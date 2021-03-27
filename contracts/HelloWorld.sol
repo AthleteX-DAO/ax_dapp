@@ -1,4 +1,4 @@
-pragma solidity ^0.5.16;
+pragma solidity ^0.7.1;
 
 contract HelloWorld {
     // public fields
@@ -11,6 +11,4 @@ contract HelloWorld {
     function setName(string memory _nm) public {
         yourName = _nm;
     }
-
-
 }
