@@ -10,7 +10,7 @@ import 'package:web_socket_channel/io.dart';
 class ContractLinking extends ChangeNotifier {
   final String _rpcUrl = "HTTP://127.0.0.1:7545";
   final String _wsUrl = "ws://10.0.2.2:7545/";
-  final String privateKey = "<Need-Private-Wallet-Key>";
+  final String _privateKey = "6a2aab1e0b61307fd88246b14355d256cd707169bae4bb39e7ebc2510461db9c";
 
   // private client for web3dart
   Web3Client _client;
@@ -45,7 +45,7 @@ class ContractLinking extends ChangeNotifier {
       
     // Reading the contract abi
     String abiStringFile =
-        await rootBundle.loadString("src/artifacts/HelloWorld.json");
+        await rootBundle.loadString("build/contracts/HelloWorld.json");
     var jsonAbi = jsonDecode(abiStringFile);
     _abiCode = jsonEncode(jsonAbi["abi"]);
   
