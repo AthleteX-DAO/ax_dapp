@@ -56,7 +56,7 @@ flutter:
 
   assets:
       - build/contracts/HelloWorld.json
-      - build/contracts/AECoin.sol
+      - build/contracts/AECoin.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
