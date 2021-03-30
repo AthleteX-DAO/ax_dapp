@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
               primaryColor: Colors.yellow[700],
               accentColor: Colors.black),
           routes: {
-            '/': (context) => HelloUI(),
+            '/': (context) => Wallet(),
             '/wallet': (context) => Wallet(),
             '/athletes': (context) => AthletesList()
           },
