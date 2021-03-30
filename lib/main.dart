@@ -1,3 +1,4 @@
+import 'package:ae_dapp/MyAthletes.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/contract_linking.dart';
 import 'package:ae_dapp/helloUI.dart';
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => Wallet(),
             '/wallet': (context) => Wallet(),
-            '/athletes': (context) => AthletesList()
+            '/athletes': (context) => AthletesList(),
+            '/my-athletes': (context) => MyAthletes()
           },
         ));
   }
