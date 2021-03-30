@@ -8,52 +8,54 @@ class AthletesList extends StatefulWidget {
 }
 
 class _AthletesListState extends State<AthletesList> {
-  Future<Athlete> futureAthlete;
-  List _allAthletes = [];
-
-  Future<void> _loadData() async {
-    futureAthlete = getBaseballAthletes();
-    setState(() {
-      _allAthletes = futureAthlete as List;
-    });
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _loadData();
-    futureAthlete = getBaseballAthletes();
+  }
+
+  Future<void> _loadData() async {
+    fetchAthletes();
   }
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _loadData,
-      child: FutureBuilder<Athlete>(
-        future: futureAthlete,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-                padding: EdgeInsets.all(8),
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: _loadData,
+        child: Center(
+          child: FutureBuilder<List<Athlete>>(
+          future: fetchAthletes(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
                 itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
+                padding: EdgeInsets.all(8),
+                itemBuilder: (context, index) {
                   return Card(
-                    child: Column(children: [
-                      <Widget>[
+                    color: Colors.blueAccent,
+                    child: Column(
+                      children: <Widget>[
                         ListTile(
-                          leading: CircleAvatar(backgroundColor: ,),
+                          title: Text(snapshot.data[index].name),
+                          subtitle:
+                              Text(snapshot.data[index].playerID.toString()),
                         )
-                      ]
-                    ],),
+                      ],
+                    ),
                   );
-                });
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Text("Snapshot has an error! ${snapshot.error}");
+            }
+
+            return CircularProgressIndicator(
+              backgroundColor: Colors.blueAccent,
             );
-          }
-        },
+          },
+        ),
+        )
       ),
     );
   }
