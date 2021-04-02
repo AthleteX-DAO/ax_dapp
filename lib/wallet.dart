@@ -1,7 +1,6 @@
-import 'package:ae_dapp/AthletesList.dart';
-import 'package:ae_dapp/main.dart';
 import 'package:flutter/material.dart';
 import "package:velocity_x/velocity_x.dart";
+import 'package:qrscan/qrscan.dart' as QRScanner;
 
 class Wallet extends StatefulWidget {
   @override
@@ -12,9 +11,17 @@ var myData = 0;
 bool data = true;
 int myAmount = 0;
 
+// TODO: NEED A WAY TO CLAIM REWARDS
+
 class _WalletState extends State<Wallet> {
+  String buyTokensSite;
+
   void _buyStuff() {
     Navigator.pushNamed(context, "/athletes");
+  }
+
+  Future<void> _buyTokensOnline() async {
+    buyTokensSite = await QRScanner.scan();
   }
 
   @override
@@ -24,7 +31,6 @@ class _WalletState extends State<Wallet> {
 
   @override
   Widget build(BuildContext context) {
-    // contractLink.getFunds()  ? data = true : data = false;
     return Scaffold(
       appBar: AppBar(
         actions: [IconButton(icon: Icon(Icons.list), onPressed: _buyStuff)],
@@ -66,19 +72,21 @@ class _WalletState extends State<Wallet> {
                   Icons.call_made_rounded,
                   color: Colors.white,
                 ),
-                label: "Deposit".text.white.make(),
+                label: "Stake".text.white.make(),
               ).h(60),
 
               // ignore: deprecated_member_use
               FlatButton.icon(
-                onPressed: () => {},
+                onPressed: () => {
+                  _buyTokensOnline()
+                },
                 color: Colors.blue,
                 shape: Vx.roundedSm,
                 icon: Icon(
-                  Icons.refresh,
+                  Icons.qr_code,
                   color: Colors.white,
                 ),
-                label: "Refresh".text.white.make(),
+                label: "Buy Tokens".text.white.make(),
               ).h(60),
 
               // ignore: deprecated_member_use
