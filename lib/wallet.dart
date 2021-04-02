@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:qrscan/qrscan.dart' as QRScanner;
@@ -21,7 +22,11 @@ class _WalletState extends State<Wallet> {
   }
 
   Future<void> _buyTokensOnline() async {
-    buyTokensSite = await QRScanner.scan();
+
+    (kIsWeb) 
+    ? buyTokensSite = "https://google.com"
+    : buyTokensSite = await QRScanner.scan();
+    
   }
 
   @override
