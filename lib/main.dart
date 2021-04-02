@@ -1,7 +1,6 @@
 import 'package:ae_dapp/MyAthletes.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/contract_linking.dart';
-import 'package:ae_dapp/helloUI.dart';
 import 'package:ae_dapp/wallet.dart';
 import 'package:ae_dapp/AthletesList.dart';
 import 'package:provider/provider.dart';

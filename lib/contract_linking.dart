@@ -7,13 +7,15 @@ import 'package:web_socket_channel/io.dart';
 
 // State management
 class ContractLinking extends ChangeNotifier {
-  final String _rpcUrl = "HTTP://127.0.0.1:7545";
-  final String _wsUrl = "ws://10.0.2.2:7545/";
-  final String _privateKey = "6a2aab1e0b61307fd88246b14355d256cd707169bae4bb39e7ebc2510461db9c";
+  final String _rpcUrl = "HTTP://127.0.0.1:7545"; // repalce w/ bsc testne rpc
+  final String _wsUrl = "ws://10.0.2.2:7545/"; // Replace w/ bsc tesnet ws
+  final String _privateKey =
+      "6a2aab1e0b61307fd88246b14355d256cd707169bae4bb39e7ebc2510461db9c"; // Bad work here
 
   // private client for web3dart
   Web3Client _client;
   bool isLoading = true;
+
   // Eth related variable declarations
   String _abiCode;
   EthereumAddress _contractAddress;
@@ -40,38 +42,34 @@ class ContractLinking extends ChangeNotifier {
     await getDeployedContract();
   }
 
+  // Get the ABI from testnet BSC
   Future<void> getAbi() async {
-      
     // Reading the contract abi
     String abiStringFile =
         await rootBundle.loadString("build/contracts/HelloWorld.json");
     var jsonAbi = jsonDecode(abiStringFile);
     _abiCode = jsonEncode(jsonAbi["abi"]);
-  
+
     _contractAddress =
         EthereumAddress.fromHex(jsonAbi["networks"]["5777"]["address"]);
   }
-  
+
   Future<void> getCredentials() async {
     _credentials = await _client.credentialsFromPrivateKey(_privateKey);
   }
-  
-  // From the blockchain to the dap
+
+  // From the blockchain to the dapp
   Future<void> getDeployedContract() async {
-      
     // Telling Web3dart where our contract is declared.
-    _contract = DeployedContract(
-        ContractAbi.fromJson(_abiCode, "HelloWorld"), _contractAddress);
-  
+    // _contract = DeployedContract(); //Needs to be updated w/ contract address
+
     // Extracting the functions, declared in contract.
     _yourName = _contract.function("yourName");
     _setName = _contract.function("setName");
     getName();
   }
-  
+
   // Executing actual smart contract logic
-
-
   getName() async {
     // Getting the current name declared in the smart contract.
     var currentName = await _client
