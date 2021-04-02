@@ -89,7 +89,7 @@ class _AthletesListState extends State<AthletesList> {
                     },
                   );
                 } else if (snapshot.hasError) {
-                  return Text("Snapshot has an error! ${snapshot.error}");
+                  return Text("Something went wrong! make sure you're connected to the internet");
                 }
 
                 return CircularProgressIndicator(
