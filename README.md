@@ -4,9 +4,7 @@ Front end UI for athlete equity MVBP built using flutter
 
 ## Getting Started
 
-To get started - got to app.athlete-equity.com and make a deposity
-
-A few resources to get you started if this is your first Flutter project:
+To get started - got to app.athlete-equity.com and make a deposit
 
 
 
