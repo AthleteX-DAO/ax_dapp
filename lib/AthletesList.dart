@@ -33,7 +33,7 @@ class _AthletesListState extends State<AthletesList> {
           _athletesList.addAll(snapshot.data.take(7));
         }
 
-        return _buildRow(_athletesList[index - 1]);
+        return _buildRow(_athletesList[i]);
       },
     );
   }
@@ -96,7 +96,7 @@ class _AthletesListState extends State<AthletesList> {
                 }
 
                 return CircularProgressIndicator(
-                  backgroundColor: Colors.blueAccent,
+                  backgroundColor: Colors.yellowAccent,
                 );
               },
             ),
