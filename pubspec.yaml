@@ -29,6 +29,7 @@ dependencies:
   web_socket_channel: ^1.2.0
   velocity_x: ^2.5.0
   qrscan: ^0.2.19
+  url_launcher: ^6.0.3
   
 
   # The following adds the Cupertino Icons font to your application.

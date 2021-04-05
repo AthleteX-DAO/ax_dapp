@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import "package:velocity_x/velocity_x.dart";
+import 'package:url_launcher/url_launcher.dart';
 import 'package:qrscan/qrscan.dart' as QRScanner;
 
 class Wallet extends StatefulWidget {
@@ -16,15 +17,18 @@ int myAmount = 0;
 
 class _WalletState extends State<Wallet> {
   String buyTokensSite;
-
+  final _buyTokenUrl = "https://google.com";
   void _buyStuff() {
     Navigator.pushNamed(context, "/athletes");
   }
 
+  void _launchURL() async =>
+    await canLaunch(_buyTokenUrl) ? await launch(_buyTokenUrl) : throw 'Could not launch $_buyTokenUrl';
+
   Future<void> _buyTokensOnline() async {
 
     (kIsWeb) 
-    ? buyTokensSite = "https://google.com"
+    ? _launchURL()
     : buyTokensSite = await QRScanner.scan();
     
   }
@@ -52,7 +56,7 @@ class _WalletState extends State<Wallet> {
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: VStack([
-            "Total Value".text.gray700.xl2.semiBold.makeCentered(),
+            "Your Balance".text.gray700.xl2.semiBold.makeCentered(),
             10.heightBox,
             data
                 ? "$myData".text.bold.xl6.makeCentered()
