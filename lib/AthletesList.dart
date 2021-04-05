@@ -8,6 +8,9 @@ class AthletesList extends StatefulWidget {
 }
 
 class _AthletesListState extends State<AthletesList> {
+  final _athletesList = <Athlete>[];
+  final _boughtAthletes = <Athlete>{};
+
   @override
   void initState() {
     // TODO: implement initState
@@ -18,43 +21,67 @@ class _AthletesListState extends State<AthletesList> {
     fetchAthletes();
   }
 
-//   Widget _buildAthletes() {
-//                       return ListView.builder(
-//                     itemCount: snapshot.data.length,
-//                     padding: EdgeInsets.all(8),
-//                     itemBuilder: (context, index) {
+  Widget _buildAthletes(AsyncSnapshot<List<Athlete>> snapshot) {
+    return ListView.builder(
+      itemCount: snapshot.data.length,
+      padding: EdgeInsets.all(8),
+      itemBuilder: (context, index) {
+        if (index.isOdd) return Divider(); /*2*/
 
-//                       );
-//                     },
-//                   );
-//   }
+        final i = index ~/ 2; /*3*/
+        if (i >= _athletesList.length) {
+          _athletesList.addAll(snapshot.data.take(7));
+        }
 
-//   Widget _buildRow(Athlete a) {
-// return Card(
-//         color: Colors.blueAccent,
-//         child: Column(
-//           children: <Widget>[
-//             ListTile(
-//               leading: Icon(
-//                 Icons.sports_baseball_rounded,
-//                 color: Colors.yellow[760],
-//               ),
-//               title: Text(a.name),
-//               subtitle: Text(
-//                   a.playerID.toString()),
-//               trailing: Icon(
-//                 Icons.check_circle,
-//                 color: Colors.greenAccent,
-//               ),
-//             )
-//           ],
-//         ),
-//       );
-//   }
+        return _buildRow(_athletesList[index - 1]);
+      },
+    );
+  }
+
+  Widget _buildRow(Athlete a) {
+    final alreadyBought = _boughtAthletes.contains(a);
+
+    return Card(
+      color: Colors.blueAccent,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Icon(
+              Icons.sports_baseball_rounded,
+              color: Colors.yellow[760],
+            ),
+            title: Text(a.name),
+            subtitle: Text("Buy: \$" + a.fantasyPoints.toString()),
+            trailing: alreadyBought
+                ? Icon(
+                    Icons.check_circle,
+                    color: Colors.greenAccent,
+                  )
+                : Icon(Icons.check_circle_outline),
+            onTap: () {
+              setState(() {
+                if (alreadyBought) {
+                  _boughtAthletes.remove(a);
+                } else {
+                  _boughtAthletes.add(a);
+                }
+              });
+            },
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Buy an Athlete"),
+        actions: [
+          IconButton(icon: Icon(Icons.account_balance_rounded), onPressed: () {})
+        ],
+      ),
       body: RefreshIndicator(
           onRefresh: _loadData,
           child: Center(
@@ -62,34 +89,10 @@ class _AthletesListState extends State<AthletesList> {
               future: fetchAthletes(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    padding: EdgeInsets.all(8),
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: Colors.blueAccent,
-                        child: Column(
-                          children: <Widget>[
-                            ListTile(
-                              leading: Icon(
-                                Icons.sports_baseball_rounded,
-                                color: Colors.yellow[760],
-                              ),
-                              title: Text(snapshot.data[index].name),
-                              subtitle: Text(
-                                  snapshot.data[index].playerID.toString()),
-                              trailing: Icon(
-                                Icons.check_circle,
-                                color: Colors.greenAccent,
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  );
+                  return _buildAthletes(snapshot);
                 } else if (snapshot.hasError) {
-                  return Text("Something went wrong! make sure you're connected to the internet");
+                  return Text(
+                      "Something went wrong! make sure you're connected to the internet");
                 }
 
                 return CircularProgressIndicator(
