@@ -11,16 +11,24 @@ class MyAthletes extends StatefulWidget {
 }
 
 class _MyAthletesState extends State<MyAthletes> {
-  List<Athlete> _MyAthletes = List.generate(20, (index) => Athlete(name: "A", fantasyPoints: (11.4*index), playerID: index*1000,));
-  
+
+  List<Athlete> _MyAthletes = List.generate(
+      20,
+      (index) => Athlete(
+            name: "A",
+            fantasyPoints: (11.4 * index),
+            playerID: index * 1000,
+          ));
+
   @override
   Widget build(BuildContext context) {
+    // final Athlete boughtAthlete = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("My Athletes"),
         actions: [],
       ),
-body: ReorderableListView.builder(
+      body: ReorderableListView.builder(
           itemCount: _MyAthletes.length,
           itemBuilder: (context, index) {
             final Athlete productName = _MyAthletes[index];
@@ -35,7 +43,6 @@ body: ReorderableListView.builder(
                   productName.name,
                   style: TextStyle(fontSize: 18),
                 ),
-                trailing: Icon(Icons.drag_handle),
                 onTap: () {/* Do something else */},
               ),
             );
