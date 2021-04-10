@@ -39,4 +39,6 @@ List<Athlete> parseAthletes(String responseBody) {
       );
     }
 
+    double getWarValue()
+
 }
