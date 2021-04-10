@@ -51,7 +51,7 @@ class _AthletesListState extends State<AthletesList> {
               color: Colors.yellow[760],
             ),
             title: Text(a.name),
-            subtitle: Text("Buy: \$" + a.fantasyPoints.toString()),
+            subtitle: Text("Buy: " + a.fantasyPoints.toString() + "ae tokens"),
             trailing: alreadyBought
                 ? Icon(
                     Icons.check_circle,
