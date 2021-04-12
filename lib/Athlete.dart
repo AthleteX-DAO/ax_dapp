@@ -39,6 +39,8 @@ List<Athlete> parseAthletes(String responseBody) {
       );
     }
 
-    double getWarValue()
-
+    void getWarValue()
+    {
+      // Call the Oracle
+    }
 }
