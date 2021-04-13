@@ -58,7 +58,7 @@ class _AthletesListState extends State<AthletesList> {
 
           final i = index ~/ 2; /*3*/
           if (i >= _athletesList.length) {
-            _athletesList.addAll(snapshot.data.take(7));
+            _athletesList.addAll(snapshot.data.take(100));
           }
 
           return _buildRow(_athletesList[i]);
