@@ -21,6 +21,11 @@ List<Athlete> parseAthletes(String responseBody) {
       throw Exception("Failed to get Athletes");
     }
   }
+
+  Future<List<Athlete>> fetchAthleteWAR() async {
+    var currentDate = new DateTime.now();
+    final String apiUrl = 'https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/';
+  }
   class Athlete  {
     final String name;
     final int playerID;
@@ -29,19 +34,22 @@ List<Athlete> parseAthletes(String responseBody) {
     Athlete(
         {@required this.name,
         @required this.playerID,
-        @required this.fantasyPoints
+        @required this.fantasyPoints,
         @required this.warValue});
   
+      double getWarValue(Map<String, dynamic> json)
+    {
+      // Call the Oracle
+      return ;
+    }
+
     factory Athlete.fromJson(Map<String, dynamic> json) {
       return Athlete(
         playerID: json['PlayerID'],
         name: json['Name'],
         fantasyPoints: json['FantasyPoints'],
+        warValue: json['RunsBattedIn'] + json['']
       );
     }
 
-    void getWarValue()
-    {
-      // Call the Oracle
-    }
 }
