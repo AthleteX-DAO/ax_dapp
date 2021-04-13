@@ -25,11 +25,12 @@ List<Athlete> parseAthletes(String responseBody) {
     final String name;
     final int playerID;
     final double fantasyPoints;
-  
+    final double warValue;
     Athlete(
         {@required this.name,
         @required this.playerID,
-        @required this.fantasyPoints});
+        @required this.fantasyPoints
+        @required this.warValue});
   
     factory Athlete.fromJson(Map<String, dynamic> json) {
       return Athlete(
