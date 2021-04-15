@@ -28,10 +28,10 @@ class _AthletesListState extends State<AthletesList> {
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
 
-        final i = index ~/ 2; /*3*/
-        if (i >= _athletesList.length) {
-          _athletesList.addAll(snapshot.data.take(7));
-        }
+          final i = index ~/ 2; /*3*/
+          if (i >= _athletesList.length) {
+            _athletesList.addAll(snapshot.data.take(100));
+          }
 
         return _buildRow(_athletesList[i]);
       },
