@@ -4,14 +4,16 @@ import 'dart:convert';
 
 class AthletesList extends StatefulWidget {
   @override
-  _AthletesListState createState() => _AthletesListState();
+  _allAthletesListState createState() => _allAthletesListState();
 }
 
-class _AthletesListState extends State<AthletesList> {
-  final _athletesList = <Athlete>[]; //All athletes
+class _allAthletesListState extends State<AthletesList> {
+  var _allAthletesList = <Athlete>[]; //All athletes
+  List<Athlete> _allAthletes;
+  var _athletesSearchableList = <Athlete>[];
   final TextEditingController _filter = new TextEditingController(); //
   Widget _appBarTitle = new Text('Buy an Athlete');
-  String _searchQuery = "";
+  String _searchText = "";
   List filteredNames = <Athlete>[]; // names filtered by search text
   Icon _searchIcon = new Icon(Icons.search);
   final _boughtAthletes = <Athlete>{};
@@ -19,12 +21,61 @@ class _AthletesListState extends State<AthletesList> {
   @override
   void initState() {
     // TODO: implement initState
+    //
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          updateFilter(_searchText);
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+          updateFilter(_searchText);
+        });
+      }
+    });
     super.initState();
   }
 
   // HTTP requests for athletes
   Future<List<Athlete>> _loadData() async {
+    _allAthletes = await fetchAthletes();
+    if (_allAthletesList == null) {
+      _allAthletesList.addAll(_allAthletes);
+      _athletesSearchableList.addAll(_allAthletesList);
+    }
     return fetchAthletes(); // From Athlete class
+  }
+
+  void updateFilter(String text) {
+    print("updated Text: ${text}");
+    filterSearchResults(text);
+  }
+
+  void filterSearchResults(String query) {
+    List<Athlete> dummySearchList;
+
+    dummySearchList.addAll(_allAthletesList.take(100));
+    print("List size : " + dummySearchList.length.toString());
+    if (query.isNotEmpty) {
+      List<Athlete> dummyListData;
+      dummySearchList.forEach((item) {
+        if (item.name.toLowerCase().contains(query.toLowerCase())) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        _athletesSearchableList.clear();
+        _athletesSearchableList.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {
+        _athletesSearchableList.clear();
+        _athletesSearchableList.addAll(_allAthletes);
+      });
+    }
   }
 
   void _searchPressed(String title) {
@@ -36,10 +87,10 @@ class _AthletesListState extends State<AthletesList> {
           controller: _filter,
           decoration: new InputDecoration(
               focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white)),
+                  borderSide: BorderSide(color: Colors.black)),
               prefixIcon: new Icon(
                 Icons.search,
-                color: Colors.white,
+                color: Colors.black,
               ),
               hintText: 'Search...',
               hintStyle: setTextStyle()),
@@ -52,7 +103,8 @@ class _AthletesListState extends State<AthletesList> {
       }
     });
   }
-    setTextStyle() {
+
+  setTextStyle() {
     return TextStyle(color: Colors.blueGrey);
   }
 
@@ -65,11 +117,11 @@ class _AthletesListState extends State<AthletesList> {
           if (index.isOdd) return Divider(); /*2*/
 
           final i = index ~/ 2; /*3*/
-          if (i >= _athletesList.length) {
-            _athletesList.addAll(snapshot.data.take(100));
+          if (i >= _allAthletesList.length) {
+            _allAthletesList.addAll(snapshot.data.take(100));
           }
 
-          return _buildRow(_athletesList[i]);
+          return _buildRow(_allAthletesList[i]);
         },
       );
   }
@@ -113,14 +165,15 @@ class _AthletesListState extends State<AthletesList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Buy an Athlete"),
-        actions: [
+        title: _appBarTitle == null ? Text("Buy an Athlete") : _appBarTitle,
+        elevation: 2,
+        centerTitle: true,
+        actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.search),
+              icon: _searchIcon,
               onPressed: () {
                 _searchPressed("Search an Athlete");
-              },
-              tooltip: "Search",)
+              })
         ],
       ),
       body: RefreshIndicator(
