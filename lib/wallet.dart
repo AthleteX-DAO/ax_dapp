@@ -17,7 +17,7 @@ int myAmount = 0;
 
 class _WalletState extends State<Wallet> {
   String buyTokensSite;
-  final _buyTokenUrl = "https://google.com";
+  final _buyTokenUrl = "https://www.athlete-equity.com/presale";
   void _buyStuff() {
     Navigator.pushNamed(context, "/athletes");
   }
@@ -44,7 +44,7 @@ class _WalletState extends State<Wallet> {
       appBar: AppBar(
         actions: [IconButton(icon: Icon(Icons.list), onPressed: _buyStuff)],
       ),
-      backgroundColor: Vx.white,
+      backgroundColor: Vx.hexToColor("#232b2b"),
       body: ZStack([
         VxBox()
             .hexColor("#fec901")
@@ -82,7 +82,7 @@ class _WalletState extends State<Wallet> {
                   color: Colors.white,
                 ),
                 label: "Stake".text.white.make(),
-              ).h(60),
+              ).h(60).tooltip("Lock your tokens in to earn interest rewards"),
 
               // ignore: deprecated_member_use
               FlatButton.icon(
@@ -96,11 +96,11 @@ class _WalletState extends State<Wallet> {
                   color: Colors.white,
                 ),
                 label: "Buy Tokens".text.white.make(),
-              ).h(60),
+              ).h(60).tooltip("Buy tokens at the Athlete Presale!"),
 
               // ignore: deprecated_member_use
               FlatButton.icon(
-                onPressed: () {},
+                onPressed: () {}, //Withdraw Smart Contract Logic
                 color: Colors.red,
                 shape: Vx.roundedSm,
                 icon: Icon(
