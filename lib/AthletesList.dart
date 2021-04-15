@@ -8,7 +8,12 @@ class AthletesList extends StatefulWidget {
 }
 
 class _AthletesListState extends State<AthletesList> {
-  final _athletesList = <Athlete>[];
+  final _athletesList = <Athlete>[]; //All athletes
+  final TextEditingController _filter = new TextEditingController(); //
+  Widget _appBarTitle = new Text('Buy an Athlete');
+  String _searchQuery = "";
+  List filteredNames = <Athlete>[]; // names filtered by search text
+  Icon _searchIcon = new Icon(Icons.search);
   final _boughtAthletes = <Athlete>{};
 
   @override
@@ -17,25 +22,56 @@ class _AthletesListState extends State<AthletesList> {
     super.initState();
   }
 
-  Future<void> _loadData() async {
-    fetchAthletes();
+  // HTTP requests for athletes
+  Future<List<Athlete>> _loadData() async {
+    return fetchAthletes(); // From Athlete class
+  }
+
+  void _searchPressed(String title) {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = new Icon(Icons.close);
+        this._appBarTitle = new TextField(
+          style: setTextStyle(),
+          controller: _filter,
+          decoration: new InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white)),
+              prefixIcon: new Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              hintText: 'Search...',
+              hintStyle: setTextStyle()),
+        );
+      } else {
+        this._searchIcon = new Icon(Icons.search);
+        this._appBarTitle = new Text(title);
+        _filter.clear();
+        this._appBarTitle = null;
+      }
+    });
+  }
+    setTextStyle() {
+    return TextStyle(color: Colors.blueGrey);
   }
 
   Widget _buildAthletes(AsyncSnapshot<List<Athlete>> snapshot) {
-    return ListView.builder(
-      itemCount: snapshot.data.length,
-      padding: EdgeInsets.all(8),
-      itemBuilder: (context, index) {
-        if (index.isOdd) return Divider(); /*2*/
+    for (int i = 0; i < snapshot.data.length; i++)
+      return ListView.builder(
+        itemCount: snapshot.data.length,
+        padding: EdgeInsets.all(8),
+        itemBuilder: (context, index) {
+          if (index.isOdd) return Divider(); /*2*/
 
           final i = index ~/ 2; /*3*/
           if (i >= _athletesList.length) {
             _athletesList.addAll(snapshot.data.take(100));
           }
 
-        return _buildRow(_athletesList[i]);
-      },
-    );
+          return _buildRow(_athletesList[i]);
+        },
+      );
   }
 
   Widget _buildRow(Athlete a) {
@@ -51,7 +87,7 @@ class _AthletesListState extends State<AthletesList> {
               color: Colors.yellow[760],
             ),
             title: Text(a.name),
-            subtitle: Text("Buy: " + a.fantasyPoints.toString() + "ae tokens"),
+            subtitle: Text("Buy: \$" + a.fantasyPoints.toString()),
             trailing: alreadyBought
                 ? Icon(
                     Icons.check_circle,
@@ -79,14 +115,19 @@ class _AthletesListState extends State<AthletesList> {
       appBar: AppBar(
         title: Text("Buy an Athlete"),
         actions: [
-          IconButton(icon: Icon(Icons.account_balance_rounded), onPressed: () {})
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                _searchPressed("Search an Athlete");
+              },
+              tooltip: "Search",)
         ],
       ),
       body: RefreshIndicator(
           onRefresh: _loadData,
           child: Center(
             child: FutureBuilder<List<Athlete>>(
-              future: fetchAthletes(),
+              future: _loadData(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return _buildAthletes(snapshot);
