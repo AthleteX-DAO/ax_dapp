@@ -8,15 +8,17 @@ class AthletesList extends StatefulWidget {
 }
 
 class _allAthletesListState extends State<AthletesList> {
-  var _allAthletesList = <Athlete>[]; //All athletes
-  List<Athlete> _allAthletes;
-  var _athletesSearchableList = <Athlete>[];
+  List<Athlete> _allAthletesList = <Athlete>[]; //All athletes
+  List<Athlete> _allAthletes = <Athlete>[];
+  List<Athlete> _athletesSearchableList = <Athlete>[];
+  List<Athlete> returnableListData = <Athlete>[];
+
   final TextEditingController _filter = new TextEditingController(); //
   Widget _appBarTitle = new Text('Buy an Athlete');
-  String _searchText = "";
   List filteredNames = <Athlete>[]; // names filtered by search text
   Icon _searchIcon = new Icon(Icons.search);
   final _boughtAthletes = <Athlete>{};
+  String _searchText = "";
 
   @override
   void initState() {
@@ -35,47 +37,17 @@ class _allAthletesListState extends State<AthletesList> {
         });
       }
     });
+
     super.initState();
   }
 
   // HTTP requests for athletes
   Future<List<Athlete>> _loadData() async {
-    _allAthletes = await fetchAthletes();
-    if (_allAthletesList == null) {
-      _allAthletesList.addAll(_allAthletes);
-      _athletesSearchableList.addAll(_allAthletesList);
-    }
     return fetchAthletes(); // From Athlete class
   }
 
   void updateFilter(String text) {
     print("updated Text: ${text}");
-    filterSearchResults(text);
-  }
-
-  void filterSearchResults(String query) {
-    List<Athlete> dummySearchList;
-
-    dummySearchList.addAll(_allAthletesList.take(100));
-    print("List size : " + dummySearchList.length.toString());
-    if (query.isNotEmpty) {
-      List<Athlete> dummyListData;
-      dummySearchList.forEach((item) {
-        if (item.name.toLowerCase().contains(query.toLowerCase())) {
-          dummyListData.add(item);
-        }
-      });
-      setState(() {
-        _athletesSearchableList.clear();
-        _athletesSearchableList.addAll(dummyListData);
-      });
-      return;
-    } else {
-      setState(() {
-        _athletesSearchableList.clear();
-        _athletesSearchableList.addAll(_allAthletes);
-      });
-    }
   }
 
   void _searchPressed(String title) {
@@ -86,6 +58,7 @@ class _allAthletesListState extends State<AthletesList> {
           style: setTextStyle(),
           controller: _filter,
           decoration: new InputDecoration(
+              // Probably need to abstract this out later - vx for search
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.black)),
               prefixIcon: new Icon(
@@ -108,27 +81,35 @@ class _allAthletesListState extends State<AthletesList> {
     return TextStyle(color: Colors.blueGrey);
   }
 
+  searchFilter(int i) {
+    //     if (_athletesSearchableList[i]
+    //     .name
+    //     .toLowerCase()
+    //     .contains(_searchText.toLowerCase())) {
+    //   _athleteFilteredList.add(_athletesSearchableList[i]);
+    // }
+  }
+
   Widget _buildAthletes(AsyncSnapshot<List<Athlete>> snapshot) {
-    for (int i = 0; i < snapshot.data.length; i++)
-      return ListView.builder(
-        itemCount: snapshot.data.length,
-        padding: EdgeInsets.all(8),
-        itemBuilder: (context, index) {
-          if (index.isOdd) return Divider(); /*2*/
-
-          final i = index ~/ 2; /*3*/
-          if (i >= _allAthletesList.length) {
-            _allAthletesList.addAll(snapshot.data.take(100));
-          }
-
-          return _buildRow(_allAthletesList[i]);
-        },
-      );
+    _allAthletesList.addAll(snapshot.data);
+    _athletesSearchableList.addAll(_allAthletesList);
+    List<Athlete> _athleteFilteredList = <Athlete>[];
+    return ListView.builder(
+      itemCount: snapshot.data.length,
+      padding: EdgeInsets.all(8),
+      itemBuilder: (context, index) {
+        if (index.isOdd) return Divider(); /*2*/
+        final i = index ~/ 2; // i is every even item in this iteration
+        if (_athletesSearchableList[i].name.toLowerCase().contains(_searchText)) {
+          _athleteFilteredList.add(_allAthletesList[i]);
+        }
+        _buildRow(_allAthletesList[i]);
+      },
+    );
   }
 
   Widget _buildRow(Athlete a) {
     final alreadyBought = _boughtAthletes.contains(a);
-
     return Card(
       color: Colors.blueAccent,
       child: Column(
@@ -188,7 +169,6 @@ class _allAthletesListState extends State<AthletesList> {
                   return Text(
                       "Something went wrong! make sure you're connected to the internet");
                 }
-
                 return CircularProgressIndicator(
                   backgroundColor: Colors.yellowAccent,
                 );
