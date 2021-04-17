@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ae_dapp/contract_linking.dart';
 import 'package:ae_dapp/wallet.dart';
 import 'package:ae_dapp/AthletesList.dart';
+import 'package:ae_dapp/NavigationBar.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
               primaryColor: Colors.yellow[700],
               accentColor: Colors.black),
           routes: {
-            '/': (context) => Wallet(),
+            '/': (context) => NavigationBar(),
             '/wallet': (context) => Wallet(),
             '/athletes': (context) => AthletesList(),
             '/my-athletes': (context) => MyAthletes()
