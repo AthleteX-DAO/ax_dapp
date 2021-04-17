@@ -18,8 +18,15 @@ class _NavigationBarState extends State<NavigationBar> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> _widgetOptions = <Widget>[
     Wallet(),
+    Text(
+      'Coming Soon!',
+      style: optionStyle,
+    ), // MyAthletes()
     AthletesList(),
-    MyAthletes(),
+    Text(
+      'Coming soon!',
+      style: optionStyle,
+    ),
     Text(
       'Coming soon!',
       style: optionStyle,
@@ -43,27 +50,29 @@ class _NavigationBarState extends State<NavigationBar> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'My Wallet',
-            backgroundColor: Colors.red,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance_wallet),
+            label: 'My Athletes',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.sports_basketball),
             label: 'Buy Athletes',
-            backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.swap_horizontal_circle_sharp),
             label: 'Token Swap',
-            backgroundColor: Colors.purple,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: Colors.pink,
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.settings),
+          //   label: 'Settings',
+          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Vx.hexToColor("#fec901"),
+        unselectedItemColor: Vx.hexToColor("#f8f8ff"),
         onTap: _onItemTapped,
+        backgroundColor: Vx.hexToColor("#232b2b"),
       ),
     );
   }
