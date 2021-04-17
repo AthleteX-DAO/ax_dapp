@@ -24,12 +24,7 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.dark,
               primaryColor: Colors.yellow[700],
               accentColor: Colors.black),
-          routes: {
-            '/': (context) => NavigationBar(),
-            '/wallet': (context) => Wallet(),
-            '/athletes': (context) => AthletesList(),
-            '/my-athletes': (context) => MyAthletes()
-          },
+              home: NavigationBar(),
         ));
   }
 }

@@ -20,6 +20,10 @@ class _NavigationBarState extends State<NavigationBar> {
     Wallet(),
     AthletesList(),
     MyAthletes(),
+    Text(
+      'Coming soon!',
+      style: optionStyle,
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -31,9 +35,6 @@ class _NavigationBarState extends State<NavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
