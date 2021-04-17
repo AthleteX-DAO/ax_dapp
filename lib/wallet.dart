@@ -41,9 +41,6 @@ class _WalletState extends State<Wallet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [IconButton(icon: Icon(Icons.list), onPressed: _buyStuff)],
-      ),
       backgroundColor: Vx.hexToColor("#232b2b"),
       body: ZStack([
         VxBox()
