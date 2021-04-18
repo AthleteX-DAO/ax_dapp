@@ -3,9 +3,33 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+// https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-04?key=fa329ac2e3ce465e9db5a14b34ca9368
+// https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-06?key=fa329ac2e3ce465e9db5a14b34ca9368
+
 Future<List<Athlete>> fetchAthletes() async {
+  //Steps - get curent date + time, set value in apiUrl
+  //2021-APR-04
+  var todayYear = DateTime.now().toLocal().year;
+  var months = [
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MAY',
+    'JUN',
+    'JUL',
+    'AUG',
+    'SEP',
+    'OCT',
+    'NOV',
+    'DEC'
+  ];
+  var todayMonth = months[DateTime.now().toLocal().month-1];
+  var todayDay = DateTime.now().toLocal().day;
+  String today = "$todayYear-$todayMonth-$todayDay";
+  print("current: $today");
   final String apiUrl =
-      "https://api.sportsdata.io/v3/mlb/stats/json/PlayerSeasonStats/2020?key=fa329ac2e3ce465e9db5a14b34ca9368";
+      "https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/$today?key=fa329ac2e3ce465e9db5a14b34ca9368";
 
   final result = await http.get(apiUrl);
 
@@ -44,6 +68,6 @@ class Athlete {
         playerID: json['PlayerID'],
         name: json['Name'],
         fantasyPoints: json['FantasyPoints']);
-        // warValue: json['RunsBattedIn'] + json['']);
+    // warValue: json['RunsBattedIn'] + json['']);
   }
 }
