@@ -24,10 +24,12 @@ Future<List<Athlete>> fetchAthletes() async {
     'NOV',
     'DEC'
   ];
-  var todayMonth = months[DateTime.now().toLocal().month-1];
-  var todayDay = DateTime.now().toLocal().day;
-  String today = "$todayYear-$todayMonth-$todayDay";
-  print("current: $today");
+  var todayMonth = months[DateTime.now().toLocal().month - 1];
+  var todayDay = DateTime.now().toLocal().day -2;
+  String today =
+      "$todayYear-$todayMonth-$todayDay"; //REMINDER: No data on Sunday
+  // ignore: unnecessary_cast
+  // Tracks player stats by date
   final String apiUrl =
       "https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/$today?key=fa329ac2e3ce465e9db5a14b34ca9368";
 
@@ -55,7 +57,10 @@ class Athlete {
   final String name;
   final int playerID;
   final double fantasyPoints;
+  String apiUrl;
   double warValue;
+
+  // Constructor
   Athlete({
     @required this.name,
     @required this.playerID,
