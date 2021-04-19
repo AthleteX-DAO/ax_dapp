@@ -18,10 +18,10 @@ class _NavigationBarState extends State<NavigationBar> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> _widgetOptions = <Widget>[
     Wallet(),
-    Text(
-      'Coming Soon!',
-      style: optionStyle,
-    ), // MyAthletes()
+    // Text(
+    //   'Coming Soon!',
+    //   style: optionStyle,
+    // ), // MyAthletes()
     AthletesList(),
     Text(
       'Coming soon!',
@@ -51,10 +51,10 @@ class _NavigationBarState extends State<NavigationBar> {
             icon: Icon(Icons.home),
             label: 'My Wallet',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: 'My Athletes',
-          ),
+          // BottomNavigationBarItem(  // Move this into same tab as Buy Athletes
+          //   icon: Icon(Icons.account_balance_wallet),
+          //   label: 'My Athletes',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.sports_basketball),
             label: 'Buy Athletes',
