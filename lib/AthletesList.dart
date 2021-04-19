@@ -18,6 +18,7 @@ class _allAthletesListState extends State<AthletesList> {
   List filteredNames = <Athlete>[]; // names filtered by search text
   Icon _searchIcon = new Icon(Icons.search);
   final _boughtAthletes = <Athlete>{};
+  Future _loadData;
   String _searchText = "";
 
   @override
@@ -37,17 +38,16 @@ class _allAthletesListState extends State<AthletesList> {
         });
       }
     });
-
+    _loadData = _loadAthletes();
     super.initState();
-  }
-
-  // HTTP requests for athletes
-  Future<List<Athlete>> _loadData() async {
-    return fetchAthletes(); // From Athlete class
   }
 
   void updateFilter(String text) {
     print("updated Text: ${text}");
+  }
+
+  Future<List<Athlete>> _loadAthletes() async {
+    return await fetchAthletes();
   }
 
   void _searchPressed(String title) {
@@ -92,24 +92,21 @@ class _allAthletesListState extends State<AthletesList> {
 
   Widget _buildAthletes(AsyncSnapshot<List<Athlete>> snapshot) {
     _allAthletesList.addAll(snapshot.data);
-    _athletesSearchableList.addAll(_allAthletesList);
-    List<Athlete> _athleteFilteredList = <Athlete>[];
     return ListView.builder(
-      itemCount: snapshot.data.length,
-      padding: EdgeInsets.all(8),
+      itemCount: _allAthletesList.length,
+      padding: EdgeInsets.all(16.0),
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
         final i = index ~/ 2; // i is every even item in this iteration
-        if (_athletesSearchableList[i].name.toLowerCase().contains(_searchText)) {
-          _athleteFilteredList.add(_allAthletesList[i]);
-        }
-        _buildRow(_allAthletesList[i]);
+        print('Loaded BuildAthetes');
+        return _buildRow(_allAthletesList[i]);
       },
     );
   }
 
   Widget _buildRow(Athlete a) {
     final alreadyBought = _boughtAthletes.contains(a);
+
     return Card(
       color: Colors.blueAccent,
       child: Column(
@@ -158,10 +155,12 @@ class _allAthletesListState extends State<AthletesList> {
         ],
       ),
       body: RefreshIndicator(
-          onRefresh: _loadData,
+          onRefresh: () {
+            return _loadData;
+          },
           child: Center(
             child: FutureBuilder<List<Athlete>>(
-              future: _loadData(),
+              future: _loadData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return _buildAthletes(snapshot);
