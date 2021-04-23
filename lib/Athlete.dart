@@ -33,8 +33,9 @@ Future<List<Athlete>> fetchAthletes() async {
   final String apiUrl =
       "https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/$today?key=fa329ac2e3ce465e9db5a14b34ca9368";
 
+  // HTTP Request
   final result = await http.get(apiUrl);
-
+  // if OK result
   if (result.statusCode == 200) {
     return parseAthletes(result.body);
   } else {
@@ -43,9 +44,11 @@ Future<List<Athlete>> fetchAthletes() async {
 }
 
 List<Athlete> parseAthletes(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  final parsedJson = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
-  return parsed.map<Athlete>((json) => Athlete.fromJson(json)).toList();
+  return parsedJson.map<Athlete>(
+    (json) => Athlete.fromJson(json)
+    ).toList();
 }
 
 // Future<List<Athlete>> fetchAthleteWAR() async {
@@ -64,7 +67,7 @@ class Athlete {
   Athlete({
     @required this.name,
     @required this.playerID,
-    @required this.fantasyPoints,
+    @required this.warValue,
   });
   // @required this.warValue}); // Needsto be implemented, ignore for now ( can do this asap!)
 
@@ -72,7 +75,6 @@ class Athlete {
     return Athlete(
         playerID: json['PlayerID'],
         name: json['Name'],
-        fantasyPoints: json['FantasyPoints']);
-    // warValue: json['RunsBattedIn'] + json['']);
+        warValue: json['SluggingPercentage']); // this should be updated with the latest data
   }
 }
