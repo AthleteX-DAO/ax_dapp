@@ -33,9 +33,8 @@ Future<List<Athlete>> fetchAthletes() async {
   final String apiUrl =
       "https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/$today?key=fa329ac2e3ce465e9db5a14b34ca9368";
 
-  // HTTP Request
   final result = await http.get(apiUrl);
-  // if OK result
+
   if (result.statusCode == 200) {
     return parseAthletes(result.body);
   } else {
@@ -44,11 +43,9 @@ Future<List<Athlete>> fetchAthletes() async {
 }
 
 List<Athlete> parseAthletes(String responseBody) {
-  final parsedJson = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
-  return parsedJson.map<Athlete>(
-    (json) => Athlete.fromJson(json)
-    ).toList();
+  return parsed.map<Athlete>((json) => Athlete.fromJson(json)).toList();
 }
 
 // Future<List<Athlete>> fetchAthleteWAR() async {
@@ -67,7 +64,7 @@ class Athlete {
   Athlete({
     @required this.name,
     @required this.playerID,
-    @required this.warValue,
+    @required this.fantasyPoints,
   });
   // @required this.warValue}); // Needsto be implemented, ignore for now ( can do this asap!)
 
@@ -75,6 +72,33 @@ class Athlete {
     return Athlete(
         playerID: json['PlayerID'],
         name: json['Name'],
-        warValue: json['SluggingPercentage']); // this should be updated with the latest data
+        fantasyPoints: json['FantasyPoints']);
+    // warValue: json['RunsBattedIn'] + json['']);
   }
+
+  /*
+  // WAR equation
+  
+  // (Batting Runs + Base Running Runs + Fielding Runs 
+  //  + Positional Adjustment + League Adjustment
+  //  + Replacement Runs)
+  //  / Runs Per Win
+
+  factory Athlete.fromJson(Map<String, dynamic> json) {
+    double _batRuns = json[];
+    double _baseRuns = json[];
+    double _fldRuns = json[];
+    double _posAdj = json[];
+    double _leagAdj = json[];
+    double _repRuns = json[];
+    double _runsWin = json[];
+
+    double _warValue = (_batRuns+_baseRuns+_fldRuns+_posAdj+_leagAdj+_repRuns)/_runsPerWin;
+
+    return Athlete(
+        playerID: json['PlayerID'],
+        name: json['Name'],
+        warValue: _warValue); // this should be updated with the latest data
+  }
+  */
 }
