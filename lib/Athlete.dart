@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-04?key=fa329ac2e3ce465e9db5a14b34ca9368
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-06?key=fa329ac2e3ce465e9db5a14b34ca9368
 
+// https://fly.sportsdata.io/v3/mlb/stats/json/PlayerSeasonStats/2021-APR-06?key=22c8f467077d4ff2a14c5b69e2355343
+
 Future<List<Athlete>> fetchAthletes() async {
   //Steps - get curent date + time, set value in apiUrl
   //2021-APR-04
@@ -56,7 +58,7 @@ List<Athlete> parseAthletes(String responseBody) {
 class Athlete {
   final String name;
   final int playerID;
-  final double fantasyPoints;
+  //final double fantasyPoints;
   String apiUrl;
   double warValue;
 
@@ -64,41 +66,21 @@ class Athlete {
   Athlete({
     @required this.name,
     @required this.playerID,
-    @required this.fantasyPoints,
+    //@required this.fantasyPoints,
+    @required this.warValue,
   });
-  // @required this.warValue}); // Needsto be implemented, ignore for now ( can do this asap!)
+
+  // AEWAR equation
 
   factory Athlete.fromJson(Map<String, dynamic> json) {
-    return Athlete(
-        playerID: json['PlayerID'],
-        name: json['Name'],
-        fantasyPoints: json['FantasyPoints']);
-    // warValue: json['RunsBattedIn'] + json['']);
-  }
-
-  /*
-  // WAR equation
-  
-  // (Batting Runs + Base Running Runs + Fielding Runs 
-  //  + Positional Adjustment + League Adjustment
-  //  + Replacement Runs)
-  //  / Runs Per Win
-
-  factory Athlete.fromJson(Map<String, dynamic> json) {
-    double _batRuns = json[];
-    double _baseRuns = json[];
-    double _fldRuns = json[];
-    double _posAdj = json[];
-    double _leagAdj = json[];
-    double _repRuns = json[];
-    double _runsWin = json[];
-
-    double _warValue = (_batRuns+_baseRuns+_fldRuns+_posAdj+_leagAdj+_repRuns)/_runsPerWin;
+    double _wins = json['Wins'];
+    double _losses = json['Losses'];
+    double _warValue = _wins/_losses;
 
     return Athlete(
         playerID: json['PlayerID'],
         name: json['Name'],
         warValue: _warValue); // this should be updated with the latest data
   }
-  */
+  
 }
