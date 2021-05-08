@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'AthletesList.dart';
+
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-04?key=fa329ac2e3ce465e9db5a14b34ca9368
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-06?key=fa329ac2e3ce465e9db5a14b34ca9368
 
@@ -61,50 +63,89 @@ List<Athlete> parseAthletes(String responseBody) {
 class Athlete {
   final String name;
   final int playerID;
-  final double fantasyPoints;
-  String apiUrl;
-  double warValue;
+  final double oba;
+  final double pa;
+  final double sb;
+  final double cs;
+  final double runs;
+  final double outs;
+  final double walks;
+  final double hitByPitch;
+  final double intentionalWalks;
 
   // Constructor
   Athlete({
     @required this.name,
     @required this.playerID,
-    @required this.fantasyPoints,
+    @required this.oba,
+    @required this.pa,
+    @required this.sb,
+    @required this.cs,
+    @required this.runs,
+    @required this.outs,
+    @required this.singles,
+    @required this.walks,
+    @required this.hitByPitch,
+    @required this.intentionalWalks,
   });
   // @required this.warValue}); // Needsto be implemented, ignore for now ( can do this asap!)
 
   factory Athlete.fromJson(Map<String, dynamic> json) {
-    double _OBA = json['OnBasePercentage'];
-    double _PA = json['PitchingPlateAppearances'];
-    double _lgwOBA = 0; //TODO
-    double _wOBAScale = 1.254;
-    double battingRuns = ((_OBA - _lgwOBA) / _wOBAScale) * _PA;
-
-    double _SB = json['StolenBases'];
-    double _CS = json['CaughtStealing'];
-    double _runs = json['Runs'];
-    double _outs = json['Outs'];
-    double _runCS = 2 * (_runs / _outs) + 0.075;
-    double _lgSB = 1; //TODO
-    double _lgCS = 1; //TODO
-    double _lg1B = 1; //TODO
-    double _lgBB = 1; //TODO
-    double _lgHBP = 1; //TODO
-    double _lgIBB = 1; //TODO
-    double _lgwSB = (_lgSB * 0.2 + _lgCS * _runCS) / (_lg1B + _lgBB + _lgHBP - lgIBB);
-    double _1B = json['Singles'];
-    double _BB = json['Walks'];
-    double _HBP = json['HitByPitch'];
-    double _IBB = json['IntentionalWalks'];
-    double _wsB = _SB * 0.2 + _CS * _runCS - _lgwSB * (_1B + _BB + _HBP - _IBB);
-    double baseRunningRuns = _wsB;
-
-
-    double _warValue = battingRuns + baseRunningRuns;
-
+ 
     return Athlete(
         playerID: json['PlayerID'],
         name: json['Name'],
-        warValue: _warValue); // this should be updated with the latest data
+        oba: json['OnBasePercentage'],
+        pa: json['PitchingPlateAppearances'],
+        sb: json['StolenBases'],
+        cs: json['CaughtStealing'],
+        runs: json['Runs'],
+        singles: json['Singles'],
+        walks: json['Walks'],
+        hitByPitch: json['HitByPitch'],
+        intentionalWalks: json['IntentionalWalks'],); // this should be updated with the latest data
   }
+}
+
+double warValue(Athlete athlete)
+{
+  /*
+  double lgwOBA = 0;
+  double lgSB = 0;
+  double lgCS = 0;
+  double lg1B = 0;
+  double lgBB = 0;
+  double lgHBP = 0;
+  double lgIBB = 0;
+  int numAthletes = list.length;
+  
+  for () // for every athlete
+  {
+    lgOBA += ath.oba;
+    lgSB += ath.sb;
+    lgCS += ath.cs;
+    lg1B += ath.singles;
+    lgBB += ath.walks;
+    lgHBP += ath.hitByPitch;
+    lgIBB += ath.intentionalWalks;
+  }
+
+  lgwOBA /= numAthletes;
+  lgSB /= numAthletes;
+  lgCS /= numAthletes;
+  lg1B /= numAthletes;
+  lgBB /= numAthletes;
+  lgHBP /= numAthletes;
+  lgIBB /= numAthletes;
+  
+  double wOBAScale = 1.254;
+  double battingRuns = ((athlete.oba - lgwOBA) / wOBAScale) * athlete.pa;
+
+  double _runCS = 2 * (athlete.runs / athlete.outs) + 0.075;
+  double lgwSB = (lgSB * 0.2 + lgCS * runCS) / (lg1B + lgBB + lgHBP - lgIBB);
+  double _wsB = athlete.SB * 0.2 + athlete.CS * runCS - lgwSB * (athlete.1B + athlete.BB + athlete.HBP - athlete.IBB);
+  double baseRunningRuns = _wsB;
+
+  return battingRuns + baseRunningRuns;
+  */
 }
