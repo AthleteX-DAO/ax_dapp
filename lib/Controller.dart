@@ -34,7 +34,7 @@ class Controller extends ChangeNotifier {
     });
 
     // Setup the contracts we'll be using - they're immutable so can be called once
-    empCreator = await retrieveContract("ExpiringMultiParyCreator");
+    empCreator = await retrieveContract("ExpiringMultiPartyCreator");
     registry = await retrieveContract("Registry");
     identifierWhitelist = await retrieveContract("IdentifierWhiteList");
     staking = await retrieveContract("Staking");
@@ -45,7 +45,7 @@ class Controller extends ChangeNotifier {
   Future<DeployedContract> retrieveContract(String contractName) async {
     // Reading the contract abi
     String abiStringFile =
-        await rootBundle.loadString('./contracts/$contractName.json');
+        await rootBundle.loadString('contracts/$contractName.json');
     var jsonAbi = jsonDecode(abiStringFile);
     _abiCode = jsonEncode(jsonAbi["abi"]);
     // assign contract address
@@ -58,10 +58,11 @@ class Controller extends ChangeNotifier {
     return contract;
   }
 
-  Future<void> retrieveNewAddress() async {
+  Future<EthereumAddress> retrieveNewAddress() async {
     Random rng = new Random.secure();
     _credentials = EthPrivateKey.createRandom(rng);
     publicAddress = await _credentials.extractAddress();
+    return publicAddress;
   }
 
   Credentials getCredentials() {
@@ -71,19 +72,43 @@ class Controller extends ChangeNotifier {
   dynamic getBalance() async {
     ContractFunction stakeOf = staking.function("stakeOf");
     final balance = await _client
-        .call(contract: staking, function: stakeOf, params: [11 * 18]);
-    return balance;
+        .call(contract: staking, function: stakeOf, params: [publicAddress]);
+    return balance.first;
   }
 
-  // dynamic stake(int amount) async {
-  //   ContractFunction stake = staking.function("createStake");
-    
-  // }
-
-  Future<void> createAthleteTokenContract(String params) async {
+  Future<void> createAthleteTokenContract() async {
     ContractFunction createEMP =
         empCreator.function("createExpiringMultiParty");
   }
 
   // From the blockchain to the dapp
+}
+
+class Params {
+  EthereumAddress collateralAddress, financialProductLibraryAddress;
+  BigInt expirationTimestamp;
+  String syntheticName, syntheticSymbol;
+  Map<dynamic, dynamic> constructorParams;
+
+  constructParams() {
+    // var constructorParams = {
+    //   expirationTimestamp: "1706780800",
+    //   collateralAddress: TestnetERC20.address,
+    //   priceFeedIdentifier:
+    //       web3.utils.padRight(web3.utils.utf8ToHex("UMATEST"), 64),
+    //   syntheticName: "Test UMA Token",
+    //   syntheticSymbol: "UMATEST",
+    //   collateralRequirement: {rawValue: web3.utils.toWei("1.5")},
+    //   disputeBondPercentage: {rawValue: web3.utils.toWei("0.1")},
+    //   sponsorDisputeRewardPercentage: {rawValue: web3.utils.toWei("0.1")},
+    //   disputerDisputeRewardPercentage: {rawValue: web3.utils.toWei("0.1")},
+    //   minSponsorTokens: {rawValue: '100000000000000'},
+    //   timerAddress: Timer.address,
+    //   withdrawalLiveness: 7200,
+    //   liquidationLiveness: 7200,
+    //   financialProductLibraryAddress:
+    //       '0x0000000000000000000000000000000000000000'
+    // };
+    print("params");
+  }
 }

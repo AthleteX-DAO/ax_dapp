@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/contract_linking.dart';
+import 'package:ae_dapp/Controller.dart';
 import 'package:ae_dapp/NavigationBar.dart';
 import 'package:provider/provider.dart';
 
@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Returns anything!
 
-    return ChangeNotifierProvider<ContractLinking>(
-        create: (_) => ContractLinking(),
+    return ChangeNotifierProvider<Controller>(
+        create: (_) => Controller(),
         child: MaterialApp(
           title: "Athlete Equity",
           debugShowCheckedModeBanner: false,

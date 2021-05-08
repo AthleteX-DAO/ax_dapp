@@ -1,12 +1,17 @@
+import 'dart:js_util';
+
+import 'package:ae_dapp/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web3_provider/ethers.dart';
+import 'package:provider/provider.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:qrscan/qrscan.dart' as QRScanner;
+import 'package:web3dart/credentials.dart';
 
 // Smart Contract specific imports
-import 'dart:math';
-import 'package:web3dart/web3dart.dart';
 
 class Wallet extends StatefulWidget {
   @override
@@ -34,13 +39,23 @@ class _WalletState extends State<Wallet> {
     (kIsWeb) ? _launchURL() : buyTokensSite = await QRScanner.scan();
   }
 
+  Controller contractLink;
+  Web3Provider web3;
+  Future balanceOfAE;
+  String aeToken = "0x805624d8a34473f24d66d74c2fb86400c90862a1";
   @override
   void initState() {
     super.initState();
+    if (ethereum != null) {
+      web3 = Web3Provider(ethereum);
+      balanceOfAE = promiseToFuture(web3.getBalance(aeToken));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    contractLink = Provider.of<Controller>(context);
+    data = true;
     return Scaffold(
       backgroundColor: Vx.hexToColor("#232b2b"),
       body: ZStack([
@@ -50,14 +65,14 @@ class _WalletState extends State<Wallet> {
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
-          "\$Athlete.Equity".text.xl4.white.bold.center.makeCentered().py16(),
+          "Athlete.Equity".text.xl4.white.bold.center.makeCentered().py16(),
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: VStack([
-            "Your Balance".text.gray700.xl2.semiBold.makeCentered(),
+            "Token Balance ".text.gray700.xl2.semiBold.makeCentered(),
             10.heightBox,
-            data
-                ? "$myData".text.bold.xl6.makeCentered()
+            ethereum != null
+                ? "$balanceOfAE".text.bold.xl6.makeCentered()
                 : CircularProgressIndicator().centered()
           ]))
               .p16
@@ -104,7 +119,7 @@ class _WalletState extends State<Wallet> {
                   color: Colors.white,
                 ),
                 label: "Withdraw".text.white.make(),
-              ).h(60),
+              ).h(60).tooltip("Sell your tokens to realize your gains"),
             ],
             alignment: MainAxisAlignment.spaceAround,
             axisSize: MainAxisSize.max,

@@ -25,7 +25,7 @@ Future<List<Athlete>> fetchAthletes() async {
     'DEC'
   ];
   var todayMonth = months[DateTime.now().toLocal().month - 1];
-  var todayDay = DateTime.now().toLocal().day -2;
+  var todayDay = DateTime.now().toLocal().day - 2;
   String today =
       "$todayYear-$todayMonth-$todayDay"; //REMINDER: No data on Sunday
   // ignore: unnecessary_cast
@@ -59,25 +59,31 @@ class Athlete {
   final double fantasyPoints;
   String apiUrl;
   double warValue;
+  String walks;
 
   // Constructor
   Athlete({
     @required this.name,
     @required this.playerID,
     @required this.fantasyPoints,
+    @required this.walks
   });
   // @required this.warValue}); // Needsto be implemented, ignore for now ( can do this asap!)
 
   factory Athlete.fromJson(Map<String, dynamic> json) {
-    
-
     return Athlete(
         playerID: json['PlayerID'],
         name: json['Name'],
-        fantasyPoints: json['FantasyPoints']);
+        fantasyPoints: json['FantasyPoints'],
+        walks: json['walks']);
     // warValue: json['RunsBattedIn'] + json['']);
   }
 
   // Create a token per athlete
-  
+  generateTokenPerAthlete() async {
+    List<Athlete> allAthletes = await fetchAthletes();
+    allAthletes.forEach((element) {
+      // Implement logic here
+    });
+  }
 }
