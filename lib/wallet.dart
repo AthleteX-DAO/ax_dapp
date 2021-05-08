@@ -4,6 +4,10 @@ import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
 import 'package:qrscan/qrscan.dart' as QRScanner;
 
+// Smart Contract specific imports
+import 'dart:math';
+import 'package:web3dart/web3dart.dart';
+
 class Wallet extends StatefulWidget {
   @override
   _WalletState createState() => _WalletState();
@@ -22,15 +26,12 @@ class _WalletState extends State<Wallet> {
     Navigator.pushNamed(context, "/athletes");
   }
 
-  void _launchURL() async =>
-    await canLaunch(_buyTokenUrl) ? await launch(_buyTokenUrl) : throw 'Could not launch $_buyTokenUrl';
+  void _launchURL() async => await canLaunch(_buyTokenUrl)
+      ? await launch(_buyTokenUrl)
+      : throw 'Could not launch $_buyTokenUrl';
 
   Future<void> _buyTokensOnline() async {
-
-    (kIsWeb) 
-    ? _launchURL()
-    : buyTokensSite = await QRScanner.scan();
-    
+    (kIsWeb) ? _launchURL() : buyTokensSite = await QRScanner.scan();
   }
 
   @override
@@ -83,9 +84,7 @@ class _WalletState extends State<Wallet> {
 
               // ignore: deprecated_member_use
               FlatButton.icon(
-                onPressed: () => {
-                  _buyTokensOnline()
-                },
+                onPressed: () => {_buyTokensOnline()},
                 color: Colors.blue,
                 shape: Vx.roundedSm,
                 icon: Icon(

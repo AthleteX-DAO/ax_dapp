@@ -69,10 +69,15 @@ class Athlete {
   // @required this.warValue}); // Needsto be implemented, ignore for now ( can do this asap!)
 
   factory Athlete.fromJson(Map<String, dynamic> json) {
+    
+
     return Athlete(
         playerID: json['PlayerID'],
         name: json['Name'],
         fantasyPoints: json['FantasyPoints']);
     // warValue: json['RunsBattedIn'] + json['']);
   }
+
+  // Create a token per athlete
+  
 }
