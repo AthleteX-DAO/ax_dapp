@@ -26,8 +26,13 @@ Future<List<Athlete>> fetchAthletes() async {
   ];
   var todayMonth = months[DateTime.now().toLocal().month - 1];
   var todayDay = DateTime.now().toLocal().day -2;
+  /*
   String today =
       "$todayYear-$todayMonth-$todayDay"; //REMINDER: No data on Sunday
+  */
+
+  String today =
+      "$todayYear";
   // ignore: unnecessary_cast
   // Tracks player stats by date
   final String apiUrl =
