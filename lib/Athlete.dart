@@ -74,10 +74,37 @@ class Athlete {
   // @required this.warValue}); // Needsto be implemented, ignore for now ( can do this asap!)
 
   factory Athlete.fromJson(Map<String, dynamic> json) {
+    double _OBA = json['OnBasePercentage'];
+    double _PA = json['PitchingPlateAppearances'];
+    double _lgwOBA = 0; //TODO
+    double _wOBAScale = 1.254;
+    double battingRuns = ((_OBA - _lgwOBA) / _wOBAScale) * _PA;
+
+    double _SB = json['StolenBases'];
+    double _CS = json['CaughtStealing'];
+    double _runs = json['Runs'];
+    double _outs = json['Outs'];
+    double _runCS = 2 * (_runs / _outs) + 0.075;
+    double _lgSB = 1; //TODO
+    double _lgCS = 1; //TODO
+    double _lg1B = 1; //TODO
+    double _lgBB = 1; //TODO
+    double _lgHBP = 1; //TODO
+    double _lgIBB = 1; //TODO
+    double _lgwSB = (_lgSB * 0.2 + _lgCS * _runCS) / (_lg1B + _lgBB + _lgHBP - lgIBB);
+    double _1B = json['Singles'];
+    double _BB = json['Walks'];
+    double _HBP = json['HitByPitch'];
+    double _IBB = json['IntentionalWalks'];
+    double _wsB = _SB * 0.2 + _CS * _runCS - _lgwSB * (_1B + _BB + _HBP - _IBB);
+    double baseRunningRuns = _wsB;
+
+
+    double _warValue = battingRuns + baseRunningRuns;
+
     return Athlete(
         playerID: json['PlayerID'],
         name: json['Name'],
-        fantasyPoints: json['FantasyPoints']);
-    // warValue: json['RunsBattedIn'] + json['']);
+        warValue: _warValue); // this should be updated with the latest data
   }
 }
