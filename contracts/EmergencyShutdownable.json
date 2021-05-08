@@ -1,0 +1,1195 @@
+{
+  "contractName": "EmergencyShutdownable",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "emergencyShutdownTimestamp",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.4+commit.c7e474f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"emergencyShutdownTimestamp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"title\":\"EmergencyShutdownable contract.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Any contract that inherits this contract will have an emergency shutdown timestamp state variable. This contract provides modifiers that can be used by children contracts to determine if the contract is in the shutdown state. The child contract is expected to implement the logic that happens once a shutdown occurs.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/kamto/code/protocol/packages/core/contracts/financial-templates/common/EmergencyShutdownable.sol\":\"EmergencyShutdownable\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":199},\"remappings\":[]},\"sources\":{\"/home/kamto/code/protocol/packages/core/contracts/financial-templates/common/EmergencyShutdownable.sol\":{\"keccak256\":\"0x20e2f94514c8718280760f7dd4137475d43d4c4728bc4054fae033c2f6d0e8b6\",\"license\":\"AGPL-3.0-only\",\"urls\":[\"bzz-raw://1726928eaaa2a774c9517bfa137621d652d78d4a7b728f1084bafc6f4e46e5ad\",\"dweb:/ipfs/QmRQS1A78rEMRxhA9CUFr2EYJdGLbRw2CPDXSxL4du1iyu\"]},\"@openzeppelin/contracts/utils/math/SafeMath.sol\":{\"keccak256\":\"0x2526b7c6a366fc211bbc176078ab02b83833e7682abcc5b3bed9d700b34e2a3e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5f9529d3d365e8415155cee11394e0f7c0de2152b601b7e77508fce16cb4a509\",\"dweb:/ipfs/QmVhbcLVsAzvqfjsdLwy25XMjgVJm7Z3w2JCNiNbZF2GHT\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: AGPL-3.0-only\npragma solidity ^0.8.0;\npragma abicoder v2;\n\nimport \"@openzeppelin/contracts/utils/math/SafeMath.sol\";\n\n/**\n * @title EmergencyShutdownable contract.\n * @notice Any contract that inherits this contract will have an emergency shutdown timestamp state variable.\n * This contract provides modifiers that can be used by children contracts to determine if the contract is\n * in the shutdown state. The child contract is expected to implement the logic that happens\n * once a shutdown occurs.\n */\n\nabstract contract EmergencyShutdownable {\n    using SafeMath for uint256;\n\n    /****************************************\n     * EMERGENCY SHUTDOWN DATA STRUCTURES *\n     ****************************************/\n\n    // Timestamp used in case of emergency shutdown. 0 if no shutdown has been triggered.\n    uint256 public emergencyShutdownTimestamp;\n\n    /****************************************\n     *              MODIFIERS               *\n     ****************************************/\n\n    modifier notEmergencyShutdown() {\n        _notEmergencyShutdown();\n        _;\n    }\n\n    modifier isEmergencyShutdown() {\n        _isEmergencyShutdown();\n        _;\n    }\n\n    /****************************************\n     *          EXTERNAL FUNCTIONS          *\n     ****************************************/\n\n    constructor() {\n        emergencyShutdownTimestamp = 0;\n    }\n\n    /****************************************\n     *          INTERNAL FUNCTIONS          *\n     ****************************************/\n\n    function _notEmergencyShutdown() internal view {\n        // Note: removed require string to save bytecode.\n        require(emergencyShutdownTimestamp == 0);\n    }\n\n    function _isEmergencyShutdown() internal view {\n        // Note: removed require string to save bytecode.\n        require(emergencyShutdownTimestamp != 0);\n    }\n}\n",
+  "sourcePath": "/home/kamto/code/protocol/packages/core/contracts/financial-templates/common/EmergencyShutdownable.sol",
+  "ast": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/financial-templates/common/EmergencyShutdownable.sol",
+    "exportedSymbols": {
+      "EmergencyShutdownable": [
+        9609
+      ],
+      "SafeMath": [
+        34361
+      ]
+    },
+    "id": 9610,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9558,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:49"
+      },
+      {
+        "id": 9559,
+        "literals": [
+          "abicoder",
+          "v2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "66:19:49"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "file": "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "id": 9560,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 9610,
+        "sourceUnit": 34362,
+        "src": "87:57:49",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": true,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 9561,
+          "nodeType": "StructuredDocumentation",
+          "src": "146:386:49",
+          "text": " @title EmergencyShutdownable contract.\n @notice Any contract that inherits this contract will have an emergency shutdown timestamp state variable.\n This contract provides modifiers that can be used by children contracts to determine if the contract is\n in the shutdown state. The child contract is expected to implement the logic that happens\n once a shutdown occurs."
+        },
+        "fullyImplemented": true,
+        "id": 9609,
+        "linearizedBaseContracts": [
+          9609
+        ],
+        "name": "EmergencyShutdownable",
+        "nameLocation": "552:21:49",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 9564,
+            "libraryName": {
+              "id": 9562,
+              "name": "SafeMath",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 34361,
+              "src": "586:8:49"
+            },
+            "nodeType": "UsingForDirective",
+            "src": "580:27:49",
+            "typeName": {
+              "id": 9563,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "599:7:49",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            }
+          },
+          {
+            "constant": false,
+            "functionSelector": "6cf1be29",
+            "id": 9566,
+            "mutability": "mutable",
+            "name": "emergencyShutdownTimestamp",
+            "nameLocation": "856:26:49",
+            "nodeType": "VariableDeclaration",
+            "scope": 9609,
+            "src": "841:41:49",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 9565,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "841:7:49",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 9572,
+              "nodeType": "Block",
+              "src": "1061:51:49",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 9568,
+                      "name": "_notEmergencyShutdown",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 9598,
+                      "src": "1071:21:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$__$",
+                        "typeString": "function () view"
+                      }
+                    },
+                    "id": 9569,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1071:23:49",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 9570,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1071:23:49"
+                },
+                {
+                  "id": 9571,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1104:1:49"
+                }
+              ]
+            },
+            "id": 9573,
+            "name": "notEmergencyShutdown",
+            "nameLocation": "1038:20:49",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 9567,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1058:2:49"
+            },
+            "src": "1029:83:49",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 9579,
+              "nodeType": "Block",
+              "src": "1149:50:49",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 9575,
+                      "name": "_isEmergencyShutdown",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 9608,
+                      "src": "1159:20:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$__$",
+                        "typeString": "function () view"
+                      }
+                    },
+                    "id": 9576,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1159:22:49",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 9577,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1159:22:49"
+                },
+                {
+                  "id": 9578,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1191:1:49"
+                }
+              ]
+            },
+            "id": 9580,
+            "name": "isEmergencyShutdown",
+            "nameLocation": "1127:19:49",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 9574,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1146:2:49"
+            },
+            "src": "1118:81:49",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 9587,
+              "nodeType": "Block",
+              "src": "1359:47:49",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 9585,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 9583,
+                      "name": "emergencyShutdownTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 9566,
+                      "src": "1369:26:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "30",
+                      "id": 9584,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1398:1:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "src": "1369:30:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 9586,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1369:30:49"
+                }
+              ]
+            },
+            "id": 9588,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9581,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1356:2:49"
+            },
+            "returnParameters": {
+              "id": 9582,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1359:0:49"
+            },
+            "scope": 9609,
+            "src": "1345:61:49",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 9597,
+              "nodeType": "Block",
+              "src": "1599:115:49",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 9594,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "id": 9592,
+                          "name": "emergencyShutdownTimestamp",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 9566,
+                          "src": "1675:26:49",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "hexValue": "30",
+                          "id": 9593,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1705:1:49",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_0_by_1",
+                            "typeString": "int_const 0"
+                          },
+                          "value": "0"
+                        },
+                        "src": "1675:31:49",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 9591,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
+                      "referencedDeclaration": 4294967278,
+                      "src": "1667:7:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 9595,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1667:40:49",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 9596,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1667:40:49"
+                }
+              ]
+            },
+            "id": 9598,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_notEmergencyShutdown",
+            "nameLocation": "1561:21:49",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9589,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1582:2:49"
+            },
+            "returnParameters": {
+              "id": 9590,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1599:0:49"
+            },
+            "scope": 9609,
+            "src": "1552:162:49",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 9607,
+              "nodeType": "Block",
+              "src": "1766:115:49",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 9604,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "id": 9602,
+                          "name": "emergencyShutdownTimestamp",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 9566,
+                          "src": "1842:26:49",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "hexValue": "30",
+                          "id": 9603,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1872:1:49",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_0_by_1",
+                            "typeString": "int_const 0"
+                          },
+                          "value": "0"
+                        },
+                        "src": "1842:31:49",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 9601,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
+                      "referencedDeclaration": 4294967278,
+                      "src": "1834:7:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 9605,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1834:40:49",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 9606,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1834:40:49"
+                }
+              ]
+            },
+            "id": 9608,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_isEmergencyShutdown",
+            "nameLocation": "1729:20:49",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9599,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1749:2:49"
+            },
+            "returnParameters": {
+              "id": 9600,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1766:0:49"
+            },
+            "scope": 9609,
+            "src": "1720:161:49",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 9610,
+        "src": "534:1349:49",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:1842:49"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/financial-templates/common/EmergencyShutdownable.sol",
+    "exportedSymbols": {
+      "EmergencyShutdownable": [
+        9609
+      ],
+      "SafeMath": [
+        34361
+      ]
+    },
+    "id": 9610,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9558,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:49"
+      },
+      {
+        "id": 9559,
+        "literals": [
+          "abicoder",
+          "v2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "66:19:49"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "file": "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "id": 9560,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 9610,
+        "sourceUnit": 34362,
+        "src": "87:57:49",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": true,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 9561,
+          "nodeType": "StructuredDocumentation",
+          "src": "146:386:49",
+          "text": " @title EmergencyShutdownable contract.\n @notice Any contract that inherits this contract will have an emergency shutdown timestamp state variable.\n This contract provides modifiers that can be used by children contracts to determine if the contract is\n in the shutdown state. The child contract is expected to implement the logic that happens\n once a shutdown occurs."
+        },
+        "fullyImplemented": true,
+        "id": 9609,
+        "linearizedBaseContracts": [
+          9609
+        ],
+        "name": "EmergencyShutdownable",
+        "nameLocation": "552:21:49",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 9564,
+            "libraryName": {
+              "id": 9562,
+              "name": "SafeMath",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 34361,
+              "src": "586:8:49"
+            },
+            "nodeType": "UsingForDirective",
+            "src": "580:27:49",
+            "typeName": {
+              "id": 9563,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "599:7:49",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            }
+          },
+          {
+            "constant": false,
+            "functionSelector": "6cf1be29",
+            "id": 9566,
+            "mutability": "mutable",
+            "name": "emergencyShutdownTimestamp",
+            "nameLocation": "856:26:49",
+            "nodeType": "VariableDeclaration",
+            "scope": 9609,
+            "src": "841:41:49",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 9565,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "841:7:49",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 9572,
+              "nodeType": "Block",
+              "src": "1061:51:49",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 9568,
+                      "name": "_notEmergencyShutdown",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 9598,
+                      "src": "1071:21:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$__$",
+                        "typeString": "function () view"
+                      }
+                    },
+                    "id": 9569,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1071:23:49",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 9570,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1071:23:49"
+                },
+                {
+                  "id": 9571,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1104:1:49"
+                }
+              ]
+            },
+            "id": 9573,
+            "name": "notEmergencyShutdown",
+            "nameLocation": "1038:20:49",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 9567,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1058:2:49"
+            },
+            "src": "1029:83:49",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 9579,
+              "nodeType": "Block",
+              "src": "1149:50:49",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 9575,
+                      "name": "_isEmergencyShutdown",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 9608,
+                      "src": "1159:20:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$__$",
+                        "typeString": "function () view"
+                      }
+                    },
+                    "id": 9576,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1159:22:49",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 9577,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1159:22:49"
+                },
+                {
+                  "id": 9578,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1191:1:49"
+                }
+              ]
+            },
+            "id": 9580,
+            "name": "isEmergencyShutdown",
+            "nameLocation": "1127:19:49",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 9574,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1146:2:49"
+            },
+            "src": "1118:81:49",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 9587,
+              "nodeType": "Block",
+              "src": "1359:47:49",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 9585,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 9583,
+                      "name": "emergencyShutdownTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 9566,
+                      "src": "1369:26:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "30",
+                      "id": 9584,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1398:1:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "src": "1369:30:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 9586,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1369:30:49"
+                }
+              ]
+            },
+            "id": 9588,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9581,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1356:2:49"
+            },
+            "returnParameters": {
+              "id": 9582,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1359:0:49"
+            },
+            "scope": 9609,
+            "src": "1345:61:49",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 9597,
+              "nodeType": "Block",
+              "src": "1599:115:49",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 9594,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "id": 9592,
+                          "name": "emergencyShutdownTimestamp",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 9566,
+                          "src": "1675:26:49",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "hexValue": "30",
+                          "id": 9593,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1705:1:49",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_0_by_1",
+                            "typeString": "int_const 0"
+                          },
+                          "value": "0"
+                        },
+                        "src": "1675:31:49",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 9591,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
+                      "referencedDeclaration": 4294967278,
+                      "src": "1667:7:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 9595,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1667:40:49",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 9596,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1667:40:49"
+                }
+              ]
+            },
+            "id": 9598,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_notEmergencyShutdown",
+            "nameLocation": "1561:21:49",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9589,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1582:2:49"
+            },
+            "returnParameters": {
+              "id": 9590,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1599:0:49"
+            },
+            "scope": 9609,
+            "src": "1552:162:49",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 9607,
+              "nodeType": "Block",
+              "src": "1766:115:49",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 9604,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "id": 9602,
+                          "name": "emergencyShutdownTimestamp",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 9566,
+                          "src": "1842:26:49",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "hexValue": "30",
+                          "id": 9603,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1872:1:49",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_0_by_1",
+                            "typeString": "int_const 0"
+                          },
+                          "value": "0"
+                        },
+                        "src": "1842:31:49",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 9601,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
+                      "referencedDeclaration": 4294967278,
+                      "src": "1834:7:49",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 9605,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1834:40:49",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 9606,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1834:40:49"
+                }
+              ]
+            },
+            "id": 9608,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_isEmergencyShutdown",
+            "nameLocation": "1729:20:49",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9599,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1749:2:49"
+            },
+            "returnParameters": {
+              "id": 9600,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1766:0:49"
+            },
+            "scope": 9609,
+            "src": "1720:161:49",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 9610,
+        "src": "534:1349:49",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:1842:49"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.4+commit.c7e474f2.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2021-05-07T15:46:50.174Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "title": "EmergencyShutdownable contract.",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "Any contract that inherits this contract will have an emergency shutdown timestamp state variable. This contract provides modifiers that can be used by children contracts to determine if the contract is in the shutdown state. The child contract is expected to implement the logic that happens once a shutdown occurs.",
+    "version": 1
+  }
+}

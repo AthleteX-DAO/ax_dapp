@@ -1,0 +1,515 @@
+{
+  "contractName": "AdministrateeInterface",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "emergencyShutdown",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "remargin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pfc",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "rawValue",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct FixedPoint.Unsigned",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.4+commit.c7e474f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"emergencyShutdown\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pfc\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"rawValue\",\"type\":\"uint256\"}],\"internalType\":\"struct FixedPoint.Unsigned\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"remargin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"pfc()\":{\"details\":\"This is equivalent to the collateral pool available from which to pay fees. Therefore, derived contracts are expected to implement this so that pay-fee methods can correctly compute the owed fees as a % of PfC.\",\"returns\":{\"_0\":\"pfc value for equal to the current profit from corruption denominated in collateral currency.\"}},\"remargin()\":{\"details\":\"It pays fees and moves money between margin accounts to make sure they reflect the NAV of the contract.\"}},\"title\":\"Interface that all financial contracts expose to the admin.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"emergencyShutdown()\":{\"notice\":\"Initiates the shutdown process, in case of an emergency.\"},\"pfc()\":{\"notice\":\"Gets the current profit from corruption for this contract in terms of the collateral currency.\"},\"remargin()\":{\"notice\":\"A core contract method called independently or as a part of other financial contract transactions.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/AdministrateeInterface.sol\":\"AdministrateeInterface\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":199},\"remappings\":[]},\"sources\":{\"/home/kamto/code/protocol/packages/core/contracts/common/implementation/FixedPoint.sol\":{\"keccak256\":\"0x8ea44f1bf5e1efcfc5943ea67c3dc5bf7ce1ba84bf2d6b868baafac7e422cc01\",\"license\":\"AGPL-3.0-only\",\"urls\":[\"bzz-raw://94e828e682e9e44991807f5f39c2ed499b451d65155d8a6c6d0fd62b13dbd222\",\"dweb:/ipfs/QmPfPWyR9deca2dHmwVnm3E9Kt2fLXXABQE4WT8iSdKSXm\"]},\"/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/AdministrateeInterface.sol\":{\"keccak256\":\"0x0cb85ef7bf29436837aaca4f03c42c7fa867ed4f7a8ba61378f67207d8ed3841\",\"license\":\"AGPL-3.0-only\",\"urls\":[\"bzz-raw://ae25b938e51db1c4248b991d047fb41ac88d28ef37de3e820af3287418952825\",\"dweb:/ipfs/QmbVehrqyjCtVdoG76iu4dJHhj44kpigcBUkaGbFsdeppG\"]},\"@openzeppelin/contracts/utils/math/SafeMath.sol\":{\"keccak256\":\"0x2526b7c6a366fc211bbc176078ab02b83833e7682abcc5b3bed9d700b34e2a3e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5f9529d3d365e8415155cee11394e0f7c0de2152b601b7e77508fce16cb4a509\",\"dweb:/ipfs/QmVhbcLVsAzvqfjsdLwy25XMjgVJm7Z3w2JCNiNbZF2GHT\"]},\"@openzeppelin/contracts/utils/math/SignedSafeMath.sol\":{\"keccak256\":\"0xd1ddc24b24f12a347093844dd645c3a96bcdce05d1f51b8650946ad404cb3c40\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://873363c817ef68913ced271e77fc4af21d4a94ffba23de2b205c6e9de8ff6b72\",\"dweb:/ipfs/QmNmN46R3rrvTxMUjDTbZiCiqqTX9TRvWbiaN9qLrWQXPS\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: AGPL-3.0-only\npragma solidity ^0.8.0;\npragma abicoder v2;\n\nimport \"../../common/implementation/FixedPoint.sol\";\n\n/**\n * @title Interface that all financial contracts expose to the admin.\n */\ninterface AdministrateeInterface {\n    /**\n     * @notice Initiates the shutdown process, in case of an emergency.\n     */\n    function emergencyShutdown() external;\n\n    /**\n     * @notice A core contract method called independently or as a part of other financial contract transactions.\n     * @dev It pays fees and moves money between margin accounts to make sure they reflect the NAV of the contract.\n     */\n    function remargin() external;\n\n    /**\n     * @notice Gets the current profit from corruption for this contract in terms of the collateral currency.\n     * @dev This is equivalent to the collateral pool available from which to pay fees. Therefore, derived contracts are\n     * expected to implement this so that pay-fee methods can correctly compute the owed fees as a % of PfC.\n     * @return pfc value for equal to the current profit from corruption denominated in collateral currency.\n     */\n    function pfc() external view returns (FixedPoint.Unsigned memory);\n}\n",
+  "sourcePath": "/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/AdministrateeInterface.sol",
+  "ast": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/AdministrateeInterface.sol",
+    "exportedSymbols": {
+      "AdministrateeInterface": [
+        29036
+      ],
+      "FixedPoint": [
+        6150
+      ],
+      "SafeMath": [
+        34361
+      ],
+      "SignedSafeMath": [
+        34425
+      ]
+    },
+    "id": 29037,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 29017,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:100"
+      },
+      {
+        "id": 29018,
+        "literals": [
+          "abicoder",
+          "v2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "66:19:100"
+      },
+      {
+        "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/common/implementation/FixedPoint.sol",
+        "file": "../../common/implementation/FixedPoint.sol",
+        "id": 29019,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 29037,
+        "sourceUnit": 6151,
+        "src": "87:52:100",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 29020,
+          "nodeType": "StructuredDocumentation",
+          "src": "141:77:100",
+          "text": " @title Interface that all financial contracts expose to the admin."
+        },
+        "fullyImplemented": false,
+        "id": 29036,
+        "linearizedBaseContracts": [
+          29036
+        ],
+        "name": "AdministrateeInterface",
+        "nameLocation": "229:22:100",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 29021,
+              "nodeType": "StructuredDocumentation",
+              "src": "258:83:100",
+              "text": " @notice Initiates the shutdown process, in case of an emergency."
+            },
+            "functionSelector": "3403c2fc",
+            "id": 29024,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "emergencyShutdown",
+            "nameLocation": "355:17:100",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29022,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "372:2:100"
+            },
+            "returnParameters": {
+              "id": 29023,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "383:0:100"
+            },
+            "scope": 29036,
+            "src": "346:38:100",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 29025,
+              "nodeType": "StructuredDocumentation",
+              "src": "390:241:100",
+              "text": " @notice A core contract method called independently or as a part of other financial contract transactions.\n @dev It pays fees and moves money between margin accounts to make sure they reflect the NAV of the contract."
+            },
+            "functionSelector": "bda02e77",
+            "id": 29028,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "remargin",
+            "nameLocation": "645:8:100",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29026,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "653:2:100"
+            },
+            "returnParameters": {
+              "id": 29027,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "664:0:100"
+            },
+            "scope": 29036,
+            "src": "636:29:100",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 29029,
+              "nodeType": "StructuredDocumentation",
+              "src": "671:460:100",
+              "text": " @notice Gets the current profit from corruption for this contract in terms of the collateral currency.\n @dev This is equivalent to the collateral pool available from which to pay fees. Therefore, derived contracts are\n expected to implement this so that pay-fee methods can correctly compute the owed fees as a % of PfC.\n @return pfc value for equal to the current profit from corruption denominated in collateral currency."
+            },
+            "functionSelector": "81a10ae1",
+            "id": 29035,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "pfc",
+            "nameLocation": "1145:3:100",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29030,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1148:2:100"
+            },
+            "returnParameters": {
+              "id": 29034,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29033,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29035,
+                  "src": "1174:26:100",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Unsigned_$4536_memory_ptr",
+                    "typeString": "struct FixedPoint.Unsigned"
+                  },
+                  "typeName": {
+                    "id": 29032,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 29031,
+                      "name": "FixedPoint.Unsigned",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 4536,
+                      "src": "1174:19:100"
+                    },
+                    "referencedDeclaration": 4536,
+                    "src": "1174:19:100",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Unsigned_$4536_storage_ptr",
+                      "typeString": "struct FixedPoint.Unsigned"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1173:28:100"
+            },
+            "scope": 29036,
+            "src": "1136:66:100",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 29037,
+        "src": "219:985:100",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:1163:100"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/AdministrateeInterface.sol",
+    "exportedSymbols": {
+      "AdministrateeInterface": [
+        29036
+      ],
+      "FixedPoint": [
+        6150
+      ],
+      "SafeMath": [
+        34361
+      ],
+      "SignedSafeMath": [
+        34425
+      ]
+    },
+    "id": 29037,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 29017,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:100"
+      },
+      {
+        "id": 29018,
+        "literals": [
+          "abicoder",
+          "v2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "66:19:100"
+      },
+      {
+        "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/common/implementation/FixedPoint.sol",
+        "file": "../../common/implementation/FixedPoint.sol",
+        "id": 29019,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 29037,
+        "sourceUnit": 6151,
+        "src": "87:52:100",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 29020,
+          "nodeType": "StructuredDocumentation",
+          "src": "141:77:100",
+          "text": " @title Interface that all financial contracts expose to the admin."
+        },
+        "fullyImplemented": false,
+        "id": 29036,
+        "linearizedBaseContracts": [
+          29036
+        ],
+        "name": "AdministrateeInterface",
+        "nameLocation": "229:22:100",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 29021,
+              "nodeType": "StructuredDocumentation",
+              "src": "258:83:100",
+              "text": " @notice Initiates the shutdown process, in case of an emergency."
+            },
+            "functionSelector": "3403c2fc",
+            "id": 29024,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "emergencyShutdown",
+            "nameLocation": "355:17:100",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29022,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "372:2:100"
+            },
+            "returnParameters": {
+              "id": 29023,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "383:0:100"
+            },
+            "scope": 29036,
+            "src": "346:38:100",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 29025,
+              "nodeType": "StructuredDocumentation",
+              "src": "390:241:100",
+              "text": " @notice A core contract method called independently or as a part of other financial contract transactions.\n @dev It pays fees and moves money between margin accounts to make sure they reflect the NAV of the contract."
+            },
+            "functionSelector": "bda02e77",
+            "id": 29028,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "remargin",
+            "nameLocation": "645:8:100",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29026,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "653:2:100"
+            },
+            "returnParameters": {
+              "id": 29027,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "664:0:100"
+            },
+            "scope": 29036,
+            "src": "636:29:100",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 29029,
+              "nodeType": "StructuredDocumentation",
+              "src": "671:460:100",
+              "text": " @notice Gets the current profit from corruption for this contract in terms of the collateral currency.\n @dev This is equivalent to the collateral pool available from which to pay fees. Therefore, derived contracts are\n expected to implement this so that pay-fee methods can correctly compute the owed fees as a % of PfC.\n @return pfc value for equal to the current profit from corruption denominated in collateral currency."
+            },
+            "functionSelector": "81a10ae1",
+            "id": 29035,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "pfc",
+            "nameLocation": "1145:3:100",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29030,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1148:2:100"
+            },
+            "returnParameters": {
+              "id": 29034,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29033,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29035,
+                  "src": "1174:26:100",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Unsigned_$4536_memory_ptr",
+                    "typeString": "struct FixedPoint.Unsigned"
+                  },
+                  "typeName": {
+                    "id": 29032,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 29031,
+                      "name": "FixedPoint.Unsigned",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 4536,
+                      "src": "1174:19:100"
+                    },
+                    "referencedDeclaration": 4536,
+                    "src": "1174:19:100",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Unsigned_$4536_storage_ptr",
+                      "typeString": "struct FixedPoint.Unsigned"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1173:28:100"
+            },
+            "scope": 29036,
+            "src": "1136:66:100",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 29037,
+        "src": "219:985:100",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:1163:100"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.4+commit.c7e474f2.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2021-05-07T15:46:50.495Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "pfc()": {
+        "details": "This is equivalent to the collateral pool available from which to pay fees. Therefore, derived contracts are expected to implement this so that pay-fee methods can correctly compute the owed fees as a % of PfC.",
+        "returns": {
+          "_0": "pfc value for equal to the current profit from corruption denominated in collateral currency."
+        }
+      },
+      "remargin()": {
+        "details": "It pays fees and moves money between margin accounts to make sure they reflect the NAV of the contract."
+      }
+    },
+    "title": "Interface that all financial contracts expose to the admin.",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "emergencyShutdown()": {
+        "notice": "Initiates the shutdown process, in case of an emergency."
+      },
+      "pfc()": {
+        "notice": "Gets the current profit from corruption for this contract in terms of the collateral currency."
+      },
+      "remargin()": {
+        "notice": "A core contract method called independently or as a part of other financial contract transactions."
+      }
+    },
+    "version": 1
+  }
+}
