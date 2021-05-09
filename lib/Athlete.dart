@@ -156,7 +156,5 @@ double warValue(Athlete athlete, List<Athlete> athleteList) {
               athlete.hitByPitch -
               athlete.intentionalWalks);
   double baseRunningRuns = wsB;
-  print("Hello\n");
-  print(battingRuns + baseRunningRuns);
   return battingRuns + baseRunningRuns;
 }
