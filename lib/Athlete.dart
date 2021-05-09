@@ -27,14 +27,13 @@ Future<List<Athlete>> fetchAthletes() async {
     'DEC'
   ];
   var todayMonth = months[DateTime.now().toLocal().month - 1];
-  var todayDay = DateTime.now().toLocal().day -2;
+  var todayDay = DateTime.now().toLocal().day - 2;
   /*
   String today =
       "$todayYear-$todayMonth-$todayDay"; //REMINDER: No data on Sunday
   */
 
-  String today =
-      "$todayYear";
+  String today = "$todayYear";
   // ignore: unnecessary_cast
   // Tracks player stats by date
   final String apiUrl =
@@ -53,6 +52,11 @@ List<Athlete> parseAthletes(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
   return parsed.map<Athlete>((json) => Athlete.fromJson(json)).toList();
+
+  /*
+  athleteList = parsed.map<Athlete>((json) => Athlete.fromJson(json)).toList();
+  return athleteList;
+  */
 }
 
 // Future<List<Athlete>> fetchAthleteWAR() async {
@@ -69,6 +73,7 @@ class Athlete {
   final double cs;
   final double runs;
   final double outs;
+  final double singles;
   final double walks;
   final double hitByPitch;
   final double intentionalWalks;
@@ -91,25 +96,24 @@ class Athlete {
   // @required this.warValue}); // Needsto be implemented, ignore for now ( can do this asap!)
 
   factory Athlete.fromJson(Map<String, dynamic> json) {
- 
     return Athlete(
-        playerID: json['PlayerID'],
-        name: json['Name'],
-        oba: json['OnBasePercentage'],
-        pa: json['PitchingPlateAppearances'],
-        sb: json['StolenBases'],
-        cs: json['CaughtStealing'],
-        runs: json['Runs'],
-        singles: json['Singles'],
-        walks: json['Walks'],
-        hitByPitch: json['HitByPitch'],
-        intentionalWalks: json['IntentionalWalks'],); // this should be updated with the latest data
+      name: json['Name'],
+      playerID: json['PlayerID'],
+      oba: json['OnBasePercentage'],
+      pa: json['PitchingPlateAppearances'],
+      sb: json['StolenBases'],
+      cs: json['CaughtStealing'],
+      runs: json['Runs'],
+      outs: json['Outs'],
+      singles: json['Singles'],
+      walks: json['Walks'],
+      hitByPitch: json['HitByPitch'],
+      intentionalWalks: json['IntentionalWalks'],
+    ); // this should be updated with the latest data
   }
 }
 
-double warValue(Athlete athlete)
-{
-  /*
+double warValue(Athlete athlete, List<Athlete> athleteList) {
   double lgwOBA = 0;
   double lgSB = 0;
   double lgCS = 0;
@@ -117,11 +121,12 @@ double warValue(Athlete athlete)
   double lgBB = 0;
   double lgHBP = 0;
   double lgIBB = 0;
-  int numAthletes = list.length;
-  
-  for () // for every athlete
+
+  int numAthletes = athleteList.length;
+
+  for (Athlete ath in athleteList) // for every athlete
   {
-    lgOBA += ath.oba;
+    lgwOBA += ath.oba;
     lgSB += ath.sb;
     lgCS += ath.cs;
     lg1B += ath.singles;
@@ -137,15 +142,21 @@ double warValue(Athlete athlete)
   lgBB /= numAthletes;
   lgHBP /= numAthletes;
   lgIBB /= numAthletes;
-  
+
   double wOBAScale = 1.254;
   double battingRuns = ((athlete.oba - lgwOBA) / wOBAScale) * athlete.pa;
 
-  double _runCS = 2 * (athlete.runs / athlete.outs) + 0.075;
+  double runCS = 2 * (athlete.runs / athlete.outs) + 0.075;
   double lgwSB = (lgSB * 0.2 + lgCS * runCS) / (lg1B + lgBB + lgHBP - lgIBB);
-  double _wsB = athlete.SB * 0.2 + athlete.CS * runCS - lgwSB * (athlete.1B + athlete.BB + athlete.HBP - athlete.IBB);
-  double baseRunningRuns = _wsB;
-
+  double wsB = athlete.sb * 0.2 +
+      athlete.cs * runCS -
+      lgwSB *
+          (athlete.singles +
+              athlete.walks +
+              athlete.hitByPitch -
+              athlete.intentionalWalks);
+  double baseRunningRuns = wsB;
+  print("Hello\n");
+  print(battingRuns + baseRunningRuns);
   return battingRuns + baseRunningRuns;
-  */
 }
