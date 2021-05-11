@@ -50,7 +50,7 @@ class Controller extends ChangeNotifier {
     _abiCode = jsonEncode(jsonAbi["abi"]);
     // assign contract address
     _contractAddress =
-        EthereumAddress.fromHex(jsonAbi["networks"]["97"]["address"]);
+        EthereumAddress.fromHex(jsonAbi["networks"]["97"]["address"]); //BSC-TESTNET Address
     final contract = DeployedContract(
         ContractAbi.fromJson(_abiCode, "$contractName"), _contractAddress);
 
@@ -69,8 +69,11 @@ class Controller extends ChangeNotifier {
     return _credentials;
   }
 
+  ///** Mutataive Methods */
+  
   // Staking
   Future<BigInt> getStakeBalance(EthereumAddress from) async {
+    
     ContractFunction stakeOf = staking.function("stakeOf");
     var balance = await _client
         .call(contract: staking, function: stakeOf, params: [from]);
