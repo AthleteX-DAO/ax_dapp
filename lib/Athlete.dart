@@ -27,14 +27,13 @@ Future<List<Athlete>> fetchAthletes() async {
     'DEC'
   ];
   var todayMonth = months[DateTime.now().toLocal().month - 1];
-  var todayDay = DateTime.now().toLocal().day -2;
+  var todayDay = DateTime.now().toLocal().day - 2;
   /*
   String today =
       "$todayYear-$todayMonth-$todayDay"; //REMINDER: No data on Sunday
   */
 
-  String today =
-      "$todayYear";
+  String today = "$todayYear";
   // ignore: unnecessary_cast
   // Tracks player stats by date
   final String apiUrl =
@@ -69,6 +68,7 @@ class Athlete {
   final double cs;
   final double runs;
   final double outs;
+  final double singles;
   final double walks;
   final double hitByPitch;
   final double intentionalWalks;
@@ -91,19 +91,19 @@ class Athlete {
   // @required this.warValue}); // Needsto be implemented, ignore for now ( can do this asap!)
 
   factory Athlete.fromJson(Map<String, dynamic> json) {
- 
     return Athlete(
-        playerID: json['PlayerID'],
-        name: json['Name'],
-        oba: json['OnBasePercentage'],
-        pa: json['PitchingPlateAppearances'],
-        sb: json['StolenBases'],
-        cs: json['CaughtStealing'],
-        runs: json['Runs'],
-        singles: json['Singles'],
-        walks: json['Walks'],
-        hitByPitch: json['HitByPitch'],
-        intentionalWalks: json['IntentionalWalks'],); // this should be updated with the latest data
+      playerID: json['PlayerID'],
+      name: json['Name'],
+      oba: json['OnBasePercentage'],
+      pa: json['PitchingPlateAppearances'],
+      sb: json['StolenBases'],
+      cs: json['CaughtStealing'],
+      runs: json['Runs'],
+      singles: json['Singles'],
+      walks: json['Walks'],
+      hitByPitch: json['HitByPitch'],
+      intentionalWalks: json['IntentionalWalks'],
+    ); // this should be updated with the latest data
   }
 
   // Create a token per athlete
@@ -115,8 +115,7 @@ class Athlete {
   }
 }
 
-double warValue(Athlete athlete)
-{
+double warValue(Athlete athlete) {
   /*
   double lgwOBA = 0;
   double lgSB = 0;

@@ -90,6 +90,17 @@ class _allAthletesListState extends State<AthletesList> {
     // }
   }
 
+  void _AthleteDetails(Athlete aAthlete) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(title: Text("About ${aAthlete.name}"),),
+          body: Text("Stuff goes here"),
+        );
+      }),
+    );
+  }
+
   Widget _buildAthletes(AsyncSnapshot<List<Athlete>> snapshot) {
     _allAthletesList.addAll(snapshot.data);
     return ListView.builder(
@@ -117,7 +128,8 @@ class _allAthletesListState extends State<AthletesList> {
               color: Colors.yellow[760],
             ),
             title: Text(a.name),
-            subtitle: Text("Buy: \$" + a.fantasyPoints.toString()),
+            onLongPress: () => {_AthleteDetails(a)},
+            subtitle: Text("Buy: ${a.playerID}"),
             trailing: alreadyBought
                 ? Icon(
                     Icons.check_circle,
