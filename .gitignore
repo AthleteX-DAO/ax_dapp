@@ -48,3 +48,4 @@ app.*.map.json
 # Deployment related
 .netlify/
 .node_modules/
+.yarn-integrity
