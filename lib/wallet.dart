@@ -41,21 +41,22 @@ class _WalletState extends State<Wallet> {
 
   Controller contractLink;
   Web3Provider web3;
-  Future balanceOfAE;
-  String aeToken = "0x805624d8a34473f24d66d74c2fb86400c90862a1";
+  BigInt balanceOfAE;
+  String aeToken =
+      "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
   @override
   void initState() {
     super.initState();
     if (ethereum != null) {
       web3 = Web3Provider(ethereum);
-      balanceOfAE = promiseToFuture(web3.getBalance(aeToken));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    contractLink = Provider.of<Controller>(context);
+    var contractLink = Provider.of<Controller>(context);
     data = true;
+
     return Scaffold(
       backgroundColor: Vx.hexToColor("#232b2b"),
       body: ZStack([
@@ -69,9 +70,9 @@ class _WalletState extends State<Wallet> {
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: VStack([
-            "Token Balance ".text.gray700.xl2.semiBold.makeCentered(),
+            "Token Balance: ".text.gray700.xl2.semiBold.makeCentered(),
             10.heightBox,
-            ethereum != null
+            balanceOfAE != null
                 ? "$balanceOfAE".text.bold.xl6.makeCentered()
                 : CircularProgressIndicator().centered()
           ]))
@@ -87,7 +88,16 @@ class _WalletState extends State<Wallet> {
             [
               // ignore: deprecated_member_use
               FlatButton.icon(
-                onPressed: () {},
+                onPressed: () async {
+                  // Staking token
+                  try {
+                    final stakeAmount = BigInt.parse("9225807");
+                    String txHash = await contractLink.stake(stakeAmount);
+                    print("txHash: $txHash");
+                  } catch (e) {
+                    print("staking: $e");
+                  }
+                },
                 color: Colors.green,
                 shape: Vx.roundedSm,
                 icon: Icon(
@@ -99,7 +109,13 @@ class _WalletState extends State<Wallet> {
 
               // ignore: deprecated_member_use
               FlatButton.icon(
-                onPressed: () => {_buyTokensOnline()},
+                onPressed: () async => {
+                  _buyTokensOnline(),
+                  balanceOfAE = await contractLink
+                      .getStakeBalance(contractLink.publicAddress),
+                  print("Your Staking Balance: $balanceOfAE"),
+                  print("Your Public Address: ${contractLink.publicAddress}")
+                },
                 color: Colors.blue,
                 shape: Vx.roundedSm,
                 icon: Icon(
@@ -111,7 +127,13 @@ class _WalletState extends State<Wallet> {
 
               // ignore: deprecated_member_use
               FlatButton.icon(
-                onPressed: () {}, //Withdraw Smart Contract Logic
+                onPressed: () {
+                  try {
+                    contractLink.withdraw(10 as BigInt);
+                  } catch (e) {
+                    print(e);
+                  }
+                }, //Withdraw Smart Contract Logic
                 color: Colors.red,
                 shape: Vx.roundedSm,
                 icon: Icon(
