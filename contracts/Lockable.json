@@ -1,0 +1,1302 @@
+{
+  "contractName": "Lockable",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.4+commit.c7e474f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"title\":\"A contract that provides modifiers to prevent reentrancy to state-changing and view-only methods. This contract is inspired by https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/ReentrancyGuard.sol and https://github.com/balancer-labs/balancer-core/blob/master/contracts/BPool.sol.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/kamto/code/protocol/packages/core/contracts/common/implementation/Lockable.sol\":\"Lockable\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":199},\"remappings\":[]},\"sources\":{\"/home/kamto/code/protocol/packages/core/contracts/common/implementation/Lockable.sol\":{\"keccak256\":\"0xaaa9ef13b45e085d0fe036215a2decd9cf491de25c16f28256b9d3e3377aa160\",\"license\":\"AGPL-3.0-only\",\"urls\":[\"bzz-raw://f8386af0716b455f9542a0e4121237c4b61d8d2132553da09d2c2f8908eacbcf\",\"dweb:/ipfs/QmdZV7Rm1o89a8VXNG2qjrzLgpRFSL3RnsGBccpqcLhTC2\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b506000805460ff19166001179055603f80602a6000396000f3fe6080604052600080fdfea2646970667358221220e34187184f72bdd2131b3ab700cf5ea9ba9d164098f3b6949474b99cdb559ab864736f6c63430008040033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220e34187184f72bdd2131b3ab700cf5ea9ba9d164098f3b6949474b99cdb559ab864736f6c63430008040033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "405:2286:20:-:0;;;460:461;;;;;;;;;-1:-1:-1;896:11:20;:18;;-1:-1:-1;;896:18:20;910:4;896:18;;;405:2286;;;;;;",
+  "deployedSourceMap": "405:2286:20:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: AGPL-3.0-only\npragma solidity ^0.8.0;\n\n/**\n * @title A contract that provides modifiers to prevent reentrancy to state-changing and view-only methods. This contract\n * is inspired by https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/ReentrancyGuard.sol\n * and https://github.com/balancer-labs/balancer-core/blob/master/contracts/BPool.sol.\n */\ncontract Lockable {\n    bool private _notEntered;\n\n    constructor() {\n        // Storing an initial non-zero value makes deployment a bit more\n        // expensive, but in exchange the refund on every call to nonReentrant\n        // will be lower in amount. Since refunds are capped to a percetange of\n        // the total transaction's gas, it is best to keep them low in cases\n        // like this one, to increase the likelihood of the full refund coming\n        // into effect.\n        _notEntered = true;\n    }\n\n    /**\n     * @dev Prevents a contract from calling itself, directly or indirectly.\n     * Calling a `nonReentrant` function from another `nonReentrant`\n     * function is not supported. It is possible to prevent this from happening\n     * by making the `nonReentrant` function external, and make it call a\n     * `private` function that does the actual work.\n     */\n    modifier nonReentrant() {\n        _preEntranceCheck();\n        _preEntranceSet();\n        _;\n        _postEntranceReset();\n    }\n\n    /**\n     * @dev Designed to prevent a view-only method from being re-entered during a call to a `nonReentrant()` state-changing method.\n     */\n    modifier nonReentrantView() {\n        _preEntranceCheck();\n        _;\n    }\n\n    // Internal methods are used to avoid copying the require statement's bytecode to every `nonReentrant()` method.\n    // On entry into a function, `_preEntranceCheck()` should always be called to check if the function is being re-entered.\n    // Then, if the function modifies state, it should call `_postEntranceSet()`, perform its logic, and then call `_postEntranceReset()`.\n    // View-only methods can simply call `_preEntranceCheck()` to make sure that it is not being re-entered.\n    function _preEntranceCheck() internal view {\n        // On the first call to nonReentrant, _notEntered will be true\n        require(_notEntered, \"ReentrancyGuard: reentrant call\");\n    }\n\n    function _preEntranceSet() internal {\n        // Any calls to nonReentrant after this point will fail\n        _notEntered = false;\n    }\n\n    function _postEntranceReset() internal {\n        // By storing the original value once again, a refund is triggered (see\n        // https://eips.ethereum.org/EIPS/eip-2200)\n        _notEntered = true;\n    }\n}\n",
+  "sourcePath": "/home/kamto/code/protocol/packages/core/contracts/common/implementation/Lockable.sol",
+  "ast": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/common/implementation/Lockable.sol",
+    "exportedSymbols": {
+      "Lockable": [
+        6211
+      ]
+    },
+    "id": 6212,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 6152,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:20"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 6153,
+          "nodeType": "StructuredDocumentation",
+          "src": "67:337:20",
+          "text": " @title A contract that provides modifiers to prevent reentrancy to state-changing and view-only methods. This contract\n is inspired by https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/ReentrancyGuard.sol\n and https://github.com/balancer-labs/balancer-core/blob/master/contracts/BPool.sol."
+        },
+        "fullyImplemented": true,
+        "id": 6211,
+        "linearizedBaseContracts": [
+          6211
+        ],
+        "name": "Lockable",
+        "nameLocation": "414:8:20",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 6155,
+            "mutability": "mutable",
+            "name": "_notEntered",
+            "nameLocation": "442:11:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 6211,
+            "src": "429:24:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bool",
+              "typeString": "bool"
+            },
+            "typeName": {
+              "id": 6154,
+              "name": "bool",
+              "nodeType": "ElementaryTypeName",
+              "src": "429:4:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bool",
+                "typeString": "bool"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 6162,
+              "nodeType": "Block",
+              "src": "474:447:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6160,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6158,
+                      "name": "_notEntered",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6155,
+                      "src": "896:11:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "74727565",
+                      "id": 6159,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "910:4:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "896:18:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 6161,
+                  "nodeType": "ExpressionStatement",
+                  "src": "896:18:20"
+                }
+              ]
+            },
+            "id": 6163,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6156,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "471:2:20"
+            },
+            "returnParameters": {
+              "id": 6157,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "474:0:20"
+            },
+            "scope": 6211,
+            "src": "460:461:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 6176,
+              "nodeType": "Block",
+              "src": "1320:104:20",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6166,
+                      "name": "_preEntranceCheck",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6194,
+                      "src": "1330:17:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$__$",
+                        "typeString": "function () view"
+                      }
+                    },
+                    "id": 6167,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1330:19:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6168,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1330:19:20"
+                },
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6169,
+                      "name": "_preEntranceSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6202,
+                      "src": "1359:15:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 6170,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1359:17:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6171,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1359:17:20"
+                },
+                {
+                  "id": 6172,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1386:1:20"
+                },
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6173,
+                      "name": "_postEntranceReset",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6210,
+                      "src": "1397:18:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 6174,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1397:20:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6175,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1397:20:20"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6164,
+              "nodeType": "StructuredDocumentation",
+              "src": "927:364:20",
+              "text": " @dev Prevents a contract from calling itself, directly or indirectly.\n Calling a `nonReentrant` function from another `nonReentrant`\n function is not supported. It is possible to prevent this from happening\n by making the `nonReentrant` function external, and make it call a\n `private` function that does the actual work."
+            },
+            "id": 6177,
+            "name": "nonReentrant",
+            "nameLocation": "1305:12:20",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 6165,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1317:2:20"
+            },
+            "src": "1296:128:20",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6184,
+              "nodeType": "Block",
+              "src": "1606:47:20",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6180,
+                      "name": "_preEntranceCheck",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6194,
+                      "src": "1616:17:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$__$",
+                        "typeString": "function () view"
+                      }
+                    },
+                    "id": 6181,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1616:19:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6182,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1616:19:20"
+                },
+                {
+                  "id": 6183,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1645:1:20"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6178,
+              "nodeType": "StructuredDocumentation",
+              "src": "1430:143:20",
+              "text": " @dev Designed to prevent a view-only method from being re-entered during a call to a `nonReentrant()` state-changing method."
+            },
+            "id": 6185,
+            "name": "nonReentrantView",
+            "nameLocation": "1587:16:20",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 6179,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1603:2:20"
+            },
+            "src": "1578:75:20",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6193,
+              "nodeType": "Block",
+              "src": "2192:143:20",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 6189,
+                        "name": "_notEntered",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6155,
+                        "src": "2281:11:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "hexValue": "5265656e7472616e637947756172643a207265656e7472616e742063616c6c",
+                        "id": 6190,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "2294:33:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_ebf73bba305590e4764d5cb53b69bffd6d4d092d1a67551cb346f8cfcdab8619",
+                          "typeString": "literal_string \"ReentrancyGuard: reentrant call\""
+                        },
+                        "value": "ReentrancyGuard: reentrant call"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_ebf73bba305590e4764d5cb53b69bffd6d4d092d1a67551cb346f8cfcdab8619",
+                          "typeString": "literal_string \"ReentrancyGuard: reentrant call\""
+                        }
+                      ],
+                      "id": 6188,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
+                      "referencedDeclaration": 4294967278,
+                      "src": "2273:7:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 6191,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2273:55:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6192,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2273:55:20"
+                }
+              ]
+            },
+            "id": 6194,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_preEntranceCheck",
+            "nameLocation": "2158:17:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6186,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2175:2:20"
+            },
+            "returnParameters": {
+              "id": 6187,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2192:0:20"
+            },
+            "scope": 6211,
+            "src": "2149:186:20",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6201,
+              "nodeType": "Block",
+              "src": "2377:100:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6199,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6197,
+                      "name": "_notEntered",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6155,
+                      "src": "2451:11:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "66616c7365",
+                      "id": 6198,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "2465:5:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "false"
+                    },
+                    "src": "2451:19:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 6200,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2451:19:20"
+                }
+              ]
+            },
+            "id": 6202,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_preEntranceSet",
+            "nameLocation": "2350:15:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6195,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2365:2:20"
+            },
+            "returnParameters": {
+              "id": 6196,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2377:0:20"
+            },
+            "scope": 6211,
+            "src": "2341:136:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6209,
+              "nodeType": "Block",
+              "src": "2522:167:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6207,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6205,
+                      "name": "_notEntered",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6155,
+                      "src": "2664:11:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "74727565",
+                      "id": 6206,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "2678:4:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "2664:18:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 6208,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2664:18:20"
+                }
+              ]
+            },
+            "id": 6210,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_postEntranceReset",
+            "nameLocation": "2492:18:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6203,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2510:2:20"
+            },
+            "returnParameters": {
+              "id": 6204,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2522:0:20"
+            },
+            "scope": 6211,
+            "src": "2483:206:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 6212,
+        "src": "405:2286:20",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:2650:20"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/common/implementation/Lockable.sol",
+    "exportedSymbols": {
+      "Lockable": [
+        6211
+      ]
+    },
+    "id": 6212,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 6152,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:20"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 6153,
+          "nodeType": "StructuredDocumentation",
+          "src": "67:337:20",
+          "text": " @title A contract that provides modifiers to prevent reentrancy to state-changing and view-only methods. This contract\n is inspired by https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/ReentrancyGuard.sol\n and https://github.com/balancer-labs/balancer-core/blob/master/contracts/BPool.sol."
+        },
+        "fullyImplemented": true,
+        "id": 6211,
+        "linearizedBaseContracts": [
+          6211
+        ],
+        "name": "Lockable",
+        "nameLocation": "414:8:20",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 6155,
+            "mutability": "mutable",
+            "name": "_notEntered",
+            "nameLocation": "442:11:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 6211,
+            "src": "429:24:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bool",
+              "typeString": "bool"
+            },
+            "typeName": {
+              "id": 6154,
+              "name": "bool",
+              "nodeType": "ElementaryTypeName",
+              "src": "429:4:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bool",
+                "typeString": "bool"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 6162,
+              "nodeType": "Block",
+              "src": "474:447:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6160,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6158,
+                      "name": "_notEntered",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6155,
+                      "src": "896:11:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "74727565",
+                      "id": 6159,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "910:4:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "896:18:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 6161,
+                  "nodeType": "ExpressionStatement",
+                  "src": "896:18:20"
+                }
+              ]
+            },
+            "id": 6163,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6156,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "471:2:20"
+            },
+            "returnParameters": {
+              "id": 6157,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "474:0:20"
+            },
+            "scope": 6211,
+            "src": "460:461:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 6176,
+              "nodeType": "Block",
+              "src": "1320:104:20",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6166,
+                      "name": "_preEntranceCheck",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6194,
+                      "src": "1330:17:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$__$",
+                        "typeString": "function () view"
+                      }
+                    },
+                    "id": 6167,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1330:19:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6168,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1330:19:20"
+                },
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6169,
+                      "name": "_preEntranceSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6202,
+                      "src": "1359:15:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 6170,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1359:17:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6171,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1359:17:20"
+                },
+                {
+                  "id": 6172,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1386:1:20"
+                },
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6173,
+                      "name": "_postEntranceReset",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6210,
+                      "src": "1397:18:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 6174,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1397:20:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6175,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1397:20:20"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6164,
+              "nodeType": "StructuredDocumentation",
+              "src": "927:364:20",
+              "text": " @dev Prevents a contract from calling itself, directly or indirectly.\n Calling a `nonReentrant` function from another `nonReentrant`\n function is not supported. It is possible to prevent this from happening\n by making the `nonReentrant` function external, and make it call a\n `private` function that does the actual work."
+            },
+            "id": 6177,
+            "name": "nonReentrant",
+            "nameLocation": "1305:12:20",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 6165,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1317:2:20"
+            },
+            "src": "1296:128:20",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6184,
+              "nodeType": "Block",
+              "src": "1606:47:20",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 6180,
+                      "name": "_preEntranceCheck",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6194,
+                      "src": "1616:17:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$__$",
+                        "typeString": "function () view"
+                      }
+                    },
+                    "id": 6181,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1616:19:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6182,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1616:19:20"
+                },
+                {
+                  "id": 6183,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1645:1:20"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 6178,
+              "nodeType": "StructuredDocumentation",
+              "src": "1430:143:20",
+              "text": " @dev Designed to prevent a view-only method from being re-entered during a call to a `nonReentrant()` state-changing method."
+            },
+            "id": 6185,
+            "name": "nonReentrantView",
+            "nameLocation": "1587:16:20",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 6179,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1603:2:20"
+            },
+            "src": "1578:75:20",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6193,
+              "nodeType": "Block",
+              "src": "2192:143:20",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 6189,
+                        "name": "_notEntered",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 6155,
+                        "src": "2281:11:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "hexValue": "5265656e7472616e637947756172643a207265656e7472616e742063616c6c",
+                        "id": 6190,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "2294:33:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_ebf73bba305590e4764d5cb53b69bffd6d4d092d1a67551cb346f8cfcdab8619",
+                          "typeString": "literal_string \"ReentrancyGuard: reentrant call\""
+                        },
+                        "value": "ReentrancyGuard: reentrant call"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_ebf73bba305590e4764d5cb53b69bffd6d4d092d1a67551cb346f8cfcdab8619",
+                          "typeString": "literal_string \"ReentrancyGuard: reentrant call\""
+                        }
+                      ],
+                      "id": 6188,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
+                      "referencedDeclaration": 4294967278,
+                      "src": "2273:7:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 6191,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2273:55:20",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 6192,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2273:55:20"
+                }
+              ]
+            },
+            "id": 6194,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_preEntranceCheck",
+            "nameLocation": "2158:17:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6186,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2175:2:20"
+            },
+            "returnParameters": {
+              "id": 6187,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2192:0:20"
+            },
+            "scope": 6211,
+            "src": "2149:186:20",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6201,
+              "nodeType": "Block",
+              "src": "2377:100:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6199,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6197,
+                      "name": "_notEntered",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6155,
+                      "src": "2451:11:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "66616c7365",
+                      "id": 6198,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "2465:5:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "false"
+                    },
+                    "src": "2451:19:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 6200,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2451:19:20"
+                }
+              ]
+            },
+            "id": 6202,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_preEntranceSet",
+            "nameLocation": "2350:15:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6195,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2365:2:20"
+            },
+            "returnParameters": {
+              "id": 6196,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2377:0:20"
+            },
+            "scope": 6211,
+            "src": "2341:136:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 6209,
+              "nodeType": "Block",
+              "src": "2522:167:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6207,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6205,
+                      "name": "_notEntered",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6155,
+                      "src": "2664:11:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "74727565",
+                      "id": 6206,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "2678:4:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "true"
+                    },
+                    "src": "2664:18:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 6208,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2664:18:20"
+                }
+              ]
+            },
+            "id": 6210,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_postEntranceReset",
+            "nameLocation": "2492:18:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6203,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2510:2:20"
+            },
+            "returnParameters": {
+              "id": 6204,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2522:0:20"
+            },
+            "scope": 6211,
+            "src": "2483:206:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 6212,
+        "src": "405:2286:20",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:2650:20"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.4+commit.c7e474f2.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2021-05-07T15:46:50.110Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "title": "A contract that provides modifiers to prevent reentrancy to state-changing and view-only methods. This contract is inspired by https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/ReentrancyGuard.sol and https://github.com/balancer-labs/balancer-core/blob/master/contracts/BPool.sol.",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

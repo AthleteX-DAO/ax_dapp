@@ -1,0 +1,754 @@
+{
+  "contractName": "IERCHandler",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "resourceID",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "contractAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setResource",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "contractAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setBurnable",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amountOrTokenID",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.4+commit.c7e474f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"setBurnable\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceID\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"}],\"name\":\"setResource\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountOrTokenID\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"ChainSafe Systems.\",\"details\":\"Copied directly from here: https://github.com/ChainSafe/chainbridge-solidity/releases/tag/v1.0.0.\",\"kind\":\"dev\",\"methods\":{\"setBurnable(address)\":{\"params\":{\"contractAddress\":\"Address of contract to be used when making or executing deposits.\"}},\"setResource(bytes32,address)\":{\"params\":{\"contractAddress\":\"Address of contract to be called when a deposit is made and a deposited is executed.\",\"resourceID\":\"ResourceID to be used when making deposits.\"}},\"withdraw(address,address,uint256)\":{\"params\":{\"amountOrTokenID\":\"Either the amount of ERC20 tokens or the ERC721 token ID to release.\",\"recipient\":\"Address to release tokens to.\",\"tokenAddress\":\"Address of token contract to release.\"}}},\"title\":\"Interface to be used with handlers that support ERC20s and ERC721s.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"setBurnable(address)\":{\"notice\":\"Marks {contractAddress} as mintable/burnable.\"},\"setResource(bytes32,address)\":{\"notice\":\"Correlates {resourceID} with {contractAddress}.\"},\"withdraw(address,address,uint256)\":{\"notice\":\"Used to manually release funds from ERC safes.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/kamto/code/protocol/packages/core/contracts/chainbridge/IERCHandler.sol\":\"IERCHandler\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":199},\"remappings\":[]},\"sources\":{\"/home/kamto/code/protocol/packages/core/contracts/chainbridge/IERCHandler.sol\":{\"keccak256\":\"0x314d4ebdc520a172b1ea0fa4d4128edbeeb91d1fc8cb2d0f4c84fca10faffbd4\",\"license\":\"AGPL-3.0-only\",\"urls\":[\"bzz-raw://c07ab249e7f2ff1bbd7965ac68f650e17a00f7fb89aa035bf6797c98fc59a3aa\",\"dweb:/ipfs/QmQSSWGiuQmACPdsuzKzUdjbSuJXKQcvNrAzQFxKxPtBmf\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: AGPL-3.0-only\npragma solidity ^0.8.0;\n\n/**\n    @title Interface to be used with handlers that support ERC20s and ERC721s.\n    @dev Copied directly from here: https://github.com/ChainSafe/chainbridge-solidity/releases/tag/v1.0.0.\n    @author ChainSafe Systems.\n */\ninterface IERCHandler {\n    /**\n        @notice Correlates {resourceID} with {contractAddress}.\n        @param resourceID ResourceID to be used when making deposits.\n        @param contractAddress Address of contract to be called when a deposit is made and a deposited is executed.\n     */\n    function setResource(bytes32 resourceID, address contractAddress) external;\n\n    /**\n        @notice Marks {contractAddress} as mintable/burnable.\n        @param contractAddress Address of contract to be used when making or executing deposits.\n     */\n    function setBurnable(address contractAddress) external;\n\n    /**\n        @notice Used to manually release funds from ERC safes.\n        @param tokenAddress Address of token contract to release.\n        @param recipient Address to release tokens to.\n        @param amountOrTokenID Either the amount of ERC20 tokens or the ERC721 token ID to release.\n     */\n    function withdraw(\n        address tokenAddress,\n        address recipient,\n        uint256 amountOrTokenID\n    ) external;\n}\n",
+  "sourcePath": "/home/kamto/code/protocol/packages/core/contracts/chainbridge/IERCHandler.sol",
+  "ast": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/chainbridge/IERCHandler.sol",
+    "exportedSymbols": {
+      "IERCHandler": [
+        3168
+      ]
+    },
+    "id": 3169,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3142,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:12"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 3143,
+          "nodeType": "StructuredDocumentation",
+          "src": "67:224:12",
+          "text": "@title Interface to be used with handlers that support ERC20s and ERC721s.\n@dev Copied directly from here: https://github.com/ChainSafe/chainbridge-solidity/releases/tag/v1.0.0.\n@author ChainSafe Systems."
+        },
+        "fullyImplemented": false,
+        "id": 3168,
+        "linearizedBaseContracts": [
+          3168
+        ],
+        "name": "IERCHandler",
+        "nameLocation": "302:11:12",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 3144,
+              "nodeType": "StructuredDocumentation",
+              "src": "320:261:12",
+              "text": "@notice Correlates {resourceID} with {contractAddress}.\n@param resourceID ResourceID to be used when making deposits.\n@param contractAddress Address of contract to be called when a deposit is made and a deposited is executed."
+            },
+            "functionSelector": "b8fa3736",
+            "id": 3151,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setResource",
+            "nameLocation": "595:11:12",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3149,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3146,
+                  "mutability": "mutable",
+                  "name": "resourceID",
+                  "nameLocation": "615:10:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3151,
+                  "src": "607:18:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 3145,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "607:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3148,
+                  "mutability": "mutable",
+                  "name": "contractAddress",
+                  "nameLocation": "635:15:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3151,
+                  "src": "627:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3147,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "627:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "606:45:12"
+            },
+            "returnParameters": {
+              "id": 3150,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "660:0:12"
+            },
+            "scope": 3168,
+            "src": "586:75:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 3152,
+              "nodeType": "StructuredDocumentation",
+              "src": "667:170:12",
+              "text": "@notice Marks {contractAddress} as mintable/burnable.\n@param contractAddress Address of contract to be used when making or executing deposits."
+            },
+            "functionSelector": "07b7ed99",
+            "id": 3157,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setBurnable",
+            "nameLocation": "851:11:12",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3155,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3154,
+                  "mutability": "mutable",
+                  "name": "contractAddress",
+                  "nameLocation": "871:15:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3157,
+                  "src": "863:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3153,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "863:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "862:25:12"
+            },
+            "returnParameters": {
+              "id": 3156,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "896:0:12"
+            },
+            "scope": 3168,
+            "src": "842:55:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 3158,
+              "nodeType": "StructuredDocumentation",
+              "src": "903:295:12",
+              "text": "@notice Used to manually release funds from ERC safes.\n@param tokenAddress Address of token contract to release.\n@param recipient Address to release tokens to.\n@param amountOrTokenID Either the amount of ERC20 tokens or the ERC721 token ID to release."
+            },
+            "functionSelector": "d9caed12",
+            "id": 3167,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "withdraw",
+            "nameLocation": "1212:8:12",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3165,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3160,
+                  "mutability": "mutable",
+                  "name": "tokenAddress",
+                  "nameLocation": "1238:12:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3167,
+                  "src": "1230:20:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3159,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1230:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3162,
+                  "mutability": "mutable",
+                  "name": "recipient",
+                  "nameLocation": "1268:9:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3167,
+                  "src": "1260:17:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3161,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1260:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3164,
+                  "mutability": "mutable",
+                  "name": "amountOrTokenID",
+                  "nameLocation": "1295:15:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3167,
+                  "src": "1287:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3163,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1287:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1220:96:12"
+            },
+            "returnParameters": {
+              "id": 3166,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1325:0:12"
+            },
+            "scope": 3168,
+            "src": "1203:123:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 3169,
+        "src": "292:1036:12",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:1287:12"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/chainbridge/IERCHandler.sol",
+    "exportedSymbols": {
+      "IERCHandler": [
+        3168
+      ]
+    },
+    "id": 3169,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3142,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:12"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 3143,
+          "nodeType": "StructuredDocumentation",
+          "src": "67:224:12",
+          "text": "@title Interface to be used with handlers that support ERC20s and ERC721s.\n@dev Copied directly from here: https://github.com/ChainSafe/chainbridge-solidity/releases/tag/v1.0.0.\n@author ChainSafe Systems."
+        },
+        "fullyImplemented": false,
+        "id": 3168,
+        "linearizedBaseContracts": [
+          3168
+        ],
+        "name": "IERCHandler",
+        "nameLocation": "302:11:12",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 3144,
+              "nodeType": "StructuredDocumentation",
+              "src": "320:261:12",
+              "text": "@notice Correlates {resourceID} with {contractAddress}.\n@param resourceID ResourceID to be used when making deposits.\n@param contractAddress Address of contract to be called when a deposit is made and a deposited is executed."
+            },
+            "functionSelector": "b8fa3736",
+            "id": 3151,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setResource",
+            "nameLocation": "595:11:12",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3149,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3146,
+                  "mutability": "mutable",
+                  "name": "resourceID",
+                  "nameLocation": "615:10:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3151,
+                  "src": "607:18:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 3145,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "607:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3148,
+                  "mutability": "mutable",
+                  "name": "contractAddress",
+                  "nameLocation": "635:15:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3151,
+                  "src": "627:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3147,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "627:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "606:45:12"
+            },
+            "returnParameters": {
+              "id": 3150,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "660:0:12"
+            },
+            "scope": 3168,
+            "src": "586:75:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 3152,
+              "nodeType": "StructuredDocumentation",
+              "src": "667:170:12",
+              "text": "@notice Marks {contractAddress} as mintable/burnable.\n@param contractAddress Address of contract to be used when making or executing deposits."
+            },
+            "functionSelector": "07b7ed99",
+            "id": 3157,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setBurnable",
+            "nameLocation": "851:11:12",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3155,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3154,
+                  "mutability": "mutable",
+                  "name": "contractAddress",
+                  "nameLocation": "871:15:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3157,
+                  "src": "863:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3153,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "863:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "862:25:12"
+            },
+            "returnParameters": {
+              "id": 3156,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "896:0:12"
+            },
+            "scope": 3168,
+            "src": "842:55:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 3158,
+              "nodeType": "StructuredDocumentation",
+              "src": "903:295:12",
+              "text": "@notice Used to manually release funds from ERC safes.\n@param tokenAddress Address of token contract to release.\n@param recipient Address to release tokens to.\n@param amountOrTokenID Either the amount of ERC20 tokens or the ERC721 token ID to release."
+            },
+            "functionSelector": "d9caed12",
+            "id": 3167,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "withdraw",
+            "nameLocation": "1212:8:12",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3165,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3160,
+                  "mutability": "mutable",
+                  "name": "tokenAddress",
+                  "nameLocation": "1238:12:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3167,
+                  "src": "1230:20:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3159,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1230:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3162,
+                  "mutability": "mutable",
+                  "name": "recipient",
+                  "nameLocation": "1268:9:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3167,
+                  "src": "1260:17:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3161,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1260:7:12",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3164,
+                  "mutability": "mutable",
+                  "name": "amountOrTokenID",
+                  "nameLocation": "1295:15:12",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3167,
+                  "src": "1287:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3163,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1287:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1220:96:12"
+            },
+            "returnParameters": {
+              "id": 3166,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1325:0:12"
+            },
+            "scope": 3168,
+            "src": "1203:123:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 3169,
+        "src": "292:1036:12",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:1287:12"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.4+commit.c7e474f2.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2021-05-07T15:46:50.042Z",
+  "devdoc": {
+    "author": "ChainSafe Systems.",
+    "details": "Copied directly from here: https://github.com/ChainSafe/chainbridge-solidity/releases/tag/v1.0.0.",
+    "kind": "dev",
+    "methods": {
+      "setBurnable(address)": {
+        "params": {
+          "contractAddress": "Address of contract to be used when making or executing deposits."
+        }
+      },
+      "setResource(bytes32,address)": {
+        "params": {
+          "contractAddress": "Address of contract to be called when a deposit is made and a deposited is executed.",
+          "resourceID": "ResourceID to be used when making deposits."
+        }
+      },
+      "withdraw(address,address,uint256)": {
+        "params": {
+          "amountOrTokenID": "Either the amount of ERC20 tokens or the ERC721 token ID to release.",
+          "recipient": "Address to release tokens to.",
+          "tokenAddress": "Address of token contract to release."
+        }
+      }
+    },
+    "title": "Interface to be used with handlers that support ERC20s and ERC721s.",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "setBurnable(address)": {
+        "notice": "Marks {contractAddress} as mintable/burnable."
+      },
+      "setResource(bytes32,address)": {
+        "notice": "Correlates {resourceID} with {contractAddress}."
+      },
+      "withdraw(address,address,uint256)": {
+        "notice": "Used to manually release funds from ERC safes."
+      }
+    },
+    "version": 1
+  }
+}

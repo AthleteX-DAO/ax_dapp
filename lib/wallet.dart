@@ -1,8 +1,17 @@
+import 'dart:js_util';
+
+import 'package:ae_dapp/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web3_provider/ethers.dart';
+import 'package:provider/provider.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:qrscan/qrscan.dart' as QRScanner;
+import 'package:web3dart/credentials.dart';
+
+// Smart Contract specific imports
 
 class Wallet extends StatefulWidget {
   @override
@@ -22,24 +31,32 @@ class _WalletState extends State<Wallet> {
     Navigator.pushNamed(context, "/athletes");
   }
 
-  void _launchURL() async =>
-    await canLaunch(_buyTokenUrl) ? await launch(_buyTokenUrl) : throw 'Could not launch $_buyTokenUrl';
+  void _launchURL() async => await canLaunch(_buyTokenUrl)
+      ? await launch(_buyTokenUrl)
+      : throw 'Could not launch $_buyTokenUrl';
 
   Future<void> _buyTokensOnline() async {
-
-    (kIsWeb) 
-    ? _launchURL()
-    : buyTokensSite = await QRScanner.scan();
-    
+    (kIsWeb) ? _launchURL() : buyTokensSite = await QRScanner.scan();
   }
 
+  Controller contractLink;
+  Web3Provider web3;
+  BigInt balanceOfAE;
+  String aeToken =
+      "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
   @override
   void initState() {
     super.initState();
+    if (ethereum != null) {
+      web3 = Web3Provider(ethereum);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    var contractLink = Provider.of<Controller>(context);
+    data = true;
+
     return Scaffold(
       backgroundColor: Vx.hexToColor("#232b2b"),
       body: ZStack([
@@ -49,14 +66,14 @@ class _WalletState extends State<Wallet> {
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
-          "\$Athlete.Equity".text.xl4.white.bold.center.makeCentered().py16(),
+          "Athlete.Equity".text.xl4.white.bold.center.makeCentered().py16(),
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: VStack([
-            "Your Balance".text.gray700.xl2.semiBold.makeCentered(),
+            "Token Balance: ".text.gray700.xl2.semiBold.makeCentered(),
             10.heightBox,
-            data
-                ? "$myData".text.bold.xl6.makeCentered()
+            balanceOfAE != null
+                ? "$balanceOfAE".text.bold.xl6.makeCentered()
                 : CircularProgressIndicator().centered()
           ]))
               .p16
@@ -71,7 +88,16 @@ class _WalletState extends State<Wallet> {
             [
               // ignore: deprecated_member_use
               FlatButton.icon(
-                onPressed: () {},
+                onPressed: () async {
+                  // Staking token
+                  try {
+                    final stakeAmount = BigInt.parse("9225807");
+                    String txHash = await contractLink.stake(stakeAmount);
+                    print("txHash: $txHash");
+                  } catch (e) {
+                    print("staking: $e");
+                  }
+                },
                 color: Colors.green,
                 shape: Vx.roundedSm,
                 icon: Icon(
@@ -83,8 +109,12 @@ class _WalletState extends State<Wallet> {
 
               // ignore: deprecated_member_use
               FlatButton.icon(
-                onPressed: () => {
-                  _buyTokensOnline()
+                onPressed: () async => {
+                  _buyTokensOnline(),
+                  balanceOfAE = await contractLink
+                      .getStakeBalance(contractLink.publicAddress),
+                  print("Your Staking Balance: $balanceOfAE"),
+                  print("Your Public Address: ${contractLink.publicAddress}")
                 },
                 color: Colors.blue,
                 shape: Vx.roundedSm,
@@ -97,7 +127,13 @@ class _WalletState extends State<Wallet> {
 
               // ignore: deprecated_member_use
               FlatButton.icon(
-                onPressed: () {}, //Withdraw Smart Contract Logic
+                onPressed: () {
+                  try {
+                    contractLink.withdraw(10 as BigInt);
+                  } catch (e) {
+                    print(e);
+                  }
+                }, //Withdraw Smart Contract Logic
                 color: Colors.red,
                 shape: Vx.roundedSm,
                 icon: Icon(
@@ -105,7 +141,7 @@ class _WalletState extends State<Wallet> {
                   color: Colors.white,
                 ),
                 label: "Withdraw".text.white.make(),
-              ).h(60),
+              ).h(60).tooltip("Sell your tokens to realize your gains"),
             ],
             alignment: MainAxisAlignment.spaceAround,
             axisSize: MainAxisSize.max,

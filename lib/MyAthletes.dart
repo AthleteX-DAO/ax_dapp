@@ -17,7 +17,7 @@ class _MyAthletesState extends State<MyAthletes> {
       (index) => Athlete(
             name: "A",
             fantasyPoints: (11.4 * index),
-            playerID: index * 1000
+            playerID: index * 1000, walks: ''
           ));
 
   @override
