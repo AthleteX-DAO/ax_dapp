@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
-import 'package:web3dart/web3dart.dart';
+import 'package:web3dart/web3dart.dart'; //Reference Library https://pub.dev/packages/web3dart/example
 import 'package:web_socket_channel/io.dart';
 
 // State management
@@ -69,16 +69,45 @@ class Controller extends ChangeNotifier {
     return _credentials;
   }
 
-  dynamic getBalance() async {
+  // Staking
+  Future<BigInt> getStakeBalance(EthereumAddress from) async {
     ContractFunction stakeOf = staking.function("stakeOf");
-    final balance = await _client
-        .call(contract: staking, function: stakeOf, params: [publicAddress]);
-    return balance.first;
+    var balance = await _client
+        .call(contract: staking, function: stakeOf, params: [from]);
+    return balance.first as BigInt;
   }
 
+  Future<String> stake(BigInt stakeAmount) async {
+    ContractFunction createStake = staking.function("createStake");
+    return await _client.sendTransaction(
+        _credentials,
+        Transaction.callContract(
+            contract: staking,
+            function: createStake,
+            parameters: [stakeAmount]),
+        chainId: 97,
+        fetchChainIdFromNetworkId: true);
+  }
+
+  Future<String> withdraw(BigInt withdrawAmount) async {
+
+    ContractFunction removeStake = staking.function("removeStake");
+    return await _client.sendTransaction(
+        _credentials,
+        Transaction.callContract(
+            contract: staking,
+            function: removeStake,
+            parameters: [withdrawAmount]),
+            chainId: 97,
+            fetchChainIdFromNetworkId: true);
+  }
+
+  // Creating tokens
   Future<void> createAthleteTokenContract() async {
     ContractFunction createEMP =
         empCreator.function("createExpiringMultiParty");
+
+    // Create a new emp from the factory instance
   }
 
   // From the blockchain to the dapp
