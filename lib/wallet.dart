@@ -56,7 +56,7 @@ class _WalletState extends State<Wallet> {
   Widget build(BuildContext context) {
     var contractLink = Provider.of<Controller>(context);
     data = true;
-
+    var announcements = "Athlete.Equity";
     return Scaffold(
       backgroundColor: Vx.hexToColor("#232b2b"),
       body: ZStack([
@@ -66,7 +66,20 @@ class _WalletState extends State<Wallet> {
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
-          "Athlete.Equity".text.xl4.white.bold.center.makeCentered().py16(),
+          "$announcements"
+              .text
+              .xl4
+              .white
+              .bold
+              .center
+              .makeCentered()
+              .py16()
+              .onTap(() {
+                setState(() {
+                announcements =
+                "Your Wallet Address: ${contractLink.publicAddress}";
+                });
+          }),
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: VStack([
