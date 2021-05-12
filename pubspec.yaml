@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   axios: ^1.0.1+1
   flutter_candlesticks: ^0.1.4
+  flutter_web3_provider: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -55,4 +56,5 @@ flutter:
 
   assets:
     - assets/images/AEX_Social_Logo.png
+    - contracts/
       

@@ -123,6 +123,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_web3_provider:
+    dependency: "direct main"
+    description:
+      name: flutter_web3_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

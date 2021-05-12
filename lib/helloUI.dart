@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/contract_linking.dart';
+import 'package:ae_dapp/Controller.dart';
 import 'package:provider/provider.dart';
   
 class HelloUI extends StatelessWidget {
@@ -8,7 +8,7 @@ class HelloUI extends StatelessWidget {
   Widget build(BuildContext context) {
       
     // Getting the value and object or contract_linking
-    var contractLink = Provider.of<ContractLinking>(context);
+    final contractLink = Provider.of<Controller>(context);
   
     TextEditingController yourNameController = TextEditingController();
   
@@ -35,7 +35,7 @@ class HelloUI extends StatelessWidget {
                             fontWeight: FontWeight.bold, fontSize: 52),
                       ),
                       Text(
-                        contractLink.deployedName,
+                        contractLink.getBalance(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 52,

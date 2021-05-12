@@ -1,0 +1,551 @@
+{
+  "contractName": "FinderInterface",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "interfaceName",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "implementationAddress",
+          "type": "address"
+        }
+      ],
+      "name": "changeImplementationAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "interfaceName",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getImplementationAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.4+commit.c7e474f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"interfaceName\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"implementationAddress\",\"type\":\"address\"}],\"name\":\"changeImplementationAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"interfaceName\",\"type\":\"bytes32\"}],\"name\":\"getImplementationAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Examples are the Oracle or Store interfaces.\",\"kind\":\"dev\",\"methods\":{\"changeImplementationAddress(bytes32,address)\":{\"params\":{\"implementationAddress\":\"address of the deployed contract that implements the interface.\",\"interfaceName\":\"bytes32 encoding of the interface name that is either changed or registered.\"}},\"getImplementationAddress(bytes32)\":{\"params\":{\"interfaceName\":\"queried interface.\"},\"returns\":{\"_0\":\"implementationAddress address of the deployed contract that implements the interface.\"}}},\"title\":\"Provides addresses of the live contracts implementing certain interfaces.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"changeImplementationAddress(bytes32,address)\":{\"notice\":\"Updates the address of the contract that implements `interfaceName`.\"},\"getImplementationAddress(bytes32)\":{\"notice\":\"Gets the address of the contract that implements the given `interfaceName`.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/FinderInterface.sol\":\"FinderInterface\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":199},\"remappings\":[]},\"sources\":{\"/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/FinderInterface.sol\":{\"keccak256\":\"0x9166fbfe08e954eb86d33c114fcde7ce4fd0dda5d9d28b31210582bfc769fa86\",\"license\":\"AGPL-3.0-only\",\"urls\":[\"bzz-raw://e611e12bcaaebfdf65b67c566ff1d34708e757f01a445bd87c55862e89383b81\",\"dweb:/ipfs/QmYNSq5oopTShdS6j4VWKqoLxmQSRKmWebCxw6K4LfmKrf\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: AGPL-3.0-only\npragma solidity ^0.8.0;\n\n/**\n * @title Provides addresses of the live contracts implementing certain interfaces.\n * @dev Examples are the Oracle or Store interfaces.\n */\ninterface FinderInterface {\n    /**\n     * @notice Updates the address of the contract that implements `interfaceName`.\n     * @param interfaceName bytes32 encoding of the interface name that is either changed or registered.\n     * @param implementationAddress address of the deployed contract that implements the interface.\n     */\n    function changeImplementationAddress(bytes32 interfaceName, address implementationAddress) external;\n\n    /**\n     * @notice Gets the address of the contract that implements the given `interfaceName`.\n     * @param interfaceName queried interface.\n     * @return implementationAddress address of the deployed contract that implements the interface.\n     */\n    function getImplementationAddress(bytes32 interfaceName) external view returns (address);\n}\n",
+  "sourcePath": "/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/FinderInterface.sol",
+  "ast": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/FinderInterface.sol",
+    "exportedSymbols": {
+      "FinderInterface": [
+        29056
+      ]
+    },
+    "id": 29057,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 29038,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:101"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 29039,
+          "nodeType": "StructuredDocumentation",
+          "src": "67:144:101",
+          "text": " @title Provides addresses of the live contracts implementing certain interfaces.\n @dev Examples are the Oracle or Store interfaces."
+        },
+        "fullyImplemented": false,
+        "id": 29056,
+        "linearizedBaseContracts": [
+          29056
+        ],
+        "name": "FinderInterface",
+        "nameLocation": "222:15:101",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 29040,
+              "nodeType": "StructuredDocumentation",
+              "src": "244:300:101",
+              "text": " @notice Updates the address of the contract that implements `interfaceName`.\n @param interfaceName bytes32 encoding of the interface name that is either changed or registered.\n @param implementationAddress address of the deployed contract that implements the interface."
+            },
+            "functionSelector": "31f9665e",
+            "id": 29047,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "changeImplementationAddress",
+            "nameLocation": "558:27:101",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29045,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29042,
+                  "mutability": "mutable",
+                  "name": "interfaceName",
+                  "nameLocation": "594:13:101",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29047,
+                  "src": "586:21:101",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 29041,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "586:7:101",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29044,
+                  "mutability": "mutable",
+                  "name": "implementationAddress",
+                  "nameLocation": "617:21:101",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29047,
+                  "src": "609:29:101",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29043,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "609:7:101",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "585:54:101"
+            },
+            "returnParameters": {
+              "id": 29046,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "648:0:101"
+            },
+            "scope": 29056,
+            "src": "549:100:101",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 29048,
+              "nodeType": "StructuredDocumentation",
+              "src": "655:250:101",
+              "text": " @notice Gets the address of the contract that implements the given `interfaceName`.\n @param interfaceName queried interface.\n @return implementationAddress address of the deployed contract that implements the interface."
+            },
+            "functionSelector": "aafd5e40",
+            "id": 29055,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getImplementationAddress",
+            "nameLocation": "919:24:101",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29051,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29050,
+                  "mutability": "mutable",
+                  "name": "interfaceName",
+                  "nameLocation": "952:13:101",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29055,
+                  "src": "944:21:101",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 29049,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "944:7:101",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "943:23:101"
+            },
+            "returnParameters": {
+              "id": 29054,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29053,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29055,
+                  "src": "990:7:101",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29052,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "990:7:101",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "989:9:101"
+            },
+            "scope": 29056,
+            "src": "910:89:101",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 29057,
+        "src": "212:789:101",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:960:101"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/kamto/code/protocol/packages/core/contracts/oracle/interfaces/FinderInterface.sol",
+    "exportedSymbols": {
+      "FinderInterface": [
+        29056
+      ]
+    },
+    "id": 29057,
+    "license": "AGPL-3.0-only",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 29038,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:101"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 29039,
+          "nodeType": "StructuredDocumentation",
+          "src": "67:144:101",
+          "text": " @title Provides addresses of the live contracts implementing certain interfaces.\n @dev Examples are the Oracle or Store interfaces."
+        },
+        "fullyImplemented": false,
+        "id": 29056,
+        "linearizedBaseContracts": [
+          29056
+        ],
+        "name": "FinderInterface",
+        "nameLocation": "222:15:101",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 29040,
+              "nodeType": "StructuredDocumentation",
+              "src": "244:300:101",
+              "text": " @notice Updates the address of the contract that implements `interfaceName`.\n @param interfaceName bytes32 encoding of the interface name that is either changed or registered.\n @param implementationAddress address of the deployed contract that implements the interface."
+            },
+            "functionSelector": "31f9665e",
+            "id": 29047,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "changeImplementationAddress",
+            "nameLocation": "558:27:101",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29045,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29042,
+                  "mutability": "mutable",
+                  "name": "interfaceName",
+                  "nameLocation": "594:13:101",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29047,
+                  "src": "586:21:101",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 29041,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "586:7:101",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29044,
+                  "mutability": "mutable",
+                  "name": "implementationAddress",
+                  "nameLocation": "617:21:101",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29047,
+                  "src": "609:29:101",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29043,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "609:7:101",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "585:54:101"
+            },
+            "returnParameters": {
+              "id": 29046,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "648:0:101"
+            },
+            "scope": 29056,
+            "src": "549:100:101",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 29048,
+              "nodeType": "StructuredDocumentation",
+              "src": "655:250:101",
+              "text": " @notice Gets the address of the contract that implements the given `interfaceName`.\n @param interfaceName queried interface.\n @return implementationAddress address of the deployed contract that implements the interface."
+            },
+            "functionSelector": "aafd5e40",
+            "id": 29055,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getImplementationAddress",
+            "nameLocation": "919:24:101",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 29051,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29050,
+                  "mutability": "mutable",
+                  "name": "interfaceName",
+                  "nameLocation": "952:13:101",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29055,
+                  "src": "944:21:101",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 29049,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "944:7:101",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "943:23:101"
+            },
+            "returnParameters": {
+              "id": 29054,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29053,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 29055,
+                  "src": "990:7:101",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29052,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "990:7:101",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "989:9:101"
+            },
+            "scope": 29056,
+            "src": "910:89:101",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 29057,
+        "src": "212:789:101",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:960:101"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.4+commit.c7e474f2.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2021-05-07T15:46:50.495Z",
+  "devdoc": {
+    "details": "Examples are the Oracle or Store interfaces.",
+    "kind": "dev",
+    "methods": {
+      "changeImplementationAddress(bytes32,address)": {
+        "params": {
+          "implementationAddress": "address of the deployed contract that implements the interface.",
+          "interfaceName": "bytes32 encoding of the interface name that is either changed or registered."
+        }
+      },
+      "getImplementationAddress(bytes32)": {
+        "params": {
+          "interfaceName": "queried interface."
+        },
+        "returns": {
+          "_0": "implementationAddress address of the deployed contract that implements the interface."
+        }
+      }
+    },
+    "title": "Provides addresses of the live contracts implementing certain interfaces.",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "changeImplementationAddress(bytes32,address)": {
+        "notice": "Updates the address of the contract that implements `interfaceName`."
+      },
+      "getImplementationAddress(bytes32)": {
+        "notice": "Gets the address of the contract that implements the given `interfaceName`."
+      }
+    },
+    "version": 1
+  }
+}

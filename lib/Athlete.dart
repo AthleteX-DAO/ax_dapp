@@ -69,7 +69,6 @@ List<Athlete> parseAthletes(String responseBody) {
 class Athlete {
   final String name;
   final int playerID;
-  String apiUrl;
   final double oba;
   final double pa;
   final double sb;
@@ -100,13 +99,9 @@ class Athlete {
   // AEWAR equation
 
   factory Athlete.fromJson(Map<String, dynamic> json) {
-    double _wins = json['Wins'];
-    double _losses = json['Losses'];
-    double _warValue = _wins/_losses;
-
     return Athlete(
-      name: json['Name'],
       playerID: json['PlayerID'],
+      name: json['Name'],
       oba: json['OnBasePercentage'],
       pa: json['PitchingPlateAppearances'],
       sb: json['StolenBases'],
