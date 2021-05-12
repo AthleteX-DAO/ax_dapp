@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'AthletesList.dart';
+
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-04?key=fa329ac2e3ce465e9db5a14b34ca9368
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-06?key=fa329ac2e3ce465e9db5a14b34ca9368
 
@@ -27,17 +29,13 @@ Future<List<Athlete>> fetchAthletes() async {
     'DEC'
   ];
   var todayMonth = months[DateTime.now().toLocal().month - 1];
-  var todayDay = DateTime.now().toLocal().day -2;
-  
-  
+  var todayDay = DateTime.now().toLocal().day - 2;
   /*
   String today =
       "$todayYear-$todayMonth-$todayDay"; //REMINDER: No data on Sunday
   */
 
-  String today =
-      "$todayYear";
-
+  String today = "$todayYear";
   // ignore: unnecessary_cast
   // Tracks player stats by date
   final String apiUrl =
@@ -56,6 +54,11 @@ List<Athlete> parseAthletes(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
   return parsed.map<Athlete>((json) => Athlete.fromJson(json)).toList();
+
+  /*
+  athleteList = parsed.map<Athlete>((json) => Athlete.fromJson(json)).toList();
+  return athleteList;
+  */
 }
 
 // Future<List<Athlete>> fetchAthleteWAR() async {
@@ -66,16 +69,32 @@ List<Athlete> parseAthletes(String responseBody) {
 class Athlete {
   final String name;
   final int playerID;
-  //final double fantasyPoints;
   String apiUrl;
-  double warValue;
+  final double oba;
+  final double pa;
+  final double sb;
+  final double cs;
+  final double runs;
+  final double outs;
+  final double singles;
+  final double walks;
+  final double hitByPitch;
+  final double intentionalWalks;
 
   // Constructor
   Athlete({
     @required this.name,
     @required this.playerID,
-    //@required this.fantasyPoints,
-    @required this.warValue,
+    @required this.oba,
+    @required this.pa,
+    @required this.sb,
+    @required this.cs,
+    @required this.runs,
+    @required this.outs,
+    @required this.singles,
+    @required this.walks,
+    @required this.hitByPitch,
+    @required this.intentionalWalks,
   });
 
   // AEWAR equation
@@ -86,8 +105,64 @@ class Athlete {
     double _warValue = _wins/_losses;
 
     return Athlete(
-        playerID: json['PlayerID'],
-        name: json['Name'],
-        warValue: _warValue); // this should be updated with the latest data
+      name: json['Name'],
+      playerID: json['PlayerID'],
+      oba: json['OnBasePercentage'],
+      pa: json['PitchingPlateAppearances'],
+      sb: json['StolenBases'],
+      cs: json['CaughtStealing'],
+      runs: json['Runs'],
+      outs: json['Outs'],
+      singles: json['Singles'],
+      walks: json['Walks'],
+      hitByPitch: json['HitByPitch'],
+      intentionalWalks: json['IntentionalWalks'],
+    ); // this should be updated with the latest data
   }
+}
+
+double warValue(Athlete athlete, List<Athlete> athleteList) {
+  double lgwOBA = 0;
+  double lgSB = 0;
+  double lgCS = 0;
+  double lg1B = 0;
+  double lgBB = 0;
+  double lgHBP = 0;
+  double lgIBB = 0;
+
+  int numAthletes = athleteList.length;
+
+  for (Athlete ath in athleteList) // for every athlete
+  {
+    lgwOBA += ath.oba;
+    lgSB += ath.sb;
+    lgCS += ath.cs;
+    lg1B += ath.singles;
+    lgBB += ath.walks;
+    lgHBP += ath.hitByPitch;
+    lgIBB += ath.intentionalWalks;
+  }
+
+  lgwOBA /= numAthletes;
+  lgSB /= numAthletes;
+  lgCS /= numAthletes;
+  lg1B /= numAthletes;
+  lgBB /= numAthletes;
+  lgHBP /= numAthletes;
+  lgIBB /= numAthletes;
+
+  double wOBAScale = 1.254;
+  double battingRuns = ((athlete.oba - lgwOBA) / wOBAScale) * athlete.pa;
+
+  double runCS = 2 * (athlete.runs / athlete.outs) + 0.075;
+  double lgwSB = (lgSB * 0.2 + lgCS * runCS) / (lg1B + lgBB + lgHBP - lgIBB);
+  double wsB = athlete.sb * 0.2 +
+      athlete.cs * runCS -
+      lgwSB *
+          (athlete.singles +
+              athlete.walks +
+              athlete.hitByPitch -
+              athlete.intentionalWalks);
+  double baseRunningRuns = wsB;
+  return battingRuns + baseRunningRuns;
 }

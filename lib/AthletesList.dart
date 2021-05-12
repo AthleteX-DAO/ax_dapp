@@ -117,7 +117,8 @@ class _allAthletesListState extends State<AthletesList> {
               color: Colors.yellow[760],
             ),
             title: Text(a.name),
-            subtitle: Text("Buy: \$" + a.fantasyPoints.toString()),
+            subtitle:
+                Text("Buy: \$" + warValue(a, _allAthletesList).toString()),
             trailing: alreadyBought
                 ? Icon(
                     Icons.check_circle,
