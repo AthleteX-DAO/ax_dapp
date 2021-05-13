@@ -39,6 +39,7 @@ dependencies:
   flutter_candlesticks: ^0.1.4
   flutter_web3_provider: ^1.0.4
   fl_chart: ^0.36.1
+  bip39: ^1.0.3
 
 dev_dependencies:
   flutter_test:
