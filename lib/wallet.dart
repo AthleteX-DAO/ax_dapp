@@ -41,15 +41,25 @@ class _WalletState extends State<Wallet> {
 
   Controller contractLink;
   Web3Provider web3;
-  BigInt balanceOfAE;
+  BigInt balanceOfAE = BigInt.from(1);
+  String publicAddress;
   String aeToken =
       "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
   @override
   void initState() {
     super.initState();
-    if (ethereum != null) {
-      web3 = Web3Provider(ethereum);
-    }
+  }
+
+  void _updatePublicAddress(String address) {
+    setState(() {
+      publicAddress = address;
+    });
+  }
+
+  void _updateTokenBalance(BigInt ae) {
+    setState(() {
+      balanceOfAE = ae;
+    });
   }
 
   @override
@@ -70,11 +80,16 @@ class _WalletState extends State<Wallet> {
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: VStack([
-            "Token Balance: ".text.gray700.xl2.semiBold.makeCentered(),
+            "Token Balance: $balanceOfAE"
+                .text
+                .gray700
+                .xl2
+                .semiBold
+                .makeCentered(),
             10.heightBox,
-            balanceOfAE != null
-                ? "$balanceOfAE".text.bold.xl6.makeCentered()
-                : CircularProgressIndicator().centered()
+            // balanceOfAE != null
+            "$balanceOfAE".text.bold.xl6.makeCentered()
+            // : CircularProgressIndicator().centered()
           ]))
               .p16
               .white
@@ -111,9 +126,8 @@ class _WalletState extends State<Wallet> {
               FlatButton.icon(
                 onPressed: () async => {
                   _buyTokensOnline(),
-                  balanceOfAE = await contractLink
-                      .getStakeBalance(contractLink.publicAddress),
-                  print("Your Staking Balance: $balanceOfAE"),
+                  _updateTokenBalance(await contractLink
+                      .getStakeBalance(contractLink.publicAddress)),
                   print("Your Public Address: ${contractLink.publicAddress}")
                 },
                 color: Colors.blue,
