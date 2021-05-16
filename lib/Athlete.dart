@@ -107,16 +107,24 @@ class Athlete {
       sb: json['StolenBases'],
       cs: json['CaughtStealing'],
       runs: json['Runs'],
-      outs: json['Outs'],
       singles: json['Singles'],
       walks: json['Walks'],
       hitByPitch: json['HitByPitch'],
       intentionalWalks: json['IntentionalWalks'],
     ); // this should be updated with the latest data
   }
+
+  // Create a token per athlete
+  generateTokenPerAthlete() async {
+    List<Athlete> allAthletes = await fetchAthletes();
+    allAthletes.forEach((element) {
+      // Implement logic here
+    });
+  }
 }
 
-double warValue(Athlete athlete, List<Athlete> athleteList) {
+double warValue(Athlete athlete) {
+  /*
   double lgwOBA = 0;
   double lgSB = 0;
   double lgCS = 0;
@@ -160,4 +168,5 @@ double warValue(Athlete athlete, List<Athlete> athleteList) {
               athlete.intentionalWalks);
   double baseRunningRuns = wsB;
   return battingRuns + baseRunningRuns;
+  */
 }
