@@ -67,6 +67,7 @@ List<Athlete> parseAthletes(String responseBody) {
 class Athlete {
   final String name;
   final int playerID;
+  final String position;
   final double oba;
   final double pa;
   final double sb;
@@ -82,6 +83,7 @@ class Athlete {
   Athlete({
     @required this.name,
     @required this.playerID,
+    @required this.position,
     @required this.oba,
     @required this.pa,
     @required this.sb,
@@ -99,6 +101,7 @@ class Athlete {
     return Athlete(
       name: json['Name'],
       playerID: json['PlayerID'],
+      position: json['PositionCategory'],
       oba: json['OnBasePercentage'],
       pa: json['PitchingPlateAppearances'],
       sb: json['StolenBases'],
@@ -114,6 +117,23 @@ class Athlete {
 }
 
 double warValue(Athlete athlete, List<Athlete> athleteList) {
+  List<Athlete> players = athleteList;
+  List<Athlete> pitchers = athleteList;
+  
+  for (Athlete ath in athleteList) {
+    if (athlete.position != "P")
+      pitchers.remove(ath);
+    else
+      players.remove(ath);
+  }
+  
+  if (athlete.position != "P")
+    return playerWARValue(athlete, players);
+  else
+    return -999;
+}
+
+double playerWARValue(Athlete athlete, List<Athlete> athleteList) {
   double lgwOBA = 0;
   double lgSB = 0;
   double lgCS = 0;
@@ -122,17 +142,20 @@ double warValue(Athlete athlete, List<Athlete> athleteList) {
   double lgHBP = 0;
   double lgIBB = 0;
 
-  int numAthletes = athleteList.length;
+  int numAthletes = 0;
 
   for (Athlete ath in athleteList) // for every athlete
   {
-    lgwOBA += ath.oba;
-    lgSB += ath.sb;
-    lgCS += ath.cs;
-    lg1B += ath.singles;
-    lgBB += ath.walks;
-    lgHBP += ath.hitByPitch;
-    lgIBB += ath.intentionalWalks;
+    if (ath.position != "P") {
+      lgwOBA += ath.oba;
+      lgSB += ath.sb;
+      lgCS += ath.cs;
+      lg1B += ath.singles;
+      lgBB += ath.walks;
+      lgHBP += ath.hitByPitch;
+      lgIBB += ath.intentionalWalks;
+      numAthletes++;
+    }
   }
 
   lgwOBA /= numAthletes;
