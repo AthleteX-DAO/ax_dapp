@@ -183,5 +183,4 @@ double playerWARValue(Athlete athlete, List<Athlete> athleteList) {
               athlete.intentionalWalks);
   double baseRunningRuns = wsB;
   return battingRuns + baseRunningRuns;
-
 }

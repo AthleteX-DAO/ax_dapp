@@ -36,7 +36,7 @@ class Controller extends ChangeNotifier {
     // Setup the contracts we'll be using - they're immutable so can be called once
     empCreator = await retrieveContract("ExpiringMultiPartyCreator");
     registry = await retrieveContract("Registry");
-    identifierWhitelist = await retrieveContract("IdentifierWhiteList");
+    identifierWhitelist = await retrieveContract("IdentifierWhitelist");
     staking = await retrieveContract("Staking");
     await retrieveNewAddress();
   }
