@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'dart:math';
-import 'package:ae_dapp/wallet.dart';
+import 'package:ae_dapp/pages/wallet.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
