@@ -1,6 +1,4 @@
-import 'dart:js_util';
-
-import 'package:ae_dapp/Controller.dart';
+import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web3_provider/ethers.dart';
@@ -9,7 +7,6 @@ import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:qrscan/qrscan.dart' as QRScanner;
-import 'package:web3dart/credentials.dart';
 
 // Smart Contract specific imports
 
