@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Athlete.dart';
-import 'dart:convert';
+import 'package:ae_dapp/Athlete.dart';
 
 class AthletesList extends StatefulWidget {
   @override
@@ -9,8 +8,6 @@ class AthletesList extends StatefulWidget {
 
 class _allAthletesListState extends State<AthletesList> {
   List<Athlete> _allAthletesList = <Athlete>[]; //All athletes
-  List<Athlete> _allAthletes = <Athlete>[];
-  List<Athlete> _athletesSearchableList = <Athlete>[];
   List<Athlete> returnableListData = <Athlete>[];
 
   final TextEditingController _filter = new TextEditingController(); //

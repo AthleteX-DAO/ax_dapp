@@ -49,3 +49,4 @@ app.*.map.json
 .netlify/
 .node_modules/
 .yarn-integrity
+node_modules

@@ -1,7 +1,6 @@
-import 'package:ae_dapp/pages/Onboarding.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Controller.dart';
-import 'package:ae_dapp/pages/NavigationBar.dart';
+import 'package:ae_dapp/contract_linking.dart';
+import 'package:ae_dapp/NavigationBar.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
