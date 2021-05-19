@@ -1,6 +1,4 @@
-import 'dart:js_util';
-
-import 'package:ae_dapp/Controller.dart';
+import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web3_provider/ethers.dart';
@@ -9,7 +7,6 @@ import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:qrscan/qrscan.dart' as QRScanner;
-import 'package:web3dart/credentials.dart';
 
 // Smart Contract specific imports
 
@@ -41,15 +38,25 @@ class _WalletState extends State<Wallet> {
 
   Controller contractLink;
   Web3Provider web3;
-  BigInt balanceOfAE;
+  BigInt balanceOfAE = BigInt.from(1);
+  String publicAddress;
   String aeToken =
       "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
   @override
   void initState() {
     super.initState();
-    if (ethereum != null) {
-      web3 = Web3Provider(ethereum);
-    }
+  }
+
+  void _updatePublicAddress(String address) {
+    setState(() {
+      publicAddress = address;
+    });
+  }
+
+  void _updateTokenBalance(BigInt ae) {
+    setState(() {
+      balanceOfAE = ae;
+    });
   }
 
   @override
@@ -83,11 +90,16 @@ class _WalletState extends State<Wallet> {
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: VStack([
-            "Token Balance: ".text.gray700.xl2.semiBold.makeCentered(),
+            "Token Balance: $balanceOfAE"
+                .text
+                .gray700
+                .xl2
+                .semiBold
+                .makeCentered(),
             10.heightBox,
-            balanceOfAE != null
-                ? "$balanceOfAE".text.bold.xl6.makeCentered()
-                : CircularProgressIndicator().centered()
+            // balanceOfAE != null
+            "$balanceOfAE".text.bold.xl6.makeCentered()
+            // : CircularProgressIndicator().centered()
           ]))
               .p16
               .white
@@ -124,9 +136,8 @@ class _WalletState extends State<Wallet> {
               FlatButton.icon(
                 onPressed: () async => {
                   _buyTokensOnline(),
-                  balanceOfAE = await contractLink
-                      .getStakeBalance(contractLink.publicAddress),
-                  print("Your Staking Balance: $balanceOfAE"),
+                  _updateTokenBalance(await contractLink
+                      .getStakeBalance(contractLink.publicAddress)),
                   print("Your Public Address: ${contractLink.publicAddress}")
                 },
                 color: Colors.blue,

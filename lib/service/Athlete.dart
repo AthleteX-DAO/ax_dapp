@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'AthletesList.dart';
-
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-04?key=fa329ac2e3ce465e9db5a14b34ca9368
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-06?key=fa329ac2e3ce465e9db5a14b34ca9368
 
@@ -28,7 +26,9 @@ Future<List<Athlete>> fetchAthletes() async {
     'NOV',
     'DEC'
   ];
+  // ignore: unused_local_variable
   var todayMonth = months[DateTime.now().toLocal().month - 1];
+  // ignore: unused_local_variable
   var todayDay = DateTime.now().toLocal().day - 2;
   /*
   String today =
@@ -110,7 +110,6 @@ class Athlete {
       sb: json['StolenBases'],
       cs: json['CaughtStealing'],
       runs: json['Runs'],
-      outs: json['Outs'],
       singles: json['Singles'],
       walks: json['Walks'],
       hitByPitch: json['HitByPitch'],
