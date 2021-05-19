@@ -2,44 +2,50 @@ import 'package:ae_dapp/pages/NavigationBar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:velocity_x/velocity_x.dart';
+
 class Onboarding extends StatefulWidget {
   @override
   _OnboardingState createState() => _OnboardingState();
 }
 
 class _OnboardingState extends State<Onboarding> {
-  
   final introKey = GlobalKey<IntroductionScreenState>();
-
   void _onIntroEnd(context) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => NavigationBar()),
     );
   }
 
-  // Widget _buildFullscrenImage() {
-  //   return Image.asset(
-  //     'assets/fullscreen.jpg',
-  //     fit: BoxFit.cover,
-  //     height: double.infinity,
-  //     width: double.infinity,
-  //     alignment: Alignment.center,
-  //   );
-  // }
+  String mneumonicSeed = "Start by setting up a  wallet for your account";
+  String warning =
+      "Understand that Athlete Equity does not have custody over your funds. \n You are in control, and responsible for your own wallet. \n We cannot recover your funds if lost";
+
+  Widget _buildFullscrenImage() {
+    return Image.asset(
+      'assets/images/asu-hero.jpg',
+      fit: BoxFit.cover,
+      height: double.infinity,
+      width: double.infinity,
+      alignment: Alignment.center,
+    );
+  }
 
   Widget _buildImage(String assetName, [double width = 350]) {
     return Image.asset('assets/images/$assetName', width: width);
   }
 
-  
-  
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
 
     const pageDecoration = const PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
-      bodyTextStyle: bodyStyle,
+      titleTextStyle: TextStyle(
+          color: Color.fromRGBO(35, 43, 43, 1.0),
+          fontSize: 28.0,
+          fontWeight: FontWeight.w700),
+      bodyTextStyle: TextStyle(
+          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.normal),
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
@@ -53,7 +59,11 @@ class _OnboardingState extends State<Onboarding> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 16, right: 16),
-            child: Text("Something goes here!"),
+            child: Text(
+              "AE",
+              style: TextStyle(
+                  color: Color.fromRGBO(254, 201, 1, 1.0), fontSize: 45.55),
+            ),
           ),
         ),
       ),
@@ -70,49 +80,25 @@ class _OnboardingState extends State<Onboarding> {
       // ),
       pages: [
         PageViewModel(
-          title: "Fractional shares",
+          title: "Welcome to Athlete Equity",
           body:
-              "Instead of having to buy an entire share, invest any amount you want.",
-          image: _buildImage('img1.jpg'),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: "Learn as you go",
-          body:
-              "Download the Stockpile app and master the market with our mini-lesson.",
+              "Invest in the player performance of athletes \n Athlete Equity lets you buy the player performance of athletes",
           image: _buildImage('img2.jpg'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Kids and teens",
-          body:
-              "Kids and teens can track their stocks 24/7 and place trades that you approve.",
-          // image: _buildImage('img3.jpg'),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: "Full Screen Page",
-          body:
-              "Pages can be full screen as well.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus, non tempor felis. Nam rutrum rhoncus est ac venenatis.",
-          // image: _buildFullscrenImage(),
-          decoration: pageDecoration.copyWith(
-            contentMargin: const EdgeInsets.symmetric(horizontal: 16),
-            fullScreen: true,
-            bodyFlex: 2,
-            imageFlex: 3,
-          ),
-        ),
-        PageViewModel(
-          title: "Another title page",
-          body: "Another beautiful body text for this example onboarding",
-          // image: _buildImage('img2.jpg'),
-          // Generate your wallet 
+          title: "Create a Wallet",
+          body: mneumonicSeed,
           footer: ElevatedButton(
             onPressed: () {
-              introKey.currentState?.animateScroll(0);
+              // Replace this with generated mneumonic seed pair
+              setState(() {
+                mneumonicSeed =
+                    "Your Mneumonic Seed: \n Your Public Address:  \n\n Be sure to write this down";
+              });
             },
             child: const Text(
-              'Generate',
+              'Generate my Key Pair',
               style: TextStyle(color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
@@ -122,26 +108,48 @@ class _OnboardingState extends State<Onboarding> {
               ),
             ),
           ),
-          decoration: pageDecoration,
+          image: _buildFullscrenImage(),
+          decoration: pageDecoration.copyWith(
+            contentMargin: const EdgeInsets.symmetric(horizontal: 16),
+            fullScreen: true,
+            bodyFlex: 2,
+            imageFlex: 3,
+          ),
         ),
         PageViewModel(
-          title: "Title of last page - reversed",
-          bodyWidget: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("Click on ", style: bodyStyle),
-              Icon(Icons.edit),
-              Text(" to edit a post", style: bodyStyle),
-            ],
+          title: "Before you Start...",
+          body: warning,
+          decoration: const PageDecoration(
+            titleTextStyle: TextStyle(
+                color: Color.fromRGBO(35, 43, 43, 1.0),
+                fontSize: 28.0,
+                fontWeight: FontWeight.w700),
+            bodyTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 19.0,
+                fontWeight: FontWeight.normal),
+            descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+            pageColor: Colors.white,
+            bodyAlignment: Alignment.center,
+            imagePadding: EdgeInsets.zero,
           ),
-          decoration: pageDecoration.copyWith(
-            bodyFlex: 2,
-            imageFlex: 4,
-            bodyAlignment: Alignment.bottomCenter,
-            imageAlignment: Alignment.topCenter,
+          footer: ElevatedButton(
+            onPressed: () {
+              setState(() {
+                warning = "Great! Good luck and have fun!";
+              });
+            },
+            child: const Text(
+              'Understood',
+              style: TextStyle(color: Colors.white),
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.lightBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
           ),
-          // image: _buildImage('img1.jpg'),
-          reverse: true,
         ),
       ],
       onDone: () => _onIntroEnd(context),
@@ -160,14 +168,14 @@ class _OnboardingState extends State<Onboarding> {
           : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
       dotsDecorator: const DotsDecorator(
         size: Size(10.0, 10.0),
-        color: Color(0xFFBDBDBD),
+        color: Color.fromRGBO(254, 201, 1, 1.0),
         activeSize: Size(22.0, 10.0),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
       ),
       dotsContainerDecorator: const ShapeDecoration(
-        color: Colors.black87,
+        color: Color.fromRGBO(35, 43, 43, 1.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
@@ -175,3 +183,4 @@ class _OnboardingState extends State<Onboarding> {
     );
   }
 }
+// Image(image: AssetImage('assets/images/img1.png'), width: 40.22, height: 40.22,)
