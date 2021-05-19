@@ -44,6 +44,7 @@ class _WalletState extends State<Wallet> {
   @override
   void initState() {
     super.initState();
+    // balanceOfAE = contractLink.getStakeBalance(contractLink.publicAddress);
     if (ethereum != null) {
       web3 = Web3Provider(ethereum);
     }
@@ -80,7 +81,7 @@ class _WalletState extends State<Wallet> {
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: VStack([
-            "Token Balance: ".text.gray700.xl2.semiBold.makeCentered(),
+            "Your BNB Balance: ".text.gray700.xl2.semiBold.makeCentered(),
             10.heightBox,
             balanceOfAE != null
                 ? "$balanceOfAE".text.bold.xl6.makeCentered()

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/Athlete.dart';
+import 'package:ae_dapp/service/Athlete.dart';
 
 class AthletesList extends StatefulWidget {
   @override
