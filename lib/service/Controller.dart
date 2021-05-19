@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart'; //Reference Library https://pub.dev/packages/web3dart/example
+import 'package:bip39/bip39.dart'
+    as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 import 'package:web_socket_channel/io.dart';
 
 // State management
@@ -20,7 +22,7 @@ class Controller extends ChangeNotifier {
   String _abiCode;
   EthereumAddress _contractAddress, publicAddress;
   Credentials _credentials;
-  DeployedContract empCreator, registry, identifierWhitelist, staking;
+  DeployedContract staking;
 
   // No-args constructor
   Controller() {
@@ -34,11 +36,8 @@ class Controller extends ChangeNotifier {
     });
 
     // Setup the contracts we'll be using - they're immutable so can be called once
-    empCreator = await retrieveContract("ExpiringMultiPartyCreator");
-    registry = await retrieveContract("Registry");
-    identifierWhitelist = await retrieveContract("IdentifierWhitelist");
     staking = await retrieveContract("Staking");
-    await retrieveNewAddress();
+    await GetPublicAddress();
   }
 
   // Get the ABI from testnet BSC
@@ -49,8 +48,8 @@ class Controller extends ChangeNotifier {
     var jsonAbi = jsonDecode(abiStringFile);
     _abiCode = jsonEncode(jsonAbi["abi"]);
     // assign contract address
-    _contractAddress =
-        EthereumAddress.fromHex(jsonAbi["networks"]["97"]["address"]); //BSC-TESTNET Address
+    _contractAddress = EthereumAddress.fromHex(
+        jsonAbi["networks"]["97"]["address"]); //BSC-TESTNET Address
     final contract = DeployedContract(
         ContractAbi.fromJson(_abiCode, "$contractName"), _contractAddress);
 
@@ -58,9 +57,38 @@ class Controller extends ChangeNotifier {
     return contract;
   }
 
-  Future<EthereumAddress> retrieveNewAddress() async {
-    Random rng = new Random.secure();
-    _credentials = EthPrivateKey.createRandom(rng);
+  Future<String> generateMnemonic() async {
+    // Generate a random mnemonic (uses crypto.randomBytes under the hood), defaults to 128-bits of entropy
+    return bip39.generateMnemonic();
+  }
+
+  Future<String> generatePrivateKey([String mnemonic]) async {
+    // If user comes with a mnemonic seed
+    String seed, validMnemonic;
+    bool isValid = bip39.validateMnemonic(mnemonic);
+    if (mnemonic != null) {
+      if (isValid) {
+        validMnemonic = bip39.mnemonicToSeedHex(mnemonic);
+      }
+    }
+
+    // If we need to generate a wallet
+    if (mnemonic == null || isValid == false) {
+      validMnemonic = await generateMnemonic();
+    }
+
+      seed = bip39.mnemonicToSeedHex(validMnemonic);
+      _credentials = EthPrivateKey.fromHex(seed);
+    return validMnemonic;
+  }
+
+  Future<EthereumAddress> GetPublicAddress([EthPrivateKey privateKey]) async {
+    // Is this below necessary?
+    // if (privateKey == null) {
+    //   Random rng = new Random.secure();
+    //   _credentials = EthPrivateKey.createRandom(rng);
+    // }
+
     publicAddress = await _credentials.extractAddress();
     return publicAddress;
   }
@@ -70,10 +98,9 @@ class Controller extends ChangeNotifier {
   }
 
   ///** Mutataive Methods */
-  
+
   // Staking
   Future<BigInt> getStakeBalance(EthereumAddress from) async {
-    
     ContractFunction stakeOf = staking.function("stakeOf");
     var balance = await _client
         .call(contract: staking, function: stakeOf, params: [from]);
@@ -93,7 +120,6 @@ class Controller extends ChangeNotifier {
   }
 
   Future<String> withdraw(BigInt withdrawAmount) async {
-
     ContractFunction removeStake = staking.function("removeStake");
     return await _client.sendTransaction(
         _credentials,
@@ -101,46 +127,9 @@ class Controller extends ChangeNotifier {
             contract: staking,
             function: removeStake,
             parameters: [withdrawAmount]),
-            chainId: 97,
-            fetchChainIdFromNetworkId: true);
-  }
-
-  // Creating tokens
-  Future<void> createAthleteTokenContract() async {
-    ContractFunction createEMP =
-        empCreator.function("createExpiringMultiParty");
-
-    // Create a new emp from the factory instance
+        chainId: 97,
+        fetchChainIdFromNetworkId: true);
   }
 
   // From the blockchain to the dapp
-}
-
-class Params {
-  EthereumAddress collateralAddress, financialProductLibraryAddress;
-  BigInt expirationTimestamp;
-  String syntheticName, syntheticSymbol;
-  Map<dynamic, dynamic> constructorParams;
-
-  constructParams() {
-    // var constructorParams = {
-    //   expirationTimestamp: "1706780800",
-    //   collateralAddress: TestnetERC20.address,
-    //   priceFeedIdentifier:
-    //       web3.utils.padRight(web3.utils.utf8ToHex("UMATEST"), 64),
-    //   syntheticName: "Test UMA Token",
-    //   syntheticSymbol: "UMATEST",
-    //   collateralRequirement: {rawValue: web3.utils.toWei("1.5")},
-    //   disputeBondPercentage: {rawValue: web3.utils.toWei("0.1")},
-    //   sponsorDisputeRewardPercentage: {rawValue: web3.utils.toWei("0.1")},
-    //   disputerDisputeRewardPercentage: {rawValue: web3.utils.toWei("0.1")},
-    //   minSponsorTokens: {rawValue: '100000000000000'},
-    //   timerAddress: Timer.address,
-    //   withdrawalLiveness: 7200,
-    //   liquidationLiveness: 7200,
-    //   financialProductLibraryAddress:
-    //       '0x0000000000000000000000000000000000000000'
-    // };
-    print("params");
-  }
 }

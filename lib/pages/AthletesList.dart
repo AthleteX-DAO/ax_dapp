@@ -91,8 +91,10 @@ class _allAthletesListState extends State<AthletesList> {
     Navigator.of(context).push(
       MaterialPageRoute<void>(builder: (BuildContext context) {
         return Scaffold(
-          appBar: AppBar(title: Text("About ${aAthlete.name}"),),
-          body: Text("Stuff goes here"),
+          appBar: AppBar(
+            title: Text("About ${aAthlete.name}"),
+          ),
+          body: PriceActionChart(),
         );
       }),
     );
@@ -106,7 +108,6 @@ class _allAthletesListState extends State<AthletesList> {
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
         final i = index ~/ 2; // i is every even item in this iteration
-        print('Loaded BuildAthetes');
         return _buildRow(_allAthletesList[i]);
       },
     );
@@ -125,7 +126,6 @@ class _allAthletesListState extends State<AthletesList> {
               color: Colors.yellow[760],
             ),
             title: Text(a.name),
-            onLongPress: () => {_AthleteDetails(a)},
             subtitle: Text("Buy: ${a.playerID}"),
             trailing: alreadyBought
                 ? Icon(
@@ -135,6 +135,7 @@ class _allAthletesListState extends State<AthletesList> {
                 : Icon(Icons.check_circle_outline),
             onTap: () {
               setState(() {
+                _AthleteDetails(a);
                 if (alreadyBought) {
                   _boughtAthletes.remove(a);
                 } else {
