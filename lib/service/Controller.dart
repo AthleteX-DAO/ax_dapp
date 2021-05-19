@@ -19,7 +19,8 @@ class Controller extends ChangeNotifier {
   bool isLoading = true;
 
   // Eth related variable declarations
-  String _abiCode;
+  // ignore: avoid_init_to_null
+  String _abiCode, userMnemonic = null;
   EthereumAddress _contractAddress, publicAddress;
   Credentials _credentials;
   DeployedContract staking;
@@ -37,6 +38,7 @@ class Controller extends ChangeNotifier {
 
     // Setup the contracts we'll be using - they're immutable so can be called once
     staking = await retrieveContract("Staking");
+    await generatePrivateKey();
     await GetPublicAddress();
   }
 
@@ -44,7 +46,7 @@ class Controller extends ChangeNotifier {
   Future<DeployedContract> retrieveContract(String contractName) async {
     // Reading the contract abi
     String abiStringFile =
-        await rootBundle.loadString('contracts/$contractName.json');
+        await rootBundle.loadString('../../contracts/$contractName.json');
     var jsonAbi = jsonDecode(abiStringFile);
     _abiCode = jsonEncode(jsonAbi["abi"]);
     // assign contract address
@@ -77,17 +79,18 @@ class Controller extends ChangeNotifier {
       validMnemonic = await generateMnemonic();
     }
 
-      seed = bip39.mnemonicToSeedHex(validMnemonic);
-      _credentials = EthPrivateKey.fromHex(seed);
+    seed = bip39.mnemonicToSeedHex(validMnemonic);
+    print("mnemonic: $validMnemonic, seed: $seed");
+    _credentials = EthPrivateKey.fromHex(seed);
     return validMnemonic;
   }
 
   Future<EthereumAddress> GetPublicAddress([EthPrivateKey privateKey]) async {
     // Is this below necessary?
-    // if (privateKey == null) {
-    //   Random rng = new Random.secure();
-    //   _credentials = EthPrivateKey.createRandom(rng);
-    // }
+    if (privateKey == null) {
+      Random rng = new Random.secure();
+      _credentials = EthPrivateKey.createRandom(rng);
+    }
 
     publicAddress = await _credentials.extractAddress();
     return publicAddress;

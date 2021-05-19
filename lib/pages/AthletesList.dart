@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/pages/PriceAction.dart';
 
 class AthletesList extends StatefulWidget {
   @override
@@ -126,10 +127,6 @@ class _allAthletesListState extends State<AthletesList> {
               color: Colors.yellow[760],
             ),
             title: Text(a.name),
-<<<<<<< HEAD:lib/AthletesList.dart
-            onLongPress: () => {_AthleteDetails(a)},
-=======
->>>>>>> 7adccc2c6d13856ba910d06fcfbcabe8d0eb9087:lib/pages/AthletesList.dart
             subtitle: Text("Buy: ${a.playerID}"),
             trailing: alreadyBought
                 ? Icon(

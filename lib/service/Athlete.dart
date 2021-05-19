@@ -103,7 +103,6 @@ class Athlete {
   factory Athlete.fromJson(Map<String, dynamic> json) {
     return Athlete(
       playerID: json['PlayerID'],
-      name: json['Name'],
       position: json['PositionCategory'],
       oba: json['OnBasePercentage'],
       pa: json['PitchingPlateAppearances'],

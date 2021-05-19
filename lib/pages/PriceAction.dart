@@ -1,4 +1,4 @@
-import 'package:ae_dapp/Athlete.dart';
+import 'package:ae_dapp/service/Athlete.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

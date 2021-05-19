@@ -1,6 +1,6 @@
 import 'package:web3dart/web3dart.dart';
-import 'web3'
-import 'Controller.dart';
+import '../web3'
+import '../Controller.dart';
 
 class UMA {
   // Uma Specific declarations

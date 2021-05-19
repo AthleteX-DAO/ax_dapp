@@ -23,7 +23,7 @@ int myAmount = 0;
 
 class _WalletState extends State<Wallet> {
   String buyTokensSite;
-  final _buyTokenUrl = "https://www.athlete-equity.com/presale";
+  final _buyTokenUrl = "https://www.athlete-equity.com/buy-ae";
   void _buyStuff() {
     Navigator.pushNamed(context, "/athletes");
   }
@@ -63,7 +63,7 @@ class _WalletState extends State<Wallet> {
   Widget build(BuildContext context) {
     var contractLink = Provider.of<Controller>(context);
     data = true;
-    var announcements = "Athlete.Equity";
+    var announcements = "Stake your AE Token and Earn rewards";
     return Scaffold(
       backgroundColor: Vx.hexToColor("#232b2b"),
       body: ZStack([
@@ -96,7 +96,7 @@ class _WalletState extends State<Wallet> {
                 .xl2
                 .semiBold
                 .makeCentered(),
-            10.heightBox,
+            2.heightBox,
             // balanceOfAE != null
             "$balanceOfAE".text.bold.xl6.makeCentered()
             // : CircularProgressIndicator().centered()
