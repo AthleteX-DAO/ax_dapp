@@ -20,7 +20,7 @@ class Controller extends ChangeNotifier {
 
   // Eth related variable declarations
   // ignore: avoid_init_to_null
-  String _abiCode, userMnemonic = null;
+  String _abiCode, privateAddress, userMnemonic = null;
   EthereumAddress _contractAddress, publicAddress;
   Credentials _credentials;
   DeployedContract staking;
@@ -38,8 +38,9 @@ class Controller extends ChangeNotifier {
 
     // Setup the contracts we'll be using - they're immutable so can be called once
     staking = await retrieveContract("Staking");
-    await generatePrivateKey();
-    await GetPublicAddress();
+    // Automatically create a wallet upon instantiation
+    await createWallet();
+    print('seed:$userMnemonic \n publickey: ${publicAddress.toString()}');
   }
 
   // Get the ABI from testnet BSC
@@ -59,41 +60,34 @@ class Controller extends ChangeNotifier {
     return contract;
   }
 
-  Future<String> generateMnemonic() async {
+  Future<String> getMnemonic() async {
     // Generate a random mnemonic (uses crypto.randomBytes under the hood), defaults to 128-bits of entropy
-    return bip39.generateMnemonic();
+    return userMnemonic;
   }
 
-  Future<String> generatePrivateKey([String mnemonic]) async {
+  Future<void> createWallet([String mnemonic]) async {
     // If user comes with a mnemonic seed
-    String seed, validMnemonic;
-    bool isValid = bip39.validateMnemonic(mnemonic);
-    if (mnemonic != null) {
-      if (isValid) {
-        validMnemonic = bip39.mnemonicToSeedHex(mnemonic);
-      }
-    }
-
-    // If we need to generate a wallet
-    if (mnemonic == null || isValid == false) {
-      validMnemonic = await generateMnemonic();
-    }
-
+    var seed, validMnemonic;
+    validMnemonic = bip39.generateMnemonic();
     seed = bip39.mnemonicToSeedHex(validMnemonic);
-    print("mnemonic: $validMnemonic, seed: $seed");
     _credentials = EthPrivateKey.fromHex(seed);
-    return validMnemonic;
+
+    // stores private / public keypair
+    privateAddress = seed;
+    userMnemonic = validMnemonic;
+    publicAddress = await _credentials.extractAddress();
+    return privateAddress;
   }
 
-  Future<EthereumAddress> GetPublicAddress([EthPrivateKey privateKey]) async {
+  Future<EthereumAddress> getPublicAddress() async {
     // Is this below necessary?
-    if (privateKey == null) {
+    if (_credentials == null) {
       Random rng = new Random.secure();
       _credentials = EthPrivateKey.createRandom(rng);
     }
 
-    publicAddress = await _credentials.extractAddress();
-    return publicAddress;
+    EthereumAddress pAddress = await _credentials.extractAddress();
+    return pAddress;
   }
 
   Credentials getCredentials() {
