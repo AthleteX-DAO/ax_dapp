@@ -1,7 +1,9 @@
 import 'package:ae_dapp/pages/NavigationBar.dart';
+import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Onboarding extends StatefulWidget {
@@ -11,15 +13,23 @@ class Onboarding extends StatefulWidget {
 
 class _OnboardingState extends State<Onboarding> {
   final introKey = GlobalKey<IntroductionScreenState>();
+  String warning = "Understand that Athlete Equity does not have custody over your funds. \n You are in control, and responsible for your own wallet. \n We cannot recover your funds if lost";
+  String mneumonicSeed, publicAddress;
+  Controller contractLink;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _loadWallet() async {
+    contractLink.createWallet();
+  }
+
   void _onIntroEnd(context) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => NavigationBar()),
     );
   }
-
-  String mneumonicSeed = "Start by setting up a  wallet for your account";
-  String warning =
-      "Understand that Athlete Equity does not have custody over your funds. \n You are in control, and responsible for your own wallet. \n We cannot recover your funds if lost";
 
   Widget _buildFullscrenImage() {
     return Image.asset(
@@ -38,7 +48,9 @@ class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
-
+    contractLink = Provider.of<Controller>(context);
+    mneumonicSeed = contractLink.userMnemonic;
+    publicAddress = contractLink.publicAddress.toString();
     const pageDecoration = const PageDecoration(
       titleTextStyle: TextStyle(
           color: Color.fromRGBO(35, 43, 43, 1.0),
@@ -88,15 +100,31 @@ class _OnboardingState extends State<Onboarding> {
         ),
         PageViewModel(
           title: "Create a Wallet",
-          body: mneumonicSeed,
+          body: "Start by setting up a  wallet for your account",
           footer: ElevatedButton(
-            onPressed: () {
-              // Replace this with generated mneumonic seed pair
-              setState(() {
-                mneumonicSeed =
-                    "Your Mneumonic Seed: \n Your Public Address:  \n\n Be sure to write this down";
-              });
-            },
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('Your Account details'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text("Great! You're good to go."),
+                      Text("Your mneumonic seed is $mneumonicSeed"),
+                      Text("Your public key is $publicAddress")
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
             child: const Text(
               'Generate my Key Pair',
               style: TextStyle(color: Colors.white),
