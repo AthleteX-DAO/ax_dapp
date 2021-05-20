@@ -110,8 +110,8 @@ class _OnboardingState extends State<Onboarding> {
                   child: ListBody(
                     children: <Widget>[
                       Text("Great! You're good to go."),
-                      Text("Your mneumonic seed is $mneumonicSeed"),
-                      Text("Your public key is $publicAddress")
+                      Text("Your mneumonic seed is \n $mneumonicSeed"),
+                      Text("Your public key is \n $publicAddress")
                     ],
                   ),
                 ),
