@@ -109,6 +109,7 @@ class _allAthletesListState extends State<AthletesList> {
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
         final i = index ~/ 2; // i is every even item in this iteration
+        print("athlete; $_allAthletesList[i] \n");
         return _buildRow(_allAthletesList[i]);
       },
     );
