@@ -1,3 +1,4 @@
+import 'package:ae_dapp/pages/PriceAction.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class _WalletState extends State<Wallet> {
   Controller contractLink;
   Web3Provider web3;
   BigInt balanceOfAE = BigInt.from(1);
+  BigInt balanceofBNB = BigInt.from(1);
   String publicAddress;
   String aeToken =
       "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
@@ -69,46 +71,24 @@ class _WalletState extends State<Wallet> {
       body: ZStack([
         VxBox()
             .hexColor("#fec901")
-            .size(context.screenWidth, context.percentHeight * 30)
+            .size(context.screenWidth, context.percentHeight * 40)
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
-          "$announcements"
-              .text
-              .xl4
-              .white
-              .bold
-              .center
-              .makeCentered()
-              .py16()
-              .onTap(() {
-                setState(() {
-                announcements =
-                "Your Wallet Address: ${contractLink.publicAddress}";
-                });
-          }),
+          "$announcements".text.xl4.white.bold.center.makeCentered().py16(),
           (context.percentHeight * 5).heightBox,
-          VxBox(
-                  child: VStack([
-            "Token Balance: $balanceOfAE"
-                .text
-                .gray700
-                .xl2
-                .semiBold
-                .makeCentered(),
-            2.heightBox,
-            // balanceOfAE != null
-            "$balanceOfAE".text.bold.xl6.makeCentered()
-            // : CircularProgressIndicator().centered()
-          ]))
+          VxBox(child: PriceActionChart())
               .p16
-              .white
               .size(context.screenWidth, context.percentHeight * 30)
               .rounded
               .shadowLg
               .make()
               .p16(),
           30.heightBox,
+          HStack([
+            Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20),
+            Text("$balanceofBNB").h(20),
+          ]),
           HStack(
             [
               // ignore: deprecated_member_use

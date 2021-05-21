@@ -99,52 +99,6 @@ class _OnboardingState extends State<Onboarding> {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Create a Wallet",
-          body: "Start by setting up a  wallet for your account",
-          footer: ElevatedButton(
-            onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: const Text('Your Account details'),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text("Great! You're good to go."),
-                      Text("Your mneumonic seed is \n $mneumonicSeed"),
-                      Text("Your public key is \n $publicAddress")
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Ok'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-            child: const Text(
-              'Generate my Key Pair',
-              style: TextStyle(color: Colors.white),
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.lightBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-          ),
-          image: _buildFullscrenImage(),
-          decoration: pageDecoration.copyWith(
-            contentMargin: const EdgeInsets.symmetric(horizontal: 16),
-            fullScreen: true,
-            bodyFlex: 2,
-            imageFlex: 3,
-          ),
-        ),
-        PageViewModel(
           title: "Before you Start...",
           body: warning,
           decoration: const PageDecoration(
@@ -177,6 +131,51 @@ class _OnboardingState extends State<Onboarding> {
                 borderRadius: BorderRadius.circular(8.0),
               ),
             ),
+          ),
+        ),
+                PageViewModel(
+          title: "Create a Wallet",
+          body: "Start by setting up a  wallet for your account",
+          footer: ElevatedButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('Your Account details'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text("Your mneumonic seed is \n $mneumonicSeed"),
+                      Text("Your public key is \n $publicAddress")
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+            child: const Text(
+              'Generate my Key Pair',
+              style: TextStyle(color: Colors.white),
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.lightBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+          ),
+          image: _buildFullscrenImage(),
+          decoration: pageDecoration.copyWith(
+            contentMargin: const EdgeInsets.symmetric(horizontal: 16),
+            fullScreen: true,
+            bodyFlex: 2,
+            imageFlex: 3,
           ),
         ),
       ],
