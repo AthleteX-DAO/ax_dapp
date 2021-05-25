@@ -104,6 +104,7 @@ class _allAthletesListState extends State<AthletesList> {
 
   Widget _buildAthletes(AsyncSnapshot<List<Athlete>> snapshot) {
     _allAthletesList.addAll(snapshot.data);
+
     return ListView.builder(
       itemCount: _allAthletesList.length,
       padding: EdgeInsets.all(16.0),
@@ -128,7 +129,7 @@ class _allAthletesListState extends State<AthletesList> {
               color: Colors.yellow[760],
             ),
             title: Text(a.name),
-            subtitle: Text("Buy: ${a.playerID}"),
+            subtitle: Text("Buy: ${a.warValue}"),
             trailing: alreadyBought
                 ? Icon(
                     Icons.check_circle,
