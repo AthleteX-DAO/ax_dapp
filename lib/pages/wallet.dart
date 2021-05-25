@@ -69,7 +69,7 @@ class _WalletState extends State<Wallet> {
       body: ZStack([
         VxBox()
             .hexColor("#fec901")
-            .size(context.screenWidth, context.percentHeight * 30)
+            .size(context.screenWidth * 50, context.percentHeight * 40)
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
@@ -88,27 +88,20 @@ class _WalletState extends State<Wallet> {
                 });
           }),
           (context.percentHeight * 5).heightBox,
-          VxBox(
-                  child: VStack([
-            "Token Balance: $balanceOfAE"
-                .text
-                .gray700
-                .xl2
-                .semiBold
-                .makeCentered(),
-            2.heightBox,
-            // balanceOfAE != null
-            "$balanceOfAE".text.bold.xl6.makeCentered()
-            // : CircularProgressIndicator().centered()
-          ]))
+          VxBox(child: Center(child: Text("Your Staked Balance: 0\n Available to Stake: 0\n Rewards accrued: 0"),))
               .p16
               .white
               .size(context.screenWidth, context.percentHeight * 30)
               .rounded
               .shadowLg
               .make()
-              .p16(),
+              .p12(),
           30.heightBox,
+          HStack([
+            Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20).tooltip("You need gas (BNB) to conduct transactions on the network"),
+            Text("$balanceofBNB").h(20),
+            Text("Address:  ")
+          ]),
           HStack(
             [
               // ignore: deprecated_member_use

@@ -61,10 +61,6 @@ List<Athlete> parseAthletes(String responseBody) {
   */
 }
 
-// Future<List<Athlete>> fetchAthleteWAR() async {
-//   var currentDate = new DateTime.now();
-//   final String apiUrl = 'https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/';
-// }
 
 class Athlete {
   final String name;
@@ -102,6 +98,7 @@ class Athlete {
 
   factory Athlete.fromJson(Map<String, dynamic> json) {
     return Athlete(
+      name: json['name'],
       playerID: json['PlayerID'],
       position: json['PositionCategory'],
       oba: json['OnBasePercentage'],
@@ -109,6 +106,7 @@ class Athlete {
       sb: json['StolenBases'],
       cs: json['CaughtStealing'],
       runs: json['Runs'],
+      outs: json['outs'],
       singles: json['Singles'],
       walks: json['Walks'],
       hitByPitch: json['HitByPitch'],

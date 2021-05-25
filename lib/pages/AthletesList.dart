@@ -1,3 +1,4 @@
+import 'package:ae_dapp/pages/AthletesDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/pages/PriceAction.dart';
@@ -95,7 +96,7 @@ class _allAthletesListState extends State<AthletesList> {
           appBar: AppBar(
             title: Text("About ${aAthlete.name}"),
           ),
-          body: PriceActionChart(),
+          body: AthleteDetail(),
         );
       }),
     );
@@ -109,7 +110,6 @@ class _allAthletesListState extends State<AthletesList> {
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
         final i = index ~/ 2; // i is every even item in this iteration
-        print("athlete; $_allAthletesList[i] \n");
         return _buildRow(_allAthletesList[i]);
       },
     );

@@ -13,7 +13,9 @@ class Onboarding extends StatefulWidget {
 
 class _OnboardingState extends State<Onboarding> {
   final introKey = GlobalKey<IntroductionScreenState>();
-  String warning = "Understand that Athlete Equity does not have custody over your funds. \n You are in control, and responsible for your own wallet. \n We cannot recover your funds if lost";
+  String warning =
+      "Understand that Athlete Equity does not have custody over your funds. \n You are in control, and responsible for your own wallet. \n We cannot recover your funds if lost";
+  String walletDetails = "Start by setting up a  wallet for your account";
   String mneumonicSeed, publicAddress;
   Controller contractLink;
   @override
@@ -21,9 +23,6 @@ class _OnboardingState extends State<Onboarding> {
     super.initState();
   }
 
-  Future<void> _loadWallet() async {
-    contractLink.createWallet();
-  }
 
   void _onIntroEnd(context) {
     Navigator.of(context).push(
@@ -99,32 +98,49 @@ class _OnboardingState extends State<Onboarding> {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Create a Wallet",
-          body: "Start by setting up a  wallet for your account",
+          title: "Before you Start...",
+          body: warning,
+          decoration: const PageDecoration(
+            titleTextStyle: TextStyle(
+                color: Color.fromRGBO(35, 43, 43, 1.0),
+                fontSize: 28.0,
+                fontWeight: FontWeight.w700),
+            bodyTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 19.0,
+                fontWeight: FontWeight.normal),
+            descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+            pageColor: Colors.white,
+            bodyAlignment: Alignment.center,
+            imagePadding: EdgeInsets.zero,
+          ),
           footer: ElevatedButton(
-            onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: const Text('Your Account details'),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text("Great! You're good to go."),
-                      Text("Your mneumonic seed is \n $mneumonicSeed"),
-                      Text("Your public key is \n $publicAddress")
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Ok'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
+            onPressed: () {
+              setState(() {
+                warning = "Great! Good luck and have fun!";
+              });
+            },
+            child: const Text(
+              'Understood',
+              style: TextStyle(color: Colors.white),
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.lightBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
               ),
             ),
+          ),
+        ),
+        PageViewModel(
+          title: "Create a Wallet",
+          body: walletDetails,
+          footer: ElevatedButton(
+            onPressed: () {
+              setState(() {
+                walletDetails = "Your seed: \n$mneumonicSeed";
+              });
+            },
             child: const Text(
               'Generate my Key Pair',
               style: TextStyle(color: Colors.white),
