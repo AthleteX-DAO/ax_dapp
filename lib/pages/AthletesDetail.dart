@@ -13,7 +13,7 @@ class _AthleteDetailState extends State<AthleteDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ZStack([
-        VxBox().hexColor('#fec901').size(context.screenWidth, context.percentHeight * 60).make(),
+        VxBox().hexColor('#fec901').size(context.screenWidth, context.percentHeight * 10).make(),
         VStack([
             HStack(
             [
@@ -21,13 +21,12 @@ class _AthleteDetailState extends State<AthleteDetail> {
               TextButton.icon(
                 onPressed: () async {
                   // Staking token
-
                 },
                 icon: Icon(
                   Icons.call_made_rounded,
                   color: Colors.white,
                 ),
-                label: "Stake".text.white.make(),
+                label: "LONG".text.white.make(),
               ).h(60).tooltip("Lock your tokens in to earn interest rewards"),
 
               // ignore: deprecated_member_use
@@ -41,10 +40,10 @@ class _AthleteDetailState extends State<AthleteDetail> {
                   Icons.call_received_rounded,
                   color: Colors.white,
                 ),
-                label: "Withdraw".text.white.make(),
+                label: "SHORT".text.white.make(),
               ).h(60).tooltip("Sell your tokens to realize your gains"),
             ],
-            alignment: MainAxisAlignment.spaceAround,
+            alignment: MainAxisAlignment.spaceEvenly,
             axisSize: MainAxisSize.max,
           ).p16()
         ]),
