@@ -38,8 +38,9 @@ class _WalletState extends State<Wallet> {
 
   Controller contractLink;
   Web3Provider web3;
-  BigInt balanceOfAE = BigInt.from(1);
-  BigInt balanceofBNB = BigInt.from(1);
+  BigInt balanceOfAE = BigInt.from(0);
+  BigInt stakedAE = BigInt.from(0);
+  BigInt balanceofBNB = BigInt.from(0);
   String publicAddress;
   String aeToken =
       "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
@@ -74,22 +75,30 @@ class _WalletState extends State<Wallet> {
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
-          "$announcements".text.xl4.white.bold.center.makeCentered().py16().onTap(() {
-            setState(() {
-              announcements =
-                  "Your Wallet Address: ${contractLink.publicAddress}";
-            });
-          }),
-            HStack([
-            Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20).tooltip("You need gas (BNB) to conduct transactions on the network"),
-            Text("$balanceofBNB").h(20),
-            Text("Address:  ")
-          ], alignment: MainAxisAlignment.end,),
+          "$announcements"
+              .text
+              .xl4
+              .white
+              .bold
+              .center
+              .makeCentered()
+              .py16(),
+          // HStack(
+          //   [
+          //     Icon(Icons.local_gas_station_rounded, color: Colors.amber)
+          //         .h(20)
+          //         .tooltip(
+          //             "You need gas (BNB) to conduct transactions on the network"),
+          //     Text("$balanceofBNB").h(20),
+          //     Text("Address:  ${contractLink.publicAddress}")
+          //   ],
+          //   alignment: MainAxisAlignment.end,
+          // ),
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: Center(
             child: Text(
-                "Your Staked Balance: 0\n Available to Stake: 0\n Rewards accrued: 0"),
+                "Your Staked Balance: $balanceOfAE\n Available to Stake: 0\n Rewards accrued: 0"),
           ))
               .p16
               .gray400
