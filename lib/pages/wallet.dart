@@ -39,6 +39,7 @@ class _WalletState extends State<Wallet> {
   Controller contractLink;
   Web3Provider web3;
   BigInt balanceOfAE = BigInt.from(1);
+  BigInt balanceofBNB = BigInt.from(1);
   String publicAddress;
   String aeToken =
       "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
@@ -73,35 +74,31 @@ class _WalletState extends State<Wallet> {
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
-          "$announcements"
-              .text
-              .xl4
-              .white
-              .bold
-              .center
-              .makeCentered()
-              .py16()
-              .onTap(() {
-                setState(() {
-                announcements =
-                "Your Wallet Address: ${contractLink.publicAddress}";
-                });
+          "$announcements".text.xl4.white.bold.center.makeCentered().py16().onTap(() {
+            setState(() {
+              announcements =
+                  "Your Wallet Address: ${contractLink.publicAddress}";
+            });
           }),
+            HStack([
+            Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20).tooltip("You need gas (BNB) to conduct transactions on the network"),
+            Text("$balanceofBNB").h(20),
+            Text("Address:  ")
+          ], alignment: MainAxisAlignment.end,),
           (context.percentHeight * 5).heightBox,
-          VxBox(child: Center(child: Text("Your Staked Balance: 0\n Available to Stake: 0\n Rewards accrued: 0"),))
+          VxBox(
+                  child: Center(
+            child: Text(
+                "Your Staked Balance: 0\n Available to Stake: 0\n Rewards accrued: 0"),
+          ))
               .p16
-              .white
-              .size(context.screenWidth, context.percentHeight * 30)
+              .gray400
+              .size(context.screenWidth * 40, context.percentHeight * 30)
               .rounded
               .shadowLg
               .make()
               .p12(),
           30.heightBox,
-          HStack([
-            Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20).tooltip("You need gas (BNB) to conduct transactions on the network"),
-            Text("$balanceofBNB").h(20),
-            Text("Address:  ")
-          ]),
           HStack(
             [
               // ignore: deprecated_member_use
