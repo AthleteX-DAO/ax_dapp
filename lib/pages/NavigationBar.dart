@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:ae_dapp/pages/wallet.dart';
 import 'package:ae_dapp/pages/AthletesList.dart';
-import 'package:ae_dapp/pages/PriceAction.dart';
+import 'package:ae_dapp/pages/swap.dart';
 
 class NavigationBar extends StatefulWidget {
   NavigationBar({Key key}) : super(key: key);
@@ -19,10 +19,7 @@ class _NavigationBarState extends State<NavigationBar> {
   List<Widget> _widgetOptions = <Widget>[
     Wallet(),
     AthletesList(),
-    Text(
-      'Coming soon!',
-      style: optionStyle,
-    ),
+    Swap()
   ];
 
   void _onItemTapped(int index) {
