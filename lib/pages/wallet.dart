@@ -1,3 +1,4 @@
+import 'package:ae_dapp/pages/PriceAction.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -75,31 +76,55 @@ class _WalletState extends State<Wallet> {
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
-          "$announcements"
-              .text
-              .xl4
-              .white
-              .bold
-              .center
-              .makeCentered()
-              .py16(),
-          // HStack(
-          //   [
-          //     Icon(Icons.local_gas_station_rounded, color: Colors.amber)
-          //         .h(20)
-          //         .tooltip(
-          //             "You need gas (BNB) to conduct transactions on the network"),
-          //     Text("$balanceofBNB").h(20),
-          //     Text("Address:  ${contractLink.publicAddress}")
-          //   ],
-          //   alignment: MainAxisAlignment.end,
-          // ),
+          "$announcements".text.xl4.white.bold.center.makeCentered().py16().onTap(() {
+            setState(() {
+              announcements =
+                  "Your Wallet Address: ${contractLink.publicAddress}";
+            });
+          }),
+          /*
+            HStack([
+            Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20).tooltip("You need gas (BNB) to conduct transactions on the network"),
+            Text("$balanceofBNB").h(20),
+            Text("Address:  ")
+          ], alignment: MainAxisAlignment.end,),
+          */
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: Center(
-            child: Text(
-                "Your Staked Balance: $balanceOfAE\n Available to Stake: 0\n Rewards accrued: 0"),
-          ))
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20).tooltip("You need gas (BNB) to conduct transactions on the network"),
+                                ),
+                                Expanded(
+                                  child: Text("$balanceofBNB").h(20),
+                                ),
+                                Expanded(
+                                  child: Text("Address: ")
+                                ),
+                              ]
+                            )
+                          )
+                        ),
+                        Expanded(
+                          child: Text("Your Staked Balance: $stakedAE"),
+                        ),
+                        Expanded(
+                          child: Text("Available to Stake: 0"),
+                        ),
+                        Expanded(
+                          child: Text("Rewards accrued: 0"),
+                        )
+                      ]
+                    )
+                  )
+          )
               .p16
               .gray400
               .size(context.screenWidth * 40, context.percentHeight * 30)
@@ -108,6 +133,10 @@ class _WalletState extends State<Wallet> {
               .make()
               .p12(),
           30.heightBox,
+          HStack([
+            Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20),
+            Text("$balanceofBNB").h(20),
+          ]),
           HStack(
             [
               // ignore: deprecated_member_use
