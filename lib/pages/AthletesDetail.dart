@@ -1,3 +1,4 @@
+import 'package:ae_dapp/pages/PriceAction.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -15,10 +16,11 @@ class _AthleteDetailState extends State<AthleteDetail> {
       body: ZStack([
         VxBox().hexColor('#fec901').size(context.screenWidth, context.percentHeight * 10).make(),
         VStack([
+              "View Athlete Details".text.xl4.black.bold.center.makeCentered().py16(),
+              PriceActionChart().scale(scaleValue: 0.8),
             HStack(
             [
-
-              TextButton.icon(
+              ElevatedButton.icon(
                 onPressed: () async {
                   // Staking token
                 },
@@ -27,21 +29,20 @@ class _AthleteDetailState extends State<AthleteDetail> {
                   color: Colors.white,
                 ),
                 label: "LONG".text.white.make(),
-              ).h(60).tooltip("Lock your tokens in to earn interest rewards"),
+                style: ElevatedButton.styleFrom(primary: Colors.greenAccent),
+              ).h(60).tooltip("Buy more tokens of this athlete"),
 
-              // ignore: deprecated_member_use
-              RaisedButton.icon(
+              ElevatedButton.icon(
                 onPressed: () {
 
                 }, //Withdraw Smart Contract Logic
-                color: Colors.red,
-                shape: Vx.roundedSm,
                 icon: Icon(
                   Icons.call_received_rounded,
                   color: Colors.white,
                 ),
                 label: "SHORT".text.white.make(),
-              ).h(60).tooltip("Sell your tokens to realize your gains"),
+                style: ElevatedButton.styleFrom(primary: Colors.redAccent),
+              ).h(60).tooltip("Short your athlete positions"),
             ],
             alignment: MainAxisAlignment.spaceEvenly,
             axisSize: MainAxisSize.max,
