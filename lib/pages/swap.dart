@@ -1,28 +1,10 @@
 import 'package:flutter/material.dart';
-  
-void main() {
-  runApp(MyApp());
-}
-class MyApp extends StatelessWidget {
+class Swap extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Swap',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
-      home: MyHomePage(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+  _SwapState createState() => _SwapState();
 }
   
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-  
-class _MyHomePageState extends State<MyHomePage> {
+class _SwapState extends State<Swap> {
   
   final int _buf = 2;
   final int _blocks = 2;
