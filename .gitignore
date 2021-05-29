@@ -50,3 +50,6 @@ app.*.map.json
 .node_modules/
 .yarn-integrity
 node_modules
+
+# Local Netlify folder
+.netlify

@@ -17,7 +17,7 @@ class _AthleteDetailState extends State<AthleteDetail> {
         VxBox().hexColor('#fec901').size(context.screenWidth, context.percentHeight * 10).make(),
         VStack([
               "View Athlete Details".text.xl4.black.bold.center.makeCentered().py16(),
-              PriceActionChart().scale(scaleValue: 0.8),
+              PriceActionChart().scale(scaleValue: 0.6),
             HStack(
             [
               ElevatedButton.icon(
