@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 class Swap extends StatefulWidget {
   @override
   _SwapState createState() => _SwapState();
-}  
+}
+  
 class _SwapState extends State<Swap> {
   
   final int _buf = 2;
