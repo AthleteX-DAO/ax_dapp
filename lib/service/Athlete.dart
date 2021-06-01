@@ -157,6 +157,7 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
     lgInnings += team.innings;
   }
   lgGames /= 2;
+  lgInnings /= 2;
 
   for (Athlete ath in aeList) // for every athlete
   {
