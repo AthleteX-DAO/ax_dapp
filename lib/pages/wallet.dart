@@ -76,55 +76,52 @@ class _WalletState extends State<Wallet> {
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
-          "$announcements".text.xl4.white.bold.center.makeCentered().py16().onTap(() {
+          "$announcements"
+              .text
+              .xl4
+              .white
+              .bold
+              .center
+              .makeCentered()
+              .py16()
+              .onTap(() {
             setState(() {
               announcements =
                   "Your Wallet Address: ${contractLink.publicAddress}";
             });
           }),
-          /*
-            HStack([
-            Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20).tooltip("You need gas (BNB) to conduct transactions on the network"),
-            Text("$balanceofBNB").h(20),
-            Text("Address:  ")
-          ], alignment: MainAxisAlignment.end,),
-          */
           (context.percentHeight * 5).heightBox,
           VxBox(
                   child: Center(
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20).tooltip("You need gas (BNB) to conduct transactions on the network"),
-                                ),
-                                Expanded(
-                                  child: Text("$balanceofBNB").h(20),
-                                ),
-                                Expanded(
-                                  child: Text("Address: ")
-                                ),
-                              ]
-                            )
-                          )
-                        ),
-                        Expanded(
-                          child: Text("Your Staked Balance: $stakedAE"),
-                        ),
-                        Expanded(
-                          child: Text("Available to Stake: 0"),
-                        ),
-                        Expanded(
-                          child: Text("Rewards accrued: 0"),
-                        )
-                      ]
-                    )
-                  )
-          )
+                      child: Column(children: <Widget>[
+            Expanded(
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Row(children: <Widget>[
+                      Expanded(
+                        child: Icon(Icons.local_gas_station_rounded,
+                                color: Colors.amber)
+                            .h(20)
+                            .tooltip(
+                                "You need gas (BNB) to conduct transactions on the network"),
+                      ),
+                      Expanded(
+                        child: Text("$balanceofBNB").h(20),
+                      ),
+                      Expanded(
+                          child:
+                              Text("Address: ${contractLink.publicAddress}")),
+                    ]))),
+            Expanded(
+              child: Text("Your Staked Balance: $stakedAE"),
+            ),
+            Expanded(
+              child: Text("Available to Stake: 0"),
+            ),
+            Expanded(
+              child: Text("Rewards accrued: 0"),
+            )
+          ])))
               .p16
               .gray400
               .size(context.screenWidth * 40, context.percentHeight * 30)
@@ -140,7 +137,7 @@ class _WalletState extends State<Wallet> {
                 onPressed: () async {
                   // Staking token
                   try {
-                    final stakeAmount = BigInt.parse("9225807");
+                    final stakeAmount = BigInt.parse("10");
                     String txHash = await contractLink.stake(stakeAmount);
                     print("txHash: $txHash");
                   } catch (e) {
