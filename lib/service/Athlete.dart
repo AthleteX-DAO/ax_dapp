@@ -11,6 +11,9 @@ import 'package:http/http.dart' as http;
 // b6acfb905f1945fc8b9bb808b1f375bf
 
 Future<List<Athlete>> fetchAthletes() async {
+
+  final String key = "22c8f467077d4ff2a14c5b69e2355343";
+
   //Steps - get curent date + time, set value in playerUrl
   //2021-APR-04
   var year = DateTime.now().toLocal().year;
@@ -24,9 +27,9 @@ Future<List<Athlete>> fetchAthletes() async {
   // Tracks player stats by date
 
   final String playerUrl =
-      "https://fly.sportsdata.io/v3/mlb/stats/json/PlayerSeasonStats/$year?key=b6acfb905f1945fc8b9bb808b1f375bf";
+      "https://fly.sportsdata.io/v3/mlb/stats/json/PlayerSeasonStats/$year?key=$key";
   final String teamUrl =
-      "https://fly.sportsdata.io/v3/mlb/scores/json/TeamSeasonStats/$year?key=b6acfb905f1945fc8b9bb808b1f375bf";
+      "https://fly.sportsdata.io/v3/mlb/scores/json/TeamSeasonStats/$year?key=$key";
 
   final playerResult = await http.get(playerUrl);
   final teamResult = await http.get(teamUrl);
@@ -68,13 +71,15 @@ class Team {
   Team(
     {@required this.games,
     @required this.runs,
-    @required this.innings,});
+    @required this.innings,}
+  );
 
   factory Team.fromJson(Map<String, dynamic> json) {
     return Team(
       games: json['Games'],
       runs: json['Runs'],
-      innings: json['InningsPitchedDecimal'],);
+      innings: json['InningsPitchedDecimal'],
+    );
   }
 }
 
@@ -92,6 +97,12 @@ class Athlete {
   final double walks;
   final double hitByPitch;
   final double intentionalWalks;
+
+  final double fip;
+  final double inningsPitched;
+  final int games;
+  final int gamesStarted;
+  
    double warValue;
 
   // Constructor
@@ -109,7 +120,14 @@ class Athlete {
       @required this.walks,
       @required this.hitByPitch,
       @required this.intentionalWalks,
-      @required this.warValue});
+
+      @required this.fip,
+      @required this.inningsPitched,
+      @required this.games,
+      @required this.gamesStarted,
+
+      @required this.warValue}
+    );
 
   // AEWAR equation
 
@@ -128,26 +146,29 @@ class Athlete {
         walks: json['Walks'],
         hitByPitch: json['HitByPitch'],
         intentionalWalks: json['IntentionalWalks'],
-        warValue: 0.0); // this should be updated with the latest data
+        
+        fip: json['FieldingIndependentPitching'],
+        inningsPitched: json['InningsPitchedDecimal'],
+        games: json['Games'],
+        gamesStarted: json['Started'],
+        
+        warValue: 0.0
+      ); // this should be updated with the latest data
   }
 }
 
 List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
   
-  // league averages of players
-  double lgwOBA = 0;
-  double lgSB = 0;
-  double lgCS = 0;
-  double lg1B = 0;
-  double lgBB = 0;
-  double lgHBP = 0;
-  double lgIBB = 0;
-  double lgPA = 0;
+  // league averages of pitchers
+  double lgFIP = 0;
+  int numPitchers = 0;
+
+  // league averages of non-pitchers
+  double lgwOBA, lgSB, lgCS,
+    lg1B, lgBB, lgHBP, lgIBB, lgPA = 0;
 
   // league averages of Teams
-  double lgGames = 0;
-  double lgRuns = 0;
-  double lgInnings = 0;
+  double lgGames, lgRuns, lgInnings = 0;
 
   double runsPerWin = 9*(lgRuns / lgInnings)*1.5 + 3;
 
@@ -161,7 +182,11 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
 
   for (Athlete ath in aeList) // for every athlete
   {
-    if (ath.position != "P") {
+    if (ath.position == "P") {
+      lgFIP += ath.fip;
+      numPitchers++;
+    }
+    else if (ath.position != "P") {
       lgwOBA += ath.oba;
       lgSB += ath.sb;
       lgCS += ath.cs;
@@ -173,8 +198,10 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
     }
   }
 
+  lgFIP /= numPitchers;
 
   /*
+    NON-PITCHERS
     WAR =
       (
         (
@@ -189,8 +216,29 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
 
   // Calculates warVal for every player
   for (Athlete a in aeList) {
+    // Calculation for pitchers
+    if (a.position == "P")
+    {
+      a.warValue = (
+        ( (
+            (lgFIP - a.fip) / 
+            // Dynamic RPW (dRPW)
+            (((
+               ((18 - a.inningsPitched / a.games) * lgFIP)
+              + ((a.inningsPitched / a.games) * a.fip)
+              / 18) + 2) * 1.5)
+          )
+          // + Replacement Level
+          + (0.03 * (1 - a.gamesStarted / a.games)
+            + 0.12 * (a.gamesStarted / a.games)
+          )
+        )
+        * (a.inningsPitched / 9)
+      );
+    }
+    
     // Calculation for non-pitchers
-    if (a.position != "P")
+    else if (a.position != "P")
     {
       double runCS = 2 * (a.runs / a.outs) + 0.075;
       double lgwSB = (lgSB * 0.2 + lgCS * runCS) / (lg1B + lgBB + lgHBP - lgIBB);
