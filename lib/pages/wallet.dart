@@ -1,4 +1,4 @@
-import 'package:ae_dapp/pages/PriceAction.dart';
+import 'package:flutter/services.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,6 @@ import 'package:flutter_web3_provider/ethers.dart';
 import 'package:provider/provider.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:qrscan/qrscan.dart' as QRScanner;
 
 // Smart Contract specific imports
@@ -39,8 +38,9 @@ class _WalletState extends State<Wallet> {
 
   Controller contractLink;
   Web3Provider web3;
-  BigInt balanceOfAE = BigInt.from(1);
-  BigInt balanceofBNB = BigInt.from(1);
+  BigInt balanceOfAE = BigInt.from(2);
+  BigInt stakedAE = BigInt.from(0);
+  BigInt balanceofBNB = BigInt.from(0);
   String publicAddress;
   String aeToken =
       "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
@@ -71,19 +71,68 @@ class _WalletState extends State<Wallet> {
       body: ZStack([
         VxBox()
             .hexColor("#fec901")
-            .size(context.screenWidth, context.percentHeight * 40)
+            .size(context.screenWidth * 50, context.percentHeight * 40)
             .make(),
         VStack([
           (context.percentHeight * 10).heightBox,
-          "$announcements".text.xl4.white.bold.center.makeCentered().py16(),
+          "$announcements"
+              .text
+              .xl4
+              .white
+              .bold
+              .center
+              .makeCentered()
+              .py16()
+              .onTap(() {
+            setState(() {
+              announcements =
+                  "Your Wallet Address: ${contractLink.publicAddress}";
+            });
+          }),
           (context.percentHeight * 5).heightBox,
-          VxBox(child: PriceActionChart())
+          VxBox(
+                  child: Center(
+                      child: Column(children: <Widget>[
+            Expanded(
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Row(children: <Widget>[
+                      Container(
+                        child: Icon(Icons.local_gas_station_rounded,
+                                color: Colors.amber)
+                            .h(20)
+                            .tooltip(
+                                "You need gas (BNB) to conduct transactions on the network"),
+                      ),
+                      Expanded(
+                        child: Text("$balanceofBNB").h(20),
+                      ),
+                      Expanded(
+                              child: Text(
+                                  "Public Address: ${contractLink.publicAddress}")).onTap(() {
+                        Clipboard.setData(ClipboardData(
+                            text: "${contractLink.publicAddress}"));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: const Text("Copied!")));
+                      }),
+                    ]))),
+            Expanded(
+              child: Text("Your Staked Balance: $stakedAE"),
+            ),
+            Expanded(
+              child: Text("Available to Stake: 0"),
+            ),
+            Expanded(
+              child: Text("Rewards accrued: 0"),
+            )
+          ])))
               .p16
-              .size(context.screenWidth, context.percentHeight * 30)
+              .gray400
+              .size(context.screenWidth * 40, context.percentHeight * 30)
               .rounded
               .shadowLg
               .make()
-              .p16(),
+              .p12(),
           30.heightBox,
           HStack([
             Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20),
@@ -96,11 +145,11 @@ class _WalletState extends State<Wallet> {
                 onPressed: () async {
                   // Staking token
                   try {
-                    final stakeAmount = BigInt.parse("9225807");
-                    String txHash = await contractLink.stake(stakeAmount);
+                    var stakeAmount = BigInt.from(10);
+                    String txHash = await contractLink.stake(stakedAE);
                     print("txHash: $txHash");
                   } catch (e) {
-                    print("staking: $e");
+                    print("Console: error attempting staking \n\n$e");
                   }
                 },
                 color: Colors.green,

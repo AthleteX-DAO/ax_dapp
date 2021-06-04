@@ -40,7 +40,6 @@ class Controller extends ChangeNotifier {
     staking = await retrieveContract("Staking");
     // Automatically create a wallet upon instantiation
     await createWallet();
-    print('seed:$userMnemonic \n publickey: ${publicAddress.toString()}');
   }
 
   // Get the ABI from testnet BSC
@@ -116,6 +115,19 @@ class Controller extends ChangeNotifier {
         fetchChainIdFromNetworkId: true);
   }
 
+  Future<BigInt> getTokenBalance(String tokenString, EthereumAddress from) async {
+    DeployedContract token = await retrieveContract(tokenString);
+    ContractFunction balanceOf = token.function("balanceOf");
+
+    var balance = await _client
+        .call(contract: staking, function: balanceOf, params: [from]);
+    return balance.first as BigInt;
+  }
+
+  // Future<BigInt> getGasBalance(EthereumAddress from) async {
+  //   return balance.first as BigInt;
+  // }
+
   Future<String> withdraw(BigInt withdrawAmount) async {
     ContractFunction removeStake = staking.function("removeStake");
     return await _client.sendTransaction(
@@ -127,6 +139,5 @@ class Controller extends ChangeNotifier {
         chainId: 97,
         fetchChainIdFromNetworkId: true);
   }
-
   // From the blockchain to the dapp
 }

@@ -1,3 +1,4 @@
+import 'package:ae_dapp/pages/AthletesDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/pages/PriceAction.dart';
@@ -95,7 +96,7 @@ class _allAthletesListState extends State<AthletesList> {
           appBar: AppBar(
             title: Text("About ${aAthlete.name}"),
           ),
-          body: PriceActionChart(),
+          body: AthleteDetail(),
         );
       }),
     );
@@ -103,13 +104,13 @@ class _allAthletesListState extends State<AthletesList> {
 
   Widget _buildAthletes(AsyncSnapshot<List<Athlete>> snapshot) {
     _allAthletesList.addAll(snapshot.data);
+
     return ListView.builder(
       itemCount: _allAthletesList.length,
       padding: EdgeInsets.all(16.0),
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
         final i = index ~/ 2; // i is every even item in this iteration
-        print("athlete; $_allAthletesList[i] \n");
         return _buildRow(_allAthletesList[i]);
       },
     );
@@ -128,7 +129,7 @@ class _allAthletesListState extends State<AthletesList> {
               color: Colors.yellow[760],
             ),
             title: Text(a.name),
-            subtitle: Text("Buy: ${a.playerID}"),
+            subtitle: Text("Buy: ${a.warValue}"),
             trailing: alreadyBought
                 ? Icon(
                     Icons.check_circle,
