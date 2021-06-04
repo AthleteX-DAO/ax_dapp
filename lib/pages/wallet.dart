@@ -1,4 +1,4 @@
-import 'package:ae_dapp/pages/PriceAction.dart';
+import 'package:flutter/services.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,6 @@ import 'package:flutter_web3_provider/ethers.dart';
 import 'package:provider/provider.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:qrscan/qrscan.dart' as QRScanner;
 
 // Smart Contract specific imports
@@ -39,7 +38,7 @@ class _WalletState extends State<Wallet> {
 
   Controller contractLink;
   Web3Provider web3;
-  BigInt balanceOfAE = BigInt.from(0);
+  BigInt balanceOfAE = BigInt.from(2);
   BigInt stakedAE = BigInt.from(0);
   BigInt balanceofBNB = BigInt.from(0);
   String publicAddress;
@@ -98,7 +97,7 @@ class _WalletState extends State<Wallet> {
                 child: Align(
                     alignment: Alignment.centerRight,
                     child: Row(children: <Widget>[
-                      Expanded(
+                      Container(
                         child: Icon(Icons.local_gas_station_rounded,
                                 color: Colors.amber)
                             .h(20)
@@ -109,8 +108,13 @@ class _WalletState extends State<Wallet> {
                         child: Text("$balanceofBNB").h(20),
                       ),
                       Expanded(
-                          child:
-                              Text("Address: ${contractLink.publicAddress}")),
+                              child: Text(
+                                  "Public Address: ${contractLink.publicAddress}")).onTap(() {
+                        Clipboard.setData(ClipboardData(
+                            text: "${contractLink.publicAddress}"));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: const Text("Copied!")));
+                      }),
                     ]))),
             Expanded(
               child: Text("Your Staked Balance: $stakedAE"),
@@ -137,11 +141,11 @@ class _WalletState extends State<Wallet> {
                 onPressed: () async {
                   // Staking token
                   try {
-                    final stakeAmount = BigInt.parse("10");
-                    String txHash = await contractLink.stake(stakeAmount);
+                    var stakeAmount = BigInt.from(10);
+                    String txHash = await contractLink.stake(stakedAE);
                     print("txHash: $txHash");
                   } catch (e) {
-                    print("staking: $e");
+                    print("Console: error attempting staking \n\n$e");
                   }
                 },
                 color: Colors.green,
