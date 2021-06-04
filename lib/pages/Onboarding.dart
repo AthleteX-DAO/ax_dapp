@@ -160,41 +160,6 @@ class _OnboardingState extends State<Onboarding> {
             imageFlex: 3,
           ),
         ),
-        PageViewModel(
-          title: "Before you Start...",
-          body: warning,
-          decoration: const PageDecoration(
-            titleTextStyle: TextStyle(
-                color: Color.fromRGBO(35, 43, 43, 1.0),
-                fontSize: 28.0,
-                fontWeight: FontWeight.w700),
-            bodyTextStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 19.0,
-                fontWeight: FontWeight.normal),
-            descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-            pageColor: Colors.white,
-            bodyAlignment: Alignment.center,
-            imagePadding: EdgeInsets.zero,
-          ),
-          footer: ElevatedButton(
-            onPressed: () {
-              setState(() {
-                warning = "Great! Good luck and have fun!";
-              });
-            },
-            child: const Text(
-              'Understood',
-              style: TextStyle(color: Colors.white),
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.lightBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-          ),
-        ),
       ],
       onDone: () => _onIntroEnd(context),
       //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
