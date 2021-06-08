@@ -12,6 +12,10 @@ class _SwapState extends State<Swap> {
   final int _col2 = 3;
   final int _button = 1;
   String selectedValue = 'ETH';
+  double amount = 0;
+  double balance1 = 500;
+  double balance2 = 1000;
+  double rt = 3.6;
   
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +25,14 @@ class _SwapState extends State<Swap> {
       ),
       body: Column(
         children: <Widget>[
-          Expanded(
+          new Expanded(
             flex: _buf,
             child: Container(
             ),
           ),
           
           // First Box
-          Expanded(
+          new Expanded(
             flex: _blocks,
             child: Padding(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -36,7 +40,7 @@ class _SwapState extends State<Swap> {
                 decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(5)),
                 child: Row(
                   children: <Widget>[
-                    Expanded(
+                    new Expanded(
                       flex: _textBox,
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(15,0,5,0),
@@ -48,26 +52,26 @@ class _SwapState extends State<Swap> {
                         ),
                       ),
                     ),
-                    Expanded(
+                    new Expanded(
                       flex: 1,
                       child: Container(
                       ),
                     ),
-                    Expanded(
+                    new Expanded(
                       flex: _col2,
                       child: Column(
                         children: <Widget>[
-                          Expanded(
+                          new Expanded(
                             flex: 1,
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(0,5,0,0),
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text('Balance: 0.000000')
+                                child: Text('Balance: ' + balance1.toString())
                               ),
                             ),
                           ),
-                          Expanded(
+                          new Expanded(
                             flex: 3,
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(0,0,5,5),
@@ -89,7 +93,7 @@ class _SwapState extends State<Swap> {
           ),
           
           // Switch Button
-          Expanded(
+          new Expanded(
             flex: _button,
             child: Padding(
               padding: EdgeInsets.fromLTRB(10,15,10,15),
@@ -107,7 +111,7 @@ class _SwapState extends State<Swap> {
           ),
           
           //Second Box
-          Expanded(
+          new Expanded(
             flex: _blocks,
             child: Padding(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -115,11 +119,11 @@ class _SwapState extends State<Swap> {
                 decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(5)),
                 child: Row(
                   children: <Widget>[
-                    Expanded(
+                    new Expanded(
                       flex: _textBox,
                       child: Column(
                         children: <Widget>[
-                          Expanded(
+                          new Expanded(
                             flex: 1,
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(15,30,0,0),
@@ -132,14 +136,14 @@ class _SwapState extends State<Swap> {
                               ),
                             ),
                           ),
-                          Expanded(
+                          new Expanded(
                             flex: 1,
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(15,0,5,0),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
-                                  '0.123456789AFBCEF00',
+                                  convertionRate(rt).toString(),
                                   style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white,),
                                 ),
                               ),
@@ -148,26 +152,26 @@ class _SwapState extends State<Swap> {
                         ],
                       ),
                     ),
-                    Expanded(
+                    new Expanded(
                       flex: 1,
                       child: Container(
                       ),
                     ),
-                    Expanded(
+                    new Expanded(
                       flex: _col2,
                       child: Column(
                         children: <Widget>[
-                          Expanded(
+                          new Expanded(
                             flex: 1,
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(0,5,0,0),
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text('Balance: 0.000000')
+                                child: Text('Balance: ' + balance2.toString())
                               ),
                             ),
                           ),
-                          Expanded(
+                          new Expanded(
                             flex: 3,
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(0,0,5,5),
@@ -189,7 +193,7 @@ class _SwapState extends State<Swap> {
           ),
           
           // Exchange Button
-          Expanded(
+          new Expanded(
             flex: _button,
             child: Padding(
               padding: EdgeInsets.fromLTRB(10,20,10,0),
@@ -201,12 +205,12 @@ class _SwapState extends State<Swap> {
                     'Exchange',
                     style: TextStyle(fontSize: 20.0),
                   ),
-                  onPressed: () {},
+                  onPressed: () {convert()},
                 ),
               ),
             ),
           ),
-          Expanded(
+          new Expanded(
             flex: _buf,
             child: Container(
             ),
@@ -215,4 +219,14 @@ class _SwapState extends State<Swap> {
       ),
     );
   }
-}
+
+  double convertionRate(double _rate) {
+    return balance1 * _rate;
+  }
+
+  String convert() {
+    if (balance1 < amount) {
+      return "insufficient funds";
+    }
+  }
+} //_SwapState class end

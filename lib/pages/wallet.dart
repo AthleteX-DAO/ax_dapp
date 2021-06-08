@@ -93,7 +93,7 @@ class _WalletState extends State<Wallet> {
           VxBox(
                   child: Center(
                       child: Column(children: <Widget>[
-            Expanded(
+            new Expanded(
                 child: Align(
                     alignment: Alignment.centerRight,
                     child: Row(children: <Widget>[
@@ -104,10 +104,10 @@ class _WalletState extends State<Wallet> {
                             .tooltip(
                                 "You need gas (BNB) to conduct transactions on the network"),
                       ),
-                      Expanded(
+                      new Expanded(
                         child: Text("$balanceofBNB").h(20),
                       ),
-                      Expanded(
+                      new Expanded(
                               child: Text(
                                   "Public Address: ${contractLink.publicAddress}")).onTap(() {
                         Clipboard.setData(ClipboardData(
@@ -116,13 +116,13 @@ class _WalletState extends State<Wallet> {
                             .showSnackBar(SnackBar(content: const Text("Copied!")));
                       }),
                     ]))),
-            Expanded(
+            new Expanded(
               child: Text("Your Staked Balance: $stakedAE"),
             ),
-            Expanded(
+            new Expanded(
               child: Text("Available to Stake: 0"),
             ),
-            Expanded(
+            new Expanded(
               child: Text("Rewards accrued: 0"),
             )
           ])))
