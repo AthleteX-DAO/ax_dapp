@@ -15,15 +15,15 @@ class Controller extends ChangeNotifier {
   final String _wsUrl = "wss://testnet-dex.binance.org/api/";
 
   // private client for web3dart
-  Web3Client _client;
+  late Web3Client _client;
   bool isLoading = true;
 
   // Eth related variable declarations
   // ignore: avoid_init_to_null
-  String _abiCode, privateAddress, userMnemonic = null;
-  EthereumAddress _contractAddress, publicAddress;
-  Credentials _credentials;
-  DeployedContract staking;
+  late String? _abiCode, privateAddress, userMnemonic = null;
+  late EthereumAddress _contractAddress, publicAddress;
+  late Credentials _credentials;
+  late DeployedContract staking;
 
   // No-args constructor
   Controller() {
@@ -61,10 +61,10 @@ class Controller extends ChangeNotifier {
 
   Future<String> getMnemonic() async {
     // Generate a random mnemonic (uses crypto.randomBytes under the hood), defaults to 128-bits of entropy
-    return userMnemonic;
+    return (userMnemonic ?? "");
   }
 
-  Future<void> createWallet([String mnemonic]) async {
+  Future<void> createWallet([String? mnemonic]) async {
     // If user comes with a mnemonic seed
     var seed, validMnemonic;
     validMnemonic = bip39.generateMnemonic();
@@ -75,7 +75,6 @@ class Controller extends ChangeNotifier {
     privateAddress = seed;
     userMnemonic = validMnemonic;
     publicAddress = await _credentials.extractAddress();
-    return privateAddress;
   }
 
   Future<EthereumAddress> getPublicAddress() async {

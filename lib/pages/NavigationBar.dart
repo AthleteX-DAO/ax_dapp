@@ -5,7 +5,7 @@ import 'package:ae_dapp/pages/AthletesList.dart';
 import 'package:ae_dapp/pages/swap.dart';
 
 class NavigationBar extends StatefulWidget {
-  NavigationBar({Key key}) : super(key: key);
+  NavigationBar({Key? key}) : super(key: key);
 
   @override
   _NavigationBarState createState() => _NavigationBarState();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AthleteDetails extends StatefulWidget {
-  AthleteDetails({Key key}) : super(key: key);
+  AthleteDetails({Key? key}) : super(key: key);
 
   @override
   _AthleteDetailsState createState() => _AthleteDetailsState();

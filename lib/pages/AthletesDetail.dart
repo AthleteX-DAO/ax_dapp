@@ -1,9 +1,8 @@
-import 'package:ae_dapp/pages/PriceAction.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class AthleteDetail extends StatefulWidget {
-  AthleteDetail({Key key}) : super(key: key);
+  AthleteDetail({Key? key}) : super(key: key);
 
   @override
   _AthleteDetailState createState() => _AthleteDetailState();
@@ -17,7 +16,7 @@ class _AthleteDetailState extends State<AthleteDetail> {
         VxBox().hexColor('#fec901').size(context.screenWidth, context.percentHeight * 10).make(),
         VStack([
               "View Athlete Details".text.xl4.black.bold.center.makeCentered().py16(),
-              PriceActionChart().scale(scaleValue: 0.6),
+              
             HStack(
             [
               ElevatedButton.icon(

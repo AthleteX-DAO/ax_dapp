@@ -22,7 +22,7 @@ int myAmount = 0;
 // TODO: NEED A WAY TO CLAIM REWARDS
 
 class _WalletState extends State<Wallet> {
-  String buyTokensSite;
+  String? buyTokensSite;
   final _buyTokenUrl = "https://www.athlete-equity.com/buy-ae";
   void _buyStuff() {
     Navigator.pushNamed(context, "/athletes");
@@ -36,12 +36,12 @@ class _WalletState extends State<Wallet> {
     (kIsWeb) ? _launchURL() : buyTokensSite = await QRScanner.scan();
   }
 
-  Controller contractLink;
-  Web3Provider web3;
+  Controller? contractLink;
+  Web3Provider? web3;
   BigInt balanceOfAE = BigInt.from(2);
   BigInt stakedAE = BigInt.from(0);
   BigInt balanceofBNB = BigInt.from(0);
-  String publicAddress;
+  String? publicAddress;
   String aeToken =
       "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
   @override

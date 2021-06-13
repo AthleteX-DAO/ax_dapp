@@ -1,7 +1,6 @@
 import 'package:ae_dapp/pages/AthletesDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/pages/PriceAction.dart';
 
 class AthletesList extends StatefulWidget {
   @override
@@ -17,7 +16,7 @@ class _allAthletesListState extends State<AthletesList> {
   List filteredNames = <Athlete>[]; // names filtered by search text
   Icon _searchIcon = new Icon(Icons.search);
   final _boughtAthletes = <Athlete>{};
-  Future _loadData;
+  Future<dynamic>? _loadData;
   String _searchText = "";
 
   @override
@@ -49,6 +48,7 @@ class _allAthletesListState extends State<AthletesList> {
     return await fetchAthletes();
   }
 
+/*
   void _searchPressed(String title) {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
@@ -75,6 +75,7 @@ class _allAthletesListState extends State<AthletesList> {
       }
     });
   }
+  */
 
   setTextStyle() {
     return TextStyle(color: Colors.blueGrey);
@@ -102,8 +103,8 @@ class _allAthletesListState extends State<AthletesList> {
     );
   }
 
-  Widget _buildAthletes(AsyncSnapshot<List<Athlete>> snapshot) {
-    _allAthletesList.addAll(snapshot.data);
+  Widget _buildAthletes(AsyncSnapshot<dynamic> snapshot) {
+    _allAthletesList.addAll(snapshot.data!);
 
     return ListView.builder(
       itemCount: _allAthletesList.length,
@@ -128,7 +129,7 @@ class _allAthletesListState extends State<AthletesList> {
               Icons.sports_baseball_rounded,
               color: Colors.yellow[760],
             ),
-            title: Text(a.name),
+            title: Text(a.name ?? ""),
             subtitle: Text("Buy: ${a.warValue}"),
             trailing: alreadyBought
                 ? Icon(
@@ -163,20 +164,22 @@ class _allAthletesListState extends State<AthletesList> {
           IconButton(
               icon: _searchIcon,
               onPressed: () {
-                _searchPressed("Search an Athlete");
+  //              _searchPressed("Search an Athlete");
               })
         ],
       ),
-      body: RefreshIndicator(
-          onRefresh: () {
-            return _loadData;
-          },
-          child: Center(
-            child: FutureBuilder<List<Athlete>>(
+      body: FutureBuilder<dynamic>(
               future: _loadData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return _buildAthletes(snapshot);
+                  return RefreshIndicator(
+                    onRefresh: () {
+                      return _loadData = fetchAthletes();
+                    },
+                    child: Center(
+                      child: _buildAthletes(snapshot.data),
+                    )
+                  );
                 } else if (snapshot.hasError) {
                   return Text(
                       "Something went wrong! make sure you're connected to the internet");
@@ -186,7 +189,6 @@ class _allAthletesListState extends State<AthletesList> {
                 );
               },
             ),
-          )),
     );
   }
 }
