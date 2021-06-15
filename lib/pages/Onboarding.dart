@@ -15,9 +15,6 @@ class _OnboardingState extends State<Onboarding> {
   final introKey = GlobalKey<IntroductionScreenState>();
   String warning =
       "Understand that Athlete Equity does not have custody over your funds. \n You are in control, and responsible for your own wallet. \n We cannot recover your funds if lost";
-  String walletDetails = "Start by setting up a  wallet for your account";
-  String? mneumonicSeed, publicAddress;
-  Controller? contractLink;
   @override
   void initState() {
     super.initState();
@@ -47,9 +44,6 @@ class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
-    contractLink = Provider.of<Controller>(context);
-    mneumonicSeed = contractLink?.userMnemonic;
-    publicAddress = contractLink?.publicAddress.toString();
     const pageDecoration = const PageDecoration(
       titleTextStyle: TextStyle(
           color: Color.fromRGBO(35, 43, 43, 1.0),
@@ -134,11 +128,11 @@ class _OnboardingState extends State<Onboarding> {
         ),
         PageViewModel(
           title: "Create a Wallet",
-          body: walletDetails,
+          body: "walletDetails",
           footer: ElevatedButton(
             onPressed: () {
               setState(() {
-                walletDetails = "Your seed: \n$mneumonicSeed";
+                // walletDetails = "Your seed: \n$mneumonicSeed";
               });
             },
             child: const Text(
