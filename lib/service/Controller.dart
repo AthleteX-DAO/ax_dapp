@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +21,7 @@ class Controller extends ChangeNotifier {
 
   // Eth related variable declarations
   // ignore: avoid_init_to_null
-  late String? _abiCode, privateAddress, userMnemonic = null;
+  late String _abiCode, privateAddress, userMnemonic;
   late EthereumAddress _contractAddress, publicAddress;
   late Credentials _credentials;
   late DeployedContract staking;
@@ -61,7 +62,7 @@ class Controller extends ChangeNotifier {
 
   Future<String> getMnemonic() async {
     // Generate a random mnemonic (uses crypto.randomBytes under the hood), defaults to 128-bits of entropy
-    return (userMnemonic ?? "");
+    return (userMnemonic);
   }
 
   Future<void> createWallet([String? mnemonic]) async {
@@ -114,7 +115,8 @@ class Controller extends ChangeNotifier {
         fetchChainIdFromNetworkId: true);
   }
 
-  Future<BigInt> getTokenBalance(String tokenString, EthereumAddress from) async {
+  Future<BigInt> getTokenBalance(
+      String tokenString, EthereumAddress from) async {
     DeployedContract token = await retrieveContract(tokenString);
     ContractFunction balanceOf = token.function("balanceOf");
 

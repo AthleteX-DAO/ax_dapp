@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart'; 
   
 class Swap extends StatelessWidget {
-  const Swap({Key? key}) : super(key: key);
+  const Swap({Key? key}) : super(key: key); 
 
   static const String _title = 'Swap';
 
