@@ -250,15 +250,16 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
 
       a.warValue = (
         ( (
-            (lgFIP - (a.fip ?? 0)) / 
+            (lgFIP - _fip) / 
             // Dynamic RPW (dRPW)
             (((
                ((18 - _ip / _games) * lgFIP)
               + ((_ip / _games) * _fip)
-              / 18) + 2) * 1.5)
+              / 18) + 2) * 1.5
+            )
           )
           // + Replacement Level
-          + (0.03 * (1 - _gs / _games)
+          + (0.03 * (1 - (_gs / _games))
             + 0.12 * (_gs / _games)
           )
         )
@@ -288,9 +289,9 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
         (((_oba - lgwOBA) / 1.254)
           * _pa
           // wsb
-          + _sb * 0.2 + _cs * runCS - lgwSB * (_singles + _walks + _hbp - _iw)
+          + (_sb * 0.2 + _cs * runCS - lgwSB * (_singles + _walks + _hbp - _iw))
           // replacement Runs
-          + (570 * (lgGames / 2430)) * (runsPerWin / lgPA) * _pa
+          + ((570 * (lgGames / 2430)) * (runsPerWin / lgPA) * _pa)
         )
         / runsPerWin
       );
