@@ -171,8 +171,8 @@ class _WalletState extends State<Wallet> {
                   Icons.qr_code,
                   color: Colors.white,
                 ),
-                label: "Buy Tokens".text.white.make(),
-              ).h(60).tooltip("Buy tokens at the Athlete Presale!"),
+                label: "Buy AX".text.white.make(),
+              ).h(60).tooltip("Buy AX at the Athlete Presale!"),
 
               // ignore: deprecated_member_use
               FlatButton.icon(
