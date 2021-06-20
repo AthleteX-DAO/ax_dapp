@@ -237,16 +237,23 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
       _fip = a.fip ?? 0;
       _gs = a.gamesStarted ?? 0;
 
-      a.warValue = ((((lgFIP - (a.fip ?? 0)) /
-                  // Dynamic RPW (dRPW)
-                  (((((18 - _ip / _games) * lgFIP) +
-                              ((_ip / _games) * _fip) / 18) +
-                          2) *
-                      1.5))
-              // + Replacement Level
-              +
-              (0.03 * (1 - _gs / _games) + 0.12 * (_gs / _games))) *
-          (_ip / 9));
+      a.warValue = (
+        ( (
+            (lgFIP - _fip) / 
+            // Dynamic RPW (dRPW)
+            (((
+               ((18 - _ip / _games) * lgFIP)
+              + ((_ip / _games) * _fip)
+              / 18) + 2) * 1.5
+            )
+          )
+          // + Replacement Level
+          + (0.03 * (1 - (_gs / _games))
+            + 0.12 * (_gs / _games)
+          )
+        )
+        * (_ip / 9)
+      );
     }
 
     // Calculation for non-pitchers
@@ -267,17 +274,16 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
           (lgSB * 0.2 + lgCS * runCS) / (lg1B + lgBB + lgHBP - lgIBB);
 
       a.warValue = (
-          // 1.254 wOBAScale
-          (((_oba - lgwOBA) / 1.254) * _pa
-                  // wsb
-                  +
-                  _sb * 0.2 +
-                  _cs * runCS -
-                  lgwSB * (_singles + _walks + _hbp - _iw)
-                  // replacement Runs
-                  +
-                  (570 * (lgGames / 2430)) * (runsPerWin / lgPA) * _pa) /
-              runsPerWin);
+        // 1.254 wOBAScale
+        (((_oba - lgwOBA) / 1.254)
+          * _pa
+          // wsb
+          + (_sb * 0.2 + _cs * runCS - lgwSB * (_singles + _walks + _hbp - _iw))
+          // replacement Runs
+          + ((570 * (lgGames / 2430)) * (runsPerWin / lgPA) * _pa)
+        )
+        / runsPerWin
+      );
     }
   }
   return aeList;

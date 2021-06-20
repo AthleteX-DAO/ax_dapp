@@ -38,7 +38,7 @@ class _NavigationBarState extends State<NavigationBar> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.account_balance_wallet),
-            label: 'Wallet',
+            label: 'Staking',
           ),
           // BottomNavigationBarItem(  // Move this into same tab as Buy Athletes
           //   icon: Icon(Icons.account_balance_wallet),
@@ -46,11 +46,11 @@ class _NavigationBarState extends State<NavigationBar> {
           // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.sports_basketball),
-            label: 'Buy Athletes',
+            label: 'My Team',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.swap_horizontal_circle_sharp),
-            label: 'Token Swap',
+            label: 'Swap',
           ),
           // BottomNavigationBarItem(
           //   icon: Icon(Icons.settings),

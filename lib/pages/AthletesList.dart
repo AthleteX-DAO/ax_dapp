@@ -12,7 +12,7 @@ class _allAthletesListState extends State<AthletesList> {
   List<Athlete> returnableListData = <Athlete>[];
 
   final TextEditingController _filter = new TextEditingController(); //
-  Widget _appBarTitle = new Text('Buy an Athlete');
+  Widget _appBarTitle = new Text('My Team');
   List filteredNames = <Athlete>[]; // names filtered by search text
   Icon _searchIcon = new Icon(Icons.search);
   final _boughtAthletes = <Athlete>{};
