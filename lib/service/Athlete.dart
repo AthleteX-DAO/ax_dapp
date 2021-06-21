@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 // b6acfb905f1945fc8b9bb808b1f375bf
 
 Future<List<Athlete>> fetchAthletes() async {
-
   final String key = "22c8f467077d4ff2a14c5b69e2355343";
 
   //Steps - get curent date + time, set value in playerUrl
@@ -26,10 +25,8 @@ Future<List<Athlete>> fetchAthletes() async {
   // ignore: unnecessary_cast
   // Tracks player stats by date
 
-  final String playerUrl =
-      "https://fly.sportsdata.io/v3/mlb/stats/json/PlayerSeasonStats/$year?key=$key";
-  final String teamUrl =
-      "https://fly.sportsdata.io/v3/mlb/scores/json/TeamSeasonStats/$year?key=$key";
+  final Uri playerUrl = Uri.parse("https://fly.sportsdata.io/v3/mlb/stats/json/PlayerSeasonStats/$year?key=$key");
+  final Uri teamUrl = Uri.parse("https://fly.sportsdata.io/v3/mlb/scores/json/TeamSeasonStats/$year?key=$key");
 
   final playerResult = await http.get(playerUrl);
   final teamResult = await http.get(teamUrl);
@@ -50,7 +47,8 @@ Future<List<Athlete>> fetchAthletes() async {
 
 List<Athlete> parseAthletes(String responseBody, List<Team> _teamList) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-  var aePlayerList = parsed.map<Athlete>((json) => Athlete.fromJson(json)).toList();
+  var aePlayerList =
+      parsed.map<Athlete>((json) => Athlete.fromJson(json)).toList();
 
   return parseWarValue(aePlayerList, _teamList);
 }
@@ -68,11 +66,11 @@ class Team {
   final double? innings;
 
   // Constructor
-  Team(
-    {@required this.games,
+  Team({
+    @required this.games,
     @required this.runs,
-    @required this.innings,}
-  );
+    @required this.innings,
+  });
 
   factory Team.fromJson(Map<String, dynamic> json) {
     return Team(
@@ -102,8 +100,8 @@ class Athlete {
   final double? inningsPitched;
   final int? games;
   final int? gamesStarted;
-  
-   double? warValue;
+  late List<int> priceHistory;
+  double? warValue;
 
   // Constructor
   Athlete(
@@ -120,14 +118,11 @@ class Athlete {
       @required this.walks,
       @required this.hitByPitch,
       @required this.intentionalWalks,
-
       @required this.fip,
       @required this.inningsPitched,
       @required this.games,
       @required this.gamesStarted,
-
-      @required this.warValue}
-    );
+      @required this.warValue});
 
   // AEWAR equation
 
@@ -146,19 +141,15 @@ class Athlete {
         walks: json['Walks'],
         hitByPitch: json['HitByPitch'],
         intentionalWalks: json['IntentionalWalks'],
-        
         fip: json['FieldingIndependentPitching'],
         inningsPitched: json['InningsPitchedDecimal'],
         games: json['Games'],
         gamesStarted: json['Started'],
-        
-        warValue: 0.0
-      ); // this should be updated with the latest data
+        warValue: 0.0); // this should be updated with the latest data
   }
 }
 
 List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
-  
   // league averages of pitchers
   double lgFIP = 0;
   int numPitchers = 0;
@@ -178,7 +169,7 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
   double lgRuns = 0;
   double lgInnings = 0;
 
-  double runsPerWin = 9*(lgRuns / lgInnings)*1.5 + 3;
+  double runsPerWin = 9 * (lgRuns / lgInnings) * 1.5 + 3;
 
   for (Team team in _teamList) {
     lgGames += (team.games ?? 0);
@@ -193,8 +184,7 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
     if (ath.position == "P") {
       lgFIP += (ath.fip ?? 0);
       numPitchers++;
-    }
-    else if (ath.position != "P") {
+    } else if (ath.position != "P") {
       lgwOBA += (ath.oba ?? 0);
       lgSB += (ath.sb ?? 0);
       lgCS += (ath.cs ?? 0);
@@ -238,11 +228,10 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
   double _walks;
   double _hbp;
   double _iw;
-  
+
   for (Athlete a in aeList) {
     // Calculation for pitchers
-    if (a.position == "P")
-    {
+    if (a.position == "P") {
       _games = a.games ?? 0;
       _ip = a.inningsPitched ?? 0;
       _fip = a.fip ?? 0;
@@ -266,10 +255,9 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
         * (_ip / 9)
       );
     }
-    
+
     // Calculation for non-pitchers
-    else if (a.position != "P")
-    {
+    else if (a.position != "P") {
       _runs = a.runs ?? 0;
       _outs = a.outs ?? 0;
       _oba = a.oba ?? 0;
@@ -282,7 +270,8 @@ List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
       _iw = a.intentionalWalks ?? 0;
 
       double runCS = 2 * (_runs / _outs) + 0.075;
-      double lgwSB = (lgSB * 0.2 + lgCS * runCS) / (lg1B + lgBB + lgHBP - lgIBB);
+      double lgwSB =
+          (lgSB * 0.2 + lgCS * runCS) / (lg1B + lgBB + lgHBP - lgIBB);
 
       a.warValue = (
         // 1.254 wOBAScale
