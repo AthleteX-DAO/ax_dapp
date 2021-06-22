@@ -14,7 +14,7 @@ class Onboarding extends StatefulWidget {
 class _OnboardingState extends State<Onboarding> {
   final introKey = GlobalKey<IntroductionScreenState>();
   String warning =
-      "Understand that Athlete Equity does not have custody over your funds. \n You are in control, and responsible for your own wallet. \n We cannot recover your funds if lost";
+      "Understand that AthleteX does not have custody over your funds. \n You are in control, and responsible for your own wallet. \n We cannot recover your funds if lost";
   @override
   void initState() {
     super.initState();
@@ -85,9 +85,9 @@ class _OnboardingState extends State<Onboarding> {
       // ),
       pages: [
         PageViewModel(
-          title: "Welcome to Athlete Equity",
+          title: "Welcome to AthleteX",
           body:
-              "Invest in the player performance of athletes \n Athlete Equity lets you buy the player performance of athletes",
+              "Invest in the player performance of athletes \n AthleteX lets you buy the player performance of athletes",
           image: _buildImage('img2.jpg'),
           decoration: pageDecoration,
         ),

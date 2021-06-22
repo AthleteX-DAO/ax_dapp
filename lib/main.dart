@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<Controller>(
         create: (_) => Controller(),
         child: MaterialApp(
-          title: "Athlete Equity",
+          title: "AthleteX",
           debugShowCheckedModeBanner: false,
           initialRoute: "/",
           theme: ThemeData(
