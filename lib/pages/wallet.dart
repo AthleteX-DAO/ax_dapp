@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web3_provider/ethers.dart';
 import 'package:provider/provider.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
@@ -24,7 +23,7 @@ int myAmount = 0;
 
 class _WalletState extends State<Wallet> {
   String? buyTokensSite;
-  final _buyTokenUrl = "https://www.athlete-equity.com/buy-ae";
+  final _buyTokenUrl = "https://www.axmarkets.net/buy-ax";
   void _buyStuff() {
     Navigator.pushNamed(context, "/athletes");
   }
@@ -161,7 +160,7 @@ class _WalletState extends State<Wallet> {
                   Icons.call_made_rounded,
                   color: Colors.white,
                 ),
-                label: "Stake".text.white.make(),
+                label: "Stake AX".text.white.make(),
               ).h(60).tooltip("Lock your tokens in to earn interest rewards"),
 
               // ignore: deprecated_member_use
@@ -194,7 +193,7 @@ class _WalletState extends State<Wallet> {
                   Icons.call_received_rounded,
                   color: Colors.white,
                 ),
-                label: "Withdraw".text.white.make(),
+                label: "Withdraw AX".text.white.make(),
               ).h(60).tooltip("Sell your tokens to realize your gains"),
             ],
             alignment: MainAxisAlignment.spaceAround,
