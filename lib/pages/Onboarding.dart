@@ -64,11 +64,7 @@ class _OnboardingState extends State<Onboarding> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 16, right: 16),
-            child: Text(
-              "AE",
-              style: TextStyle(
-                  color: Color.fromRGBO(254, 201, 1, 1.0), fontSize: 45.55),
-            ),
+            child: _buildImage("x.png"),
           ),
         ),
       ),
@@ -90,41 +86,6 @@ class _OnboardingState extends State<Onboarding> {
               "Invest in the player performance of athletes \n AthleteX lets you buy the player performance of athletes",
           image: _buildImage('img2.jpg'),
           decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: "Before you Start...",
-          body: warning,
-          decoration: const PageDecoration(
-            titleTextStyle: TextStyle(
-                color: Color.fromRGBO(35, 43, 43, 1.0),
-                fontSize: 28.0,
-                fontWeight: FontWeight.w700),
-            bodyTextStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 19.0,
-                fontWeight: FontWeight.normal),
-            descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-            pageColor: Colors.white,
-            bodyAlignment: Alignment.center,
-            imagePadding: EdgeInsets.zero,
-          ),
-          footer: ElevatedButton(
-            onPressed: () {
-              setState(() {
-                warning = "Great! Good luck and have fun!";
-              });
-            },
-            child: const Text(
-              'Understood',
-              style: TextStyle(color: Colors.white),
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.lightBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-          ),
         ),
         PageViewModel(
           title: "Create a Wallet",

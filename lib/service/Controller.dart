@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +10,9 @@ import 'package:web_socket_channel/io.dart';
 
 // State management
 class Controller extends ChangeNotifier {
-  // RPC & WS are now linked to BSC-Testnet
-  final String _rpcUrl = "https://data-seed-prebsc-1-s1.binance.org:8545/";
-  final String _wsUrl = "wss://testnet-dex.binance.org/api/";
+  // RPC & WS are now linked to MATIC-Testnet
+  final String _rpcUrl = "https://rpc-mumbai.matic.today";
+  final String _wsUrl = "wss://rpc-mumbai.matic.today";
 
   // private client for web3dart
   late Web3Client _client;

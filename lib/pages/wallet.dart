@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
 import 'package:qrscan/qrscan.dart' as QRScanner;
+import 'package:web3dart/credentials.dart';
 
 // Smart Contract specific imports
 
@@ -66,6 +67,11 @@ class _WalletState extends State<Wallet> {
     var contractLink = Provider.of<Controller>(context);
     data = true;
     var announcements = "Stake your AE Token and Earn rewards";
+    Future<EthereumAddress> getPublicAddress() async {
+      await contractLink.getPublicAddress();
+      return contractLink.publicAddress;
+    }
+
     return Scaffold(
       backgroundColor: Vx.hexToColor("#232b2b"),
       body: ZStack([
@@ -86,7 +92,7 @@ class _WalletState extends State<Wallet> {
               .onTap(() {
             setState(() {
               announcements =
-                  "Your Wallet Address: ${contractLink.publicAddress}";
+                  "Your Wallet Address: ${getPublicAddress()}";
             });
           }),
           (context.percentHeight * 5).heightBox,
@@ -109,11 +115,12 @@ class _WalletState extends State<Wallet> {
                       ),
                       new Expanded(
                               child: Text(
-                                  "Public Address: ${contractLink.publicAddress}")).onTap(() {
+                                  "Public Address: ${getPublicAddress()}"))
+                          .onTap(() {
                         Clipboard.setData(ClipboardData(
-                            text: "${contractLink.publicAddress}"));
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: const Text("Copied!")));
+                            text: "${getPublicAddress()}"));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: const Text("Copied!")));
                       }),
                     ]))),
             new Expanded(
@@ -141,8 +148,8 @@ class _WalletState extends State<Wallet> {
                 onPressed: () async {
                   // Staking token
                   try {
-                    var stakeAmount = BigInt.from(10);
-                    String txHash = await contractLink.stake(stakedAE);
+                    String txHash = "Hash Goes Here!";
+                    // await contractLink.stake(stakedAE);
                     print("txHash: $txHash");
                   } catch (e) {
                     print("Console: error attempting staking \n\n$e");
@@ -161,9 +168,7 @@ class _WalletState extends State<Wallet> {
               FlatButton.icon(
                 onPressed: () async => {
                   _buyTokensOnline(),
-                  _updateTokenBalance(await contractLink
-                      .getStakeBalance(contractLink.publicAddress)),
-                  print("Your Public Address: ${contractLink.publicAddress}")
+                  print("Your Public Address: ${getPublicAddress()}")
                 },
                 color: Colors.blue,
                 shape: Vx.roundedSm,
@@ -178,7 +183,7 @@ class _WalletState extends State<Wallet> {
               FlatButton.icon(
                 onPressed: () {
                   try {
-                    contractLink.withdraw(10 as BigInt);
+                    // contractLink.withdraw(10 as BigInt);
                   } catch (e) {
                     print(e);
                   }

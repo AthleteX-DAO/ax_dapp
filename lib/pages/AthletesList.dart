@@ -4,11 +4,11 @@ import 'package:ae_dapp/service/Athlete.dart';
 
 class AthletesList extends StatefulWidget {
   @override
-  _allAthletesListState createState() => _allAthletesListState();
+  _AllAthletesListState createState() => _AllAthletesListState();
 }
 
-class _allAthletesListState extends State<AthletesList> {
-  List<Athlete> _allAthletesList = <Athlete>[]; //All athletes
+class _AllAthletesListState extends State<AthletesList> {
+  List<Athlete> _AllAthletesList = <Athlete>[]; //All athletes
   List<Athlete> returnableListData = <Athlete>[];
 
   final TextEditingController _filter = new TextEditingController(); //
@@ -41,10 +41,10 @@ class _allAthletesListState extends State<AthletesList> {
   }
 
   void updateFilter(String text) {
-    print("updated Text: ${text}");
+    print("updated Text: $text");
   }
 
-  Future<List<Athlete>> _loadAthletes() async {
+  Future<dynamic> _loadAthletes() async {
     return await fetchAthletes();
   }
 
@@ -104,15 +104,15 @@ class _allAthletesListState extends State<AthletesList> {
   }
 
   Widget _buildAthletes(AsyncSnapshot<dynamic> snapshot) {
-    _allAthletesList.addAll(snapshot.data!);
+    _AllAthletesList.addAll(snapshot.data!);
 
     return ListView.builder(
-      itemCount: _allAthletesList.length,
+      itemCount: _AllAthletesList.length,
       padding: EdgeInsets.all(16.0),
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
         final i = index ~/ 2; // i is every even item in this iteration
-        return _buildRow(_allAthletesList[i]);
+        return _buildRow(_AllAthletesList[i]);
       },
     );
   }
@@ -177,7 +177,7 @@ class _allAthletesListState extends State<AthletesList> {
                       return _loadData = fetchAthletes();
                     },
                     child: Center(
-                      child: _buildAthletes(snapshot.data),
+                      child: _buildAthletes(snapshot),
                     )
                   );
                 } else if (snapshot.hasError) {

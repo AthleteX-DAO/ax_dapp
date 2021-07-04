@@ -60,6 +60,8 @@ flutter:
 
   assets:
     - assets/images/img1.png
-    - assets/images/img2.jpg
+    - assets/images/img2.png
     - assets/images/asu-hero.jpg
+    - assets/images/x.png
+    - assets/images/x.png
       
