@@ -37,13 +37,12 @@ class _WalletState extends State<Wallet> {
   }
 
   Controller? contractLink;
-  Web3Provider? web3;
-  BigInt balanceOfAE = BigInt.from(2);
-  BigInt stakedAE = BigInt.from(0);
-  BigInt balanceofBNB = BigInt.from(0);
+  BigInt? balanceOfAE;
+  BigInt? stakedAX;
+  BigInt? balanceofMATIC;
   String? publicAddress;
-  String aeToken =
-      "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
+  String? AX;
+
   @override
   void initState() {
     super.initState();
@@ -67,8 +66,9 @@ class _WalletState extends State<Wallet> {
     data = true;
     var announcements = "Stake your AE Token and Earn rewards";
     Future<EthereumAddress> getPublicAddress() async {
-      await contractLink.getPublicAddress();
-      return contractLink.publicAddress;
+      EthereumAddress returnValue = "Your Address!" as EthereumAddress;
+      await contractLink.getPublicAddress().then((value) => returnValue = value);
+      return returnValue;
     }
 
     return Scaffold(
@@ -90,8 +90,7 @@ class _WalletState extends State<Wallet> {
               .py16()
               .onTap(() {
             setState(() {
-              announcements =
-                  "Your Wallet Address: ${getPublicAddress()}";
+              announcements = "Your Wallet Address: ${getPublicAddress()}";
             });
           }),
           (context.percentHeight * 5).heightBox,
@@ -107,23 +106,23 @@ class _WalletState extends State<Wallet> {
                                 color: Colors.amber)
                             .h(20)
                             .tooltip(
-                                "You need gas (BNB) to conduct transactions on the network"),
+                                "You need gas (MATIC) to conduct transactions on the network"),
                       ),
                       new Expanded(
-                        child: Text("$balanceofBNB").h(20),
+                        child: Text("").h(20),
                       ),
                       new Expanded(
-                              child: Text(
-                                  "Public Address: ${getPublicAddress()}"))
+                              child:
+                                  Text("Public Address: ${getPublicAddress()}"))
                           .onTap(() {
-                        Clipboard.setData(ClipboardData(
-                            text: "${getPublicAddress()}"));
+                        Clipboard.setData(
+                            ClipboardData(text: "${getPublicAddress()}"));
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: const Text("Copied!")));
                       }),
                     ]))),
             new Expanded(
-              child: Text("Your Staked Balance: $stakedAE"),
+              child: Text("Your Staked Balance: "),
             ),
             new Expanded(
               child: Text("Available to Stake: 0"),
