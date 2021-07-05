@@ -17,20 +17,36 @@ class _MyTeamState extends State<MyTeam> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
- body: new Center(
-          child: new Container(
-            width: 300.0,
-            height: 100.0,
-            child: new Sparkline(
-              data: data,
-              lineWidth: 10.0,
-              fillMode: FillMode.below,
-              fillColor: Colors.amber[700],
-              pointsMode: PointsMode.all,
-              pointColor: Colors.red[400],
+      appBar: AppBar(
+        title: Text("My Team"),
+      ),
+      body: new Center(
+        child: Column(
+          children: <Widget>[
+            new Expanded(
+              flex: 1,
+              child: Text("Your portfolio history"),
             ),
-          ),
+            new Expanded(
+              flex: 3,
+              child: Container(
+                child: new Sparkline(
+                  data: data,
+                  lineWidth: 10.0,
+                  fillMode: FillMode.below,
+                  fillColor: Colors.amber[700],
+                  pointsMode: PointsMode.all,
+                  pointColor: Colors.red[400],
+                ),
+              ),
+            ),
+            new Expanded(
+              flex: 3,
+              child: Container(),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
