@@ -42,7 +42,10 @@ class _MyTeamState extends State<MyTeam> {
             ),
             new Expanded(
               flex: 3,
-              child: Container(),
+              child: Container(
+                // Listview goes here
+                child: new Text("List of your Athletes goes here!"),
+              ),
             ),
           ],
         ),
