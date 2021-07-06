@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomSliderThumbCircle extends SliderComponentShape {
-  final double thumbRadius;
+  final double? thumbRadius;
   final int min;
   final int max;
 
@@ -13,23 +13,23 @@ class CustomSliderThumbCircle extends SliderComponentShape {
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
-    return Size.fromRadius(thumbRadius);
+    return Size.fromRadius(thumbRadius ?? 0);
   }
 
   @override
   void paint(
       PaintingContext context,
       Offset center, {
-        Animation<double> activationAnimation,
-        Animation<double> enableAnimation,
-        bool isDiscrete,
-        TextPainter labelPainter,
-        RenderBox parentBox,
-        SliderThemeData sliderTheme,
-        TextDirection textDirection,
-        double value,
-        double textScaleFactor,
-        Size sizeWithOverflow,
+        Animation<double>? activationAnimation,
+        Animation<double>? enableAnimation,
+        bool? isDiscrete,
+        TextPainter? labelPainter,
+        RenderBox? parentBox,
+        SliderThemeData? sliderTheme,
+        TextDirection? textDirection,
+        double? value,
+        double? textScaleFactor,
+        Size? sizeWithOverflow,
       }) {
     final Canvas canvas = context.canvas;
 
@@ -39,11 +39,11 @@ class CustomSliderThumbCircle extends SliderComponentShape {
 
     TextSpan span = new TextSpan(
       style: new TextStyle(
-        fontSize: thumbRadius * .8,
+        fontSize: (thumbRadius ?? 0) * .8,
         fontWeight: FontWeight.w700,
-        color: sliderTheme.thumbColor, //Text Color of Value on Thumb
+        color: sliderTheme?.thumbColor, //Text Color of Value on Thumb
       ),
-      text: getValue(value),
+      text: getValue(value ?? 0),
     );
 
     TextPainter tp = new TextPainter(
@@ -54,7 +54,7 @@ class CustomSliderThumbCircle extends SliderComponentShape {
     Offset textCenter =
     Offset(center.dx - (tp.width / 2), center.dy - (tp.height / 2));
 
-    canvas.drawCircle(center, thumbRadius * .9, paint);
+    canvas.drawCircle(center, (thumbRadius ?? 0) * .9, paint);
     tp.paint(canvas, textCenter);
   }
 

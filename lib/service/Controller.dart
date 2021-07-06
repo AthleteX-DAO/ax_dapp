@@ -10,20 +10,20 @@ import 'package:web_socket_channel/io.dart';
 
 // State management
 class Controller extends ChangeNotifier {
-  // RPC & WS are now linked to BSC-Testnet
-  final String _rpcUrl = "https://data-seed-prebsc-1-s1.binance.org:8545/";
-  final String _wsUrl = "wss://testnet-dex.binance.org/api/";
+  // RPC & WS are now linked to MATIC-Testnet
+  final String _rpcUrl = "https://rpc-mumbai.matic.today";
+  final String _wsUrl = "wss://rpc-mumbai.matic.today";
 
   // private client for web3dart
-  Web3Client _client;
+  late Web3Client _client;
   bool isLoading = true;
 
   // Eth related variable declarations
   // ignore: avoid_init_to_null
-  String _abiCode, privateAddress, userMnemonic = null;
-  EthereumAddress _contractAddress, publicAddress;
-  Credentials _credentials;
-  DeployedContract staking;
+  late String _abiCode, privateAddress, userMnemonic;
+  late EthereumAddress _contractAddress, publicAddress;
+  late Credentials _credentials;
+  late DeployedContract staking;
 
   // No-args constructor
   Controller() {
@@ -61,10 +61,10 @@ class Controller extends ChangeNotifier {
 
   Future<String> getMnemonic() async {
     // Generate a random mnemonic (uses crypto.randomBytes under the hood), defaults to 128-bits of entropy
-    return userMnemonic;
+    return (userMnemonic);
   }
 
-  Future<void> createWallet([String mnemonic]) async {
+  Future<void> createWallet([String? mnemonic]) async {
     // If user comes with a mnemonic seed
     var seed, validMnemonic;
     validMnemonic = bip39.generateMnemonic();
@@ -75,7 +75,6 @@ class Controller extends ChangeNotifier {
     privateAddress = seed;
     userMnemonic = validMnemonic;
     publicAddress = await _credentials.extractAddress();
-    return privateAddress;
   }
 
   Future<EthereumAddress> getPublicAddress() async {
@@ -115,7 +114,8 @@ class Controller extends ChangeNotifier {
         fetchChainIdFromNetworkId: true);
   }
 
-  Future<BigInt> getTokenBalance(String tokenString, EthereumAddress from) async {
+  Future<BigInt> getTokenBalance(
+      String tokenString, EthereumAddress from) async {
     DeployedContract token = await retrieveContract(tokenString);
     ContractFunction balanceOf = token.function("balanceOf");
 
