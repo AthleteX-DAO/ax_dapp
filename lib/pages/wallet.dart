@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web3_provider/ethers.dart';
 import 'package:provider/provider.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:url_launcher/url_launcher.dart';
@@ -24,7 +23,7 @@ int myAmount = 0;
 
 class _WalletState extends State<Wallet> {
   String? buyTokensSite;
-  final _buyTokenUrl = "https://www.athlete-equity.com/buy-ae";
+  final _buyTokenUrl = "https://www.axmarkets.net/buy-ax";
   void _buyStuff() {
     Navigator.pushNamed(context, "/athletes");
   }
@@ -38,13 +37,12 @@ class _WalletState extends State<Wallet> {
   }
 
   Controller? contractLink;
-  Web3Provider? web3;
-  BigInt balanceOfAE = BigInt.from(2);
-  BigInt stakedAE = BigInt.from(0);
-  BigInt balanceofBNB = BigInt.from(0);
+  BigInt? balanceOfAE;
+  BigInt? stakedAX;
+  BigInt? balanceofMATIC;
   String? publicAddress;
-  String aeToken =
-      "0x805624d8a34473f24d66d74c2fb86400c90862a1"; // Hash for the AE Token
+  String? AX;
+
   @override
   void initState() {
     super.initState();
@@ -68,8 +66,9 @@ class _WalletState extends State<Wallet> {
     data = true;
     var announcements = "Stake your AE Token and Earn rewards";
     Future<EthereumAddress> getPublicAddress() async {
-      await contractLink.getPublicAddress();
-      return contractLink.publicAddress;
+      EthereumAddress returnValue = "Your Address!" as EthereumAddress;
+      await contractLink.getPublicAddress().then((value) => returnValue = value);
+      return returnValue;
     }
 
     return Scaffold(
@@ -91,8 +90,7 @@ class _WalletState extends State<Wallet> {
               .py16()
               .onTap(() {
             setState(() {
-              announcements =
-                  "Your Wallet Address: ${getPublicAddress()}";
+              announcements = "Your Wallet Address: ";
             });
           }),
           (context.percentHeight * 5).heightBox,
@@ -108,23 +106,23 @@ class _WalletState extends State<Wallet> {
                                 color: Colors.amber)
                             .h(20)
                             .tooltip(
-                                "You need gas (BNB) to conduct transactions on the network"),
+                                "You need gas (MATIC) to conduct transactions on the network"),
                       ),
                       new Expanded(
-                        child: Text("$balanceofBNB").h(20),
+                        child: Text("").h(20),
                       ),
                       new Expanded(
-                              child: Text(
-                                  "Public Address: ${getPublicAddress()}"))
+                              child:
+                                  Text("Public Address: "))
                           .onTap(() {
-                        Clipboard.setData(ClipboardData(
-                            text: "${getPublicAddress()}"));
+                        Clipboard.setData(
+                            ClipboardData(text: "Copied!"));
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: const Text("Copied!")));
                       }),
                     ]))),
             new Expanded(
-              child: Text("Your Staked Balance: $stakedAE"),
+              child: Text("Your Staked Balance: "),
             ),
             new Expanded(
               child: Text("Available to Stake: 0"),
@@ -161,14 +159,14 @@ class _WalletState extends State<Wallet> {
                   Icons.call_made_rounded,
                   color: Colors.white,
                 ),
-                label: "Stake".text.white.make(),
+                label: "Stake AX".text.white.make(),
               ).h(60).tooltip("Lock your tokens in to earn interest rewards"),
 
               // ignore: deprecated_member_use
               FlatButton.icon(
                 onPressed: () async => {
                   _buyTokensOnline(),
-                  print("Your Public Address: ${getPublicAddress()}")
+                  print("Your Public Address: ")
                 },
                 color: Colors.blue,
                 shape: Vx.roundedSm,
@@ -194,7 +192,7 @@ class _WalletState extends State<Wallet> {
                   Icons.call_received_rounded,
                   color: Colors.white,
                 ),
-                label: "Withdraw".text.white.make(),
+                label: "Withdraw AX".text.white.make(),
               ).h(60).tooltip("Sell your tokens to realize your gains"),
             ],
             alignment: MainAxisAlignment.spaceAround,

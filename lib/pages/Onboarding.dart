@@ -14,7 +14,7 @@ class Onboarding extends StatefulWidget {
 class _OnboardingState extends State<Onboarding> {
   final introKey = GlobalKey<IntroductionScreenState>();
   String warning =
-      "Understand that AthleteX does not have custody over your funds. \n You are in control, and responsible for your own wallet. \n We cannot recover your funds if lost";
+      " Note: You are in control of, and responsible for your own wallet. \n We cannot recover your funds if lost";
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,7 @@ class _OnboardingState extends State<Onboarding> {
     );
   }
 
-  Widget _buildImage(String assetName, [double width = 350]) {
+  Widget _buildImage(String assetName, [double width = 150]) {
     return Image.asset('assets/images/$assetName', width: width);
   }
 
@@ -52,8 +52,9 @@ class _OnboardingState extends State<Onboarding> {
       bodyTextStyle: TextStyle(
           color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.normal),
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.white,
+      pageColor: const Color.fromRGBO(128, 128, 128, 100),
       imagePadding: EdgeInsets.zero,
+      imageAlignment: Alignment.bottomCenter
     );
 
     return IntroductionScreen(
@@ -61,9 +62,11 @@ class _OnboardingState extends State<Onboarding> {
       globalBackgroundColor: Colors.black87,
       globalHeader: Align(
         alignment: Alignment.topRight,
+        widthFactor: 5,
+        heightFactor: 5,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(top: 16, right: 16),
+            padding: const EdgeInsets.only(top: 20, right: 20),
             child: _buildImage("x.png"),
           ),
         ),
@@ -83,21 +86,17 @@ class _OnboardingState extends State<Onboarding> {
         PageViewModel(
           title: "Welcome to AthleteX",
           body:
-              "Invest in the player performance of athletes \n AthleteX lets you buy the player performance of athletes",
-          image: _buildImage('img2.jpg'),
+              "Invest in the player performance of athletes \n AthleteX lets you buy the player performance of athletes \n" + warning,
+          image: _buildImage('img2.png'),
           decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: "Create a Wallet",
-          body: "walletDetails",
           footer: ElevatedButton(
-            onPressed: () {
+                        onPressed: () {
               setState(() {
-                // walletDetails = "Your seed: \n$mneumonicSeed";
+                warning = "Great! Good luck and have fun!";
               });
             },
             child: const Text(
-              'Generate my Key Pair',
+              'Understood',
               style: TextStyle(color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
@@ -106,14 +105,7 @@ class _OnboardingState extends State<Onboarding> {
                 borderRadius: BorderRadius.circular(8.0),
               ),
             ),
-          ),
-          image: _buildFullscrenImage(),
-          decoration: pageDecoration.copyWith(
-            contentMargin: const EdgeInsets.symmetric(horizontal: 16),
-            fullScreen: true,
-            bodyFlex: 2,
-            imageFlex: 3,
-          ),
+          )
         ),
       ],
       onDone: () => _onIntroEnd(context),
