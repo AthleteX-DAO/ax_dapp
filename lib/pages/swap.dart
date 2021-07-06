@@ -475,7 +475,7 @@ class _SwapState extends State<SwapWidget> {
                       return _loadData = fetchAthletes();
                     },
                     child: Center(
-                      child: _buildAthletes(snapshot.data),
+                      child: _buildAthletes(snapshot),
                     )
                   );
                 } else if (snapshot.hasError) {
