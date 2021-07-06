@@ -31,6 +31,8 @@ dependencies:
   velocity_x: ^3.2.0
   qrscan: ^0.3.1
   url_launcher: ^6.0.3
+  fl_chart: ^0.36.2
+
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,6 +43,8 @@ dependencies:
   flutter_web3_provider: ^1.0.4
   introduction_screen: ^2.1.0
   bip39: ^1.0.3
+  draggable_home: ^1.0.2
+
 
 
 dev_dependencies:
