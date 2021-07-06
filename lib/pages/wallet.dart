@@ -90,7 +90,7 @@ class _WalletState extends State<Wallet> {
               .py16()
               .onTap(() {
             setState(() {
-              announcements = "Your Wallet Address: ${getPublicAddress()}";
+              announcements = "Your Wallet Address: ";
             });
           }),
           (context.percentHeight * 5).heightBox,
@@ -113,10 +113,10 @@ class _WalletState extends State<Wallet> {
                       ),
                       new Expanded(
                               child:
-                                  Text("Public Address: ${getPublicAddress()}"))
+                                  Text("Public Address: "))
                           .onTap(() {
                         Clipboard.setData(
-                            ClipboardData(text: "${getPublicAddress()}"));
+                            ClipboardData(text: "Copied!"));
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: const Text("Copied!")));
                       }),
@@ -166,7 +166,7 @@ class _WalletState extends State<Wallet> {
               FlatButton.icon(
                 onPressed: () async => {
                   _buyTokensOnline(),
-                  print("Your Public Address: ${getPublicAddress()}")
+                  print("Your Public Address: ")
                 },
                 color: Colors.blue,
                 shape: Vx.roundedSm,
