@@ -11,10 +11,10 @@ import 'unit.dart';
 
 /// A [Category] keeps track of a list of [Unit]s.
 class Category {
-  final String name;
-  final ColorSwatch color;
-  final List<Unit> units;
-  final String iconLocation;
+  final String? name;
+  final ColorSwatch? color;
+  final List<Unit>? units;
+  final String? iconLocation;
 
   /// Information about a [Category].
   ///

@@ -4,11 +4,11 @@ import 'package:meta/meta.dart';
 import 'package:ae_dapp/swapFiles/unit.dart';
 
 class Dropdown extends StatefulWidget {
-  final List<Unit> units;
-  final ValueChanged<Unit> onChangeHandler;
+  final List<Unit>? units;
+  final ValueChanged<Unit>? onChangeHandler;
 
   const Dropdown({
-    Key key,
+    Key? key,
     @required this.units,
     @required this.onChangeHandler
   }) : assert(units != null),
@@ -20,19 +20,19 @@ class Dropdown extends StatefulWidget {
 }
 
 class _DropdownState extends State<Dropdown> {
-  List<DropdownMenuItem> _dropdownMenuItems;
-  String _selectedValue;
+  List<DropdownMenuItem>? _dropdownMenuItems;
+  String? _selectedValue;
 
   void _createDropdownMenuItems() {
     final List<DropdownMenuItem> items = <DropdownMenuItem>[];
 
-    for (Unit unit in widget.units) {
+    for (Unit unit in widget.units!) {
       items.add(
           DropdownMenuItem(
               value: unit.name,
               child: Container(
                 child: Text(
-                  unit.name,
+                  unit.name!,
                   softWrap: true,
                 ),
               )
@@ -45,7 +45,7 @@ class _DropdownState extends State<Dropdown> {
 
   void _setDefaultState() {
     setState(() {
-      this._selectedValue = widget.units[0].name;
+      this._selectedValue = widget.units![0].name;
     });
   }
 
@@ -54,8 +54,8 @@ class _DropdownState extends State<Dropdown> {
       this._selectedValue = value;
     });
 
-    final Unit selected = widget.units.firstWhere((unit) => unit.name == value);
-    widget.onChangeHandler(selected);
+    final Unit selected = widget.units!.firstWhere((unit) => unit.name == value);
+    widget.onChangeHandler!(selected);
   }
 
   @override
@@ -85,7 +85,7 @@ class _DropdownState extends State<Dropdown> {
           // This sets the color of the [DropdownButton] itself
           color: Colors.grey[50],
           border: Border.all(
-            color: Colors.grey[400],
+            color: Colors.grey[400]!,
             width: 1.0,
           ),
         ),

@@ -5,11 +5,11 @@ import 'package:meta/meta.dart';
 /// It performs validation on the input entered before delegating to the
 /// provided handler.
 class NumericInput extends StatefulWidget {
-  final String label;
-  final ValueChanged<double> onChangeHandler;
+  final String? label;
+  final ValueChanged<double>? onChangeHandler;
 
   const NumericInput({
-    Key key,
+    Key? key,
     @required this.label,
     @required this.onChangeHandler
   }) : assert(label != null),
@@ -33,7 +33,7 @@ class _NumericInputState extends State<NumericInput> {
       try {
         final double valueAsDouble = double.parse(value);
         this._hasInvalidInput = false;
-        widget.onChangeHandler(valueAsDouble);
+        widget.onChangeHandler!(valueAsDouble);
       } on Exception catch (e) {
         print('Caught exception while converting value to double: $e');
         this._hasInvalidInput = true;

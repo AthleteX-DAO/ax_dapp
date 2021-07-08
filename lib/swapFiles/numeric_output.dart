@@ -3,8 +3,8 @@ import 'package:meta/meta.dart';
 
 /// A text field for numeric outputs only that displays a label on its border.
 class NumericOutput extends StatelessWidget {
-  final String label;
-  final double value;
+  final String? label;
+  final double? value;
 
   const NumericOutput({
     @required this.label,
@@ -18,7 +18,7 @@ class NumericOutput extends StatelessWidget {
       return "";
     }
 
-    String formattedValue = this.value.toStringAsPrecision(7);
+    String formattedValue = this.value!.toStringAsPrecision(7);
 
     // Remove all trailing zeros
     if (formattedValue.contains('.') && formattedValue.endsWith('0')) {

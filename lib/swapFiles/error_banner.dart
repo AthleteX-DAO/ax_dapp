@@ -25,7 +25,7 @@ class ErrorBanner extends StatelessWidget {
             Text(
               "Oh no! Can't connect right now!",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline.copyWith(
+              style: Theme.of(context).textTheme.headline5!.copyWith(
                 color: Colors.white
               ),
             ),

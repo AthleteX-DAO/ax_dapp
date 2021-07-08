@@ -16,8 +16,8 @@ import 'package:ae_dapp/swapFiles/currency_provider.dart';
 
 /// Converter screen where users can input amounts to convert.
 class ConverterScreen extends StatefulWidget {
-  final Category category;
-  final CurrencyProvider currencyProvider;
+  final Category? category; // Need it to take only a single list of Units (don't need Category) OR just need a single CRYPTO CATEGORY
+  final CurrencyProvider? currencyProvider;
 
   /// This [ConverterScreen] requires [Category] to not be null.
   const ConverterScreen({
@@ -44,8 +44,8 @@ class _ConverterScreenState extends State<ConverterScreen> {
   void _setDefaults() {
     // Update the conversions, and trigger the computation of the output value
     setState(() {
-      this._from = widget.category.units[0];
-      this._to = widget.category.units[0];
+      this._from = widget.category!.units![0];
+      this._to = widget.category!.units![0];
       this._updateConversion();
       this._showError = false;
     });
@@ -56,20 +56,20 @@ class _ConverterScreenState extends State<ConverterScreen> {
       return;
     }
 
-    double converted;
+    double? converted;
     bool inErrorState = false;
 
     // For the Currency [Category] use an external provider for the conversion
-    if (widget.category.name == 'Currency') {
+    if (widget.category!.name == 'Currency') {
       try {
-        converted = await widget.currencyProvider
-            .convert(this._from, this._to, this._inputValue);
+        converted = await widget.currencyProvider!
+            .convert(this._from!, this._to!, this._inputValue!);
       } catch (e) {
         inErrorState = true;
       }
     } else {
       converted =
-          this._inputValue * (this._to.conversion / this._from.conversion);
+          this._inputValue! * (this._to!.conversion! / this._from!.conversion!);
     }
 
     setState(() {
@@ -124,7 +124,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
           ),
           Dropdown(
             key: Key('driver-from-dropdown'),
-            units: widget.category.units,
+            units: widget.category!.units,
             onChangeHandler: (unit) =>
                 this._handleOnFromConversionValueChange(unit),
           ),
@@ -145,7 +145,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
           ),
           Dropdown(
             key: Key('driver-to-dropdown'),
-            units: widget.category.units,
+            units: widget.category!.units,
             onChangeHandler: (unit) =>
                 this._handleOnToConversionValueChange(unit),
           ),
@@ -171,7 +171,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (this._showError) {
+    if (this._showError!) {
       return ErrorBanner();
     }
 
