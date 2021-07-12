@@ -140,6 +140,10 @@ class _WalletState extends State<Wallet> {
             .make()
             .p12(),
           30.heightBox,
+          HStack([
+            Icon(Icons.local_gas_station_rounded, color: Colors.amber).h(20),
+            Text("$balanceofBNB").h(20),
+          ]),
           HStack(
             [
               // ignore: deprecated_member_use
