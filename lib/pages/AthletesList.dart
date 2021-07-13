@@ -24,11 +24,13 @@ class _AllAthletesListState extends State<AthletesList> {
     // TODO: implement initState
     //
 
+    
     initList(); //sets up synchronous array of athletes from async pull
     super.initState();
   }
 
   initList() async {
+    // REPLACE THIS
     __athletesDataEntity = await _loadAthletes();
   }
 
