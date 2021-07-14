@@ -105,7 +105,7 @@ class _AllAthletesListState extends State<AthletesList> {
               })
         ],
       ),
-      body: _buildAthletesList(__athletesDataEntity),
+      body: _buildAthletesList(_AllAthletesList),
     );
   }
 }
