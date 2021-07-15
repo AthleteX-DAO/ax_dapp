@@ -1,6 +1,7 @@
 import 'package:ae_dapp/pages/AthletesDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
+import 'package:search_page/search_page.dart';
 
 class AthletesList extends StatefulWidget {
   @override
@@ -10,20 +11,13 @@ class AthletesList extends StatefulWidget {
 class _AllAthletesListState extends State<AthletesList> {
   List<Athlete> _AllAthletesList = <Athlete>[]; //All athletes
   List<Athlete> returnableListData = <Athlete>[];
-
-  final TextEditingController _filter = new TextEditingController(); //
-  Widget _appBarTitle = new Text('My Team');
-  List filteredNames = <Athlete>[]; // names filtered by search text
-  Icon _searchIcon = new Icon(Icons.search);
   final _boughtAthletes = <Athlete>{};
-  List<Athlete>? __athletesDataEntity;
-  String _searchText = "";
+  List<Athlete>? _athletesDataEntity;
 
   @override
   void initState() {
     // TODO: implement initState
     //
-
     
     initList(); //sets up synchronous array of athletes from async pull
     super.initState();
@@ -31,7 +25,7 @@ class _AllAthletesListState extends State<AthletesList> {
 
   initList() async {
     // REPLACE THIS
-    __athletesDataEntity = await _loadAthletes();
+    _athletesDataEntity = await _loadAthletes();
   }
 
   Future<List<Athlete>> _loadAthletes() async {
@@ -94,16 +88,35 @@ class _AllAthletesListState extends State<AthletesList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _appBarTitle == null ? Text("Buy an Athlete") : _appBarTitle,
-        elevation: 2,
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-              icon: _searchIcon,
-              onPressed: () {
-                //              _searchPressed("Search an Athlete");
-              })
-        ],
+        title: Text("Buy an Athlete"),
+      ),
+      floatingActionButton: FloatingActionButton(
+                tooltip: 'Search people',
+        onPressed: () => showSearch(
+          context: context,
+          delegate: SearchPage<Athlete>(
+            onQueryUpdate: (s) => print(s),
+            items: _AllAthletesList,
+            searchLabel: 'Search athletes',
+            suggestion: Center(
+              child: Text('Filter athletes by name, position or playerID'),
+            ),
+            failure: Center(
+              child: Text('No athlete found :('),
+            ),
+            filter: (athlete) => [
+              athlete.name,
+              athlete.position,
+              athlete.playerID.toString(),
+            ],
+            builder: (athlete) => ListTile(
+              title: Text(athlete.name!),
+              subtitle: Text(athlete.position!),
+              trailing: Text('${athlete.name} yo'),
+            ),
+          ),
+      ),
+      child: Icon(Icons.search),
       ),
       body: _buildAthletesList(_AllAthletesList),
     );
