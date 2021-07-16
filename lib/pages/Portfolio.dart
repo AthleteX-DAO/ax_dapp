@@ -1,7 +1,6 @@
 import 'package:ae_dapp/pages/wallet.dart';
 import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:flutter/material.dart';
-import 'package:chart_sparkline/chart_sparkline.dart';
 
 
 class Portfolio extends StatefulWidget {
