@@ -20,7 +20,7 @@ class _PortfolioState extends State<Portfolio> {
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black45),
+        border: Border.all(color: Colors.black45, width: 4.0, style: BorderStyle.solid),
       ),
       child: Sparkline(
         //Data must be replaced by individual's portfolio history
