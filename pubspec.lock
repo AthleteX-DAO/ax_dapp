@@ -120,6 +120,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  chart_sparkline:
+    dependency: "direct main"
+    description:
+      name: chart_sparkline
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   checked_yaml:
     dependency: transitive
     description:
@@ -203,7 +210,7 @@ packages:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.2"
   fake_async:
     dependency: transitive
     description:
@@ -429,6 +436,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -527,6 +541,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  search_page:
+    dependency: "direct main"
+    description:
+      name: search_page
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0+1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -693,6 +714,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  webfeed:
+    dependency: "direct main"
+    description:
+      name: webfeed
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.2"
   yaml:
     dependency: transitive
     description:

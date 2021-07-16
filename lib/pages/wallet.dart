@@ -107,13 +107,13 @@ class _WalletState extends State<Wallet> {
                         Container(
                           child: Icon(
                             Icons.local_gas_station_rounded,
-                            color: Colors.amber
+                            color: Colors.amber[200]
                             )
                               .h(20) //TODO: What is this doing?
                               .tooltip(
                                   "You need gas (MATIC) to conduct transactions on the network"),
                         ),
-                        Text("").h(20),
+                        Text("20").h(20),
                         Text("Public Address: ")
                         .onTap(() {
                         Clipboard.setData(
