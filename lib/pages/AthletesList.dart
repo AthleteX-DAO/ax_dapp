@@ -1,4 +1,5 @@
 import 'package:ae_dapp/pages/AthletesDetail.dart';
+import 'package:ae_dapp/service/RSSReader.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:search_page/search_page.dart';
@@ -17,15 +18,8 @@ class _AllAthletesListState extends State<AthletesList> {
   @override
   void initState() {
     // TODO: implement initState
-    //
     
-    initList(); //sets up synchronous array of athletes from async pull
     super.initState();
-  }
-
-  initList() async {
-    // REPLACE THIS
-    _athletesDataEntity = await _loadAthletes();
   }
 
   Future<List<Athlete>> _loadAthletes() async {
@@ -88,10 +82,12 @@ class _AllAthletesListState extends State<AthletesList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Buy an Athlete"),
+        title: Center( child: Text("Latest Sports News"),),
       ),
       floatingActionButton: FloatingActionButton(
-                tooltip: 'Search people',
+        elevation: 3.5,
+        backgroundColor: Colors.yellow.shade600,
+        tooltip: 'Search an athlete',
         onPressed: () => showSearch(
           context: context,
           delegate: SearchPage<Athlete>(
@@ -115,10 +111,10 @@ class _AllAthletesListState extends State<AthletesList> {
               trailing: Text('${athlete.name} yo'),
             ),
           ),
+        ),
+        child: Icon(Icons.search),
       ),
-      child: Icon(Icons.search),
-      ),
-      body: _buildAthletesList(_AllAthletesList),
+      body: RSSReader(),
     );
   }
 }

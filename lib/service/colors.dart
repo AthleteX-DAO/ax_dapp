@@ -15,6 +15,6 @@ Map<int, Color> color = {
 };
 
 // Custom Colors for our app. In this case I'm going for a terminal look.
-MaterialColor colorHackerHeading = MaterialColor(0xff13fa16, color);
+MaterialColor colorHackerHeading = MaterialColor(0xffeac02c, color);
 MaterialColor colorHackerBorder = MaterialColor(0xff13690c, color);
 MaterialColor colorHackerBackground = MaterialColor(0xff000000, color);
