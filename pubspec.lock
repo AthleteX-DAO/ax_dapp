@@ -429,13 +429,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.0"
-  platform:
-    dependency: transitive
-    description:
-      name: platform
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   petitparser:
     dependency: transitive
     description:
@@ -443,6 +436,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.0"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -499,6 +499,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.1"
+  search_page:
+    dependency: "direct main"
+    description:
+      name: search_page
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0+1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -541,13 +548,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  search_page:
-    dependency: "direct main"
-    description:
-      name: search_page
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0+1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -700,6 +700,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  webfeed:
+    dependency: "direct main"
+    description:
+      name: webfeed
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   win32:
     dependency: transitive
     description:
@@ -714,13 +721,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
-  webfeed:
-    dependency: "direct main"
-    description:
-      name: webfeed
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.7.0"
   xml:
     dependency: transitive
     description:

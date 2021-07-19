@@ -17,17 +17,11 @@ class _AllAthletesListState extends State<AthletesList> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    
     super.initState();
   }
 
   Future<List<Athlete>> _loadAthletes() async {
     return await fetchAthletes();
-  }
-
-  setTextStyle() {
-    return TextStyle(color: Colors.blueGrey);
   }
 
   Widget _buildAthletesList(List<Athlete>? _futureAthletes) {
@@ -82,7 +76,9 @@ class _AllAthletesListState extends State<AthletesList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center( child: Text("Latest Sports News"),),
+        title: Center(
+          child: Text("Latest Sports News"),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         elevation: 3.5,
@@ -95,7 +91,7 @@ class _AllAthletesListState extends State<AthletesList> {
             items: _AllAthletesList,
             searchLabel: 'Search athletes',
             suggestion: Center(
-              child: Text('Filter athletes by name, position or playerID'),
+              child: _buildAthletesList(_AllAthletesList),
             ),
             failure: Center(
               child: Text('No athlete found :('),

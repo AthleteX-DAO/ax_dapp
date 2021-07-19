@@ -18,8 +18,8 @@ class RSSReader extends StatefulWidget {
 
 class RSSReaderState extends State<RSSReader> {
   // TODO 3: Define RSS Feed URL
- // ignore: non_constant_identifier_names
- Uri FEED_URL = Uri.parse("https://www.espn.com/espn/rss/news");
+  // ignore: non_constant_identifier_names
+  Uri FEED_URL = Uri.parse("https://www.espn.com/espn/rss/news");
 
   // TODO 4: Create a variable to hold our RSS feed data.
   RssFeed _feed = new RssFeed(); // RSS Feed Object
@@ -157,48 +157,48 @@ class RSSReaderState extends State<RSSReader> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           // Container displaying RSS feed info.
-          // Expanded(
-          //   flex: 1,
-          //   child: Container(
-          //     padding: EdgeInsets.all(10.0),
-          //     margin: EdgeInsets.only(left: 5.0, right: 5.0),
-          //     decoration: customBoxDecoration(),
-          //     child: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.stretch,
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: <Widget>[
-          //         Text(
-          //           "Link: ${_feed.link}",
-          //           style: TextStyle(
-          //               fontSize: 18.0,
-          //               fontWeight: FontWeight.w500,
-          //               color: colorHackerHeading),
-          //         ),
-          //         Text(
-          //           "Description: ${_feed.description}",
-          //           style: TextStyle(
-          //               fontSize: 18.0,
-          //               fontWeight: FontWeight.w500,
-          //               color: colorHackerHeading),
-          //         ),
-          //         Text(
-          //           "Docs: ${_feed.docs}",
-          //           style: TextStyle(
-          //               fontSize: 18.0,
-          //               fontWeight: FontWeight.w500,
-          //               color: colorHackerHeading),
-          //         ),
-          //         Text(
-          //           "Last Build Date: ${_feed.lastBuildDate}",
-          //           style: TextStyle(
-          //               fontSize: 18.0,
-          //               fontWeight: FontWeight.w500,
-          //               color: colorHackerHeading),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: EdgeInsets.all(10.0),
+              margin: EdgeInsets.only(left: 5.0, right: 5.0),
+              decoration: customBoxDecoration(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Link: ${_feed.link}",
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w500,
+                        color: colorHackerHeading),
+                  ),
+                  Text(
+                    "Description: ${_feed.description}",
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w500,
+                        color: colorHackerHeading),
+                  ),
+                  Text(
+                    "Docs: ${_feed.docs}",
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w500,
+                        color: colorHackerHeading),
+                  ),
+                  Text(
+                    "Last Build Date: ${_feed.lastBuildDate}",
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w500,
+                        color: colorHackerHeading),
+                  ),
+                ],
+              ),
+            ),
+          ),
           // ListView that displays the RSS data.
           Expanded(
             flex: 3,
