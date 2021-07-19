@@ -2,9 +2,8 @@ import 'package:ae_dapp/pages/wallet.dart';
 import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:flutter/material.dart';
 
-
 class Portfolio extends StatefulWidget {
-  const Portfolio({ Key? key }) : super(key: key);
+  const Portfolio({Key? key}) : super(key: key);
 
   @override
   _PortfolioState createState() => _PortfolioState();
@@ -19,7 +18,8 @@ class _PortfolioState extends State<Portfolio> {
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black45, width: 4.0, style: BorderStyle.solid),
+        border: Border.all(
+            color: Colors.black45, width: 4.0, style: BorderStyle.solid),
       ),
       child: Sparkline(
         //Data must be replaced by individual's portfolio history
