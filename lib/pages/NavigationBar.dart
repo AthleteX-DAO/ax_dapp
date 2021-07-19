@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:ae_dapp/pages/wallet.dart';
 import 'package:ae_dapp/pages/MyTeam.dart';
-import 'package:ae_dapp/swapFiles/swapPage.dart';
+import 'package:ae_dapp/pages/swapPage.dart';
+import 'package:ae_dapp/pages/AXPage.dart';
 
 class NavigationBar extends StatefulWidget {
   NavigationBar({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _NavigationBarState extends State<NavigationBar> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   // This is where the pages are linked to the navigation
-  List<Widget> _widgetOptions = <Widget>[Wallet(), MyTeam(), Swap()];
+  List<Widget> _widgetOptions = <Widget>[AXPage(), Wallet(), MyTeam(), Swap()];
 
   void _onItemTapped(int index) {
     setState(() {

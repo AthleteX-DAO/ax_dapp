@@ -72,7 +72,7 @@ class _WalletState extends State<Wallet> {
     }
 
     return Scaffold(
-      backgroundColor: Vx.hexToColor("#232b2b"),
+      // backgroundColor: Vx.hexToColor("#232b2b"),
       body: Stack(
         children: <Widget>[
           Image(
