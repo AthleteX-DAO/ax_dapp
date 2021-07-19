@@ -14,20 +14,21 @@ class Swap extends StatefulWidget {
 }
 
 class _Swap extends State<Swap> {
-  
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.white,
-        accentColor: Color.fromRGBO(75, 214, 145, 1.0),
-        fontFamily: 'Rockwell'),
-      home: new MainPage(title: '',),
+          primaryColor: Colors.white,
+          accentColor: Color.fromRGBO(75, 214, 145, 1.0),
+          fontFamily: 'Rockwell'),
+      home: new MainPage(
+        title: '',
+      ),
       navigatorObservers: [routeObserver],
     );
   }
@@ -42,7 +43,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> with RouteAware {
-
   var rates = new LinkedHashMap();
 
   var currentValue = 1;
@@ -66,8 +66,8 @@ class _MainPageState extends State<MainPage> with RouteAware {
     // else {
     //   print("User Defaults Already Instanciated");
     // }
-    // setState(() {    
-      
+    // setState(() {
+
     // });
   }
 
@@ -82,25 +82,23 @@ class _MainPageState extends State<MainPage> with RouteAware {
     return dateFormatter.format(now);
   }
 
-
   void _showDialog(String title, String content) {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text(title),
-          content: new Text(content),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      }
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text(title),
+            content: new Text(content),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -115,8 +113,7 @@ class _MainPageState extends State<MainPage> with RouteAware {
   }
 
   @override
-  void didPush() {
-  }
+  void didPush() {}
 
   @override
   Widget build(BuildContext context) {
@@ -124,29 +121,37 @@ class _MainPageState extends State<MainPage> with RouteAware {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          bottom: TabBar(
-            tabs: [
-              Tab(child: Text("Convert", style: new TextStyle(
-                    fontSize: 13.0,
-                  ),
+          bottom: TabBar(tabs: [
+            Tab(
+              child: Text(
+                "Convert",
+                style: new TextStyle(
+                  fontSize: 13.0,
                 ),
               ),
-              Tab(child: Text("Rates", style: new TextStyle(
-                    fontSize: 13.0,
-                  ),
+            ),
+            Tab(
+              child: Text(
+                "Rates",
+                style: new TextStyle(
+                  fontSize: 13.0,
                 ),
               ),
-            ]
-          ),
-          title: Text(_getDate(), style: new TextStyle(
+            ),
+          ]),
+          title: Text(
+            _getDate(),
+            style: new TextStyle(
               fontSize: 15.0,
             ),
           ),
           actions: <Widget>[
-            new IconButton(icon: new Icon(Icons.refresh),
-            onPressed: () {
-              setState(() {});
-            },)
+            new IconButton(
+              icon: new Icon(Icons.refresh),
+              onPressed: () {
+                setState(() {});
+              },
+            )
           ],
         ),
         body: TabBarView(
@@ -161,7 +166,8 @@ class _MainPageState extends State<MainPage> with RouteAware {
                       padding: new EdgeInsets.all(12.0),
                       decoration: new BoxDecoration(
                         color: Colors.white,
-                        borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
+                        borderRadius:
+                            new BorderRadius.all(const Radius.circular(10.0)),
                         boxShadow: <BoxShadow>[
                           BoxShadow(
                             color: Colors.grey,
@@ -180,16 +186,17 @@ class _MainPageState extends State<MainPage> with RouteAware {
                                 new GestureDetector(
                                   onTap: () {},
                                   child: new Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
                                       new Container(
                                         width: 6.0,
                                       ),
-                                      
                                       new Container(
                                         width: 4.0,
                                       ),
-                                      new Icon(Icons.arrow_forward_ios,
+                                      new Icon(
+                                        Icons.arrow_forward_ios,
                                         color: Colors.grey,
                                         size: 14.0,
                                       ),
@@ -239,17 +246,17 @@ class _MainPageState extends State<MainPage> with RouteAware {
                                 new GestureDetector(
                                   onTap: () {},
                                   child: new Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      
                                       new Container(
                                         width: 6.0,
                                       ),
-                                      
                                       new Container(
                                         width: 4.0,
                                       ),
-                                      new Icon(Icons.arrow_forward_ios,
+                                      new Icon(
+                                        Icons.arrow_forward_ios,
                                         color: Colors.grey,
                                         size: 13.0,
                                       ),
@@ -259,18 +266,17 @@ class _MainPageState extends State<MainPage> with RouteAware {
                               ],
                             ),
                           ],
-                        ),    
+                        ),
                       ),
                     ),
                   ),
                 ),
-                
               ],
             ),
             new NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                ];
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[];
               },
               body: new Column(
                 children: <Widget>[
@@ -282,7 +288,8 @@ class _MainPageState extends State<MainPage> with RouteAware {
                         padding: new EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
                         decoration: new BoxDecoration(
                           color: Colors.white,
-                          borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
+                          borderRadius:
+                              new BorderRadius.all(const Radius.circular(10.0)),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
                               color: Colors.grey,
@@ -322,7 +329,8 @@ class _MainPageState extends State<MainPage> with RouteAware {
                           padding: new EdgeInsets.all(12.0),
                           decoration: new BoxDecoration(
                             color: Colors.white,
-                            borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
+                            borderRadius: new BorderRadius.all(
+                                const Radius.circular(10.0)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                 color: Colors.grey,
@@ -337,15 +345,16 @@ class _MainPageState extends State<MainPage> with RouteAware {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 new Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     new Container(
                                       width: 6.0,
                                     ),
-                                    
                                   ],
                                 ),
-                                new Icon(Icons.arrow_forward_ios,
+                                new Icon(
+                                  Icons.arrow_forward_ios,
                                   color: Colors.grey,
                                   size: 14.0,
                                 ),
@@ -366,7 +375,8 @@ class _MainPageState extends State<MainPage> with RouteAware {
                           padding: new EdgeInsets.all(12.0),
                           decoration: new BoxDecoration(
                             color: Colors.white,
-                            borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
+                            borderRadius: new BorderRadius.all(
+                                const Radius.circular(10.0)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                 color: Colors.grey,
@@ -377,32 +387,34 @@ class _MainPageState extends State<MainPage> with RouteAware {
                           ),
                           child: new Center(
                             child: new ListView.builder(
-                              itemCount: 0,
-                              itemBuilder: (context, index) {
-                                return new Container(
-                                  height: 42.0,
-                                  child: new Column(
-                                    children: <Widget>[
-                                      new Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          new Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              new Container(
-                                                width: 6.0,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      new Divider(),
-                                    ],
-                                  ),
-                                );
-                              }
-                            ),
+                                itemCount: 0,
+                                itemBuilder: (context, index) {
+                                  return new Container(
+                                    height: 42.0,
+                                    child: new Column(
+                                      children: <Widget>[
+                                        new Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            new Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: <Widget>[
+                                                new Container(
+                                                  width: 6.0,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        new Divider(),
+                                      ],
+                                    ),
+                                  );
+                                }),
                           ),
                         ),
                       ),

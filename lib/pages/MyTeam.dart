@@ -1,4 +1,5 @@
 import 'package:ae_dapp/pages/AthletesList.dart';
+import 'package:ae_dapp/pages/LandingPage.dart';
 import 'package:ae_dapp/pages/Portfolio.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,7 @@ class MyTeam extends StatefulWidget {
 }
 
 class _MyTeamState extends State<MyTeam> {
-  static List<Athlete> _AllAthletesList = [
-  ];
+  static List<Athlete> _AllAthletesList = [];
 
   Widget _buildOwnedAthletesList(List<Athlete>? _futureAthletes) {
     _AllAthletesList.addAll(_futureAthletes as List<Athlete>);
@@ -42,9 +42,7 @@ class _MyTeamState extends State<MyTeam> {
             title: Text(a.name ?? ""),
             subtitle: Text("Buy: ${a.warValue}"),
             trailing: Icon(Icons.check_circle_outline),
-            onTap: () {
-
-            },
+            onTap: () {},
           )
         ],
       ),
@@ -129,7 +127,7 @@ class _MyTeamState extends State<MyTeam> {
         listView()
       ],
       fullyStretchable: true,
-      expandedBody: AthletesList(),
+      expandedBody: LandingPage(),
     );
   }
 }

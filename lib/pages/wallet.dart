@@ -67,7 +67,9 @@ class _WalletState extends State<Wallet> {
     var announcements = "Stake your AE Token and Earn rewards";
     Future<EthereumAddress> getPublicAddress() async {
       EthereumAddress returnValue = "Your Address!" as EthereumAddress;
-      await contractLink.getPublicAddress().then((value) => returnValue = value);
+      await contractLink
+          .getPublicAddress()
+          .then((value) => returnValue = value);
       return returnValue;
     }
 
