@@ -1,4 +1,4 @@
-import 'package:ae_dapp/pages/AthletesDetail.dart';
+import 'package:ae_dapp/service/AthletesDetail.dart';
 import 'package:ae_dapp/service/RSSReader.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';

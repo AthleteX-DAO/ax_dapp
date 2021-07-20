@@ -1,3 +1,4 @@
+import 'package:ae_dapp/pages/NavigationBar.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -10,37 +11,172 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("images/ax.jpg"), fit: BoxFit.cover),
-      ),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Row(
-            children: [Image.asset("images/img2.png")],
+
+    double txt = 30;
+    double buttonTxt = 20;
+
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Image(
+            image: AssetImage("assets/images/background.jpeg"),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.cover,
           ),
-          Row( children: [
-            const Text("Trade Athlete Tokens \n Build your Team \n Earn Rewards")
-          ],),
-          Row(
-            children: [
-              ElevatedButton(
-                child: const Text("Create AX Wallet"),
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.amber.shade700)),
+
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image(
+                image: AssetImage(
+                  "assets/images/AXMarkets.png"
+                ),
+                width: 500,
+                height: 200,
               ),
-              ElevatedButton(
-                child: const Text("Start Trading"),
-                onPressed: () {},
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "TRADE ", style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: txt,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.amber[400]
+                        )
+                      ),
+                      TextSpan(
+                        text: "ATHLETE TOKENS", style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: txt,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.white
+                        )
+                      ),
+                    ]
+                  )
                 )
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "BUILD ", style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: txt,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.amber[400]
+                        )
+                      ),
+                      TextSpan(
+                        text: "YOUR TEAM", style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: txt,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.white
+                        )
+                      ),
+                    ]
+                  )
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 60),
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "EARN ", style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: txt,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.amber[400]
+                        )
+                      ),
+                      TextSpan(
+                        text: "REWARDS", style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: txt,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.white
+                        )
+                      ),
+                    ]
+                  )
+                )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(width: 250, height: 55),
+                      child: ElevatedButton(
+                      child: Text(
+                        "CREATE AX WALLET",
+                        style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: buttonTxt,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        )
+                      ),
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[400]!),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.amber[400]!),
+                          )
+                        )
+                      ),
+                    )
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(width: 250, height: 55),
+                      child: ElevatedButton(
+                      child: Text(
+                        "START TRADING",
+                        style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: buttonTxt,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.amber[400],
+                        )
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => NavigationBar()),
+                        );
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.amber[400]!),
+                          )
+                        )
+                      ),
+                    )
+                  ),
+                ],
+              )
             ],
           )
-        ],
-      ),
+        ]
+      )
     );
   }
 }

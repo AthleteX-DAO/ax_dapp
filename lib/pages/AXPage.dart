@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
 class AXPage extends StatefulWidget {
@@ -67,7 +65,7 @@ class _AXState extends State<AXPage> {
                 )
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
+                padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[900],
@@ -166,7 +164,7 @@ class _AXState extends State<AXPage> {
                 )
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[800],

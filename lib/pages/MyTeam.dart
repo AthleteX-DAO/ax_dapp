@@ -1,6 +1,6 @@
-import 'package:ae_dapp/pages/AthletesList.dart';
+import 'package:ae_dapp/service/AthletesList.dart';
 import 'package:ae_dapp/pages/LandingPage.dart';
-import 'package:ae_dapp/pages/Portfolio.dart';
+import 'package:ae_dapp/service/Portfolio.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:draggable_home/draggable_home.dart';
