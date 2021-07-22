@@ -12,8 +12,8 @@ class _PortfolioState extends State<Portfolio> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width - 20,
-      height: 250,
+      // width: MediaQuery.of(context).size.width - 20,
+      // height: 250,
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(

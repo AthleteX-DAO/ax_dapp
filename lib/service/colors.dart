@@ -13,8 +13,8 @@ Map<int, Color> color = {
   800: Color.fromRGBO(136, 14, 79, .9),
   900: Color.fromRGBO(136, 14, 79, 1),
 };
-
+// Color temp = Colors.amber[400]
 // Custom Colors for our app. In this case I'm going for a terminal look.
-MaterialColor colorHackerHeading = MaterialColor(0xffeac02c, color);
+MaterialColor colorHackerHeading = MaterialColor(0xffe0e0e0, color);
 MaterialColor colorHackerBorder = MaterialColor(0xff13690c, color);
 MaterialColor colorHackerBackground = MaterialColor(0xff000000, color);

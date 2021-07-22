@@ -243,6 +243,7 @@ class _AXState extends State<AXPage> {
                                   style: TextStyle(
                                     fontFamily: 'OpenSans',
                                     fontSize: smTxSize,
+                                    fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   )
                                 ),
@@ -269,6 +270,7 @@ class _AXState extends State<AXPage> {
                                   style: TextStyle(
                                     fontFamily: 'OpenSans',
                                     fontSize: smTxSize,
+                                    fontWeight: FontWeight.w600,
                                     color: Colors.amber[400],
                                   )
                                 ),

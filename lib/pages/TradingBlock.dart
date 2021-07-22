@@ -121,94 +121,6 @@ class _TradingBlockState extends State<TradingBlock> {
                                             )
                                           )
                                         ),
-                                      //   Row(
-                                      //     crossAxisAlignment: CrossAxisAlignment.center,
-                                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      //     children: <Widget>[
-                                      //       GestureDetector(
-                                      //         onTap: () {},
-                                      //         child: Row(
-                                      //           mainAxisAlignment:
-                                      //               MainAxisAlignment.spaceEvenly,
-                                      //           children: <Widget>[
-                                      //             Container(
-                                      //               width: 6.0,
-                                      //             ),
-                                      //             Container(
-                                      //               width: 4.0,
-                                      //             ),
-                                      //             Icon(
-                                      //               Icons.arrow_forward_ios,
-                                      //               color: Colors.grey,
-                                      //               size: 14.0,
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                        
-                                      //   Container(
-                                      //     height: 4,
-                                      //   ),
-                                      // Row(
-                                      //     crossAxisAlignment: CrossAxisAlignment.center,
-                                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      //     children: <Widget>[
-                                      //       Container(
-                                      //         // width: 80.0,
-                                      //         height: 10,
-                                      //         color: Colors.grey[800],
-                                      //       ),
-                                      //       RawMaterialButton(
-                                      //         onPressed: () {},
-                                      //         child: Icon(
-                                      //           Icons.swap_vert,
-                                      //           size: 20.0,
-                                      //           color: Colors.white,
-                                      //         ),
-                                      //         shape: CircleBorder(),
-                                      //         elevation: 4.0,
-                                      //         fillColor: Colors.grey[800],
-                                      //         padding: EdgeInsets.all(8.0),
-                                      //       ),
-                                      //       Container(
-                                      //         width: 80.0,
-                                      //         height: 0.5,
-                                      //         color: Color.fromARGB(30, 0, 0, 0),
-                                      //       )
-                                      //     ],
-                                      //   ),
-                                        
-                                      //   Container(
-                                      //     height: 4.0,
-                                      //   ),
-                                      //   Row(
-                                      //     crossAxisAlignment: CrossAxisAlignment.center,
-                                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      //     children: <Widget>[
-                                      //       GestureDetector(
-                                      //         onTap: () {},
-                                      //         child: Row(
-                                      //           mainAxisAlignment:
-                                      //               MainAxisAlignment.spaceEvenly,
-                                      //           children: <Widget>[
-                                      //             Container(
-                                      //               width: 6.0,
-                                      //             ),
-                                      //             Container(
-                                      //               width: 4.0,
-                                      //             ),
-                                      //             Icon(
-                                      //               Icons.arrow_forward_ios,
-                                      //               color: Colors.grey,
-                                      //               size: 13.0,
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //   ),
                                       ],
                                     ),
                                   ),
@@ -230,7 +142,6 @@ class _TradingBlockState extends State<TradingBlock> {
                                     color: Colors.grey[800],
                                     borderRadius: BorderRadius.all(const Radius.circular(10.0)),
                                   ),
-                                  // color: Colors.grey[800],
                                 ),
                               ],
                             ),
