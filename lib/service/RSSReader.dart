@@ -134,14 +134,12 @@ class RSSReaderState extends State<RSSReader> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        // backgroundColor: colorHackerBackground,
-        // appBar: AppBar(
-        //   title: Text(_title),
-        // ),
-        child: body(),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.all(const Radius.circular(10.0)),
       ),
+      child: body(),
     );
   }
 
@@ -156,73 +154,35 @@ class RSSReaderState extends State<RSSReader> {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          // Container displaying RSS feed info.
-          Expanded(
-            flex: 1,
-            child: Container(
-              padding: EdgeInsets.all(10.0),
-              margin: EdgeInsets.only(left: 5.0, right: 5.0),
-              decoration: customBoxDecoration(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "Link: ${_feed.link}",
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                        color: colorHackerHeading),
-                  ),
-                  Text(
-                    "Description: ${_feed.description}",
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                        color: colorHackerHeading),
-                  ),
-                  Text(
-                    "Docs: ${_feed.docs}",
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                        color: colorHackerHeading),
-                  ),
-                  Text(
-                    "Last Build Date: ${_feed.lastBuildDate}",
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                        color: colorHackerHeading),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          
           // ListView that displays the RSS data.
           Expanded(
             flex: 3,
             child: Container(
-              child: ListView.builder(
-                padding: EdgeInsets.all(5.0),
-                itemCount: _feed.items!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final item = _feed.items![index];
-                  return Container(
-                    margin: EdgeInsets.only(
-                      bottom: 10.0,
-                    ),
-                    decoration: customBoxDecoration(),
-                    child: ListTile(
-                      title: title(item.title),
-                      // subtitle: subtitle(item.pubDate as String),
-                      trailing: rightIcon(),
-                      contentPadding: EdgeInsets.all(5.0),
-                      onTap: () => openFeed(item.link!),
-                    ),
-                  );
-                },
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 10),
+                child: ListView.builder(
+                  padding: EdgeInsets.all(5.0),
+                  itemCount: _feed.items!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final item = _feed.items![index];
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[800],
+                        borderRadius: BorderRadius.all(const Radius.circular(10.0)),
+                      ),
+                      margin: EdgeInsets.only(
+                        bottom: 10.0,
+                      ),
+                      child: ListTile(
+                        title: title(item.title),
+                        trailing: rightIcon(),
+                        contentPadding: EdgeInsets.all(5.0),
+                        onTap: () => openFeed(item.link!),
+                      ),
+                    );
+                  },
+                ),
             ),
           ),
         ]);
@@ -258,7 +218,7 @@ class RSSReaderState extends State<RSSReader> {
   rightIcon() {
     return Icon(
       Icons.keyboard_arrow_right,
-      color: colorHackerBorder,
+      color: Colors.amber[400],
       size: 30.0,
     );
   }

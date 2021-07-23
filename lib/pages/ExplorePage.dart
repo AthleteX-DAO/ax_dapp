@@ -1,4 +1,4 @@
-import 'package:ae_dapp/pages/NavigationBar.dart';
+import 'package:ae_dapp/service/RSSReader.dart';
 import 'package:flutter/material.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -11,6 +11,7 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
 
   double lgTxSize = 52;
+  double headerTx = 30;
 
   @override
   Widget build(BuildContext context) {
@@ -46,34 +47,73 @@ class _ExplorePageState extends State<ExplorePage> {
                 )
               ),
               Container(
-                color: Colors.grey[900],
+                width: MediaQuery.of(context).size.width-50,
+                height: MediaQuery.of(context).size.height*.675,
+                padding: EdgeInsets.only(top: 30),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[900],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        Row(
-                          children: [
-                            Text(
-                              "Athlete Tokens"
-                            ),
-                          ],
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            "Sports News",
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontSize: headerTx,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.italic,
+                            )
+                          )
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(bottom: 20),
+                          height: MediaQuery.of(context).size.height*.55,
+                          width: MediaQuery.of(context).size.width/2-50,
+                          child: RSSReader()
                         )
-                        
-                      ]
+                      ],
                     ),
                     Column(
                       children: <Widget>[
-
-                      ]
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            "Sports News",
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontSize: headerTx,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.italic,
+                            )
+                          )
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(bottom: 20),
+                          height: MediaQuery.of(context).size.height*.55,
+                          width: MediaQuery.of(context).size.width/2-50,
+                          child: RSSReader()
+                        )
+                      ],
                     ),
                   ],
                 )
-              )
-            ]
+              ),
+            ],
           )
         ],
       )
     );
   }
 }
+
+/*
+Explore Page
+My Team
+Generate Key
+*/

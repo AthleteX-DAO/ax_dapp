@@ -1,5 +1,6 @@
-import 'package:ae_dapp/pages/NavigationBar.dart';
+import 'package:ae_dapp/pages/EnterKeyPage.dart';
 import 'package:flutter/material.dart';
+import 'package:ae_dapp/pages/KeyGeneration.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -131,7 +132,11 @@ class _LandingPageState extends State<LandingPage> {
                           color: Colors.white,
                         )
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => KeyGeneration()),
+                        );
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[400]!),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -157,7 +162,7 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => NavigationBar()),
+                          MaterialPageRoute(builder: (_) => EnterKeyPage()),
                         );
                       },
                       style: ButtonStyle(

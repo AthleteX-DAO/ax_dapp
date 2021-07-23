@@ -52,13 +52,9 @@ class _NavigationBarState extends State<NavigationBar> {
             label: 'Trading Block',
           ),
           BottomNavigationBarItem(
-            icon: Icon(IconData(58094, fontFamily: 'MaterialIcons')),
+            icon: Icon(Icons.groups_sharp),
             label: 'My Team',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.settings),
-          //   label: 'Settings',
-          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Vx.hexToColor("#fec901"),
