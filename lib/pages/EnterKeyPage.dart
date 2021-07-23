@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:web3dart/web3dart.dart'; //Reference Library https://pub.dev/packages/web3dart/example
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:ae_dapp/pages/NavigationBar.dart';
+import 'package:ae_dapp/pages/KeyGeneration.dart';
 
 class EnterKeyPage extends StatefulWidget {
   const EnterKeyPage({Key? key}) : super(key: key);
@@ -76,24 +77,58 @@ class _EnterKeyPageState extends State<EnterKeyPage> {
                       context: context,
                       builder: (BuildContext context) {
                         bool isValid = bip39.validateMnemonic(_mnemonic);
-                        return AlertDialog(
-                          title: const Text('Thanks!'),
-                          content: Text(
-                              isValid.toString()),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        );
+                        if (isValid) {
+                          return NavigationBar();
+                        }
+                        else {
+                          return AlertDialog(
+                            title: const Text('Not a valid key'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        }
                       },
                     );
                   },
                 )
-              )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 40),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.tightFor(width: 250, height: 55),
+                    child: ElevatedButton(
+                    child: Text(
+                      "CREATE AX WALLET",
+                      style: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      )
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => KeyGeneration()),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[400]!),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.amber[400]!),
+                        )
+                      )
+                    ),
+                  )
+                )
+              ),
             ],
           ),
         ],
