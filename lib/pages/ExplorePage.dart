@@ -1,3 +1,4 @@
+import 'package:ae_dapp/service/AllAthletesList.dart';
 import 'package:ae_dapp/service/RSSReader.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +63,7 @@ class _ExplorePageState extends State<ExplorePage> {
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            "Sports News",
+                            "Athlete Tokens",
                             style: TextStyle(
                               fontFamily: 'OpenSans',
                               fontSize: headerTx,
@@ -75,7 +76,7 @@ class _ExplorePageState extends State<ExplorePage> {
                           padding: EdgeInsets.only(bottom: 20),
                           height: MediaQuery.of(context).size.height*.55,
                           width: MediaQuery.of(context).size.width/2-50,
-                          child: RSSReader()
+                          child: AllAthletesList()
                         )
                       ],
                     ),

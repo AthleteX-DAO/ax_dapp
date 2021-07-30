@@ -29,7 +29,7 @@ abstract class Athletes {
     final Uri playerUrl = Uri.parse(
         "https://fly.sportsdata.io/v3/mlb/stats/json/PlayerSeasonStats/$year?key=$key");
     final playerResult = await http.get(playerUrl);
-    var allAthletes = 
+    var allAthletes = "";
   }
 
   getPrice();
