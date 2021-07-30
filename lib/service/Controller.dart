@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -88,10 +87,6 @@ class Controller extends ChangeNotifier {
 
   Future<EthereumAddress> getPublicAddress() async {
     // Is this below necessary?
-    if (_credentials == null) {
-      Random rng = new Random.secure();
-      _credentials = EthPrivateKey.createRandom(rng);
-    }
 
     EthereumAddress pAddress = await _credentials.extractAddress();
     return pAddress;

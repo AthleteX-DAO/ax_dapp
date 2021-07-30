@@ -1,4 +1,4 @@
-import 'package:ae_dapp/service/AthletesList.dart';
+import 'package:ae_dapp/service/AthleteList.dart';
 import 'package:ae_dapp/pages/LandingPage.dart';
 import 'package:ae_dapp/service/Portfolio.dart';
 import 'package:ae_dapp/service/Athlete.dart';

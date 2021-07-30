@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/pages/MyTeam2.dart';
 
 class PlayerPage extends StatefulWidget {
   const PlayerPage({Key? key}) : super(key: key);

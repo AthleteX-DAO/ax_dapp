@@ -1,5 +1,4 @@
 import 'package:ae_dapp/pages/LandingPage.dart';
-import 'package:ae_dapp/pages/NavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:provider/provider.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Portfolio.dart';
 import 'package:ae_dapp/pages/PlayerPage.dart';
-import 'package:ae_dapp/pages/NavigationBar.dart';
 
 class MyTeam2 extends StatefulWidget {
   @override
@@ -269,7 +268,7 @@ class _MyTeamState extends State<MyTeam2> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 3),
                 child: Icon(
-                  Icons.groups_sharp,
+                  Icons.group_sharp,
                   color: Colors.grey[800],
                 ),
                 decoration: BoxDecoration(
