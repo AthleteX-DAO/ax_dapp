@@ -13,10 +13,7 @@ class NavigationBar extends StatefulWidget {
 }
 
 class _NavigationBarState extends State<NavigationBar> {
-  @override
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   // This is where the pages are linked to the navigation
   List<Widget> _widgetOptions = <Widget>[
     AXPage(),
@@ -52,7 +49,7 @@ class _NavigationBarState extends State<NavigationBar> {
             label: 'Trading Block',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.groups_sharp),
+            icon: Icon(Icons.group_sharp),
             label: 'My Team',
           ),
         ],
