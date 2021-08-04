@@ -44,7 +44,12 @@ dependencies:
   introduction_screen: ^2.1.0
   bip39: ^1.0.3
   draggable_home: ^1.0.2
+  shared_preferences: ^2.0.6
+  flutter_device_type: ^0.4.0
   search_page: ^2.0.0+1
+  webfeed: ^0.7.0
+  chart_sparkline: ^1.0.5
+
 
 
 
@@ -63,10 +68,23 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-Regular.ttf
+        - asset: assets/fonts/OpenSans-ExtraBold.ttf
+          weight: 600
+    - family: PublicSans
+      fonts:
+        - asset: assets/fonts/PublicSans-Thin.ttf
+
   assets:
-    - assets/images/img1.png
-    - assets/images/img2.png
+    - assets/images/trophy.png
+    - assets/images/AXMarkets.png
     - assets/images/asu-hero.jpg
+    - assets/images/x.jpg
     - assets/images/x.png
-    - assets/images/x.png
+    - assets/images/background.jpeg
+    
       

@@ -5,7 +5,6 @@ import 'package:candlesticks/candlesticks.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:http/http.dart' as http;
 
-
 class AthleteDetails extends StatefulWidget {
   AthleteDetails({Key? key}) : super(key: key);
 
@@ -26,7 +25,7 @@ Future<List<Candle>> fetchCandles(
 }
 
 class _AthleteDetailsState extends State<AthleteDetails> {
-    List<Candle> candles = [];
+  List<Candle> candles = [];
   final _channel = WebSocketChannel.connect(
     Uri.parse('wss://stream.binance.com:9443/ws'),
   );
@@ -70,8 +69,10 @@ class _AthleteDetailsState extends State<AthleteDetails> {
             stream: _channel.stream,
             builder: (context, snapshot) {
               if (snapshot.data != null) {
-                final data = jsonDecode(snapshot.data as String) as Map<String, dynamic>;
-                if (data.containsKey("k") == true && candles[0].date.millisecondsSinceEpoch == data["k"]["t"]) {
+                final data =
+                    jsonDecode(snapshot.data as String) as Map<String, dynamic>;
+                if (data.containsKey("k") == true &&
+                    candles[0].date.millisecondsSinceEpoch == data["k"]["t"]) {
                   candles[0] = Candle(
                       date: candles[0].date,
                       high: double.parse(data["k"]["h"]),
@@ -79,15 +80,17 @@ class _AthleteDetailsState extends State<AthleteDetails> {
                       open: double.parse(data["k"]["o"]),
                       close: double.parse(data["k"]["c"]),
                       volume: double.parse(data["k"]["v"]));
-                }
-                else if (data.containsKey("k") == true) {
-                  candles.insert(0, Candle(
-                      date: DateTime.fromMillisecondsSinceEpoch(data["k"]["t"]),
-                      high: double.parse(data["k"]["h"]),
-                      low: double.parse(data["k"]["l"]),
-                      open: double.parse(data["k"]["o"]),
-                      close: double.parse(data["k"]["c"]),
-                      volume: double.parse(data["k"]["v"])));
+                } else if (data.containsKey("k") == true) {
+                  candles.insert(
+                      0,
+                      Candle(
+                          date: DateTime.fromMillisecondsSinceEpoch(
+                              data["k"]["t"]),
+                          high: double.parse(data["k"]["h"]),
+                          low: double.parse(data["k"]["l"]),
+                          open: double.parse(data["k"]["o"]),
+                          close: double.parse(data["k"]["c"]),
+                          volume: double.parse(data["k"]["v"])));
                 }
               }
               // candles[0] = new Candle(close: )

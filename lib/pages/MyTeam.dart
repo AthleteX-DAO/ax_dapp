@@ -1,7 +1,9 @@
-import 'package:ae_dapp/pages/AthletesList.dart';
+import 'package:ae_dapp/service/AthleteList.dart';
+import 'package:ae_dapp/pages/LandingPage.dart';
+import 'package:ae_dapp/service/Portfolio.dart';
+import 'package:ae_dapp/service/Athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:draggable_home/draggable_home.dart';
-
 
 class MyTeam extends StatefulWidget {
   MyTeam({Key? key}) : super(key: key);
@@ -11,7 +13,41 @@ class MyTeam extends StatefulWidget {
 }
 
 class _MyTeamState extends State<MyTeam> {
-  var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
+  static List<Athlete> _AllAthletesList = [];
+
+  Widget _buildOwnedAthletesList(List<Athlete>? _futureAthletes) {
+    _AllAthletesList.addAll(_futureAthletes as List<Athlete>);
+
+    return ListView.builder(
+      itemCount: _AllAthletesList.length,
+      padding: EdgeInsets.all(16.0),
+      itemBuilder: (context, index) {
+        if (index.isOdd) return Divider(); /*2*/
+        final i = index ~/ 2; // i is every even item in this iteration
+        return _buildRow(_AllAthletesList[i]);
+      },
+    );
+  }
+
+  Widget _buildRow(Athlete a) {
+    return Card(
+      color: Colors.blueAccent,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Icon(
+              Icons.sports_baseball_rounded,
+              color: Colors.yellow[760],
+            ),
+            title: Text(a.name ?? ""),
+            subtitle: Text("Buy: ${a.warValue}"),
+            trailing: Icon(Icons.check_circle_outline),
+            onTap: () {},
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +58,11 @@ class _MyTeamState extends State<MyTeam> {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              Icons.arrow_downward,
-              color: Colors.white,
-            ),
-            Text("Swipe down to buy athletes")
+            // Icon(
+            //   Icons.arrow_downward,
+            //   color: Colors.white,
+            // ),
+            // Text("Swipe down to buy athletes")
           ],
         ),
       );
@@ -39,14 +75,14 @@ class _MyTeamState extends State<MyTeam> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-            new Text("Portfolio history goes here")
-            //       new Sparkline(data: data,
-            // lineWidth: 10.0,
-            // fillMode: FillMode.below,
-            // fillColor: Colors.amber[700],
-            // pointsMode: PointsMode.all,
-            // pointSize: 3.0,
-            // pointColor: Colors.black)
+                  Portfolio()
+                  //       new Sparkline(data: data,
+                  // lineWidth: 10.0,
+                  // fillMode: FillMode.below,
+                  // fillColor: Colors.amber[700],
+                  // pointsMode: PointsMode.all,
+                  // pointSize: 3.0,
+                  // pointColor: Colors.black)
                 ],
               ),
             ),
@@ -78,10 +114,20 @@ class _MyTeamState extends State<MyTeam> {
       headerWidget: headerWidget(context),
       headerBottomBar: headerBottomBarWidget(),
       body: [
-        Row(children: [Text("Your Athletes", style: TextStyle(color: Colors.amber[400], fontWeight: FontWeight.bold),)], mainAxisAlignment: MainAxisAlignment.center,),
-        listView()],
+        Row(
+          children: [
+            Text(
+              "Your Athletes",
+              style: TextStyle(
+                  color: Colors.amber[400], fontWeight: FontWeight.bold),
+            )
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+        listView()
+      ],
       fullyStretchable: true,
-      expandedBody: AthletesList(),
+      expandedBody: LandingPage(),
     );
   }
 }
