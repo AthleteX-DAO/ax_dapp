@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/pages/PlayerPage.dart';
 
 class AllAthletesList extends StatefulWidget {
   @override
@@ -123,7 +124,11 @@ class _AllAthletesListState extends State<AllAthletesList> {
                     color: Colors.greenAccent,
                   )
                 : Icon(Icons.check_circle_outline),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => PlayerPage()),
+              );
+            },
           )
         ],
       ),
