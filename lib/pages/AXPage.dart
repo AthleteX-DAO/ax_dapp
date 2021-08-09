@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ae_dapp/service/Singleton.dart';
 
 class AXPage extends StatefulWidget {
   @override
@@ -8,6 +9,12 @@ class AXPage extends StatefulWidget {
 class _AXState extends State<AXPage> {
 
   Widget build(BuildContext context) {
+
+    Singleton _s1 = Singleton();
+    Singleton _s2 = Singleton();
+
+    String s1 = _s1.mnemonic;
+    String s2 = _s2.mnemonic;
 
     double lgTxSize = 52;
     double smTxSize = 20;
@@ -189,7 +196,17 @@ class _AXState extends State<AXPage> {
                                     color: Colors.white,
                                   )
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+
+                                  /// TESTING SINGLETON
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                        title: Text(s1),
+                                        content: Text(s2),
+                                    )
+                                  );
+                                },
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[400]!),
                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -12,6 +12,15 @@ class EnterKeyPage extends StatefulWidget {
 
 class _EnterKeyPageState extends State<EnterKeyPage> {
 
+  final textController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    textController.dispose();
+    super.dispose();
+  }
+
   @override
   // Future<Widget> build(BuildContext context) async {
   Widget build(BuildContext context) {
@@ -72,6 +81,7 @@ class _EnterKeyPageState extends State<EnterKeyPage> {
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                   ),
+                  controller: textController,
                   onSubmitted: (String _mnemonic) async {
                     await showDialog<void>(
                       context: context,
@@ -99,12 +109,12 @@ class _EnterKeyPageState extends State<EnterKeyPage> {
                 )
               ),
               Padding(
-                padding: EdgeInsets.only(top: 40),
+                padding: EdgeInsets.only(top: 20, bottom: 60),
                 child: ConstrainedBox(
                   constraints: BoxConstraints.tightFor(width: 250, height: 55),
                     child: ElevatedButton(
                     child: Text(
-                      "CREATE AX WALLET",
+                      "ENTER KEY",
                       style: TextStyle(
                         fontFamily: 'OpenSans',
                         fontSize: 18,
@@ -112,9 +122,28 @@ class _EnterKeyPageState extends State<EnterKeyPage> {
                         color: Colors.white,
                       )
                     ),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => KeyGeneration()),
+                    onPressed: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          bool isValid = bip39.validateMnemonic(textController.text);
+                          if (isValid) {
+                            return NavigationBar();
+                          }
+                          else {
+                            return AlertDialog(
+                              title: const Text('Not a valid key'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          }
+                        },
                       );
                     },
                     style: ButtonStyle(
@@ -127,6 +156,34 @@ class _EnterKeyPageState extends State<EnterKeyPage> {
                       )
                     ),
                   )
+                )
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints.tightFor(width: 250, height: 55),
+                  child: ElevatedButton(
+                  child: Text(
+                    "CREATE AX WALLET",
+                    style: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    )
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => KeyGeneration()),
+                    );
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: BorderSide(color: Colors.amber[400]!),
+                      )
+                    )
+                  ),
                 )
               ),
             ],

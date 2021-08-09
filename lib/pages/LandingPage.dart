@@ -1,3 +1,5 @@
+import 'package:ae_dapp/pages/EnterKeyPage.dart';
+import 'package:ae_dapp/pages/KeyGeneration.dart';
 import 'package:ae_dapp/pages/NavigationBar.dart';
 import 'package:flutter/material.dart';
 
@@ -133,7 +135,8 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => NavigationBar()),
+                          // MaterialPageRoute(builder: (_) => NavigationBar()),
+                          MaterialPageRoute(builder: (_) => KeyGeneration()),
                         );
                       },
                       style: ButtonStyle(
@@ -161,7 +164,8 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => NavigationBar()),
+                          // MaterialPageRoute(builder: (_) => NavigationBar()),
+                          MaterialPageRoute(builder: (_) => EnterKeyPage()),
                         );
                       },
                       style: ButtonStyle(
