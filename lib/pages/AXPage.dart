@@ -8,16 +8,13 @@ class AXPage extends StatefulWidget {
 
 class _AXState extends State<AXPage> {
 
-  Widget build(BuildContext context) {
+    double lgTxSize = 52;
+    double smTxSize = 20;
 
     Singleton _s1 = Singleton();
     Singleton _s2 = Singleton();
 
-    String s1 = _s1.mnemonic;
-    String s2 = _s2.mnemonic;
-
-    double lgTxSize = 52;
-    double smTxSize = 20;
+  Widget build(BuildContext context) {
     // Column
       // Row
         // AX
@@ -182,128 +179,14 @@ class _AXState extends State<AXPage> {
                     children: <Widget>[
                       Column(
                         children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(width: 250, height: 55),
-                                child: ElevatedButton(
-                                child: Text(
-                                  "BUY AX",
-                                  style: TextStyle(
-                                    fontFamily: 'OpenSans',
-                                    fontSize: smTxSize,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  )
-                                ),
-                                onPressed: () {
-
-                                  /// TESTING SINGLETON
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                        title: Text(s1),
-                                        content: Text(s2),
-                                    )
-                                  );
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[400]!),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.amber[400]!),
-                                    )
-                                  )
-                                ),
-                              )
-                            )
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 20),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(width: 250, height: 55),
-                                child: ElevatedButton(
-                                child: Text(
-                                  "STAKE AX",
-                                  style: TextStyle(
-                                    fontFamily: 'OpenSans',
-                                    fontSize: smTxSize,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.amber[400],
-                                  )
-                                ),
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey[800]!),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.amber[400]!),
-                                    )
-                                  )
-                                ),
-                              )
-                            )
-                          ),
+                          coloredButtons("BUY AX"),
+                          borderedButtons("STAKE AX"),
                         ],
                       ),
                       Column(
                         children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(width: 250, height: 55),
-                                child: ElevatedButton(
-                                child: Text(
-                                  "CLAIM REWARDS",
-                                  style: TextStyle(
-                                    fontFamily: 'OpenSans',
-                                    fontSize: smTxSize,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  )
-                                ),
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[400]!),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.amber[400]!),
-                                    )
-                                  )
-                                ),
-                              )
-                            )
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 20),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(width: 250, height: 55),
-                                child: ElevatedButton(
-                                child: Text(
-                                  "UNSTAKE AX",
-                                  style: TextStyle(
-                                    fontFamily: 'OpenSans',
-                                    fontSize: smTxSize,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.amber[400],
-                                  )
-                                ),
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.grey[800]!),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.amber[400]!),
-                                    )
-                                  )
-                                ),
-                              )
-                            )
-                          ),
+                          coloredButtons("CLAIM REWARDS"),
+                          borderedButtons("UNSTAKE AX")
                         ],
                       )
                     ]
@@ -314,6 +197,76 @@ class _AXState extends State<AXPage> {
           )
 
         ],
+      )
+    );
+  }
+
+  Widget coloredButtons(String text) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      child: ConstrainedBox(
+        constraints: BoxConstraints.tightFor(width: 250, height: 55),
+          child: ElevatedButton(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: smTxSize,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            )
+          ),
+          onPressed: () {
+
+            /// TESTING SINGLETON
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                  title: Text(_s1.mnemonic),
+                  content: Text(_s2.mnemonic),
+              )
+            );
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[400]!),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.amber[400]!),
+              )
+            )
+          ),
+        )
+      )
+    );
+  }
+
+  Widget borderedButtons(String text) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20),
+      child: ConstrainedBox(
+        constraints: BoxConstraints.tightFor(width: 250, height: 55),
+          child: ElevatedButton(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: smTxSize,
+              fontWeight: FontWeight.w600,
+              color: Colors.amber[400],
+            )
+          ),
+          onPressed: () {},
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.grey[800]!),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.amber[400]!),
+              )
+            )
+          ),
+        )
       )
     );
   }

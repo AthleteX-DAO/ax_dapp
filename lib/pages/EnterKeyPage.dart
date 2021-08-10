@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:ae_dapp/pages/NavigationBar.dart';
-import 'package:ae_dapp/pages/KeyGeneration.dart';
+import 'package:ae_dapp/pages/KeyGenerationPage.dart';
 
 class EnterKeyPage extends StatefulWidget {
   const EnterKeyPage({Key? key}) : super(key: key);
@@ -172,7 +172,7 @@ class _EnterKeyPageState extends State<EnterKeyPage> {
                   ),
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => KeyGeneration()),
+                      MaterialPageRoute(builder: (_) => KeyGenerationPage()),
                     );
                   },
                   style: ButtonStyle(
