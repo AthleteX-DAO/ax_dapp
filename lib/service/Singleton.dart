@@ -8,10 +8,6 @@ class Singleton {
 
   static final Singleton _instance = Singleton._privateConstructor();
 
-  factory Singleton() {
-    return _instance;
-  }
-
   /// VARIABLES
   var rng = new Random().nextInt(999);
   var mnemonic;
@@ -19,21 +15,20 @@ class Singleton {
   var credentials;
   var publicAddress;
 
-  Future<void> createNewMnemonic() async {
-    mnemonic = bip39.generateMnemonic();
-    privateAddress = bip39.mnemonicToSeedHex(mnemonic);
-    credentials = EthPrivateKey.fromHex(privateAddress);
-    publicAddress = await credentials.extractAddress();
+  factory Singleton([String? mnemonic]) {
+    return _instance;
   }
 
-  Future<void> retrieveWallet([String? _mnemonic]) async {
+  Future<String> createNewMnemonic() async {
+    mnemonic = bip39.generateMnemonic();
+    return retrieveWallet(mnemonic);
+  }
+
+  Future<String> retrieveWallet([String? _mnemonic]) async {
     mnemonic = _mnemonic;
     privateAddress = bip39.mnemonicToSeedHex(mnemonic);
     credentials = EthPrivateKey.fromHex(privateAddress);
     publicAddress = await credentials.extractAddress();
+    return mnemonic;
   }
-
-  
-
-
 }

@@ -1,28 +1,39 @@
-import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/pages/NavigationBar.dart';
-import 'package:provider/provider.dart';
 import 'package:ae_dapp/service/Singleton.dart';
 
-class KeyGeneration extends StatefulWidget {
-  const KeyGeneration({Key? key}) : super(key: key);
+class KeyGenerationPage extends StatefulWidget {
+  const KeyGenerationPage({Key? key}) : super(key: key);
 
   @override
-  _KeyGenerationState createState() => _KeyGenerationState();
+  _KeyGenerationPageState createState() => _KeyGenerationPageState();
 }
 
-class _KeyGenerationState extends State<KeyGeneration> {
+class _KeyGenerationPageState extends State<KeyGenerationPage> {
   Singleton userData = Singleton();
-  Future<Column>? _listMnemonic;
-
-  void initState() {
-    super.initState();
-    _listMnemonic = generateKeyTxt(userData);
-  }
 
   @override
-  // Future<Widget> build(BuildContext context) async {
   Widget build(BuildContext context) {
+    Future<String> mnemonic = Singleton().createNewMnemonic();
+    // Future<String> mnemonic = Future<String>.delayed(
+    //   const Duration(seconds: 5),
+    //   () => 'Data Loaded',
+    // );
+
+    return FutureBuilder<String>(
+      future: mnemonic,
+      builder: (context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.hasData) {
+          String mn = "${snapshot.data}";
+          return mainBuild(readyChild(mn));
+        } else {
+          return mainBuild(notReadyChild());
+        }
+      },
+    );
+  }
+
+  Widget mainBuild(Widget child) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double lgTxSize = 52;
@@ -39,48 +50,25 @@ class _KeyGenerationState extends State<KeyGeneration> {
           Column(
             children: <Widget>[
               Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Image(
-                      width: 80,
-                      height: 80,
-                      image: AssetImage("assets/images/x.png"),
-                    ),
-                  )),
-              Text("Your New Key",
-                  style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: lgTxSize,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                  )),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                // child: generateKeyTxt(),
-                child: FutureBuilder<Column>(
-                  future: _listMnemonic,
-                  builder: (context, AsyncSnapshot<Column> snapshot) {
-                    if (snapshot.data != null) {
-                      return snapshot.data!;
-                    } else {
-                      return Column(
-                        children: <Widget>[
-                          SizedBox(
-                            child: CircularProgressIndicator(),
-                            width: 60,
-                            height: 60,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 16),
-                            child: Text('Awaiting mnemonic key...'),
-                          )
-                        ]
-                      );
-                    }
-                  }
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Image(
+                    width: 80,
+                    height: 80,
+                    image: AssetImage("assets/images/x.png"),
+                  ),
                 )
-              )
+              ),
+              Text("Your New Key",
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: lgTxSize,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.italic,
+                )
+              ),
+              child,
             ],
           ),
         ],
@@ -88,8 +76,7 @@ class _KeyGenerationState extends State<KeyGeneration> {
     );
   }
 
-  Future<Column> generateKeyTxt(Singleton _userData) async {
-    
+  Widget readyChild(String _mnemonic) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -111,7 +98,7 @@ class _KeyGenerationState extends State<KeyGeneration> {
             borderRadius: BorderRadius.circular(10)
           ),
           alignment: Alignment.center,
-          child: SelectableText(await _userData.createNewMnemonic(),
+          child: SelectableText(_mnemonic,
             style: TextStyle(
               fontFamily: 'OpenSans',
               fontSize: 24,
@@ -169,4 +156,22 @@ class _KeyGenerationState extends State<KeyGeneration> {
       ],
     );
   }
+
+  Widget notReadyChild() {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          child: CircularProgressIndicator(),
+          width: 60,
+          height: 60,
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 16),
+          child: Text('Awaiting Mnemonic Key...'),
+        )
+      ]
+    );
+  }
+
 }
+
