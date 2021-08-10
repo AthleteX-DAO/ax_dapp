@@ -1,6 +1,5 @@
 import 'package:ae_dapp/service/AllAthletesList.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Portfolio.dart';
 import 'package:ae_dapp/pages/PlayerPage.dart';
 
 class MyTeam2 extends StatefulWidget {
@@ -260,36 +259,36 @@ class _MyTeamState extends State<MyTeam2> {
     );
   }
 
-  Widget buildAthlete(String _name, double _price, double _width){
-    return Card(
-      color: Colors.grey[800],
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: Icon(
-              Icons.sports_baseball_rounded,
-              color: Colors.yellow[760],
-            ),
-            title: Text(_name),
-            subtitle: Text("Buy: $_price"),
-            trailing: true
-                ? Icon(
-                    Icons.check_circle,
-                    color: Colors.greenAccent,
-                  )
-                : Icon(Icons.check_circle_outline),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => PlayerPage()),
-              );
-            },
-          )
-        ],
-      ),
-    );
-  }
+  // Widget buildAthlete(String _name, double _price, double _width){
+  //   return Card(
+  //     color: Colors.grey[800],
+  //     child: Column(
+  //       children: <Widget>[
+  //         ListTile(
+  //           leading: Icon(
+  //             Icons.sports_baseball_rounded,
+  //             color: Colors.yellow[760],
+  //           ),
+  //           title: Text(_name),
+  //           subtitle: Text("Buy: $_price"),
+  //           trailing: true
+  //               ? Icon(
+  //                   Icons.check_circle,
+  //                   color: Colors.greenAccent,
+  //                 )
+  //               : Icon(Icons.check_circle_outline),
+  //           onTap: () {
+  //             Navigator.of(context).push(
+  //               MaterialPageRoute(builder: (_) => PlayerPage()),
+  //             );
+  //           },
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  String getPrice(double _price) {
-    return "\$" + _price.toStringAsFixed(2);
-  }
+  // String getPrice(double _price) {
+  //   return "\$" + _price.toStringAsFixed(2);
+  // }
 }

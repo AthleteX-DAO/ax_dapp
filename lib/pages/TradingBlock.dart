@@ -30,12 +30,42 @@ class _TradingBlockState extends State<TradingBlock> {
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 20),
+                  padding: const EdgeInsets.only(right: 20, bottom: 10),
                   child: Image(
                     width: 80,
                     height: 80,
                     image: AssetImage("assets/images/x.png"),
                   ),
+                )
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(width: 250, height: 55),
+                      child: ElevatedButton(
+                      child: Text(
+                        "CONNECT WALLET",
+                        style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: butTx,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.amber[400],
+                        )
+                      ),
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.grey[800]!),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.amber[400]!),
+                          )
+                        )
+                      ),
+                    )
+                  )
                 )
               ),
               Text(
@@ -145,59 +175,30 @@ class _TradingBlockState extends State<TradingBlock> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                ConstrainedBox(
-                                  constraints: BoxConstraints.tightFor(width: 250, height: 55),
-                                    child: ElevatedButton(
-                                    child: Text(
-                                      "CONNECT WALLET",
-                                      style: TextStyle(
-                                        fontFamily: 'OpenSans',
-                                        fontSize: butTx,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.amber[400],
-                                      )
-                                    ),
-                                    onPressed: () {},
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.grey[800]!),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(18.0),
-                                          side: BorderSide(color: Colors.amber[400]!),
-                                        )
-                                      )
-                                    ),
+                            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(width: 250, height: 55),
+                                child: ElevatedButton(
+                                child: Text(
+                                  "SWAP",
+                                  style: TextStyle(
+                                    fontFamily: 'OpenSans',
+                                    fontSize: butTx,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
                                   )
                                 ),
-                                ConstrainedBox(
-                                  constraints: BoxConstraints.tightFor(width: 250, height: 55),
-                                    child: ElevatedButton(
-                                    child: Text(
-                                      "SWAP",
-                                      style: TextStyle(
-                                        fontFamily: 'OpenSans',
-                                        fontSize: butTx,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      )
-                                    ),
-                                    onPressed: () {},
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[400]!),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(18.0),
-                                          side: BorderSide(color: Colors.amber[400]!),
-                                        )
-                                      )
-                                    ),
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[400]!),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Colors.amber[400]!),
+                                    )
                                   )
                                 ),
-                              ]
+                              )
                             )
                           )
                         ],
