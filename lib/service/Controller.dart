@@ -7,14 +7,18 @@ import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 import 'package:web_socket_channel/io.dart';
 
+import '../contracts/AthleteX.g.dart';
+
 // State management
+Controller c = Controller();
+final athleteX = AthleteX(address: _contractAddress, client: c._client);
+
 class Controller extends ChangeNotifier {
   // RPC & WS are now linked to MATIC-Testnet
-  final String _rpcUrl = "https://rpc-mumbai.matic.today";
-  final String _wsUrl = "wss://rpc-mumbai.matic.today";
 
+  late String _rpcUrl, _wsUrl;
   // private client for web3dart
-  late Web3Client _client;
+  late final Web3Client _client;
   bool isLoading = true;
 
   // Eth related variable declarations
@@ -22,7 +26,7 @@ class Controller extends ChangeNotifier {
   late String _abiCode, privateAddress, userMnemonic;
   late EthereumAddress _contractAddress, publicAddress;
   late Credentials _credentials;
-  late DeployedContract staking;
+  late final DeployedContract staking;
 
   // No-args constructor
   Controller() {
@@ -36,7 +40,8 @@ class Controller extends ChangeNotifier {
     });
 
     // Setup the contracts we'll be using - they're immutable so can be called once
-    staking = await retrieveContract("Staking");
+    staking = await retrieveContract("StakingRewards");
+
     // Automatically create a wallet upon instantiation
     await createWallet();
   }
@@ -50,7 +55,7 @@ class Controller extends ChangeNotifier {
     _abiCode = jsonEncode(jsonAbi["abi"]);
     // assign contract address
     _contractAddress = EthereumAddress.fromHex(
-        jsonAbi["networks"]["97"]["address"]); //BSC-TESTNET Address
+        jsonAbi["networks"]["80001"]["address"]); //BSC-TESTNET Address
     final contract = DeployedContract(
         ContractAbi.fromJson(_abiCode, "$contractName"), _contractAddress);
 
@@ -66,15 +71,13 @@ class Controller extends ChangeNotifier {
   Future<void> createWallet([String? mnemonic]) async {
     // If user comes with a mnemonic seed
     var seed;
-    if (mnemonic == null)
-    {
+    if (mnemonic == null) {
       var validMnemonic;
       validMnemonic = bip39.generateMnemonic();
       seed = bip39.mnemonicToSeedHex(validMnemonic);
       _credentials = EthPrivateKey.fromHex(seed);
       mnemonic = validMnemonic;
-    }
-    else {
+    } else {
       seed = bip39.mnemonicToSeedHex(mnemonic);
       _credentials = EthPrivateKey.fromHex(seed);
     }
@@ -87,7 +90,6 @@ class Controller extends ChangeNotifier {
 
   Future<EthereumAddress> getPublicAddress() async {
     // Is this below necessary?
-
     EthereumAddress pAddress = await _credentials.extractAddress();
     return pAddress;
   }
@@ -96,9 +98,10 @@ class Controller extends ChangeNotifier {
     return _credentials;
   }
 
-  ///** Mutataive Methods */
-
   // Staking
+  ///** Views Methods */
+
+  ///** Mutative Methods */
   Future<BigInt> getStakeBalance(EthereumAddress from) async {
     ContractFunction stakeOf = staking.function("stakeOf");
     var balance = await _client
@@ -107,7 +110,8 @@ class Controller extends ChangeNotifier {
   }
 
   Future<String> stake(BigInt stakeAmount) async {
-    ContractFunction createStake = staking.function("createStake");
+    ContractFunction createStake = staking.function("stake");
+
     return await _client.sendTransaction(
         _credentials,
         Transaction.callContract(
@@ -118,30 +122,18 @@ class Controller extends ChangeNotifier {
         fetchChainIdFromNetworkId: true);
   }
 
-  Future<BigInt> getTokenBalance(
-      String tokenString, EthereumAddress from) async {
-    DeployedContract token = await retrieveContract(tokenString);
-    ContractFunction balanceOf = token.function("balanceOf");
-
-    var balance = await _client
-        .call(contract: staking, function: balanceOf, params: [from]);
-    return balance.first as BigInt;
-  }
-
-  // Future<BigInt> getGasBalance(EthereumAddress from) async {
-  //   return balance.first as BigInt;
-  // }
-
   Future<String> withdraw(BigInt withdrawAmount) async {
-    ContractFunction removeStake = staking.function("removeStake");
+    ContractFunction withdrawStake = staking.function("withdraw");
+
     return await _client.sendTransaction(
         _credentials,
         Transaction.callContract(
             contract: staking,
-            function: removeStake,
+            function: withdrawStake,
             parameters: [withdrawAmount]),
         chainId: 97,
         fetchChainIdFromNetworkId: true);
   }
+
   // From the blockchain to the dapp
 }
