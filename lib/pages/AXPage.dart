@@ -1,36 +1,51 @@
 import 'dart:math';
-
+import 'package:ae_dapp/contracts/StakingRewards.dart';
+import 'package:ae_dapp/service/Controller.dart';
+import 'package:http/http.dart';
+import 'package:web_socket_channel/io.dart';
 import 'package:flutter/material.dart';
+import 'package:web3dart/web3dart.dart';
+import '../contracts/AthleteX.g.dart';
+import 'package:bip39/bip39.dart' as bip39;
 
 class AXPage extends StatefulWidget {
   @override
   _AXState createState() => _AXState();
 }
 
+Controller _c = new Controller();
+final EthereumAddress tokenAddr =
+    EthereumAddress.fromHex('0x585E0c93F73C520ca6513fc03f450dAea3D4b493');
+final EthereumAddress stakingAddr =
+        EthereumAddress.fromHex("0x063086C5b352F986718Db9383c894Be9Cd4350fA");
+
+final athleteX = AthleteX(address: tokenAddr, client: _c.client);
+final stakingRewards = StakingRewards( address: stakingAddr, client: _c.client);
+
 class _AXState extends State<AXPage> {
   // Actionable
   Future<void> buyAX() async {}
   Future<void> stakeAX() async {}
   Future<void> claimRewards() async {}
-  Future<Widget> unstakeAX() async {
-    return Text("Unclaimed Rewards: ");
-  }
+  Future<void> unstakeAX() async {}
 
   // Viewable
-  Future<int> totalBalance() async {
-    return new Random().nextInt(800);
+  Future<BigInt> totalBalance() async {
+    return athleteX.totalSupply();
   }
 
-  Future<String> availableBalance() async {
-    return "0";
+  Future<BigInt> availableBalance() async {
+    EthereumAddress publicAddress = await _c.credentials.extractAddress();
+    return athleteX.balanceOf(publicAddress);
   }
 
-  Future<int> stakedAX() async {
-    return Random().nextInt(200);
+  Future<BigInt> stakedAX() async {
+    EthereumAddress publicAddress = await _c.credentials.extractAddress();
+    return stakingRewards.balanceOf(publicAddress);
   }
 
   Future<double> getAPY() async {
-    return Random().nextDouble();
+    return new Random().nextDouble();
   }
 
   Future<double> rewardsEarned() async {
@@ -223,7 +238,11 @@ class _AXState extends State<AXPage> {
                                             fontWeight: FontWeight.w600,
                                             color: Colors.amber[400],
                                           )),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        BigInt amount = BigInt.two;
+                                        stakingRewards.stake(amount,
+                                            credentials: _c.credentials);
+                                      },
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all<Color>(
@@ -281,7 +300,11 @@ class _AXState extends State<AXPage> {
                                             fontWeight: FontWeight.w600,
                                             color: Colors.amber[400],
                                           )),
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        BigInt amount = BigInt.two;
+                                        stakingRewards.withdraw(amount,
+                                            credentials: _c.credentials);
+                                      },
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all<Color>(
