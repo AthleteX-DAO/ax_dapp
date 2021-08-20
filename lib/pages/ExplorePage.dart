@@ -36,17 +36,19 @@ class _ExplorePageState extends State<ExplorePage> {
                     image: AssetImage("assets/images/x.png"),
                   ),
                 )),
-            Text("EXPLORE",
-                style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: lgTxSize,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.italic,
-                )),
+            Padding(padding: EdgeInsets.only(bottom: 20),
+              child: Text("EXPLORE",
+                  style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: lgTxSize,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.italic,
+                  )),
+            ),
             Container(
-                width: MediaQuery.of(context).size.width - 50,
+                width: MediaQuery.of(context).size.width - 300,
                 height: MediaQuery.of(context).size.height * .675,
-                padding: EdgeInsets.only(top: 30),
+                padding: EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.grey[900],
@@ -68,7 +70,7 @@ class _ExplorePageState extends State<ExplorePage> {
                         Container(
                             padding: EdgeInsets.only(bottom: 20),
                             height: MediaQuery.of(context).size.height * .55,
-                            width: MediaQuery.of(context).size.width / 2 - 50,
+                            width: MediaQuery.of(context).size.width / 2 - 200,
                             child: AllAthletesList())
                       ],
                     ),
@@ -86,7 +88,7 @@ class _ExplorePageState extends State<ExplorePage> {
                         Container(
                             padding: EdgeInsets.only(bottom: 20),
                             height: MediaQuery.of(context).size.height * .55,
-                            width: MediaQuery.of(context).size.width / 2 - 50,
+                            width: MediaQuery.of(context).size.width / 2 - 200,
                             child: RSSReader())
                       ],
                     ),

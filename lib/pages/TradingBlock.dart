@@ -47,6 +47,7 @@ class _TradingBlockState extends State<TradingBlock> {
                 Padding(
                     padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
                     child: Container(
+                      width: 800,
                         decoration: BoxDecoration(
                           color: Colors.grey[800],
                           borderRadius:

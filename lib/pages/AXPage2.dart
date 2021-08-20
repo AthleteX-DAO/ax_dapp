@@ -92,24 +92,6 @@ class AXPage2 extends StatefulWidget {
 class _AX2State extends State<AXPage2> {
   TextEditingController stakeController = new TextEditingController();
 
-  bool _swapNutrients = false;
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Widget getMacroChart() {
-    return Center(
-      child: Text('macro chart here'),
-    );
-  }
-
-  Widget getMicroChart() {
-    return Center(
-      child: Text('micro chart here'),
-    );
-  }
-
   // Actionable
   Future<void> buyAX() async {}
   Future<void> stakeAX() async {}
@@ -152,38 +134,7 @@ class _AX2State extends State<AXPage2> {
   }
 
   Widget build(BuildContext context) {
-    const double lgTxSize = 52;
-    const double mdTxSize = 35;
-    const double smTxSize = 15;
-    const double xsTxSize = 12;
-
-    final ButtonStyle approveButton = ElevatedButton.styleFrom(
-        textStyle: TextStyle(
-            fontSize: smTxSize,
-            fontFamily: 'OpenSans',
-            fontWeight: FontWeight.w600),
-        primary: Colors.grey[900],
-        onPrimary: Colors.amber[600],
-        fixedSize: Size(250, 75));
-
-    final ButtonStyle claimButton = ElevatedButton.styleFrom(
-        textStyle: TextStyle(
-            fontSize: smTxSize,
-            fontFamily: 'OpenSans',
-            fontWeight: FontWeight.w600),
-        primary: Colors.grey[800],
-        onPrimary: Colors.amber[600],
-        fixedSize: Size(250, 75));
-
-    final ButtonStyle connectButton = ElevatedButton.styleFrom(
-        textStyle: TextStyle(
-            fontSize: xsTxSize,
-            fontFamily: 'OpenSans',
-            fontWeight: FontWeight.w200),
-        primary: Colors.blue[400],
-        onPrimary: Colors.white,
-        fixedSize: Size(250, 75));
-
+    
     return Scaffold(
         body: Stack(
       children: <Widget>[
@@ -225,12 +176,12 @@ class _AX2State extends State<AXPage2> {
 
         // main user area
         Container(
-            child: Row(
+          child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // my account info
 
+            // my account info
             Column(
               children: [
                 // Main Left Area
@@ -257,6 +208,7 @@ class _AX2State extends State<AXPage2> {
                                     fontSize: 25,
                                     fontFamily: 'OpenSans',
                                     fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.italic
                                   )
                                 ),
                             ),
@@ -308,6 +260,7 @@ class _AX2State extends State<AXPage2> {
                                     fontSize: 25,
                                     fontFamily: 'OpenSans',
                                     fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.italic
                                   )),
                             ),
 
@@ -349,7 +302,7 @@ class _AX2State extends State<AXPage2> {
                                 ),
                               ),
                             ),
-
+                            //Claim rewards button
                             Padding(
                               padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                               child: SizedBox(
@@ -361,7 +314,7 @@ class _AX2State extends State<AXPage2> {
                                 height: 50,
                                 width: 250,
                               )),
-                            
+                            //Buy AX button
                             Padding(
                               padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                               child: SizedBox(
@@ -379,7 +332,8 @@ class _AX2State extends State<AXPage2> {
                     )),
               ],
             ),
-
+            
+            //Main right area
             Column(
               children: [
                 //Main Right Area
@@ -407,6 +361,7 @@ class _AX2State extends State<AXPage2> {
                                       fontSize: mdTxSize,
                                       fontFamily: 'OpenSans',
                                       fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.italic
                                     ))),
 
                             // adding note
