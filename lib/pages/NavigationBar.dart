@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:ae_dapp/pages/MyTeam2.dart';
 import 'package:ae_dapp/pages/TradingBlock.dart';
-import 'package:ae_dapp/pages/AXPage.dart';
+import 'package:ae_dapp/pages/AXPage2.dart';
 import 'package:ae_dapp/pages/ExplorePage.dart';
 
 class NavigationBar extends StatefulWidget {
@@ -16,7 +16,7 @@ class _NavigationBarState extends State<NavigationBar> {
   int _selectedIndex = 0;
   // This is where the pages are linked to the navigation
   List<Widget> _widgetOptions = <Widget>[
-    AXPage(),
+    AXPage2(),
     ExplorePage(),
     TradingBlock(),
     MyTeam2(),

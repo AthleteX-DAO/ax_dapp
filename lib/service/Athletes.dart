@@ -2,9 +2,9 @@ import 'dart:core';
 import 'package:http/http.dart' as http;
 
 abstract class Athletes {
-   String? name;
-   int? playerID;
-   int? season;
+  String? name;
+  int? playerID;
+  int? season;
 
   Athletes() {
     this.fetchAthletes();

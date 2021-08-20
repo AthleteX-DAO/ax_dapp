@@ -154,12 +154,12 @@ class _AllAthletesListState extends State<AllAthletesList> {
           }
           return Center(
             child: SizedBox(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.grey[500],
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.grey[500],
+              ),
+              height: 50,
+              width: 50,
             ),
-            height: 50,
-            width: 50,
-          ),
           );
         },
       ),
