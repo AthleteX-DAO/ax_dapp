@@ -17,15 +17,19 @@ Controller _c = new Controller();
 final EthereumAddress tokenAddr =
     EthereumAddress.fromHex('0x585E0c93F73C520ca6513fc03f450dAea3D4b493');
 final EthereumAddress stakingAddr =
-        EthereumAddress.fromHex("0x063086C5b352F986718Db9383c894Be9Cd4350fA");
+    EthereumAddress.fromHex("0x063086C5b352F986718Db9383c894Be9Cd4350fA");
 
 final athleteX = AthleteX(address: tokenAddr, client: _c.client);
-final stakingRewards = StakingRewards( address: stakingAddr, client: _c.client);
+final stakingRewards = StakingRewards(address: stakingAddr, client: _c.client);
 
 class _AXState extends State<AXPage> {
   // Actionable
   Future<void> buyAX() async {}
-  Future<void> stakeAX() async {}
+  Future<void> stakeAX() async {
+        BigInt amount = BigInt.from(11);
+    stakingRewards.stake(amount,
+        credentials: _c.credentials);
+  }
   Future<void> claimRewards() async {}
   Future<void> unstakeAX() async {}
 
@@ -36,6 +40,7 @@ class _AXState extends State<AXPage> {
 
   Future<BigInt> availableBalance() async {
     EthereumAddress publicAddress = await _c.credentials.extractAddress();
+    print('User Address: $publicAddress');
     return athleteX.balanceOf(publicAddress);
   }
 
@@ -105,15 +110,6 @@ class _AXState extends State<AXPage> {
                                     fontFamily: 'OpenSans',
                                     fontSize: lgTxSize,
                                     fontWeight: FontWeight.w600))),
-                        StreamBuilder(
-                            stream: Stream.periodic(Duration(seconds: 7))
-                                .asyncMap((event) => totalBalance()),
-                            builder: (context, snapshot) => Text(
-                                "AX Total Balance: ${snapshot.data.toString()}",
-                                style: TextStyle(
-                                  fontFamily: 'OpenSans',
-                                  fontSize: smTxSize,
-                                ))),
                         Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: StreamBuilder(
@@ -239,9 +235,7 @@ class _AXState extends State<AXPage> {
                                             color: Colors.amber[400],
                                           )),
                                       onPressed: () {
-                                        BigInt amount = BigInt.two;
-                                        stakingRewards.stake(amount,
-                                            credentials: _c.credentials);
+                                        stakeAX();
                                       },
                                       style: ButtonStyle(
                                           backgroundColor:
