@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 // import 'package:toggle_switch/toggle_switch.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:ae_dapp/pages/AXPage2.dart';
+import 'package:ae_dapp/pages/AXPage.dart';
 
 const double lgTxSize = 52;
 const double mdTxSize = 35;
