@@ -32,6 +32,7 @@ dependencies:
   qrscan: ^0.3.1
   url_launcher: ^6.0.3
   fl_chart: ^0.36.2
+  toggle_switch: ^1.2.0
 
   
 

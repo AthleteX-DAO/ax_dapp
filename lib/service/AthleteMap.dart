@@ -12,5 +12,5 @@ class AthleteMap {
 
   search(String athleteName) {
     Athletes returnAthlete;
-    }
+  }
 }
