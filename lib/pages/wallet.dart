@@ -95,49 +95,50 @@ class _WalletState extends State<Wallet> {
           }),
           (context.percentHeight * 5).heightBox,
           VxBox(
-                  child: Center(
-                      child: Column(children: <Widget>[
-            new Expanded(
-                child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Row(children: <Widget>[
-                      Container(
-                        child: Icon(Icons.local_gas_station_rounded,
-                                color: Colors.amber)
-                            .h(20)
-                            .tooltip(
-                                "You need gas (MATIC) to conduct transactions on the network"),
-                      ),
-                      new Expanded(
-                        child: Text("").h(20),
-                      ),
-                      new Expanded(
-                              child:
-                                  Text("Public Address: "))
-                          .onTap(() {
+            child: Center(
+              child: Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          child: Icon(
+                            Icons.local_gas_station_rounded,
+                            color: Colors.amber
+                            )
+                              .h(20) //TODO: What is this doing?
+                              .tooltip(
+                                  "You need gas (MATIC) to conduct transactions on the network"),
+                        ),
+                        Text("").h(20),
+                        Text("Public Address: ")
+                        .onTap(() {
                         Clipboard.setData(
-                            ClipboardData(text: "Copied!"));
+                          ClipboardData(text: "Copied!")
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: const Text("Copied!")));
-                      }),
-                    ]))),
-            new Expanded(
-              child: Text("Your Staked Balance: "),
-            ),
-            new Expanded(
-              child: Text("Available to Stake: 0"),
-            ),
-            new Expanded(
-              child: Text("Rewards accrued: 0"),
+                          SnackBar(content: const Text("Copied!")));
+                        }),
+                      ]
+                    )
+                  ),
+                  Text("Your Staked Balance: "),
+                  Text("Available to Stake: 0"),
+                  Text("Rewards accrued: 0"),
+                ]
+              )
             )
-          ])))
-              .p16
-              .gray400
-              .size(context.screenWidth * 40, context.percentHeight * 30)
-              .rounded
-              .shadowLg
-              .make()
-              .p12(),
+          )
+            .p16
+            .gray400
+            .size(context.screenWidth * 40, context.percentHeight * 30)
+            .rounded
+            .shadowLg
+            .make()
+            .p12(),
           30.heightBox,
           HStack(
             [
