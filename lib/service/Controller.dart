@@ -66,15 +66,13 @@ class Controller extends ChangeNotifier {
   Future<void> createWallet([String? mnemonic]) async {
     // If user comes with a mnemonic seed
     var seed;
-    if (mnemonic == null)
-    {
+    if (mnemonic == null) {
       var validMnemonic;
       validMnemonic = bip39.generateMnemonic();
       seed = bip39.mnemonicToSeedHex(validMnemonic);
       _credentials = EthPrivateKey.fromHex(seed);
       mnemonic = validMnemonic;
-    }
-    else {
+    } else {
       seed = bip39.mnemonicToSeedHex(mnemonic);
       _credentials = EthPrivateKey.fromHex(seed);
     }
