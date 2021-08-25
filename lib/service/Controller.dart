@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -66,23 +65,28 @@ class Controller extends ChangeNotifier {
 
   Future<void> createWallet([String? mnemonic]) async {
     // If user comes with a mnemonic seed
-    var seed, validMnemonic;
-    validMnemonic = bip39.generateMnemonic();
-    seed = bip39.mnemonicToSeedHex(validMnemonic);
-    _credentials = EthPrivateKey.fromHex(seed);
+    var seed;
+    if (mnemonic == null)
+    {
+      var validMnemonic;
+      validMnemonic = bip39.generateMnemonic();
+      seed = bip39.mnemonicToSeedHex(validMnemonic);
+      _credentials = EthPrivateKey.fromHex(seed);
+      mnemonic = validMnemonic;
+    }
+    else {
+      seed = bip39.mnemonicToSeedHex(mnemonic);
+      _credentials = EthPrivateKey.fromHex(seed);
+    }
 
     // stores private / public keypair
     privateAddress = seed;
-    userMnemonic = validMnemonic;
+    userMnemonic = mnemonic!;
     publicAddress = await _credentials.extractAddress();
   }
 
   Future<EthereumAddress> getPublicAddress() async {
     // Is this below necessary?
-    if (_credentials == null) {
-      Random rng = new Random.secure();
-      _credentials = EthPrivateKey.createRandom(rng);
-    }
 
     EthereumAddress pAddress = await _credentials.extractAddress();
     return pAddress;

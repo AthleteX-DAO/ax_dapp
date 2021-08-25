@@ -1,13 +1,13 @@
-import 'package:ae_dapp/pages/AthletesDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/pages/PlayerPage.dart';
 
-class AthletesList extends StatefulWidget {
+class AllAthletesList extends StatefulWidget {
   @override
   _AllAthletesListState createState() => _AllAthletesListState();
 }
 
-class _AllAthletesListState extends State<AthletesList> {
+class _AllAthletesListState extends State<AllAthletesList> {
   List<Athlete> _AllAthletesList = <Athlete>[]; //All athletes
   List<Athlete> returnableListData = <Athlete>[];
 
@@ -90,19 +90,6 @@ class _AllAthletesListState extends State<AthletesList> {
     // }
   }
 
-  void _AthleteDetails(Athlete aAthlete) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (BuildContext context) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("About ${aAthlete.name}"),
-          ),
-          body: AthleteDetail(),
-        );
-      }),
-    );
-  }
-
   Widget _buildAthletes(AsyncSnapshot<dynamic> snapshot) {
     _AllAthletesList.addAll(snapshot.data!);
 
@@ -121,7 +108,7 @@ class _AllAthletesListState extends State<AthletesList> {
     final alreadyBought = _boughtAthletes.contains(a);
 
     return Card(
-      color: Colors.blueAccent,
+      color: Colors.grey[800],
       child: Column(
         children: <Widget>[
           ListTile(
@@ -138,14 +125,9 @@ class _AllAthletesListState extends State<AthletesList> {
                   )
                 : Icon(Icons.check_circle_outline),
             onTap: () {
-              setState(() {
-                _AthleteDetails(a);
-                if (alreadyBought) {
-                  _boughtAthletes.remove(a);
-                } else {
-                  _boughtAthletes.add(a);
-                }
-              });
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => PlayerPage()),
+              );
             },
           )
         ],
@@ -155,40 +137,37 @@ class _AllAthletesListState extends State<AthletesList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: _appBarTitle == null ? Text("Buy an Athlete") : _appBarTitle,
-        elevation: 2,
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-              icon: _searchIcon,
-              onPressed: () {
-  //              _searchPressed("Search an Athlete");
-              })
-        ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.all(const Radius.circular(10.0)),
       ),
-      body: FutureBuilder<dynamic>(
-              future: _loadData,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return RefreshIndicator(
-                    onRefresh: () {
-                      return _loadData = fetchAthletes();
-                    },
-                    child: Center(
-                      child: _buildAthletes(snapshot),
-                    )
-                  );
-                } else if (snapshot.hasError) {
-                  return Text(
-                      "Something went wrong! make sure you're connected to the internet");
-                }
-                return CircularProgressIndicator(
-                  backgroundColor: Colors.yellowAccent,
-                );
-              },
+      child: FutureBuilder<dynamic>(
+        future: _loadData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return RefreshIndicator(
+                onRefresh: () {
+                  return _loadData = fetchAthletes();
+                },
+                child: Center(
+                  child: _buildAthletes(snapshot),
+                ));
+          } else if (snapshot.hasError) {
+            return Text(
+                "Something went wrong! make sure you're connected to the internet");
+          }
+          return Center(
+            child: SizedBox(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.grey[500],
             ),
+            height: 50,
+            width: 50,
+          ),
+          );
+        },
+      ),
     );
   }
 }
