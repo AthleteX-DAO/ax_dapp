@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_web3_provider/ethereum.dart';
+import 'package:flutter_web3_provider/ethers.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart'; //Reference Library https://pub.dev/packages/web3dart/example
 import 'package:bip39/bip39.dart'
@@ -8,41 +10,49 @@ import 'package:bip39/bip39.dart'
 import 'package:web_socket_channel/io.dart';
 
 // State management
-class Controller extends ChangeNotifier {
+Controller c = Controller();
+
+class Controller {
   // RPC & WS are now linked to MATIC-Testnet
-  final String _rpcUrl = "https://rpc-mumbai.matic.today";
-  final String _wsUrl = "wss://rpc-mumbai.matic.today";
 
+  final String _rpcUrl = 'https://rpc-mumbai.matic.today';
+  final String _wsUrl = 'wss://rpc-mumbai.matic.today';
   // private client for web3dart
-  late Web3Client _client;
   bool isLoading = true;
-
   // Eth related variable declarations
+
   // ignore: avoid_init_to_null
   late String _abiCode, privateAddress, userMnemonic;
-  late EthereumAddress _contractAddress, publicAddress;
+  late EthereumAddress _contractAddress, _publicAddress;
   late Credentials _credentials;
-  late DeployedContract staking;
+  late Web3Client _client;
+  late Web3Provider _web3;
+  late final DeployedContract staking;
 
   // No-args constructor
   Controller() {
     initialSetup();
-  }
-
-  initialSetup() async {
-    // Setup connection between eth rpc node & dApp
+    _web3 = Web3Provider(ethereum!);
     _client = Web3Client(_rpcUrl, Client(), socketConnector: () {
       return IOWebSocketChannel.connect(_wsUrl).cast<String>();
     });
+  }
 
-    // Setup the contracts we'll be using - they're immutable so can be called once
-    staking = await retrieveContract("Staking");
+  // Getters
+  Web3Client get client => _client;
+  Web3Provider get web3 => _web3;
+  Credentials get credentials => _credentials;
+  EthereumAddress get publicAddress => _publicAddress;
+
+  initialSetup() async {
+    // Setup connection between eth rpc node & dApp
+
     // Automatically create a wallet upon instantiation
-    await createWallet();
+    // await createWallet();
   }
 
   // Get the ABI from testnet BSC
-  Future<DeployedContract> retrieveContract(String contractName) async {
+  Future<DeployedContract> _retrieveContract(String contractName) async {
     // Reading the contract abi
     String abiStringFile =
         await rootBundle.loadString('../../contracts/$contractName.json');
@@ -50,7 +60,7 @@ class Controller extends ChangeNotifier {
     _abiCode = jsonEncode(jsonAbi["abi"]);
     // assign contract address
     _contractAddress = EthereumAddress.fromHex(
-        jsonAbi["networks"]["97"]["address"]); //BSC-TESTNET Address
+        jsonAbi["networks"]["80001"]["address"]); //BSC-TESTNET Address
     final contract = DeployedContract(
         ContractAbi.fromJson(_abiCode, "$contractName"), _contractAddress);
 
@@ -80,66 +90,11 @@ class Controller extends ChangeNotifier {
     // stores private / public keypair
     privateAddress = seed;
     userMnemonic = mnemonic!;
-    publicAddress = await _credentials.extractAddress();
   }
 
   Future<EthereumAddress> getPublicAddress() async {
     // Is this below necessary?
-
     EthereumAddress pAddress = await _credentials.extractAddress();
     return pAddress;
   }
-
-  Credentials getCredentials() {
-    return _credentials;
-  }
-
-  ///** Mutataive Methods */
-
-  // Staking
-  Future<BigInt> getStakeBalance(EthereumAddress from) async {
-    ContractFunction stakeOf = staking.function("stakeOf");
-    var balance = await _client
-        .call(contract: staking, function: stakeOf, params: [from]);
-    return balance.first as BigInt;
-  }
-
-  Future<String> stake(BigInt stakeAmount) async {
-    ContractFunction createStake = staking.function("createStake");
-    return await _client.sendTransaction(
-        _credentials,
-        Transaction.callContract(
-            contract: staking,
-            function: createStake,
-            parameters: [stakeAmount]),
-        chainId: 97,
-        fetchChainIdFromNetworkId: true);
-  }
-
-  Future<BigInt> getTokenBalance(
-      String tokenString, EthereumAddress from) async {
-    DeployedContract token = await retrieveContract(tokenString);
-    ContractFunction balanceOf = token.function("balanceOf");
-
-    var balance = await _client
-        .call(contract: staking, function: balanceOf, params: [from]);
-    return balance.first as BigInt;
-  }
-
-  // Future<BigInt> getGasBalance(EthereumAddress from) async {
-  //   return balance.first as BigInt;
-  // }
-
-  Future<String> withdraw(BigInt withdrawAmount) async {
-    ContractFunction removeStake = staking.function("removeStake");
-    return await _client.sendTransaction(
-        _credentials,
-        Transaction.callContract(
-            contract: staking,
-            function: removeStake,
-            parameters: [withdrawAmount]),
-        chainId: 97,
-        fetchChainIdFromNetworkId: true);
-  }
-  // From the blockchain to the dapp
 }

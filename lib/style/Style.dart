@@ -24,7 +24,7 @@ final ButtonStyle walletButton = ElevatedButton.styleFrom(
             fontWeight: FontWeight.w600),
         primary: Colors.grey[900],
         onPrimary: Colors.amber[600],
-        fixedSize: Size(350, 60));
+        minimumSize: Size(350, 60));
 
 final ButtonStyle approveButton = ElevatedButton.styleFrom(
         textStyle: TextStyle(
@@ -33,7 +33,7 @@ final ButtonStyle approveButton = ElevatedButton.styleFrom(
             fontWeight: FontWeight.w600),
         primary: Colors.grey[900],
         onPrimary: Colors.amber[600],
-        fixedSize: Size(250, 75));
+        minimumSize: Size(250, 75));
 
 final ButtonStyle claimButton = ElevatedButton.styleFrom(
   textStyle: TextStyle(
@@ -42,7 +42,7 @@ final ButtonStyle claimButton = ElevatedButton.styleFrom(
       fontWeight: FontWeight.w600),
   primary: Colors.grey[800],
   onPrimary: Colors.amber[600],
-  fixedSize: Size(250, 75));
+  minimumSize: Size(250, 75));
 
 final ButtonStyle connectButton = ElevatedButton.styleFrom(
   textStyle: TextStyle(
@@ -51,4 +51,4 @@ final ButtonStyle connectButton = ElevatedButton.styleFrom(
       fontWeight: FontWeight.w200),
   primary: Colors.blue[400],
   onPrimary: Colors.white,
-  fixedSize: Size(250, 75));
+  minimumSize: Size(250, 75));
