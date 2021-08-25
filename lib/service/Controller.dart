@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_web3_provider/ethereum.dart';
+import 'package:flutter_web3_provider/ethers.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart'; //Reference Library https://pub.dev/packages/web3dart/example
 import 'package:bip39/bip39.dart'
@@ -18,31 +20,35 @@ class Controller {
   // private client for web3dart
   bool isLoading = true;
   // Eth related variable declarations
+
   // ignore: avoid_init_to_null
   late String _abiCode, privateAddress, userMnemonic;
   late EthereumAddress _contractAddress, _publicAddress;
   late Credentials _credentials;
   late Web3Client _client;
+  late Web3Provider _web3;
   late final DeployedContract staking;
 
   // No-args constructor
   Controller() {
     initialSetup();
+    _web3 = Web3Provider(ethereum!);
+    _client = Web3Client(_rpcUrl, Client(), socketConnector: () {
+      return IOWebSocketChannel.connect(_wsUrl).cast<String>();
+    });
   }
 
   // Getters
   Web3Client get client => _client;
+  Web3Provider get web3 => _web3;
   Credentials get credentials => _credentials;
   EthereumAddress get publicAddress => _publicAddress;
 
   initialSetup() async {
     // Setup connection between eth rpc node & dApp
-    _client = Web3Client(_rpcUrl, Client(), socketConnector: () {
-      return IOWebSocketChannel.connect(_wsUrl).cast<String>();
-    });
 
     // Automatically create a wallet upon instantiation
-    await createWallet();
+    // await createWallet();
   }
 
   // Get the ABI from testnet BSC
