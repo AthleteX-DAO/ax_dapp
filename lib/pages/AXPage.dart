@@ -1,20 +1,16 @@
+import 'dart:js_util';
 import 'dart:math';
 import 'package:ae_dapp/contracts/StakingRewards.dart';
 import 'package:ae_dapp/service/Controller.dart';
-import 'package:http/http.dart';
-import 'package:web_socket_channel/io.dart';
 import 'package:flutter/material.dart';
 import 'package:web3dart/web3dart.dart';
 import '../contracts/AthleteX.g.dart';
-import 'package:bip39/bip39.dart' as bip39;
-import 'dart:html' as html;
-
+import 'package:flutter_web3_provider/ethers.dart';
+import 'package:flutter_web3_provider/ethereum.dart';
+import 'package:js/js.dart';
 
 // flutter format .
-
-import 'package:ae_dapp/service/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:ae_dapp/style/Style.dart';
 
@@ -26,16 +22,14 @@ _launchURL() async {
   }
 }
 
-
 Widget _buildPopupDialog(BuildContext context) {
   return new AlertDialog(
-    
     title: Text('Connect to a wallet',
-    textAlign: TextAlign.center,
-    style: TextStyle(color: Colors.grey[400],
-    fontFamily: 'OpenSans',
-    )
-    ),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.grey[400],
+          fontFamily: 'OpenSans',
+        )),
     content: new Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,92 +39,96 @@ Widget _buildPopupDialog(BuildContext context) {
           child: ElevatedButton(
             child: Align(
               alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                  child: Text('Install Metamask'),
-                  ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                child: Text('Install Metamask'),
               ),
-            onPressed: () {},
+            ),
+            onPressed: () async {
+              var accounts = await promiseToFuture(ethereum!
+                  .request(RequestParams(method: 'eth_requestAccounts')));
+              print(accounts);
+            },
             style: walletButton,
           ),
         ),
-
         Padding(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: ElevatedButton(
             child: Align(
               alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                  child: Text('WalletConnect'),
-                  ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                child: Text('WalletConnect'),
               ),
+            ),
             onPressed: () {},
             style: walletButton,
           ),
         ),
-
         Padding(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: ElevatedButton(
             child: Align(
               alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                  child: Text('Coinbase Wallet'),
-                  ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                child: Text('Coinbase Wallet'),
               ),
+            ),
             onPressed: () {},
             style: walletButton,
           ),
         ),
-
-
       ],
     ),
-    
   );
 }
+
+Controller _c = Controller();
 
 class AXPage extends StatefulWidget {
   @override
   _AXState createState() => _AXState();
 }
 
-Controller _c = new Controller();
-final EthereumAddress tokenAddr =
-    EthereumAddress.fromHex('0x585E0c93F73C520ca6513fc03f450dAea3D4b493');
-final EthereumAddress stakingAddr =
-    EthereumAddress.fromHex("0x063086C5b352F986718Db9383c894Be9Cd4350fA");
-
-final athleteX = AthleteX(address: tokenAddr, client: _c.client);
-final stakingRewards = StakingRewards(address: stakingAddr, client: _c.client);
-
 class _AXState extends State<AXPage> {
+  final EthereumAddress tokenAddr =
+      EthereumAddress.fromHex('0x585E0c93F73C520ca6513fc03f450dAea3D4b493');
+  final EthereumAddress stakingAddr =
+      EthereumAddress.fromHex("0x063086C5b352F986718Db9383c894Be9Cd4350fA");
+  late Web3Provider web3;
+  var balanceF;
+
+  @override
+  void initState() {
+    print("Initiating Page!");
+    super.initState();
+    if (ethereum != null) {
+      web3 = Web3Provider(ethereum!);
+      balanceF = promiseToFuture(web3.getBalance(ethereum!.selectedAddress));
+      print(balanceF);
+    }
+  }
+
   // Actionable
   Future<void> buyAX() async {}
-  Future<void> stakeAX() async {
-        BigInt amount = BigInt.from(11);
-    stakingRewards.stake(amount,
-        credentials: _c.credentials);
-  }
+  Future<void> stakeAX(int _amount) async {}
+
   Future<void> claimRewards() async {}
-  Future<void> unstakeAX() async {}
+  Future<void> unstakeAX(int _amount) async {}
 
   // Viewable
   Future<BigInt> totalBalance() async {
-    return athleteX.totalSupply();
+    return BigInt.one;
   }
 
-  Future<BigInt> availableBalance() async {
-    EthereumAddress publicAddress = await _c.credentials.extractAddress();
-    print('User Address: $publicAddress');
-    return athleteX.balanceOf(publicAddress);
+  Future<dynamic> availableBalance() async {
+    return balanceF;
   }
 
   Future<BigInt> stakedAX() async {
-    EthereumAddress publicAddress = await _c.credentials.extractAddress();
-    return stakingRewards.balanceOf(publicAddress);
+    return BigInt.from(2);
   }
 
   Future<double> getAPY() async {
@@ -146,23 +144,6 @@ class _AXState extends State<AXPage> {
   }
 
   Widget build(BuildContext context) {
-    double lgTxSize = 52;
-    double smTxSize = 20;
-
-  Future<int> getAPY() async {
-    return Random().nextInt(200);
-  }
-
-  Future<int> rewardsEarned() async {
-    return new Random().nextInt(200);
-  }
-
-  Future<int> UnclaimedRewards() async {
-    return new Random(300).nextInt(200);
-  }
-
-  Widget build(BuildContext context) {
-    
     return Scaffold(
         body: Stack(
       children: <Widget>[
@@ -204,11 +185,10 @@ class _AXState extends State<AXPage> {
 
         // main user area
         Container(
-          child: Row(
+            child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             // my account info
             Column(
               children: [
@@ -230,15 +210,12 @@ class _AXState extends State<AXPage> {
                             // My Account
                             Padding(
                               padding: EdgeInsets.fromLTRB(0, 45, 0, 20),
-                              child: Text(
-                                'My Account',
+                              child: Text('My Account',
                                   style: TextStyle(
-                                    fontSize: 25,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w600,
-                                    fontStyle: FontStyle.italic
-                                  )
-                                ),
+                                      fontSize: 25,
+                                      fontFamily: 'OpenSans',
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.italic)),
                             ),
 
                             // Staked AX
@@ -285,11 +262,10 @@ class _AXState extends State<AXPage> {
                               padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                               child: Text('My Rewards',
                                   style: TextStyle(
-                                    fontSize: 25,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w600,
-                                    fontStyle: FontStyle.italic
-                                  )),
+                                      fontSize: 25,
+                                      fontFamily: 'OpenSans',
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.italic)),
                             ),
 
                             // APY
@@ -332,35 +308,37 @@ class _AXState extends State<AXPage> {
                             ),
                             //Claim rewards button
                             Padding(
-                              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: SizedBox(
-                                child: ElevatedButton(
-                                  child: Text('CLAIM REWARDS'),
-                                  onPressed: () {},
-                                  style: claimButton,
-                                ),
-                                height: 50,
-                                width: 250,
-                              )),
+                                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                child: SizedBox(
+                                  child: ElevatedButton(
+                                    child: Text('CLAIM REWARDS'),
+                                    onPressed: () {
+                                      claimRewards();
+                                    },
+                                    style: claimButton,
+                                  ),
+                                  height: 50,
+                                  width: 250,
+                                )),
                             //Buy AX button
                             Padding(
-                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                              child: SizedBox(
-                                child: ElevatedButton(
-                                  child: Text('BUY AX'),
-                                  onPressed: _launchURL,
-                                  style: claimButton,
-                                ),
-                                height: 50,
-                                width: 250,
-                              )),
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                child: SizedBox(
+                                  child: ElevatedButton(
+                                    child: Text('BUY AX'),
+                                    onPressed: _launchURL,
+                                    style: claimButton,
+                                  ),
+                                  height: 50,
+                                  width: 250,
+                                )),
                           ],
                         )
                       ],
                     )),
               ],
             ),
-            
+
             //Main right area
             Column(
               children: [
@@ -378,19 +356,17 @@ class _AXState extends State<AXPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          
-                          child: Column(
+                            child: Column(
                           children: [
                             // My Liquidity
                             Padding(
                                 padding: EdgeInsets.fromLTRB(0, 45, 0, 10),
                                 child: Text('My Liquidity',
                                     style: TextStyle(
-                                      fontSize: mdTxSize,
-                                      fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FontStyle.italic
-                                    ))),
+                                        fontSize: mdTxSize,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w600,
+                                        fontStyle: FontStyle.italic))),
 
                             // adding note
                             Container(
@@ -418,44 +394,43 @@ class _AXState extends State<AXPage> {
                                             ))),
 
                                 Container(
-                                  child: Row(
+                                    child: Row(
                                   children: [
-                                    Column(children: [
-                                      ToggleSwitch(
-                                        minWidth: 75.0,
-                                        minHeight: 30.0,
-                                        fontSize: xsTxSize,
-                                        activeBgColor: [(Colors.grey[800])!],
-                                        activeFgColor: Colors.amber[600],
-                                        inactiveBgColor: Colors.grey[800],
-                                        inactiveFgColor: Colors.white,
-                                        initialLabelIndex: 0,
-                                        totalSwitches: 2,
-                                        labels: ['STAKE', 'UNSTAKE'],
-                                        onToggle: (index) {
-                                        },
-                                      ),
-                                    ],),
-
-                                  Column(children: [
-                                      ToggleSwitch(
-                                        borderColor: [(Colors.grey[800])!],
-                                        minWidth: 50.0,
-                                        minHeight: 30.0,
-                                        fontSize: xsTxSize,
-                                        activeBgColor: [(Colors.grey[800])!],
-                                        activeFgColor: Colors.amber[600],
-                                        inactiveBgColor: Colors.grey[800],
-                                        inactiveFgColor: Colors.white,
-                                        initialLabelIndex: 0,
-                                        totalSwitches: 4,
-                                        labels: ['25%', '50%', '75%', 'MAX'],
-                                        onToggle: (index) {
-                                        },
-                                      ),
-                                    ],),
-
-                                    
+                                    Column(
+                                      children: [
+                                        ToggleSwitch(
+                                          minWidth: 75.0,
+                                          minHeight: 30.0,
+                                          fontSize: xsTxSize,
+                                          activeBgColor: [(Colors.grey[800])!],
+                                          activeFgColor: Colors.amber[600],
+                                          inactiveBgColor: Colors.grey[800],
+                                          inactiveFgColor: Colors.white,
+                                          initialLabelIndex: 0,
+                                          totalSwitches: 2,
+                                          labels: ['STAKE', 'UNSTAKE'],
+                                          onToggle: (index) {},
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        ToggleSwitch(
+                                          borderColor: [(Colors.grey[800])!],
+                                          minWidth: 50.0,
+                                          minHeight: 30.0,
+                                          fontSize: xsTxSize,
+                                          activeBgColor: [(Colors.grey[800])!],
+                                          activeFgColor: Colors.amber[600],
+                                          inactiveBgColor: Colors.grey[800],
+                                          inactiveFgColor: Colors.white,
+                                          initialLabelIndex: 0,
+                                          totalSwitches: 4,
+                                          labels: ['25%', '50%', '75%', 'MAX'],
+                                          onToggle: (index) {},
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 )),
 
@@ -463,7 +438,8 @@ class _AXState extends State<AXPage> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                                   child: ConstrainedBox(
-                                    constraints:BoxConstraints.tight(Size(350, 60)),
+                                    constraints:
+                                        BoxConstraints.tight(Size(350, 60)),
                                     child: TextFormField(
                                       decoration: InputDecoration(
                                           fillColor: Colors.grey[900],
@@ -500,23 +476,27 @@ class _AXState extends State<AXPage> {
                                         onPressed: () {
                                           showDialog(
                                             context: context,
-                                            builder: (BuildContext context) => _buildPopupDialog(context),
-                                          );},
+                                            builder: (BuildContext context) =>
+                                                _buildPopupDialog(context),
+                                          );
+                                        },
                                         style: approveButton,
                                       ),
                                       height: 50,
                                       width: 350,
                                     )),
-                                
+
                                 Padding(
                                     padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                                     child: SizedBox(
                                       child: ElevatedButton(
-                                        child: const Text('Connect to a wallet'),
+                                        child:
+                                            const Text('Connect to a wallet'),
                                         onPressed: () {
                                           showDialog(
                                             context: context,
-                                            builder: (BuildContext context) => _buildPopupDialog(context),
+                                            builder: (BuildContext context) =>
+                                                _buildPopupDialog(context),
                                           );
                                         },
                                         style: connectButton,
