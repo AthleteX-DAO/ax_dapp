@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:ae_dapp/pages/MyTeam2.dart';
+import 'package:ae_dapp/pages/MyTeam.dart';
 import 'package:ae_dapp/pages/TradingBlock.dart';
 import 'package:ae_dapp/pages/AXPage.dart';
 import 'package:ae_dapp/pages/ExplorePage.dart';
@@ -19,7 +19,7 @@ class _NavigationBarState extends State<NavigationBar> {
     AXPage(),
     ExplorePage(),
     TradingBlock(),
-    MyTeam2(),
+    MyTeam(),
   ];
 
   void _onItemTapped(int index) {
