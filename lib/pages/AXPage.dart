@@ -1,6 +1,5 @@
 import 'dart:js_util';
 import 'dart:math';
-import 'package:ae_dapp/contracts/StakingRewards.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:web3dart/web3dart.dart';

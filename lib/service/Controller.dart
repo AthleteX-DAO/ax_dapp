@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:flutter_web3_provider/ethers.dart';
@@ -52,6 +51,7 @@ class Controller {
   }
 
   // Get the ABI from testnet BSC
+  // ignore: unused_element
   Future<DeployedContract> _retrieveContract(String contractName) async {
     // Reading the contract abi
     String abiStringFile =
