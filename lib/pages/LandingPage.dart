@@ -99,31 +99,6 @@ class _LandingPageState extends State<LandingPage> {
               ConstrainedBox(
                   constraints: BoxConstraints.tightFor(width: 250, height: 55),
                   child: ElevatedButton(
-                    child: Text("CREATE AX WALLET",
-                        style: TextStyle(
-                          fontFamily: 'OpenSans',
-                          fontSize: buttonTxt,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        )),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => NavigationBar()),
-                      );
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.amber[400]!),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.amber[400]!),
-                        ))),
-                  )),
-              ConstrainedBox(
-                  constraints: BoxConstraints.tightFor(width: 250, height: 55),
-                  child: ElevatedButton(
                     child: Text("START TRADING",
                         style: TextStyle(
                           fontFamily: 'OpenSans',
