@@ -193,7 +193,7 @@ class RSSReaderState extends State<RSSReader> {
     return Text(
       title,
       style: TextStyle(
-          fontSize: 18.0,
+          fontSize: 15.0,
           fontWeight: FontWeight.w500,
           color: colorHackerHeading),
       maxLines: 2,

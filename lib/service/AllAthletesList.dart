@@ -120,6 +120,7 @@ class _AllAthletesListState extends State<AllAthletesList> {
             ),
             title: Text(a.name ?? "",
               style: TextStyle(
+                letterSpacing: 1,
                 color: Colors.amber[600],
                 fontSize: 20,
                 fontWeight: FontWeight.w800
@@ -158,7 +159,7 @@ class _AllAthletesListState extends State<AllAthletesList> {
                 ));
           } else if (snapshot.hasError) {
             return Text(
-                "Something went wrong! make sure you're connected to the internet");
+                "Something went wrong! make sure you're connected to the internet",);
           }
           return Center(
             child: SizedBox(
