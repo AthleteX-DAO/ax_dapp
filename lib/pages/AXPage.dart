@@ -186,11 +186,18 @@ class _AXState extends State<AXPage> {
               children: [
                 // Main Left Area
                 Container(
+                    decoration:BoxDecoration(
+                      
+                    border: Border.all(),
+                    color: Colors.grey[900],
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20))
+                    ),
                     margin: EdgeInsets.fromLTRB(0, 175, 0, 0),
                     alignment: Alignment.center,
                     height: 500,
                     width: 400,
-                    color: Colors.grey[900],
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -338,11 +345,18 @@ class _AXState extends State<AXPage> {
               children: [
                 //Main Right Area
                 Container(
+                    decoration:BoxDecoration(
+                        
+                      border: Border.all(),
+                      color: Colors.grey[800],
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        bottomRight: Radius.circular(20))
+                      ),
                     margin: EdgeInsets.fromLTRB(0, 175, 0, 0),
                     alignment: Alignment.center,
                     height: 500,
                     width: 500,
-                    color: Colors.grey[800],
 
                     // My Liquidity Area
                     child: Row(

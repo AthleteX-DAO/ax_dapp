@@ -6,6 +6,11 @@ class TradingBlock extends StatefulWidget {
   @override
   _TradingBlockState createState() => _TradingBlockState();
 }
+var walletConnected = true;
+
+Future<bool> getIsWalletConnected() async {
+  return true;
+}
 
 class _TradingBlockState extends State<TradingBlock> {
   @override
@@ -45,11 +50,11 @@ class _TradingBlockState extends State<TradingBlock> {
             Column(
               children: <Widget>[
                 Padding(
-                    padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
+                    padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                     child: Container(
-                      width: 800,
+                      width: 500,
                         decoration: BoxDecoration(
-                          color: Colors.grey[800],
+                          color: Colors.grey[900],
                           borderRadius:
                               BorderRadius.all(const Radius.circular(10.0)),
                         ),
@@ -58,13 +63,12 @@ class _TradingBlockState extends State<TradingBlock> {
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
+                                    padding: EdgeInsets.fromLTRB(25, 15, 0, 5),
                                     child: Text("Swap",
                                         style: TextStyle(
                                           fontFamily: 'OpenSans',
-                                          fontSize: txt,
-                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400,
                                         )))),
                             Container(
                               color: Colors.transparent,
@@ -75,7 +79,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                   Container(
                                     padding: EdgeInsets.all(12.0),
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[800],
+                                      color: Colors.grey[900],
                                       borderRadius: BorderRadius.all(
                                           const Radius.circular(10.0)),
                                     ),
@@ -89,7 +93,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                                 borderRadius: BorderRadius.all(
                                                     const Radius.circular(
                                                         10.0)),
-                                                color: Colors.grey[900],
+                                                color: Colors.grey[800],
                                               ),
                                               child: Align(
                                                   alignment:
@@ -100,7 +104,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                                         Icons.arrow_downward),
                                                   ))),
                                           Container(
-                                            height: 15,
+                                            height: 10,
                                             color: Colors.transparent,
                                           ),
                                           Container(
@@ -110,7 +114,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                                 borderRadius: BorderRadius.all(
                                                     const Radius.circular(
                                                         10.0)),
-                                                color: Colors.grey[900],
+                                                color: Colors.grey[800],
                                               ),
                                               child: Align(
                                                   alignment:
@@ -130,7 +134,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all<Color>(
-                                                Colors.grey[800]!),
+                                                Colors.grey[900]!),
                                       ),
                                       child: Icon(
                                         Icons.arrow_downward_sharp,
@@ -140,7 +144,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                     width: 40,
                                     height: 40,
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[800],
+                                      color: Colors.grey[900],
                                       borderRadius: BorderRadius.all(
                                           const Radius.circular(10.0)),
                                     ),
@@ -150,68 +154,45 @@ class _TradingBlockState extends State<TradingBlock> {
                             ),
                             Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 20),
+                                    horizontal: 0, vertical: 20),
                                 child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.center,
                                     children: <Widget>[
-                                      ConstrainedBox(
-                                          constraints: BoxConstraints.tightFor(
-                                              width: 250, height: 55),
-                                          child: ElevatedButton(
-                                            child: Text("CONNECT WALLET",
-                                                style: TextStyle(
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: butTx,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.amber[400],
-                                                )),
-                                            onPressed: () {},
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                            Color>(
-                                                        Colors.grey[800]!),
-                                                shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          18.0),
-                                                  side: BorderSide(
-                                                      color:
-                                                          Colors.amber[400]!),
-                                                ))),
-                                          )),
-                                      ConstrainedBox(
-                                          constraints: BoxConstraints.tightFor(
-                                              width: 250, height: 55),
-                                          child: ElevatedButton(
-                                            child: Text("SWAP",
-                                                style: TextStyle(
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: butTx,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.white,
-                                                )),
-                                            onPressed: () {},
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                            Color>(
-                                                        Colors.amber[400]!),
-                                                shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          18.0),
-                                                  side: BorderSide(
-                                                      color:
-                                                          Colors.amber[400]!),
-                                                ))),
-                                          )),
-                                    ]))
+                                      // boolean is user wallet connected
+                                      // ignore: unrelated_type_equality_checks
+                                      getIsWalletConnected() == true
+                                      ? ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.amber.withOpacity(0.8),
+                                            fixedSize: Size(240, 75),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(25))
+                                          ),
+                                          child: Text("SWAP", 
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontFamily: 'OpenSans',
+                                              fontWeight: FontWeight.w400)),
+                                          onPressed: () {},
+                                        )
+                                      : ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: Colors.blue.withOpacity(0.3),
+                                              fixedSize: Size(450, 60),
+                                              shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(25))
+                                            ),
+                                          child: Text("Connect Wallet", 
+                                            style: TextStyle(
+                                              color: Colors.blue.withOpacity(0.8),
+                                              fontSize: 20,
+                                              fontFamily: 'OpenSans',
+                                              fontWeight: FontWeight.w400)),
+                                          onPressed: () {},
+                                        )
+                                      ]))
                           ],
                         ))),
               ],
