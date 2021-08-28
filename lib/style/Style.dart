@@ -40,15 +40,15 @@ final ButtonStyle claimButton = ElevatedButton.styleFrom(
       fontSize: smTxSize,
       fontFamily: 'OpenSans',
       fontWeight: FontWeight.w600),
-  primary: Colors.grey[800],
+  primary: Colors.grey[900],
   onPrimary: Colors.amber[600],
   minimumSize: Size(250, 75));
 
 final ButtonStyle connectButton = ElevatedButton.styleFrom(
   textStyle: TextStyle(
-      fontSize: xsTxSize,
+      fontSize: smTxSize,
       fontFamily: 'OpenSans',
       fontWeight: FontWeight.w200),
-  primary: Colors.blue[400],
-  onPrimary: Colors.white,
-  minimumSize: Size(250, 75));
+  primary: Colors.blue.withOpacity(0.3),
+  onPrimary: Colors.white.withOpacity(0.8),
+  fixedSize: Size(250, 75));

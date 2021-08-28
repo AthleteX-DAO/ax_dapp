@@ -1,5 +1,8 @@
+import 'package:ae_dapp/style/Style.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
+
+var md2TxSize = 20;
 
 class AllAthletesList extends StatefulWidget {
   @override
@@ -115,8 +118,14 @@ class _AllAthletesListState extends State<AllAthletesList> {
               Icons.sports_baseball_rounded,
               color: Colors.yellow[760],
             ),
-            title: Text(a.name ?? ""),
-            subtitle: Text("Buy: ${a.warValue}"),
+            title: Text(a.name ?? "",
+              style: TextStyle(
+                letterSpacing: 1,
+                color: Colors.amber[600],
+                fontSize: 20,
+                fontWeight: FontWeight.w800
+              )),
+            subtitle: Text("${a.warValue}"),
             trailing: alreadyBought
                 ? Icon(
                     Icons.check_circle,
@@ -150,7 +159,7 @@ class _AllAthletesListState extends State<AllAthletesList> {
                 ));
           } else if (snapshot.hasError) {
             return Text(
-                "Something went wrong! make sure you're connected to the internet");
+                "Something went wrong! make sure you're connected to the internet",);
           }
           return Center(
             child: SizedBox(
