@@ -62,7 +62,6 @@ class _MyTeamState extends State<MyTeam> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              /// TODO: Player Photo
                               Container(
                                   // padding: EdgeInsets.only(left: 20),
                                   child: Text("User Name",

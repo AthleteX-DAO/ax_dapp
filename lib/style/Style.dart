@@ -1,14 +1,6 @@
-import 'dart:math';
-
-
 // flutter format .
 
-import 'package:ae_dapp/service/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-// import 'package:toggle_switch/toggle_switch.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:ae_dapp/pages/AXPage.dart';
 
 const double lgTxSize = 52;
 const double mdTxSize = 35;
@@ -51,4 +43,4 @@ final ButtonStyle connectButton = ElevatedButton.styleFrom(
       fontWeight: FontWeight.w200),
   primary: Colors.blue.withOpacity(0.3),
   onPrimary: Colors.white.withOpacity(0.8),
-  fixedSize: Size(250, 75));
+  minimumSize: Size(250, 75));

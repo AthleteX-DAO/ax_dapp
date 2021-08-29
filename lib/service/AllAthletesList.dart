@@ -16,7 +16,7 @@ class _AllAthletesListState extends State<AllAthletesList> {
   final TextEditingController _filter = new TextEditingController(); //
   Widget _appBarTitle = new Text('My Team');
   List filteredNames = <Athlete>[]; // names filtered by search text
-  Icon _searchIcon = new Icon(Icons.search);
+
   final _boughtAthletes = <Athlete>{};
   Future<dynamic>? _loadData;
   String _searchText = "";

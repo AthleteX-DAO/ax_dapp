@@ -15,8 +15,8 @@ Future<bool> getIsWalletConnected() async {
 class _TradingBlockState extends State<TradingBlock> {
   @override
   Widget build(BuildContext context) {
-    double txt = 30;
-    double butTx = 20;
+    // double txt = 30;
+    // double butTx = 20;
     double lgTxSize = 52;
 
     return Scaffold(
@@ -40,7 +40,7 @@ class _TradingBlockState extends State<TradingBlock> {
                     image: AssetImage("assets/images/x.png"),
                   ),
                 )),
-            Text("TRADING BLOCK",
+            Text("APT Swap",
                 style: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: lgTxSize,
@@ -165,7 +165,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                       ? ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             primary: Colors.amber.withOpacity(0.8),
-                                            fixedSize: Size(240, 75),
+                                            minimumSize: Size(240, 75),
                                             shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(25))
                                           ),
@@ -180,7 +180,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                       : ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               primary: Colors.blue.withOpacity(0.3),
-                                              fixedSize: Size(450, 60),
+                                              minimumSize: Size(450, 60),
                                               shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(25))
                                             ),
