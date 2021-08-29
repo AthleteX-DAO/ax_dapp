@@ -52,3 +52,13 @@ final ButtonStyle connectButton = ElevatedButton.styleFrom(
   primary: Colors.blue.withOpacity(0.3),
   onPrimary: Colors.white.withOpacity(0.8),
   fixedSize: Size(250, 75));
+
+
+final ButtonStyle confirmSwap = ElevatedButton.styleFrom(
+  textStyle: TextStyle(
+      fontSize: smTxSize,
+      fontFamily: 'OpenSans',
+      fontWeight: FontWeight.w600),
+  primary: Colors.amber[600],
+  onPrimary: Colors.white,
+  fixedSize: Size(300, 50));

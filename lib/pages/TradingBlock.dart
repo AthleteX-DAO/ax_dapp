@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ae_dapp/style/Style.dart';
 
 class TradingBlock extends StatefulWidget {
   const TradingBlock({Key? key}) : super(key: key);
@@ -6,11 +7,61 @@ class TradingBlock extends StatefulWidget {
   @override
   _TradingBlockState createState() => _TradingBlockState();
 }
-var walletConnected = true;
 
 Future<bool> getIsWalletConnected() async {
   return true;
 }
+
+
+Widget _tradeConfirmation(BuildContext context) {
+  return new AlertDialog(
+    backgroundColor: Colors.white,
+    title: Text('Confirm Swap',
+    textAlign: TextAlign.left,
+    style: TextStyle(
+      color: Colors.grey[900],
+      fontSize: 15,
+      fontWeight: FontWeight.w400,
+    fontFamily: 'OpenSans',
+    )
+    ),
+    content: new Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          child: Text('')
+        ),
+
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          child: Text('')
+        ),
+
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          child: ElevatedButton(
+            child: Align(
+              alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                  child: Text('Confirm Swap'),
+                  ),
+              ),
+            onPressed: () {},
+            style: confirmSwap,
+          ),
+        ),
+
+
+      ],
+    ),
+    
+  );
+}
+
+var walletConnected = true;
 
 class _TradingBlockState extends State<TradingBlock> {
   @override
@@ -40,7 +91,7 @@ class _TradingBlockState extends State<TradingBlock> {
                     image: AssetImage("assets/images/x.png"),
                   ),
                 )),
-            Text("TRADING BLOCK",
+            Text("SWAP",
                 style: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: lgTxSize,
@@ -60,19 +111,19 @@ class _TradingBlockState extends State<TradingBlock> {
                         ),
                         child: Column(
                           children: <Widget>[
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                    padding: EdgeInsets.fromLTRB(25, 15, 0, 5),
-                                    child: Text("Swap",
-                                        style: TextStyle(
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w400,
-                                        )))),
+                            // Align(
+                            //     alignment: Alignment.centerLeft,
+                            //     child: Padding(
+                            //         padding: EdgeInsets.fromLTRB(25, 15, 0, 5),
+                            //         child: Text("Swap",
+                            //             style: TextStyle(
+                            //               fontFamily: 'OpenSans',
+                            //               fontSize: 20,
+                            //               fontWeight: FontWeight.w400,
+                            //             )))),
                             Container(
                               color: Colors.transparent,
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 5),
                               child: Stack(
                                 alignment: AlignmentDirectional.center,
                                 children: [
@@ -161,21 +212,27 @@ class _TradingBlockState extends State<TradingBlock> {
                                     children: <Widget>[
                                       // boolean is user wallet connected
                                       // ignore: unrelated_type_equality_checks
-                                      getIsWalletConnected() == true
+                                      walletConnected
                                       ? ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            primary: Colors.amber.withOpacity(0.8),
-                                            fixedSize: Size(240, 75),
-                                            shape: RoundedRectangleBorder(
+                                              primary: Colors.amber[600],
+                                              fixedSize: Size(450, 60),
+                                              shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(25))
-                                          ),
-                                          child: Text("SWAP", 
+                                            ),
+                                          child: Text("Swap", 
                                             style: TextStyle(
+                                              letterSpacing: .5,
                                               color: Colors.white,
-                                              fontSize: 20,
+                                              fontSize: 25,
                                               fontFamily: 'OpenSans',
-                                              fontWeight: FontWeight.w400)),
-                                          onPressed: () {},
+                                              fontWeight: FontWeight.w600)),
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) => _tradeConfirmation(context),
+                                            );
+                                          },
                                         )
                                       : ElevatedButton(
                                           style: ElevatedButton.styleFrom(
