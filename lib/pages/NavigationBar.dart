@@ -19,7 +19,7 @@ class _NavigationBarState extends State<NavigationBar> {
     AXPage(),
     ExplorePage(),
     TradingBlock(),
-    MyTeam(),
+    // MyTeam(),
   ];
 
   void _onItemTapped(int index) {
@@ -46,12 +46,12 @@ class _NavigationBarState extends State<NavigationBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.swap_horizontal_circle_sharp),
-            label: 'Trading Block',
+            label: 'APT Swap',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group_sharp),
-            label: 'My Team',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.group_sharp),
+          //   label: 'My Team',
+          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Vx.hexToColor("#fec901"),
