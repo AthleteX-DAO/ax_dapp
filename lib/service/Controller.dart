@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:flutter_web3_provider/ethereum.dart';
-import 'package:flutter_web3_provider/ethers.dart';
+import 'package:flutter_web3/flutter_web3.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart'; //Reference Library https://pub.dev/packages/web3dart/example
 import 'package:bip39/bip39.dart'
@@ -16,17 +15,24 @@ class Controller {
 
   final String _rpcUrl = 'https://rpc-mumbai.matic.today';
   final String _wsUrl = 'wss://rpc-mumbai.matic.today';
+  static const OPERATING_CHAIN = 80001;
+
   // private client for web3dart
-  bool isLoading = true;
-  // Eth related variable declarations
+
+  // bool get isInOperatingChain => currentChain == OPERATING_CHAIN;
+  // bool get isConnected => Ethereum.isSupported && currentAddress.isNotEmpty;
 
   // ignore: avoid_init_to_null
   late String _abiCode, privateAddress, userMnemonic;
-  late EthereumAddress _contractAddress, _publicAddress;
+  late EthereumAddress _contractAddress, _publicAddress, _walletAddress;
+  late Web3Provider _web3;
   late Credentials _credentials;
   late Web3Client _client;
-  late Web3Provider _web3;
-  late final DeployedContract staking;
+  
+
+  final wc = WalletConnectProvider.fromRpc(
+      {OPERATING_CHAIN: 'https://rpc-mumbai.matic.today'},
+      chainId: OPERATING_CHAIN);
 
   // No-args constructor
   Controller() {
@@ -42,6 +48,9 @@ class Controller {
   Web3Provider get web3 => _web3;
   Credentials get credentials => _credentials;
   EthereumAddress get publicAddress => _publicAddress;
+
+  // Setters
+
 
   initialSetup() async {
     // Setup connection between eth rpc node & dApp
@@ -67,6 +76,18 @@ class Controller {
     // return deployed contract
     return contract;
   }
+
+  // connectWC() async {
+  //   await wc.connect();
+  //   if (wc.connected) {
+  //     currentAddress = wc.accounts.first;
+  //     currentChain = 56;
+  //     wcConnected = true;
+  //     web3 = Web3Provider.fromWalletConnect(wc);
+  //   }
+
+  //   update();
+  // }
 
   Future<String> getMnemonic() async {
     // Generate a random mnemonic (uses crypto.randomBytes under the hood), defaults to 128-bits of entropy

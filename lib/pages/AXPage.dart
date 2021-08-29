@@ -1,12 +1,9 @@
-import 'dart:js_util';
 import 'dart:math';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web3/flutter_web3.dart';
 import 'package:web3dart/web3dart.dart';
 import '../contracts/AthleteX.g.dart';
-import 'package:flutter_web3_provider/ethers.dart';
-import 'package:flutter_web3_provider/ethereum.dart';
-import 'package:js/js.dart';
 
 // flutter format .
 import 'package:url_launcher/url_launcher.dart';
@@ -46,9 +43,7 @@ Widget _buildPopupDialog(BuildContext context) {
               ),
             ),
             onPressed: () async {
-              var accounts = await promiseToFuture(ethereum!
-                  .request(RequestParams(method: 'eth_requestAccounts')));
-              print(accounts);
+              // connectMetamask();
             },
             style: walletButton,
           ),
@@ -86,8 +81,6 @@ Widget _buildPopupDialog(BuildContext context) {
   );
 }
 
-Controller _c = Controller();
-
 class AXPage extends StatefulWidget {
   @override
   _AXState createState() => _AXState();
@@ -105,11 +98,6 @@ class _AXState extends State<AXPage> {
   void initState() {
     print("Initiating Page!");
     super.initState();
-    if (ethereum != null) {
-      web3 = Web3Provider(ethereum!);
-      balanceF = promiseToFuture(web3.getBalance(ethereum!.selectedAddress));
-      print(balanceF);
-    }
   }
 
   // Actionable
@@ -142,6 +130,10 @@ class _AXState extends State<AXPage> {
 
   Future<double> UnclaimedRewards() async {
     return new Random(300).nextDouble();
+  }
+
+  Future<void> connectMetamask() async {
+    // Web3Provider goes here
   }
 
   Widget build(BuildContext context) {
