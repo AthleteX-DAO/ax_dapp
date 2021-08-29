@@ -28,38 +28,35 @@ class Controller {
   late Web3Provider _web3;
   late Credentials _credentials;
   late Web3Client _client;
-  
+  Contract staking, LSPair;
+  final ContractERC20 _axToken =
+      ContractERC20("0x585E0c93F73C520ca6513fc03f450dAea3D4b493", ethereum!);
+  // ContractERC20 _gasToken = ContractERC20(address, ethereum);
 
   final wc = WalletConnectProvider.fromRpc(
       {OPERATING_CHAIN: 'https://rpc-mumbai.matic.today'},
       chainId: OPERATING_CHAIN);
 
   // No-args constructor
-  Controller() {
-    initialSetup();
-    _web3 = Web3Provider(ethereum!);
-    _client = Web3Client(_rpcUrl, Client(), socketConnector: () {
-      return IOWebSocketChannel.connect(_wsUrl).cast<String>();
-    });
-  }
+  Controller() {}
 
   // Getters
   Web3Client get client => _client;
   Web3Provider get web3 => _web3;
   Credentials get credentials => _credentials;
   EthereumAddress get publicAddress => _publicAddress;
+  ContractERC20 get axToken => _axToken;
 
-  // Setters
-
-
-  initialSetup() async {
-    // Setup connection between eth rpc node & dApp
-
-    // Automatically create a wallet upon instantiation
-    // await createWallet();
+  connectWeb3Provider() async {
+    if (ethereum != null) {
+      try {
+        final accounts = await ethereum!.requestAccount();
+      } on EthereumUserRejected {
+        print('user rejected the modal');
+      }
+    }
   }
 
-  // Get the ABI from testnet BSC
   // ignore: unused_element
   Future<DeployedContract> _retrieveContract(String contractName) async {
     // Reading the contract abi
