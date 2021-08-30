@@ -13,106 +13,98 @@ Controller c = Controller();
 class Controller {
   // RPC & WS are now linked to MATIC-Testnet
 
+  late JsonRpcProvider rpcProvider;
   final String _rpcUrl = 'https://rpc-mumbai.matic.today';
   final String _wsUrl = 'wss://rpc-mumbai.matic.today';
   static const OPERATING_CHAIN = 80001;
-
-  // private client for web3dart
-
-  // bool get isInOperatingChain => currentChain == OPERATING_CHAIN;
-  // bool get isConnected => Ethereum.isSupported && currentAddress.isNotEmpty;
+  String currentAddress = '';
+  int currentChain = -1;
+  bool wcConnected = false;
+  final wc = WalletConnectProvider.fromRpc({80001: 'https://rpc-mumbai.matic.today'}, chainId: OPERATING_CHAIN, network: 'Mumbai');
 
   // ignore: avoid_init_to_null
-  late String _abiCode, privateAddress, userMnemonic;
-  late EthereumAddress _contractAddress, _publicAddress, _walletAddress;
-  late Web3Provider _web3;
-  late Credentials _credentials;
-  late Web3Client _client;
-  Contract staking, LSPair;
+  Web3Provider? _web3wc;
+  // final Contract staking = Contract(
+  //     "0x063086C5b352F986718Db9383c894Be9Cd4350fA", abi, provider!.getSigner());
   final ContractERC20 _axToken =
       ContractERC20("0x585E0c93F73C520ca6513fc03f450dAea3D4b493", ethereum!);
-  // ContractERC20 _gasToken = ContractERC20(address, ethereum);
-
-  final wc = WalletConnectProvider.fromRpc(
-      {OPERATING_CHAIN: 'https://rpc-mumbai.matic.today'},
-      chainId: OPERATING_CHAIN);
 
   // No-args constructor
-  Controller() {}
+  Controller() {
+    rpcProvider = JsonRpcProvider(_rpcUrl);
+    _web3wc = Web3Provider(Ethereum.provider);
+  }
 
   // Getters
-  Web3Client get client => _client;
-  Web3Provider get web3 => _web3;
-  Credentials get credentials => _credentials;
-  EthereumAddress get publicAddress => _publicAddress;
+  Web3Provider? get web3wc => _web3wc;
   ContractERC20 get axToken => _axToken;
+  bool get isInOperatingChain => currentChain == OPERATING_CHAIN;
+  bool get isConnected => Ethereum.isSupported && currentAddress.isNotEmpty;
 
-  connectWeb3Provider() async {
-    if (ethereum != null) {
-      try {
-        final accounts = await ethereum!.requestAccount();
-      } on EthereumUserRejected {
-        print('user rejected the modal');
+  connectProvider() async {
+    if (Ethereum.isSupported) {
+      final accs = await ethereum!.requestAccount();
+      if (accs.isNotEmpty) {
+        currentAddress = accs.first;
+        currentChain = await ethereum!.getChainId();
       }
     }
   }
 
-  // ignore: unused_element
-  Future<DeployedContract> _retrieveContract(String contractName) async {
-    // Reading the contract abi
-    String abiStringFile =
-        await rootBundle.loadString('../../contracts/$contractName.json');
-    var jsonAbi = jsonDecode(abiStringFile);
-    _abiCode = jsonEncode(jsonAbi["abi"]);
-    // assign contract address
-    _contractAddress = EthereumAddress.fromHex(
-        jsonAbi["networks"]["80001"]["address"]); //BSC-TESTNET Address
-    final contract = DeployedContract(
-        ContractAbi.fromJson(_abiCode, "$contractName"), _contractAddress);
-
-    // return deployed contract
-    return contract;
-  }
-
-  // connectWC() async {
-  //   await wc.connect();
-  //   if (wc.connected) {
-  //     currentAddress = wc.accounts.first;
-  //     currentChain = 56;
-  //     wcConnected = true;
-  //     web3 = Web3Provider.fromWalletConnect(wc);
-  //   }
-
-  //   update();
-  // }
-
-  Future<String> getMnemonic() async {
-    // Generate a random mnemonic (uses crypto.randomBytes under the hood), defaults to 128-bits of entropy
-    return (userMnemonic);
-  }
-
-  Future<void> createWallet([String? mnemonic]) async {
-    // If user comes with a mnemonic seed
-    var seed;
-    if (mnemonic == null) {
-      var validMnemonic;
-      validMnemonic = bip39.generateMnemonic();
-      seed = bip39.mnemonicToSeedHex(validMnemonic);
-      _credentials = EthPrivateKey.fromHex(seed);
-      mnemonic = validMnemonic;
-    } else {
-      seed = bip39.mnemonicToSeedHex(mnemonic);
-      _credentials = EthPrivateKey.fromHex(seed);
+  connectWC() async {
+    await wc.connect();
+    if (wc.connected) {
+      currentAddress = wc.accounts.first;
+      currentChain = 56;
+      wcConnected = true;
+      _web3wc = Web3Provider.fromWalletConnect(wc);
     }
-
-    // stores private / public keypair
-    privateAddress = seed;
-    userMnemonic = mnemonic!;
   }
 
-  Future<EthereumAddress> getPublicAddress() async {
-    // Is this below necessary?
-    EthereumAddress pAddress = await _credentials.extractAddress();
-    return pAddress;
+  clear() {
+    currentAddress = '';
+    currentChain = -1;
+    wcConnected = false;
+    _web3wc = null;
   }
+
+  init() {
+    if (Ethereum.isSupported) {
+      connectProvider();
+
+      ethereum!.onAccountsChanged((accs) {
+        clear();
+      });
+
+      ethereum!.onChainChanged((chain) {
+        clear();
+      });
+    }
+  }
+
+  getLastestBlock() async {
+    print(await provider!.getLastestBlock());
+    print(await provider!.getLastestBlockWithTransaction());
+  }
+
+  testProvider() async {
+    final rpcProvider = JsonRpcProvider('https://bsc-dataseed.binance.org/');
+    print(rpcProvider);
+    print(await rpcProvider.getNetwork());
+  }
+
+  test() async {}
+
+  testSwitchChain() async {
+    await ethereum!.walletSwitchChain(97, () async {
+      await ethereum!.walletAddChain(
+        chainId: 97,
+        chainName: 'Binance Testnet',
+        nativeCurrency:
+            CurrencyParams(name: 'BNB', symbol: 'BNB', decimals: 18),
+        rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+      );
+    });
+  }
+
 }
