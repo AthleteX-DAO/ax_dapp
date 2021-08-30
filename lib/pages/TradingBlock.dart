@@ -1,4 +1,6 @@
+import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web3/flutter_web3.dart';
 
 class TradingBlock extends StatefulWidget {
   const TradingBlock({Key? key}) : super(key: key);
@@ -6,13 +8,16 @@ class TradingBlock extends StatefulWidget {
   @override
   _TradingBlockState createState() => _TradingBlockState();
 }
+
 var walletConnected = true;
 
 Future<bool> getIsWalletConnected() async {
   return true;
 }
 
+
 class _TradingBlockState extends State<TradingBlock> {
+  
   @override
   Widget build(BuildContext context) {
     // double txt = 30;
@@ -52,7 +57,7 @@ class _TradingBlockState extends State<TradingBlock> {
                 Padding(
                     padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                     child: Container(
-                      width: 500,
+                        width: 500,
                         decoration: BoxDecoration(
                           color: Colors.grey[900],
                           borderRadius:
@@ -156,43 +161,61 @@ class _TradingBlockState extends State<TradingBlock> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 0, vertical: 20),
                                 child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       // boolean is user wallet connected
                                       // ignore: unrelated_type_equality_checks
                                       getIsWalletConnected() == true
-                                      ? ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Colors.amber.withOpacity(0.8),
-                                            minimumSize: Size(240, 75),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(25))
-                                          ),
-                                          child: Text("SWAP", 
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontFamily: 'OpenSans',
-                                              fontWeight: FontWeight.w400)),
-                                          onPressed: () {},
-                                        )
-                                      : ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              primary: Colors.blue.withOpacity(0.3),
-                                              minimumSize: Size(450, 60),
-                                              shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(25))
-                                            ),
-                                          child: Text("Connect Wallet", 
-                                            style: TextStyle(
-                                              color: Colors.blue.withOpacity(0.8),
-                                              fontSize: 20,
-                                              fontFamily: 'OpenSans',
-                                              fontWeight: FontWeight.w400)),
-                                          onPressed: () {},
-                                        )
-                                      ]))
+                                          ? ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.amber
+                                                      .withOpacity(0.8),
+                                                  minimumSize: Size(240, 75),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              25))),
+                                              child: Text("SWAP",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                      fontFamily: 'OpenSans',
+                                                      fontWeight:
+                                                          FontWeight.w400)),
+                                              onPressed: () {},
+                                            )
+                                          : ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.blue
+                                                      .withOpacity(0.3),
+                                                  minimumSize: Size(450, 60),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              25))),
+                                              child: Text("Connect Wallet",
+                                                  style: TextStyle(
+                                                      color: Colors.blue
+                                                          .withOpacity(0.8),
+                                                      fontSize: 20,
+                                                      fontFamily: 'OpenSans',
+                                                      fontWeight:
+                                                          FontWeight.w400)),
+                                              onPressed: () async {
+                                                // `Ethereum.isSupported` is the same as `ethereum != null`
+if (ethereum != null) {
+  try {
+    // Prompt user to connect to the provider, i.e. confirm the connection modal
+    final accs = await ethereum!
+        .requestAccount(); // Get all accounts in node disposal
+    accs; // [foo,bar]
+  } on EthereumUserRejected {
+    print('User rejected the modal');
+  }
+}
+                                              },
+                                            )
+                                    ]))
                           ],
                         ))),
               ],
