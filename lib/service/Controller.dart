@@ -1,15 +1,4 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:flutter_web3/flutter_web3.dart';
-import 'package:http/http.dart';
-import 'package:web3dart/web3dart.dart'; //Reference Library https://pub.dev/packages/web3dart/example
-import 'package:bip39/bip39.dart'
-    as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
-import 'package:web_socket_channel/io.dart';
-
-// State management
-Controller c = Controller();
-
 class Controller {
   // RPC & WS are now linked to MATIC-Testnet
 
@@ -30,11 +19,7 @@ class Controller {
       ContractERC20("0x585E0c93F73C520ca6513fc03f450dAea3D4b493", ethereum!);
 
   // No-args constructor
-  Controller() {
-    rpcProvider = JsonRpcProvider(_rpcUrl);
-    _web3wc = Web3Provider(Ethereum.provider);
-  }
-
+  
   // Getters
   Web3Provider? get web3wc => _web3wc;
   ContractERC20 get axToken => _axToken;
@@ -68,19 +53,6 @@ class Controller {
     _web3wc = null;
   }
 
-  init() {
-    if (Ethereum.isSupported) {
-      connectProvider();
-
-      ethereum!.onAccountsChanged((accs) {
-        clear();
-      });
-
-      ethereum!.onChainChanged((chain) {
-        clear();
-      });
-    }
-  }
 
   getLastestBlock() async {
     print(await provider!.getLastestBlock());
