@@ -7,7 +7,6 @@ const double mdTxSize = 35;
 const double smTxSize = 15;
 const double xsTxSize = 12;
 
-const url = "https://www.axmarkets.net/ax";
 
 final ButtonStyle walletButton = ElevatedButton.styleFrom(
         textStyle: TextStyle(

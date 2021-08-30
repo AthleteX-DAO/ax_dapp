@@ -112,7 +112,7 @@ class _KeyGenerationState extends State<KeyGeneration> {
                 color: Colors.grey[900],
                 borderRadius: BorderRadius.circular(10)),
             alignment: Alignment.center,
-            child: SelectableText(await contractLink.getMnemonic(),
+            child: SelectableText("await contractLink.getMnemonic()",
                 style: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: 24,
