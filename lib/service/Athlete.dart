@@ -149,6 +149,188 @@ class Athlete {
         gamesStarted: json['Started'],
         warValue: 0.0); // this should be updated with the latest data
   }
+
+
+  /* @Ryan Are you creating these stats elsewhere?
+  *   Should we import those stats instead of recreating?
+  */
+
+  /*
+    Used to create the Individual Athlete portion of the ExplorePage
+  */
+  Widget createAthleteWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+
+        // Contain Athlete's name and info
+        Container(
+          child: Row(
+            children: <Widget>[
+              // Name and Sport
+              Column(
+                children: <Widget>[
+                  Text(
+                    name!, 
+                    style: TextStyle(
+                      letterSpacing: .5,
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontFamily: 'OpenSans',
+                      fontWeight: FontWeight.w600
+                    )
+                  ),
+                  Text(
+                    "Major League Baseball", 
+                    style: TextStyle(
+                      letterSpacing: .5,
+                      color: Colors.white,
+                      fontSize: 8,
+                      fontFamily: 'OpenSans',
+                    )
+                  ),
+                ],
+              ),
+              Text(
+                "%24", 
+                style: TextStyle(
+                  letterSpacing: .5,
+                  color: Colors.green,
+                  fontSize: 25,
+                  fontFamily: 'OpenSans',
+                )
+              ),
+              Text(
+                warValue!.toStringAsFixed(2), 
+                style: TextStyle(
+                  letterSpacing: .5,
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.w600,
+                )
+              ),
+            ],
+          ),
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            borderRadius: BorderRadius.all(const Radius.circular(2.0))
+          ),
+        ),
+        
+        //Graph 
+        // ************************
+        //  Needs History imported
+        // ************************
+        
+        // Long/Short Button
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            // Long Button
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: SizedBox(
+                child: ElevatedButton(
+                  child: Text('LONG'),
+                  onPressed: () {},
+                  style: longButton
+                ),
+              )
+            ),
+
+            // Short Button
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: SizedBox(
+                child: ElevatedButton(
+                  child: Text('SHORT'),
+                  onPressed: () {},
+                  style: shortButton
+                ),
+              )
+            ),
+          ]
+        ),
+
+        // Mint/Redeem Button
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            // Mint Button
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: SizedBox(
+                child: ElevatedButton(
+                  child: Text('MINT'),
+                  onPressed: () {},
+                  style: mintButton
+                ),
+              )
+            ),
+
+            // Redeem Button
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: SizedBox(
+                child: ElevatedButton(
+                  child: Text('Redeem'),
+                  onPressed: () {},
+                  style: redeemButton
+                ),
+              )
+            ),
+          ]
+        ),
+      ]
+    );
+
+    
+  }
+
+
+  // Button Styles
+
+  final ButtonStyle longButton = ElevatedButton.styleFrom(
+    textStyle: TextStyle(
+      fontSize: 12,
+      fontFamily: 'OpenSans',
+      fontWeight: FontWeight.w600
+    ),
+    primary: Colors.green,
+    onPrimary: Colors.white,
+    fixedSize: Size(100, 50)
+  );
+
+  final ButtonStyle shortButton = ElevatedButton.styleFrom(
+    textStyle: TextStyle(
+        fontSize: 12,
+        fontFamily: 'OpenSans',
+        fontWeight: FontWeight.w600),
+    primary: Colors.red,
+    onPrimary: Colors.white,
+    fixedSize: Size(100, 50)
+  );
+
+  final ButtonStyle mintButton = ElevatedButton.styleFrom(
+    textStyle: TextStyle(
+        fontSize: 12,
+        fontFamily: 'OpenSans',
+        fontWeight: FontWeight.w600),
+    primary: Colors.red,
+    onPrimary: Colors.white,
+    fixedSize: Size(100, 50)
+  );
+
+  final ButtonStyle redeemButton = ElevatedButton.styleFrom(
+    textStyle: TextStyle(
+        fontSize: 12,
+        fontFamily: 'OpenSans',
+        fontWeight: FontWeight.w600),
+    primary: Colors.red,
+    onPrimary: Colors.white,
+    fixedSize: Size(100, 50)
+  );
 }
 
 List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
