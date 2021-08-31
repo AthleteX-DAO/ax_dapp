@@ -96,7 +96,7 @@ class _AllAthletesListState extends State<AllAthletesList> {
     _AllAthletesList.addAll(snapshot.data!);
 
     return ListView.builder(
-      itemCount: _AllAthletesList.length,
+      itemCount: 9,
       padding: EdgeInsets.all(16.0),
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
@@ -119,19 +119,17 @@ class _AllAthletesListState extends State<AllAthletesList> {
               color: Colors.yellow[760],
             ),
             title: Text(a.name ?? "",
-              style: TextStyle(
-                letterSpacing: 1,
-                color: Colors.amber[600],
-                fontSize: 20,
-                fontWeight: FontWeight.w800
-              )),
-            subtitle: Text("${a.warValue}"),
-            trailing: alreadyBought
-                ? Icon(
-                    Icons.check_circle,
-                    color: Colors.greenAccent,
-                  )
-                : Icon(Icons.check_circle_outline),
+                style: TextStyle(
+                    letterSpacing: 1,
+                    color: Colors.amber[600],
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800)),
+            trailing: Text("\$0.0148",
+                style: TextStyle(
+                    letterSpacing: 1,
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w500)),
             onTap: () {},
           )
         ],
@@ -159,7 +157,8 @@ class _AllAthletesListState extends State<AllAthletesList> {
                 ));
           } else if (snapshot.hasError) {
             return Text(
-                "Something went wrong! make sure you're connected to the internet",);
+              "Something went wrong! make sure you're connected to the internet",
+            );
           }
           return Center(
             child: SizedBox(

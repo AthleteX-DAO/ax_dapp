@@ -36,25 +36,23 @@ class _ExplorePageState extends State<ExplorePage> {
                     image: AssetImage("assets/images/x.png"),
                   ),
                 )),
-            Padding(padding: EdgeInsets.only(bottom: 20),
-              child: Text("EXPLORE",
-                  style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: lgTxSize,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                  )),
-            ),
+            Text("EXPLORE",
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: lgTxSize,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.italic,
+                )),
             Container(
                 width: MediaQuery.of(context).size.width - 300,
                 height: MediaQuery.of(context).size.height * .675,
-                padding: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: 30),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.grey[900],
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Column(
                       children: <Widget>[
@@ -68,9 +66,16 @@ class _ExplorePageState extends State<ExplorePage> {
                                   fontStyle: FontStyle.italic,
                                 ))),
                         Container(
-                            padding: EdgeInsets.only(bottom: 20),
-                            height: MediaQuery.of(context).size.height * .55,
-                            width: MediaQuery.of(context).size.width / 2 - 200,
+                            padding: EdgeInsets.only(bottom: 5),
+                            height: MediaQuery.of(context).size.height * .05,
+                            width: 200,
+                            child: Container(
+                              child: TextField(),
+                            )),
+                        Container(
+                            padding: EdgeInsets.only(bottom: 10),
+                            height: MediaQuery.of(context).size.height * .5,
+                            width: MediaQuery.of(context).size.width / 2 - 225,
                             child: AllAthletesList())
                       ],
                     ),
@@ -78,7 +83,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       children: <Widget>[
                         Container(
                             padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Text("Sports News",
+                            child: Text("Athlete Performance",
                                 style: TextStyle(
                                   fontFamily: 'OpenSans',
                                   fontSize: headerTx,
@@ -89,7 +94,9 @@ class _ExplorePageState extends State<ExplorePage> {
                             padding: EdgeInsets.only(bottom: 20),
                             height: MediaQuery.of(context).size.height * .55,
                             width: MediaQuery.of(context).size.width / 2 - 200,
-                            child: RSSReader())
+                            child: Container(
+                              child: Text('Athete Uno'),
+                            ))
                       ],
                     ),
                   ],
