@@ -122,13 +122,13 @@ class _AllAthletesListState extends State<AllAthletesList> {
                 style: TextStyle(
                     letterSpacing: 1,
                     color: Colors.amber[600],
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.w800)),
             trailing: Text("\$0.0148",
                 style: TextStyle(
                     letterSpacing: 1,
                     color: Colors.white,
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.w500)),
             onTap: () {},
           )
