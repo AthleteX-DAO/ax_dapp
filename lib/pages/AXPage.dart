@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:html' as html;
 
-
 // flutter format .
 
 import 'package:ae_dapp/service/colors.dart';
@@ -18,18 +17,15 @@ _launchURL() async {
   }
 }
 
-
 Widget _buildPopupDialog(BuildContext context) {
   return new AlertDialog(
-    
     title: Text('Connect to a wallet',
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      color: Colors.grey[400],
-      fontSize: 20,
-    fontFamily: 'OpenSans',
-    )
-    ),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.grey[400],
+          fontSize: 20,
+          fontFamily: 'OpenSans',
+        )),
     content: new Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,50 +35,45 @@ Widget _buildPopupDialog(BuildContext context) {
           child: ElevatedButton(
             child: Align(
               alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                  child: Text('Install Metamask'),
-                  ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                child: Text('Install Metamask'),
               ),
+            ),
             onPressed: () {},
             style: walletButton,
           ),
         ),
-
         Padding(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: ElevatedButton(
             child: Align(
               alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                  child: Text('WalletConnect'),
-                  ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                child: Text('WalletConnect'),
               ),
+            ),
             onPressed: () {},
             style: walletButton,
           ),
         ),
-
         Padding(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: ElevatedButton(
             child: Align(
               alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                  child: Text('Coinbase Wallet'),
-                  ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                child: Text('Coinbase Wallet'),
               ),
+            ),
             onPressed: () {},
             style: walletButton,
           ),
         ),
-
-
       ],
     ),
-    
   );
 }
 
@@ -136,7 +127,6 @@ class _AXState extends State<AXPage> {
   }
 
   Widget build(BuildContext context) {
-    
     return Scaffold(
         body: Stack(
       children: <Widget>[
@@ -178,372 +168,393 @@ class _AXState extends State<AXPage> {
 
         // main user area
         Align(
-          alignment: Alignment.center,
-          child:Container(
-            decoration:BoxDecoration(
-                        
-                      border: Border.all(),
-                      color: Colors.grey[900],
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                        bottomRight: Radius.circular(20))
-                      ),
-          width: 950,
-          height: 540,
-          margin: EdgeInsets.fromLTRB(0, 75, 0, 0),
-          child: Container(
-            child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-
-              // my account info
-              Column(
+            alignment: Alignment.center,
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20))),
+              width: 950,
+              height: 540,
+              margin: EdgeInsets.fromLTRB(0, 75, 0, 0),
+              child: Container(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Main Left Area
-                  Container(
-                      decoration:BoxDecoration(
-                        
-                      border: Border.all(),
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                        bottomRight: Radius.circular(20))
-                      ),
-                      margin: EdgeInsets.fromLTRB(0, 20, 5, 0),
-                      alignment: Alignment.center,
-                      height: 500,
-                      width: 400,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                  // my account info
+                  Column(
+                    children: [
+                      // Main Left Area
+                      Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: (Colors.grey[800])!),
+                              color: Colors.grey[800],
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20))),
+                          margin: EdgeInsets.fromLTRB(0, 20, 5, 0),
+                          alignment: Alignment.center,
+                          height: 500,
+                          width: 400,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
 
-                        // Main Left Area
-                        children: [
-                          Column(
+                            // Main Left Area
                             children: [
-                              // My Account
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 45, 0, 20),
-                                child: Text(
-                                  'My Account',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FontStyle.italic
-                                    )
+                              Column(
+                                children: [
+                                  // My Account
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 45, 0, 20),
+                                    child: Text('My Account',
+                                        style: TextStyle(
+                                            fontSize: 25,
+                                            fontFamily: 'OpenSans',
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle: FontStyle.italic)),
                                   ),
-                              ),
 
-                              // Staked AX
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                child: Text(
-                                  'Staked AX: ',
-                                  style: TextStyle(
-                                    fontSize: smTxSize,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-
-                              // Available AX
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                child: Text(
-                                  'Available AX: ',
-                                  style: TextStyle(
-                                    fontSize: smTxSize,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-
-                              // Total AX
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                child: Text(
-                                  'Total AX: ',
-                                  style: TextStyle(
-                                    fontSize: smTxSize,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-
-                              // My Rewards
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                child: Text('My Rewards',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FontStyle.italic
-                                    )),
-                              ),
-
-                              // APY
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                child: Text(
-                                  'APY: ',
-                                  style: TextStyle(
-                                    fontSize: smTxSize,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-
-                              // Rewards Earned
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                child: Text(
-                                  'Rewards Earned: ',
-                                  style: TextStyle(
-                                    fontSize: smTxSize,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-
-                              // Unclaimed Rewards
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: Text(
-                                  'Unclaimed Rewards: ',
-                                  style: TextStyle(
-                                    fontSize: smTxSize,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                              //Claim rewards button
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                child: SizedBox(
-                                  child: ElevatedButton(
-                                    child: Text('CLAIM REWARDS'),
-                                    onPressed: () {},
-                                    style: claimButton,
-                                  ),
-                                  height: 50,
-                                  width: 250,
-                                )),
-                              //Buy AX button
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                child: SizedBox(
-                                  child: ElevatedButton(
-                                    child: Text('BUY AX'),
-                                    onPressed: _launchURL,
-                                    style: claimButton,
-                                  ),
-                                  height: 50,
-                                  width: 250,
-                                )),
-                            ],
-                          )
-                        ],
-                      )),
-                ],
-              ),
-              
-              //Main right area
-              Column(
-                children: [
-                  //Main Right Area
-                  Container(
-                      decoration:BoxDecoration(
-                          
-                        border: Border.all(),
-                        color: Colors.grey[800],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          bottomLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20))
-                        ),
-                      margin: EdgeInsets.fromLTRB(5, 20, 0, 0),
-                      alignment: Alignment.center,
-                      height: 500,
-                      width: 500,
-
-                      // My Liquidity Area
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            
-                            child: Column(
-                            children: [
-                              // My Liquidity
-                              Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 45, 0, 10),
-                                  child: Text('My Liquidity',
+                                  // Staked AX
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    child: Text(
+                                      'Staked AX: ',
                                       style: TextStyle(
-                                        fontSize: mdTxSize,
+                                        fontSize: smTxSize,
                                         fontFamily: 'OpenSans',
-                                        fontWeight: FontWeight.w600,
-                                        fontStyle: FontStyle.italic
-                                      ))),
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
 
-                              // adding note
+                                  // Available AX
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    child: Text(
+                                      'Available AX: ',
+                                      style: TextStyle(
+                                        fontSize: smTxSize,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Total AX
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    child: Text(
+                                      'Total AX: ',
+                                      style: TextStyle(
+                                        fontSize: smTxSize,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+
+                                  // My Rewards
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                    child: Text('My Rewards',
+                                        style: TextStyle(
+                                            fontSize: 25,
+                                            fontFamily: 'OpenSans',
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle: FontStyle.italic)),
+                                  ),
+
+                                  // APY
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    child: Text(
+                                      'APY: ',
+                                      style: TextStyle(
+                                        fontSize: smTxSize,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Rewards Earned
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    child: Text(
+                                      'Rewards Earned: ',
+                                      style: TextStyle(
+                                        fontSize: smTxSize,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Unclaimed Rewards
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    child: Text(
+                                      'Unclaimed Rewards: ',
+                                      style: TextStyle(
+                                        fontSize: smTxSize,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                  //Claim rewards button
+                                  Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                      child: SizedBox(
+                                        child: ElevatedButton(
+                                          child: Text('CLAIM REWARDS'),
+                                          onPressed: () {},
+                                          style: claimButton,
+                                        ),
+                                        height: 50,
+                                        width: 250,
+                                      )),
+                                  //Buy AX button
+                                  Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                      child: SizedBox(
+                                        child: ElevatedButton(
+                                          child: Text('BUY AX'),
+                                          onPressed: _launchURL,
+                                          style: claimButton,
+                                        ),
+                                        height: 50,
+                                        width: 250,
+                                      )),
+                                ],
+                              )
+                            ],
+                          )),
+                    ],
+                  ),
+
+                  //Main right area
+                  Column(
+                    children: [
+                      //Main Right Area
+                      Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: (Colors.grey[800])!),
+                              color: Colors.grey[800],
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20))),
+                          margin: EdgeInsets.fromLTRB(5, 20, 0, 0),
+                          alignment: Alignment.center,
+                          height: 500,
+                          width: 500,
+
+                          // My Liquidity Area
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
                               Container(
                                   child: Column(
                                 children: [
-                                  // Add liquidity tag
+                                  // My Liquidity
                                   Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                      child: Text('Add liquidity to stake AX',
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 45, 0, 10),
+                                      child: Text('My Liquidity',
                                           style: TextStyle(
-                                            fontSize: smTxSize,
-                                            fontFamily: 'OpenSans',
-                                            fontWeight: FontWeight.w200,
-                                          ))),
+                                              fontSize: mdTxSize,
+                                              fontFamily: 'OpenSans',
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.italic))),
 
-                                  // remove note
-                                  Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-                                      child:
-                                          Text('Remove liquidity to receive AX',
+                                  // adding note
+                                  Container(
+                                      child: Column(
+                                    children: [
+                                      // Add liquidity tag
+                                      Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                          child:
+                                              Text('Add liquidity to stake AX',
+                                                  style: TextStyle(
+                                                    fontSize: smTxSize,
+                                                    fontFamily: 'OpenSans',
+                                                    fontWeight: FontWeight.w200,
+                                                  ))),
+
+                                      // remove note
+                                      Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 0, 0, 40),
+                                          child: Text(
+                                              'Remove liquidity to receive AX',
                                               style: TextStyle(
                                                 fontSize: smTxSize,
                                                 fontFamily: 'OpenSans',
                                                 fontWeight: FontWeight.w200,
                                               ))),
 
-                                  Container(
-                                    child: Row(
-                                    children: [
-                                      Column(children: [
-                                        ToggleSwitch(
-                                          minWidth: 75.0,
-                                          minHeight: 30.0,
-                                          fontSize: xsTxSize,
-                                          activeBgColor: [(Colors.grey[800])!],
-                                          activeFgColor: Colors.amber[600],
-                                          inactiveBgColor: Colors.grey[800],
-                                          inactiveFgColor: Colors.white,
-                                          initialLabelIndex: 0,
-                                          totalSwitches: 2,
-                                          labels: ['STAKE', 'UNSTAKE'],
-                                          onToggle: (index) {
-                                          },
-                                        ),
-                                      ],),
+                                      Container(
+                                          child: Row(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              ToggleSwitch(
+                                                minWidth: 75.0,
+                                                minHeight: 30.0,
+                                                fontSize: xsTxSize,
+                                                activeBgColor: [
+                                                  (Colors.grey[800])!
+                                                ],
+                                                activeFgColor:
+                                                    Colors.amber[600],
+                                                inactiveBgColor:
+                                                    Colors.grey[800],
+                                                inactiveFgColor: Colors.white,
+                                                initialLabelIndex: 0,
+                                                totalSwitches: 2,
+                                                labels: ['STAKE', 'UNSTAKE'],
+                                                onToggle: (index) {},
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              ToggleSwitch(
+                                                borderColor: [
+                                                  (Colors.grey[800])!
+                                                ],
+                                                minWidth: 50.0,
+                                                minHeight: 30.0,
+                                                fontSize: xsTxSize,
+                                                activeBgColor: [
+                                                  (Colors.grey[800])!
+                                                ],
+                                                activeFgColor:
+                                                    Colors.amber[600],
+                                                inactiveBgColor:
+                                                    Colors.grey[800],
+                                                inactiveFgColor: Colors.white,
+                                                initialLabelIndex: 0,
+                                                totalSwitches: 4,
+                                                labels: [
+                                                  '25%',
+                                                  '50%',
+                                                  '75%',
+                                                  'MAX'
+                                                ],
+                                                onToggle: (index) {},
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )),
 
-                                    Column(children: [
-                                        ToggleSwitch(
-                                          borderColor: [(Colors.grey[800])!],
-                                          minWidth: 50.0,
-                                          minHeight: 30.0,
-                                          fontSize: xsTxSize,
-                                          activeBgColor: [(Colors.grey[800])!],
-                                          activeFgColor: Colors.amber[600],
-                                          inactiveBgColor: Colors.grey[800],
-                                          inactiveFgColor: Colors.white,
-                                          initialLabelIndex: 0,
-                                          totalSwitches: 4,
-                                          labels: ['25%', '50%', '75%', 'MAX'],
-                                          onToggle: (index) {
-                                          },
+                                      // text field box
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints.tight(
+                                              Size(350, 60)),
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                                fillColor: Colors.grey[900],
+                                                filled: true,
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: BorderSide(
+                                                    color: (Colors.amber[600])!,
+                                                    width: 3.0,
+                                                  ),
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: BorderSide(
+                                                    color: (Colors.grey[900])!,
+                                                    width: 3.0,
+                                                  ),
+                                                ),
+                                                border: UnderlineInputBorder(),
+                                                hintText:
+                                                    'Enter the amount of AX to stake'),
+                                          ),
                                         ),
-                                      ],),
+                                      ),
 
-                                      
+                                      // Approve button
+                                      Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                          child: SizedBox(
+                                            child: ElevatedButton(
+                                              child: const Text('APPROVE'),
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          _buildPopupDialog(
+                                                              context),
+                                                );
+                                              },
+                                              style: approveButton,
+                                            ),
+                                            height: 50,
+                                            width: 350,
+                                          )),
+
+                                      Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 30, 0, 0),
+                                          child: SizedBox(
+                                            child: ElevatedButton(
+                                              child:
+                                                  const Text('Connect Wallet'),
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          _buildPopupDialog(
+                                                              context),
+                                                );
+                                              },
+                                              style: connectButton,
+                                            ),
+                                            height: 50,
+                                            width: 350,
+                                          ))
                                     ],
                                   )),
-
-                                  // text field box
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                    child: ConstrainedBox(
-                                      constraints:BoxConstraints.tight(Size(350, 60)),
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                            fillColor: Colors.grey[900],
-                                            filled: true,
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
-                                              borderSide: BorderSide(
-                                                color: (Colors.amber[600])!,
-                                                width: 3.0,
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
-                                              borderSide: BorderSide(
-                                                color: (Colors.grey[900])!,
-                                                width: 3.0,
-                                              ),
-                                            ),
-                                            border: UnderlineInputBorder(),
-                                            hintText:
-                                                'Enter the amount of AX to stake'),
-                                      ),
-                                    ),
-                                  ),
-
-                                  // Approve button
-                                  Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                      child: SizedBox(
-                                        child: ElevatedButton(
-                                          child: const Text('APPROVE'),
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) => _buildPopupDialog(context),
-                                            );},
-                                          style: approveButton,
-                                        ),
-                                        height: 50,
-                                        width: 350,
-                                      )),
-                                  
-                                  Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                                      child: SizedBox(
-                                        child: ElevatedButton(
-                                          child: const Text('Connect Wallet'),
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) => _buildPopupDialog(context),
-                                            );
-                                          },
-                                          style: connectButton,
-                                        ),
-                                        height: 50,
-                                        width: 350,
-                                      ))
                                 ],
-                              )),
+                              ))
                             ],
-                          ))
-                        ],
-                      )),
+                          )),
+                    ],
+                  )
                 ],
-              )
-            ],
-          )),
-        )
-        )],
+              )),
+            ))
+      ],
     ));
   }
 }

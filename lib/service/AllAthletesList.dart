@@ -67,8 +67,13 @@ class _AllAthletesListState extends State<AllAthletesList> {
     _AllAthletesList.addAll(snapshot.data!);
 
     return ListView.builder(
+<<<<<<< HEAD
       itemCount: 20,
       padding: EdgeInsets.all(0),
+=======
+      itemCount: 9,
+      padding: EdgeInsets.all(16.0),
+>>>>>>> 6e55e5b9440c6ebf3c996ba8995f4a491060bf93
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
         final i = index ~/ 2; // i is every even item in this iteration
@@ -101,6 +106,22 @@ class _AllAthletesListState extends State<AllAthletesList> {
               trailing: Text("\$3.1893", style: TextStyle(fontSize: 20)),
               onTap: () {},
             ),
+<<<<<<< HEAD
+=======
+            title: Text(a.name ?? "",
+                style: TextStyle(
+                    letterSpacing: 1,
+                    color: Colors.amber[600],
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800)),
+            trailing: Text("\$0.0148",
+                style: TextStyle(
+                    letterSpacing: 1,
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500)),
+            onTap: () {},
+>>>>>>> 6e55e5b9440c6ebf3c996ba8995f4a491060bf93
           )
         ],
       ),
