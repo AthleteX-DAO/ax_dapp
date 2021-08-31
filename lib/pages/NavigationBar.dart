@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:ae_dapp/pages/MyTeam2.dart';
 import 'package:ae_dapp/pages/TradingBlock.dart';
 import 'package:ae_dapp/pages/AXPage.dart';
 import 'package:ae_dapp/pages/ExplorePage.dart';
@@ -18,8 +17,7 @@ class _NavigationBarState extends State<NavigationBar> {
   List<Widget> _widgetOptions = <Widget>[
     AXPage(),
     ExplorePage(),
-    TradingBlock(),
-    MyTeam2(),
+    TradingBlock()
   ];
 
   void _onItemTapped(int index) {
@@ -47,11 +45,7 @@ class _NavigationBarState extends State<NavigationBar> {
           BottomNavigationBarItem(
             icon: Icon(Icons.swap_horizontal_circle_sharp),
             label: 'Trading Block',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group_sharp),
-            label: 'My Team',
-          ),
+          )
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Vx.hexToColor("#fec901"),

@@ -50,35 +50,6 @@ class _AllAthletesListState extends State<AllAthletesList> {
     return await fetchAthletes();
   }
 
-/*
-  void _searchPressed(String title) {
-    setState(() {
-      if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon = new Icon(Icons.close);
-        this._appBarTitle = new TextField(
-          style: setTextStyle(),
-          controller: _filter,
-          decoration: new InputDecoration(
-              // Probably need to abstract this out later - vx for search
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black)),
-              prefixIcon: new Icon(
-                Icons.search,
-                color: Colors.black,
-              ),
-              hintText: 'Search...',
-              hintStyle: setTextStyle()),
-        );
-      } else {
-        this._searchIcon = new Icon(Icons.search);
-        this._appBarTitle = new Text(title);
-        _filter.clear();
-        this._appBarTitle = null;
-      }
-    });
-  }
-  */
-
   setTextStyle() {
     return TextStyle(color: Colors.blueGrey);
   }
@@ -96,8 +67,8 @@ class _AllAthletesListState extends State<AllAthletesList> {
     _AllAthletesList.addAll(snapshot.data!);
 
     return ListView.builder(
-      itemCount: _AllAthletesList.length,
-      padding: EdgeInsets.all(16.0),
+      itemCount: 20,
+      padding: EdgeInsets.all(0),
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
         final i = index ~/ 2; // i is every even item in this iteration
@@ -110,29 +81,26 @@ class _AllAthletesListState extends State<AllAthletesList> {
     final alreadyBought = _boughtAthletes.contains(a);
 
     return Card(
-      color: Colors.grey[800],
+      color: Colors.grey[900],
       child: Column(
         children: <Widget>[
-          ListTile(
-            leading: Icon(
-              Icons.sports_baseball_rounded,
-              color: Colors.yellow[760],
+          SizedBox(
+            height: 40,
+            child: ListTile(
+              leading: Icon(
+                Icons.sports_baseball_rounded,
+                color: Colors.yellow[760],
+              ),
+              title: Text(a.name ?? "",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      letterSpacing: 1,
+                      color: Colors.amber[600],
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600)),
+              trailing: Text("\$3.1893", style: TextStyle(fontSize: 20)),
+              onTap: () {},
             ),
-            title: Text(a.name ?? "",
-              style: TextStyle(
-                letterSpacing: 1,
-                color: Colors.amber[600],
-                fontSize: 20,
-                fontWeight: FontWeight.w800
-              )),
-            subtitle: Text("${a.warValue}"),
-            trailing: alreadyBought
-                ? Icon(
-                    Icons.check_circle,
-                    color: Colors.greenAccent,
-                  )
-                : Icon(Icons.check_circle_outline),
-            onTap: () {},
           )
         ],
       ),
@@ -159,7 +127,8 @@ class _AllAthletesListState extends State<AllAthletesList> {
                 ));
           } else if (snapshot.hasError) {
             return Text(
-                "Something went wrong! make sure you're connected to the internet",);
+              "Something went wrong! make sure you're connected to the internet",
+            );
           }
           return Center(
             child: SizedBox(
