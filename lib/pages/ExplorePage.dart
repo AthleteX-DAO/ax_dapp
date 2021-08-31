@@ -17,169 +17,6 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
-        body: Stack(
-      children: <Widget>[
-        Image(
-          image: AssetImage("assets/images/background.jpeg"),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          fit: BoxFit.cover,
-        ),
-        Column(
-          children: <Widget>[
-            Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: Image(
-                    width: 80,
-                    height: 80,
-                    image: AssetImage("assets/images/x.png"),
-                  ),
-                )),
-            Padding(
-              padding: EdgeInsets.only(bottom: 20),
-              child: Text("EXPLORE",
-                  style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: lgTxSize,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.italic,
-                  )),
-            ),
-            Container(
-                width: MediaQuery.of(context).size.width - 200,
-                height: MediaQuery.of(context).size.height * .675,
-                padding: EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey[900],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Text("Athlete Tokens",
-                                style: TextStyle(
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FontStyle.italic,
-                                ))),
-                        Container(
-                            padding: EdgeInsets.only(bottom: 0),
-                            height: MediaQuery.of(context).size.height * .55,
-                            width: MediaQuery.of(context).size.width / 2 - 300,
-                            child: AllAthletesList())
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                              width: 600,
-                              height: 75,
-                              child: Container(
-                                  color: Colors.grey,
-                                  child: Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                      child: Text(
-                                        'Chase Anderson',
-                                        style: TextStyle(fontSize: 30),
-                                      )))),
-                        ),
-                        Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                                width: 600,
-                                height: 275,
-                                child: Container(
-                                    color: Colors.white, child: Row()))),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // SizedBox(
-                                //   width: 300,
-                                //   height: 75,
-                                //   child: Container(),
-                                // ),
-                                SizedBox(
-                                    width: 600,
-                                    height: 75,
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                              color: Colors.grey[900],
-                                              child: ElevatedButton(
-                                                style: longButton,
-                                                child: Text('LONG'),
-                                                onPressed: () {},
-                                              )),
-                                          Container(
-                                              color: Colors.grey[900],
-                                              child: ElevatedButton(
-                                                style: shortButton,
-                                                child: Text('SHORT'),
-                                                onPressed: () {},
-                                              ))
-                                        ]))
-                              ]),
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // SizedBox(
-                                //   width: 300,
-                                //   height: 75,
-                                //   child: Container(),
-                                // ),
-                                SizedBox(
-                                    width: 600,
-                                    height: 75,
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                              color: Colors.grey[900],
-                                              child: ElevatedButton(
-                                                style: mintButton,
-                                                child: Text('MINT'),
-                                                onPressed: () {},
-                                              )),
-                                          Container(
-                                              color: Colors.grey[900],
-                                              child: ElevatedButton(
-                                                style: redeemButton,
-                                                child: Text('REDEEM'),
-                                                onPressed: () {},
-                                              ))
-                                        ]))
-                              ]),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-          ],
-=======
         body: Stack(children: <Widget>[
       Image(
         image: AssetImage("assets/images/background.jpeg"),
@@ -198,118 +35,150 @@ class _ExplorePageState extends State<ExplorePage> {
                 image: AssetImage("assets/images/x.png"),
               ),
             )),
-        Text("EXPLORE",
-            style: TextStyle(
-              fontFamily: 'OpenSans',
-              fontSize: lgTxSize,
-              fontWeight: FontWeight.w600,
-              fontStyle: FontStyle.italic,
-            )),
+        Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: Text("EXPLORE",
+              style: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: lgTxSize,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.italic,
+              )),
+        ),
         Container(
-          width: MediaQuery.of(context).size.width - 200,
-          height: MediaQuery.of(context).size.height * .675,
-          padding: EdgeInsets.only(top: 30),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey[900],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Text("Athlete Tokens",
-                          style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: headerTx,
-                            fontWeight: FontWeight.w600,
-                            fontStyle: FontStyle.italic,
-                          ))),
-                  Container(
-                      padding: EdgeInsets.only(bottom: 5),
-                      height: MediaQuery.of(context).size.height * .05,
-                      width: 200,
-                      child: Container(
-                        child: TextField(),
-                      )),
-                  Container(
-                      padding: EdgeInsets.only(bottom: 10),
-                      height: MediaQuery.of(context).size.height * .5,
-                      width: MediaQuery.of(context).size.width / 2 - 250,
-                      child: AllAthletesList())
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  //Main Right Area
-                  Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: (Colors.grey[800])!),
-                          color: Colors.grey[800],
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              bottomLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                              bottomRight: Radius.circular(20))),
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            width: MediaQuery.of(context).size.width - 200,
+            height: MediaQuery.of(context).size.height * .675,
+            padding: EdgeInsets.only(top: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey[900],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Text("Athlete Tokens",
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.italic,
+                            ))),
+                    Container(
+                        padding: EdgeInsets.only(bottom: 0),
+                        height: MediaQuery.of(context).size.height * .55,
+                        width: MediaQuery.of(context).size.width / 2 - 300,
+                        child: AllAthletesList())
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Align(
                       alignment: Alignment.center,
-                      height: 475,
-                      width: 600,
-                      child: Container(
-                        child: Row(
+                      child: SizedBox(
+                          width: 600,
+                          height: 75,
+                          child: Container(
+                              color: Colors.grey,
+                              child: Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  child: Text(
+                                    'Chase Anderson',
+                                    style: TextStyle(fontSize: 30),
+                                  )))),
+                    ),
+                    Align(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                            width: 600,
+                            height: 275,
+                            child:
+                                Container(color: Colors.white, child: Row()))),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Row(children: [
-                              Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                  child: Column(children: [
-                                    Text(
-                                      'Chase Anderson',
-                                      style: TextStyle(
-                                          fontSize: 25, fontFamily: 'OpenSans'),
-                                    ),
-                                  ])),
-                              Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                  child: Column(children: [
-                                    Text(
-                                      '+1.59\%',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontFamily: 'OpenSans',
-                                          color: Colors.green),
-                                    ),
-                                  ])),
-                              Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                  child: Column(children: [
-                                    Text(
-                                      '\$0.0148',
-                                      style: TextStyle(
-                                          fontSize: 25, fontFamily: 'OpenSans'),
-                                    ),
-                                  ])),
-                            ])
-                          ],
-                        ),
-                      ))
-                ],
-              )
-            ],
-          ),
->>>>>>> 6e55e5b9440c6ebf3c996ba8995f4a491060bf93
-        )
-      ])
+                            // SizedBox(
+                            //   width: 300,
+                            //   height: 75,
+                            //   child: Container(),
+                            // ),
+                            SizedBox(
+                                width: 600,
+                                height: 75,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          color: Colors.grey[900],
+                                          child: ElevatedButton(
+                                            style: longButton,
+                                            child: Text('LONG'),
+                                            onPressed: () {},
+                                          )),
+                                      Container(
+                                          color: Colors.grey[900],
+                                          child: ElevatedButton(
+                                            style: shortButton,
+                                            child: Text('SHORT'),
+                                            onPressed: () {},
+                                          ))
+                                    ]))
+                          ]),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // SizedBox(
+                            //   width: 300,
+                            //   height: 75,
+                            //   child: Container(),
+                            // ),
+                            SizedBox(
+                                width: 600,
+                                height: 75,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          color: Colors.grey[900],
+                                          child: ElevatedButton(
+                                            style: mintButton,
+                                            child: Text('MINT'),
+                                            onPressed: () {},
+                                          )),
+                                      Container(
+                                          color: Colors.grey[900],
+                                          child: ElevatedButton(
+                                            style: redeemButton,
+                                            child: Text('REDEEM'),
+                                            onPressed: () {},
+                                          ))
+                                    ]))
+                          ]),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+      ]),
     ]));
   }
 }
-
-
-
-
-
 
 
 
