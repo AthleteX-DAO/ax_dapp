@@ -16,12 +16,23 @@ class _LandingPageState extends State<LandingPage> {
 
     return Scaffold(
         body: Stack(children: <Widget>[
-      Image(
-        image: AssetImage("assets/images/background.jpeg"),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        fit: BoxFit.cover,
+      Container(
+        decoration: new BoxDecoration(
+          color: const Color(0xff7c94b6),
+          image: new DecorationImage(
+            fit: BoxFit.cover,
+            colorFilter: new ColorFilter.mode(
+                Colors.black.withOpacity(.9), BlendMode.darken),
+            image: AssetImage("assets/images/background.jpeg"),
+          ),
+        ),
       ),
+      // Image(
+      //   image: AssetImage("assets/images/background.jpeg"),
+      //   width: MediaQuery.of(context).size.width,
+      //   height: MediaQuery.of(context).size.height,
+      //   fit: BoxFit.cover,
+      // ),
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

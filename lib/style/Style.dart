@@ -21,8 +21,10 @@ final ButtonStyle walletButton = ElevatedButton.styleFrom(
         fontSize: smTxSize,
         fontFamily: 'OpenSans',
         fontWeight: FontWeight.w600),
-    primary: Colors.grey[900],
+    primary: Colors.grey[800],
     onPrimary: Colors.amber[600],
+    shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(20.0)),
     fixedSize: Size(350, 60));
 
 final ButtonStyle approveButton = ElevatedButton.styleFrom(
@@ -30,8 +32,10 @@ final ButtonStyle approveButton = ElevatedButton.styleFrom(
         fontSize: smTxSize,
         fontFamily: 'OpenSans',
         fontWeight: FontWeight.w600),
-    primary: Colors.grey[900],
+    primary: Colors.grey[800],
     onPrimary: Colors.amber[600],
+    shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(20.0)),
     fixedSize: Size(250, 75));
 
 final ButtonStyle claimButton = ElevatedButton.styleFrom(
@@ -39,7 +43,9 @@ final ButtonStyle claimButton = ElevatedButton.styleFrom(
         fontSize: smTxSize,
         fontFamily: 'OpenSans',
         fontWeight: FontWeight.w600),
-    primary: Colors.grey[900],
+    primary: Colors.grey[800],
+    shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(20.0)),
     onPrimary: Colors.amber[600],
     fixedSize: Size(250, 75));
 
@@ -49,6 +55,8 @@ final ButtonStyle connectButton = ElevatedButton.styleFrom(
         fontFamily: 'OpenSans',
         fontWeight: FontWeight.w200),
     primary: Colors.blue.withOpacity(0.3),
+    shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(20.0)),
     onPrimary: Colors.white.withOpacity(0.8),
     fixedSize: Size(250, 75));
 
@@ -56,10 +64,12 @@ final ButtonStyle confirmSwap = ElevatedButton.styleFrom(
     textStyle: TextStyle(
         fontSize: smTxSize,
         fontFamily: 'OpenSans',
-        fontWeight: FontWeight.w600),
+        fontWeight: FontWeight.w400),
     primary: Colors.amber[600],
+    shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(20.0)),
     onPrimary: Colors.white,
-    fixedSize: Size(300, 50));
+    fixedSize: Size(350, 50));
 
 final ButtonStyle longButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -108,3 +118,18 @@ final ButtonStyle redeemButton = ElevatedButton.styleFrom(
         borderRadius: new BorderRadius.circular(10.0)),
     side: BorderSide(color: (Colors.amber[600])!),
     fixedSize: Size(120, 40));
+
+final TextStyle confirmText = TextStyle(
+    color: Colors.grey[500], fontWeight: FontWeight.w100, fontSize: 15);
+
+final TextStyle confirmTextPercent =
+    TextStyle(color: Colors.red, fontWeight: FontWeight.w100, fontSize: 12);
+
+final TextStyle confirmTextCoin = TextStyle(
+    color: Colors.grey[200], fontWeight: FontWeight.w600, fontSize: 23);
+
+final TextStyle confirmTextOther = TextStyle(
+    color: Colors.grey[500], fontWeight: FontWeight.w100, fontSize: 13);
+
+final TextStyle confirmTextOtherBold = TextStyle(
+    color: Colors.grey[400], fontWeight: FontWeight.w600, fontSize: 13);

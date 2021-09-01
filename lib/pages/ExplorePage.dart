@@ -60,7 +60,7 @@ class _ExplorePageState extends State<ExplorePage> {
               )),
         ),
         Container(
-            width: MediaQuery.of(context).size.width - 200,
+            width: MediaQuery.of(context).size.width - 250,
             height: MediaQuery.of(context).size.height * .675,
             padding: EdgeInsets.only(top: 20),
             decoration: BoxDecoration(
@@ -84,7 +84,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     Container(
                         padding: EdgeInsets.only(bottom: 0),
                         height: MediaQuery.of(context).size.height * .55,
-                        width: MediaQuery.of(context).size.width / 2 - 300,
+                        width: MediaQuery.of(context).size.width / 2 - 350,
                         child: AllAthletesList())
                   ],
                 ),
