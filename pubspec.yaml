@@ -50,6 +50,7 @@ dependencies:
   search_page: ^2.0.0+1
   webfeed: ^0.7.0
   chart_sparkline: ^1.0.5
+  syncfusion_flutter_charts: ^18.4.49
 
 
 

@@ -2,6 +2,7 @@ import 'package:ae_dapp/service/AllAthletesList.dart';
 import 'package:ae_dapp/service/AthleteProfile.dart';
 import 'package:ae_dapp/style/Style.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -10,9 +11,22 @@ class ExplorePage extends StatefulWidget {
   _ExplorePageState createState() => _ExplorePageState();
 }
 
+late TooltipBehavior _tooltipBehavior;
+
 class _ExplorePageState extends State<ExplorePage> {
   double lgTxSize = 52;
   double headerTx = 30;
+
+  @override
+  void initState() {
+    _tooltipBehavior = TooltipBehavior(
+        tooltipPosition: TooltipPosition.pointer,
+        enable: true,
+        borderColor: Colors.red,
+        borderWidth: 0,
+        color: Colors.lightBlue);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,38 +90,147 @@ class _ExplorePageState extends State<ExplorePage> {
                 ),
                 Column(
                   children: <Widget>[
+                    // athlete header and name
                     Align(
-                      alignment: Alignment.center,
-                      child: SizedBox(
-                          width: 600,
-                          height: 75,
-                          child: Container(
-                              color: Colors.grey,
-                              child: Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  child: Text(
-                                    'Chase Anderson',
-                                    style: TextStyle(fontSize: 30),
-                                  )))),
-                    ),
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(0, 5, 0, 15),
+                          child: SizedBox(
+                              width: 600,
+                              height: 50,
+                              child: Row(children: [
+                                Column(children: [
+                                  Container(
+                                      color: Colors.grey[900],
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                        child: Icon(
+                                          Icons.sports_baseball_rounded,
+                                          size: 40,
+                                          color: Colors.yellow[760],
+                                        ),
+                                      )),
+                                ]),
+                                Column(children: [
+                                  Container(
+                                      color: Colors.grey[900],
+                                      child: Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                          child: Text(
+                                            'Chase Anderson',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic,
+                                                fontSize: 32,
+                                                fontFamily: 'OpenSans',
+                                                fontWeight: FontWeight.w400),
+                                          ))),
+                                ]),
+                                Column(children: [
+                                  Container(
+                                      color: Colors.grey[900],
+                                      child: Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(15, 10, 0, 0),
+                                          child: Text(
+                                            '+1.02%',
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.green,
+                                                fontFamily: 'OpenSans',
+                                                fontWeight: FontWeight.w400),
+                                          ))),
+                                ])
+                              ])),
+                        )),
+                    Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: SizedBox(
+                              width: 600,
+                              height: 75,
+                              child: Row(children: [
+                                Column(children: [
+                                  Container(
+                                      color: Colors.grey[900],
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                        child: Text(
+                                          '\$3.8908',
+                                          style: TextStyle(
+                                              fontSize: 40,
+                                              fontFamily: 'OpenSans',
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      )),
+                                ]),
+                              ])),
+                        )),
+
+                    // insert athlete graph here
                     Align(
                         alignment: Alignment.center,
                         child: SizedBox(
                             width: 600,
-                            height: 275,
-                            child:
-                                Container(color: Colors.white, child: Row()))),
+                            height: 250,
+                            child: SfCartesianChart(
+                                tooltipBehavior: _tooltipBehavior,
+                                enableAxisAnimation: true,
+                                primaryXAxis: CategoryAxis(
+                                  majorGridLines: MajorGridLines(width: 0),
+                                  //Hide the axis line of x-axis
+                                  axisLine:
+                                      AxisLine(width: 1, color: Colors.white),
+                                  majorTickLines: MajorTickLines(
+                                      width: 0, color: Colors.transparent),
+                                ),
+                                primaryYAxis: NumericAxis(
+                                  minimum: 25,
+                                  maximum: 40,
+                                  isVisible: false,
+                                  desiredIntervals: 5,
+                                  decimalPlaces: 2,
+                                  axisLine:
+                                      AxisLine(width: 1, color: Colors.white),
+                                  majorGridLines: MajorGridLines(width: 0),
+                                  //Hide the axis line of x-axis
+                                  majorTickLines: MajorTickLines(
+                                      width: 0, color: Colors.transparent),
+                                ),
+                                plotAreaBorderColor: Colors.grey[900],
+                                plotAreaBorderWidth: 0.2,
+                                series: <LineSeries<SalesData, String>>[
+                                  LineSeries<SalesData, String>(
+                                      // Bind data source
+                                      dataSource: <SalesData>[
+                                        SalesData('Jan', 35),
+                                        SalesData('Feb', 28),
+                                        SalesData('Mar', 34),
+                                        SalesData('Apr', 32),
+                                        SalesData('May', 40),
+                                        SalesData('Jun', 35),
+                                        SalesData('Jul', 28),
+                                        SalesData('Aug', 34),
+                                        SalesData('Sep', 32),
+                                        SalesData('Oct', 40),
+                                        SalesData('Nov', 35),
+                                        SalesData('Dec', 28)
+                                      ],
+                                      xValueMapper: (SalesData sales, _) =>
+                                          sales.year,
+                                      yValueMapper: (SalesData sales, _) =>
+                                          sales.sales)
+                                ]))),
                     Align(
                       alignment: Alignment.center,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // SizedBox(
-                            //   width: 300,
-                            //   height: 75,
-                            //   child: Container(),
-                            // ),
                             SizedBox(
                                 width: 600,
                                 height: 75,
@@ -130,30 +253,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                             style: shortButton,
                                             child: Text('SHORT'),
                                             onPressed: () {},
-                                          ))
-                                    ]))
-                          ]),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // SizedBox(
-                            //   width: 300,
-                            //   height: 75,
-                            //   child: Container(),
-                            // ),
-                            SizedBox(
-                                width: 600,
-                                height: 75,
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
+                                          )),
                                       Container(
                                           color: Colors.grey[900],
                                           child: ElevatedButton(
@@ -171,6 +271,43 @@ class _ExplorePageState extends State<ExplorePage> {
                                     ]))
                           ]),
                     ),
+                    // Align(
+                    //   alignment: Alignment.center,
+                    //   child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       children: [
+                    //         // SizedBox(
+                    //         //   width: 300,
+                    //         //   height: 75,
+                    //         //   child: Container(),
+                    //         // ),
+                    //         SizedBox(
+                    //             width: 600,
+                    //             height: 75,
+                    //             child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceAround,
+                    //                 crossAxisAlignment:
+                    //                     CrossAxisAlignment.center,
+                    //                 children: [
+                    //                   Container(
+                    //                       color: Colors.grey[900],
+                    //                       child: ElevatedButton(
+                    //                         style: mintButton,
+                    //                         child: Text('MINT'),
+                    //                         onPressed: () {},
+                    //                       )),
+                    //                   Container(
+                    //                       color: Colors.grey[900],
+                    //                       child: ElevatedButton(
+                    //                         style: redeemButton,
+                    //                         child: Text('REDEEM'),
+                    //                         onPressed: () {},
+                    //                       ))
+                    //                 ]))
+                    //       ]),
+                    // ),
                   ],
                 ),
               ],
@@ -180,11 +317,14 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 }
 
-
-
-
 /*
 Explore Page
 My Team
 Generate Key
 */
+
+class SalesData {
+  SalesData(this.year, this.sales);
+  final String year;
+  final double sales;
+}

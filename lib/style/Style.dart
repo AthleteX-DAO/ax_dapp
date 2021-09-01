@@ -71,7 +71,7 @@ final ButtonStyle longButton = ElevatedButton.styleFrom(
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
     side: BorderSide(color: (Colors.grey[900])!),
-    fixedSize: Size(175, 50));
+    fixedSize: Size(120, 40));
 
 final ButtonStyle shortButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -83,28 +83,28 @@ final ButtonStyle shortButton = ElevatedButton.styleFrom(
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
     side: BorderSide(color: (Colors.grey[900])!),
-    fixedSize: Size(175, 50));
+    fixedSize: Size(120, 40));
 
 final ButtonStyle mintButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
         fontSize: smTxSize,
         fontFamily: 'OpenSans',
         fontWeight: FontWeight.w600),
-    primary: Colors.grey[800],
+    primary: Colors.grey[900],
     onPrimary: Colors.white,
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
-    side: BorderSide(color: (Colors.grey[900])!),
-    fixedSize: Size(175, 50));
+    side: BorderSide(color: (Colors.amber[600])!),
+    fixedSize: Size(120, 40));
 
 final ButtonStyle redeemButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
         fontSize: smTxSize,
         fontFamily: 'OpenSans',
         fontWeight: FontWeight.w600),
-    primary: Colors.grey[800],
+    primary: Colors.grey[900],
     onPrimary: Colors.white,
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
-    side: BorderSide(color: (Colors.grey[900])!),
-    fixedSize: Size(175, 50));
+    side: BorderSide(color: (Colors.amber[600])!),
+    fixedSize: Size(120, 40));
