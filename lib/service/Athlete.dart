@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ae_dapp/style/Style.dart';
 
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-04?key=fa329ac2e3ce465e9db5a14b34ca9368
 // https://fly.sportsdata.io/v3/mlb/stats/json/PlayerGameStatsByDate/2021-APR-06?key=fa329ac2e3ce465e9db5a14b34ca9368
@@ -45,6 +46,422 @@ Future<List<Athlete>> fetchAthletes() async {
   } else {
     throw Exception("Failed to get Teams");
   }
+}
+
+Widget _mintAPT(BuildContext context) {
+  return new AlertDialog(
+    backgroundColor: Colors.grey[900],
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
+    title: Text('Confirm Swap', textAlign: TextAlign.left, style: confirmText),
+    content: new Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        //FROM
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [Text('From', style: confirmText)],
+              ),
+              Column(
+                children: [Text('~\$1,300.00', style: confirmText)],
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [Text('ETH', style: confirmTextCoin)],
+              ),
+              Column(
+                children: [Text('10.0702', style: confirmTextCoin)],
+              )
+            ],
+          ),
+        ),
+        //DOWN ARROW
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [Icon(Icons.arrow_downward, size: 15)],
+              )
+            ],
+          ),
+        ),
+        //TO
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [Text('To', style: confirmText)],
+              ),
+              Row(children: [
+                Column(children: [Text('~\$1,290.00', style: confirmText)]),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                    child: Column(children: [
+                      Text('(0.079%)', style: confirmTextPercent)
+                    ]))
+              ])
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'AX',
+                    style: confirmTextCoin,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('9.1000', style: confirmTextCoin)],
+              )
+            ],
+          ),
+        ),
+        //PRICE
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Price',
+                    style: confirmText,
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Text('1 AX = .00589 ETH', style: confirmTextOtherBold)
+                ],
+              )
+            ],
+          ),
+        ),
+        //OTHER INFO
+        Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Liquidity Provider Fee',
+                    style: confirmTextOther,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('0.000824 ETH', style: confirmTextOtherBold)],
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Price Impact',
+                    style: confirmTextOther,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('-0.03%', style: confirmTextOtherBold)],
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Maximum sent',
+                    style: confirmTextOther,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('0.289529 ETH', style: confirmTextOtherBold)],
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 50),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Slippage tolerance',
+                    style: confirmTextOther,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('0.05%', style: confirmTextOtherBold)],
+              )
+            ],
+          ),
+        ),
+        //CONFIRMATION BUTTON
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                  onPressed: () {},
+                  style: confirmSwap,
+                  child: Text('Confirm Swap'))
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _redeemAX(BuildContext context) {
+  return new AlertDialog(
+    backgroundColor: Colors.grey[900],
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
+    title: Text('Confirm Swap', textAlign: TextAlign.left, style: confirmText),
+    content: new Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        //FROM
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [Text('From', style: confirmText)],
+              ),
+              Column(
+                children: [Text('~\$1,300.00', style: confirmText)],
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [Text('ETH', style: confirmTextCoin)],
+              ),
+              Column(
+                children: [Text('10.0702', style: confirmTextCoin)],
+              )
+            ],
+          ),
+        ),
+        //DOWN ARROW
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [Icon(Icons.arrow_downward, size: 15)],
+              )
+            ],
+          ),
+        ),
+        //TO
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [Text('To', style: confirmText)],
+              ),
+              Row(children: [
+                Column(children: [Text('~\$1,290.00', style: confirmText)]),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                    child: Column(children: [
+                      Text('(0.079%)', style: confirmTextPercent)
+                    ]))
+              ])
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'AX',
+                    style: confirmTextCoin,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('9.1000', style: confirmTextCoin)],
+              )
+            ],
+          ),
+        ),
+        //PRICE
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Price',
+                    style: confirmText,
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Text('1 AX = .00589 ETH', style: confirmTextOtherBold)
+                ],
+              )
+            ],
+          ),
+        ),
+        //OTHER INFO
+        Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Liquidity Provider Fee',
+                    style: confirmTextOther,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('0.000824 ETH', style: confirmTextOtherBold)],
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Price Impact',
+                    style: confirmTextOther,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('-0.03%', style: confirmTextOtherBold)],
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Maximum sent',
+                    style: confirmTextOther,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('0.289529 ETH', style: confirmTextOtherBold)],
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 50),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Slippage tolerance',
+                    style: confirmTextOther,
+                  )
+                ],
+              ),
+              Column(
+                children: [Text('0.05%', style: confirmTextOtherBold)],
+              )
+            ],
+          ),
+        ),
+        //CONFIRMATION BUTTON
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                  onPressed: () {},
+                  style: confirmSwap,
+                  child: Text('Confirm Swap'))
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 List<Athlete> parseAthletes(String responseBody, List<Team> _teamList) {
@@ -158,96 +575,250 @@ class Athlete {
     Used to create the Individual Athlete portion of the ExplorePage
   */
   Widget createAthleteWidget() {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: <
-        Widget>[
-      // Contain Athlete's name and info
-      Container(
-        child: Row(
-          children: <Widget>[
-            // Name and Sport
-            Column(
-              children: <Widget>[
-                Text(name!,
-                    style: TextStyle(
-                        letterSpacing: .5,
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontFamily: 'OpenSans',
-                        fontWeight: FontWeight.w600)),
-                Text("Major League Baseball",
-                    style: TextStyle(
-                      letterSpacing: .5,
-                      color: Colors.white,
-                      fontSize: 8,
-                      fontFamily: 'OpenSans',
-                    )),
-              ],
-            ),
-            Text("%24",
-                style: TextStyle(
-                  letterSpacing: .5,
-                  color: Colors.green,
-                  fontSize: 25,
-                  fontFamily: 'OpenSans',
-                )),
-            Text(warValue!.toStringAsFixed(2),
-                style: TextStyle(
-                  letterSpacing: .5,
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.w600,
-                )),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        // athlete header and name
+        Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+              child: SizedBox(
+                  width: 600,
+                  height: 60,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Column(children: [
+                          Container(
+                              color: Colors.grey[900],
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child: Icon(
+                                  Icons.sports_baseball_rounded,
+                                  size: 40,
+                                  color: Colors.yellow[760],
+                                ),
+                              )),
+                        ]),
+                        Column(children: [
+                          Container(
+                              color: Colors.grey[900],
+                              child: Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 5, 50, 0),
+                                  child: Text(
+                                    name!,
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w400),
+                                  ))),
+                        ]),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                  color: Colors.grey[900],
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                                    child: Text(
+                                      '\$3.8908',
+                                      style: TextStyle(
+                                          fontSize: 40,
+                                          fontFamily: 'OpenSans',
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  )),
+                            ]),
+                        Column(children: [
+                          Container(
+                              color: Colors.grey[900],
+                              child: Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
+                                  child: Text(
+                                    '+1.02%',
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.green,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w400),
+                                  ))),
+                        ])
+                      ])),
+            )),
+        Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: SizedBox(width: 600, height: 75, child: Row(children: [])),
+            )),
+
+// insert athlete graph here
+        Align(
+            child: SizedBox(
+          width: 600,
+          height: 200,
+        )),
+
+        Align(
+          alignment: Alignment.center,
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                    width: 600,
+                    height: 75,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              color: Colors.grey[900],
+                              child: ElevatedButton(
+                                style: longButton,
+                                child: Text('LONG'),
+                                onPressed: () {},
+                              )),
+                          Container(
+                              color: Colors.grey[900],
+                              child: ElevatedButton(
+                                style: shortButton,
+                                child: Text('SHORT'),
+                                onPressed: () {},
+                              )),
+                          Container(
+                              color: Colors.grey[900],
+                              child: ElevatedButton(
+                                style: mintButton,
+                                child: Text('MINT'),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        _mintAPT(context),
+                                  );
+                                },
+                              )),
+                          Container(
+                              color: Colors.grey[900],
+                              child: ElevatedButton(
+                                style: redeemButton,
+                                child: Text('REDEEM'),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        _redeemAX(context),
+                                  );
+                                },
+                              ))
+                        ]))
+              ]),
         ),
-        decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.all(const Radius.circular(2.0))),
-      ),
-
-      //Graph
-      // ************************
-      //  Needs History imported
-      // ************************
-
-      // Long/Short Button
-      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
-        // Long Button
-        Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: SizedBox(
-              child: ElevatedButton(
-                  child: Text('LONG'), onPressed: () {}, style: longButton),
-            )),
-
-        // Short Button
-        Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: SizedBox(
-              child: ElevatedButton(
-                  child: Text('SHORT'), onPressed: () {}, style: shortButton),
-            )),
-      ]),
-
-      // Mint/Redeem Button
-      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
-        // Mint Button
-        Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: SizedBox(
-              child: ElevatedButton(
-                  child: Text('MINT'), onPressed: () {}, style: mintButton),
-            )),
-
-        // Redeem Button
-        Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: SizedBox(
-              child: ElevatedButton(
-                  child: Text('Redeem'), onPressed: () {}, style: redeemButton),
-            )),
-      ]),
-    ]);
+        Align(
+            alignment: Alignment.center,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(children: [
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        child: SizedBox(
+                          width: 300,
+                          height: 75,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints.tight(Size(250, 60)),
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                  fillColor: Colors.grey[800],
+                                  filled: true,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide(
+                                      color: (Colors.amber[600])!,
+                                      width: 3.0,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide(
+                                      color: (Colors.grey[900])!,
+                                      width: 3.0,
+                                    ),
+                                  ),
+                                  border: UnderlineInputBorder(),
+                                  hintText:
+                                      'Enter the amount of APT to long/short',
+                                  hintStyle: TextStyle(
+                                    fontSize: 15,
+                                  )),
+                            ),
+                          ),
+                        )),
+                  ]),
+                  Column(
+                    children: [
+                      SizedBox(
+                          width: 300,
+                          height: 40,
+                          child: Text(
+                            '**Mint: Supply AX and receive APT-LSP (Athlete Performance Token Long/Short Pair)**',
+                            style: mintAndRedeemText,
+                            textAlign: TextAlign.center,
+                          )),
+                      SizedBox(
+                          width: 300,
+                          height: 40,
+                          child: Text(
+                              '**Redeem: Supply APT-LSP (Athlete Performace Token Long/Short Pair and receive AX**',
+                              style: mintAndRedeemText,
+                              textAlign: TextAlign.center))
+                    ],
+                  )
+                ])),
+        // Align(
+        //   alignment: Alignment.center,
+        //   child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //       crossAxisAlignment: CrossAxisAlignment.center,
+        //       children: [
+        //         // SizedBox(
+        //         //   width: 300,
+        //         //   height: 75,
+        //         //   child: Container(),
+        //         // ),
+        //         SizedBox(
+        //             width: 600,
+        //             height: 75,
+        //             child: Row(
+        //                 mainAxisAlignment:
+        //                     MainAxisAlignment.spaceAround,
+        //                 crossAxisAlignment:
+        //                     CrossAxisAlignment.center,
+        //                 children: [
+        //                   Container(
+        //                       color: Colors.grey[900],
+        //                       child: ElevatedButton(
+        //                         style: mintButton,
+        //                         child: Text('MINT'),
+        //                         onPressed: () {},
+        //                       )),
+        //                   Container(
+        //                       color: Colors.grey[900],
+        //                       child: ElevatedButton(
+        //                         style: redeemButton,
+        //                         child: Text('REDEEM'),
+        //                         onPressed: () {},
+        //                       ))
+        //                 ]))
+        //       ]),
+        // ),
+      ],
+    );
   }
 
   // Button Styles
