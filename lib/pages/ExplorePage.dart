@@ -1,6 +1,6 @@
-import 'package:ae_dapp/service/AllAthletesList.dart';
-import 'package:ae_dapp/service/AthleteProfile.dart';
+import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/style/Style.dart';
+
 import 'package:flutter/material.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -10,425 +10,87 @@ class ExplorePage extends StatefulWidget {
   _ExplorePageState createState() => _ExplorePageState();
 }
 
-Widget _mintAPT(BuildContext context) {
-  return new AlertDialog(
-    backgroundColor: Colors.grey[900],
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20),
-    ),
-    title: Text('Confirm Swap', textAlign: TextAlign.left, style: confirmText),
-    content: new Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        //FROM
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [Text('From', style: confirmText)],
-              ),
-              Column(
-                children: [Text('~\$1,300.00', style: confirmText)],
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [Text('ETH', style: confirmTextCoin)],
-              ),
-              Column(
-                children: [Text('10.0702', style: confirmTextCoin)],
-              )
-            ],
-          ),
-        ),
-        //DOWN ARROW
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [Icon(Icons.arrow_downward, size: 15)],
-              )
-            ],
-          ),
-        ),
-        //TO
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [Text('To', style: confirmText)],
-              ),
-              Row(children: [
-                Column(children: [Text('~\$1,290.00', style: confirmText)]),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Column(children: [
-                      Text('(0.079%)', style: confirmTextPercent)
-                    ]))
-              ])
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'AX',
-                    style: confirmTextCoin,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('9.1000', style: confirmTextCoin)],
-              )
-            ],
-          ),
-        ),
-        //PRICE
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Price',
-                    style: confirmText,
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Text('1 AX = .00589 ETH', style: confirmTextOtherBold)
-                ],
-              )
-            ],
-          ),
-        ),
-        //OTHER INFO
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Liquidity Provider Fee',
-                    style: confirmTextOther,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('0.000824 ETH', style: confirmTextOtherBold)],
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Price Impact',
-                    style: confirmTextOther,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('-0.03%', style: confirmTextOtherBold)],
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Maximum sent',
-                    style: confirmTextOther,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('0.289529 ETH', style: confirmTextOtherBold)],
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 5, 50),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Slippage tolerance',
-                    style: confirmTextOther,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('0.05%', style: confirmTextOtherBold)],
-              )
-            ],
-          ),
-        ),
-        //CONFIRMATION BUTTON
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                  onPressed: () {},
-                  style: confirmSwap,
-                  child: Text('Confirm Swap'))
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _redeemAX(BuildContext context) {
-  return new AlertDialog(
-    backgroundColor: Colors.grey[900],
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20),
-    ),
-    title: Text('Confirm Swap', textAlign: TextAlign.left, style: confirmText),
-    content: new Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        //FROM
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [Text('From', style: confirmText)],
-              ),
-              Column(
-                children: [Text('~\$1,300.00', style: confirmText)],
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [Text('ETH', style: confirmTextCoin)],
-              ),
-              Column(
-                children: [Text('10.0702', style: confirmTextCoin)],
-              )
-            ],
-          ),
-        ),
-        //DOWN ARROW
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [Icon(Icons.arrow_downward, size: 15)],
-              )
-            ],
-          ),
-        ),
-        //TO
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [Text('To', style: confirmText)],
-              ),
-              Row(children: [
-                Column(children: [Text('~\$1,290.00', style: confirmText)]),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Column(children: [
-                      Text('(0.079%)', style: confirmTextPercent)
-                    ]))
-              ])
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'AX',
-                    style: confirmTextCoin,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('9.1000', style: confirmTextCoin)],
-              )
-            ],
-          ),
-        ),
-        //PRICE
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Price',
-                    style: confirmText,
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Text('1 AX = .00589 ETH', style: confirmTextOtherBold)
-                ],
-              )
-            ],
-          ),
-        ),
-        //OTHER INFO
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Liquidity Provider Fee',
-                    style: confirmTextOther,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('0.000824 ETH', style: confirmTextOtherBold)],
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Price Impact',
-                    style: confirmTextOther,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('-0.03%', style: confirmTextOtherBold)],
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Maximum sent',
-                    style: confirmTextOther,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('0.289529 ETH', style: confirmTextOtherBold)],
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 5, 50),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Slippage tolerance',
-                    style: confirmTextOther,
-                  )
-                ],
-              ),
-              Column(
-                children: [Text('0.05%', style: confirmTextOtherBold)],
-              )
-            ],
-          ),
-        ),
-        //CONFIRMATION BUTTON
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                  onPressed: () {},
-                  style: confirmSwap,
-                  child: Text('Confirm Swap'))
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
 class _ExplorePageState extends State<ExplorePage> {
   double lgTxSize = 52;
   double headerTx = 30;
+
+  List<Athlete> _AllAthletesList = <Athlete>[]; //All athletes
+  final _boughtAthletes = <Athlete>{};
+  Future<dynamic>? _loadData;
+
+  Widget _buildRow(Athlete a) {
+    final alreadyBought = _boughtAthletes.contains(a);
+
+    return Card(
+      color: Colors.grey[900],
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+            child: ListTile(
+              title: Text(a.name ?? "",
+                  textAlign: TextAlign.left, style: athleteListText),
+              trailing: Text("\$3.1893", style: TextStyle(fontSize: 20)),
+              onTap: () {},
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+/*
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.all(const Radius.circular(10.0)),
+      ),
+      child: FutureBuilder<dynamic>(
+        future: _loadData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return RefreshIndicator(
+                onRefresh: () {
+                  return _loadData = fetchAthletes();
+                },
+                child: Center(
+                  child: _buildAthletes(snapshot),
+                ));
+          } else if (snapshot.hasError) {
+            return Text(
+              "Something went wrong! make sure you're connected to the internet",
+            );
+          }
+          return Center(
+            child: SizedBox(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.grey[500],
+              ),
+              height: 50,
+              width: 50,
+            ),
+          );
+        },
+      ),
+    );
+  }
+*/
+
+  Widget _buildAthletes(AsyncSnapshot<dynamic> snapshot) {
+    _AllAthletesList.addAll(snapshot.data!);
+
+    return ListView.builder(
+      itemCount: 20,
+      padding: EdgeInsets.all(0),
+      itemBuilder: (context, index) {
+        if (index.isOdd) return Divider(); /*2*/
+        final i = index ~/ 2; // i is every even item in this iteration
+        return _buildRow(_AllAthletesList[i]);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -523,9 +185,44 @@ class _ExplorePageState extends State<ExplorePage> {
                     Container(
                         height: MediaQuery.of(context).size.height * .45,
                         width: MediaQuery.of(context).size.width / 2 - 350,
-                        child: AllAthletesList())
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            borderRadius:
+                                BorderRadius.all(const Radius.circular(10.0)),
+                          ),
+                          child: FutureBuilder<dynamic>(
+                            future: _loadData,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return RefreshIndicator(
+                                    onRefresh: () {
+                                      return _loadData = fetchAthletes();
+                                    },
+                                    child: Center(
+                                      child: _buildAthletes(snapshot),
+                                    ));
+                              } else if (snapshot.hasError) {
+                                return Text(
+                                  "Something went wrong! make sure you're connected to the internet",
+                                );
+                              }
+                              return Center(
+                                child: SizedBox(
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: Colors.grey[500],
+                                  ),
+                                  height: 50,
+                                  width: 50,
+                                ),
+                              );
+                            },
+                          ),
+                        )),
                   ],
                 ),
+
+                // Add athlete half
               ],
             )),
       ]),
