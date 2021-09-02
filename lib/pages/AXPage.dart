@@ -184,8 +184,8 @@ class _AXState extends State<AXPage> {
                       bottomLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20))),
-              width: 1000,
-              height: 550,
+              width: 950,
+              height: 500,
               margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
               child: Container(
                   child: Row(

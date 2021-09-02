@@ -2,7 +2,6 @@ import 'package:ae_dapp/service/AllAthletesList.dart';
 import 'package:ae_dapp/service/AthleteProfile.dart';
 import 'package:ae_dapp/style/Style.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -10,8 +9,6 @@ class ExplorePage extends StatefulWidget {
   @override
   _ExplorePageState createState() => _ExplorePageState();
 }
-
-late TooltipBehavior _tooltipBehavior;
 
 Widget _mintAPT(BuildContext context) {
   return new AlertDialog(
@@ -434,15 +431,6 @@ class _ExplorePageState extends State<ExplorePage> {
   double headerTx = 30;
 
   @override
-  void initState() {
-    _tooltipBehavior = TooltipBehavior(
-        tooltipPosition: TooltipPosition.auto,
-        enable: true,
-        color: Colors.lightBlue);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(children: <Widget>[
@@ -628,94 +616,10 @@ class _ExplorePageState extends State<ExplorePage> {
 
                     // insert athlete graph here
                     Align(
-                        alignment: Alignment.center,
                         child: SizedBox(
-                            width: 600,
-                            height: 250,
-                            child: SfCartesianChart(
-                                tooltipBehavior: _tooltipBehavior,
-                                enableAxisAnimation: true,
-                                primaryXAxis: CategoryAxis(
-                                  majorGridLines: MajorGridLines(width: 0),
-                                  //Hide the axis line of x-axis
-                                  axisLine:
-                                      AxisLine(width: 1, color: Colors.white),
-                                  majorTickLines: MajorTickLines(
-                                      width: 0, color: Colors.transparent),
-                                ),
-                                primaryYAxis: NumericAxis(
-                                  minimum: 25,
-                                  maximum: 65,
-                                  isVisible: false,
-                                  desiredIntervals: 5,
-                                  decimalPlaces: 2,
-                                  axisLine:
-                                      AxisLine(width: 1, color: Colors.white),
-                                  majorGridLines: MajorGridLines(width: 0),
-                                  //Hide the axis line of x-axis
-                                  majorTickLines: MajorTickLines(
-                                      width: 0, color: Colors.transparent),
-                                ),
-                                plotAreaBorderColor: Colors.grey[900],
-                                plotAreaBorderWidth: 0.2,
-                                series: <LineSeries<SalesData, String>>[
-                                  LineSeries<SalesData, String>(
-                                      // Bind data source
-                                      dataSource: <SalesData>[
-                                        SalesData('1/1 12AM', 35),
-                                        SalesData('1/1 1AM', 28),
-                                        SalesData('1/1 2AM', 34),
-                                        SalesData('1/1 3AM', 32),
-                                        SalesData('1/1 4AM', 40),
-                                        SalesData('1/1 5AM', 35),
-                                        SalesData('1/1 6AM', 28),
-                                        SalesData('1/1 7AM', 30),
-                                        SalesData('1/1 8AM', 32),
-                                        SalesData('1/1 9AM', 40),
-                                        SalesData('1/1 10AM', 35),
-                                        SalesData('1/1 11AM', 28),
-                                        SalesData('1/1 12PM', 34),
-                                        SalesData('1/1 1PM', 29),
-                                        SalesData('1/1 2PM', 35),
-                                        SalesData('1/1 3PM', 39),
-                                        SalesData('1/1 4PM', 42),
-                                        SalesData('1/1 5PM', 41),
-                                        SalesData('1/1 6PM', 46),
-                                        SalesData('1/1 7PM', 44),
-                                        SalesData('1/1 8PM', 42),
-                                        SalesData('1/1 9PM', 47),
-                                        SalesData('1/1 10PM', 48),
-                                        SalesData('1/1 11PM', 45),
-                                        SalesData('1/2 12AM', 44),
-                                        SalesData('1/2 1AM', 42),
-                                        SalesData('1/2 2AM', 46),
-                                        SalesData('1/2 3AM', 47),
-                                        SalesData('1/2 4AM', 45),
-                                        SalesData('1/2 5AM', 44),
-                                        SalesData('1/2 6AM', 48),
-                                        SalesData('1/2 7AM', 49),
-                                        SalesData('1/2 8AM', 51),
-                                        SalesData('1/2 9AM', 55),
-                                        SalesData('1/2 10AM', 60),
-                                        SalesData('1/2 11AM', 58),
-                                        SalesData('1/2 12PM', 48),
-                                        SalesData('1/2 1PM', 50),
-                                        SalesData('1/2 2PM', 54),
-                                        SalesData('1/2 3PM', 55),
-                                        SalesData('1/2 4PM', 57),
-                                        SalesData('1/2 5PM', 60),
-                                        SalesData('1/2 6PM', 58),
-                                        SalesData('1/2 7PM', 59),
-                                        SalesData('1/2 8PM', 61),
-                                        SalesData('1/2 9PM', 64),
-                                        SalesData('1/2 10PM', 58),
-                                        SalesData('1/2 11PM', 59)
-                                      ],
-                                      xValueMapper: (SalesData sales, _) =>
-                                          sales.year,
-                                      yValueMapper: (SalesData sales, _) =>
-                                          sales.sales)
-                                ]))),
+                      width: 600,
+                      height: 200,
+                    )),
 
                     Align(
                       alignment: Alignment.center,
