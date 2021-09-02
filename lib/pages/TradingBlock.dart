@@ -15,6 +15,7 @@ Future<bool> getIsWalletConnected() async {
 
 Widget _tradeConfirmation(BuildContext context) {
   return new AlertDialog(
+    backgroundColor: Colors.grey[900],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
     ),
@@ -232,11 +233,16 @@ class _TradingBlockState extends State<TradingBlock> {
     return Scaffold(
         body: Stack(
       children: <Widget>[
-        Image(
-          image: AssetImage("assets/images/background.jpeg"),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          fit: BoxFit.cover,
+        Container(
+          decoration: new BoxDecoration(
+            color: const Color(0xff7c94b6),
+            image: new DecorationImage(
+              fit: BoxFit.cover,
+              colorFilter: new ColorFilter.mode(
+                  Colors.black.withOpacity(.9), BlendMode.darken),
+              image: AssetImage("assets/images/background.jpeg"),
+            ),
+          ),
         ),
         Column(
           children: <Widget>[
@@ -260,7 +266,7 @@ class _TradingBlockState extends State<TradingBlock> {
             Column(
               children: <Widget>[
                 Padding(
-                    padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                    padding: EdgeInsets.fromLTRB(10.0, 100.0, 10.0, 0.0),
                     child: Container(
                         width: 500,
                         decoration: BoxDecoration(

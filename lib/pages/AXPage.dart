@@ -19,6 +19,7 @@ _launchURL() async {
 
 Widget _buildPopupDialog(BuildContext context) {
   return new AlertDialog(
+    backgroundColor: Colors.grey[900],
     title: Text('Connect to a wallet',
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -157,7 +158,7 @@ class _AXState extends State<AXPage> {
 
         // header
         Container(
-            margin: EdgeInsets.fromLTRB(0, 75, 0, 100),
+            margin: EdgeInsets.fromLTRB(0, 75, 0, 250),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -184,8 +185,8 @@ class _AXState extends State<AXPage> {
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20))),
               width: 1000,
-              height: 530,
-              margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+              height: 550,
+              margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
               child: Container(
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -208,7 +209,7 @@ class _AXState extends State<AXPage> {
                                   bottomRight: Radius.circular(20))),
                           margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
                           alignment: Alignment.center,
-                          height: 500,
+                          height: 450,
                           width: 400,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -220,7 +221,7 @@ class _AXState extends State<AXPage> {
                                 children: [
                                   // My Account
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 45, 0, 20),
+                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                                     child: Text('My Account',
                                         style: TextStyle(
                                             fontSize: 25,
@@ -365,7 +366,7 @@ class _AXState extends State<AXPage> {
                                   bottomRight: Radius.circular(20))),
                           margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
                           alignment: Alignment.center,
-                          height: 500,
+                          height: 450,
                           width: 500,
 
                           // My Liquidity Area
@@ -379,7 +380,7 @@ class _AXState extends State<AXPage> {
                                   // My Liquidity
                                   Padding(
                                       padding:
-                                          EdgeInsets.fromLTRB(0, 45, 0, 10),
+                                          EdgeInsets.fromLTRB(0, 20, 0, 10),
                                       child: Text('My Liquidity',
                                           style: TextStyle(
                                               fontSize: mdTxSize,

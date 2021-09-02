@@ -104,7 +104,7 @@ final ButtonStyle mintButton = ElevatedButton.styleFrom(
     onPrimary: Colors.white,
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
-    side: BorderSide(color: (Colors.amber[600])!),
+    side: BorderSide(color: (Colors.amber[600])!, width: 2),
     fixedSize: Size(120, 40));
 
 final ButtonStyle redeemButton = ElevatedButton.styleFrom(
@@ -116,7 +116,7 @@ final ButtonStyle redeemButton = ElevatedButton.styleFrom(
     onPrimary: Colors.white,
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
-    side: BorderSide(color: (Colors.amber[600])!),
+    side: BorderSide(color: (Colors.amber[600])!, width: 2),
     fixedSize: Size(120, 40));
 
 final TextStyle confirmText = TextStyle(
@@ -133,3 +133,15 @@ final TextStyle confirmTextOther = TextStyle(
 
 final TextStyle confirmTextOtherBold = TextStyle(
     color: Colors.grey[400], fontWeight: FontWeight.w600, fontSize: 13);
+
+final TextStyle mintAndRedeemText = TextStyle(
+    color: Colors.amber.withOpacity(0.4),
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.italic,
+    fontSize: 13);
+
+final TextStyle athleteListText = TextStyle(
+    letterSpacing: 1,
+    color: Colors.amber.withOpacity(0.6),
+    fontSize: 20,
+    fontWeight: FontWeight.w200);

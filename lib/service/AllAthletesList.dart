@@ -85,19 +85,10 @@ class _AllAthletesListState extends State<AllAthletesList> {
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: 40,
+            height: 30,
             child: ListTile(
-              leading: Icon(
-                Icons.sports_baseball_rounded,
-                color: Colors.yellow[760],
-              ),
               title: Text(a.name ?? "",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      letterSpacing: 1,
-                      color: Colors.amber[600],
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600)),
+                  textAlign: TextAlign.left, style: athleteListText),
               trailing: Text("\$3.1893", style: TextStyle(fontSize: 20)),
               onTap: () {},
             ),
