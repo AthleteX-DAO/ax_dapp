@@ -1,6 +1,5 @@
 import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/style/Style.dart';
-
+import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:flutter/material.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -11,86 +10,48 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
+  // name variable to store future list item name on tap
+  late String name;
+
+  // reset the name for the state when list item on tap
+  @override
+  void initState() {
+    super.initState();
+    name = 'Click an athlete';
+  }
+
   double lgTxSize = 52;
   double headerTx = 30;
 
-  List<Athlete> _AllAthletesList = <Athlete>[]; //All athletes
-  final _boughtAthletes = <Athlete>{};
-  Future<dynamic>? _loadData;
+  //widget to get athlete data and build ListView
+  Widget buildAthleteList(BuildContext context) => Scaffold(
+      body: FutureBuilder<List<Athlete>>(
+          future: AthleteApi.getAthletesLocally(context),
+          builder: (context, snapshot) {
+            final athletes = snapshot.data;
 
-  Widget _buildRow(Athlete a) {
-    final alreadyBought = _boughtAthletes.contains(a);
-
-    return Card(
-      color: Colors.grey[900],
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 30,
-            child: ListTile(
-              title: Text(a.name ?? "",
-                  textAlign: TextAlign.left, style: athleteListText),
-              trailing: Text("\$3.1893", style: TextStyle(fontSize: 20)),
-              onTap: () {},
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.all(const Radius.circular(10.0)),
-      ),
-      child: FutureBuilder<dynamic>(
-        future: _loadData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return RefreshIndicator(
-                onRefresh: () {
-                  return _loadData = fetchAthletes();
-                },
-                child: Center(
-                  child: _buildAthletes(snapshot),
-                ));
-          } else if (snapshot.hasError) {
-            return Text(
-              "Something went wrong! make sure you're connected to the internet",
-            );
-          }
-          return Center(
-            child: SizedBox(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.grey[500],
-              ),
-              height: 50,
-              width: 50,
-            ),
-          );
-        },
-      ),
-    );
-  }
-*/
-
-  Widget _buildAthletes(AsyncSnapshot<dynamic> snapshot) {
-    _AllAthletesList.addAll(snapshot.data!);
-
-    return ListView.builder(
-      itemCount: 20,
-      padding: EdgeInsets.all(0),
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              default:
+                return buildAthletes(athletes!);
+            }
+          }));
+  //build ListView for athletes
+  Widget buildAthletes(List<Athlete> athletes) => ListView.builder(
+      physics: BouncingScrollPhysics(),
+      itemCount: athletes.length,
       itemBuilder: (context, index) {
-        if (index.isOdd) return Divider(); /*2*/
-        final i = index ~/ 2; // i is every even item in this iteration
-        return _buildRow(_AllAthletesList[i]);
-      },
-    );
-  }
+        final athlete = athletes[index];
+        return Card(
+            color: Colors.grey[900],
+            shadowColor: Colors.grey[900],
+            child: ListTile(
+                onTap: () => setState(() => name = athlete.name),
+                title: Text(athlete.name)));
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +102,7 @@ class _ExplorePageState extends State<ExplorePage> {
               children: <Widget>[
                 Column(
                   children: <Widget>[
+                    // header
                     Container(
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: Text("Athlete Tokens",
@@ -150,6 +112,7 @@ class _ExplorePageState extends State<ExplorePage> {
                               fontWeight: FontWeight.w600,
                               fontStyle: FontStyle.italic,
                             ))),
+                    // search for an athlete
                     SizedBox(
                       width: 250,
                       height: 50,
@@ -182,6 +145,7 @@ class _ExplorePageState extends State<ExplorePage> {
                         ),
                       ),
                     ),
+                    // generate athlete cards
                     Container(
                         height: MediaQuery.of(context).size.height * .45,
                         width: MediaQuery.of(context).size.width / 2 - 350,
@@ -192,52 +156,28 @@ class _ExplorePageState extends State<ExplorePage> {
                                 BorderRadius.all(const Radius.circular(10.0)),
                           ),
                           child: FutureBuilder<dynamic>(
-                            future: _loadData,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return RefreshIndicator(
-                                    onRefresh: () {
-                                      return _loadData = fetchAthletes();
-                                    },
-                                    child: Center(
-                                      child: _buildAthletes(snapshot),
-                                    ));
-                              } else if (snapshot.hasError) {
-                                return Text(
-                                  "Something went wrong! make sure you're connected to the internet",
-                                );
-                              }
-                              return Center(
-                                child: SizedBox(
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: Colors.grey[500],
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                ),
-                              );
-                            },
-                          ),
+                              future: AthleteApi.getAthletesLocally(context),
+                              builder: (context, snapshot) {
+                                final athletes = snapshot.data;
+
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.waiting:
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  default:
+                                    return buildAthletes(athletes!);
+                                }
+                              }),
                         )),
                   ],
                 ),
-
-                // Add athlete half
+                Column(
+                  children: [Text(name)],
+                )
               ],
             )),
       ]),
     ]));
   }
-}
-
-/*
-Explore Page
-My Team
-Generate Key
-*/
-
-class SalesData {
-  SalesData(this.year, this.sales);
-  final String year;
-  final double sales;
 }
