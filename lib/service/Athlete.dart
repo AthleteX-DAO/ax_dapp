@@ -247,7 +247,7 @@ Widget _mintAPT(BuildContext context) {
               ElevatedButton(
                   onPressed: () {},
                   style: confirmSwap,
-                  child: Text('Confirm Swap'))
+                  child: Text('Cofirm Swap'))
             ],
           ),
         ),
@@ -574,7 +574,7 @@ class Athlete {
   /*
     Used to create the Individual Athlete portion of the ExplorePage
   */
-  Widget createAthleteWidget() {
+  Widget createAthleteWidget(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -601,19 +601,23 @@ class Athlete {
                                 ),
                               )),
                         ]),
-                        Column(children: [
-                          Container(
+                        Column(
+                          children: [
+                            Container(
                               color: Colors.grey[900],
                               child: Padding(
-                                  padding: EdgeInsets.fromLTRB(15, 5, 50, 0),
-                                  child: Text(
-                                    name!,
-                                    style: TextStyle(
-                                        fontSize: 30,
-                                        fontFamily: 'OpenSans',
-                                        fontWeight: FontWeight.w400),
-                                  ))),
-                        ]),
+                                padding: EdgeInsets.fromLTRB(15, 5, 50, 0),
+                                child: Text(
+                                  name!,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontFamily: 'OpenSans',
+                                      fontWeight: FontWeight.w400),
+                                )
+                              )
+                            ),
+                          ]
+                        ),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -622,7 +626,7 @@ class Athlete {
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      '\$3.8908',
+                                      getPrice(),
                                       style: TextStyle(
                                           fontSize: 40,
                                           fontFamily: 'OpenSans',
@@ -654,7 +658,7 @@ class Athlete {
               child: SizedBox(width: 600, height: 75, child: Row(children: [])),
             )),
 
-// insert athlete graph here
+        // insert athlete graph here
         Align(
             child: SizedBox(
           width: 600,
@@ -821,7 +825,10 @@ class Athlete {
     );
   }
 
-  // Button Styles
+
+  String getPrice() {
+    return '\$' + warValue!.toStringAsFixed(4);
+  }
 }
 
 List<Athlete> parseWarValue(List<Athlete> aeList, List<Team> _teamList) {
