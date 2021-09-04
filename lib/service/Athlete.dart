@@ -694,11 +694,11 @@ class Athlete {
                                 style: mintButton,
                                 child: Text('MINT'),
                                 onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        _mintAPT(context),
-                                  );
+                                  // showDialog(
+                                  //   context: context,
+                                  //   builder: (BuildContext context) =>
+                                  //       _mintAPT(context),
+                                  // );
                                 },
                               )),
                           Container(
@@ -707,11 +707,11 @@ class Athlete {
                                 style: redeemButton,
                                 child: Text('REDEEM'),
                                 onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        _redeemAX(context),
-                                  );
+                                  // showDialog(
+                                  //   context: context,
+                                  //   builder: (BuildContext context) =>
+                                  //       _redeemAX(context),
+                                  // );
                                 },
                               ))
                         ]))
