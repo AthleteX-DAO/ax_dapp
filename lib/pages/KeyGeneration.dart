@@ -92,7 +92,6 @@ class _KeyGenerationState extends State<KeyGeneration> {
   }
 
   Future<Column> generateKeyTxt() async {
-    var contractLink = Provider.of<Controller>(context, listen: false);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
