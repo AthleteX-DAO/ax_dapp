@@ -1,9 +1,8 @@
 import 'dart:math';
+import 'dart:html';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web3/flutter_web3.dart';
-import 'package:web3dart/web3dart.dart';
-import '../contracts/AthleteX.g.dart';
+import 'package:web3dart/browser.dart';
 
 // flutter format .
 import 'package:url_launcher/url_launcher.dart';
@@ -90,30 +89,24 @@ class AXPage extends StatefulWidget {
 }
 
 class _AXState extends State<AXPage> {
-  final EthereumAddress tokenAddr =
-      EthereumAddress.fromHex('0x585E0c93F73C520ca6513fc03f450dAea3D4b493');
-  final EthereumAddress stakingAddr =
-      EthereumAddress.fromHex("0x063086C5b352F986718Db9383c894Be9Cd4350fA");
-  late Web3Provider web3;
-  var balanceF;
+  // final EthereumAddress tokenAddr = "0x585E0c93F73C520ca6513fc03f450dAea3D4b493";
+  // final EthereumAddress stakingAddr = "0x063086C5b352F986718Db9383c894Be9Cd4350fA";
 
   @override
   void initState() {
-    print("Initiating Page!");
+    checkMetamask();
     super.initState();
   }
 
   // Actionable
   Future<void> buyAX() async {}
   Future<void> stakeAX(int _amount) async {}
-  void addAndSwitchChains() async {
-    ethereum!.walletAddChain(
-        chainId: 80001,
-        chainName: "mumbai",
-        nativeCurrency:
-            CurrencyParams(name: "MATIC", symbol: "MATIC", decimals: 18),
-        rpcUrls: ['https://rpc-mumbai.matic.today']);
-    ethereum!.walletSwitchChain(80001);
+  Future<void> checkMetamask() async {
+    final eth = window.ethereum;
+    if (eth != null) {
+      print('Connected to the decentralized web!');
+      return;
+    }
   }
 
   Future<void> claimRewards() async {}
@@ -121,12 +114,10 @@ class _AXState extends State<AXPage> {
 
   // Viewable
   Future<BigInt> totalBalance() async {
-    return BigInt.one;
+    return BigInt.from(111);
   }
 
-  Future<dynamic> availableBalance() async {
-    return balanceF;
-  }
+  Future<dynamic> availableBalance() async {}
 
   Future<BigInt> stakedAX() async {
     return BigInt.from(2);
@@ -143,7 +134,6 @@ class _AXState extends State<AXPage> {
   Future<double> UnclaimedRewards() async {
     return new Random(300).nextDouble();
   }
-
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -335,7 +325,14 @@ class _AXState extends State<AXPage> {
                                       child: SizedBox(
                                         child: ElevatedButton(
                                           child: Text('CLAIM REWARDS'),
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            if (window.ethereum != null) {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) => _buildPopupDialog(context),
+                                                  );
+                                            }
+                                          },
                                           style: claimButton,
                                         ),
                                         height: 50,
@@ -530,13 +527,12 @@ class _AXState extends State<AXPage> {
                                             child: ElevatedButton(
                                               child: const Text('APPROVE'),
                                               onPressed: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          _buildPopupDialog(
-                                                              context),
-                                                );
+                                                if (window.ethereum != null) {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) => _buildPopupDialog(context),
+                                                      );
+                                                }
                                               },
                                               style: approveButton,
                                             ),
@@ -552,20 +548,11 @@ class _AXState extends State<AXPage> {
                                               child:
                                                   const Text('Connect Wallet'),
                                               onPressed: () async {
-                                                if (ethereum != null) {
-                                                  final accs = await ethereum!
-                                                      .requestAccount();
-                                                  addAndSwitchChains();
-                                                } else if (ethereum!
-                                                        .isConnected() ==
-                                                    false) {
+                                                if (window.ethereum != null) {
                                                   showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        _buildPopupDialog(
-                                                            context),
-                                                  );
+                                                      context: context,
+                                                      builder: (BuildContext context) => _buildPopupDialog(context),
+                                                      );
                                                 }
                                               },
                                               style: connectButton,
