@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:web3dart/browser.dart';
+import 'dart:html' as html;
 
 // flutter format .
 import 'package:url_launcher/url_launcher.dart';
@@ -19,6 +20,7 @@ _launchURL(String $url) async {
 
 Widget _buildPopupDialog(BuildContext context) {
   return new AlertDialog(
+    backgroundColor: Colors.grey[900],
     title: Text('Connect to a wallet',
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -140,11 +142,16 @@ class _AXState extends State<AXPage> {
         body: Stack(
       children: <Widget>[
         // background image
-        Image(
-          image: AssetImage("assets/images/background.jpeg"),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          fit: BoxFit.cover,
+        Container(
+          decoration: new BoxDecoration(
+            color: const Color(0xff7c94b6),
+            image: new DecorationImage(
+              fit: BoxFit.cover,
+              colorFilter: new ColorFilter.mode(
+                  Colors.black.withOpacity(.9), BlendMode.darken),
+              image: AssetImage("assets/images/background.jpeg"),
+            ),
+          ),
         ),
 
         // upper right logo
@@ -161,12 +168,12 @@ class _AXState extends State<AXPage> {
 
         // header
         Container(
-            margin: EdgeInsets.fromLTRB(0, 75, 0, 100),
+            margin: EdgeInsets.fromLTRB(0, 75, 0, 250),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("AX",
+                  Text("AX LIQUIDITY",
                       style: TextStyle(
                         fontFamily: 'OpenSans',
                         fontSize: lgTxSize,
@@ -188,29 +195,31 @@ class _AXState extends State<AXPage> {
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20))),
               width: 950,
-              height: 540,
-              margin: EdgeInsets.fromLTRB(0, 75, 0, 0),
+              height: 500,
+              margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
               child: Container(
                   child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // my account info
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Main Left Area
                       Container(
                           decoration: BoxDecoration(
-                              border: Border.all(),
-                              color: Colors.grey[800],
+                              border: Border.all(color: (Colors.grey[900])!),
+                              color: Colors.grey[900],
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   bottomLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
                                   bottomRight: Radius.circular(20))),
-                          margin: EdgeInsets.fromLTRB(0, 20, 5, 0),
+                          margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
                           alignment: Alignment.center,
-                          height: 500,
+                          height: 450,
                           width: 400,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -222,7 +231,7 @@ class _AXState extends State<AXPage> {
                                 children: [
                                   // My Account
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 45, 0, 20),
+                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                                     child: Text('My Account',
                                         style: TextStyle(
                                             fontSize: 25,
@@ -362,20 +371,22 @@ class _AXState extends State<AXPage> {
 
                   //Main right area
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       //Main Right Area
                       Container(
                           decoration: BoxDecoration(
-                              border: Border.all(),
-                              color: Colors.grey[800],
+                              border: Border.all(color: (Colors.grey[900])!),
+                              color: Colors.grey[900],
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   bottomLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
                                   bottomRight: Radius.circular(20))),
-                          margin: EdgeInsets.fromLTRB(5, 20, 0, 0),
+                          margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
                           alignment: Alignment.center,
-                          height: 500,
+                          height: 450,
                           width: 500,
 
                           // My Liquidity Area
@@ -389,7 +400,7 @@ class _AXState extends State<AXPage> {
                                   // My Liquidity
                                   Padding(
                                       padding:
-                                          EdgeInsets.fromLTRB(0, 45, 0, 10),
+                                          EdgeInsets.fromLTRB(0, 20, 0, 10),
                                       child: Text('My Liquidity',
                                           style: TextStyle(
                                               fontSize: mdTxSize,
@@ -404,7 +415,7 @@ class _AXState extends State<AXPage> {
                                       // Add liquidity tag
                                       Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
                                           child:
                                               Text('Add liquidity to stake AX',
                                                   style: TextStyle(
@@ -416,7 +427,7 @@ class _AXState extends State<AXPage> {
                                       // remove note
                                       Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 40),
+                                              EdgeInsets.fromLTRB(0, 0, 0, 60),
                                           child: Text(
                                               'Remove liquidity to receive AX',
                                               style: TextStyle(
@@ -435,12 +446,12 @@ class _AXState extends State<AXPage> {
                                                 minHeight: 30.0,
                                                 fontSize: xsTxSize,
                                                 activeBgColor: [
-                                                  (Colors.grey[800])!
+                                                  (Colors.grey[900])!
                                                 ],
                                                 activeFgColor:
                                                     Colors.amber[600],
                                                 inactiveBgColor:
-                                                    Colors.grey[800],
+                                                    Colors.grey[900],
                                                 inactiveFgColor: Colors.white,
                                                 initialLabelIndex: 0,
                                                 totalSwitches: 2,
@@ -453,18 +464,18 @@ class _AXState extends State<AXPage> {
                                             children: [
                                               ToggleSwitch(
                                                 borderColor: [
-                                                  (Colors.grey[800])!
+                                                  (Colors.grey[900])!
                                                 ],
                                                 minWidth: 50.0,
                                                 minHeight: 30.0,
                                                 fontSize: xsTxSize,
                                                 activeBgColor: [
-                                                  (Colors.grey[800])!
+                                                  (Colors.grey[900])!
                                                 ],
                                                 activeFgColor:
                                                     Colors.amber[600],
                                                 inactiveBgColor:
-                                                    Colors.grey[800],
+                                                    Colors.grey[900],
                                                 inactiveFgColor: Colors.white,
                                                 initialLabelIndex: 0,
                                                 totalSwitches: 4,
@@ -522,7 +533,7 @@ class _AXState extends State<AXPage> {
                                       // Approve button
                                       Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                              EdgeInsets.fromLTRB(0, 20, 0, 0),
                                           child: SizedBox(
                                             child: ElevatedButton(
                                               child: const Text('APPROVE'),
@@ -542,18 +553,19 @@ class _AXState extends State<AXPage> {
 
                                       Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(0, 30, 0, 0),
+                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
                                           child: SizedBox(
                                             child: ElevatedButton(
                                               child:
                                                   const Text('Connect Wallet'),
-                                              onPressed: () async {
-                                                if (window.ethereum != null) {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext context) => _buildPopupDialog(context),
-                                                      );
-                                                }
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          _buildPopupDialog(
+                                                              context),
+                                                );
                                               },
                                               style: connectButton,
                                             ),

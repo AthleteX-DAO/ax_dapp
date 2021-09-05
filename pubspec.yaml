@@ -46,6 +46,7 @@ dependencies:
   webfeed: ^0.7.0
   chart_sparkline: ^1.0.5
   flutter_web3: ^2.0.4
+  flutter_screenutil: ^5.0.0+2
 
 
 
@@ -87,5 +88,6 @@ flutter:
     - assets/images/x.jpg
     - assets/images/x.png
     - assets/images/background.jpeg
+    - assets/data.json
     
       

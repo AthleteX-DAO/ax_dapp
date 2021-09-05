@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:ae_dapp/pages/MyTeam.dart';
 import 'package:ae_dapp/pages/TradingBlock.dart';
 import 'package:ae_dapp/pages/AXPage.dart';
 import 'package:ae_dapp/pages/ExplorePage.dart';
@@ -57,7 +56,7 @@ class _NavigationBarState extends State<NavigationBar> {
         selectedItemColor: Vx.hexToColor("#fec901"),
         unselectedItemColor: Vx.hexToColor("#f8f8ff"),
         onTap: _onItemTapped,
-        backgroundColor: Vx.hexToColor("#232b2b"),
+        backgroundColor: Colors.grey[1000],
       ),
     );
   }
