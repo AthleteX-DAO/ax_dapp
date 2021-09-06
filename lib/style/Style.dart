@@ -19,7 +19,7 @@ final ButtonStyle walletButton = ElevatedButton.styleFrom(
     onPrimary: Colors.amber[600],
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(20.0)),
-    fixedSize: Size(350, 60));
+    minimumSize: Size(350, 60));
 
 final ButtonStyle approveButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -30,7 +30,7 @@ final ButtonStyle approveButton = ElevatedButton.styleFrom(
     onPrimary: Colors.amber[600],
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(20.0)),
-    fixedSize: Size(250, 75));
+    minimumSize: Size(250, 75));
 
 final ButtonStyle claimButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -41,7 +41,7 @@ final ButtonStyle claimButton = ElevatedButton.styleFrom(
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(20.0)),
     onPrimary: Colors.amber[600],
-    fixedSize: Size(250, 75));
+    minimumSize: Size(250, 75));
 
 final ButtonStyle connectButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -52,7 +52,7 @@ final ButtonStyle connectButton = ElevatedButton.styleFrom(
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(20.0)),
     onPrimary: Colors.white.withOpacity(0.8),
-    fixedSize: Size(250, 75));
+    minimumSize: Size(250, 75));
 
 final ButtonStyle confirmSwap = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -63,7 +63,7 @@ final ButtonStyle confirmSwap = ElevatedButton.styleFrom(
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(20.0)),
     onPrimary: Colors.white,
-    fixedSize: Size(350, 50));
+    minimumSize: Size(350, 50));
 
 final ButtonStyle longButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -75,7 +75,7 @@ final ButtonStyle longButton = ElevatedButton.styleFrom(
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
     side: BorderSide(color: (Colors.grey[900])!),
-    fixedSize: Size(120, 40));
+    minimumSize: Size(120, 40));
 
 final ButtonStyle shortButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -87,7 +87,7 @@ final ButtonStyle shortButton = ElevatedButton.styleFrom(
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
     side: BorderSide(color: (Colors.grey[900])!),
-    fixedSize: Size(120, 40));
+    minimumSize: Size(120, 40));
 
 final ButtonStyle mintButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -99,7 +99,7 @@ final ButtonStyle mintButton = ElevatedButton.styleFrom(
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
     side: BorderSide(color: (Colors.amber[600])!, width: 2),
-    fixedSize: Size(120, 40));
+    minimumSize: Size(120, 40));
 
 final ButtonStyle redeemButton = ElevatedButton.styleFrom(
     textStyle: TextStyle(
@@ -111,7 +111,7 @@ final ButtonStyle redeemButton = ElevatedButton.styleFrom(
     shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0)),
     side: BorderSide(color: (Colors.amber[600])!, width: 2),
-    fixedSize: Size(120, 40));
+    minimumSize: Size(120, 40));
 
 final TextStyle confirmText = TextStyle(
     color: Colors.grey[500], fontWeight: FontWeight.w100, fontSize: 15);

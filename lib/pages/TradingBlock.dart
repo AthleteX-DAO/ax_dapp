@@ -381,7 +381,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                           ? ElevatedButton(
                                               style: ElevatedButton.styleFrom(
                                                   primary: Colors.amber[600],
-                                                  fixedSize: Size(450, 60),
+                                                  minimumSize: Size(450, 60),
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -408,7 +408,7 @@ class _TradingBlockState extends State<TradingBlock> {
                                               style: ElevatedButton.styleFrom(
                                                   primary: Colors.blue
                                                       .withOpacity(0.3),
-                                                  fixedSize: Size(450, 60),
+                                                  minimumSize: Size(450, 60),
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
