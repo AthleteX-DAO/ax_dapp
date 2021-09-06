@@ -119,6 +119,25 @@ final ButtonStyle redeemButton = ElevatedButton.styleFrom(
     side: BorderSide(color: (Colors.amber[600])!, width: 2),
     fixedSize: Size(120, 40));
 
+final ButtonStyle inactiveSport = ElevatedButton.styleFrom(
+  textStyle: TextStyle(
+      fontSize: 10, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
+  primary: Colors.grey[900],
+  onPrimary: Colors.grey[800],
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+);
+
+final ButtonStyle nflButton = ElevatedButton.styleFrom(
+  textStyle: TextStyle(
+      fontSize: 10, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
+  primary: Colors.amber[600],
+  onPrimary: Colors.grey[800],
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+  side: BorderSide(color: (Colors.amber[600])!, width: 2),
+);
+
 final TextStyle confirmText = TextStyle(
     color: Colors.grey[500], fontWeight: FontWeight.w100, fontSize: 15);
 
@@ -144,4 +163,28 @@ final TextStyle athleteListText = TextStyle(
     letterSpacing: 1,
     color: Colors.amber.withOpacity(0.6),
     fontSize: 20,
+    fontWeight: FontWeight.w200);
+
+final TextStyle athleteText = TextStyle(
+    letterSpacing: 1,
+    color: Colors.white,
+    fontSize: 40,
+    fontWeight: FontWeight.w200);
+
+final TextStyle athleteWAR = TextStyle(
+    letterSpacing: 1,
+    color: Colors.white,
+    fontSize: 40,
+    fontWeight: FontWeight.w200);
+
+final TextStyle athletePercent = TextStyle(
+    letterSpacing: 1,
+    color: Colors.green,
+    fontSize: 20,
+    fontWeight: FontWeight.w200);
+
+final TextStyle athleteCard = TextStyle(
+    letterSpacing: 1,
+    color: Colors.white.withOpacity(0.8),
+    fontSize: 15,
     fontWeight: FontWeight.w200);

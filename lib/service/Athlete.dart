@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 class Athlete {
   final String name;
-  final List history;
 
-  const Athlete({required this.name, required this.history});
+  const Athlete({required this.name});
 
-  static Athlete fromJson(json) =>
-      Athlete(name: json['name'], history: json['history']);
+  static Athlete fromJson(json) => Athlete(name: json['name']);
 }
