@@ -8,8 +8,8 @@ sql_query = "select * from nfl"
 class Athlete():
     def __init__(self, name):
         self.name = name
-        # self.time = []
-        # self.war = []
+        self.time = []
+        self.war = []
 
     def add_data(self, time, war):
         self.time.append(time)
@@ -17,8 +17,8 @@ class Athlete():
 
     def make_dict(self):
         id = self.name[-5:].replace('_', '')
-        return (id, {"name": self.name[:-5].replace('_', '')})
-        # return (id, {"name": self.name[:-5].replace('_', ''), "time":self.time, "war":self.war})
+        # return (id, {"name": self.name[:-5].replace('_', '')})
+        return (id, {"name": self.name[:-5].replace('_', ''), "time":self.time, "war":self.war})
 
 ATHLETES = []
 
@@ -42,8 +42,8 @@ try:
         if is_Active(ATHLETES, row[0]) == False:
             new_entry = Athlete(row[0])
             ATHLETES.append(new_entry)
-    # for row in rows: # append historical data
-        # append_Data(ATHLETES, row[0], row[2], row[1])
+    for row in rows: # append historical data
+        append_Data(ATHLETES, row[0], row[2], row[1])
         
 except requests.exceptions.RequestException as e:
   print("Error: %s" % (e))

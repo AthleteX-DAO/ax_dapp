@@ -4,8 +4,6 @@ import 'package:ae_dapp/style/Style.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-// print(athlete.history[0][1][0]);
-
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key? key}) : super(key: key);
 
@@ -13,57 +11,25 @@ class ExplorePage extends StatefulWidget {
   _ExplorePageState createState() => _ExplorePageState();
 }
 
-class LineChartWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => LineChart(
-        LineChartData(
-          lineTouchData: LineTouchData(
-            enabled: true,
-          ),
-          backgroundColor: Colors.grey[800],
-          minX: 0,
-          maxX: 11,
-          minY: 0,
-          maxY: 6,
-          gridData: FlGridData(
-            show: false,
-          ),
-          borderData: FlBorderData(
-            show: false,
-          ),
-          lineBarsData: [
-            LineChartBarData(
-              colors: [(Colors.amber[600])!],
-              spots: [
-                FlSpot(0, 3),
-                FlSpot(2.6, 2),
-                FlSpot(4.9, 5),
-                FlSpot(6.8, 2.5),
-                FlSpot(8, 4),
-                FlSpot(9.5, 3),
-                FlSpot(11, 4),
-              ],
-              isCurved: false,
-              barWidth: 2,
-              dotData: FlDotData(show: false),
-              belowBarData: BarAreaData(show: false),
-            ),
-          ],
-        ),
-      );
-}
+// class LineChartWidget extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) =>
+//       );
+// }
 
 class _ExplorePageState extends State<ExplorePage> {
   // name variable to store future list item name on tap
   late String name;
-  late List history;
+  late List war;
+  late List time;
 
   // reset the name for the state when list item on tap
   @override
   void initState() {
     super.initState();
-    name = 'Click an athlete';
-    history = [];
+    name = 'Select athlete';
+    war = [0, 0, 0];
+    time = [0, 0, 0];
   }
 
   double lgTxSize = 52;
@@ -95,16 +61,54 @@ class _ExplorePageState extends State<ExplorePage> {
             color: Colors.grey[900],
             shadowColor: Colors.grey[900],
             child: ListTile(
-                onTap: () => setState(() => name = athlete.name),
+                onTap: () =>
+                    setState(() => {name = athlete.name, war = athlete.war}),
                 title: Text(
                   athlete.name,
                   style: athleteCard,
                 )));
       });
 
-  void setRightPanel(Athlete _athlete) {
-    rightPanel = _athlete.createAthleteWidget(context);
+  Widget buildGraph(List war, List time) {
+    List<FlSpot> athleteData = [];
+
+    for (int i = 0; i < war.length - 1; i++) {
+      athleteData.add(FlSpot(time[i], war[i]));
+    }
+
+    return LineChart(
+      LineChartData(
+        lineTouchData: LineTouchData(
+          enabled: true,
+        ),
+        backgroundColor: Colors.grey[800],
+        minX: 0,
+        maxX: 11,
+        minY: 0,
+        maxY: 6,
+        gridData: FlGridData(
+          show: false,
+        ),
+        borderData: FlBorderData(
+          show: false,
+        ),
+        lineBarsData: [
+          LineChartBarData(
+            colors: [(Colors.amber[600])!],
+            spots: athleteData,
+            isCurved: false,
+            barWidth: 2,
+            dotData: FlDotData(show: false),
+            belowBarData: BarAreaData(show: false),
+          ),
+        ],
+      ),
+    );
   }
+
+  // void setRightPanel(Athlete _athlete) {
+  //   rightPanel = _athlete.createAthleteWidget(context);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -316,7 +320,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                     child: Column(
                                       children: [
-                                        Text('\$0.3279', style: athleteWAR)
+                                        Text("${war[0]}", style: athleteWAR)
                                       ],
                                     ),
                                   ),
@@ -339,7 +343,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 250, width: 600, child: LineChartWidget()),
+                SizedBox(height: 250, width: 600, child: Text('')),
                 SizedBox(
                     height: 150,
                     width: 600,
