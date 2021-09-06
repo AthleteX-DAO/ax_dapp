@@ -9,6 +9,7 @@ import 'dart:html' as html;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:ae_dapp/style/Style.dart';
+import 'package:web3dart/web3dart.dart';
 
 _launchURL(String $url) async {
   if (await canLaunch($url)) {
@@ -17,6 +18,8 @@ _launchURL(String $url) async {
     throw 'Could not launch ${$url}';
   }
 }
+
+Controller _controller = Controller();
 
 Widget _buildPopupDialog(BuildContext context) {
   return new AlertDialog(
@@ -107,6 +110,9 @@ class _AXState extends State<AXPage> {
     final eth = window.ethereum;
     if (eth != null) {
       print('Connected to the decentralized web!');
+      // Immediately 
+      final client = Web3Client.custom(eth.asRpcService());
+      _controller.updateClient(client);
       return;
     }
   }
@@ -335,11 +341,13 @@ class _AXState extends State<AXPage> {
                                         child: ElevatedButton(
                                           child: Text('CLAIM REWARDS'),
                                           onPressed: () async {
-                                            if (window.ethereum != null) {
+                                            if (window.ethereum == null) {
                                               showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) => _buildPopupDialog(context),
-                                                  );
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    _buildPopupDialog(context),
+                                              );
                                             }
                                           },
                                           style: claimButton,
@@ -538,11 +546,14 @@ class _AXState extends State<AXPage> {
                                             child: ElevatedButton(
                                               child: const Text('APPROVE'),
                                               onPressed: () {
-                                                if (window.ethereum != null) {
+                                                if (window.ethereum == null) {
                                                   showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext context) => _buildPopupDialog(context),
-                                                      );
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        _buildPopupDialog(
+                                                            context),
+                                                  );
                                                 }
                                               },
                                               style: approveButton,
@@ -558,14 +569,16 @@ class _AXState extends State<AXPage> {
                                             child: ElevatedButton(
                                               child:
                                                   const Text('Connect Wallet'),
-                                              onPressed: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          _buildPopupDialog(
-                                                              context),
-                                                );
+                                              onPressed: () async {
+                                                if (window.ethereum == null) {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        _buildPopupDialog(
+                                                            context),
+                                                  );
+                                                }
                                               },
                                               style: connectButton,
                                             ),
