@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:ae_dapp/style/Style.dart';
+import 'package:web3dart/web3dart.dart';
 
 _launchURL() async {
   if (await canLaunch(url)) {
@@ -88,10 +89,9 @@ class _AXState extends State<AXPage> {
 
   // Actionable
   Future<void> buyAX() async {}
-  Future<void> stakeAX() async {}
-  Future<void> claimRewards() async {}
-  Future<Widget> unstakeAX() async {
-    return Text("Unclaimed Rewards: ");
+  
+  Future<void> stakeAX(int _amount) async {
+
   }
 
   var currentTotal = 0;
