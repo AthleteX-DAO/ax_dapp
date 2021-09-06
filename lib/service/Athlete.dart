@@ -601,23 +601,19 @@ class Athlete {
                                 ),
                               )),
                         ]),
-                        Column(
-                          children: [
-                            Container(
+                        Column(children: [
+                          Container(
                               color: Colors.grey[900],
                               child: Padding(
-                                padding: EdgeInsets.fromLTRB(15, 5, 50, 0),
-                                child: Text(
-                                  name!,
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w400),
-                                )
-                              )
-                            ),
-                          ]
-                        ),
+                                  padding: EdgeInsets.fromLTRB(15, 5, 50, 0),
+                                  child: Text(
+                                    name!,
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w400),
+                                  ))),
+                        ]),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -626,7 +622,7 @@ class Athlete {
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      getPrice(),
+                                      getPriceString(),
                                       style: TextStyle(
                                           fontSize: 40,
                                           fontFamily: 'OpenSans',
@@ -825,8 +821,7 @@ class Athlete {
     );
   }
 
-
-  String getPrice() {
+  String getPriceString() {
     return '\$' + warValue!.toStringAsFixed(4);
   }
 }

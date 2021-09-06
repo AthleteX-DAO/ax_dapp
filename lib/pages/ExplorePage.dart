@@ -14,13 +14,19 @@ class _ExplorePageState extends State<ExplorePage> {
   double lgTxSize = 52;
   double headerTx = 30;
 
+  // ignore: non_constant_identifier_names
   List<Athlete> _AllAthletesList = <Athlete>[]; //All athletes
   final _boughtAthletes = <Athlete>{};
   Future<dynamic>? _loadData;
 
-  Widget _buildRow(Athlete a) {
-    final alreadyBought = _boughtAthletes.contains(a);
+  Widget rightPanel = Container(
+    padding: EdgeInsets.all(20),
+    child: Image(
+      image: AssetImage("assets/images/x.png"),
+      )
+  );
 
+  Widget _buildRow(Athlete a) {
     return Card(
       color: Colors.grey[900],
       child: Column(
@@ -30,53 +36,14 @@ class _ExplorePageState extends State<ExplorePage> {
             child: ListTile(
               title: Text(a.name ?? "",
                   textAlign: TextAlign.left, style: athleteListText),
-              trailing: Text("\$3.1893", style: TextStyle(fontSize: 20)),
-              onTap: () {},
+              trailing: Text(a.getPriceString(), style: TextStyle(fontSize: 20)),
+              onTap: () {setRightPanel(a);},
             ),
           )
         ],
       ),
     );
   }
-
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.all(const Radius.circular(10.0)),
-      ),
-      child: FutureBuilder<dynamic>(
-        future: _loadData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return RefreshIndicator(
-                onRefresh: () {
-                  return _loadData = fetchAthletes();
-                },
-                child: Center(
-                  child: _buildAthletes(snapshot),
-                ));
-          } else if (snapshot.hasError) {
-            return Text(
-              "Something went wrong! make sure you're connected to the internet",
-            );
-          }
-          return Center(
-            child: SizedBox(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.grey[500],
-              ),
-              height: 50,
-              width: 50,
-            ),
-          );
-        },
-      ),
-    );
-  }
-*/
 
   Widget _buildAthletes(AsyncSnapshot<dynamic> snapshot) {
     _AllAthletesList.addAll(snapshot.data!);
@@ -90,6 +57,10 @@ class _ExplorePageState extends State<ExplorePage> {
         return _buildRow(_AllAthletesList[i]);
       },
     );
+  }
+
+  void setRightPanel(Athlete _athlete) {
+    rightPanel = _athlete.createAthleteWidget(context);
   }
 
   @override
@@ -222,7 +193,6 @@ class _ExplorePageState extends State<ExplorePage> {
                   ],
                 ),
 
-                // Add athlete half
               ],
             )),
       ]),
