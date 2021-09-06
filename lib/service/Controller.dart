@@ -1,4 +1,4 @@
-
+import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import 'dart:html';
 
@@ -10,8 +10,8 @@ class Controller {
   // Placeholder for ethers library (window.ethereum)
   static const ACTIVE_CHAIN_ID = 80001;
   var eth;
-  Web3Client? _client;
-  Credentials? _credentials;
+  late Web3Client _client;
+  late Credentials _credentials;
   bool ethIsEnabled = false;
   bool activeChain = false;
 
@@ -21,20 +21,30 @@ class Controller {
   //     ContractERC20("0x585E0c93F73C520ca6513fc03f450dAea3D4b493", ethereum!);
   Controller() {
     // TODO - init controller variables
+    init();
+  }
+
+  void init() {
+    _client = Web3Client(_rpcUrl, new Client());
   }
 
   // Getters
-  Web3Client? get client => _client;
-  Credentials? get credentials => _credentials;
+  Web3Client get client => _client;
+  Credentials get credentials => _credentials;
 
   void updateClient(Web3Client _newClient) {
     _client = _newClient;
   }
 
-  bool checkCorrectChain() {
+  void updateCredentials(Credentials _newCredentials) async {
+    _credentials = _newCredentials;
+  }
 
+  bool checkCorrectChain() {
     // ignore: unrelated_type_equality_checks
-    _client!.getNetworkId() == ACTIVE_CHAIN_ID ? activeChain = true : activeChain = false;
+    _client.getNetworkId() == ACTIVE_CHAIN_ID
+        ? activeChain = true
+        : activeChain = false;
 
     return activeChain;
   }
