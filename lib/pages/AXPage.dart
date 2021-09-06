@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:ae_dapp/style/Style.dart';
 import 'package:web3dart/web3dart.dart';
+import '../contracts/StakingRewards.g.dart';
 
 _launchURL(String $url) async {
   if (await canLaunch($url)) {
@@ -20,6 +21,12 @@ _launchURL(String $url) async {
 }
 
 Controller _controller = Controller();
+
+// Defined Staking
+final EthereumAddress stakingAddr =
+    EthereumAddress.fromHex("0x063086C5b352F986718Db9383c894Be9Cd4350fA");
+StakingRewards _stakingRewards =
+    StakingRewards(address: stakingAddr, client: _controller.client);
 
 Widget _buildPopupDialog(BuildContext context) {
   return new AlertDialog(
@@ -105,30 +112,53 @@ class _AXState extends State<AXPage> {
 
   // Actionable
   Future<void> buyAX() async {}
-  Future<void> stakeAX(int _amount) async {}
+  Future<void> stakeAX(int _amount) async {
+    BigInt stakeAmount = BigInt.from(_amount);
+    Credentials stakeCredentials = _controller.credentials;
+    try {
+      _stakingRewards.stake(stakeAmount, credentials: stakeCredentials);
+    } catch (e) {
+      print('Error occured! $e');
+    }
+    print("Attempting to stake... ");
+  }
+
   Future<void> checkMetamask() async {
     final eth = window.ethereum;
     if (eth != null) {
       print('Connected to the decentralized web!');
-      // Immediately 
+      // Immediately
       final client = Web3Client.custom(eth.asRpcService());
+      final credentials = await eth.requestAccount();
       _controller.updateClient(client);
+      _controller.updateCredentials(credentials);
       return;
     }
   }
 
   Future<void> claimRewards() async {}
-  Future<void> unstakeAX(int _amount) async {}
+  Future<void> unstakeAX(int _amount) async {
+    Credentials credentials = _controller.credentials;
+    BigInt amount = BigInt.from(_amount);
+    try {
+      _stakingRewards.withdraw(amount, credentials: credentials);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   // Viewable
   Future<BigInt> totalBalance() async {
     return BigInt.from(111);
   }
 
-  Future<dynamic> availableBalance() async {}
+  Future<dynamic> availableBalance() async {
+    return Random().nextInt(10000);
+  }
 
   Future<BigInt> stakedAX() async {
-    return BigInt.from(2);
+    EthereumAddress account = await _controller.credentials.extractAddress();
+    return _stakingRewards.balanceOf(account);
   }
 
   Future<double> getAPY() async {
@@ -261,16 +291,21 @@ class _AXState extends State<AXPage> {
 
                                   // Available AX
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                    child: Text(
-                                      'Available AX: ',
-                                      style: TextStyle(
-                                        fontSize: smTxSize,
-                                        fontFamily: 'OpenSans',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                      child: StreamBuilder(
+                                        stream: Stream.periodic(
+                                                Duration(seconds: 7))
+                                            .asyncMap(
+                                                (event) => availableBalance()),
+                                        builder: (context, snapshot) => Text(
+                                          'Available AX: ${snapshot.data.toString()}',
+                                          style: TextStyle(
+                                            fontSize: smTxSize,
+                                            fontFamily: 'OpenSans',
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      )),
 
                                   // Total AX
                                   Padding(
@@ -545,7 +580,7 @@ class _AXState extends State<AXPage> {
                                           child: SizedBox(
                                             child: ElevatedButton(
                                               child: const Text('APPROVE'),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 if (window.ethereum == null) {
                                                   showDialog(
                                                     context: context,
@@ -554,6 +589,9 @@ class _AXState extends State<AXPage> {
                                                         _buildPopupDialog(
                                                             context),
                                                   );
+                                                } else {
+                                                  // Testing out staking
+                                                  stakeAX(10);
                                                 }
                                               },
                                               style: approveButton,
@@ -578,6 +616,8 @@ class _AXState extends State<AXPage> {
                                                         _buildPopupDialog(
                                                             context),
                                                   );
+                                                } else {
+                                                  checkMetamask();
                                                 }
                                               },
                                               style: connectButton,
