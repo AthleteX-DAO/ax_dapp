@@ -1,9 +1,10 @@
 import 'dart:math';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
+import 'package:ae_dapp/contracts/AthleteX.g.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:web3dart/browser.dart';
-import 'dart:html' as html;
 
 // flutter format .
 import 'package:url_launcher/url_launcher.dart';
@@ -27,6 +28,12 @@ final EthereumAddress stakingAddr =
     EthereumAddress.fromHex("0x063086C5b352F986718Db9383c894Be9Cd4350fA");
 StakingRewards _stakingRewards =
     StakingRewards(address: stakingAddr, client: _controller.client);
+int _amount = 0;
+bool stakeBoolean = true;
+// Defined AthelteX
+final EthereumAddress axTokenAddr =
+    EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
+AthleteX athleteX = AthleteX(address: axTokenAddr, client: _controller.client);
 
 Widget _buildPopupDialog(BuildContext context) {
   return new AlertDialog(
@@ -112,13 +119,15 @@ class _AXState extends State<AXPage> {
 
   // Actionable
   Future<void> buyAX() async {}
-  Future<void> stakeAX(int _amount) async {
+  Future<void> stakeAX() async {
     BigInt stakeAmount = BigInt.from(_amount);
     Credentials stakeCredentials = _controller.credentials;
     try {
       _stakingRewards.stake(stakeAmount, credentials: stakeCredentials);
     } catch (e) {
       print('Error occured! $e');
+    } finally {
+      print("Staked successfully!");
     }
     print("Attempting to stake... ");
   }
@@ -137,7 +146,7 @@ class _AXState extends State<AXPage> {
   }
 
   Future<void> claimRewards() async {}
-  Future<void> unstakeAX(int _amount) async {
+  Future<void> unstakeAX() async {
     Credentials credentials = _controller.credentials;
     BigInt amount = BigInt.from(_amount);
     try {
@@ -153,7 +162,8 @@ class _AXState extends State<AXPage> {
   }
 
   Future<dynamic> availableBalance() async {
-    return Random().nextInt(10000);
+    EthereumAddress account = await _controller.credentials.extractAddress();
+    return athleteX.balanceOf(account);
   }
 
   Future<BigInt> stakedAX() async {
@@ -165,11 +175,11 @@ class _AXState extends State<AXPage> {
     return new Random().nextDouble();
   }
 
-  Future<double> rewardsEarned() async {
-    return new Random().nextDouble();
+  Future<dynamic> rewardsEarned() async {
+    return _stakingRewards.rewardPerToken();
   }
 
-  Future<double> UnclaimedRewards() async {
+  Future<double> unclaimedRewards() async {
     return new Random(300).nextDouble();
   }
 
@@ -499,7 +509,14 @@ class _AXState extends State<AXPage> {
                                                 initialLabelIndex: 0,
                                                 totalSwitches: 2,
                                                 labels: ['STAKE', 'UNSTAKE'],
-                                                onToggle: (index) {},
+                                                onToggle: (index) {
+                                                  setState(() {
+                                                  index == 0
+                                                      ? stakeBoolean = true
+                                                      : stakeBoolean = false;                         
+                                                      });
+                                                  print("$index + $stakeBoolean");
+                                                },
                                               ),
                                             ],
                                           ),
@@ -569,6 +586,17 @@ class _AXState extends State<AXPage> {
                                                 border: UnderlineInputBorder(),
                                                 hintText:
                                                     'Enter the amount of AX to stake'),
+                                            validator: (value) {
+                                              if (value!.isEmpty) {
+                                                return 'This field cannot be left empty';
+                                              }
+                                            },
+                                            onChanged: (inputValue) {
+                                              int value = int.parse(inputValue);
+                                              setState(() {
+                                                _amount = value;
+                                              });
+                                            },
                                           ),
                                         ),
                                       ),
@@ -590,8 +618,17 @@ class _AXState extends State<AXPage> {
                                                             context),
                                                   );
                                                 } else {
-                                                  // Testing out staking
-                                                  stakeAX(10);
+                                                  switch (stakeBoolean) {
+                                                    case true:
+                                                      stakeAX();
+                                                      break;
+                                                    case false:
+                                                      unstakeAX();
+                                                      break;
+                                                    default:
+                                                      stakeAX();
+                                                      break;
+                                                  }
                                                 }
                                               },
                                               style: approveButton,
