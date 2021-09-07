@@ -1,7 +1,7 @@
 import requests
 import json
 
-host = 'http://localhost:9000'
+host = 'http://146.59.10.118:9000'
 
 sql_query = "select * from nfl"
 
