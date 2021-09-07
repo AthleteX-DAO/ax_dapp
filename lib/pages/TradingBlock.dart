@@ -1,4 +1,3 @@
-import 'package:ae_dapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/style/Style.dart';
 

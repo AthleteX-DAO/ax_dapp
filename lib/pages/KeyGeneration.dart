@@ -1,7 +1,5 @@
-import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/pages/NavigationBar.dart';
-import 'package:provider/provider.dart';
 
 class KeyGeneration extends StatefulWidget {
   const KeyGeneration({Key? key}) : super(key: key);

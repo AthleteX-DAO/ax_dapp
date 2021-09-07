@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Athlete {
   final String name;
   final List history;
