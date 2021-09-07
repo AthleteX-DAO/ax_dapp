@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/style/Style.dart';
@@ -61,11 +63,16 @@ class _ExplorePageState extends State<ExplorePage> {
             color: Colors.grey[900],
             shadowColor: Colors.grey[900],
             child: ListTile(
+                trailing: Text(
+                    ('\$' +
+                        (athlete.war[athlete.war.length - 1])
+                            .toStringAsFixed(4)),
+                    style: athleteCardPrice),
                 onTap: () =>
                     setState(() => {name = athlete.name, war = athlete.war}),
                 title: Text(
                   athlete.name,
-                  style: athleteCard,
+                  style: athleteCardName,
                 )));
       });
 
@@ -154,135 +161,132 @@ class _ExplorePageState extends State<ExplorePage> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.grey[900],
           ),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
-                  Widget>[
-            Column(
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                // header
-                Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    child: Text("Athlete Tokens",
-                        style: TextStyle(
-                          fontFamily: 'OpenSans',
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.italic,
-                        ))),
-                // search for an athlete
-                SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.tight(Size(250, 50)),
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                          fillColor: Colors.grey[800],
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
-                              color: (Colors.grey[900])!,
-                              width: 3.0,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide(
-                              color: (Colors.grey[900])!,
-                              width: 3.0,
-                            ),
-                          ),
-                          border: UnderlineInputBorder(),
-                          hintText: 'Search for an Athlete',
-                          hintStyle: TextStyle(
-                            fontSize: 15,
-                          )),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: SizedBox(
+                Column(
+                  children: <Widget>[
+                    // header
+                    Container(
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        child: Text("Athlete Tokens",
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.italic,
+                            ))),
+                    // search for an athlete
+                    SizedBox(
                       width: 250,
                       height: 50,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: [
-                              SizedBox(
-                                child: ElevatedButton(
-                                  style: nflButton,
-                                  onPressed: () {},
-                                  child: Text('NFL'),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints.tight(Size(250, 50)),
+                        child: TextFormField(
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              fillColor: Colors.grey[900],
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide(
+                                  color: (Colors.grey[900])!,
+                                  width: 3.0,
                                 ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              SizedBox(
-                                child: ElevatedButton(
-                                  style: inactiveSport,
-                                  onPressed: () {},
-                                  child: Text('MLB'),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide(
+                                  color: (Colors.grey[900])!,
+                                  width: 3.0,
                                 ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              SizedBox(
-                                child: ElevatedButton(
-                                  style: inactiveSport,
-                                  onPressed: () {},
-                                  child: Text('MMA'),
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      )),
-                ),
-                // generate athlete cards
-                Container(
-                    height: MediaQuery.of(context).size.height * .4,
-                    width: MediaQuery.of(context).size.width / 2 - 350,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[900],
-                        borderRadius:
-                            BorderRadius.all(const Radius.circular(10.0)),
+                              ),
+                              border: UnderlineInputBorder(),
+                              hintText: 'Search for an Athlete',
+                              hintStyle: TextStyle(
+                                fontSize: 15,
+                              )),
+                        ),
                       ),
-                      child: FutureBuilder<dynamic>(
-                          future: AthleteApi.getAthletesLocally(context),
-                          builder: (context, snapshot) {
-                            final athletes = snapshot.data;
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    child: ElevatedButton(
+                                      style: nflButton,
+                                      onPressed: () {},
+                                      child: Text('NFL'),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    child: ElevatedButton(
+                                      style: inactiveSport,
+                                      onPressed: () {},
+                                      child: Text('MLB'),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    child: ElevatedButton(
+                                      style: inactiveSport,
+                                      onPressed: () {},
+                                      child: Text('MMA'),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          )),
+                    ),
+                    // generate athlete cards
+                    Container(
+                        height: MediaQuery.of(context).size.height * .4,
+                        width: MediaQuery.of(context).size.width / 2 - 350,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            borderRadius:
+                                BorderRadius.all(const Radius.circular(10.0)),
+                          ),
+                          child: FutureBuilder<dynamic>(
+                              future: AthleteApi.getAthletesLocally(context),
+                              builder: (context, snapshot) {
+                                final athletes = snapshot.data;
 
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.waiting:
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              default:
-                                return buildAthletes(athletes!);
-                            }
-                          }),
-                    )),
-              ],
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  width: 600,
-                  height: 100,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Row(
-                      children: [
-                        Row(
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.waiting:
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  default:
+                                    return buildAthletes(athletes!);
+                                }
+                              }),
+                        )),
+                  ],
+                ),
+                Column(children: [
+                  Row(children: [
+                    Container(
+                        color: Colors.blue,
+                        width: 600,
+                        height: 75,
+                        child: Row(
                           children: [
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,7 +324,8 @@ class _ExplorePageState extends State<ExplorePage> {
                                     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                     child: Column(
                                       children: [
-                                        Text("${war[0]}", style: athleteWAR)
+                                        Text("\$" + (war[0]).toStringAsFixed(4),
+                                            style: athleteWAR)
                                       ],
                                     ),
                                   ),
@@ -338,90 +343,96 @@ class _ExplorePageState extends State<ExplorePage> {
                                   ),
                                 ])
                           ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 250, width: 600, child: Text('')),
-                SizedBox(
-                    height: 150,
-                    width: 600,
+                        )),
+                  ]),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                              color: Colors.white,
+                              height: 250,
+                              width: 600,
+                              child: StreamBuilder(
+                                builder: (context, snapshot) =>
+                                    buildGraph(war, time),
+                                stream: Stream.periodic(Duration(seconds: 7)),
+                              )),
+                        ]),
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(children: [
-                                  SizedBox(
-                                    width: 125,
-                                    height: 50,
-                                    child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                        child: ElevatedButton(
-                                          style: longButton,
-                                          onPressed: () {},
-                                          child: Text('LONG'),
-                                        )),
-                                  )
-                                ]),
-                                Column(children: [
-                                  SizedBox(
-                                    width: 125,
-                                    height: 50,
-                                    child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                        child: ElevatedButton(
-                                          style: shortButton,
-                                          onPressed: () {},
-                                          child: Text('SHORT'),
-                                        )),
-                                  )
-                                ]),
-                                Column(children: [
-                                  SizedBox(
-                                    width: 125,
-                                    height: 50,
-                                    child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                        child: ElevatedButton(
-                                          style: mintButton,
-                                          onPressed: () {},
-                                          child: Text('MINT'),
-                                        )),
-                                  )
-                                ]),
-                                Column(children: [
-                                  SizedBox(
-                                    width: 125,
-                                    height: 50,
-                                    child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                        child: ElevatedButton(
-                                          style: redeemButton,
-                                          onPressed: () {},
-                                          child: Text('REDEEM'),
-                                        )),
-                                  )
-                                ])
-                              ],
-                            ),
-                            Row(
-                              children: [],
-                            )
-                          ],
+                        SizedBox(
+                          height: 60,
+                          width: 600,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(children: [
+                                SizedBox(
+                                  width: 125,
+                                  height: 50,
+                                  child: Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: ElevatedButton(
+                                        style: longButton,
+                                        onPressed: () {},
+                                        child: Text('LONG'),
+                                      )),
+                                )
+                              ]),
+                              Column(children: [
+                                SizedBox(
+                                  width: 125,
+                                  height: 50,
+                                  child: Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: ElevatedButton(
+                                        style: shortButton,
+                                        onPressed: () {},
+                                        child: Text('SHORT'),
+                                      )),
+                                )
+                              ]),
+                              Column(children: [
+                                SizedBox(
+                                  width: 125,
+                                  height: 50,
+                                  child: Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: ElevatedButton(
+                                        style: mintButton,
+                                        onPressed: () {},
+                                        child: Text('MINT'),
+                                      )),
+                                )
+                              ]),
+                              Column(children: [
+                                SizedBox(
+                                  width: 125,
+                                  height: 50,
+                                  child: Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: ElevatedButton(
+                                        style: redeemButton,
+                                        onPressed: () {},
+                                        child: Text('REDEEM'),
+                                      )),
+                                )
+                              ])
+                            ],
+                          ),
                         )
-                      ],
-                    ))
-              ],
-            )
-          ]),
+                      ]),
+                  Row(children: [
+                    Container(width: 600, height: 100, color: Colors.white)
+                  ])
+                ])
+              ]),
         ),
       ]),
     ]));

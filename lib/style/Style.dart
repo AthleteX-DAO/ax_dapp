@@ -72,52 +72,44 @@ final ButtonStyle confirmSwap = ElevatedButton.styleFrom(
     fixedSize: Size(350, 50));
 
 final ButtonStyle longButton = ElevatedButton.styleFrom(
-    textStyle: TextStyle(
-        fontSize: smTxSize,
-        fontFamily: 'OpenSans',
-        fontWeight: FontWeight.w600),
-    primary: Colors.green,
-    onPrimary: Colors.white,
-    shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(10.0)),
-    side: BorderSide(color: (Colors.grey[900])!),
-    fixedSize: Size(120, 40));
+  textStyle: TextStyle(
+      fontSize: smTxSize, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+  primary: Colors.green,
+  onPrimary: Colors.white,
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+  side: BorderSide(color: (Colors.grey[900])!),
+);
 
 final ButtonStyle shortButton = ElevatedButton.styleFrom(
-    textStyle: TextStyle(
-        fontSize: smTxSize,
-        fontFamily: 'OpenSans',
-        fontWeight: FontWeight.w600),
-    primary: Colors.red,
-    onPrimary: Colors.white,
-    shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(10.0)),
-    side: BorderSide(color: (Colors.grey[900])!),
-    fixedSize: Size(120, 40));
+  textStyle: TextStyle(
+      fontSize: smTxSize, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+  primary: Colors.red,
+  onPrimary: Colors.white,
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+  side: BorderSide(color: (Colors.grey[900])!),
+);
 
 final ButtonStyle mintButton = ElevatedButton.styleFrom(
-    textStyle: TextStyle(
-        fontSize: smTxSize,
-        fontFamily: 'OpenSans',
-        fontWeight: FontWeight.w600),
-    primary: Colors.grey[900],
-    onPrimary: Colors.white,
-    shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(10.0)),
-    side: BorderSide(color: (Colors.amber[600])!, width: 2),
-    fixedSize: Size(120, 40));
+  textStyle: TextStyle(
+      fontSize: smTxSize, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+  primary: Colors.grey[900],
+  onPrimary: Colors.white,
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+  side: BorderSide(color: (Colors.amber[600])!, width: 2),
+);
 
 final ButtonStyle redeemButton = ElevatedButton.styleFrom(
-    textStyle: TextStyle(
-        fontSize: smTxSize,
-        fontFamily: 'OpenSans',
-        fontWeight: FontWeight.w600),
-    primary: Colors.grey[900],
-    onPrimary: Colors.white,
-    shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(10.0)),
-    side: BorderSide(color: (Colors.amber[600])!, width: 2),
-    fixedSize: Size(120, 40));
+  textStyle: TextStyle(
+      fontSize: smTxSize, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+  primary: Colors.grey[900],
+  onPrimary: Colors.white,
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+  side: BorderSide(color: (Colors.amber[600])!, width: 2),
+);
 
 final ButtonStyle inactiveSport = ElevatedButton.styleFrom(
   textStyle: TextStyle(
@@ -183,7 +175,13 @@ final TextStyle athletePercent = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w200);
 
-final TextStyle athleteCard = TextStyle(
+final TextStyle athleteCardName = TextStyle(
+    letterSpacing: 1,
+    color: Colors.white.withOpacity(0.8),
+    fontSize: 18,
+    fontWeight: FontWeight.w200);
+
+final TextStyle athleteCardPrice = TextStyle(
     letterSpacing: 1,
     color: Colors.white.withOpacity(0.8),
     fontSize: 15,
