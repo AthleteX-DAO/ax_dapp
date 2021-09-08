@@ -161,7 +161,7 @@ class _AXState extends State<AXPage> {
     return BigInt.from(111);
   }
 
-  Future<dynamic> availableBalance() async {
+  Future<BigInt> availableBalance() async {
     EthereumAddress account = await _controller.credentials.extractAddress();
     return athleteX.balanceOf(account);
   }
@@ -175,7 +175,7 @@ class _AXState extends State<AXPage> {
     return new Random().nextDouble();
   }
 
-  Future<dynamic> rewardsEarned() async {
+  Future<BigInt> rewardsEarned() async {
     return _stakingRewards.rewardPerToken();
   }
 
@@ -231,448 +231,420 @@ class _AXState extends State<AXPage> {
         // main user area
         Align(
             alignment: Alignment.center,
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(),
-                  color: Colors.grey[900],
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20))),
-              width: 950,
-              height: 500,
-              margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
-              child: Container(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // my account info
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Main Left Area
-                      Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: (Colors.grey[900])!),
-                              color: Colors.grey[900],
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))),
-                          margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                          alignment: Alignment.center,
-                          height: 450,
-                          width: 400,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-
-                            // Main Left Area
-                            children: [
-                              Column(
-                                children: [
-                                  // My Account
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                    child: Text('My Account',
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontFamily: 'OpenSans',
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle: FontStyle.italic)),
-                                  ),
-
-                                  // Staked AX
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                    child: Text(
-                                      'Staked AX: ',
-                                      style: TextStyle(
-                                        fontSize: smTxSize,
-                                        fontFamily: 'OpenSans',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-
-                                  // Available AX
-                                  Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                      child: StreamBuilder(
-                                        stream: Stream.periodic(
-                                                Duration(seconds: 7))
-                                            .asyncMap(
-                                                (event) => availableBalance()),
-                                        builder: (context, snapshot) => Text(
-                                          'Available AX: ${snapshot.data.toString()}',
-                                          style: TextStyle(
-                                            fontSize: smTxSize,
-                                            fontFamily: 'OpenSans',
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      )),
-
-                                  // Total AX
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                    child: Text(
-                                      'Total AX: ',
-                                      style: TextStyle(
-                                        fontSize: smTxSize,
-                                        fontFamily: 'OpenSans',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-
-                                  // My Rewards
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                    child: Text('My Rewards',
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontFamily: 'OpenSans',
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle: FontStyle.italic)),
-                                  ),
-
-                                  // APY
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                    child: Text(
-                                      'APY: ',
-                                      style: TextStyle(
-                                        fontSize: smTxSize,
-                                        fontFamily: 'OpenSans',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-
-                                  // Rewards Earned
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                    child: Text(
-                                      'Rewards Earned: ',
-                                      style: TextStyle(
-                                        fontSize: smTxSize,
-                                        fontFamily: 'OpenSans',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-
-                                  // Unclaimed Rewards
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: Text(
-                                      'Unclaimed Rewards: ',
-                                      style: TextStyle(
-                                        fontSize: smTxSize,
-                                        fontFamily: 'OpenSans',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                  //Claim rewards button
-                                  Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                      child: SizedBox(
-                                        child: ElevatedButton(
-                                          child: Text('CLAIM REWARDS'),
-                                          onPressed: () async {
-                                            if (window.ethereum == null) {
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    _buildPopupDialog(context),
-                                              );
-                                            }
-                                          },
-                                          style: claimButton,
-                                        ),
-                                        height: 50,
-                                        width: 250,
-                                      )),
-                                  //Buy AX button
-                                  Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                      child: SizedBox(
-                                        child: ElevatedButton(
-                                          child: Text('BUY AX'),
-                                          onPressed: () async {
-                                            _launchURL(
-                                                "https://www.axmarkets.net/ax");
-                                          },
-                                          style: claimButton,
-                                        ),
-                                        height: 50,
-                                        width: 250,
-                                      )),
-                                ],
-                              )
-                            ],
-                          )),
-                    ],
-                  ),
-
-                  //Main right area
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      //Main Right Area
-                      Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: (Colors.grey[900])!),
-                              color: Colors.grey[900],
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))),
-                          margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                          alignment: Alignment.center,
-                          height: 450,
-                          width: 500,
-
-                          // My Liquidity Area
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+            child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 125, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: (Colors.grey[900])!),
+                          color: Colors.grey[900],
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                              bottomRight: Radius.circular(20))),
+                      height: 550,
+                      width: 1000,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          //LEFT SIDE PANEL
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                  child: Column(
-                                children: [
-                                  // My Liquidity
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 20, 0, 10),
-                                      child: Text('My Liquidity',
-                                          style: TextStyle(
-                                              fontSize: mdTxSize,
-                                              fontFamily: 'OpenSans',
-                                              fontWeight: FontWeight.w600,
-                                              fontStyle: FontStyle.italic))),
-
-                                  // adding note
-                                  Container(
-                                      child: Column(
+                                  height: 450,
+                                  width: 350,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      // Add liquidity tag
-                                      Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                          child:
-                                              Text('Add liquidity to stake AX',
-                                                  style: TextStyle(
-                                                    fontSize: smTxSize,
-                                                    fontFamily: 'OpenSans',
-                                                    fontWeight: FontWeight.w200,
-                                                  ))),
-
-                                      // remove note
-                                      Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 60),
-                                          child: Text(
-                                              'Remove liquidity to receive AX',
-                                              style: TextStyle(
-                                                fontSize: smTxSize,
-                                                fontFamily: 'OpenSans',
-                                                fontWeight: FontWeight.w200,
-                                              ))),
-
-                                      Container(
-                                          child: Row(
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Column(
-                                            children: [
-                                              ToggleSwitch(
-                                                minWidth: 75.0,
-                                                minHeight: 30.0,
-                                                fontSize: xsTxSize,
-                                                activeBgColor: [
-                                                  (Colors.grey[900])!
-                                                ],
-                                                activeFgColor:
-                                                    Colors.amber[600],
-                                                inactiveBgColor:
-                                                    Colors.grey[900],
-                                                inactiveFgColor: Colors.white,
-                                                initialLabelIndex: 0,
-                                                totalSwitches: 2,
-                                                labels: ['STAKE', 'UNSTAKE'],
-                                                onToggle: (index) {
-                                                  setState(() {
-                                                  index == 0
-                                                      ? stakeBoolean = true
-                                                      : stakeBoolean = false;                         
-                                                      });
-                                                  print("$index + $stakeBoolean");
-                                                },
+                                          Container(
+                                            width: 300,
+                                            height: 60,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Account',
+                                                style: axHeader,
                                               ),
-                                            ],
+                                            ),
                                           ),
-                                          Column(
-                                            children: [
-                                              ToggleSwitch(
-                                                borderColor: [
-                                                  (Colors.grey[900])!
-                                                ],
-                                                minWidth: 50.0,
-                                                minHeight: 30.0,
-                                                fontSize: xsTxSize,
-                                                activeBgColor: [
-                                                  (Colors.grey[900])!
-                                                ],
-                                                activeFgColor:
-                                                    Colors.amber[600],
-                                                inactiveBgColor:
-                                                    Colors.grey[900],
-                                                inactiveFgColor: Colors.white,
-                                                initialLabelIndex: 0,
-                                                totalSwitches: 4,
-                                                labels: [
-                                                  '25%',
-                                                  '50%',
-                                                  '75%',
-                                                  'MAX'
-                                                ],
-                                                onToggle: (index) {},
+                                          Container(
+                                            width: 300,
+                                            height: 25,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: StreamBuilder(
+                                                  stream: Stream.periodic(
+                                                          Duration(seconds: 7))
+                                                      .asyncMap((event) =>
+                                                          stakedAX()),
+                                                  builder: (context,
+                                                          snapshot) =>
+                                                      Text(
+                                                          'Staked AX: ${snapshot.data.toString()}',
+                                                          style: axSubheader),
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 25,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: StreamBuilder(
+                                                  stream: Stream.periodic(
+                                                          Duration(seconds: 7))
+                                                      .asyncMap((event) =>
+                                                          availableBalance()),
+                                                  builder: (context,
+                                                          snapshot) =>
+                                                      Text(
+                                                          'Available AX: ${snapshot.data.toString()}',
+                                                          style: axSubheader),
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 25,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: StreamBuilder(
+                                                  stream: Stream.periodic(
+                                                          Duration(seconds: 7))
+                                                      .asyncMap((event) =>
+                                                          totalBalance()),
+                                                  builder: (context,
+                                                          snapshot) =>
+                                                      Text(
+                                                          'Total AX: ${snapshot.data.toString()}',
+                                                          style: axSubheader),
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 60,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Rewards',
+                                                style: axHeader,
                                               ),
-                                            ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 25,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: StreamBuilder(
+                                                  stream: Stream.periodic(
+                                                          Duration(seconds: 7))
+                                                      .asyncMap(
+                                                          (event) => getAPY()),
+                                                  builder: (context,
+                                                          snapshot) =>
+                                                      Text(
+                                                          'APY: ${snapshot.data.toString()}',
+                                                          style: axSubheader),
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 25,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: StreamBuilder(
+                                                  stream: Stream.periodic(
+                                                          Duration(seconds: 7))
+                                                      .asyncMap((event) =>
+                                                          rewardsEarned()),
+                                                  builder: (context,
+                                                          snapshot) =>
+                                                      Text(
+                                                          'Rewards Earned: ${snapshot.data.toString()}',
+                                                          style: axSubheader),
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 25,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: StreamBuilder(
+                                                  stream: Stream.periodic(
+                                                          Duration(seconds: 7))
+                                                      .asyncMap((event) =>
+                                                          unclaimedRewards()),
+                                                  builder: (context,
+                                                          snapshot) =>
+                                                      Text(
+                                                          'Unclaimed Rewards: ${snapshot.data.toString()}',
+                                                          style: axSubheader),
+                                                )),
+                                          ),
+                                          Container(height: 20),
+                                          Container(
+                                            width: 200,
+                                            height: 50,
+                                            child: ElevatedButton(
+                                              child: Text('CLAIM REWARDS'),
+                                              onPressed: () async {
+                                                if (window.ethereum == null) {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        _buildPopupDialog(
+                                                            context),
+                                                  );
+                                                }
+                                              },
+                                              style: claimButton,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 200,
+                                            height: 50,
+                                            child: ElevatedButton(
+                                              child: Text('BUY AX'),
+                                              onPressed: () async {
+                                                _launchURL(
+                                                    "https://www.axmarkets.net/ax");
+                                              },
+                                              style: claimButton,
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ))
+                            ],
+                          ),
+                          //RIGHT SIDE PANEL
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: (Colors.grey[800])!),
+                                      color: Colors.grey[800],
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          bottomLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                          bottomRight: Radius.circular(20))),
+                                  height: 500,
+                                  width: 550,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0, 30, 0, 20),
+                                            child: Container(
+                                              width: 300,
+                                              height: 50,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  'Liquidity',
+                                                  style: axHeader1,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 20,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Add liquidity to stake AX',
+                                                style: axSubheader2,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 20,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Remove liquidity to receive AX',
+                                                style: axSubheader2,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0, 20, 0, 0),
+                                            child: Container(
+                                              width: 300,
+                                              height: 75,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: ToggleSwitch(
+                                                  customTextStyles: [
+                                                    TextStyle(
+                                                      letterSpacing: 1,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                    TextStyle(
+                                                        letterSpacing: 1,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ],
+                                                  minWidth: 100.0,
+                                                  minHeight: 40.0,
+                                                  fontSize: 15,
+                                                  activeBgColor: [
+                                                    (Colors.amber[600])!
+                                                  ],
+                                                  activeFgColor:
+                                                      Colors.grey[800],
+                                                  inactiveBgColor:
+                                                      Colors.grey[900]!,
+                                                  inactiveFgColor:
+                                                      Colors.grey[800]!,
+                                                  initialLabelIndex: 0,
+                                                  totalSwitches: 2,
+                                                  labels: ['STAKE', 'UNSTAKE'],
+                                                  onToggle: (index) {},
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 100,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: TextFormField(
+                                                textAlign: TextAlign.center,
+                                                decoration: InputDecoration(
+                                                    fillColor: Colors.grey[900],
+                                                    filled: true,
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5.0),
+                                                      borderSide: BorderSide(
+                                                        color: (Colors
+                                                            .amber[600])!,
+                                                        width: 3.0,
+                                                      ),
+                                                    ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5.0),
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            (Colors.grey[900])!,
+                                                        width: 3.0,
+                                                      ),
+                                                    ),
+                                                    border:
+                                                        UnderlineInputBorder(),
+                                                    hintText:
+                                                        'Enter the amount of AX to stake'),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0, 0, 0, 10),
+                                            child: Container(
+                                              width: 300,
+                                              height: 50,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: ElevatedButton(
+                                                  child: const Text('APPROVE'),
+                                                  onPressed: () async {
+                                                    if (window.ethereum ==
+                                                        null) {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            _buildPopupDialog(
+                                                                context),
+                                                      );
+                                                    } else {
+                                                      // Testing out staking
+                                                      stakeAX();
+                                                    }
+                                                  },
+                                                  style: approveButton,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 300,
+                                            height: 50,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: ElevatedButton(
+                                                child: const Text(
+                                                    'Connect Wallet'),
+                                                onPressed: () async {
+                                                  if (window.ethereum == null) {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          _buildPopupDialog(
+                                                              context),
+                                                    );
+                                                  } else {
+                                                    checkMetamask();
+                                                  }
+                                                },
+                                                style: connectButton,
+                                              ),
+                                            ),
                                           ),
                                         ],
-                                      )),
-
-                                      // text field box
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                        child: ConstrainedBox(
-                                          constraints: BoxConstraints.tight(
-                                              Size(350, 60)),
-                                          child: TextFormField(
-                                            decoration: InputDecoration(
-                                                fillColor: Colors.grey[900],
-                                                filled: true,
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5.0),
-                                                  borderSide: BorderSide(
-                                                    color: (Colors.amber[600])!,
-                                                    width: 3.0,
-                                                  ),
-                                                ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5.0),
-                                                  borderSide: BorderSide(
-                                                    color: (Colors.grey[900])!,
-                                                    width: 3.0,
-                                                  ),
-                                                ),
-                                                border: UnderlineInputBorder(),
-                                                hintText:
-                                                    'Enter the amount of AX to stake'),
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'This field cannot be left empty';
-                                              }
-                                            },
-                                            onChanged: (inputValue) {
-                                              int value = int.parse(inputValue);
-                                              setState(() {
-                                                _amount = value;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-
-                                      // Approve button
-                                      Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                          child: SizedBox(
-                                            child: ElevatedButton(
-                                              child: const Text('APPROVE'),
-                                              onPressed: () async {
-                                                if (window.ethereum == null) {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        _buildPopupDialog(
-                                                            context),
-                                                  );
-                                                } else {
-                                                  switch (stakeBoolean) {
-                                                    case true:
-                                                      stakeAX();
-                                                      break;
-                                                    case false:
-                                                      unstakeAX();
-                                                      break;
-                                                    default:
-                                                      stakeAX();
-                                                      break;
-                                                  }
-                                                }
-                                              },
-                                              style: approveButton,
-                                            ),
-                                            height: 50,
-                                            width: 350,
-                                          )),
-
-                                      Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                          child: SizedBox(
-                                            child: ElevatedButton(
-                                              child:
-                                                  const Text('Connect Wallet'),
-                                              onPressed: () async {
-                                                if (window.ethereum == null) {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        _buildPopupDialog(
-                                                            context),
-                                                  );
-                                                } else {
-                                                  checkMetamask();
-                                                }
-                                              },
-                                              style: connectButton,
-                                            ),
-                                            height: 50,
-                                            width: 350,
-                                          ))
+                                      )
                                     ],
-                                  )),
-                                ],
-                              ))
+                                  ))
                             ],
-                          )),
-                    ],
-                  )
-                ],
-              )),
-            ))
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                )))
       ],
     ));
   }
