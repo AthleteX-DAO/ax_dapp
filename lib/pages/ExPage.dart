@@ -12,9 +12,18 @@ class ExPage extends StatefulWidget {
   _ExPageState createState() => _ExPageState();
 }
 
+class RightHalfWidget extends ChangeNotifier {
+  Widget rightHalf = Container(
+      padding: EdgeInsets.all(5),
+      child: Image(
+          image: AssetImage("assets/images/x.png"), height: 50, width: 50));
+}
+
 class _ExPageState extends State<ExPage> {
   late final ValueNotifier<String> athleteName;
   late final ValueNotifier<List> athleteWAR;
+  RightHalfWidget rightHalfWidget = RightHalfWidget();
+  bool athFlag = false;
 
   @override
   @override
@@ -23,26 +32,27 @@ class _ExPageState extends State<ExPage> {
     athleteName = ValueNotifier<String>("NULL");
   }
 
-  void updateFilter(String text) {
-    print("updated Text: $text");
-  }
+  // void updateFilter(String text) {
+  //   print("updated Text: $text");
+  // }
 
   //widget to get athlete data and build ListView
-  Widget buildAthleteList(BuildContext context) => Scaffold(
-      body: FutureBuilder<List<Athlete>>(
-          future: AthleteApi.getAthletesLocally(context),
-          builder: (context, snapshot) {
-            final athletes = snapshot.data;
 
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              default:
-                return buildAthletes(athletes!);
-            }
-          }));
+  // Widget buildAthleteList(BuildContext context) => Scaffold(
+  //     body: FutureBuilder<List<Athlete>>(
+  //         future: AthleteApi.getAthletesLocally(context),
+  //         builder: (context, snapshot) {
+  //           final athletes = snapshot.data;
+
+  //           switch (snapshot.connectionState) {
+  //             case ConnectionState.waiting:
+  //               return Center(
+  //                 child: CircularProgressIndicator(),
+  //               );
+  //             default:
+  //               return buildAthletes(athletes!);
+  //           }
+  //         }));
   //build ListView for athletes
   Widget buildAthletes(List<Athlete> athletes) => ListView.builder(
       physics: BouncingScrollPhysics(),
@@ -56,6 +66,7 @@ class _ExPageState extends State<ExPage> {
                 onTap: () {
                   athleteName.value = athlete.name;
                   athleteWAR.value = athlete.war;
+                  athFlag = true;
                 },
                 title: Text(athlete.name)));
       });
@@ -63,28 +74,6 @@ class _ExPageState extends State<ExPage> {
   // **********************************************************
   // Build Left Side (Athlete List)
   // **********************************************************
-
-  Widget _buildRow(Athlete _athlete) {
-    return Card(
-      color: Colors.grey[900],
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 30,
-            child: ListTile(
-              title: Text(_athlete.name,
-                  textAlign: TextAlign.left, style: athleteListText),
-              // trailing: Text(_athlete.getPriceString(), style: TextStyle(fontSize: 20)),
-              onTap: () {
-                athleteName.value = _athlete.name;
-                athleteWAR.value = _athlete.war;
-              },
-            ),
-          )
-        ],
-      ),
-    );
-  }
 
   Widget buildList() {
     return Column(
@@ -162,12 +151,8 @@ class _ExPageState extends State<ExPage> {
   // **********************************************************
 
   Widget buildRight() {
-    if (athleteName.value == "NULL") {
-      return Container(
-          padding: EdgeInsets.all(100),
-          child: Image(image: AssetImage("assets/images/x.png")));
-    } else
-      return Column(
+    if (athFlag) {
+      rightHalfWidget.rightHalf = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // athlete header and name
@@ -427,6 +412,8 @@ class _ExPageState extends State<ExPage> {
           // ),
         ],
       );
+    }
+    return rightHalfWidget.rightHalf;
   }
 
   //////////////////////////////////
@@ -884,6 +871,11 @@ class _ExPageState extends State<ExPage> {
   // **********************************************************
 
   Widget build(BuildContext context) {
+    rightHalfWidget.rightHalf = Container(
+        padding: EdgeInsets.all(5),
+        child: Image(
+            image: AssetImage("assets/images/x.png"), height: 50, width: 50));
+
     return Scaffold(
         body: Stack(children: <Widget>[
       Container(
@@ -928,7 +920,7 @@ class _ExPageState extends State<ExPage> {
           ),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[buildList(), buildRight()]),
+              children: <Widget>[buildList(), rightHalfWidget.rightHalf]),
         )
       ])
     ]));
