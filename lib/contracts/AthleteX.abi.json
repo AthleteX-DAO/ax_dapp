@@ -97,7 +97,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -140,7 +141,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -184,7 +186,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -245,7 +248,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -258,7 +262,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -278,7 +283,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -291,7 +297,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -12103,22 +12110,22 @@
         45
       ],
       "Context": [
-        2293
+        2436
       ],
       "ERC20": [
-        2107
+        2250
       ],
       "ERC20Burnable": [
-        2247
+        2390
       ],
       "IERC20": [
-        2185
+        2328
       ],
       "IERC20Metadata": [
-        2272
+        2415
       ],
       "Ownable": [
-        1561
+        1704
       ]
     },
     "id": 46,
@@ -12143,7 +12150,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 46,
-        "sourceUnit": 2108,
+        "sourceUnit": 2251,
         "src": "57:55:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -12155,7 +12162,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 46,
-        "sourceUnit": 2248,
+        "sourceUnit": 2391,
         "src": "113:74:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -12167,7 +12174,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 46,
-        "sourceUnit": 1562,
+        "sourceUnit": 1705,
         "src": "188:52:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -12180,7 +12187,7 @@
               "id": 5,
               "name": "ERC20",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 2107,
+              "referencedDeclaration": 2250,
               "src": "263:5:0"
             },
             "id": 6,
@@ -12192,7 +12199,7 @@
               "id": 7,
               "name": "ERC20Burnable",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 2247,
+              "referencedDeclaration": 2390,
               "src": "270:13:0"
             },
             "id": 8,
@@ -12204,7 +12211,7 @@
               "id": 9,
               "name": "Ownable",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 1561,
+              "referencedDeclaration": 1704,
               "src": "285:7:0"
             },
             "id": 10,
@@ -12218,12 +12225,12 @@
         "id": 45,
         "linearizedBaseContracts": [
           45,
-          1561,
-          2247,
-          2107,
-          2272,
-          2185,
-          2293
+          1704,
+          2390,
+          2250,
+          2415,
+          2328,
+          2436
         ],
         "name": "AthleteX",
         "nameLocation": "251:8:0",
@@ -12328,7 +12335,7 @@
                               "name": "decimals",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1636,
+                              "referencedDeclaration": 1779,
                               "src": "383:8:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_internal_view$__$returns$_t_uint8_$",
@@ -12378,7 +12385,7 @@
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1967,
+                      "referencedDeclaration": 2110,
                       "src": "347:5:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -12451,7 +12458,7 @@
                   "id": 12,
                   "name": "ERC20",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2107,
+                  "referencedDeclaration": 2250,
                   "src": "313:5:0"
                 },
                 "nodeType": "ModifierInvocation",
@@ -12528,7 +12535,7 @@
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1967,
+                      "referencedDeclaration": 2110,
                       "src": "476:5:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -12568,7 +12575,7 @@
                   "id": 35,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 1504,
+                  "referencedDeclaration": 1647,
                   "src": "456:9:0"
                 },
                 "nodeType": "ModifierInvocation",
@@ -12667,22 +12674,22 @@
         45
       ],
       "Context": [
-        2293
+        2436
       ],
       "ERC20": [
-        2107
+        2250
       ],
       "ERC20Burnable": [
-        2247
+        2390
       ],
       "IERC20": [
-        2185
+        2328
       ],
       "IERC20Metadata": [
-        2272
+        2415
       ],
       "Ownable": [
-        1561
+        1704
       ]
     },
     "id": 46,
@@ -12707,7 +12714,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 46,
-        "sourceUnit": 2108,
+        "sourceUnit": 2251,
         "src": "57:55:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -12719,7 +12726,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 46,
-        "sourceUnit": 2248,
+        "sourceUnit": 2391,
         "src": "113:74:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -12731,7 +12738,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 46,
-        "sourceUnit": 1562,
+        "sourceUnit": 1705,
         "src": "188:52:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -12744,7 +12751,7 @@
               "id": 5,
               "name": "ERC20",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 2107,
+              "referencedDeclaration": 2250,
               "src": "263:5:0"
             },
             "id": 6,
@@ -12756,7 +12763,7 @@
               "id": 7,
               "name": "ERC20Burnable",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 2247,
+              "referencedDeclaration": 2390,
               "src": "270:13:0"
             },
             "id": 8,
@@ -12768,7 +12775,7 @@
               "id": 9,
               "name": "Ownable",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 1561,
+              "referencedDeclaration": 1704,
               "src": "285:7:0"
             },
             "id": 10,
@@ -12782,12 +12789,12 @@
         "id": 45,
         "linearizedBaseContracts": [
           45,
-          1561,
-          2247,
-          2107,
-          2272,
-          2185,
-          2293
+          1704,
+          2390,
+          2250,
+          2415,
+          2328,
+          2436
         ],
         "name": "AthleteX",
         "nameLocation": "251:8:0",
@@ -12892,7 +12899,7 @@
                               "name": "decimals",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1636,
+                              "referencedDeclaration": 1779,
                               "src": "383:8:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_internal_view$__$returns$_t_uint8_$",
@@ -12942,7 +12949,7 @@
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1967,
+                      "referencedDeclaration": 2110,
                       "src": "347:5:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -13015,7 +13022,7 @@
                   "id": 12,
                   "name": "ERC20",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2107,
+                  "referencedDeclaration": 2250,
                   "src": "313:5:0"
                 },
                 "nodeType": "ModifierInvocation",
@@ -13092,7 +13099,7 @@
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1967,
+                      "referencedDeclaration": 2110,
                       "src": "476:5:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -13132,7 +13139,7 @@
                   "id": 35,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 1504,
+                  "referencedDeclaration": 1647,
                   "src": "456:9:0"
                 },
                 "nodeType": "ModifierInvocation",
@@ -13232,12 +13239,13 @@
     "80001": {
       "events": {},
       "links": {},
-      "address": "0x585E0c93F73C520ca6513fc03f450dAea3D4b493",
-      "transactionHash": "0x6c9df6710f619db7ac092be17047efcbca1d6be701028f898bba41e6debf008c"
+      "address": "0xc51d9bf2C238037462BA7FEd84AeC99543e0a1FD",
+      "transactionHash": "0x9c8fe30885558c341883cf8d02e8f89bf2528b8214b1834aa97db22c102c12a1"
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-09-06T13:28:05.875Z",
+  "updatedAt": "2021-09-08T01:05:23.149Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {
