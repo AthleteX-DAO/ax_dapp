@@ -3,7 +3,7 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:ae_dapp/pages/TradingBlock.dart';
 import 'package:ae_dapp/pages/AXPage.dart';
 import 'package:ae_dapp/pages/ExplorePage.dart';
-// import 'package:ae_dapp/pages/ExPage.dart';
+import 'package:ae_dapp/pages/ExPage.dart';
 
 class NavigationBar extends StatefulWidget {
   NavigationBar({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _NavigationBarState extends State<NavigationBar> {
   List<Widget> _widgetOptions = <Widget>[
     AXPage(),
     // ExplorePage(),
-    ExplorePage(),
+    ExPage(),
     TradingBlock()
   ];
 

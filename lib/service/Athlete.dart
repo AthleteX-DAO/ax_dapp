@@ -12,7 +12,6 @@ class Athlete {
   static Athlete fromJson(json) =>
       Athlete(name: json['name'], time: json['time'], war: json['war']);
 
-
   Widget createAthletePage(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,23 +39,19 @@ class Athlete {
                                 ),
                               )),
                         ]),
-                        Column(
-                          children: [
-                            Container(
+                        Column(children: [
+                          Container(
                               color: Colors.grey[900],
                               child: Padding(
-                                padding: EdgeInsets.fromLTRB(15, 5, 50, 0),
-                                child: Text(
-                                  name,
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w400),
-                                )
-                              )
-                            ),
-                          ]
-                        ),
+                                  padding: EdgeInsets.fromLTRB(15, 5, 50, 0),
+                                  child: Text(
+                                    name,
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w400),
+                                  ))),
+                        ]),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -65,7 +60,7 @@ class Athlete {
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
                                     child: Text(
-                                      '\$3.8908',
+                                      war[0],
                                       style: TextStyle(
                                           fontSize: 40,
                                           fontFamily: 'OpenSans',
@@ -96,7 +91,7 @@ class Athlete {
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: SizedBox(width: 600, height: 75, child: Row(children: [])),
             )),
-            // insert athlete graph here
+        // insert athlete graph here
         Align(
             child: SizedBox(
           width: 600,
@@ -262,30 +257,28 @@ class Athlete {
     );
   }
 
-
-  
-final ButtonStyle longButton = ElevatedButton.styleFrom(
-    textStyle: TextStyle(
-        fontSize: 12, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
-    primary: Colors.green,
-    onPrimary: Colors.white,
-    fixedSize: Size(100, 50));
-final ButtonStyle shortButton = ElevatedButton.styleFrom(
-    textStyle: TextStyle(
-        fontSize: 12, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
-    primary: Colors.red,
-    onPrimary: Colors.white,
-    fixedSize: Size(100, 50));
-final ButtonStyle mintButton = ElevatedButton.styleFrom(
-    textStyle: TextStyle(
-        fontSize: 12, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
-    primary: Colors.red,
-    onPrimary: Colors.white,
-    fixedSize: Size(100, 50));
-final ButtonStyle redeemButton = ElevatedButton.styleFrom(
-    textStyle: TextStyle(
-        fontSize: 12, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
-    primary: Colors.red,
-    onPrimary: Colors.white,
-    fixedSize: Size(100, 50));
+  final ButtonStyle longButton = ElevatedButton.styleFrom(
+      textStyle: TextStyle(
+          fontSize: 12, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+      primary: Colors.green,
+      onPrimary: Colors.white,
+      fixedSize: Size(100, 50));
+  final ButtonStyle shortButton = ElevatedButton.styleFrom(
+      textStyle: TextStyle(
+          fontSize: 12, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+      primary: Colors.red,
+      onPrimary: Colors.white,
+      fixedSize: Size(100, 50));
+  final ButtonStyle mintButton = ElevatedButton.styleFrom(
+      textStyle: TextStyle(
+          fontSize: 12, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+      primary: Colors.red,
+      onPrimary: Colors.white,
+      fixedSize: Size(100, 50));
+  final ButtonStyle redeemButton = ElevatedButton.styleFrom(
+      textStyle: TextStyle(
+          fontSize: 12, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+      primary: Colors.red,
+      onPrimary: Colors.white,
+      fixedSize: Size(100, 50));
 }
