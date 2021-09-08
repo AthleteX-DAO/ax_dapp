@@ -3,7 +3,7 @@ import json
 
 host = 'http://146.59.10.118:9000'
 
-sql_query = "select * from nfl"
+sql_query = "select * from nfl;"
 
 class Athlete():
     def __init__(self, name):
