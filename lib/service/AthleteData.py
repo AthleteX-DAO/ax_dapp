@@ -3,7 +3,7 @@ import json
 
 host = 'http://146.59.10.118:9000'
 
-sql_query = "select * from nfl"
+sql_query = "select * from nfl;"
 
 class Athlete():
     def __init__(self, name):
@@ -33,6 +33,7 @@ def append_Data(ATHLETES, name, pair):
 try:
     response = requests.post(host + '/exec', params={'query': sql_query})
     json_response = json.loads(response.text)
+    print(json_response)
     rows = json_response['dataset']
     
     for row in rows: # create athlete objects
