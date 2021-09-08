@@ -25,14 +25,14 @@ Controller _controller = Controller();
 
 // Defined Staking
 final EthereumAddress stakingAddr =
-    EthereumAddress.fromHex("0x063086C5b352F986718Db9383c894Be9Cd4350fA");
+    EthereumAddress.fromHex("0xD842133F7f9b88866e6B7cd0d72ec05B037b7C92");
 StakingRewards _stakingRewards =
     StakingRewards(address: stakingAddr, client: _controller.client);
 int _amount = 0;
 bool stakeBoolean = true;
 // Defined AthelteX
 final EthereumAddress axTokenAddr =
-    EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
+    EthereumAddress.fromHex("0xc51d9bf2C238037462BA7FEd84AeC99543e0a1FD");
 AthleteX athleteX = AthleteX(address: axTokenAddr, client: _controller.client);
 
 Widget _buildPopupDialog(BuildContext context) {
@@ -113,17 +113,19 @@ class _AXState extends State<AXPage> {
 
   @override
   void initState() {
-    checkMetamask();
     super.initState();
   }
 
   // Actionable
   Future<void> buyAX() async {}
+
   Future<void> stakeAX() async {
     BigInt stakeAmount = BigInt.from(_amount);
     Credentials stakeCredentials = _controller.credentials;
+    Transaction stakingTransaction = Transaction(maxGas: 21000, gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50));
     try {
-      _stakingRewards.stake(stakeAmount, credentials: stakeCredentials);
+      _stakingRewards.stake(stakeAmount,
+          credentials: stakeCredentials, transaction: stakingTransaction);
     } catch (e) {
       print('Error occured! $e');
     } finally {
@@ -145,7 +147,10 @@ class _AXState extends State<AXPage> {
     }
   }
 
-  Future<void> claimRewards() async {}
+  Future<void> claimRewards() async {
+
+  }
+
   Future<void> unstakeAX() async {
     Credentials credentials = _controller.credentials;
     BigInt amount = BigInt.from(_amount);
@@ -179,8 +184,8 @@ class _AXState extends State<AXPage> {
     return _stakingRewards.rewardPerToken();
   }
 
-  Future<double> unclaimedRewards() async {
-    return new Random(300).nextDouble();
+  Future<BigInt> unclaimedRewards() async {
+    return new Random(300).nextDouble() as BigInt;
   }
 
   Widget build(BuildContext context) {
@@ -393,6 +398,9 @@ class _AXState extends State<AXPage> {
                                                         context) =>
                                                     _buildPopupDialog(context),
                                               );
+                                            } else {
+                                              checkMetamask();
+                                              claimRewards();
                                             }
                                           },
                                           style: claimButton,
@@ -511,11 +519,12 @@ class _AXState extends State<AXPage> {
                                                 labels: ['STAKE', 'UNSTAKE'],
                                                 onToggle: (index) {
                                                   setState(() {
-                                                  index == 0
-                                                      ? stakeBoolean = true
-                                                      : stakeBoolean = false;                         
-                                                      });
-                                                  print("$index + $stakeBoolean");
+                                                    index == 0
+                                                        ? stakeBoolean = true
+                                                        : stakeBoolean = false;
+                                                  });
+                                                  print(
+                                                      "$index + $stakeBoolean");
                                                 },
                                               ),
                                             ],
@@ -618,17 +627,10 @@ class _AXState extends State<AXPage> {
                                                             context),
                                                   );
                                                 } else {
-                                                  switch (stakeBoolean) {
-                                                    case true:
-                                                      stakeAX();
-                                                      break;
-                                                    case false:
-                                                      unstakeAX();
-                                                      break;
-                                                    default:
-                                                      stakeAX();
-                                                      break;
-                                                  }
+                                                  checkMetamask();
+                                                  stakeBoolean
+                                                      ? stakeAX()
+                                                      : unstakeAX();
                                                 }
                                               },
                                               style: approveButton,
