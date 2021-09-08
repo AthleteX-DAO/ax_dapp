@@ -53,9 +53,9 @@ class _ExplorePageState extends State<ExplorePage> {
                 title: Text(athlete.name)));
       });
 
-  void setRightPanel(Athlete _athlete) {
-    rightPanel = _athlete.createAthleteWidget(context);
-  }
+  // void setRightPanel(Athlete _athlete) {
+  //   rightPanel = _athlete.createAthleteWidget(context);
+  // }
 
   @override
   Widget build(BuildContext context) {

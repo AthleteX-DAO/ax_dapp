@@ -1,6 +1,7 @@
-import 'package:ae_dapp/service/AllAthletesList.dart';
+// import 'package:ae_dapp/service/AllAthletesList.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/style/Style.dart';
+import 'package:ae_dapp/service/AthleteApi.dart';
 
 import 'package:flutter/material.dart';
 
@@ -16,42 +17,48 @@ class _ExPageState extends State<ExPage> {
   bool athleteFlag = false;
 
   late final ValueNotifier<Athlete> rightAthlete;
-  // ignore: non_constant_identifier_names
-  List<Athlete> _AllAthletesList = <Athlete>[]; //All athletes
-  Future<dynamic>? _loadData;
-  // Athlete? rightAthlete;
-  final TextEditingController _filter = new TextEditingController(); //
-  String _searchText = "";
-  
+  late String name;
 
   @override
+  @override
   void initState() {
-    // TODO: implement initState
-    //
-    _filter.addListener(() {
-      if (_filter.text.isEmpty) {
-        setState(() {
-          _searchText = "";
-          updateFilter(_searchText);
-        });
-      } else {
-        setState(() {
-          _searchText = _filter.text;
-          updateFilter(_searchText);
-        });
-      }
-    });
-    _loadData = _loadAthletes();
     super.initState();
+    name = 'Click an athlete';
   }
 
   void updateFilter(String text) {
     print("updated Text: $text");
   }
 
-  Future<dynamic> _loadAthletes() async {
-    return await fetchAthletes();
-  }
+  //widget to get athlete data and build ListView
+  Widget buildAthleteList(BuildContext context) => Scaffold(
+      body: FutureBuilder<List<Athlete>>(
+          future: AthleteApi.getAthletesLocally(context),
+          builder: (context, snapshot) {
+            final athletes = snapshot.data;
+
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              default:
+                return buildAthletes(athletes!);
+            }
+          }));
+  //build ListView for athletes
+  Widget buildAthletes(List<Athlete> athletes) => ListView.builder(
+      physics: BouncingScrollPhysics(),
+      itemCount: athletes.length,
+      itemBuilder: (context, index) {
+        final athlete = athletes[index];
+        return Card(
+            color: Colors.grey[900],
+            shadowColor: Colors.grey[900],
+            child: ListTile(
+                onTap: () => setState(() => name = athlete.name),
+                title: Text(athlete.name)));
+      });
 
 
 
@@ -68,9 +75,9 @@ class _ExPageState extends State<ExPage> {
           SizedBox(
             height: 30,
             child: ListTile(
-              title: Text(_athlete.name ?? "",
+              title: Text(_athlete.name,
                   textAlign: TextAlign.left, style: athleteListText),
-              trailing: Text(_athlete.getPriceString(), style: TextStyle(fontSize: 20)),
+              // trailing: Text(_athlete.getPriceString(), style: TextStyle(fontSize: 20)),
               onTap: () {
                 athleteFlag = true;
                 rightAthlete.value = _athlete;
@@ -79,20 +86,6 @@ class _ExPageState extends State<ExPage> {
           )
         ],
       ),
-    );
-  }
-
-  Widget _buildAthletes(AsyncSnapshot<dynamic> snapshot) {
-    _AllAthletesList.addAll(snapshot.data!);
-
-    return ListView.builder(
-      itemCount: 20,
-      padding: EdgeInsets.all(0),
-      itemBuilder: (context, index) {
-        if (index.isOdd) return Divider(); /*2*/
-        final i = index ~/ 2; // i is every even item in this iteration
-        return _buildRow(_AllAthletesList[i]);
-      },
     );
   }
 
@@ -149,36 +142,21 @@ class _ExPageState extends State<ExPage> {
               borderRadius:
                   BorderRadius.all(const Radius.circular(10.0)),
             ),
-            // child: AllAthletesList(),
             child: FutureBuilder<dynamic>(
-              future: _loadData,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return RefreshIndicator(
-                      onRefresh: () {
-                        return _loadData = fetchAthletes();
-                      },
-                      child: Center(
-                        child: _buildAthletes(snapshot),
-                      ));
-                } else if (snapshot.hasError) {
-                  return Text(
-                    "Something went wrong! make sure you're connected to the internet",
-                  );
-                }
-                return Center(
-                  child: SizedBox(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.grey[500],
-                    ),
-                    height: 50,
-                    width: 50,
-                  ),
-                );
-              },
-            ),
-          )
-        ),
+                future: AthleteApi.getAthletesLocally(context),
+                builder: (context, snapshot) {
+                  final athletes = snapshot.data;
+
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    default:
+                      return buildAthletes(athletes!);
+                  }
+                }),
+          )),
       ],
     );
   }
@@ -235,7 +213,7 @@ class _ExPageState extends State<ExPage> {
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(15, 5, 50, 0),
                                     child: Text(
-                                      _ath.name!,
+                                      _ath.name,
                                       style: TextStyle(
                                         fontSize: 30,
                                         fontFamily: 'OpenSans',
@@ -259,13 +237,13 @@ class _ExPageState extends State<ExPage> {
                                   color: Colors.grey[900],
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                                    child: Text(
-                                      _ath.getPriceString(),
-                                      style: TextStyle(
-                                          fontSize: 40,
-                                          fontFamily: 'OpenSans',
-                                          fontWeight: FontWeight.w400),
-                                    ),
+                                    // child: Text(
+                                    //   _ath.getPriceString(),
+                                    //   style: TextStyle(
+                                    //       fontSize: 40,
+                                    //       fontFamily: 'OpenSans',
+                                    //       fontWeight: FontWeight.w400),
+                                    // ),
                                   )),
                             ]);
                           }
