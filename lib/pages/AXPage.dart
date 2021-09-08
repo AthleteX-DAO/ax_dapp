@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:ae_dapp/style/Style.dart';
+import 'package:web3dart/web3dart.dart';
 
 _launchURL() async {
   if (await canLaunch(url)) {
@@ -88,11 +89,8 @@ class _AXState extends State<AXPage> {
 
   // Actionable
   Future<void> buyAX() async {}
-  Future<void> stakeAX() async {}
-  Future<void> claimRewards() async {}
-  Future<Widget> unstakeAX() async {
-    return Text("Unclaimed Rewards: ");
-  }
+
+  Future<void> stakeAX(int _amount) async {}
 
   var currentTotal = 0;
   var numNewAX = 0;
@@ -222,7 +220,7 @@ class _AXState extends State<AXPage> {
                                   // My Account
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                    child: Text('My Account',
+                                    child: Text('Account',
                                         style: TextStyle(
                                             fontSize: 25,
                                             fontFamily: 'OpenSans',
@@ -272,7 +270,7 @@ class _AXState extends State<AXPage> {
                                   // My Rewards
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                    child: Text('My Rewards',
+                                    child: Text('Rewards',
                                         style: TextStyle(
                                             fontSize: 25,
                                             fontFamily: 'OpenSans',
@@ -381,7 +379,7 @@ class _AXState extends State<AXPage> {
                                   Padding(
                                       padding:
                                           EdgeInsets.fromLTRB(0, 20, 0, 10),
-                                      child: Text('My Liquidity',
+                                      child: Text('Liquidity',
                                           style: TextStyle(
                                               fontSize: mdTxSize,
                                               fontFamily: 'OpenSans',

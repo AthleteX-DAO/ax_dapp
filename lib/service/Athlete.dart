@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 
 class Athlete {
   final String name;
-  final List history;
+  final List time;
+  final List war;
 
-  // const Athlete({required this.name, required this.history});
-  Athlete({required this.name, required this.history});
+  // const Athlete({required this.name, required this.time, required this.war});
+  Athlete({required this.name, required this.time, required this.war});
 
   static Athlete fromJson(json) =>
-    Athlete(name: json['name'], history: json['history']);
+      Athlete(name: json['name'], time: json['time'], war: json['war']);
+
 
   Widget createAthletePage(BuildContext context) {
     return Column(
@@ -286,5 +288,4 @@ final ButtonStyle redeemButton = ElevatedButton.styleFrom(
     primary: Colors.red,
     onPrimary: Colors.white,
     fixedSize: Size(100, 50));
-
 }

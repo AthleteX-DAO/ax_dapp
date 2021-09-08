@@ -8,14 +8,17 @@ sql_query = "select * from nfl"
 class Athlete():
     def __init__(self, name):
         self.name = name
-        self.history = []
+        self.time = []
+        self.war = []
 
-    def add_data(self, pair):
-        self.history.append(pair)
+    def add_data(self, time, war):
+        self.time.append(time)
+        self.war.append(war)
 
     def make_dict(self):
         id = self.name[-5:].replace('_', '')
-        return (id, {"name": self.name[:-5].replace('_', ''), "history":self.history})
+        # return (id, {"name": self.name[:-5].replace('_', '')})
+        return (id, {"name": self.name[:-5].replace('_', ''), "time":self.time, "war":self.war})
 
 ATHLETES = []
 
@@ -25,10 +28,10 @@ def is_Active(ATHLETES, name):
             return True
     return False
 
-def append_Data(ATHLETES, name, pair):
+def append_Data(ATHLETES, name, time, war):
     for athlete in ATHLETES:
         if athlete.name == name:
-            athlete.add_data(pair)
+            athlete.add_data(time, war)
 
 try:
     response = requests.post(host + '/exec', params={'query': sql_query})
@@ -40,7 +43,7 @@ try:
             new_entry = Athlete(row[0])
             ATHLETES.append(new_entry)
     for row in rows: # append historical data
-        append_Data(ATHLETES, row[0], [ row[2], [row[1]] ])
+        append_Data(ATHLETES, row[0], row[2], row[1])
         
 except requests.exceptions.RequestException as e:
   print("Error: %s" % (e))
