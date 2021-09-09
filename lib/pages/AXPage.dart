@@ -160,7 +160,9 @@ class _AXState extends State<AXPage> {
       final credentials = await eth.requestAccount();
       _controller.updateClient(client);
       _controller.updateCredentials(credentials);
-      walletConnected = true;
+      setState(() {
+        walletConnected = true;
+      });
       return;
     }
   }
@@ -303,7 +305,11 @@ class _AXState extends State<AXPage> {
               alignment: Alignment.topRight,
               child: Padding(
                   padding: const EdgeInsets.only(right: 20, top: 25),
-                  child: addressConnect(context))),
+                  child: StreamBuilder(
+                      stream: Stream.periodic(Duration(seconds: 1))
+                          .asyncMap((event) => stakedAX()),
+                      builder: (context, snapshot) =>
+                          addressConnect(context)))),
           // upper right logo
           Align(
               alignment: Alignment.topRight,
