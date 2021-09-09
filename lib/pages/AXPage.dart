@@ -109,6 +109,7 @@ class AXPage extends StatefulWidget {
 }
 
 class _AXState extends State<AXPage> {
+  bool walletConnected = false;
   // final EthereumAddress tokenAddr = "0x585E0c93F73C520ca6513fc03f450dAea3D4b493";
   // final EthereumAddress stakingAddr = "0x063086C5b352F986718Db9383c894Be9Cd4350fA";
 
@@ -116,6 +117,7 @@ class _AXState extends State<AXPage> {
   void initState() {
     testRewards();
     super.initState();
+    walletConnected = false;
   }
 
   // Actionable
@@ -158,6 +160,7 @@ class _AXState extends State<AXPage> {
       final credentials = await eth.requestAccount();
       _controller.updateClient(client);
       _controller.updateCredentials(credentials);
+      walletConnected = true;
       return;
     }
   }
@@ -219,6 +222,65 @@ class _AXState extends State<AXPage> {
     return await _stakingRewards.earned(account);
   }
 
+  Widget addressConnect(BuildContext context) {
+    Widget child;
+    if (walletConnected) {
+      child = Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: (Colors.amber[600])!, width: 2),
+              color: Colors.transparent,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20))),
+          width: 175,
+          height: 50,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Center(
+                child: Text(
+              ('0x' + ('208g8d84n90vsdksk8asdfjklaskdf').toUpperCase()),
+              style: TextStyle(
+                  fontSize: 17,
+                  color: Colors.white.withOpacity(0.6),
+                  fontWeight: FontWeight.w600),
+              overflow: TextOverflow.ellipsis,
+            )),
+          ));
+    } else {
+      child = Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: (Colors.grey[800])!, width: 2),
+              color: Colors.transparent,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20))),
+          width: 175,
+          height: 50,
+          child: ElevatedButton(
+            child: Text(
+              'Connect Wallet',
+              style: TextStyle(color: Colors.white.withOpacity(0.6)),
+            ),
+            onPressed: () async {
+              if (window.ethereum == null) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildPopupDialog(context),
+                );
+              } else {
+                checkMetamask();
+              }
+            },
+            style: connectButton,
+          ));
+    }
+    return child;
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
@@ -236,18 +298,24 @@ class _AXState extends State<AXPage> {
           ),
         ),
 
-        // upper right logo
-        Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Image(
-                width: 80,
-                height: 80,
-                image: AssetImage("assets/images/x.png"),
-              ),
-            )),
-
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                  padding: const EdgeInsets.only(right: 20, top: 25),
+                  child: addressConnect(context))),
+          // upper right logo
+          Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20, top: 10),
+                child: Image(
+                  width: 80,
+                  height: 80,
+                  image: AssetImage("assets/images/x.png"),
+                ),
+              )),
+        ]),
         // header
         Container(
             margin: EdgeInsets.fromLTRB(0, 75, 0, 250),
@@ -611,7 +679,8 @@ class _AXState extends State<AXPage> {
                                               child: Align(
                                                 alignment: Alignment.center,
                                                 child: ElevatedButton(
-                                                  child: const Text('APPROVE'),
+                                                  child: const Text(
+                                                      'APPROVE STAKE'),
                                                   onPressed: () async {
                                                     if (window.ethereum ==
                                                         null) {
