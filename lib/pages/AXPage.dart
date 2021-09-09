@@ -22,17 +22,18 @@ _launchURL(String $url) async {
 }
 
 Controller _controller = Controller();
+int _amount = 0;
+int initialIndex = 0;
+bool stakeBoolean = true;
 
 // Defined Staking
 final EthereumAddress stakingAddr =
-    EthereumAddress.fromHex("0xD842133F7f9b88866e6B7cd0d72ec05B037b7C92");
+    EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
 StakingRewards _stakingRewards =
     StakingRewards(address: stakingAddr, client: _controller.client);
-int _amount = 0;
-bool stakeBoolean = true;
 // Defined AthelteX
 final EthereumAddress axTokenAddr =
-    EthereumAddress.fromHex("0xc51d9bf2C238037462BA7FEd84AeC99543e0a1FD");
+    EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
 AthleteX athleteX = AthleteX(address: axTokenAddr, client: _controller.client);
 
 Widget _buildPopupDialog(BuildContext context) {
@@ -113,31 +114,45 @@ class _AXState extends State<AXPage> {
 
   @override
   void initState() {
+    testRewards();
     super.initState();
   }
 
   // Actionable
   Future<void> buyAX() async {}
 
+  Future<void> testRewards() async {
+    print("award for duraiton");
+    print(await _stakingRewards.getRewardForDuration());
+  }
+
   Future<void> stakeAX() async {
-    BigInt stakeAmount = BigInt.from(_amount);
+    BigInt stakeAmount = BigInt.from(_amount * (pow(10, 18)));
     Credentials stakeCredentials = _controller.credentials;
-    Transaction stakingTransaction = Transaction(maxGas: 21000, gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50));
+    Transaction _transaction = Transaction(
+        maxGas: 5500000,
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 10));
+
     try {
+      athleteX.approve(stakingAddr, stakeAmount,
+          credentials: _controller.credentials);
       _stakingRewards.stake(stakeAmount,
-          credentials: stakeCredentials, transaction: stakingTransaction);
+          credentials: stakeCredentials, transaction: _transaction);
     } catch (e) {
-      print('Error occured! $e');
-    } finally {
-      print("Staked successfully!");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Failed at Staking: $e"),
+        backgroundColor: Colors.red,
+      ));
     }
-    print("Attempting to stake... ");
   }
 
   Future<void> checkMetamask() async {
     final eth = window.ethereum;
     if (eth != null) {
-      print('Connected to the decentralized web!');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Connected to the decentralized web!"),
+        backgroundColor: Colors.green,
+      ));
       // Immediately
       final client = Web3Client.custom(eth.asRpcService());
       final credentials = await eth.requestAccount();
@@ -148,44 +163,60 @@ class _AXState extends State<AXPage> {
   }
 
   Future<void> claimRewards() async {
-
+    _stakingRewards.getReward(credentials: _controller.credentials);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Getting your rewards!"),
+      backgroundColor: Colors.green,
+    ));
   }
 
   Future<void> unstakeAX() async {
-    Credentials credentials = _controller.credentials;
-    BigInt amount = BigInt.from(_amount);
+    Credentials wCredentials = _controller.credentials;
+    BigInt withdrawAmount = BigInt.from(_amount * (pow(10, 18)));
+    Transaction _transaction = Transaction(
+        maxGas: 5500000,
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 10));
+
     try {
-      _stakingRewards.withdraw(amount, credentials: credentials);
+      athleteX.approve(stakingAddr, withdrawAmount, credentials: wCredentials);
+      _stakingRewards.withdraw(withdrawAmount,
+          credentials: wCredentials, transaction: _transaction);
     } catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Failed at Withdraw: $e"),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
   // Viewable
   Future<BigInt> totalBalance() async {
-    return BigInt.from(111);
+    return await athleteX.totalSupply();
   }
 
   Future<BigInt> availableBalance() async {
     EthereumAddress account = await _controller.credentials.extractAddress();
-    return athleteX.balanceOf(account);
+    BigInt returnValue = await athleteX.balanceOf(account);
+    return returnValue;
   }
 
   Future<BigInt> stakedAX() async {
     EthereumAddress account = await _controller.credentials.extractAddress();
-    return _stakingRewards.balanceOf(account);
+    return BigInt.from(
+        await _stakingRewards.balanceOf(account) / BigInt.from(pow(10, 18)));
   }
 
-  Future<double> getAPY() async {
-    return new Random().nextDouble();
+  Future<BigInt> getAPY() async {
+    return await _stakingRewards.getRewardForDuration();
   }
 
   Future<BigInt> rewardsEarned() async {
-    return _stakingRewards.rewardPerToken();
+    return await _stakingRewards.rewardPerToken();
   }
 
   Future<BigInt> unclaimedRewards() async {
-    return new Random(300).nextDouble() as BigInt;
+    EthereumAddress account = await _controller.credentials.extractAddress();
+    return await _stakingRewards.earned(account);
   }
 
   Widget build(BuildContext context) {
@@ -295,47 +326,13 @@ class _AXState extends State<AXPage> {
                                                 alignment: Alignment.center,
                                                 child: StreamBuilder(
                                                   stream: Stream.periodic(
-                                                          Duration(seconds: 7))
+                                                          Duration(seconds: 3))
                                                       .asyncMap((event) =>
                                                           stakedAX()),
                                                   builder: (context,
                                                           snapshot) =>
                                                       Text(
                                                           'Staked AX: ${snapshot.data.toString()}',
-                                                          style: axSubheader),
-                                                )),
-                                          ),
-                                          Container(
-                                            width: 300,
-                                            height: 25,
-                                            child: Align(
-                                                alignment: Alignment.center,
-                                                child: StreamBuilder(
-                                                  stream: Stream.periodic(
-                                                          Duration(seconds: 7))
-                                                      .asyncMap((event) =>
-                                                          availableBalance()),
-                                                  builder: (context,
-                                                          snapshot) =>
-                                                      Text(
-                                                          'Available AX: ${snapshot.data.toString()}',
-                                                          style: axSubheader),
-                                                )),
-                                          ),
-                                          Container(
-                                            width: 300,
-                                            height: 25,
-                                            child: Align(
-                                                alignment: Alignment.center,
-                                                child: StreamBuilder(
-                                                  stream: Stream.periodic(
-                                                          Duration(seconds: 7))
-                                                      .asyncMap((event) =>
-                                                          totalBalance()),
-                                                  builder: (context,
-                                                          snapshot) =>
-                                                      Text(
-                                                          'Total AX: ${snapshot.data.toString()}',
                                                           style: axSubheader),
                                                 )),
                                           ),
@@ -357,7 +354,7 @@ class _AXState extends State<AXPage> {
                                                 alignment: Alignment.center,
                                                 child: StreamBuilder(
                                                   stream: Stream.periodic(
-                                                          Duration(seconds: 7))
+                                                          Duration(seconds: 3))
                                                       .asyncMap(
                                                           (event) => getAPY()),
                                                   builder: (context,
@@ -374,7 +371,7 @@ class _AXState extends State<AXPage> {
                                                 alignment: Alignment.center,
                                                 child: StreamBuilder(
                                                   stream: Stream.periodic(
-                                                          Duration(seconds: 7))
+                                                          Duration(seconds: 3))
                                                       .asyncMap((event) =>
                                                           rewardsEarned()),
                                                   builder: (context,
@@ -391,7 +388,7 @@ class _AXState extends State<AXPage> {
                                                 alignment: Alignment.center,
                                                 child: StreamBuilder(
                                                   stream: Stream.periodic(
-                                                          Duration(seconds: 7))
+                                                          Duration(seconds: 3))
                                                       .asyncMap((event) =>
                                                           unclaimedRewards()),
                                                   builder: (context,
@@ -416,6 +413,8 @@ class _AXState extends State<AXPage> {
                                                         _buildPopupDialog(
                                                             context),
                                                   );
+                                                } else {
+                                                  claimRewards();
                                                 }
                                               },
                                               style: claimButton,
@@ -537,10 +536,20 @@ class _AXState extends State<AXPage> {
                                                       Colors.grey[900]!,
                                                   inactiveFgColor:
                                                       Colors.grey[800]!,
-                                                  initialLabelIndex: 0,
+                                                  initialLabelIndex:
+                                                      initialIndex,
                                                   totalSwitches: 2,
                                                   labels: ['STAKE', 'UNSTAKE'],
-                                                  onToggle: (index) {},
+                                                  onToggle: (index) {
+                                                    setState(() {
+                                                      index == 0
+                                                          ? stakeBoolean = true
+                                                          : stakeBoolean =
+                                                              false;
+                                                      initialIndex = index;
+                                                    });
+                                                  },
+                                                  changeOnTap: true,
                                                 ),
                                               ),
                                             ),
@@ -581,6 +590,15 @@ class _AXState extends State<AXPage> {
                                                         UnderlineInputBorder(),
                                                     hintText:
                                                         'Enter the amount of AX to stake'),
+                                                onChanged: (String amount) {
+                                                  int stakeAmount =
+                                                      int.parse(amount);
+
+                                                  setState(() {
+                                                    _amount = stakeAmount;
+                                                    print(_amount);
+                                                  });
+                                                },
                                               ),
                                             ),
                                           ),
@@ -606,7 +624,9 @@ class _AXState extends State<AXPage> {
                                                       );
                                                     } else {
                                                       // Testing out staking
-                                                      stakeAX();
+                                                      stakeBoolean == false
+                                                          ? unstakeAX()
+                                                          : stakeAX();
                                                     }
                                                   },
                                                   style: approveButton,
