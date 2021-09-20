@@ -13,22 +13,12 @@ class ExplorePage extends StatefulWidget {
   _ExplorePageState createState() => _ExplorePageState();
 }
 
-class DisplayedList extends ChangeNotifier {
-  List<Athlete> list = [];
-
-  void setList(List<Athlete> _list) {
-    list = _list;
-    notifyListeners();
-  }
-}
-
 class _ExplorePageState extends State<ExplorePage> {
   // name variable to store future list item name on tap
   late String name;
   late List war;
   late List time;
   late List<Athlete> athleteList;
-  DisplayedList displayedAthletes = DisplayedList();
   Widget filler = Text("Filler Text");
 
   // reset the name for the state when list item on tap
@@ -42,44 +32,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   double lgTxSize = 52;
   double headerTx = 30;
-/*
-  //widget to get athlete data and build ListView
-  Widget buildAthleteList(BuildContext context) => Scaffold(
-      body: FutureBuilder<List<Athlete>>(
-          future: AthleteApi.getAthletesLocally(context),
-          builder: (context, snapshot) {
-            final athletes = snapshot.data;
 
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              default:
-                return buildAthletes(athletes!);
-            }
-          }));
-*/
-  //build ListView for athletes
-/*
-  Widget buildAthletes() => ListView.builder(
-      physics: BouncingScrollPhysics(),
-      itemCount: displayedAthletes.value.length,
-      itemBuilder: (context, index) {
-        final athlete = displayedAthletes.value[index];
-print("BuildAthletes: "+displayedAthletes.value[index].name+', '+athlete.name);
-        return Card(
-            color: Colors.grey[900],
-            shadowColor: Colors.grey[900],
-            child: ListTile(
-                onTap: () => setState(() => {
-                      name = athlete.name,
-                      war = athlete.war,
-                      time = athlete.time
-                    }),
-                title: Text(athlete.name)));
-      });
-*/
   Widget buildGraph(List war, List time) {
     List<FlSpot> athleteData = [];
 
@@ -119,9 +72,7 @@ print("BuildAthletes: "+displayedAthletes.value[index].name+', '+athlete.name);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => DisplayedList(),
-      child: FutureBuilder<dynamic>(
+    return FutureBuilder<dynamic>(
           future: AthleteApi.getAthletesLocally(context),
           builder: (context, snapshot) {
             athleteList = snapshot.data;
@@ -134,7 +85,6 @@ print("BuildAthletes: "+displayedAthletes.value[index].name+', '+athlete.name);
                   child: CircularProgressIndicator(),
                 );
               default:
-                displayedAthletes.setList(athleteList);
                 return Scaffold(
                   body: getBasePage(
                     Container(
@@ -151,66 +101,65 @@ print("BuildAthletes: "+displayedAthletes.value[index].name+', '+athlete.name);
                         Column(
                           children: <Widget>[
                             // search for an athlete
-                            SizedBox(
-                              width: 250,
-                              height: 50,
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints.tight(Size(250, 60)),
-                                child: TextFormField(
-                                  onChanged: (textVal){
-                                    textVal=textVal.toLowerCase();
-                                    List<Athlete> tempList = athleteList.where(
-                                      (_athlete) {
-                                        var at = _athlete.name.toLowerCase();
-print("Updating "+_athlete.name);if(at.contains(textVal)) print(' true');
-                                        return at.contains(textVal);
-                                      }
-                                    ).toList();
+//                             SizedBox(
+//                               width: 250,
+//                               height: 50,
+//                               child: ConstrainedBox(
+//                                 constraints: BoxConstraints.tight(Size(250, 60)),
+//                                 child: TextFormField(
+//                                   onChanged: (textVal){
+//                                     textVal=textVal.toLowerCase();
+//                                     List<Athlete> tempList = athleteList.where(
+//                                       (_athlete) {
+//                                         var at = _athlete.name.toLowerCase();
+// print("Updating "+_athlete.name);if(at.contains(textVal)) print(' true');
+//                                         return at.contains(textVal);
+//                                       }
+//                                     ).toList();
                                     
-                                    displayedAthletes.setList(tempList);
-
-for(int i=0;i<displayedAthletes.list.length;i++)print("display: "+displayedAthletes.list[i].name);
+//                                     displayedAthletes.setList(tempList);
                                       
-            //                         setState((){
-            //                           displayedAthletes=athleteList.where((_athlete)
-            //                           {
-            // print(textVal + ' ' + _athlete.name.contains(textVal).toString());
-            //                             var at = _athlete.name.toLowerCase();
-            //                             return at.contains(textVal);
-            //                           }).toList();
-            // for (int i = 0; i < displayedAthletes.length; i++) print(displayedAthletes[i].name+' ');
-            //                         });
-                                  },
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey[800],
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                        borderSide: BorderSide(
-                                          color: (Colors.grey[900])!,
-                                          width: 3.0,
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                        borderSide: BorderSide(
-                                          color: (Colors.grey[900])!,
-                                          width: 3.0,
-                                        ),
-                                      ),
-                                      border: UnderlineInputBorder(),
-                                      hintText: 'Search for an Athlete',
-                                      hintStyle: TextStyle(
-                                        fontSize: 15,
-                                      )),
-                                ),
-                              ),
-                            ),
+//             //                         setState((){
+//             //                           displayedAthletes=athleteList.where((_athlete)
+//             //                           {
+//             // print(textVal + ' ' + _athlete.name.contains(textVal).toString());
+//             //                             var at = _athlete.name.toLowerCase();
+//             //                             return at.contains(textVal);
+//             //                           }).toList();
+//             // for (int i = 0; i < displayedAthletes.length; i++) print(displayedAthletes[i].name+' ');
+//             //                         });
+//                                   },
+//                                   textAlign: TextAlign.center,
+//                                   decoration: InputDecoration(
+//                                       fillColor: Colors.grey[800],
+//                                       filled: true,
+//                                       focusedBorder: OutlineInputBorder(
+//                                         borderRadius: BorderRadius.circular(20.0),
+//                                         borderSide: BorderSide(
+//                                           color: (Colors.grey[900])!,
+//                                           width: 3.0,
+//                                         ),
+//                                       ),
+//                                       enabledBorder: OutlineInputBorder(
+//                                         borderRadius: BorderRadius.circular(20.0),
+//                                         borderSide: BorderSide(
+//                                           color: (Colors.grey[900])!,
+//                                           width: 3.0,
+//                                         ),
+//                                       ),
+//                                       border: UnderlineInputBorder(),
+//                                       hintText: 'Search for an Athlete',
+//                                       hintStyle: TextStyle(
+//                                         fontSize: 15,
+//                                       )),
+//                                 ),
+//                               ),
+//                             ),
                             
                             // generate athlete cards
                             Container(
-                                height: MediaQuery.of(context).size.height * .45,
+                              padding: EdgeInsets.symmetric(vertical: 30),
+                                height: MediaQuery.of(context).size.height * .62,
                                 width: MediaQuery.of(context).size.width / 2 - 350,
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -219,27 +168,24 @@ for(int i=0;i<displayedAthletes.list.length;i++)print("display: "+displayedAthle
                                         BorderRadius.all(const Radius.circular(10.0)),
                                   ),
                                   // child: buildAthletes()
-                                  child: Consumer<DisplayedList>(
-                                    builder: (context, displayedAthletes, filler) {
-print("Size: "+displayedAthletes.list.length.toString());
-                                      return ListView.builder(
-                                        physics: BouncingScrollPhysics(),
-                                        itemCount: displayedAthletes.list.length,
-                                        itemBuilder: (context, index) {
-                                          final athlete = displayedAthletes.list[index];
-print("Building: "+displayedAthletes.list[index].name+', '+athlete.name);
-                                          return Card(
-                                              color: Colors.grey[900],
-                                              shadowColor: Colors.grey[900],
-                                              child: ListTile(
-                                                  onTap: () => setState(() => {
-                                                        name = athlete.name,
-                                                        war = athlete.war,
-                                                        time = athlete.time
-                                                      }),
-                                                  title: Text(athlete.name)));
-                                        });
-                                    },
+                                  child: ListView.builder(
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: athleteList.length,
+                                    itemBuilder: (context, index) {
+                                      final athlete = athleteList[index];
+                                      return Card(
+                                        color: Colors.grey[900],
+                                        shadowColor: Colors.grey[900],
+                                        child: ListTile(
+                                          onTap: () => setState(() => {
+                                            name = athlete.name,
+                                            war = athlete.war,
+                                            time = athlete.time
+                                          }),
+                                          title: Text(athlete.name)
+                                        )
+                                      );
+                                    }
                                   )
                                 )),
                           ],
@@ -400,7 +346,6 @@ print("Building: "+displayedAthletes.list[index].name+', '+athlete.name);
                 );
             }
           }
-        )
       );
     }
 
