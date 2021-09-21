@@ -113,7 +113,7 @@ class _ScoutPageState extends State<ScoutPage> {
                   topRight: Radius.circular(20),
                   bottomRight: Radius.circular(20))),
           width: 150,
-          height: 20,
+          height: 40,
           child: Padding(
             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Center(
@@ -137,7 +137,7 @@ class _ScoutPageState extends State<ScoutPage> {
                   topRight: Radius.circular(20),
                   bottomRight: Radius.circular(20))),
           width: 150,
-          height: 20,
+          height: 40,
           child: ElevatedButton(
             child: Text(
               'Connect Wallet',
@@ -187,18 +187,48 @@ class _ScoutPageState extends State<ScoutPage> {
             if (MediaQuery.of(context).orientation == Orientation.portrait) {
               // Mobile/tablet in portrait mode
               if (constraints.maxWidth < 900) {
-                return Text('Mobile');
+                return Stack(children: <Widget>[
+                  // background image
+                  Container(
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage("../assets/images/axBackground.png"),
+                      ),
+                    ),
+                  ),
+                ]);
               }
             }
             // Landscape widget returns
             else {
               // Landscape and smaller than 900px width
               if (constraints.maxWidth < 900) {
-                return Text('Landscape Mobile/Tablet');
+                return Stack(children: <Widget>[
+                  // background image
+                  Container(
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage("../assets/images/axBackground.png"),
+                      ),
+                    ),
+                  ),
+                ]);
               }
               // Landscape and larger than 900px width
               else {
-                return Text('Landscape Desktop');
+                return Stack(children: <Widget>[
+                  // background image
+                  Container(
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage("../assets/images/axBackground.png"),
+                      ),
+                    ),
+                  ),
+                ]);
               }
             }
             return Text('Nothing');
@@ -233,11 +263,15 @@ class _ScoutPageState extends State<ScoutPage> {
                   ],
                 ),
                 actions: [
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                      child: addressConnect(context))
+                  Row(
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                          child: addressConnect(context))
+                    ],
+                  )
                 ],
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.black,
                 automaticallyImplyLeading: false));
   }
 }

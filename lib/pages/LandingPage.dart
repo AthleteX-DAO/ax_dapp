@@ -18,12 +18,9 @@ class _LandingPageState extends State<LandingPage> {
         body: Stack(children: <Widget>[
       Container(
         decoration: new BoxDecoration(
-          color: const Color(0xff7c94b6),
           image: new DecorationImage(
             fit: BoxFit.cover,
-            colorFilter: new ColorFilter.mode(
-                Colors.black.withOpacity(.9), BlendMode.darken),
-            image: AssetImage("assets/images/background.jpeg"),
+            image: AssetImage("../assets/images/axBackground.png"),
           ),
         ),
       ),

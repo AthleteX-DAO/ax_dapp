@@ -53,7 +53,7 @@ class _NavigationBarState extends State<NavigationBar> {
                   selectedItemColor: Vx.hexToColor("#fec901"),
                   unselectedItemColor: Vx.hexToColor("#f8f8ff"),
                   onTap: _onItemTapped,
-                  backgroundColor: Colors.grey[1000],
+                  backgroundColor: Colors.black,
                 )
               : null,
     );
