@@ -161,13 +161,18 @@ final TextStyle axSubheader2 = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.w500);
 
+final ButtonStyle navButton = ElevatedButton.styleFrom(
+  textStyle: TextStyle(
+      fontSize: 20, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+  primary: Colors.transparent,
+  onPrimary: Colors.white,
+);
+
 final ButtonStyle inactiveSport = ElevatedButton.styleFrom(
   textStyle: TextStyle(
       fontSize: 10, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
   primary: Colors.grey[900],
   onPrimary: Colors.grey[800],
-  shape:
-      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
 );
 
 final ButtonStyle nflButton = ElevatedButton.styleFrom(
