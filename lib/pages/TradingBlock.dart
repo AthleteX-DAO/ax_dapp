@@ -230,6 +230,192 @@ class _TradingBlockState extends State<TradingBlock> {
     double lgTxSize = 52;
 
     return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Portrait Widget returns
+          if (MediaQuery.of(context).orientation == Orientation.portrait) {
+            // Mobile/Tablet in portrait mode
+            if (constraints.maxWidth < 900) {
+              return Text("Mobile Portrait");
+            }
+          }
+          // landscape widget returns
+          else {
+            // landscape and smaller than 900px width (mobile)
+            if (constraints.maxWidth < 900) {
+              return Text("Mobile Landscape");
+            }
+            // landscapse and larger than 900px width (Desktop)
+            else {
+              return desktopLandscape(context);
+            }
+          }
+
+          return Text("error: wrong screen size");
+        }
+      ),
+    );
+  }
+
+  Widget desktopLandscape(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+                padding: EdgeInsets.fromLTRB(25, 15, 0, 5),
+                child: Text("DEX",
+                    style: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                    )))),
+        Container(
+          color: Colors.transparent,
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(12.0),
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.all(
+                      const Radius.circular(10.0)),
+                ),
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 30),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                const Radius.circular(
+                                    10.0)),
+                            color: Colors.grey[800],
+                          ),
+                          child: Align(
+                              alignment:
+                                  Alignment.centerLeft,
+                              child: DropdownButton(
+                                items: [],
+                                icon: const Icon(
+                                    Icons.arrow_downward),
+                              ))),
+                      Container(
+                        height: 10,
+                        color: Colors.transparent,
+                      ),
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 30),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                const Radius.circular(
+                                    10.0)),
+                            color: Colors.grey[800],
+                          ),
+                          child: Align(
+                              alignment:
+                                  Alignment.centerLeft,
+                              child: DropdownButton(
+                                items: [],
+                                icon: const Icon(
+                                    Icons.arrow_downward),
+                              ))),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(
+                            Colors.grey[900]!),
+                  ),
+                  child: Icon(
+                    Icons.arrow_downward_sharp,
+                  ),
+                  onPressed: () {},
+                ),
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.all(
+                      const Radius.circular(10.0)),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: 0, vertical: 20),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // boolean is user wallet connected
+                  // ignore: unrelated_type_equality_checks
+                  walletConnected
+                      ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.amber[600],
+                              minimumSize: Size(MediaQuery.of(context).size.width * .33, 60),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(
+                                          25))),
+                          child: Text("Swap",
+                              style: TextStyle(
+                                  letterSpacing: .5,
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontFamily: 'OpenSans',
+                                  fontWeight:
+                                      FontWeight.w600)),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder:
+                                  (BuildContext context) =>
+                                      _tradeConfirmation(
+                                          context),
+                            );
+                          },
+                        )
+                      : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.blue
+                                  .withOpacity(0.3),
+                              minimumSize: Size(450, 60),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(
+                                          25))),
+                          child: Text("Connect Wallet",
+                              style: TextStyle(
+                                  color: Colors.blue
+                                      .withOpacity(0.8),
+                                  fontSize: 20,
+                                  fontFamily: 'OpenSans',
+                                  fontWeight:
+                                      FontWeight.w400)),
+                          onPressed: () {},
+                        )
+                ]))
+      ],
+    );
+  }
+
+}
+
+    /// DELETE SOON
+/*
+    return Scaffold(
         body: Stack(
       children: <Widget>[
         Container(
@@ -255,7 +441,7 @@ class _TradingBlockState extends State<TradingBlock> {
                     image: AssetImage("assets/images/x.png"),
                   ),
                 )),
-            Text("SWAP",
+            Text("DEX",
                 style: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: lgTxSize,
@@ -271,176 +457,177 @@ class _TradingBlockState extends State<TradingBlock> {
                     child: Center(
                       child: Text('COMING SOON', style: comingSoon),
                     ))),
-            // Column(
-            //   children: <Widget>[
-            //     Padding(
-            //         padding: EdgeInsets.fromLTRB(10.0, 100.0, 10.0, 0.0),
-            //         child: Container(
-            //             width: 500,
-            //             decoration: BoxDecoration(
-            //               color: Colors.grey[900],
-            //               borderRadius:
-            //                   BorderRadius.all(const Radius.circular(10.0)),
-            //             ),
-            //             child: Column(
-            //               children: <Widget>[
-            //                 // Align(
-            //                 //     alignment: Alignment.centerLeft,
-            //                 //     child: Padding(
-            //                 //         padding: EdgeInsets.fromLTRB(25, 15, 0, 5),
-            //                 //         child: Text("Swap",
-            //                 //             style: TextStyle(
-            //                 //               fontFamily: 'OpenSans',
-            //                 //               fontSize: 20,
-            //                 //               fontWeight: FontWeight.w400,
-            //                 //             )))),
-            //                 Container(
-            //                   color: Colors.transparent,
-            //                   padding: EdgeInsets.symmetric(horizontal: 5),
-            //                   child: Stack(
-            //                     alignment: AlignmentDirectional.center,
-            //                     children: [
-            //                       Container(
-            //                         padding: EdgeInsets.all(12.0),
-            //                         decoration: BoxDecoration(
-            //                           color: Colors.grey[900],
-            //                           borderRadius: BorderRadius.all(
-            //                               const Radius.circular(10.0)),
-            //                         ),
-            //                         child: Center(
-            //                           child: Column(
-            //                             children: <Widget>[
-            //                               Container(
-            //                                   padding: EdgeInsets.symmetric(
-            //                                       horizontal: 10, vertical: 30),
-            //                                   decoration: BoxDecoration(
-            //                                     borderRadius: BorderRadius.all(
-            //                                         const Radius.circular(
-            //                                             10.0)),
-            //                                     color: Colors.grey[800],
-            //                                   ),
-            //                                   child: Align(
-            //                                       alignment:
-            //                                           Alignment.centerLeft,
-            //                                       child: DropdownButton(
-            //                                         items: [],
-            //                                         icon: const Icon(
-            //                                             Icons.arrow_downward),
-            //                                       ))),
-            //                               Container(
-            //                                 height: 10,
-            //                                 color: Colors.transparent,
-            //                               ),
-            //                               Container(
-            //                                   padding: EdgeInsets.symmetric(
-            //                                       horizontal: 10, vertical: 30),
-            //                                   decoration: BoxDecoration(
-            //                                     borderRadius: BorderRadius.all(
-            //                                         const Radius.circular(
-            //                                             10.0)),
-            //                                     color: Colors.grey[800],
-            //                                   ),
-            //                                   child: Align(
-            //                                       alignment:
-            //                                           Alignment.centerLeft,
-            //                                       child: DropdownButton(
-            //                                         items: [],
-            //                                         icon: const Icon(
-            //                                             Icons.arrow_downward),
-            //                                       ))),
-            //                             ],
-            //                           ),
-            //                         ),
-            //                       ),
-            //                       Container(
-            //                         padding: EdgeInsets.symmetric(vertical: 0),
-            //                         child: ElevatedButton(
-            //                           style: ButtonStyle(
-            //                             backgroundColor:
-            //                                 MaterialStateProperty.all<Color>(
-            //                                     Colors.grey[900]!),
-            //                           ),
-            //                           child: Icon(
-            //                             Icons.arrow_downward_sharp,
-            //                           ),
-            //                           onPressed: () {},
-            //                         ),
-            //                         width: 40,
-            //                         height: 40,
-            //                         decoration: BoxDecoration(
-            //                           color: Colors.grey[900],
-            //                           borderRadius: BorderRadius.all(
-            //                               const Radius.circular(10.0)),
-            //                         ),
-            //                       ),
-            //                     ],
-            //                   ),
-            //                 ),
-            //                 Padding(
-            //                     padding: EdgeInsets.symmetric(
-            //                         horizontal: 0, vertical: 20),
-            //                     child: Row(
-            //                         mainAxisAlignment: MainAxisAlignment.center,
-            //                         children: <Widget>[
-            //                           // boolean is user wallet connected
-            //                           // ignore: unrelated_type_equality_checks
-            //                           walletConnected
-            //                               ? ElevatedButton(
-            //                                   style: ElevatedButton.styleFrom(
-            //                                       primary: Colors.amber[600],
-            //                                       minimumSize: Size(450, 60),
-            //                                       shape: RoundedRectangleBorder(
-            //                                           borderRadius:
-            //                                               BorderRadius.circular(
-            //                                                   25))),
-            //                                   child: Text("Swap",
-            //                                       style: TextStyle(
-            //                                           letterSpacing: .5,
-            //                                           color: Colors.white,
-            //                                           fontSize: 25,
-            //                                           fontFamily: 'OpenSans',
-            //                                           fontWeight:
-            //                                               FontWeight.w600)),
-            //                                   onPressed: () {
-            //                                     showDialog(
-            //                                       context: context,
-            //                                       builder:
-            //                                           (BuildContext context) =>
-            //                                               _tradeConfirmation(
-            //                                                   context),
-            //                                     );
-            //                                   },
-            //                                 )
-            //                               : ElevatedButton(
-            //                                   style: ElevatedButton.styleFrom(
-            //                                       primary: Colors.blue
-            //                                           .withOpacity(0.3),
-            //                                       minimumSize: Size(450, 60),
-            //                                       shape: RoundedRectangleBorder(
-            //                                           borderRadius:
-            //                                               BorderRadius.circular(
-            //                                                   25))),
-            //                                   child: Text("Connect Wallet",
-            //                                       style: TextStyle(
-            //                                           color: Colors.blue
-            //                                               .withOpacity(0.8),
-            //                                           fontSize: 20,
-            //                                           fontFamily: 'OpenSans',
-            //                                           fontWeight:
-            //                                               FontWeight.w400)),
-            //                                   onPressed: () {},
-            //                                 )
-            //                         ]))
-            //               ],
-            //             ))),
-            //   ],
-            // ),
+            Column(
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.fromLTRB(10.0, 100.0, 10.0, 0.0),
+                    child: Container(
+                        width: 500,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[900],
+                          borderRadius:
+                              BorderRadius.all(const Radius.circular(10.0)),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            // Align(
+                            //     alignment: Alignment.centerLeft,
+                            //     child: Padding(
+                            //         padding: EdgeInsets.fromLTRB(25, 15, 0, 5),
+                            //         child: Text("Swap",
+                            //             style: TextStyle(
+                            //               fontFamily: 'OpenSans',
+                            //               fontSize: 20,
+                            //               fontWeight: FontWeight.w400,
+                            //             )))),
+                            Container(
+                              color: Colors.transparent,
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child: Stack(
+                                alignment: AlignmentDirectional.center,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(12.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[900],
+                                      borderRadius: BorderRadius.all(
+                                          const Radius.circular(10.0)),
+                                    ),
+                                    child: Center(
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 30),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    const Radius.circular(
+                                                        10.0)),
+                                                color: Colors.grey[800],
+                                              ),
+                                              child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: DropdownButton(
+                                                    items: [],
+                                                    icon: const Icon(
+                                                        Icons.arrow_downward),
+                                                  ))),
+                                          Container(
+                                            height: 10,
+                                            color: Colors.transparent,
+                                          ),
+                                          Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 30),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    const Radius.circular(
+                                                        10.0)),
+                                                color: Colors.grey[800],
+                                              ),
+                                              child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: DropdownButton(
+                                                    items: [],
+                                                    icon: const Icon(
+                                                        Icons.arrow_downward),
+                                                  ))),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(vertical: 0),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.grey[900]!),
+                                      ),
+                                      child: Icon(
+                                        Icons.arrow_downward_sharp,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[900],
+                                      borderRadius: BorderRadius.all(
+                                          const Radius.circular(10.0)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 20),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      // boolean is user wallet connected
+                                      // ignore: unrelated_type_equality_checks
+                                      walletConnected
+                                          ? ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.amber[600],
+                                                  minimumSize: Size(450, 60),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              25))),
+                                              child: Text("Swap",
+                                                  style: TextStyle(
+                                                      letterSpacing: .5,
+                                                      color: Colors.white,
+                                                      fontSize: 25,
+                                                      fontFamily: 'OpenSans',
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          _tradeConfirmation(
+                                                              context),
+                                                );
+                                              },
+                                            )
+                                          : ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: Colors.blue
+                                                      .withOpacity(0.3),
+                                                  minimumSize: Size(450, 60),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              25))),
+                                              child: Text("Connect Wallet",
+                                                  style: TextStyle(
+                                                      color: Colors.blue
+                                                          .withOpacity(0.8),
+                                                      fontSize: 20,
+                                                      fontFamily: 'OpenSans',
+                                                      fontWeight:
+                                                          FontWeight.w400)),
+                                              onPressed: () {},
+                                            )
+                                    ]))
+                          ],
+                        ))),
+              ],
+            ),
           ],
         )
       ],
     ));
   }
 }
+*/
 
 // content: new Column(
 //           mainAxisSize: MainAxisSize.min,
