@@ -9,11 +9,11 @@ import 'package:web3dart/browser.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
-class ScoutPage extends StatefulWidget {
-  const ScoutPage({Key? key}) : super(key: key);
+class DrawerPage extends StatefulWidget {
+  const DrawerPage({Key? key}) : super(key: key);
 
   @override
-  _ScoutPageState createState() => _ScoutPageState();
+  _DrawerPageState createState() => _DrawerPageState();
 }
 
 _launchURL(String $url) async {
@@ -93,7 +93,7 @@ Widget _buildPopupDialog(BuildContext context) {
   );
 }
 
-class _ScoutPageState extends State<ScoutPage> {
+class _DrawerPageState extends State<DrawerPage> {
   bool walletConnected = false;
   void initState() {
     super.initState();
