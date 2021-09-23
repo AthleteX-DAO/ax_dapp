@@ -8,6 +8,7 @@ import 'package:ae_dapp/service/Controller.dart';
 import 'package:web3dart/browser.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:webfeed/domain/media/media.dart';
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({Key? key}) : super(key: key);
@@ -197,6 +198,11 @@ class _DrawerPageState extends State<DrawerPage> {
                       ),
                     ),
                   ),
+                  Container(
+                    color: Colors.black,
+                    height: MediaQuery.of(context).size.height * .80,
+                    width: MediaQuery.of(context).size.width * .9
+                  )
                 ]);
               }
             }
@@ -228,6 +234,12 @@ class _DrawerPageState extends State<DrawerPage> {
                       ),
                     ),
                   ),
+                  Container(
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width * .80,
+                    height: MediaQuery.of(context).size.height * .60,
+                    child: Text('Moving box')
+                  )
                 ]);
               }
             }
