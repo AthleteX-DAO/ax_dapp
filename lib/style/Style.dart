@@ -185,11 +185,33 @@ final ButtonStyle nflButton = ElevatedButton.styleFrom(
   side: BorderSide(color: (Colors.amber[600])!, width: 2),
 );
 
+final ButtonStyle connectWallet = ElevatedButton.styleFrom(
+  textStyle: TextStyle(
+      fontSize: 20, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
+  primary: Colors.transparent,
+  onPrimary: Colors.grey[800],
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+  side: BorderSide(color: (Colors.amber[500])!, width: 4),
+);
+
 final TextStyle athleteText = TextStyle(
     letterSpacing: 1,
     color: Colors.white,
     fontSize: 40,
     fontWeight: FontWeight.w200);
+
+final TextStyle connectWalletMobile = TextStyle(
+    color: Colors.amber[500],
+    fontSize: 15,
+    fontFamily: 'OpenSans',
+    fontWeight: FontWeight.w200);
+
+final TextStyle toolbarButton = TextStyle(
+    color: Colors.amber[500],
+    fontSize: 20,
+    fontFamily: 'OpenSans',
+    fontWeight: FontWeight.w600);
 
 final TextStyle athleteWAR = TextStyle(
     letterSpacing: 1,
