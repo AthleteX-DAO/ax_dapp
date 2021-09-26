@@ -99,9 +99,7 @@ class _HomePageState extends State<HomePage> {
           // Scout page
           if (_selectedIndex == 0) {
             return Scaffold(
-              body: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Container(
+              body: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
@@ -111,50 +109,73 @@ class _HomePageState extends State<HomePage> {
                       fit: BoxFit.fill,
                     ),
                   ),
-                  child: Row(
-                    children: [Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                            child: Image(
-                            image: AssetImage('../assets/images/x.png'),
-                            height: 40
-                          ),
-                        )
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(0, 20, 20, 0),
-                            child: ElevatedButton(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: Text('Connect Wallet',
-                                  style: connectWalletMobile),
-                                ),
-                              style: connectWallet,
-                              onPressed: () {},
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header row
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .075,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Upper-left Icon
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10,5,0,0),
+                              child: Image(
+                                image: AssetImage('../assets/images/x.png'),
+                                height: 40
+                              ),
+                            ),
+                            // Upper-right connect wallet button
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0,5,10,0),
+                              child: ElevatedButton(
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  child: Text('Connect Wallet',
+                                    style: connectWalletMobile),
+                                  ),
+                                style: connectWallet,
+                                onPressed: () {},
+                              )
                             )
-                          ),
+                          ]
                         )
-                      ],)
-                    )
-                  ]),
-                )
+                      ),
+                      // Main mobile area
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .84,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Main mobile border box
+                            Container(
+                              width: MediaQuery.of(context).size.width * .9,
+                              height: MediaQuery.of(context).size.height * .8,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.transparent,
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 3,
+                                ),
+                              ),
+                            )
+                          ]
+                        )
+                      )
+                    ]
+                  )
               )
             );
           } 
           // Dex page
           else if (_selectedIndex == 1) {
            return Scaffold(
-              body: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Container(
+              body: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
@@ -164,50 +185,73 @@ class _HomePageState extends State<HomePage> {
                       fit: BoxFit.fill,
                     ),
                   ),
-                  child: Row(
-                    children: [Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                            child: Image(
-                            image: AssetImage('../assets/images/x.png'),
-                            height: 40
-                          ),
-                        )
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(0, 20, 20, 0),
-                            child: ElevatedButton(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: Text('Connect Wallet',
-                                  style: connectWalletMobile),
-                                ),
-                              style: connectWallet,
-                              onPressed: () {},
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header row
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .075,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Upper-left Icon
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10,0,0,0),
+                              child: Image(
+                                image: AssetImage('../assets/images/x.png'),
+                                height: 40
+                              ),
+                            ),
+                            // Upper-right connect wallet button
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0,0,10,0),
+                              child: ElevatedButton(
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  child: Text('Connect Wallet',
+                                    style: connectWalletMobile),
+                                  ),
+                                style: connectWallet,
+                                onPressed: () {},
+                              )
                             )
-                          ),
+                          ]
                         )
-                      ],)
-                    )
-                  ]),
-                )
+                      ),
+                      // Main mobile area
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .84,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Main mobile border box
+                            Container(
+                              width: MediaQuery.of(context).size.width * .9,
+                              height: MediaQuery.of(context).size.height * .8,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.transparent,
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 3,
+                                ),
+                              ),
+                            )
+                          ]
+                        )
+                      )
+                    ]
+                  )
               )
             );
           } 
           // Help page
           else {
             return Scaffold(
-              body: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Container(
+              body: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
@@ -217,41 +261,66 @@ class _HomePageState extends State<HomePage> {
                       fit: BoxFit.fill,
                     ),
                   ),
-                  child: Row(
-                    children: [Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                            child: Image(
-                            image: AssetImage('../assets/images/x.png'),
-                            height: 40
-                          ),
-                        )
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(0, 20, 20, 0),
-                            child: ElevatedButton(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: Text('Connect Wallet',
-                                  style: connectWalletMobile),
-                                ),
-                              style: connectWallet,
-                              onPressed: () {},
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header row
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .075,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Upper-left Icon
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10,0,0,0),
+                              child: Image(
+                                image: AssetImage('../assets/images/x.png'),
+                                height: 40
+                              ),
+                            ),
+                            // Upper-right connect wallet button
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0,0,10,0),
+                              child: ElevatedButton(
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  child: Text('Connect Wallet',
+                                    style: connectWalletMobile),
+                                  ),
+                                style: connectWallet,
+                                onPressed: () {},
+                              )
                             )
-                          ),
+                          ]
                         )
-                      ],)
-                    )
-                  ]),
-                )
+                      ),
+                      // Main mobile area
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .84,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Main mobile border box
+                            Container(
+                              width: MediaQuery.of(context).size.width * .9,
+                              height: MediaQuery.of(context).size.height * .8,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.transparent,
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 3,
+                                ),
+                              ),
+                            )
+                          ]
+                        )
+                      )
+                    ]
+                  )
               )
             );
           }  
