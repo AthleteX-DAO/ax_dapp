@@ -25,7 +25,7 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   void initState() {
     super.initState();
-    name = 'Click an athlete';
+    name = 'Select Athlete';
     war = [0, 0, 0];
     time = [0, 0, 0]; 
   }
@@ -235,7 +235,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                             child: Column(
                                               children: [
-                                                Text("\$" + (war[0]).toStringAsFixed(4),
+                                                Text("  \$" + (war[0]).toStringAsFixed(4),
                                                     style: athleteWAR)
                                               ],
                                             ),
