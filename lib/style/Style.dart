@@ -195,6 +195,17 @@ final ButtonStyle connectWallet = ElevatedButton.styleFrom(
   side: BorderSide(color: (Colors.amber[500])!, width: 4),
 );
 
+final ButtonStyle connectWalletDesktopButton = ElevatedButton.styleFrom(
+  textStyle: TextStyle(
+      fontSize: 20, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
+  primary: Colors.transparent,
+  onPrimary: Colors.grey[800],
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+  side: BorderSide(color: (Colors.amber[500])!, width: 4),
+);
+
+
 final TextStyle athleteText = TextStyle(
     letterSpacing: 1,
     color: Colors.white,
@@ -202,6 +213,12 @@ final TextStyle athleteText = TextStyle(
     fontWeight: FontWeight.w200);
 
 final TextStyle connectWalletMobile = TextStyle(
+    color: Colors.amber[500],
+    fontSize: 15,
+    fontFamily: 'OpenSans',
+    fontWeight: FontWeight.w200);
+
+final TextStyle connectWalletDesktop = TextStyle(
     color: Colors.amber[500],
     fontSize: 15,
     fontFamily: 'OpenSans',
