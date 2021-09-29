@@ -205,6 +205,25 @@ final ButtonStyle connectWalletDesktopButton = ElevatedButton.styleFrom(
   side: BorderSide(color: (Colors.amber[500])!, width: 4),
 );
 
+final ButtonStyle dexToggleActive = ElevatedButton.styleFrom(
+  textStyle: TextStyle(
+      fontSize: 20, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+  primary: Colors.grey[900],
+  onPrimary: Colors.amber[600],
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+  // side: BorderSide(color: (Colors.amber[500])!, width: 4),
+);
+
+final ButtonStyle dexToggleInactive = ElevatedButton.styleFrom(
+  textStyle: TextStyle(
+      fontSize: 20, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+  primary: Colors.transparent,
+  onPrimary: Colors.white,
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+  // side: BorderSide(color: (Colors.amber[500])!, width: 4),
+);
 
 final TextStyle athleteText = TextStyle(
     letterSpacing: 1,
