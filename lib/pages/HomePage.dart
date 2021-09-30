@@ -198,6 +198,88 @@ class _HomePageState extends State<HomePage> {
                                             width: 3,
                                           ),
                                         ),
+                                        child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              .24,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              .1,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        color: Colors.black,
+                                                        border: Border.all(
+                                                          color: Colors.grey,
+                                                          width: 3,
+                                                        ),
+                                                      ),
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Container(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                .1,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                .07,
+                                                            child:
+                                                                ElevatedButton(
+                                                              style:
+                                                                  dexToggleActive,
+                                                              onPressed: () {},
+                                                              child:
+                                                                  Text('Swap'),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                .1,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                .07,
+                                                            child:
+                                                                ElevatedButton(
+                                                              style:
+                                                                  dexToggleInactive,
+                                                              onPressed: () {},
+                                                              child:
+                                                                  Text('Earn'),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ))
+                                                ],
+                                              )
+                                            ]),
                                       )
                                     ]))
                           ])));
