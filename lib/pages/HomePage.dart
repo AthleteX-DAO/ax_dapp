@@ -16,6 +16,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  var swap = true;
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -85,7 +87,6 @@ class _HomePageState extends State<HomePage> {
                     child: TextButton(
                       child: Text('DEX', style: toolbarButton),
                       onPressed: () {
-                        print('Logged');
                         _selectedIndex = 1;
                         _onItemTapped(_selectedIndex);
                       },
@@ -250,7 +251,9 @@ class _HomePageState extends State<HomePage> {
                                                                 ElevatedButton(
                                                               style:
                                                                   dexToggleActive,
-                                                              onPressed: () {},
+                                                              onPressed: () {
+                                                                swap = true;
+                                                              },
                                                               child:
                                                                   Text('Swap'),
                                                             ),
@@ -270,7 +273,9 @@ class _HomePageState extends State<HomePage> {
                                                                 ElevatedButton(
                                                               style:
                                                                   dexToggleInactive,
-                                                              onPressed: () {},
+                                                              onPressed: () {
+                                                                swap = false;
+                                                              },
                                                               child:
                                                                   Text('Earn'),
                                                             ),
@@ -490,106 +495,123 @@ class _HomePageState extends State<HomePage> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      // Main mobile border box
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .9,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                .79,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: Colors.black,
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                            width: 3,
-                                          ),
-                                        ),
-                                        child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Row(
+                                      Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            // Main mobile border box
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .9,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  .79,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                color: Colors.black,
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 3,
+                                                ),
+                                              ),
+                                            ),
+                                            Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
-                                                  Container(
-                                                      width:
-                                                          MediaQuery.of(context)
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                          width: MediaQuery.of(
+                                                                      context)
                                                                   .size
                                                                   .width *
                                                               .24,
-                                                      height:
-                                                          MediaQuery.of(context)
+                                                          height: MediaQuery.of(
+                                                                      context)
                                                                   .size
                                                                   .height *
                                                               .1,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                        color: Colors.black,
-                                                        border: Border.all(
-                                                          color: Colors.grey,
-                                                          width: 3,
-                                                        ),
-                                                      ),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        children: [
-                                                          Container(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                .1,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                .07,
-                                                            child:
-                                                                ElevatedButton(
-                                                              style:
-                                                                  dexToggleActive,
-                                                              onPressed: () {},
-                                                              child:
-                                                                  Text('Swap'),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            color: Colors.black,
+                                                            border: Border.all(
+                                                              color:
+                                                                  Colors.grey,
+                                                              width: 3,
                                                             ),
                                                           ),
-                                                          Container(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                .1,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                .07,
-                                                            child:
-                                                                ElevatedButton(
-                                                              style:
-                                                                  dexToggleInactive,
-                                                              onPressed: () {},
-                                                              child:
-                                                                  Text('Earn'),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ))
-                                                ],
-                                              )
-                                            ]),
-                                      ),
+                                                          child: Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            children: [
+                                                              Container(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    .1,
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    .07,
+                                                                child:
+                                                                    ElevatedButton(
+                                                                  style:
+                                                                      dexToggleActive,
+                                                                  onPressed:
+                                                                      () {
+                                                                    swap = true;
+                                                                  },
+                                                                  child: Text(
+                                                                      'Swap'),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    .1,
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    .07,
+                                                                child:
+                                                                    ElevatedButton(
+                                                                  style:
+                                                                      dexToggleInactive,
+                                                                  onPressed:
+                                                                      () {
+                                                                    swap =
+                                                                        false;
+                                                                  },
+                                                                  child: Text(
+                                                                      'Earn'),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ))
+                                                    ],
+                                                  )
+                                                ]),
+                                          ]),
                                     ]))
                           ])));
             } else {
