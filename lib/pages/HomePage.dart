@@ -201,6 +201,76 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         child: Row(
                                             crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Column(children: [
+                                                Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            .85,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            .78,
+                                                    color: Colors.red)
+                                              ]),
+                                            ]),
+                                      )
+                                    ]))
+                          ])));
+            }
+            // Dex page
+            else if (_selectedIndex == 1) {
+              return Scaffold(
+                  body: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image:
+                              AssetImage('../assets/images/axBackground.png'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Header row
+                            _mobileHeader(context),
+                            // Main mobile area
+                            Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * .84,
+                                child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Main mobile border box
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .9,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                .8,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.black,
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                            width: 3,
+                                          ),
+                                        ),
+                                        child: Row(
+                                            crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
@@ -285,55 +355,6 @@ class _HomePageState extends State<HomePage> {
                                                 ],
                                               )
                                             ]),
-                                      )
-                                    ]))
-                          ])));
-            }
-            // Dex page
-            else if (_selectedIndex == 1) {
-              return Scaffold(
-                  body: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                              AssetImage('../assets/images/axBackground.png'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Header row
-                            _mobileHeader(context),
-                            // Main mobile area
-                            Container(
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * .84,
-                                child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      // Main mobile border box
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .9,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                .8,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: Colors.black,
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                            width: 3,
-                                          ),
-                                        ),
                                       )
                                     ]))
                           ])));
@@ -444,7 +465,7 @@ class _HomePageState extends State<HomePage> {
                                                         MediaQuery.of(context)
                                                                 .size
                                                                 .width *
-                                                            .4,
+                                                            .8,
                                                     height:
                                                         MediaQuery.of(context)
                                                                 .size
@@ -452,20 +473,6 @@ class _HomePageState extends State<HomePage> {
                                                             .78,
                                                     color: Colors.red)
                                               ]),
-                                              Column(children: [
-                                                Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            .45,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            .78,
-                                                    color: Colors.blue)
-                                              ])
                                             ]),
                                       ),
                                     ]))
@@ -526,7 +533,14 @@ class _HomePageState extends State<HomePage> {
                                                         .spaceAround,
                                                 children: [
                                                   Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
                                                     children: [
+                                                      // Swap and earn button container
                                                       Container(
                                                           width: MediaQuery.of(
                                                                       context)
@@ -559,6 +573,7 @@ class _HomePageState extends State<HomePage> {
                                                                 MainAxisAlignment
                                                                     .spaceAround,
                                                             children: [
+                                                              // Swap Button
                                                               Container(
                                                                 width: MediaQuery.of(
                                                                             context)
@@ -582,6 +597,7 @@ class _HomePageState extends State<HomePage> {
                                                                       'Swap'),
                                                                 ),
                                                               ),
+                                                              // Earn button
                                                               Container(
                                                                 width: MediaQuery.of(
                                                                             context)
