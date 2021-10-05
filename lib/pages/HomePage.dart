@@ -149,7 +149,6 @@ class _HomePageState extends State<HomePage> {
                 onTap: _onItemTapped,
               )
             : null,
-
         // main body
         body: LayoutBuilder(builder: (context, constraints) {
           // Return mobile pages here
@@ -411,6 +410,7 @@ class _HomePageState extends State<HomePage> {
           }
           // Return desktop pages here
           else {
+            // Scout page
             if (_selectedIndex == 0) {
               return Scaffold(
                   body: Container(
@@ -471,13 +471,53 @@ class _HomePageState extends State<HomePage> {
                                                                 .size
                                                                 .height *
                                                             .78,
-                                                    color: Colors.red)
+                                                    color: Colors.red,
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      // athlete list cards
+                                                      children: [
+                                                        Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Colors
+                                                                  .grey[900],
+                                                              borderRadius:
+                                                                  BorderRadius.all(
+                                                                      const Radius
+                                                                              .circular(
+                                                                          10.0)),
+                                                            ),
+                                                            child: Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  .7,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  .6,
+                                                              color:
+                                                                  Colors.white,
+                                                            )
+                                                            // child: buildAthletes()
+                                                            )
+                                                      ],
+                                                    ))
                                               ]),
                                             ]),
                                       ),
                                     ]))
                           ])));
-            } else if (_selectedIndex == 1) {
+            }
+            // Dex page
+            else if (_selectedIndex == 1) {
               return Scaffold(
                   body: Container(
                       width: MediaQuery.of(context).size.width,
@@ -630,7 +670,9 @@ class _HomePageState extends State<HomePage> {
                                           ]),
                                     ]))
                           ])));
-            } else {
+            }
+            // Help page
+            else {
               return Text('empty');
             }
           }
