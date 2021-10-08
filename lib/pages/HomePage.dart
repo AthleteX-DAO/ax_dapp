@@ -9,6 +9,7 @@ import 'package:ae_dapp/pages/ScoutPage.dart';
 import 'package:ae_dapp/pages/DexPage.dart';
 import 'package:ae_dapp/pages/HelpPage.dart';
 import 'package:ae_dapp/style/Style.dart';
+import 'package:flutter/rendering.dart';
 import 'package:webfeed/domain/media/media.dart';
 
 class HomePage extends StatefulWidget {
@@ -595,157 +596,135 @@ class _HomePageState extends State<HomePage> {
             // Dex page
             else if (_selectedIndex == 1) {
               return Scaffold(
-                  body: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                              AssetImage('../assets/images/axBackground.png'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                body: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image:
+                          AssetImage('../assets/images/axBackground.png'),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // Main mobile area
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height:MediaQuery.of(context).size.height * .90,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Main mobile area
-                            Container(
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * .90,
-                                child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            // Main mobile border box
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  .9,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .79,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: Colors.black,
-                                                border: Border.all(
-                                                  color: Colors.grey,
-                                                  width: 3,
-                                                ),
-                                              ),
-                                            ),
-                                            Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      // Swap and earn button container
-                                                      Container(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width *
-                                                              .24,
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              .1,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            color: Colors.black,
-                                                            border: Border.all(
-                                                              color:
-                                                                  Colors.grey,
-                                                              width: 3,
-                                                            ),
-                                                          ),
-                                                          child: Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceAround,
-                                                            children: [
-                                                              // Swap Button
-                                                              Container(
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    .1,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    .07,
-                                                                child:
-                                                                    ElevatedButton(
-                                                                  style:
-                                                                      dexToggleActive,
-                                                                  onPressed:
-                                                                      () {
-                                                                    swap = true;
-                                                                  },
-                                                                  child: Text(
-                                                                      'Swap'),
-                                                                ),
-                                                              ),
-                                                              // Earn button
-                                                              Container(
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    .1,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    .07,
-                                                                child:
-                                                                    ElevatedButton(
-                                                                  style:
-                                                                      dexToggleInactive,
-                                                                  onPressed:
-                                                                      () {
-                                                                    swap =
-                                                                        false;
-                                                                  },
-                                                                  child: Text(
-                                                                      'Earn'),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ))
-                                                    ],
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Main mobile border box
+                                Container(
+                                  width: MediaQuery.of(context).size.width * .9,
+                                  height: MediaQuery.of(context).size.height * .79,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.black,
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      width: 3,
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment(0, -0.98),
+                                  // Swap and earn button container
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * .24,
+                                    height: MediaQuery.of(context).size.height * .1,
+                                    decoration:
+                                      BoxDecoration(
+                                        borderRadius:BorderRadius.circular(20),
+                                        color: Colors.black,
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 3,
+                                        ),
+                                      ),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment .spaceAround,
+                                      children: <Widget>[
+                                        // Swap Button
+                                        Container(
+                                          width: MediaQuery.of(context).size.width * .1,
+                                          height: MediaQuery.of(context).size.height * .07,
+                                          child:
+                                            ElevatedButton(
+                                              style: dexToggleActive,
+                                              onPressed: () {
+                                                swap = true;
+                                              },
+                                              child: Text('Swap'),
+                                          ),
+                                        ),
+                                        // Earn button
+                                        Container(
+                                          width: MediaQuery.of(context).size.width * .1,
+                                          height: MediaQuery.of(context).size.height * .07,
+                                          child:
+                                            ElevatedButton(
+                                              style: dexToggleActive,
+                                              onPressed: () {
+                                                swap = true;
+                                              },
+                                              child: Text('Earn'),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  )
+                                ),
+                                Align(
+                                  alignment: Alignment(0, -0.5),
+                                  child: FutureBuilder<dynamic>(
+                                    future: AthleteApi.getAthletesLocally(context),
+                                    builder:(context, snapshot) {
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.waiting:
+                                          // return circle indicator for progress
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        default:
+                                          return Container(
+                                            width: MediaQuery.of(context).size.width * .8,
+                                            height: MediaQuery.of(context).size.height * .4,
+                                            color: Colors.red,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index) {
+                                                final athlete = athleteList[index];
+                                                return Card(
+                                                  color: Colors.grey[900],
+                                                  shadowColor: Colors.grey[900],
+                                                  child: ListTile(
+                                                    title: Text(athlete.name)
                                                   )
-                                                ]),
-                                          ]),
-                                    ]))
-                          ])));
+                                                );
+                                              }
+                                            )
+                                          );
+                                      }
+                                    }
+                                  )
+                                ),
+                              ]
+                            ),
+                          ]
+                        )
+                      )
+                    ]
+                  )
+                )
+              );
             }
             // Help page
             else {
