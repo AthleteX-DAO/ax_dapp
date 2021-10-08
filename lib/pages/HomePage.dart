@@ -1,6 +1,8 @@
 import 'dart:html';
 import 'dart:js';
 
+import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/pages/ScoutPage.dart';
@@ -17,6 +19,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   var swap = true;
+  List<Athlete> athleteList = [];
+  List<Athlete> nflList = [];
+  List<Athlete> otherList = [];
+  bool firstRun = true;
+  double filterText = 20;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -410,7 +417,7 @@ class _HomePageState extends State<HomePage> {
           }
           // Return desktop pages here
           else {
-            // Scout page
+            // desktop: Scout page
             if (_selectedIndex == 0) {
               return Scaffold(
                   body: Container(
@@ -453,67 +460,136 @@ class _HomePageState extends State<HomePage> {
                                             width: 3,
                                           ),
                                         ),
-                                        child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Column(children: [
-                                                Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            .8,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            .78,
-                                                    color: Colors.red,
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      // athlete list cards
-                                                      children: [
-                                                        Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Colors
-                                                                  .grey[900],
-                                                              borderRadius:
-                                                                  BorderRadius.all(
-                                                                      const Radius
-                                                                              .circular(
-                                                                          10.0)),
-                                                            ),
-                                                            child: Container(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  .7,
-                                                              height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  .6,
-                                                              color:
-                                                                  Colors.white,
-                                                            )
-                                                            // child: buildAthletes()
-                                                            )
-                                                      ],
-                                                    ))
-                                              ]),
-                                            ]),
-                                      ),
-                                    ]))
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Align(
+                                                alignment: Alignment(-0.55, -0.96),
+                                                child: Container(
+                                                  width: MediaQuery.of(context).size.width*0.7,
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          setState((){
+                                                            athleteList=nflList;
+                                                            firstRun = false;
+                                                          });
+                                                        },
+                                                        child: Text(
+                                                          "NFL",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily: 'OpenSans',
+                                                            fontSize: filterText,                                            
+                                                          ),
+                                                        )
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: ()   {
+                                                          setState((){
+                                                            athleteList=[];
+                                                            firstRun = false;
+                                                          });
+
+                                                        },
+                                                        child: Text(
+                                                          "NBA",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily: 'OpenSans',
+                                                            fontSize: filterText,                                            
+                                                          ),
+                                                        )
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: ()  {
+                                                          setState((){
+                                                            athleteList=[];
+                                                            firstRun = false;
+                                                          });
+                                                        },
+                                                        child: Text(
+                                                          "MMA",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily: 'OpenSans',
+                                                            fontSize: filterText,                                            
+                                                          ),
+                                                        )
+                                                      ),
+                                                    ],
+                                                  )
+                                                )
+                                              ),
+                                              Align(
+                                                alignment: Alignment(0, 0),
+                                                child: FutureBuilder<dynamic>(
+                                                  future: AthleteApi.getAthletesLocally(context),
+                                                  builder:(context, snapshot) {
+                                                    switch (snapshot.connectionState) {
+                                                      case ConnectionState.waiting:
+                                                        // return circle indicator for progress
+                                                        return Center(
+                                                          child: CircularProgressIndicator(),
+                                                        );
+                                                      default:
+                                                        nflList = snapshot.data;
+                                                        if (firstRun)
+                                                          athleteList = nflList;
+                                                        return Container(
+                                                          height: MediaQuery.of(context).size.height * 0.65,
+                                                          width: MediaQuery.of(context).size.width * 0.8,
+                                                          child: ListView.builder(
+                                                            physics: BouncingScrollPhysics(),
+                                                            itemCount: athleteList.length,
+                                                            itemBuilder: (context, index) {
+                                                              final athlete = athleteList[index];
+                                                              return Card(
+                                                                color: Colors.grey[900],
+                                                                shadowColor: Colors.grey[900],
+                                                                child: ListTile(
+                                                                  title: Text(athlete.name)
+                                                                )
+                                                              );
+                                                            }
+                                                          )
+                                                        );
+                                                    }
+                                                  }
+                                                )
+                                              ),
+                                              Align(
+                                                alignment: Alignment(.97, 0.92),
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  width: 23,
+                                                  height: 23,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(100),
+                                                    color: Colors.transparent,
+                                                    border: Border.all(
+                                                      color: Colors.amber[600]!,
+                                                      width: 2,
+                                                    ),
+                                                  ),
+                                                  child: TextButton(
+                                                    onPressed: () => scoutHintDialog(context),
+                                                    child: Text(
+                                                      '?',
+                                                      style: TextStyle(
+                                                        color: Colors.amber[600],
+                                                        fontSize: 12,
+                                                      ),
+                                                    )
+                                                  )
+                                                )
+                                              )
+                                            ]
+                                          ),
+                                        ),
+                                      ]
+                                    )
+                                  )
                           ])));
             }
             // Dex page
@@ -677,5 +753,70 @@ class _HomePageState extends State<HomePage> {
             }
           }
         }));
+  }
+
+
+  void scoutHintDialog(BuildContext context) {
+    Dialog fancyDialog = Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Align(alignment: Alignment.bottomRight, child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[900],
+          borderRadius: BorderRadius.circular(12.0),
+          border: Border.all(
+            color: Colors.grey[600]!,
+            width: 2,
+          ),
+        ),
+        height: MediaQuery.of(context).size.height * 0.45,
+        width: MediaQuery.of(context).size.width * 0.3,
+        child: Stack(children: <Widget>[
+          Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * .45,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12),
+              topRight: Radius.circular(12),
+              ),
+            ),
+            child: Text(
+              "Welcome to the Scout page! This is where you can search Athlete Performance Tokens (APTs)" +
+              " and speculate on their performance.\n\nYou can also execute long/short orders and mint/redeem" +
+              " the APTs of your choice:\n\nLong: Loads a purchase for an APT on the Swap page.\n\nShort: " +
+              "Loads a purchase for an Inverse APT (iAPT) on the Swap page.\n\nMint: Allows you to mint APT and" +
+              " iAPT pairs.\n\nRedeem: Allows you to redeem APT and iAPT pairs for AX Coin.\n\nLearn more about" +
+              " these functions here."
+            )
+          ),
+          Align(
+            // These values are based on trial & error method
+            alignment: Alignment(0.92, -0.95),
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  Icons.close,
+                  size: 35,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ),
+          ),
+        ]),
+      ),)
+    );
+
+    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
   }
 }
