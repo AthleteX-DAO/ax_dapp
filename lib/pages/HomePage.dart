@@ -3,6 +3,7 @@ import 'dart:js';
 
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
+import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/pages/ScoutPage.dart';
@@ -696,17 +697,135 @@ class _HomePageState extends State<HomePage> {
                                         default:
                                           return Container(
                                             width: MediaQuery.of(context).size.width * .8,
-                                            height: MediaQuery.of(context).size.height * .4,
+                                            height: MediaQuery.of(context).size.height * .3,
                                             color: Colors.red,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
+                                              itemCount: athleteList.length,
+                                              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                                              shrinkWrap: true,
                                               itemBuilder: (context, index) {
                                                 final athlete = athleteList[index];
-                                                return Card(
-                                                  color: Colors.grey[900],
-                                                  shadowColor: Colors.grey[900],
-                                                  child: ListTile(
-                                                    title: Text(athlete.name)
+                                                return Container(
+                                                  width: 500,
+                                                  height: MediaQuery.of(context).size.height * 0.25,
+                                                  color: Colors.grey,
+                                                  child: GestureDetector(
+                                                    onTap: () {},
+                                                    child: Card(
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          Row(
+                                                            children: [
+                                                              // Container(
+                                                              //   width: 20,
+                                                              //   height: 20,
+                                                              //   color: Colors.amber[600],
+                                                              //   decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(16))),
+                                                              // ),
+                                                              // Container(
+                                                              //   width: 20,
+                                                              //   height: 20,
+                                                              //   color: Colors.amber[600],
+                                                              //   decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(16))),
+                                                              // )
+                                                            ],
+                                                          ),
+                                                          Text(
+                                                            "AX - " + athlete.name + " APT",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontFamily: 'OpenSans',
+                                                              fontWeight:  FontWeight.w600,
+                                                              fontSize: 32,
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            width: 350,
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: <Widget>[
+                                                                Text(
+                                                                  "Total APY:",
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: 16,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "20 %",
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: 16,
+                                                                  )
+                                                                )
+                                                              ],
+                                                            )
+                                                          ),
+                                                          Container(
+                                                            width: 350,
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: <Widget>[
+                                                                Text(
+                                                                  "TVL:",
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey[300],
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: 16,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "\$1,000,000",
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey[300],
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: 16,
+                                                                  )
+                                                                )
+                                                              ],
+                                                            )
+                                                          ),
+                                                          Container(
+                                                            width: 350,
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: <Widget>[
+                                                                Text(
+                                                                  "LP APY:",
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey[300],
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: 16,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "5 %",
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey[300],
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: 16,
+                                                                  )
+                                                                )
+                                                              ],
+                                                            )
+                                                          ),
+                                                          Container(
+                                                            width: 300,
+                                                            height: 100,
+                                                            color: Colors.amber[600],
+                                                          )
+                                                        ]
+                                                      )
+                                                    )
                                                   )
                                                 );
                                               }
