@@ -25,10 +25,11 @@ class _HomePageState extends State<HomePage> {
   List<Athlete> athleteList = [];
   List<Athlete> nflList = [];
   List<Athlete> otherList = [];
-  List<Container> lpButtonList = [];
+  List<Container> lpCardList = [];
   bool firstRun = true;
   double filterText = 20;
   var earnRange = [0,3];
+  bool haveAthletes = false;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -174,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image:
-                              AssetImage('../assets/images/axBackground.png'),
+                              AssetImage('../assets/images/axBackground.jpeg'),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -244,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image:
-                              AssetImage('../assets/images/axBackground.png'),
+                              AssetImage('../assets/images/axBackground.jpeg'),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -379,7 +380,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image:
-                              AssetImage('../assets/images/axBackground.png'),
+                              AssetImage('../assets/images/axBackground.jpeg'),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -431,7 +432,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image:
-                              AssetImage('../assets/images/axBackground.png'),
+                              AssetImage('../assets/images/axBackground.jpeg'),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -607,290 +608,287 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image:
-                          AssetImage('../assets/images/axBackground.png'),
+                          AssetImage('../assets/images/axBackground.jpeg'),
                       fit: BoxFit.fill,
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Main mobile area
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height:MediaQuery.of(context).size.height * .90,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                // Main mobile border box
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height:MediaQuery.of(context).size.height * .90,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Main mobile border box
+                        Container(
+                          width: MediaQuery.of(context).size.width * .9,
+                          height: MediaQuery.of(context).size.height * .79,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.black,
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 3,
+                            ),
+                          ),
+                        ),
+                        // Swap / Earn Button Widget
+                        Align(
+                          alignment: Alignment(0, -0.98),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .24,
+                            height: MediaQuery.of(context).size.height * .1,
+                            decoration:
+                              BoxDecoration(
+                                borderRadius:BorderRadius.circular(20),
+                                color: Colors.black,
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 3,
+                                ),
+                              ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment .spaceAround,
+                              children: <Widget>[
+                                // Swap Button
                                 Container(
-                                  width: MediaQuery.of(context).size.width * .9,
-                                  height: MediaQuery.of(context).size.height * .79,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.black,
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 3,
-                                    ),
+                                  width: MediaQuery.of(context).size.width * .1,
+                                  height: MediaQuery.of(context).size.height * .07,
+                                  child:
+                                    ElevatedButton(
+                                      style: dexToggleActive,
+                                      onPressed: () {
+                                        swap = true;
+                                      },
+                                      child: Text('Swap'),
                                   ),
                                 ),
-                                Align(
-                                  alignment: Alignment(0, -0.98),
-                                  // Swap and earn button container
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width * .24,
-                                    height: MediaQuery.of(context).size.height * .1,
-                                    decoration:
-                                      BoxDecoration(
-                                        borderRadius:BorderRadius.circular(20),
-                                        color: Colors.black,
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 3,
-                                        ),
-                                      ),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment .spaceAround,
-                                      children: <Widget>[
-                                        // Swap Button
-                                        Container(
-                                          width: MediaQuery.of(context).size.width * .1,
-                                          height: MediaQuery.of(context).size.height * .07,
-                                          child:
-                                            ElevatedButton(
-                                              style: dexToggleActive,
-                                              onPressed: () {
-                                                swap = true;
-                                              },
-                                              child: Text('Swap'),
-                                          ),
-                                        ),
-                                        // Earn button
-                                        Container(
-                                          width: MediaQuery.of(context).size.width * .1,
-                                          height: MediaQuery.of(context).size.height * .07,
-                                          child:
-                                            ElevatedButton(
-                                              style: dexToggleActive,
-                                              onPressed: () {
-                                                swap = true;
-                                              },
-                                              child: Text('Earn'),
-                                          ),
-                                        ),
-                                      ],
+                                // Earn button
+                                Container(
+                                  width: MediaQuery.of(context).size.width * .1,
+                                  height: MediaQuery.of(context).size.height * .07,
+                                  child:
+                                    ElevatedButton(
+                                      style: dexToggleActive,
+                                      onPressed: () {
+                                        swap = true;
+                                      },
+                                      child: Text('Earn'),
+                                  ),
+                                ),
+                              ],
+                            )
+                          )
+                        ),
+                        // LP Horizontal List
+                        Align(
+                          alignment: Alignment(0, -0.5),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .8,
+                            height: MediaQuery.of(context).size.height * .3,
+                            color: Colors.red,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                // Scroll Left
+                                Container(
+                                  width: MediaQuery.of(context).size.width * 0.1,
+                                  height: MediaQuery.of(context).size.height * .3,
+                                  color: Colors.grey,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      earnRange[0] -= earnRange[1];
+                                      if (earnRange[0] < 0)
+                                        earnRange[0] = 0;
+                                    },
+                                    style: ButtonStyle(
+                                      overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                    ),
+                                    child: Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Colors.grey[800],
                                     )
                                   )
                                 ),
-                                Align(
-                                  alignment: Alignment(0, -0.5),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width * .8,
-                                    height: MediaQuery.of(context).size.height * .3,
-                                    color: Colors.red,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        // Scroll Left
-                                        Container(
-                                          width: MediaQuery.of(context).size.width * 0.1,
-                                          height: MediaQuery.of(context).size.height * .3,
-                                          color: Colors.grey,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              earnRange[0] -= earnRange[1];
-                                              if (earnRange[0] < 0)
-                                                earnRange[0] = 0;
-                                            },
-                                            style: ButtonStyle(
-                                              overlayColor: MaterialStateProperty.all(Colors.transparent),
-                                            ),
-                                            child: Icon(
-                                              Icons.arrow_back_ios,
-                                              color: Colors.grey[800],
-                                            )
-                                          )
-                                        ),
-                                        // LP Cards
-                                        FutureBuilder<dynamic>(
-                                          future: AthleteApi.getAthletesLocally(context),
-                                          builder:(context, snapshot) {
-                                            switch (snapshot.connectionState) {
-                                              case ConnectionState.waiting:
-                                                // return circle indicator for progress
-                                                return Center(
-                                                  child: CircularProgressIndicator(),
-                                                );
-                                              default:
-                                                List<Athlete> athList = snapshot.data;
-                                                // build list of athlete LP pairs
-                                                for (var athlete in athList) {
-                                                  lpButtonList.add(
-                                                    Container(
-                                                      width: 300,
-                                                      height: MediaQuery.of(context).size.height * 0.25,
-                                                      color: Colors.grey,
-                                                      child: GestureDetector(
-                                                        onTap: () {},
-                                                        child: Card(
-                                                          child: Column(
-                                                            children: <Widget>[
-                                                              Column(
-                                                                children: <Widget>[
-                                                                  Text(
-                                                                    "AX - " + athlete.name + " APT",
-                                                                    style: TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontFamily: 'OpenSans',
-                                                                      fontWeight:  FontWeight.w600,
-                                                                      fontSize: 32,
-                                                                    ),
+                                // LP Cards
+                                FutureBuilder<dynamic>(
+                                  future: AthleteApi.getAthletesLocally(context),
+                                  builder:(context, snapshot) {
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.waiting:
+                                        // return circle indicator for progress
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      default:
+                                        athleteList = snapshot.data;
+                                        double cardSz = 300;
+                                        double tempSz = 28;
+                                        // build list of athlete LP pairs
+                                        for (var athlete in athleteList) {
+                                          lpCardList.add(
+                                            Container(
+                                              width: cardSz,
+                                              height: MediaQuery.of(context).size.height * 0.25,
+                                              color: Colors.grey,
+                                              child: GestureDetector(
+                                                onTap: () {},
+                                                child: Card(
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      Column(
+                                                        children: <Widget>[
+                                                          Text(
+                                                            "AX - " + athlete.name + " APT",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontFamily: 'OpenSans',
+                                                              fontWeight:  FontWeight.w600,
+                                                              fontSize: tempSz,
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            width: cardSz-15,
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: <Widget>[
+                                                                Text(
+                                                                  "Total APY:",
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: tempSz-10,
                                                                   ),
-                                                                  Container(
-                                                                    width: 350,
-                                                                    child: Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                      children: <Widget>[
-                                                                        Text(
-                                                                          "Total APY:",
-                                                                          style: TextStyle(
-                                                                            color: Colors.white,
-                                                                            fontFamily: 'OpenSans',
-                                                                            fontWeight:  FontWeight.w600,
-                                                                            fontSize: 16,
-                                                                          ),
-                                                                        ),
-                                                                        Text(
-                                                                          "20 %",
-                                                                          style: TextStyle(
-                                                                            color: Colors.white,
-                                                                            fontFamily: 'OpenSans',
-                                                                            fontWeight:  FontWeight.w600,
-                                                                            fontSize: 16,
-                                                                          )
-                                                                        )
-                                                                      ],
-                                                                    )
-                                                                  ),
-                                                                  Container(
-                                                                    width: 350,
-                                                                    child: Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                      children: <Widget>[
-                                                                        Text(
-                                                                          "TVL:",
-                                                                          style: TextStyle(
-                                                                            color: Colors.grey[300],
-                                                                            fontFamily: 'OpenSans',
-                                                                            fontWeight:  FontWeight.w600,
-                                                                            fontSize: 16,
-                                                                          ),
-                                                                        ),
-                                                                        Text(
-                                                                          "\$1,000,000",
-                                                                          style: TextStyle(
-                                                                            color: Colors.grey[300],
-                                                                            fontFamily: 'OpenSans',
-                                                                            fontWeight:  FontWeight.w600,
-                                                                            fontSize: 16,
-                                                                          )
-                                                                        )
-                                                                      ],
-                                                                    )
-                                                                  ),
-                                                                  Container(
-                                                                    width: 350,
-                                                                    child: Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                      children: <Widget>[
-                                                                        Text(
-                                                                          "LP APY:",
-                                                                          style: TextStyle(
-                                                                            color: Colors.grey[300],
-                                                                            fontFamily: 'OpenSans',
-                                                                            fontWeight:  FontWeight.w600,
-                                                                            fontSize: 16,
-                                                                          ),
-                                                                        ),
-                                                                        Text(
-                                                                          "5 %",
-                                                                          style: TextStyle(
-                                                                            color: Colors.grey[300],
-                                                                            fontFamily: 'OpenSans',
-                                                                            fontWeight:  FontWeight.w600,
-                                                                            fontSize: 16,
-                                                                          )
-                                                                        )
-                                                                      ],
-                                                                    )
-                                                                  ),
-                                                                  Container(
-                                                                    width: 250,
-                                                                    height: MediaQuery.of(context).size.height * 0.08,
-                                                                    color: Colors.amber[600],
+                                                                ),
+                                                                Text(
+                                                                  "20 %",
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: tempSz-10,
                                                                   )
-                                                                ],
-                                                              )
-                                                            ],
+                                                                )
+                                                              ],
+                                                            )
+                                                          ),
+                                                          Container(
+                                                            width: cardSz,
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: <Widget>[
+                                                                Text(
+                                                                  "TVL:",
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey[300],
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: tempSz-10,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "\$1,000,000",
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey[300],
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: tempSz-10,
+                                                                  )
+                                                                )
+                                                              ],
+                                                            )
+                                                          ),
+                                                          Container(
+                                                            width: cardSz-15,
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: <Widget>[
+                                                                Text(
+                                                                  "LP APY:",
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey[300],
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: tempSz-10,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "5 %",
+                                                                  style: TextStyle(
+                                                                    color: Colors.grey[300],
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontWeight:  FontWeight.w600,
+                                                                    fontSize: tempSz-10,
+                                                                  )
+                                                                )
+                                                              ],
+                                                            )
+                                                          ),
+                                                          Container(
+                                                            width: cardSz-50,
+                                                            height: MediaQuery.of(context).size.height * 0.08,
+                                                            color: Colors.amber[600],
                                                           )
-                                                        )
+                                                        ],
                                                       )
-                                                    )
-                                                  );
-                                                }
-
-                                                List<Container> lpList = [];
-                                                for (int i = 0; i < earnRange[1]; i++)
-                                                  lpList.add(lpButtonList[i+earnRange[0]]);
-
-                                                return Container(
-                                                  width: MediaQuery.of(context).size.width * 0.6,
-                                                  color: Colors.white,
-                                                  child: ListView.builder(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                                                    scrollDirection: Axis.horizontal,
-                                                    itemCount: earnRange[1],
-                                                    itemBuilder: (BuildContext context, int index) {
-                                                      return lpButtonList[index + earnRange[0]];
-                                                    }
-                                                  ),
-                                                );
-                                            }
-                                          }
-                                        ),
-                                        // Scroll Right
-                                        Container(
-                                          width: MediaQuery.of(context).size.width * 0.1,
-                                          height: MediaQuery.of(context).size.height * .3,
-                                          color: Colors.grey,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              earnRange[0] += earnRange[1];
-                                              if (earnRange[0] > lpButtonList.length - earnRange[1])
-                                                earnRange[0] = lpButtonList.length - earnRange[1];
-print(earnRange[0].toString()+" / "+lpButtonList.length.toString());
-                                            },
-                                            child: Icon(
-                                              Icons.arrow_forward_ios,
-                                              color: Colors.grey[800],
+                                                    ],
+                                                  )
+                                                )
+                                              )
                                             )
-                                          )
-                                        ),
-                                      ],
+                                          );
+                                        }
+                                        haveAthletes = true;
+                                        return Container();
+                                    }
+                                  }
+                                ),
+                                // if (haveAthletes)
+                                //   Center(
+                                //     child: CircularProgressIndicator(),
+                                //   ),
+                                // if (!haveAthletes) 
+                                //   ListView.builder(
+                                //     itemBuilder: (BuildContext context, int index) {
+                                //       return Container(
+                                //         width: MediaQuery.of(context).size.width * 0.6,
+                                //         color: Colors.white,
+                                //         child: ListView.builder(
+                                //           padding: const EdgeInsets.symmetric(horizontal: 8),
+                                //           scrollDirection: Axis.horizontal,
+                                //           itemCount: earnRange[1],
+                                //           itemBuilder: (BuildContext context, int index) {
+                                //             return lpButtonList[index + earnRange[0]];
+                                //           }
+                                //         ),
+                                //       );
+                                //     }
+                                //   ),
+                                // Scroll Right
+                                Container(
+                                  width: MediaQuery.of(context).size.width * 0.1,
+                                  height: MediaQuery.of(context).size.height * .3,
+                                  color: Colors.grey,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      earnRange[0] += earnRange[1];
+                                      if (earnRange[0] > lpCardList.length - earnRange[1])
+                                        earnRange[0] = lpCardList.length - earnRange[1];
+print(earnRange[0].toString()+" / "+lpCardList.length.toString());
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.grey[800],
                                     )
-                                  ),
-                                )
-                              ]
-                            ),
-                          ]
+                                  )
+                                ),
+                              ],
+                            )
+                          ),
                         )
-                      )
-                    ]
+                      ]
+                    ),
                   )
                 )
               );
