@@ -4,6 +4,7 @@ import 'dart:js';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/Controller.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/pages/ScoutPage.dart';
@@ -24,8 +25,10 @@ class _HomePageState extends State<HomePage> {
   List<Athlete> athleteList = [];
   List<Athlete> nflList = [];
   List<Athlete> otherList = [];
+  List<Container> lpButtonList = [];
   bool firstRun = true;
   double filterText = 20;
+  var earnRange = [0,3];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -550,7 +553,8 @@ class _HomePageState extends State<HomePage> {
                                                                 color: Colors.grey[900],
                                                                 shadowColor: Colors.grey[900],
                                                                 child: ListTile(
-                                                                  title: Text(athlete.name)
+                                                                  title: Text(athlete.name),
+                                                                  onTap: () => athleteDialog(context, athlete),
                                                                 )
                                                               );
                                                             }
@@ -685,156 +689,202 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Align(
                                   alignment: Alignment(0, -0.5),
-                                  child: FutureBuilder<dynamic>(
-                                    future: AthleteApi.getAthletesLocally(context),
-                                    builder:(context, snapshot) {
-                                      switch (snapshot.connectionState) {
-                                        case ConnectionState.waiting:
-                                          // return circle indicator for progress
-                                          return Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        default:
-                                          return Container(
-                                            width: MediaQuery.of(context).size.width * .8,
-                                            height: MediaQuery.of(context).size.height * .3,
-                                            color: Colors.red,
-                                            child: ListView.builder(
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: athleteList.length,
-                                              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                                              shrinkWrap: true,
-                                              itemBuilder: (context, index) {
-                                                final athlete = athleteList[index];
-                                                return Container(
-                                                  width: 500,
-                                                  height: MediaQuery.of(context).size.height * 0.25,
-                                                  color: Colors.grey,
-                                                  child: GestureDetector(
-                                                    onTap: () {},
-                                                    child: Card(
-                                                      child: Column(
-                                                        children: <Widget>[
-                                                          Row(
-                                                            children: [
-                                                              // Container(
-                                                              //   width: 20,
-                                                              //   height: 20,
-                                                              //   color: Colors.amber[600],
-                                                              //   decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(16))),
-                                                              // ),
-                                                              // Container(
-                                                              //   width: 20,
-                                                              //   height: 20,
-                                                              //   color: Colors.amber[600],
-                                                              //   decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(16))),
-                                                              // )
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * .8,
+                                    height: MediaQuery.of(context).size.height * .3,
+                                    color: Colors.red,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        // Scroll Left
+                                        Container(
+                                          width: MediaQuery.of(context).size.width * 0.1,
+                                          height: MediaQuery.of(context).size.height * .3,
+                                          color: Colors.grey,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              earnRange[0] -= earnRange[1];
+                                              if (earnRange[0] < 0)
+                                                earnRange[0] = 0;
+                                            },
+                                            style: ButtonStyle(
+                                              overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                            ),
+                                            child: Icon(
+                                              Icons.arrow_back_ios,
+                                              color: Colors.grey[800],
+                                            )
+                                          )
+                                        ),
+                                        // LP Cards
+                                        FutureBuilder<dynamic>(
+                                          future: AthleteApi.getAthletesLocally(context),
+                                          builder:(context, snapshot) {
+                                            switch (snapshot.connectionState) {
+                                              case ConnectionState.waiting:
+                                                // return circle indicator for progress
+                                                return Center(
+                                                  child: CircularProgressIndicator(),
+                                                );
+                                              default:
+                                                List<Athlete> athList = snapshot.data;
+                                                // build list of athlete LP pairs
+                                                for (var athlete in athList) {
+                                                  lpButtonList.add(
+                                                    Container(
+                                                      width: 300,
+                                                      height: MediaQuery.of(context).size.height * 0.25,
+                                                      color: Colors.grey,
+                                                      child: GestureDetector(
+                                                        onTap: () {},
+                                                        child: Card(
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              Column(
+                                                                children: <Widget>[
+                                                                  Text(
+                                                                    "AX - " + athlete.name + " APT",
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontFamily: 'OpenSans',
+                                                                      fontWeight:  FontWeight.w600,
+                                                                      fontSize: 32,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    width: 350,
+                                                                    child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: <Widget>[
+                                                                        Text(
+                                                                          "Total APY:",
+                                                                          style: TextStyle(
+                                                                            color: Colors.white,
+                                                                            fontFamily: 'OpenSans',
+                                                                            fontWeight:  FontWeight.w600,
+                                                                            fontSize: 16,
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          "20 %",
+                                                                          style: TextStyle(
+                                                                            color: Colors.white,
+                                                                            fontFamily: 'OpenSans',
+                                                                            fontWeight:  FontWeight.w600,
+                                                                            fontSize: 16,
+                                                                          )
+                                                                        )
+                                                                      ],
+                                                                    )
+                                                                  ),
+                                                                  Container(
+                                                                    width: 350,
+                                                                    child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: <Widget>[
+                                                                        Text(
+                                                                          "TVL:",
+                                                                          style: TextStyle(
+                                                                            color: Colors.grey[300],
+                                                                            fontFamily: 'OpenSans',
+                                                                            fontWeight:  FontWeight.w600,
+                                                                            fontSize: 16,
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          "\$1,000,000",
+                                                                          style: TextStyle(
+                                                                            color: Colors.grey[300],
+                                                                            fontFamily: 'OpenSans',
+                                                                            fontWeight:  FontWeight.w600,
+                                                                            fontSize: 16,
+                                                                          )
+                                                                        )
+                                                                      ],
+                                                                    )
+                                                                  ),
+                                                                  Container(
+                                                                    width: 350,
+                                                                    child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: <Widget>[
+                                                                        Text(
+                                                                          "LP APY:",
+                                                                          style: TextStyle(
+                                                                            color: Colors.grey[300],
+                                                                            fontFamily: 'OpenSans',
+                                                                            fontWeight:  FontWeight.w600,
+                                                                            fontSize: 16,
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          "5 %",
+                                                                          style: TextStyle(
+                                                                            color: Colors.grey[300],
+                                                                            fontFamily: 'OpenSans',
+                                                                            fontWeight:  FontWeight.w600,
+                                                                            fontSize: 16,
+                                                                          )
+                                                                        )
+                                                                      ],
+                                                                    )
+                                                                  ),
+                                                                  Container(
+                                                                    width: 250,
+                                                                    height: MediaQuery.of(context).size.height * 0.08,
+                                                                    color: Colors.amber[600],
+                                                                  )
+                                                                ],
+                                                              )
                                                             ],
-                                                          ),
-                                                          Text(
-                                                            "AX - " + athlete.name + " APT",
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontFamily: 'OpenSans',
-                                                              fontWeight:  FontWeight.w600,
-                                                              fontSize: 32,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 350,
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: <Widget>[
-                                                                Text(
-                                                                  "Total APY:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.white,
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: 16,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "20 %",
-                                                                  style: TextStyle(
-                                                                    color: Colors.white,
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: 16,
-                                                                  )
-                                                                )
-                                                              ],
-                                                            )
-                                                          ),
-                                                          Container(
-                                                            width: 350,
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: <Widget>[
-                                                                Text(
-                                                                  "TVL:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey[300],
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: 16,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "\$1,000,000",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey[300],
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: 16,
-                                                                  )
-                                                                )
-                                                              ],
-                                                            )
-                                                          ),
-                                                          Container(
-                                                            width: 350,
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: <Widget>[
-                                                                Text(
-                                                                  "LP APY:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey[300],
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: 16,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "5 %",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey[300],
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: 16,
-                                                                  )
-                                                                )
-                                                              ],
-                                                            )
-                                                          ),
-                                                          Container(
-                                                            width: 300,
-                                                            height: 100,
-                                                            color: Colors.amber[600],
                                                           )
-                                                        ]
+                                                        )
                                                       )
                                                     )
-                                                  )
+                                                  );
+                                                }
+
+                                                List<Container> lpList = [];
+                                                for (int i = 0; i < earnRange[1]; i++)
+                                                  lpList.add(lpButtonList[i+earnRange[0]]);
+
+                                                return Container(
+                                                  width: MediaQuery.of(context).size.width * 0.6,
+                                                  color: Colors.white,
+                                                  child: ListView.builder(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                                                    scrollDirection: Axis.horizontal,
+                                                    itemCount: earnRange[1],
+                                                    itemBuilder: (BuildContext context, int index) {
+                                                      return lpButtonList[index + earnRange[0]];
+                                                    }
+                                                  ),
                                                 );
-                                              }
+                                            }
+                                          }
+                                        ),
+                                        // Scroll Right
+                                        Container(
+                                          width: MediaQuery.of(context).size.width * 0.1,
+                                          height: MediaQuery.of(context).size.height * .3,
+                                          color: Colors.grey,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              earnRange[0] += earnRange[1];
+                                              if (earnRange[0] > lpButtonList.length - earnRange[1])
+                                                earnRange[0] = lpButtonList.length - earnRange[1];
+print(earnRange[0].toString()+" / "+lpButtonList.length.toString());
+                                            },
+                                            child: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Colors.grey[800],
                                             )
-                                          );
-                                      }
-                                    }
-                                  )
-                                ),
+                                          )
+                                        ),
+                                      ],
+                                    )
+                                  ),
+                                )
                               ]
                             ),
                           ]
@@ -853,6 +903,99 @@ class _HomePageState extends State<HomePage> {
         }));
   }
 
+  Widget buildGraph(List war, List time) {
+    List<FlSpot> athleteData = [];
+
+    for (int i = 0; i < war.length - 1; i++) {
+      athleteData.add(FlSpot(time[i].toDouble(), war[i].toDouble()));
+    }
+
+    return LineChart(
+      LineChartData(
+        lineTouchData: LineTouchData(
+          enabled: true,
+        ),
+        backgroundColor: Colors.grey[800],
+        minX: 0,
+        maxX: 5,
+        minY: 0,
+        maxY: 1,
+        gridData: FlGridData(
+          show: false,
+        ),
+        borderData: FlBorderData(
+          show: false,
+        ),
+        lineBarsData: [
+          LineChartBarData(
+            colors: [(Colors.amber[600])!],
+            spots: athleteData,
+            isCurved: false,
+            barWidth: 2,
+            dotData: FlDotData(show: false),
+            belowBarData: BarAreaData(show: false),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  // Athlete Popup
+  void athleteDialog(BuildContext context, Athlete athlete) {
+    Dialog fancyDialog = Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Stack(
+        children: <Widget>[
+          // Background
+          Align(
+            alignment: Alignment(0, 0.6),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .9,
+              height: MediaQuery.of(context).size.height * .79,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.black,
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 3,
+                ),
+              ),
+            ),
+          ), 
+          // Back Button
+          Align(
+            alignment: Alignment(-0.9, -0.65),
+            child: Container(
+              width: 80,
+              height: 50,
+              child: TextButton(
+                onPressed: () {Navigator.pop(context);},
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.grey[400],
+                  size: 50
+                )
+              )
+            )
+          ), 
+          Align(
+            alignment: Alignment(0,0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .6,
+              height: MediaQuery.of(context).size.height * .5,
+              child: buildGraph(athlete.war, athlete.time)
+            )
+          )
+        ]
+      )
+    );
+
+    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+  }
 
   void scoutHintDialog(BuildContext context) {
     Dialog fancyDialog = Dialog(
