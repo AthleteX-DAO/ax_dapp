@@ -870,23 +870,23 @@ class _HomePageState extends State<HomePage> {
                                   //   Center(
                                   //     child: CircularProgressIndicator(),
                                   //   ),
-                                  if (!haveAthletes) 
-                                    ListView.builder(
-                                      itemBuilder: (BuildContext context, int index) {
-                                        return Container(
-                                          width: MediaQuery.of(context).size.width * 0.6,
-                                          color: Colors.white,
-                                          child: ListView.builder(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: earnRange[1],
-                                            itemBuilder: (BuildContext context, int index) {
-                                              return lpCardList[index + earnRange[0]];
-                                            }
-                                          ),
-                                        );
-                                      }
-                                    ),
+                                  // if (!haveAthletes) 
+                                  //   ListView.builder(
+                                  //     itemBuilder: (BuildContext context, int index) {
+                                  //       return Container(
+                                  //         width: MediaQuery.of(context).size.width * 0.6,
+                                  //         color: Colors.white,
+                                  //         child: ListView.builder(
+                                  //           padding: const EdgeInsets.symmetric(horizontal: 8),
+                                  //           scrollDirection: Axis.horizontal,
+                                  //           itemCount: earnRange[1],
+                                  //           itemBuilder: (BuildContext context, int index) {
+                                  //             return lpCardList[index + earnRange[0]];
+                                  //           }
+                                  //         ),
+                                  //       );
+                                  //     }
+                                  //   ),
                                   // Scroll Right
                                   Container(
                                     width: MediaQuery.of(context).size.width * 0.1,
