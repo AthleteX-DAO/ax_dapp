@@ -862,7 +862,7 @@ class _HomePageState extends State<HomePage> {
                                             }
                                             haveAthletes = true;
                                           }
-                                          return Container();
+                                          return Container(width: 0.1, height: 0.1);
                                       }
                                     }
                                   ),
