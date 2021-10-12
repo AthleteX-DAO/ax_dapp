@@ -37,6 +37,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _onSwapItemTapped(bool index) {
+    setState(() {
+      swap = index;
+    });
+  }
+
   // Mobile navigation header
   Widget _mobileHeader(BuildContext context) {
     return Container(
@@ -335,6 +341,7 @@ class _HomePageState extends State<HomePage> {
                                                                   dexToggleActive,
                                                               onPressed: () {
                                                                 swap = true;
+                                                                _onSwapItemTapped(swap);
                                                               },
                                                               child:
                                                                   Text('Swap'),
@@ -357,6 +364,7 @@ class _HomePageState extends State<HomePage> {
                                                                   dexToggleInactive,
                                                               onPressed: () {
                                                                 swap = false;
+                                                                _onSwapItemTapped(swap);
                                                               },
                                                               child:
                                                                   Text('Earn'),
@@ -659,6 +667,7 @@ class _HomePageState extends State<HomePage> {
                                       style: dexToggleActive,
                                       onPressed: () {
                                         swap = true;
+                                        _onSwapItemTapped(swap);
                                       },
                                       child: Text('Swap'),
                                   ),
@@ -671,7 +680,8 @@ class _HomePageState extends State<HomePage> {
                                     ElevatedButton(
                                       style: dexToggleActive,
                                       onPressed: () {
-                                        swap = true;
+                                        swap = false;
+                                        _onSwapItemTapped(swap);
                                       },
                                       child: Text('Earn'),
                                   ),
@@ -680,213 +690,226 @@ class _HomePageState extends State<HomePage> {
                             )
                           )
                         ),
-                        // LP Horizontal List
-                        Align(
-                          alignment: Alignment(0, -0.5),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * .8,
+                        // Swap Widget
+                        if (swap) 
+                          Container(
+                            width: MediaQuery.of(context).size.width * .3,
                             height: MediaQuery.of(context).size.height * .3,
-                            color: Colors.red,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                // Scroll Left
-                                Container(
-                                  width: MediaQuery.of(context).size.width * 0.1,
-                                  height: MediaQuery.of(context).size.height * .3,
-                                  color: Colors.grey,
-                                  child: TextButton(
-                                    onPressed: () {
-                                      earnRange[0] -= earnRange[1];
-                                      if (earnRange[0] < 0)
-                                        earnRange[0] = 0;
-                                    },
-                                    style: ButtonStyle(
-                                      overlayColor: MaterialStateProperty.all(Colors.transparent),
-                                    ),
-                                    child: Icon(
-                                      Icons.arrow_back_ios,
-                                      color: Colors.grey[800],
+                            color: Colors.green
+                          ),
+                          // End of Swap
+                        // Earn Widget
+                        if (!swap)
+                          // LP Horizontal List
+                          Align(
+                            alignment: Alignment(0, -0.5),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * .8,
+                              height: MediaQuery.of(context).size.height * .3,
+                              color: Colors.red,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  // Scroll Left
+                                  Container(
+                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    height: MediaQuery.of(context).size.height * .3,
+                                    color: Colors.grey,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        earnRange[0] -= earnRange[1];
+                                        if (earnRange[0] < 0)
+                                          earnRange[0] = 0;
+                                      },
+                                      style: ButtonStyle(
+                                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                      ),
+                                      child: Icon(
+                                        Icons.arrow_back_ios,
+                                        color: Colors.grey[800],
+                                      )
                                     )
-                                  )
-                                ),
-                                // LP Cards
-                                FutureBuilder<dynamic>(
-                                  future: AthleteApi.getAthletesLocally(context),
-                                  builder:(context, snapshot) {
-                                    switch (snapshot.connectionState) {
-                                      case ConnectionState.waiting:
-                                        // return circle indicator for progress
-                                        return Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      default:
-                                        athleteList = snapshot.data;
-                                        double cardSz = 300;
-                                        double tempSz = 28;
-                                        // build list of athlete LP pairs
-                                        for (var athlete in athleteList) {
-                                          lpCardList.add(
-                                            Container(
-                                              width: cardSz,
-                                              height: MediaQuery.of(context).size.height * 0.25,
-                                              color: Colors.grey,
-                                              child: GestureDetector(
-                                                onTap: () {},
-                                                child: Card(
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      Column(
+                                  ),
+                                  // LP Cards
+                                  FutureBuilder<dynamic>(
+                                    future: AthleteApi.getAthletesLocally(context),
+                                    builder:(context, snapshot) {
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.waiting:
+                                          // return circle indicator for progress
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        default:
+                                          if (lpCardList.isEmpty) {
+                                            athleteList = snapshot.data;
+                                            double cardSz = 300;
+                                            double tempSz = 28;
+                                            // build list of athlete LP pairs
+                                            for (var athlete in athleteList) {
+                                              lpCardList.add(
+                                                Container(
+                                                  width: cardSz,
+                                                  height: MediaQuery.of(context).size.height * 0.25,
+                                                  color: Colors.grey,
+                                                  child: GestureDetector(
+                                                    onTap: () {},
+                                                    child: Card(
+                                                      child: Column(
                                                         children: <Widget>[
-                                                          Text(
-                                                            "AX - " + athlete.name + " APT",
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontFamily: 'OpenSans',
-                                                              fontWeight:  FontWeight.w600,
-                                                              fontSize: tempSz,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: cardSz-15,
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: <Widget>[
-                                                                Text(
-                                                                  "Total APY:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.white,
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: tempSz-10,
-                                                                  ),
+                                                          Column(
+                                                            children: <Widget>[
+                                                              Text(
+                                                                "AX - " + athlete.name + " APT",
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontFamily: 'OpenSans',
+                                                                  fontWeight:  FontWeight.w600,
+                                                                  fontSize: tempSz,
                                                                 ),
-                                                                Text(
-                                                                  "20 %",
-                                                                  style: TextStyle(
-                                                                    color: Colors.white,
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: tempSz-10,
-                                                                  )
+                                                              ),
+                                                              Container(
+                                                                width: cardSz-15,
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: <Widget>[
+                                                                    Text(
+                                                                      "Total APY:",
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontFamily: 'OpenSans',
+                                                                        fontWeight:  FontWeight.w600,
+                                                                        fontSize: tempSz-10,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      "20 %",
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontFamily: 'OpenSans',
+                                                                        fontWeight:  FontWeight.w600,
+                                                                        fontSize: tempSz-10,
+                                                                      )
+                                                                    )
+                                                                  ],
                                                                 )
-                                                              ],
-                                                            )
-                                                          ),
-                                                          Container(
-                                                            width: cardSz,
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: <Widget>[
-                                                                Text(
-                                                                  "TVL:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey[300],
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: tempSz-10,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "\$1,000,000",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey[300],
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: tempSz-10,
-                                                                  )
+                                                              ),
+                                                              Container(
+                                                                width: cardSz,
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: <Widget>[
+                                                                    Text(
+                                                                      "TVL:",
+                                                                      style: TextStyle(
+                                                                        color: Colors.grey[300],
+                                                                        fontFamily: 'OpenSans',
+                                                                        fontWeight:  FontWeight.w600,
+                                                                        fontSize: tempSz-10,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      "\$1,000,000",
+                                                                      style: TextStyle(
+                                                                        color: Colors.grey[300],
+                                                                        fontFamily: 'OpenSans',
+                                                                        fontWeight:  FontWeight.w600,
+                                                                        fontSize: tempSz-10,
+                                                                      )
+                                                                    )
+                                                                  ],
                                                                 )
-                                                              ],
-                                                            )
-                                                          ),
-                                                          Container(
-                                                            width: cardSz-15,
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: <Widget>[
-                                                                Text(
-                                                                  "LP APY:",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey[300],
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: tempSz-10,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "5 %",
-                                                                  style: TextStyle(
-                                                                    color: Colors.grey[300],
-                                                                    fontFamily: 'OpenSans',
-                                                                    fontWeight:  FontWeight.w600,
-                                                                    fontSize: tempSz-10,
-                                                                  )
+                                                              ),
+                                                              Container(
+                                                                width: cardSz-15,
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: <Widget>[
+                                                                    Text(
+                                                                      "LP APY:",
+                                                                      style: TextStyle(
+                                                                        color: Colors.grey[300],
+                                                                        fontFamily: 'OpenSans',
+                                                                        fontWeight:  FontWeight.w600,
+                                                                        fontSize: tempSz-10,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      "5 %",
+                                                                      style: TextStyle(
+                                                                        color: Colors.grey[300],
+                                                                        fontFamily: 'OpenSans',
+                                                                        fontWeight:  FontWeight.w600,
+                                                                        fontSize: tempSz-10,
+                                                                      )
+                                                                    )
+                                                                  ],
                                                                 )
-                                                              ],
-                                                            )
-                                                          ),
-                                                          Container(
-                                                            width: cardSz-50,
-                                                            height: MediaQuery.of(context).size.height * 0.08,
-                                                            color: Colors.amber[600],
+                                                              ),
+                                                              Container(
+                                                                width: cardSz-50,
+                                                                height: MediaQuery.of(context).size.height * 0.08,
+                                                                color: Colors.amber[600],
+                                                              )
+                                                            ],
                                                           )
                                                         ],
                                                       )
-                                                    ],
+                                                    )
                                                   )
                                                 )
-                                              )
-                                            )
-                                          );
-                                        }
-                                        haveAthletes = true;
-                                        return Container();
+                                              );
+                                            }
+                                            haveAthletes = true;
+                                          }
+                                          return Container();
+                                      }
                                     }
-                                  }
-                                ),
-                                // if (haveAthletes)
-                                //   Center(
-                                //     child: CircularProgressIndicator(),
-                                //   ),
-                                // if (!haveAthletes) 
-                                //   ListView.builder(
-                                //     itemBuilder: (BuildContext context, int index) {
-                                //       return Container(
-                                //         width: MediaQuery.of(context).size.width * 0.6,
-                                //         color: Colors.white,
-                                //         child: ListView.builder(
-                                //           padding: const EdgeInsets.symmetric(horizontal: 8),
-                                //           scrollDirection: Axis.horizontal,
-                                //           itemCount: earnRange[1],
-                                //           itemBuilder: (BuildContext context, int index) {
-                                //             return lpButtonList[index + earnRange[0]];
-                                //           }
-                                //         ),
-                                //       );
-                                //     }
-                                //   ),
-                                // Scroll Right
-                                Container(
-                                  width: MediaQuery.of(context).size.width * 0.1,
-                                  height: MediaQuery.of(context).size.height * .3,
-                                  color: Colors.grey,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      earnRange[0] += earnRange[1];
-                                      if (earnRange[0] > lpCardList.length - earnRange[1])
-                                        earnRange[0] = lpCardList.length - earnRange[1];
+                                  ),
+                                  // if (haveAthletes)
+                                  //   Center(
+                                  //     child: CircularProgressIndicator(),
+                                  //   ),
+                                  if (!haveAthletes) 
+                                    ListView.builder(
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return Container(
+                                          width: MediaQuery.of(context).size.width * 0.6,
+                                          color: Colors.white,
+                                          child: ListView.builder(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: earnRange[1],
+                                            itemBuilder: (BuildContext context, int index) {
+                                              return lpCardList[index + earnRange[0]];
+                                            }
+                                          ),
+                                        );
+                                      }
+                                    ),
+                                  // Scroll Right
+                                  Container(
+                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    height: MediaQuery.of(context).size.height * .3,
+                                    color: Colors.grey,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        earnRange[0] += earnRange[1];
+                                        if (earnRange[0] > lpCardList.length - earnRange[1])
+                                          earnRange[0] = lpCardList.length - earnRange[1];
 print(earnRange[0].toString()+" / "+lpCardList.length.toString());
-                                    },
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.grey[800],
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.grey[800],
+                                      )
                                     )
-                                  )
-                                ),
-                              ],
-                            )
-                          ),
-                        )
+                                  ),
+                                ],
+                              )
+                            ),
+                          )
+                          // End of Earn
                       ]
                     ),
                   )
