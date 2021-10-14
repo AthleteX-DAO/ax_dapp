@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   List<Athlete> otherList = [];
   List<Container> lpCardList = [];
   List<Athlete> curAthletes = [];
+  List<String> athNames = [];
   bool firstRun = true;
   double filterText = 20;
   var earnRange = [0,3];
@@ -697,7 +698,7 @@ class _HomePageState extends State<HomePage> {
                             )
                           )
                         ),
-                        // Swap Widget
+                        // DexSwap Widget
                         if (swap==0) 
                           Stack(
                             children: <Widget>[
@@ -849,7 +850,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                   
                           // End of Swap
-                        // Earn Widget
+                        // DexEarn Widget
                         if (swap==1)
                           // LP Horizontal List
                           Align(
@@ -857,7 +858,7 @@ class _HomePageState extends State<HomePage> {
                             child: Container(
                               width: MediaQuery.of(context).size.width * .8,
                               height: MediaQuery.of(context).size.height * .3,
-                              color: Colors.green,
+                              color: Colors.green[100],
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
@@ -867,18 +868,7 @@ class _HomePageState extends State<HomePage> {
                                     height: MediaQuery.of(context).size.height * .3,
                                     color: Colors.grey,
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        earnRange[0] -= earnRange[1];
-                                        if (earnRange[0] < 0)
-                                          earnRange[0] = 0;
-                                        setState(() {
-                                          curAthletes = [];
-                                          for (int i = 0; i < earnRange[1]; i++)
-                                            curAthletes.add(athleteList[earnRange[0]+i]);
-                                        });
-// print(earnRange[0].toString()+" / "+athleteList.length.toString());
-// for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
-                                      },
+                                      onPressed: () {},
                                       style: ButtonStyle(
                                         overlayColor: MaterialStateProperty.all(Colors.transparent),
                                       ),
@@ -893,7 +883,6 @@ class _HomePageState extends State<HomePage> {
                                     FutureBuilder<dynamic>(
                                       future: AthleteApi.getAthletesLocally(context),
                                       builder:(context, snapshot) {
-print("Here");
                                         switch (snapshot.connectionState) {
                                           case ConnectionState.waiting:
                                             // return circle indicator for progress
@@ -901,15 +890,7 @@ print("Here");
                                               child: CircularProgressIndicator(),
                                             );
                                           default:
-print(" "+athleteList.length.toString());
                                             if (athleteList.isNotEmpty) {
-print("1");
-                                              setState(() {
-                                                curAthletes = [];
-                                                for (int i = 0; i < earnRange[1] && i < athleteList.length; i++)
-                                                  curAthletes.add(athleteList[earnRange[0]+i]);
-                                              });
-print("2");
                                               return Container(
                                                 width: MediaQuery.of(context).size.width*0.6,
                                                 height: MediaQuery.of(context).size.height*0.3,
@@ -925,7 +906,7 @@ print("2");
                                                           width: MediaQuery.of(context).size.width*0.175,
                                                           height: MediaQuery.of(context).size.height*0.3,
                                                           color: Colors.red[700],
-                                                          child: Text(curAthletes[index].name)
+                                                          child: Text(athleteList[index].name)
                                                         )
                                                       ),
                                                     );
@@ -934,12 +915,11 @@ print("2");
                                               );
                                             }
                                             else{
-print("3");
                                               return Container(color: Colors.orange,);}
                                         }
                                       }
                                     ),
-                                  if (athleteList.isNotEmpty)
+                                  if (curAthletes.isNotEmpty)
                                     Container(
                                       width: MediaQuery.of(context).size.width*0.6,
                                       height: MediaQuery.of(context).size.height*0.3,
@@ -955,7 +935,7 @@ print("3");
                                                 width: MediaQuery.of(context).size.width*0.175,
                                                 height: MediaQuery.of(context).size.height*0.3,
                                                 color: Colors.red[700],
-                                                child: Text(curAthletes[index].name)
+                                                child: Text(athleteList[index].name)
                                               )
                                             ),
                                           );
@@ -991,18 +971,7 @@ print("3");
                                     height: MediaQuery.of(context).size.height * .3,
                                     color: Colors.grey,
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        earnRange[0] += earnRange[1];
-                                        if (earnRange[0] > athleteList.length - earnRange[1])
-                                          earnRange[0] = athleteList.length - earnRange[1];
-// print(earnRange[0].toString()+" / "+athleteList.length.toString());
-// for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
-                                        setState(() {
-                                          curAthletes = [];
-                                          for (int i = 0; i < earnRange[1]; i++)
-                                            curAthletes.add(athleteList[earnRange[0]+i]);
-                                        });
-                                      },
+                                      onPressed: () {},
                                       child: Icon(
                                         Icons.arrow_forward_ios,
                                         color: Colors.grey[800],
@@ -1053,7 +1022,7 @@ print("3");
                                         width: MediaQuery.of(context).size.width*0.08,
                                         height: 60,
                                         decoration: BoxDecoration(
-                                          color: Colors.green,
+                                          color: Colors.green[800],
                                           borderRadius: BorderRadius.circular(20),
                                         ),
                                         child: TextButton(
