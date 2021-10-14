@@ -876,9 +876,8 @@ class _HomePageState extends State<HomePage> {
                                           for (int i = 0; i < earnRange[1]; i++)
                                             curAthletes.add(athleteList[earnRange[0]+i]);
                                         });
-                                        
-print(earnRange[0].toString()+" / "+athleteList.length.toString());
-for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
+// print(earnRange[0].toString()+" / "+athleteList.length.toString());
+// for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
                                       },
                                       style: ButtonStyle(
                                         overlayColor: MaterialStateProperty.all(Colors.transparent),
@@ -894,6 +893,7 @@ for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
                                     FutureBuilder<dynamic>(
                                       future: AthleteApi.getAthletesLocally(context),
                                       builder:(context, snapshot) {
+print("Here");
                                         switch (snapshot.connectionState) {
                                           case ConnectionState.waiting:
                                             // return circle indicator for progress
@@ -901,12 +901,15 @@ for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
                                               child: CircularProgressIndicator(),
                                             );
                                           default:
+print(" "+athleteList.length.toString());
                                             if (athleteList.isNotEmpty) {
+print("1");
                                               setState(() {
                                                 curAthletes = [];
-                                                for (int i = 0; i < earnRange[1]; i++)
+                                                for (int i = 0; i < earnRange[1] && i < athleteList.length; i++)
                                                   curAthletes.add(athleteList[earnRange[0]+i]);
                                               });
+print("2");
                                               return Container(
                                                 width: MediaQuery.of(context).size.width*0.6,
                                                 height: MediaQuery.of(context).size.height*0.3,
@@ -930,8 +933,9 @@ for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
                                                 )
                                               );
                                             }
-                                            else
-                                              return Container(color: Colors.orange,);
+                                            else{
+print("3");
+                                              return Container(color: Colors.orange,);}
                                         }
                                       }
                                     ),
@@ -980,8 +984,8 @@ for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
                                         );
                                       }
                                     ),
-                                  // Scroll Right
                                   **/
+                                  // Scroll Right
                                   Container(
                                     width: MediaQuery.of(context).size.width * 0.1,
                                     height: MediaQuery.of(context).size.height * .3,
@@ -991,8 +995,8 @@ for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
                                         earnRange[0] += earnRange[1];
                                         if (earnRange[0] > athleteList.length - earnRange[1])
                                           earnRange[0] = athleteList.length - earnRange[1];
-print(earnRange[0].toString()+" / "+athleteList.length.toString());
-for(int i=0;i<earnRange[1];i++)print("  "+athleteList[earnRange[0]+i].name+" ");
+// print(earnRange[0].toString()+" / "+athleteList.length.toString());
+// for(int i=0;i<earnRange[1];i++)print("  "+curAthletes[i].name+" ");
                                         setState(() {
                                           curAthletes = [];
                                           for (int i = 0; i < earnRange[1]; i++)
