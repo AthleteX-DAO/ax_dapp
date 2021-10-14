@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   double filterText = 20;
   var earnRange = [0,3];
   bool haveAthletes = false;
+   
 
   void _onItemTapped(int index) {
     setState(() {
@@ -72,6 +73,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
 
         // NAVIGATION BAR //
@@ -834,6 +836,34 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                   ),
+                                      Container(
+                                      width: MediaQuery.of(context).size.width*0.02,
+                                      ),
+                                    // Confirm Swap Button
+                                    Container(
+                                      width: MediaQuery.of(context).size.width*0.15,
+                                      height: MediaQuery.of(context).size.height*0.08,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber[600],
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: Colors.amber[600]!,
+                                          width: 2,
+                                        ),
+                                      ),
+                                       child: TextButton(
+                                        onPressed: () => {},
+                                        child: Text(
+                                          "Confirm Swap",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                       ),
+                                    ),
                                 ],
                               ),
                             ),
