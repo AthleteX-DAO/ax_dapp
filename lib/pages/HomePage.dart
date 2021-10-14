@@ -1013,10 +1013,10 @@ class _HomePageState extends State<HomePage> {
                                   //   Center(
                                   //     child: CircularProgressIndicator(),
                                   //   ),
-<<<<<<< HEAD
                                    /** 
                                   if (!haveAthletes) 
                                     ListView.builder(
+                                      itemBuilder: (BuildContext context, int index) {
                                         return Container(
                                           width: MediaQuery.of(context).size.width * 0.6,
                                           color: Colors.white,
@@ -1031,12 +1031,16 @@ class _HomePageState extends State<HomePage> {
                                         );
                                       }
                                     ),
+                                  // Scroll Right
                                   **/
-                                  //     itemBuilder: (BuildContext context, int index) {
-                                  //       return Container(
-                                  //         width: MediaQuery.of(context).size.width * 0.6,
-                                  //         color: Colors.white,
-                                  //         child: ListView.builder(
+                                  Container(
+                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    height: MediaQuery.of(context).size.height * .3,
+                                    color: Colors.grey,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        earnRange[0] += earnRange[1];
+                                        if (earnRange[0] > lpCardList.length - earnRange[1])
                                           earnRange[0] = lpCardList.length - earnRange[1];
 print(earnRange[0].toString()+" / "+lpCardList.length.toString());
                                       },
