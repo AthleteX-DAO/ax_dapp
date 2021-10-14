@@ -21,7 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  int swap = 0;
+  var swap = true;
   List<Athlete> athleteList = [];
   List<Athlete> nflList = [];
   List<Athlete> otherList = [];
@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   double filterText = 20;
   var earnRange = [0,3];
   bool haveAthletes = false;
+   
 
   void _onItemTapped(int index) {
     setState(() {
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _onSwapItemTapped(int index) {
+  void _onSwapItemTapped(bool index) {
     setState(() {
       swap = index;
     });
@@ -74,6 +75,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
 
         // NAVIGATION BAR //
@@ -327,39 +329,49 @@ class _HomePageState extends State<HomePage> {
                                                                 .spaceAround,
                                                         children: [
                                                           Container(
-                                                            width: MediaQuery.of(context).size.width *.1,
-                                                            height: MediaQuery.of(context).size.height *.07,
-                                                            child:ElevatedButton(
-                                                              style: dexToggleActive,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                .1,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                .07,
+                                                            child:
+                                                                ElevatedButton(
+                                                              style:
+                                                                  dexToggleActive,
                                                               onPressed: () {
-                                                                swap = 0;
+                                                                swap = true;
                                                                 _onSwapItemTapped(swap);
                                                               },
-                                                              child: Text('Swap'),
+                                                              child:
+                                                                  Text('Swap'),
                                                             ),
                                                           ),
                                                           Container(
-                                                            width: MediaQuery.of(context).size.width *.1,
-                                                            height: MediaQuery.of(context).size.height *.07,
-                                                            child: ElevatedButton(
-                                                              style: dexToggleInactive,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                .1,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                .07,
+                                                            child:
+                                                                ElevatedButton(
+                                                              style:
+                                                                  dexToggleInactive,
                                                               onPressed: () {
-                                                                swap = 1;
+                                                                swap = false;
                                                                 _onSwapItemTapped(swap);
                                                               },
-                                                              child: Text('Earn'),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: MediaQuery.of(context).size.width *.1,
-                                                            height: MediaQuery.of(context).size.height *.07,
-                                                            child: ElevatedButton(
-                                                              style: dexToggleInactive,
-                                                              onPressed: () {
-                                                                swap = 2;
-                                                                _onSwapItemTapped(swap);
-                                                              },
-                                                              child: Text('Stake'),
+                                                              child:
+                                                                  Text('Earn'),
                                                             ),
                                                           ),
                                                         ],
@@ -554,10 +566,7 @@ class _HomePageState extends State<HomePage> {
                                                                 color: Colors.grey[900],
                                                                 shadowColor: Colors.grey[900],
                                                                 child: ListTile(
-                                                                  title: Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                    children: [Text(athlete.name), Text("\$0.9876")]
-                                                                  ),
+                                                                  title: Text(athlete.name),
                                                                   onTap: () => athleteDialog(context, athlete),
                                                                 )
                                                               );
@@ -636,10 +645,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                         // Swap / Earn Button Widget
                         Align(
-                          alignment: Alignment(0, -0.93),
+                          alignment: Alignment(0, -0.98),
                           child: Container(
-                            width: MediaQuery.of(context).size.width * .35,
-                            height: MediaQuery.of(context).size.height * .08,
+                            width: MediaQuery.of(context).size.width * .24,
+                            height: MediaQuery.of(context).size.height * .1,
                             decoration:
                               BoxDecoration(
                                 borderRadius:BorderRadius.circular(20),
@@ -655,13 +664,13 @@ class _HomePageState extends State<HomePage> {
                               children: <Widget>[
                                 // Swap Button
                                 Container(
-                                  width: MediaQuery.of(context).size.width * .09,
-                                  height: MediaQuery.of(context).size.height * .055,
+                                  width: MediaQuery.of(context).size.width * .1,
+                                  height: MediaQuery.of(context).size.height * .07,
                                   child:
                                     ElevatedButton(
                                       style: dexToggleActive,
                                       onPressed: () {
-                                        swap = 0;
+                                        swap = true;
                                         _onSwapItemTapped(swap);
                                       },
                                       child: Text('Swap'),
@@ -669,29 +678,16 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 // Earn button
                                 Container(
-                                  width: MediaQuery.of(context).size.width * .09,
-                                  height: MediaQuery.of(context).size.height * .055,
+                                  width: MediaQuery.of(context).size.width * .1,
+                                  height: MediaQuery.of(context).size.height * .07,
                                   child:
                                     ElevatedButton(
                                       style: dexToggleActive,
                                       onPressed: () {
-                                        swap = 1;
+                                        swap = false;
                                         _onSwapItemTapped(swap);
                                       },
                                       child: Text('Earn'),
-                                  ),
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .09,
-                                  height: MediaQuery.of(context).size.height * .055,
-                                  child:
-                                    ElevatedButton(
-                                      style: dexToggleActive,
-                                      onPressed: () {
-                                        swap = 2;
-                                        _onSwapItemTapped(swap);
-                                      },
-                                      child: Text('Stake'),
                                   ),
                                 ),
                               ],
@@ -716,134 +712,147 @@ class _HomePageState extends State<HomePage> {
                                       decoration: BoxDecoration(
                                         color: Colors.grey[850],
                                         borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          // top dropdown box
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Center(
-                                              child: Center(
-                                                child: CircularProgressIndicator(),
-                                              )
-                                            )
-                                          ),
-                                          // Text Amount
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text(
-                                              "0.0",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'OpenSans',
-                                                fontSize: 20,                                            
-                                              ),
-                                            )
-                                          ),
-                                        ],
                                       )
                                     ),
-                                    Container(
-                                      height: MediaQuery.of(context).size.height*0.02,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width*0.4,
-                                      height: MediaQuery.of(context).size.height*0.125,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey[850],
-                                          borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          // Bottom dropdown box
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Center(
-                                              child: Center(
-                                                child: CircularProgressIndicator(),
-                                              )
-                                            )
-                                          ),
-                                            Padding(
-                                              padding: EdgeInsets.only(right: 10),
-                                              child: Text(
-                                                "0.0",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 20,                                            
-                                                ),
-                                              )
-                                            ),
-                                        ],
+                                    // Text Amount
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 10),
+                                      child: Text(
+                                        "0.0",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 20,                                            
+                                        ),
                                       )
-                                    ), 
-                                    Align(
-                                      alignment: Alignment(0, -0.9),
-                                      child: Column(
-                                        children: <Widget>[
-                                          // Padding for arrow
-                                          Container(
-                                            height: MediaQuery.of(context).size.height*0.001,
-                                          ),
-                                          // Switch Arrow
-                                          Container(
-                                            width: MediaQuery.of(context).size.width*0.032,
-                                            height: MediaQuery.of(context).size.width*0.032,
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              borderRadius: BorderRadius.circular(6),
-                                            ),
-                                            child: TextButton(
-                                              onPressed: () {},
-                                              child: Icon(
-                                                Icons.arrow_downward_outlined,
-                                                color: Colors.grey[500],
-                                                size: MediaQuery.of(context).size.width*0.022,
-                                              )
-                                            )
+                                    ),
+                                  ],
+                                )
+                              ),
+                              Container(
+                                height: MediaQuery.of(context).size.height*0.02,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.4,
+                                height: MediaQuery.of(context).size.height*0.125,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[850],
+                                    borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      // Bottom dropdown box
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: Center(
+                                          child: Center(
+                                            child: CircularProgressIndicator(),
                                           )
-                                        ],
+                                        )
                                       ),
-                                    ),
+                                      Padding(
+                                          padding: EdgeInsets.only(right: 10),
+                                          child: Text(
+                                            "0.0",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 20,                                            
+                                            ),
+                                          )
+                                        ),
+                                    ],
+                                )
+                              ), 
+                              Center(
+                                child: Column(
+                                  children: <Widget>[
+                                    // Padding for arrow
                                     Container(
-                                      height: MediaQuery.of(context).size.height*0.065,
+                                      height: MediaQuery.of(context).size.height*0.001,
                                     ),
-                                    Center(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
-                                            // Connect Wallet Button
-                                          Container(
-                                            width: MediaQuery.of(context).size.width*0.15,
-                                            height: MediaQuery.of(context).size.height*0.08,
-                                            decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              borderRadius: BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: Colors.amber[600]!,
-                                                width: 2,
-                                              ),
-                                            ),
-                                            child: TextButton(
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Connect Wallet",
-                                                style: TextStyle(
-                                                color: Colors.amber[600],
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
+                                    // Switch Arrow
+                                    Container(
+                                      width: MediaQuery.of(context).size.width*0.032,
+                                      height: MediaQuery.of(context).size.width*0.032,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () {},
+                                        child: Icon(
+                                          Icons.arrow_downward_outlined,
+                                          color: Colors.grey[500],
+                                          size: MediaQuery.of(context).size.width*0.022,
+                                        )
+                                      )
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: MediaQuery.of(context).size.height*0.065,
+                              ),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    // Connect Wallet Button
+                                    Container(
+                                      width: MediaQuery.of(context).size.width*0.15,
+                                      height: MediaQuery.of(context).size.height*0.08,
+                                      decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: Colors.amber[600]!,
+                                          width: 2,
+                                        ),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () {},
+                                        child: Text(
+                                          "Connect Wallet",
+                                          style: TextStyle(
+                                            color: Colors.amber[600],
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.02,
+                              ),
+                              // Confirm Swap Button
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.15,
+                                height: MediaQuery.of(context).size.height*0.08,
+                                decoration: BoxDecoration(
+                                  color: Colors.amber[600],
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: Colors.amber[600]!,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: TextButton(
+                                  onPressed: () => {},
+                                  child: Text(
+                                    "Confirm Swap",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -964,8 +973,8 @@ class _HomePageState extends State<HomePage> {
                                         );
                                       }
                                     ),
-                                  **/
                                   // Scroll Right
+                                  **/
                                   Container(
                                     width: MediaQuery.of(context).size.width * 0.1,
                                     height: MediaQuery.of(context).size.height * .3,
@@ -983,6 +992,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           // End of Earn
+                        // DexStake Widget
                         if (swap==2)
                           Stack(
                             children: <Widget>[
@@ -1058,6 +1068,7 @@ class _HomePageState extends State<HomePage> {
                               )
                             ]
                           )
+                          // End of Earn
                       ]
                     ),
                   )
@@ -1150,76 +1161,15 @@ class _HomePageState extends State<HomePage> {
                 )
               )
             )
-          ),
-          Align(
-            alignment: Alignment(-0.25,-0.25),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.1,
-              height: MediaQuery.of(context).size.height * 0.1,
-              color: Colors.green,
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Buy Long APT",
-                  style: TextStyle(color: Colors.amber[600]),
-                )
-              )
-            )
           ), 
           Align(
-            alignment: Alignment(0.25,-0.25),
+            alignment: Alignment(0,0),
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.1,
-              height: MediaQuery.of(context).size.height * 0.1,
-              color: Colors.red,
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Buy Short APT",
-                  style: TextStyle(color: Colors.amber[600]),
-                )
-              )
+              width: MediaQuery.of(context).size.width * .6,
+              height: MediaQuery.of(context).size.height * .5,
+              child: buildGraph(athlete.war, athlete.time)
             )
-          ), 
-          Align(
-            alignment: Alignment(-0.25,0.25),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.1,
-              height: MediaQuery.of(context).size.height * 0.1,
-              color: Colors.grey,
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "MINT",
-                  style: TextStyle(color: Colors.amber[600]),
-                )
-              )
-            )
-          ), 
-          Align(
-            alignment: Alignment(0.25,0.25),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.1,
-              height: MediaQuery.of(context).size.height * 0.1,
-              color: Colors.grey,
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "REDEEM",
-                  style: TextStyle(color: Colors.amber[600]),
-                )
-              )
-            )
-          ), 
-          // Graph
-          // Align(
-          //   alignment: Alignment(0,0),
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width * .6,
-          //     height: MediaQuery.of(context).size.height * .5,
-          //     child: buildGraph(athlete.war, athlete.time)
-          //   )
-          // )
+          )
         ]
       )
     );
