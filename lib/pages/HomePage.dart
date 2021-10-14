@@ -692,11 +692,154 @@ class _HomePageState extends State<HomePage> {
                         ),
                         // Swap Widget
                         if (swap) 
+                         Stack(
+                          children: <Widget>[
+                            // Large Container (Trade)
+                            Center(
+                              child: Column(
+                                children: <Widget>[
+                                  // Padding for the large Container
+                                  Container(
+                                    height: MediaQuery.of(context).size.height*0.25,
+                                  ),
                           Container(
-                            width: MediaQuery.of(context).size.width * .3,
-                            height: MediaQuery.of(context).size.height * .3,
-                            color: Colors.green
-                          ),
+                                  width: MediaQuery.of(context).size.width*0.4,
+                                  height: MediaQuery.of(context).size.height*0.125,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[850],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      // top dropdown box
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: Center(
+                                          child: Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        )
+                                      ),
+                                      // Text Amount
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          "0.0",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 20,                                            
+                                          ),
+                                        )
+                                      ),
+                                    ],
+                                  )
+                                ),
+                            Container(
+                                  height: MediaQuery.of(context).size.height*0.02,
+                                  ),
+                          Container(
+                            width: MediaQuery.of(context).size.width*0.4,
+                            height: MediaQuery.of(context).size.height*0.125,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[850],
+                                borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  // Bottom dropdown box
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Center(
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    )
+                                  ),
+                                   Padding(
+                                      padding: EdgeInsets.only(right: 10),
+                                      child: Text(
+                                        "0.0",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 20,                                            
+                                        ),
+                                      )
+                                    ),
+                                ],
+                            )
+                          ), 
+                          Center(
+                                child: Column(
+                                  children: <Widget>[
+                                    // Padding for arrow
+                                    Container(
+                                      height: MediaQuery.of(context).size.height*0.001,
+                                    ),
+                                    // Switch Arrow
+                                    Container(
+                                      width: MediaQuery.of(context).size.width*0.032,
+                                      height: MediaQuery.of(context).size.width*0.032,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () {},
+                                        child: Icon(
+                                          Icons.arrow_downward_outlined,
+                                          color: Colors.grey[500],
+                                          size: MediaQuery.of(context).size.width*0.022,
+                                        )
+                                      )
+                                    )
+                                  ],
+                                ),
+                               ),
+                               Container(
+                                 height: MediaQuery.of(context).size.height*0.065,
+                                 ),
+                                  Center(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        // Connect Wallet Button
+                                        Container(
+                                          width: MediaQuery.of(context).size.width*0.15,
+                                          height: MediaQuery.of(context).size.height*0.08,
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            borderRadius: BorderRadius.circular(12),
+                                            border: Border.all(
+                                              color: Colors.amber[600]!,
+                                              width: 2,
+                                            ),
+                                          ),
+                                           child: TextButton(
+                                            onPressed: () {},
+                                             child: Text(
+                                              "Connect Wallet",
+                                             style: TextStyle(
+                                             color: Colors.amber[600],
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                             ),
+                                            ),
+                                           ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                  
                           // End of Swap
                         // Earn Widget
                         if (!swap)
@@ -862,7 +1005,7 @@ class _HomePageState extends State<HomePage> {
                                             }
                                             haveAthletes = true;
                                           }
-                                          return Container(width: 0.1, height: 0.1);
+                                          return Container();
                                       }
                                     }
                                   ),
@@ -870,24 +1013,26 @@ class _HomePageState extends State<HomePage> {
                                   //   Center(
                                   //     child: CircularProgressIndicator(),
                                   //   ),
-                                  // if (!haveAthletes) 
-                                  //   ListView.builder(
-                                  //     itemBuilder: (BuildContext context, int index) {
-                                  //       return Container(
-                                  //         width: MediaQuery.of(context).size.width * 0.6,
-                                  //         color: Colors.white,
-                                  //         child: ListView.builder(
-                                  //           padding: const EdgeInsets.symmetric(horizontal: 8),
-                                  //           scrollDirection: Axis.horizontal,
-                                  //           itemCount: earnRange[1],
-                                  //           itemBuilder: (BuildContext context, int index) {
-                                  //             return lpCardList[index + earnRange[0]];
-                                  //           }
-                                  //         ),
-                                  //       );
-                                  //     }
-                                  //   ),
+                                   /** 
+                                  if (!haveAthletes) 
+                                    ListView.builder(
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return Container(
+                                          width: MediaQuery.of(context).size.width * 0.6,
+                                          color: Colors.white,
+                                          child: ListView.builder(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: earnRange[1],
+                                            itemBuilder: (BuildContext context, int index) {
+                                              return lpCardList[index + earnRange[0]];
+                                            }
+                                          ),
+                                        );
+                                      }
+                                    ),
                                   // Scroll Right
+                                  **/
                                   Container(
                                     width: MediaQuery.of(context).size.width * 0.1,
                                     height: MediaQuery.of(context).size.height * .3,
