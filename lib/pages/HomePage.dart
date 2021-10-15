@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   String _value2 = "USDC";
   late Coin coin1;
   late Coin coin2;
+  Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
 
   void _onItemTapped(int index) {
     setState(() {
@@ -940,7 +941,17 @@ class _HomePageState extends State<HomePage> {
                                     height: MediaQuery.of(context).size.height * .3,
                                     color: Colors.grey,
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        earnRange[0] -= earnRange[1];
+                                        if (earnRange[0] < 0)
+                                          earnRange[0] = 0;
+                                        curAthletes = [];
+                                        for (int i=0;i<earnRange[1];i++)
+                                          curAthletes.add(athleteList[earnRange[0]+i]);
+                                        setState(() {
+                                          lastFirstEarn = curAthletes[0];
+                                        });
+                                      },
                                       style: ButtonStyle(
                                         overlayColor: MaterialStateProperty.all(Colors.transparent),
                                       ),
@@ -951,7 +962,7 @@ class _HomePageState extends State<HomePage> {
                                     )
                                   ),
                                   // LP Cards
-                                  if (athleteList.isEmpty)
+                                  if (curAthletes.isEmpty)
                                     FutureBuilder<dynamic>(
                                       future: AthleteApi.getAthletesLocally(context),
                                       builder:(context, snapshot) {
@@ -962,36 +973,38 @@ class _HomePageState extends State<HomePage> {
                                               child: CircularProgressIndicator(),
                                             );
                                           default:
-                                            if (athleteList.isNotEmpty) {
-                                              return Container(
-                                                width: MediaQuery.of(context).size.width*0.6,
-                                                height: MediaQuery.of(context).size.height*0.3,
-                                                child: ListView.builder(
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: earnRange[1],
-                                                  itemBuilder: (BuildContext context, int index) {
-                                                    return Container(
-                                                      width: MediaQuery.of(context).size.width*0.2,
-                                                      height: MediaQuery.of(context).size.height*0.3,
-                                                      child: Center(
-                                                        child: Container(
-                                                          width: MediaQuery.of(context).size.width*0.175,
-                                                          height: MediaQuery.of(context).size.height*0.3,
-                                                          color: Colors.red[700],
-                                                          child: Text(athleteList[index].name)
-                                                        )
-                                                      ),
-                                                    );
-                                                  },
-                                                )
-                                              );
-                                            }
-                                            else{
-                                              return Container(color: Colors.orange,);}
+                                            athleteList = snapshot.data;
+                                            for (int i=0;i<earnRange[1]&&i<athleteList.length;i++) 
+                                              curAthletes.add(athleteList[i]);
+                                            if (curAthletes.isNotEmpty)
+                                            lastFirstEarn = curAthletes[0];
+                                            return Container(
+                                              width: MediaQuery.of(context).size.width*0.6,
+                                              height: MediaQuery.of(context).size.height*0.3,
+                                              child: ListView.builder(
+                                                scrollDirection: Axis.horizontal,
+                                                itemCount: earnRange[1],
+                                                itemBuilder: (BuildContext context, int index) {
+                                                  return Container(
+                                                    width: MediaQuery.of(context).size.width*0.2,
+                                                    height: MediaQuery.of(context).size.height*0.3,
+                                                    child: Center(
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.175,
+                                                        height: MediaQuery.of(context).size.height*0.3,
+                                                        color: Colors.red[700],
+                                                        child: Text(curAthletes[index].name)
+                                                      )
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            );
                                         }
                                       }
                                     ),
-                                  if (curAthletes.isNotEmpty)
+                                  // ignore: unnecessary_null_comparison
+                                  if (curAthletes.isNotEmpty && lastFirstEarn == curAthletes[0])
                                     Container(
                                       width: MediaQuery.of(context).size.width*0.6,
                                       height: MediaQuery.of(context).size.height*0.3,
@@ -1007,43 +1020,32 @@ class _HomePageState extends State<HomePage> {
                                                 width: MediaQuery.of(context).size.width*0.175,
                                                 height: MediaQuery.of(context).size.height*0.3,
                                                 color: Colors.red[700],
-                                                child: Text(athleteList[index].name)
+                                                child: Text(curAthletes[index].name)
                                               )
                                             ),
                                           );
                                         },
                                       )
                                     ),
-                                  // if (haveAthletes)
-                                  //   Center(
-                                  //     child: CircularProgressIndicator(),
-                                  //   ),
-                                   /** 
-                                  if (!haveAthletes) 
-                                    ListView.builder(
-                                      itemBuilder: (BuildContext context, int index) {
-                                        return Container(
-                                          width: MediaQuery.of(context).size.width * 0.6,
-                                          color: Colors.white,
-                                          child: ListView.builder(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: earnRange[1],
-                                            itemBuilder: (BuildContext context, int index) {
-                                              return lpCardList[index + earnRange[0]];
-                                            }
-                                          ),
-                                        );
-                                      }
-                                    ),
                                   // Scroll Right
-                                  **/
                                   Container(
                                     width: MediaQuery.of(context).size.width * 0.1,
                                     height: MediaQuery.of(context).size.height * .3,
                                     color: Colors.grey,
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        earnRange[0] += earnRange[1];
+                                        if (earnRange[0] > athleteList.length - earnRange[1])
+                                          earnRange[0] = athleteList.length - earnRange[1];
+                                        curAthletes = [];
+                                        for (int i=0;i<earnRange[1];i++)
+                                          curAthletes.add(athleteList[earnRange[0]+i]);
+                                        setState(() {
+                                          lastFirstEarn = curAthletes[0];
+                                        });
+print(earnRange[0].toString()+"/"+athleteList.length.toString()+"  : "+athleteList[earnRange[0]].name+"  ~  "+curAthletes[0].name);
+print(" Name: "+lastFirstEarn.name);
+                                      },
                                       child: Icon(
                                         Icons.arrow_forward_ios,
                                         color: Colors.grey[800],
