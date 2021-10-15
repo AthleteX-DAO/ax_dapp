@@ -705,151 +705,153 @@ class _HomePageState extends State<HomePage> {
                         ),
                         // DexSwap Widget
                         if (swap==0) 
-                          Stack(
-                          child: FutureBuilder<List<Coin>>(
-                              future: coinList.getCoins(context),
-                              builder: (context, snapshot) {
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.waiting:
-                            children: <Widget>[
-                              // Top token box
-                              Align(
-                                alignment: Alignment(0, -0.4),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width*0.4,
-                                  height: MediaQuery.of(context).size.height*0.125,
-                                  child: Center(
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width*0.35,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            width: MediaQuery.of(context).size.width*0.08,
-                                            height: MediaQuery.of(context).size.height*0.08,
-                                            color: Colors.green
-                                          ),
-                                          Text("0.0"),
-                                        ],
-                                      )
-                                    )
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[850],
-                                    borderRadius: BorderRadius.circular(12),
-                                  )
-                                ),
-                              ),
-                              // Bottom token box
-                              Align(
-                                alignment: Alignment(0, -0.05),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width*0.4,
-                                  height: MediaQuery.of(context).size.height*0.125,
-                                  child: Center(
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width*0.35,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            width: MediaQuery.of(context).size.width*0.08,
-                                            height: MediaQuery.of(context).size.height*0.08,
-                                            color: Colors.orange
-                                          ),
-                                          Text("0.0"),
-                                        ],
-                                      ),
-                                    )
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[850],
-                                    borderRadius: BorderRadius.circular(12),
-                                  )
-                                ),
-                              ),
-                              // switch arrow
-                              Align(
-                                alignment: Alignment(0, -0.225),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width*0.032,
-                                  height: MediaQuery.of(context).size.width*0.032,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {},
-                                    child: Icon(
-                                      Icons.arrow_downward_outlined,
-                                      color: Colors.grey[500],
-                                      size: MediaQuery.of(context).size.width*0.022,
-                                    )
-                                  )
-                                )
-                              ),
-                              // buttons
-                              Align(
-                                alignment: Alignment(0, 0.4),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width*0.4,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          FutureBuilder<List<Coin>>(
+                            future: coinList.getCoins(context),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                  return Stack(
                                     children: <Widget>[
-                                      // Connect Wallet Button
-                                      Container(
-                                        width: MediaQuery.of(context).size.width*0.15,
-                                        height: MediaQuery.of(context).size.height*0.08,
+                                    // Top token box
+                                    Align(
+                                      alignment: Alignment(0, -0.4),
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width*0.4,
+                                        height: MediaQuery.of(context).size.height*0.125,
+                                        child: Center(
+                                          child: Container(
+                                            width: MediaQuery.of(context).size.width*0.35,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Container(
+                                                  width: MediaQuery.of(context).size.width*0.08,
+                                                  height: MediaQuery.of(context).size.height*0.08,
+                                                  color: Colors.green
+                                                ),
+                                                Text("0.0"),
+                                              ],
+                                            )
+                                          )
+                                        ),
                                         decoration: BoxDecoration(
-                                          color: Colors.transparent,
+                                          color: Colors.grey[850],
                                           borderRadius: BorderRadius.circular(12),
-                                          border: Border.all(
-                                            color: Colors.amber[600]!,
-                                            width: 2,
-                                          ),
+                                        )
+                                      ),
+                                    ),
+                                    // Bottom token box
+                                    Align(
+                                      alignment: Alignment(0, -0.05),
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width*0.4,
+                                        height: MediaQuery.of(context).size.height*0.125,
+                                        child: Center(
+                                          child: Container(
+                                            width: MediaQuery.of(context).size.width*0.35,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Container(
+                                                  width: MediaQuery.of(context).size.width*0.08,
+                                                  height: MediaQuery.of(context).size.height*0.08,
+                                                  color: Colors.orange
+                                                ),
+                                                Text("0.0"),
+                                              ],
+                                            ),
+                                          )
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[850],
+                                          borderRadius: BorderRadius.circular(12),
+                                        )
+                                      ),
+                                    ),
+                                    // switch arrow
+                                    Align(
+                                      alignment: Alignment(0, -0.225),
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width*0.032,
+                                        height: MediaQuery.of(context).size.width*0.032,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          borderRadius: BorderRadius.circular(6),
                                         ),
                                         child: TextButton(
                                           onPressed: () {},
-                                          child: Text(
-                                            "Connect Wallet",
-                                            style: TextStyle(
-                                              color: Colors.amber[600],
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
+                                          child: Icon(
+                                            Icons.arrow_downward_outlined,
+                                            color: Colors.grey[500],
+                                            size: MediaQuery.of(context).size.width*0.022,
+                                          )
+                                        )
+                                      )
+                                    ),
+                                    // buttons
+                                    Align(
+                                      alignment: Alignment(0, 0.4),
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width*0.4,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            // Connect Wallet Button
+                                            Container(
+                                              width: MediaQuery.of(context).size.width*0.15,
+                                              height: MediaQuery.of(context).size.height*0.08,
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                                borderRadius: BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: Colors.amber[600]!,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: TextButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "Connect Wallet",
+                                                  style: TextStyle(
+                                                    color: Colors.amber[600],
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                      // Confirm Swap button
-                                      Container(
-                                        width: MediaQuery.of(context).size.width*0.15,
-                                        height: MediaQuery.of(context).size.height*0.08,
-                                        decoration: BoxDecoration(
-                                          color: Colors.amber[600],
-                                          borderRadius: BorderRadius.circular(12),
-                                          border: Border.all(
-                                            color: Colors.amber[600]!,
-                                            width: 2,
-                                          ),
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () => {},
-                                          child: Text(
-                                            "Confirm Swap",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
+                                            // Confirm Swap button
+                                            Container(
+                                              width: MediaQuery.of(context).size.width*0.15,
+                                              height: MediaQuery.of(context).size.height*0.08,
+                                              decoration: BoxDecoration(
+                                                color: Colors.amber[600],
+                                                borderRadius: BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: Colors.amber[600]!,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: TextButton(
+                                                onPressed: () => {},
+                                                child: Text(
+                                                  "Confirm Swap",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                )
-                              ),
+                                          ],
+                                        )
+                                      )
+                                    )
+                                  ]
+                                );
                               default: 
                                 List<Coin>? coins = snapshot.data;
                                 if (_value1 == "ETH") _value1 = coins![0].name;
@@ -859,70 +861,65 @@ class _HomePageState extends State<HomePage> {
                                   if (c.name == _value2)
                                     coin2 = c;
                                 }
-                              return Column(
-                                    children: <Widget>[
-                                      // First Coin Box
-                                      Container(
-                                        width: MediaQuery.of(context).size.width*0.4,
-                                        height: MediaQuery.of(context).size.height*0.125,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[850],
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            // top dropdown box
-                                            Padding(
-                                              padding: EdgeInsets.only(left: 10),
-                                              child: Center(
-                                                child: DropdownButton<String>(
-                                                  icon: Icon(Icons.keyboard_arrow_down),
-                                                  value: _value1,
-                                                  items:coins.map((Coin c) {
-                                                    return DropdownMenuItem<String>(
-                                                      child: Text(c.name),
-                                                      value: c.name
-                                                    );
-                                                  }).toList(),
-                                                  onChanged: (newValue){
-                                                    setState(() {
-                                                      _value1 = newValue!;
-                                                      for (var c in coins)
-                                                        if (c.name == _value1)
-                                                          coin1 = c;
-                                                    });
-                                                  },
-                                                )
-                                              )
-                                            ),
-                                            // Text Amount
-                                            Padding(
-                                              padding: EdgeInsets.only(right: 10),
-                                              child: Text(
-                                                "0.0",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: buttonText,                                            
-                                                ),
-                                              )
-                                            ),
-                                          ],
-                                        )
+                                return Column(
+                                  children: <Widget>[
+                                    // First Coin Box
+                                    Container(
+                                      width: MediaQuery.of(context).size.width*0.4,
+                                      height: MediaQuery.of(context).size.height*0.125,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[850],
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                    ],
-                                   ),
-                                
-                              
-                            
-                           ],
-                          } 
-                          } 
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          // top dropdown box
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Center(
+                                              child: DropdownButton<String>(
+                                                icon: Icon(Icons.keyboard_arrow_down),
+                                                value: _value1,
+                                                items:coins.map((Coin c) {
+                                                  return DropdownMenuItem<String>(
+                                                    child: Text(c.name),
+                                                    value: c.name
+                                                  );
+                                                }).toList(),
+                                                onChanged: (newValue){
+                                                  setState(() {
+                                                    _value1 = newValue!;
+                                                    for (var c in coins)
+                                                      if (c.name == _value1)
+                                                        coin1 = c;
+                                                  });
+                                                },
+                                              )
+                                            )
+                                          ),
+                                          // Text Amount
+                                          Padding(
+                                            padding: EdgeInsets.only(right: 10),
+                                            child: Text(
+                                              "0.0",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 20,                                            
+                                              ),
+                                            )
+                                          ),
+                                        ],
+                                      )
+                                    ),
+                                  ],
+                                );
+                              }
+                            }
                           ),
-                         ),
-                  
                           // End of Swap
+                          
                         // DexEarn Widget
                         if (swap==1)
                           // LP Horizontal List
