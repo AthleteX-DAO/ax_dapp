@@ -852,72 +852,76 @@ class _HomePageState extends State<HomePage> {
                                     )
                                   ]
                                 );
-                              default: 
-                                List<Coin>? coins = snapshot.data;
-                                if (_value1 == "ETH") _value1 = coins![0].name;
-                                for (var c in coins!) {
-                                  if (c.name == _value1)
-                                    coin1 = c;
-                                  if (c.name == _value2)
-                                    coin2 = c;
-                                }
-                                return Column(
-                                  children: <Widget>[
-                                    // First Coin Box
-                                    Container(
-                                      width: MediaQuery.of(context).size.width*0.4,
-                                      height: MediaQuery.of(context).size.height*0.125,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[850],
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          // top dropdown box
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Center(
-                                              child: DropdownButton<String>(
-                                                icon: Icon(Icons.keyboard_arrow_down),
-                                                value: _value1,
-                                                items:coins.map((Coin c) {
-                                                  return DropdownMenuItem<String>(
-                                                    child: Text(c.name),
-                                                    value: c.name
-                                                  );
-                                                }).toList(),
-                                                onChanged: (newValue){
-                                                  setState(() {
-                                                    _value1 = newValue!;
-                                                    for (var c in coins)
-                                                      if (c.name == _value1)
-                                                        coin1 = c;
-                                                  });
-                                                },
-                                              )
-                                            )
-                                          ),
-                                          // Text Amount
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text(
-                                              "0.0",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'OpenSans',
-                                                fontSize: 20,                                            
-                                              ),
-                                            )
-                                          ),
-                                        ],
-                                      )
-                                    ),
-                                  ],
-                                );
+                                default:
+                                  return Container();
                               }
                             }
                           ),
+                          //       List<Coin>? coins = snapshot.data;
+                          //       if (_value1 == "ETH") _value1 = coins![0].name;
+                          //       for (var c in coins!) {
+                          //         if (c.name == _value1)
+                          //           coin1 = c;
+                          //         if (c.name == _value2)
+                          //           coin2 = c;
+                          //       }
+                          //       return Column(
+                          //         children: <Widget>[
+                          //           // First Coin Box
+                          //           Container(
+                          //             width: MediaQuery.of(context).size.width*0.4,
+                          //             height: MediaQuery.of(context).size.height*0.125,
+                          //             decoration: BoxDecoration(
+                          //               color: Colors.grey[850],
+                          //               borderRadius: BorderRadius.circular(12),
+                          //             ),
+                          //             child: Row(
+                          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //               children: <Widget>[
+                          //                 // top dropdown box
+                          //                 Padding(
+                          //                   padding: EdgeInsets.only(left: 10),
+                          //                   child: Center(
+                          //                     child: DropdownButton<String>(
+                          //                       icon: Icon(Icons.keyboard_arrow_down),
+                          //                       value: _value1,
+                          //                       items:coins.map((Coin c) {
+                          //                         return DropdownMenuItem<String>(
+                          //                           child: Text(c.name),
+                          //                           value: c.name
+                          //                         );
+                          //                       }).toList(),
+                          //                       onChanged: (newValue){
+                          //                         setState(() {
+                          //                           _value1 = newValue!;
+                          //                           for (var c in coins)
+                          //                             if (c.name == _value1)
+                          //                               coin1 = c;
+                          //                         });
+                          //                       },
+                          //                     )
+                          //                   )
+                          //                 ),
+                          //                 // Text Amount
+                          //                 Padding(
+                          //                   padding: EdgeInsets.only(right: 10),
+                          //                   child: Text(
+                          //                     "0.0",
+                          //                     style: TextStyle(
+                          //                       color: Colors.white,
+                          //                       fontFamily: 'OpenSans',
+                          //                       fontSize: 20,                                            
+                          //                     ),
+                          //                   )
+                          //                 ),
+                          //               ],
+                          //             )
+                          //           ),
+                          //         ],
+                          //       );
+                          //     }
+                          //   }
+                          // ),
                           // End of Swap
                           
                         // DexEarn Widget
@@ -982,15 +986,19 @@ class _HomePageState extends State<HomePage> {
                                                 scrollDirection: Axis.horizontal,
                                                 itemCount: earnRange[1],
                                                 itemBuilder: (BuildContext context, int index) {
+                                                  // spacing
                                                   return Container(
                                                     width: MediaQuery.of(context).size.width*0.2,
                                                     height: MediaQuery.of(context).size.height*0.3,
                                                     child: Center(
+                                                      // Earn LP Container
                                                       child: Container(
                                                         width: MediaQuery.of(context).size.width*0.175,
                                                         height: MediaQuery.of(context).size.height*0.3,
-                                                        color: Colors.red[700],
-                                                        child: Text(curAthletes[index].name)
+                                                        color: Colors.grey,
+                                                        child: Stack(
+                                                          children: []
+                                                        )
                                                       )
                                                     ),
                                                   );
