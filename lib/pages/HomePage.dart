@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'dart:js';
-
+import 'package:ae_dapp/service/Coin.dart';
+import 'package:ae_dapp/service/CoinApi.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/Controller.dart';
@@ -32,7 +33,10 @@ class _HomePageState extends State<HomePage> {
   double filterText = 20;
   var earnRange = [0,3];
   bool haveAthletes = false;
-   
+  String _value1 = "ETH";
+  String _value2 = "USDC";
+  late Coin coin1;
+  late Coin coin2;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -75,7 +79,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    
+     CoinApi coinList = new CoinApi();
     return Scaffold(
 
         // NAVIGATION BAR //
@@ -701,6 +705,11 @@ class _HomePageState extends State<HomePage> {
                         // DexSwap Widget
                         if (swap==0) 
                           Stack(
+                          child: FutureBuilder<List<Coin>>(
+                              future: coinList.getCoins(context),
+                              builder: (context, snapshot) {
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.waiting:
                             children: <Widget>[
                               // Top token box
                               Align(
@@ -840,8 +849,77 @@ class _HomePageState extends State<HomePage> {
                                   )
                                 )
                               ),
-                            ],
+                              default: 
+                                List<Coin>? coins = snapshot.data;
+                                if (_value1 == "ETH") _value1 = coins![0].name;
+                                for (var c in coins!) {
+                                  if (c.name == _value1)
+                                    coin1 = c;
+                                  if (c.name == _value2)
+                                    coin2 = c;
+                                }
+                              return Column(
+                                    children: <Widget>[
+                                      // First Coin Box
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*0.4,
+                                        height: MediaQuery.of(context).size.height*0.125,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[850],
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            // top dropdown box
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 10),
+                                              child: Center(
+                                                child: DropdownButton<String>(
+                                                  icon: Icon(Icons.keyboard_arrow_down),
+                                                  value: _value1,
+                                                  items:coins.map((Coin c) {
+                                                    return DropdownMenuItem<String>(
+                                                      child: Text(c.name),
+                                                      value: c.name
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (newValue){
+                                                    setState(() {
+                                                      _value1 = newValue!;
+                                                      for (var c in coins)
+                                                        if (c.name == _value1)
+                                                          coin1 = c;
+                                                    });
+                                                  },
+                                                )
+                                              )
+                                            ),
+                                            // Text Amount
+                                            Padding(
+                                              padding: EdgeInsets.only(right: 10),
+                                              child: Text(
+                                                "0.0",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: buttonText,                                            
+                                                ),
+                                              )
+                                            ),
+                                          ],
+                                        )
+                                      ),
+                                    ],
+                                   ),
+                                
+                              
+                            
+                           ],
+                          } 
+                          } 
                           ),
+                         ),
                   
                           // End of Swap
                         // DexEarn Widget
