@@ -913,6 +913,61 @@ class _HomePageState extends State<HomePage> {
                                         ],
                                       )
                                     ),
+                                    Container(
+                                              height: MediaQuery.of(context).size.height*0.02,
+                                            ),
+                                            // Second Coin Box
+                                            
+                                            Container(
+                                              width: MediaQuery.of(context).size.width*0.4,
+                                              height: MediaQuery.of(context).size.height*0.125,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[850],
+                                                borderRadius: BorderRadius.circular(12),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  // Bottom dropdown box
+                                                  Padding(
+                                                    padding: EdgeInsets.only(left: 10),
+                                                    child: Center(
+                                                      child: DropdownButton<String>(
+                                                        icon: Icon(Icons.keyboard_arrow_down),
+                                                        value: _value2,
+                                                        items:coins.map((Coin c) {
+                                                          return DropdownMenuItem<String>(
+                                                            child: Text(c.name),
+                                                            value: c.name
+                                                          );
+                                                        }).toList(),
+                                                        onChanged: (newValue){
+                                                          setState(() {
+                                                            _value2 = newValue!;
+                                                            for (var c in coins)
+                                                              if (c.name == _value2)
+                                                                coin2 = c;
+                                                          });
+                                                        },
+                                                      )
+                                                    )
+                                                  ),
+                                                  // Bottom Coin Text Amount
+                                                  Padding(
+                                                    padding: EdgeInsets.only(right: 10),
+                                                    child: Text(
+                                                      "0.0",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'OpenSans',
+                                                        fontSize: 20,                                            
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            
                                   ],
                                 );
                               }
@@ -953,7 +1008,7 @@ class _HomePageState extends State<HomePage> {
                                         overlayColor: MaterialStateProperty.all(Colors.transparent),
                                       ),
                                       child: Icon(
-                                        Icons.arrow_back_ios,
+                                        Icons.arrow_back,
                                         color: Colors.grey[800],
                                       )
                                     )
@@ -1044,7 +1099,7 @@ print(earnRange[0].toString()+"/"+athleteList.length.toString()+"  : "+athleteLi
 print(" Name: "+lastFirstEarn.name);
                                       },
                                       child: Icon(
-                                        Icons.arrow_forward_ios,
+                                        Icons.arrow_forward,
                                         color: Colors.grey[800],
                                       )
                                     )
