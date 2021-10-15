@@ -917,7 +917,6 @@ class _HomePageState extends State<HomePage> {
                                               height: MediaQuery.of(context).size.height*0.02,
                                             ),
                                             // Second Coin Box
-                                            
                                             Container(
                                               width: MediaQuery.of(context).size.width*0.4,
                                               height: MediaQuery.of(context).size.height*0.125,
@@ -967,7 +966,6 @@ class _HomePageState extends State<HomePage> {
                                                 ],
                                               ),
                                             ),
-                                            
                                   ],
                                 );
                               }
