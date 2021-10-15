@@ -852,122 +852,123 @@ class _HomePageState extends State<HomePage> {
                                     )
                                   ]
                                 );
-                              default: 
-                                List<Coin>? coins = snapshot.data;
-                                if (_value1 == "ETH") _value1 = coins![0].name;
-                                for (var c in coins!) {
-                                  if (c.name == _value1)
-                                    coin1 = c;
-                                  if (c.name == _value2)
-                                    coin2 = c;
-                                }
-                                return Column(
-                                  children: <Widget>[
-                                    // First Coin Box
-                                    Container(
-                                      width: MediaQuery.of(context).size.width*0.4,
-                                      height: MediaQuery.of(context).size.height*0.125,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[850],
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          // top dropdown box
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Center(
-                                              child: DropdownButton<String>(
-                                                icon: Icon(Icons.keyboard_arrow_down),
-                                                value: _value1,
-                                                items:coins.map((Coin c) {
-                                                  return DropdownMenuItem<String>(
-                                                    child: Text(c.name),
-                                                    value: c.name
-                                                  );
-                                                }).toList(),
-                                                onChanged: (newValue){
-                                                  setState(() {
-                                                    _value1 = newValue!;
-                                                    for (var c in coins)
-                                                      if (c.name == _value1)
-                                                        coin1 = c;
-                                                  });
-                                                },
-                                              )
-                                            )
-                                          ),
-                                          // Text Amount
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text(
-                                              "0.0",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'OpenSans',
-                                                fontSize: 20,                                            
-                                              ),
-                                            )
-                                          ),
-                                        ],
-                                      )
-                                    ),
-                                    Container(
-                                              height: MediaQuery.of(context).size.height*0.02,
-                                            ),
-                                            // Second Coin Box
-                                            Container(
-                                              width: MediaQuery.of(context).size.width*0.4,
-                                              height: MediaQuery.of(context).size.height*0.125,
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey[850],
-                                                borderRadius: BorderRadius.circular(12),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: <Widget>[
-                                                  // Bottom dropdown box
-                                                  Padding(
-                                                    padding: EdgeInsets.only(left: 10),
-                                                    child: Center(
-                                                      child: DropdownButton<String>(
-                                                        icon: Icon(Icons.keyboard_arrow_down),
-                                                        value: _value2,
-                                                        items:coins.map((Coin c) {
-                                                          return DropdownMenuItem<String>(
-                                                            child: Text(c.name),
-                                                            value: c.name
-                                                          );
-                                                        }).toList(),
-                                                        onChanged: (newValue){
-                                                          setState(() {
-                                                            _value2 = newValue!;
-                                                            for (var c in coins)
-                                                              if (c.name == _value2)
-                                                                coin2 = c;
-                                                          });
-                                                        },
-                                                      )
-                                                    )
-                                                  ),
-                                                  // Bottom Coin Text Amount
-                                                  Padding(
-                                                    padding: EdgeInsets.only(right: 10),
-                                                    child: Text(
-                                                      "0.0",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontFamily: 'OpenSans',
-                                                        fontSize: 20,                                            
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                  ],
-                                );
+                              default:
+                                return Container(); 
+                                // List<Coin>? coins = snapshot.data;
+                                // if (_value1 == "ETH") _value1 = coins![0].name;
+                                // for (var c in coins!) {
+                                //   if (c.name == _value1)
+                                //     coin1 = c;
+                                //   if (c.name == _value2)
+                                //     coin2 = c;
+                                // }
+                                // return Column(
+                                //   children: <Widget>[
+                                //     // First Coin Box
+                                //     Container(
+                                //       width: MediaQuery.of(context).size.width*0.4,
+                                //       height: MediaQuery.of(context).size.height*0.125,
+                                //       decoration: BoxDecoration(
+                                //         color: Colors.grey[850],
+                                //         borderRadius: BorderRadius.circular(12),
+                                //       ),
+                                //       child: Row(
+                                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //         children: <Widget>[
+                                //           // top dropdown box
+                                //           Padding(
+                                //             padding: EdgeInsets.only(left: 10),
+                                //             child: Center(
+                                //               child: DropdownButton<String>(
+                                //                 icon: Icon(Icons.keyboard_arrow_down),
+                                //                 value: _value1,
+                                //                 items:coins.map((Coin c) {
+                                //                   return DropdownMenuItem<String>(
+                                //                     child: Text(c.name),
+                                //                     value: c.name
+                                //                   );
+                                //                 }).toList(),
+                                //                 onChanged: (newValue){
+                                //                   setState(() {
+                                //                     _value1 = newValue!;
+                                //                     for (var c in coins)
+                                //                       if (c.name == _value1)
+                                //                         coin1 = c;
+                                //                   });
+                                //                 },
+                                //               )
+                                //             )
+                                //           ),
+                                //           // Text Amount
+                                //           Padding(
+                                //             padding: EdgeInsets.only(right: 10),
+                                //             child: Text(
+                                //               "0.0",
+                                //               style: TextStyle(
+                                //                 color: Colors.white,
+                                //                 fontFamily: 'OpenSans',
+                                //                 fontSize: 20,                                            
+                                //               ),
+                                //             )
+                                //           ),
+                                //         ],
+                                //       )
+                                //     ),
+                                //     Container(
+                                //               height: MediaQuery.of(context).size.height*0.02,
+                                //             ),
+                                //             // Second Coin Box
+                                //             Container(
+                                //               width: MediaQuery.of(context).size.width*0.4,
+                                //               height: MediaQuery.of(context).size.height*0.125,
+                                //               decoration: BoxDecoration(
+                                //                 color: Colors.grey[850],
+                                //                 borderRadius: BorderRadius.circular(12),
+                                //               ),
+                                //               child: Row(
+                                //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //                 children: <Widget>[
+                                //                   // Bottom dropdown box
+                                //                   Padding(
+                                //                     padding: EdgeInsets.only(left: 10),
+                                //                     child: Center(
+                                //                       child: DropdownButton<String>(
+                                //                         icon: Icon(Icons.keyboard_arrow_down),
+                                //                         value: _value2,
+                                //                         items:coins.map((Coin c) {
+                                //                           return DropdownMenuItem<String>(
+                                //                             child: Text(c.name),
+                                //                             value: c.name
+                                //                           );
+                                //                         }).toList(),
+                                //                         onChanged: (newValue){
+                                //                           setState(() {
+                                //                             _value2 = newValue!;
+                                //                             for (var c in coins)
+                                //                               if (c.name == _value2)
+                                //                                 coin2 = c;
+                                //                           });
+                                //                         },
+                                //                       )
+                                //                     )
+                                //                   ),
+                                //                   // Bottom Coin Text Amount
+                                //                   Padding(
+                                //                     padding: EdgeInsets.only(right: 10),
+                                //                     child: Text(
+                                //                       "0.0",
+                                //                       style: TextStyle(
+                                //                         color: Colors.white,
+                                //                         fontFamily: 'OpenSans',
+                                //                         fontSize: 20,                                            
+                                //                       ),
+                                //                     ),
+                                //                   ),
+                                //                 ],
+                                //               ),
+                                //             ),
+                                //   ],
+                                // );
                               }
                             }
                           ),
@@ -979,17 +980,15 @@ class _HomePageState extends State<HomePage> {
                           Align(
                             alignment: Alignment(0, -0.5),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * .8,
+                              width: MediaQuery.of(context).size.width * .82,
                               height: MediaQuery.of(context).size.height * .3,
-                              color: Colors.green[100],
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   // Scroll Left
                                   Container(
-                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    width: MediaQuery.of(context).size.width * 0.055555,
                                     height: MediaQuery.of(context).size.height * .3,
-                                    color: Colors.grey,
                                     child: ElevatedButton(
                                       onPressed: () {
                                         earnRange[0] -= earnRange[1];
@@ -1003,11 +1002,12 @@ class _HomePageState extends State<HomePage> {
                                         });
                                       },
                                       style: ButtonStyle(
-                                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
                                       ),
                                       child: Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.grey[800],
+                                        Icons.arrow_back_ios,
+                                        color: Colors.white,
+                                        size: MediaQuery.of(context).size.height*0.075,
                                       )
                                     )
                                   ),
@@ -1028,60 +1028,19 @@ class _HomePageState extends State<HomePage> {
                                               curAthletes.add(athleteList[i]);
                                             if (curAthletes.isNotEmpty)
                                             lastFirstEarn = curAthletes[0];
-                                            return Container(
-                                              width: MediaQuery.of(context).size.width*0.6,
-                                              height: MediaQuery.of(context).size.height*0.3,
-                                              child: ListView.builder(
-                                                scrollDirection: Axis.horizontal,
-                                                itemCount: earnRange[1],
-                                                itemBuilder: (BuildContext context, int index) {
-                                                  return Container(
-                                                    width: MediaQuery.of(context).size.width*0.2,
-                                                    height: MediaQuery.of(context).size.height*0.3,
-                                                    child: Center(
-                                                      child: Container(
-                                                        width: MediaQuery.of(context).size.width*0.175,
-                                                        height: MediaQuery.of(context).size.height*0.3,
-                                                        color: Colors.red[700],
-                                                        child: Text(curAthletes[index].name)
-                                                      )
-                                                    ),
-                                                  );
-                                                },
-                                              )
-                                            );
+                                            return LPEarnListView(context);
                                         }
                                       }
                                     ),
+                                  //Once < or > is pressed
                                   // ignore: unnecessary_null_comparison
                                   if (curAthletes.isNotEmpty && lastFirstEarn == curAthletes[0])
-                                    Container(
-                                      width: MediaQuery.of(context).size.width*0.6,
-                                      height: MediaQuery.of(context).size.height*0.3,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: earnRange[1],
-                                        itemBuilder: (BuildContext context, int index) {
-                                          return Container(
-                                            width: MediaQuery.of(context).size.width*0.2,
-                                            height: MediaQuery.of(context).size.height*0.3,
-                                            child: Center(
-                                              child: Container(
-                                                width: MediaQuery.of(context).size.width*0.175,
-                                                height: MediaQuery.of(context).size.height*0.3,
-                                                color: Colors.red[700],
-                                                child: Text(curAthletes[index].name)
-                                              )
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    ),
+                                    LPEarnListView(context),
                                   // Scroll Right
                                   Container(
-                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    width: MediaQuery.of(context).size.width * 0.05,
                                     height: MediaQuery.of(context).size.height * .3,
-                                    color: Colors.grey,
+                                    color: Colors.transparent,
                                     child: ElevatedButton(
                                       onPressed: () {
                                         earnRange[0] += earnRange[1];
@@ -1096,9 +1055,13 @@ class _HomePageState extends State<HomePage> {
 print(earnRange[0].toString()+"/"+athleteList.length.toString()+"  : "+athleteList[earnRange[0]].name+"  ~  "+curAthletes[0].name);
 print(" Name: "+lastFirstEarn.name);
                                       },
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                                      ),
                                       child: Icon(
-                                        Icons.arrow_forward,
-                                        color: Colors.grey[800],
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.white,
+                                        size: MediaQuery.of(context).size.height*0.075,
                                       )
                                     )
                                   ),
@@ -1351,6 +1314,270 @@ print(" Name: "+lastFirstEarn.name);
           ),
         ]),
       ),)
+    );
+
+    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+  }
+
+  // Earn ListView
+  Widget LPEarnListView(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width*0.7,
+      height: MediaQuery.of(context).size.height*0.3,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: earnRange[1],
+        itemBuilder: (BuildContext context, int index) {
+          // spacing
+          return Container(
+            width: MediaQuery.of(context).size.width*0.22,
+            height: MediaQuery.of(context).size.height*0.3,
+            child: Center(
+              // Earn LP Container
+              child: Container(
+                width: MediaQuery.of(context).size.width*0.175,
+                height: MediaQuery.of(context).size.height*0.3,
+                decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Stack(
+                  children: [
+                    // Circle icons
+                    Align(
+                      alignment: Alignment(0, -0.7),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width*0.05,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.022,
+                              height: MediaQuery.of(context).size.width*0.022,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.black
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.022,
+                              height: MediaQuery.of(context).size.width*0.022,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: Colors.amber[600]
+                              ),
+                            ),
+                          ],
+                        )
+                      )
+                    ),
+                    // Athlete APT Name
+                    Align(
+                      alignment: Alignment(0.0, -0.3),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width*0.17,
+                        child: Text(
+                          "AX - " + curAthletes[index].name + " APT",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      )
+                    ),
+                    // Small Text
+                    Align(
+                      alignment: Alignment(0,0.3),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height*0.075,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // Total APY
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.11,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Total APY", 
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    )
+                                  ),
+                                  Text(
+                                    "20 %",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    )
+                                  )
+                                ],
+                              )
+                            ),
+                            // TVL
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.11,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "TVL", 
+                                    style: TextStyle(
+                                      color: Colors.grey[200],
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 12,
+                                    )
+                                  ),
+                                  Text(
+                                    "\$1,000,000",
+                                    style: TextStyle(
+                                      color: Colors.grey[200],
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 12,
+                                    )
+                                  )
+                                ],
+                              )
+                            ),
+                            // LP APY
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.11,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "LP APY", 
+                                    style: TextStyle(
+                                      color: Colors.grey[200],
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 12,
+                                    )
+                                  ),
+                                  Text(
+                                    "5 %",
+                                    style: TextStyle(
+                                      color: Colors.grey[200],
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 12,
+                                    )
+                                  )
+                                ],
+                              )
+                            ),
+                          ]
+                        )
+                      )
+                    ),
+                    // Deposit Button
+                    Align(
+                      alignment: Alignment(0,0.8),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width*0.10,
+                        height: MediaQuery.of(context).size.height*0.035,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.amber[600]
+                        ),
+                        child: TextButton(
+                          onPressed: () => lpPopupDialog(context, curAthletes[index]),
+                          child: Text(
+                            "Deposit",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'OpenSans',
+                              fontSize: 20,
+                            ),
+                          )
+                        )
+                      )
+                    )
+                  ]
+                )
+              )
+            ),
+          );
+        }
+      )
+    );
+  }
+
+  // LP Farm Popup
+  void lpPopupDialog(BuildContext context, Athlete athlete) {
+    Dialog fancyDialog = Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Stack(
+        children: <Widget>[
+          // Background
+          Align(
+            alignment: Alignment(0, 0.2),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .45,
+              height: MediaQuery.of(context).size.height * .85,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.black,
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 3,
+                ),
+              ),
+            ),
+          ), 
+          // 'X' Button
+          Align(
+            alignment: Alignment(0.44, -0.82),
+            child: Container(
+              width: 80,
+              height: 50,
+              child: TextButton(
+                onPressed: () {Navigator.pop(context);},
+                child: Icon(
+                  Icons.close,
+                  color: Colors.grey[400],
+                  size: 50
+                )
+              )
+            )
+          ),
+          // Athlete Title
+          Align(
+            alignment: Alignment(0,-0.7),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .6,
+              height: MediaQuery.of(context).size.height * .5,
+              child: Text(
+                "AX - " + athlete.name + " APT Farm",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'OpenSans',
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                ),
+              )
+            )
+          ),
+          //
+          Align(
+            alignment: Alignment(0,0),
+            child: Container(
+              
+            )
+          )
+        ]
+      )
     );
 
     showDialog(context: context, builder: (BuildContext context) => fancyDialog);
