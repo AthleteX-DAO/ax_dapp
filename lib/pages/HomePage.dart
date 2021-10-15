@@ -930,10 +930,10 @@ class _HomePageState extends State<HomePage> {
                           Align(
                             alignment: Alignment(0, -0.5),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * .8,
+                              width: MediaQuery.of(context).size.width * .82,
                               height: MediaQuery.of(context).size.height * .3,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   // Scroll Left
                                   Container(
@@ -1171,7 +1171,7 @@ class _HomePageState extends State<HomePage> {
                                   // ignore: unnecessary_null_comparison
                                   if (curAthletes.isNotEmpty && lastFirstEarn == curAthletes[0])
                                     Container(
-                                      width: MediaQuery.of(context).size.width*0.6,
+                                      width: MediaQuery.of(context).size.width*0.7,
                                       height: MediaQuery.of(context).size.height*0.3,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
@@ -1179,20 +1179,20 @@ class _HomePageState extends State<HomePage> {
                                         itemBuilder: (BuildContext context, int index) {
                                           // spacing
                                           return Container(
-                                            width: MediaQuery.of(context).size.width*0.2,
+                                            width: MediaQuery.of(context).size.width*0.22,
                                             height: MediaQuery.of(context).size.height*0.3,
                                             child: Center(
-                                              // Earn LP Container (Next)
+                                              // Earn LP Container
                                               child: Container(
                                                 width: MediaQuery.of(context).size.width*0.175,
                                                 height: MediaQuery.of(context).size.height*0.3,
                                                 decoration: BoxDecoration(
-                                                  color: Colors.grey,
+                                                  color: Colors.grey[800],
                                                   borderRadius: BorderRadius.circular(12.0),
                                                 ),
                                                 child: Stack(
                                                   children: [
-                                                    // Circle icons (Next)
+                                                    // Circle icons
                                                     Align(
                                                       alignment: Alignment(0, -0.7),
                                                       child: Container(
@@ -1220,7 +1220,7 @@ class _HomePageState extends State<HomePage> {
                                                         )
                                                       )
                                                     ),
-                                                    // Athlete APT Name (Next)
+                                                    // Athlete APT Name
                                                     Align(
                                                       alignment: Alignment(0.0, -0.3),
                                                       child: Container(
@@ -1237,7 +1237,7 @@ class _HomePageState extends State<HomePage> {
                                                         )
                                                       )
                                                     ),
-                                                    // Small Text (Next)
+                                                    // Small Text
                                                     Align(
                                                       alignment: Alignment(0,0.3),
                                                       child: Container(
@@ -1245,7 +1245,7 @@ class _HomePageState extends State<HomePage> {
                                                         child: Column(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: <Widget>[
-                                                            // Total APY (Next)
+                                                            // Total APY
                                                             Container(
                                                               width: MediaQuery.of(context).size.width*0.11,
                                                               child: Row(
@@ -1272,7 +1272,7 @@ class _HomePageState extends State<HomePage> {
                                                                 ],
                                                               )
                                                             ),
-                                                            // TVL (Next)
+                                                            // TVL
                                                             Container(
                                                               width: MediaQuery.of(context).size.width*0.11,
                                                               child: Row(
@@ -1297,7 +1297,7 @@ class _HomePageState extends State<HomePage> {
                                                                 ],
                                                               )
                                                             ),
-                                                            // LP APY (Next)
+                                                            // LP APY
                                                             Container(
                                                               width: MediaQuery.of(context).size.width*0.11,
                                                               child: Row(
@@ -1326,7 +1326,7 @@ class _HomePageState extends State<HomePage> {
                                                         )
                                                       )
                                                     ),
-                                                    // Deposit Button (Next)
+                                                    // Deposit Button
                                                     Align(
                                                       alignment: Alignment(0,0.8),
                                                       child: Container(
