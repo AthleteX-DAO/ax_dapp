@@ -932,15 +932,13 @@ class _HomePageState extends State<HomePage> {
                             child: Container(
                               width: MediaQuery.of(context).size.width * .8,
                               height: MediaQuery.of(context).size.height * .3,
-                              color: Colors.green[100],
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   // Scroll Left
                                   Container(
-                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    width: MediaQuery.of(context).size.width * 0.055555,
                                     height: MediaQuery.of(context).size.height * .3,
-                                    color: Colors.grey,
                                     child: ElevatedButton(
                                       onPressed: () {
                                         earnRange[0] -= earnRange[1];
@@ -954,11 +952,12 @@ class _HomePageState extends State<HomePage> {
                                         });
                                       },
                                       style: ButtonStyle(
-                                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
                                       ),
                                       child: Icon(
                                         Icons.arrow_back_ios,
-                                        color: Colors.grey[800],
+                                        color: Colors.white,
+                                        size: MediaQuery.of(context).size.height*0.075,
                                       )
                                     )
                                   ),
@@ -980,7 +979,7 @@ class _HomePageState extends State<HomePage> {
                                             if (curAthletes.isNotEmpty)
                                             lastFirstEarn = curAthletes[0];
                                             return Container(
-                                              width: MediaQuery.of(context).size.width*0.6,
+                                              width: MediaQuery.of(context).size.width*0.7,
                                               height: MediaQuery.of(context).size.height*0.3,
                                               child: ListView.builder(
                                                 scrollDirection: Axis.horizontal,
@@ -988,16 +987,177 @@ class _HomePageState extends State<HomePage> {
                                                 itemBuilder: (BuildContext context, int index) {
                                                   // spacing
                                                   return Container(
-                                                    width: MediaQuery.of(context).size.width*0.2,
+                                                    width: MediaQuery.of(context).size.width*0.22,
                                                     height: MediaQuery.of(context).size.height*0.3,
                                                     child: Center(
                                                       // Earn LP Container
                                                       child: Container(
                                                         width: MediaQuery.of(context).size.width*0.175,
                                                         height: MediaQuery.of(context).size.height*0.3,
-                                                        color: Colors.grey,
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.grey[800],
+                                                          borderRadius: BorderRadius.circular(12.0),
+                                                        ),
                                                         child: Stack(
-                                                          children: []
+                                                          children: [
+                                                            // Circle icons
+                                                            Align(
+                                                              alignment: Alignment(0, -0.7),
+                                                              child: Container(
+                                                                width: MediaQuery.of(context).size.width*0.05,
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: <Widget>[
+                                                                    Container(
+                                                                      width: MediaQuery.of(context).size.width*0.022,
+                                                                      height: MediaQuery.of(context).size.width*0.022,
+                                                                      decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(20),
+                                                                        color: Colors.black
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      width: MediaQuery.of(context).size.width*0.022,
+                                                                      height: MediaQuery.of(context).size.width*0.022,
+                                                                      decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(100),
+                                                                        color: Colors.amber[600]
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              )
+                                                            ),
+                                                            // Athlete APT Name
+                                                            Align(
+                                                              alignment: Alignment(0.0, -0.3),
+                                                              child: Container(
+                                                                width: MediaQuery.of(context).size.width*0.17,
+                                                                child: Text(
+                                                                  "AX - " + curAthletes[index].name + " APT",
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontFamily: 'OpenSans',
+                                                                    fontSize: 24,
+                                                                    fontWeight: FontWeight.w600,
+                                                                  ),
+                                                                )
+                                                              )
+                                                            ),
+                                                            // Small Text
+                                                            Align(
+                                                              alignment: Alignment(0,0.3),
+                                                              child: Container(
+                                                                height: MediaQuery.of(context).size.height*0.075,
+                                                                child: Column(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: <Widget>[
+                                                                    // Total APY
+                                                                    Container(
+                                                                      width: MediaQuery.of(context).size.width*0.11,
+                                                                      child: Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                        children: <Widget>[
+                                                                          Text(
+                                                                            "Total APY", 
+                                                                            style: TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontFamily: 'OpenSans',
+                                                                              fontSize: 12,
+                                                                              fontWeight: FontWeight.w600,
+                                                                            )
+                                                                          ),
+                                                                          Text(
+                                                                            "20 %",
+                                                                            style: TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontFamily: 'OpenSans',
+                                                                              fontSize: 12,
+                                                                              fontWeight: FontWeight.w600,
+                                                                            )
+                                                                          )
+                                                                        ],
+                                                                      )
+                                                                    ),
+                                                                    // TVL
+                                                                    Container(
+                                                                      width: MediaQuery.of(context).size.width*0.11,
+                                                                      child: Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                        children: <Widget>[
+                                                                          Text(
+                                                                            "TVL", 
+                                                                            style: TextStyle(
+                                                                              color: Colors.grey[200],
+                                                                              fontFamily: 'OpenSans',
+                                                                              fontSize: 12,
+                                                                            )
+                                                                          ),
+                                                                          Text(
+                                                                            "\$1,000,000",
+                                                                            style: TextStyle(
+                                                                              color: Colors.grey[200],
+                                                                              fontFamily: 'OpenSans',
+                                                                              fontSize: 12,
+                                                                            )
+                                                                          )
+                                                                        ],
+                                                                      )
+                                                                    ),
+                                                                    // LP APY
+                                                                    Container(
+                                                                      width: MediaQuery.of(context).size.width*0.11,
+                                                                      child: Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                        children: <Widget>[
+                                                                          Text(
+                                                                            "LP APY", 
+                                                                            style: TextStyle(
+                                                                              color: Colors.grey[200],
+                                                                              fontFamily: 'OpenSans',
+                                                                              fontSize: 12,
+                                                                            )
+                                                                          ),
+                                                                          Text(
+                                                                            "5 %",
+                                                                            style: TextStyle(
+                                                                              color: Colors.grey[200],
+                                                                              fontFamily: 'OpenSans',
+                                                                              fontSize: 12,
+                                                                            )
+                                                                          )
+                                                                        ],
+                                                                      )
+                                                                    ),
+                                                                  ]
+                                                                )
+                                                              )
+                                                            ),
+                                                            // Deposit Button
+                                                            Align(
+                                                              alignment: Alignment(0,0.8),
+                                                              child: Container(
+                                                                width: MediaQuery.of(context).size.width*0.10,
+                                                                height: MediaQuery.of(context).size.height*0.035,
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                  color: Colors.amber[600]
+                                                                ),
+                                                                child: TextButton(
+                                                                  onPressed: () {},
+                                                                  child: Text(
+                                                                    "Deposit",
+                                                                    style: TextStyle(
+                                                                      color: Colors.black,
+                                                                      fontFamily: 'OpenSans',
+                                                                      fontSize: 20,
+                                                                    ),
+                                                                  )
+                                                                )
+                                                              )
+                                                            )
+                                                          ]
                                                         )
                                                       )
                                                     ),
@@ -1017,15 +1177,180 @@ class _HomePageState extends State<HomePage> {
                                         scrollDirection: Axis.horizontal,
                                         itemCount: earnRange[1],
                                         itemBuilder: (BuildContext context, int index) {
+                                          // spacing
                                           return Container(
                                             width: MediaQuery.of(context).size.width*0.2,
                                             height: MediaQuery.of(context).size.height*0.3,
                                             child: Center(
+                                              // Earn LP Container (Next)
                                               child: Container(
                                                 width: MediaQuery.of(context).size.width*0.175,
                                                 height: MediaQuery.of(context).size.height*0.3,
-                                                color: Colors.red[700],
-                                                child: Text(curAthletes[index].name)
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey,
+                                                  borderRadius: BorderRadius.circular(12.0),
+                                                ),
+                                                child: Stack(
+                                                  children: [
+                                                    // Circle icons (Next)
+                                                    Align(
+                                                      alignment: Alignment(0, -0.7),
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.05,
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: <Widget>[
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.022,
+                                                              height: MediaQuery.of(context).size.width*0.022,
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(20),
+                                                                color: Colors.black
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.022,
+                                                              height: MediaQuery.of(context).size.width*0.022,
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(100),
+                                                                color: Colors.amber[600]
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      )
+                                                    ),
+                                                    // Athlete APT Name (Next)
+                                                    Align(
+                                                      alignment: Alignment(0.0, -0.3),
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.17,
+                                                        child: Text(
+                                                          "AX - " + curAthletes[index].name + " APT",
+                                                          textAlign: TextAlign.center,
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily: 'OpenSans',
+                                                            fontSize: 24,
+                                                            fontWeight: FontWeight.w600,
+                                                          ),
+                                                        )
+                                                      )
+                                                    ),
+                                                    // Small Text (Next)
+                                                    Align(
+                                                      alignment: Alignment(0,0.3),
+                                                      child: Container(
+                                                        height: MediaQuery.of(context).size.height*0.075,
+                                                        child: Column(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: <Widget>[
+                                                            // Total APY (Next)
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.11,
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: <Widget>[
+                                                                  Text(
+                                                                    "Total APY", 
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontFamily: 'OpenSans',
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.w600,
+                                                                    )
+                                                                  ),
+                                                                  Text(
+                                                                    "20 %",
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontFamily: 'OpenSans',
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.w600,
+                                                                    )
+                                                                  )
+                                                                ],
+                                                              )
+                                                            ),
+                                                            // TVL (Next)
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.11,
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: <Widget>[
+                                                                  Text(
+                                                                    "TVL", 
+                                                                    style: TextStyle(
+                                                                      color: Colors.grey[200],
+                                                                      fontFamily: 'OpenSans',
+                                                                      fontSize: 12,
+                                                                    )
+                                                                  ),
+                                                                  Text(
+                                                                    "\$1,000,000",
+                                                                    style: TextStyle(
+                                                                      color: Colors.grey[200],
+                                                                      fontFamily: 'OpenSans',
+                                                                      fontSize: 12,
+                                                                    )
+                                                                  )
+                                                                ],
+                                                              )
+                                                            ),
+                                                            // LP APY (Next)
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.11,
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: <Widget>[
+                                                                  Text(
+                                                                    "LP APY", 
+                                                                    style: TextStyle(
+                                                                      color: Colors.grey[200],
+                                                                      fontFamily: 'OpenSans',
+                                                                      fontSize: 12,
+                                                                    )
+                                                                  ),
+                                                                  Text(
+                                                                    "5 %",
+                                                                    style: TextStyle(
+                                                                      color: Colors.grey[200],
+                                                                      fontFamily: 'OpenSans',
+                                                                      fontSize: 12,
+                                                                    )
+                                                                  )
+                                                                ],
+                                                              )
+                                                            ),
+                                                          ]
+                                                        )
+                                                      )
+                                                    ),
+                                                    // Deposit Button (Next)
+                                                    Align(
+                                                      alignment: Alignment(0,0.8),
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.10,
+                                                        height: MediaQuery.of(context).size.height*0.035,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(12.0),
+                                                          color: Colors.amber[600]
+                                                        ),
+                                                        child: TextButton(
+                                                          onPressed: () {},
+                                                          child: Text(
+                                                            "Deposit",
+                                                            style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontFamily: 'OpenSans',
+                                                              fontSize: 20,
+                                                            ),
+                                                          )
+                                                        )
+                                                      )
+                                                    )
+                                                  ]
+                                                )
                                               )
                                             ),
                                           );
@@ -1034,9 +1359,9 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   // Scroll Right
                                   Container(
-                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    width: MediaQuery.of(context).size.width * 0.05,
                                     height: MediaQuery.of(context).size.height * .3,
-                                    color: Colors.grey,
+                                    color: Colors.transparent,
                                     child: ElevatedButton(
                                       onPressed: () {
                                         earnRange[0] += earnRange[1];
@@ -1051,9 +1376,13 @@ class _HomePageState extends State<HomePage> {
 print(earnRange[0].toString()+"/"+athleteList.length.toString()+"  : "+athleteList[earnRange[0]].name+"  ~  "+curAthletes[0].name);
 print(" Name: "+lastFirstEarn.name);
                                       },
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                                      ),
                                       child: Icon(
                                         Icons.arrow_forward_ios,
-                                        color: Colors.grey[800],
+                                        color: Colors.white,
+                                        size: MediaQuery.of(context).size.height*0.075,
                                       )
                                     )
                                   ),
