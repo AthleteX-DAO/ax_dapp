@@ -976,98 +976,196 @@ class _HomePageState extends State<HomePage> {
                           
                         // DexEarn Widget
                         if (swap==1)
-                          // LP Horizontal List
-                          Align(
-                            alignment: Alignment(0, -0.5),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * .82,
-                              height: MediaQuery.of(context).size.height * .3,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  // Scroll Left
-                                  Container(
-                                    width: MediaQuery.of(context).size.width * 0.055555,
-                                    height: MediaQuery.of(context).size.height * .3,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        earnRange[0] -= earnRange[1];
-                                        if (earnRange[0] < 0)
-                                          earnRange[0] = 0;
-                                        curAthletes = [];
-                                        for (int i=0;i<earnRange[1];i++)
-                                          curAthletes.add(athleteList[earnRange[0]+i]);
-                                        setState(() {
-                                          lastFirstEarn = curAthletes[0];
-                                        });
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                          // participating farms text
+                          Stack(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment(0,-0.65),
+                                child: Text(
+                                  "Participating Farms",
+                                  style: TextStyle(
+                                    color: Colors.grey[300],
+                                    fontFamily: 'OpenSans',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 26,                                            
+                                  ),
+                                )
+                              ),
+                              // Sports Filter (Earn)
+                              Align(
+                                alignment: Alignment(0,-0.475),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width*0.7,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      if (athleteList == nflList)
+                                        TextButton(
+                                          onPressed: () {
+                                            setState((){
+                                              athleteList=nflList;
+                                            });
+                                          },
+                                          child: Text(
+                                            "NFL",
+                                            style: TextStyle(
+                                              color: Colors.amber[600],
+                                              fontFamily: 'OpenSans',
+                                              fontSize: filterText, 
+                                              fontWeight: FontWeight.w600                                           
+                                            ),
+                                          )
+                                        )
+                                      else
+                                        TextButton(
+                                          onPressed: () {
+                                            setState((){
+                                              athleteList=nflList;
+                                            });
+                                          },
+                                          child: Text(
+                                            "NFL",
+                                            style: TextStyle(
+                                              color: Colors.grey[800],
+                                              fontFamily: 'OpenSans',
+                                              fontSize: filterText, 
+                                              fontWeight: FontWeight.w600
+                                            ),
+                                          )
+                                        ),
+                                      TextButton(
+                                        onPressed: ()   {
+                                          setState((){
+                                            athleteList=[];
+                                          });
+
+                                        },
+                                        child: Text(
+                                          "NBA",
+                                          style: TextStyle(
+                                            color: Colors.grey[800],
+                                            fontFamily: 'OpenSans',
+                                            fontSize: filterText,
+                                            fontWeight: FontWeight.w600
+                                          ),
+                                        )
                                       ),
-                                      child: Icon(
-                                        Icons.arrow_back_ios,
-                                        color: Colors.white,
-                                        size: MediaQuery.of(context).size.height*0.075,
-                                      )
+                                      TextButton(
+                                        onPressed: ()  {
+                                          setState((){
+                                            athleteList=[];
+                                          });
+                                        },
+                                        child: Text(
+                                          "MMA",
+                                          style: TextStyle(
+                                            color: Colors.grey[800],
+                                            fontFamily: 'OpenSans',
+                                            fontSize: filterText,
+                                            fontWeight: FontWeight.w600
+                                          ),
+                                        )
+                                      ),
+                                    ],
+                                  )
+                                )
+                              ),
+                              // LP Horizontal List
+                              if (athleteList.isNotEmpty)
+                                Align(
+                                  alignment: Alignment(0, 0.25),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * .875,
+                                    height: MediaQuery.of(context).size.height * .5,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        // Scroll Left
+                                        Container(
+                                          width: MediaQuery.of(context).size.width * 0.055555,
+                                          height: MediaQuery.of(context).size.height * .3,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              earnRange[0] -= earnRange[1];
+                                              if (earnRange[0] < 0)
+                                                earnRange[0] = 0;
+                                              curAthletes = [];
+                                              for (int i=0;i<earnRange[1];i++)
+                                                curAthletes.add(athleteList[earnRange[0]+i]);
+                                              setState(() {
+                                                lastFirstEarn = curAthletes[0];
+                                              });
+                                            },
+                                            style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                                            ),
+                                            child: Icon(
+                                              Icons.arrow_back_ios,
+                                              color: Colors.white,
+                                              size: MediaQuery.of(context).size.height*0.075,
+                                            )
+                                          )
+                                        ),
+                                        // LP Cards
+                                        if (curAthletes.isEmpty)
+                                          FutureBuilder<dynamic>(
+                                            future: AthleteApi.getAthletesLocally(context),
+                                            builder:(context, snapshot) {
+                                              switch (snapshot.connectionState) {
+                                                case ConnectionState.waiting:
+                                                  // return circle indicator for progress
+                                                  return Center(
+                                                    child: CircularProgressIndicator(),
+                                                  );
+                                                default:
+                                                  nflList = snapshot.data;
+                                                  athleteList = nflList;
+                                                  for (int i=0;i<earnRange[1]&&i<athleteList.length;i++) 
+                                                    curAthletes.add(athleteList[i]);
+                                                  if (curAthletes.isNotEmpty)
+                                                  lastFirstEarn = curAthletes[0];
+                                                  return LPEarnListView(context);
+                                              }
+                                            }
+                                          )
+                                        //Once < or > is pressed
+                                        // ignore: unnecessary_null_comparison
+                                        else if (lastFirstEarn == curAthletes[0])
+                                          LPEarnListView(context),
+                                        // Scroll Right
+                                        Container(
+                                          width: MediaQuery.of(context).size.width * 0.05,
+                                          height: MediaQuery.of(context).size.height * .3,
+                                          color: Colors.transparent,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              earnRange[0] += earnRange[1];
+                                              if (earnRange[0] > athleteList.length - earnRange[1])
+                                                earnRange[0] = athleteList.length - earnRange[1];
+                                              curAthletes = [];
+                                              for (int i=0;i<earnRange[1];i++)
+                                                curAthletes.add(athleteList[earnRange[0]+i]);
+                                              setState(() {
+                                                lastFirstEarn = curAthletes[0];
+                                              });
+      print(earnRange[0].toString()+"/"+athleteList.length.toString()+"  : "+athleteList[earnRange[0]].name+"  ~  "+curAthletes[0].name);
+      print(" Name: "+lastFirstEarn.name);
+                                            },
+                                            style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                                            ),
+                                            child: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Colors.white,
+                                              size: MediaQuery.of(context).size.height*0.075,
+                                            )
+                                          )
+                                        ),
+                                      ],
                                     )
                                   ),
-                                  // LP Cards
-                                  if (curAthletes.isEmpty)
-                                    FutureBuilder<dynamic>(
-                                      future: AthleteApi.getAthletesLocally(context),
-                                      builder:(context, snapshot) {
-                                        switch (snapshot.connectionState) {
-                                          case ConnectionState.waiting:
-                                            // return circle indicator for progress
-                                            return Center(
-                                              child: CircularProgressIndicator(),
-                                            );
-                                          default:
-                                            athleteList = snapshot.data;
-                                            for (int i=0;i<earnRange[1]&&i<athleteList.length;i++) 
-                                              curAthletes.add(athleteList[i]);
-                                            if (curAthletes.isNotEmpty)
-                                            lastFirstEarn = curAthletes[0];
-                                            return LPEarnListView(context);
-                                        }
-                                      }
-                                    ),
-                                  //Once < or > is pressed
-                                  // ignore: unnecessary_null_comparison
-                                  if (curAthletes.isNotEmpty && lastFirstEarn == curAthletes[0])
-                                    LPEarnListView(context),
-                                  // Scroll Right
-                                  Container(
-                                    width: MediaQuery.of(context).size.width * 0.05,
-                                    height: MediaQuery.of(context).size.height * .3,
-                                    color: Colors.transparent,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        earnRange[0] += earnRange[1];
-                                        if (earnRange[0] > athleteList.length - earnRange[1])
-                                          earnRange[0] = athleteList.length - earnRange[1];
-                                        curAthletes = [];
-                                        for (int i=0;i<earnRange[1];i++)
-                                          curAthletes.add(athleteList[earnRange[0]+i]);
-                                        setState(() {
-                                          lastFirstEarn = curAthletes[0];
-                                        });
-print(earnRange[0].toString()+"/"+athleteList.length.toString()+"  : "+athleteList[earnRange[0]].name+"  ~  "+curAthletes[0].name);
-print(" Name: "+lastFirstEarn.name);
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-                                      ),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.white,
-                                        size: MediaQuery.of(context).size.height*0.075,
-                                      )
-                                    )
-                                  ),
-                                ],
-                              )
-                            ),
+                                ),
+                            ]
                           ),
                           // End of Earn
                         // DexStake Widget
@@ -1322,21 +1420,21 @@ print(" Name: "+lastFirstEarn.name);
   // Earn ListView
   Widget LPEarnListView(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width*0.7,
-      height: MediaQuery.of(context).size.height*0.3,
+      width: MediaQuery.of(context).size.width*0.768,
+      height: MediaQuery.of(context).size.height*0.4,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: earnRange[1],
         itemBuilder: (BuildContext context, int index) {
           // spacing
           return Container(
-            width: MediaQuery.of(context).size.width*0.22,
-            height: MediaQuery.of(context).size.height*0.3,
+            width: MediaQuery.of(context).size.width*0.256,
+            height: MediaQuery.of(context).size.height*0.4,
             child: Center(
               // Earn LP Container
               child: Container(
-                width: MediaQuery.of(context).size.width*0.175,
-                height: MediaQuery.of(context).size.height*0.3,
+                width: MediaQuery.of(context).size.width*0.236,
+                height: MediaQuery.of(context).size.height*0.4,
                 decoration: BoxDecoration(
                   color: Colors.grey[800],
                   borderRadius: BorderRadius.circular(12.0),
@@ -1348,9 +1446,11 @@ print(" Name: "+lastFirstEarn.name);
                       alignment: Alignment(0, -0.7),
                       child: Container(
                         width: MediaQuery.of(context).size.width*0.05,
+                        // circle Icons
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
+                            // AX icon
                             Container(
                               width: MediaQuery.of(context).size.width*0.022,
                               height: MediaQuery.of(context).size.width*0.022,
@@ -1359,6 +1459,7 @@ print(" Name: "+lastFirstEarn.name);
                                 color: Colors.black
                               ),
                             ),
+                            // APT icon
                             Container(
                               width: MediaQuery.of(context).size.width*0.022,
                               height: MediaQuery.of(context).size.width*0.022,
@@ -1390,15 +1491,15 @@ print(" Name: "+lastFirstEarn.name);
                     ),
                     // Small Text
                     Align(
-                      alignment: Alignment(0,0.3),
+                      alignment: Alignment(0,0.275),
                       child: Container(
-                        height: MediaQuery.of(context).size.height*0.075,
+                        height: MediaQuery.of(context).size.height*0.09,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             // Total APY
                             Container(
-                              width: MediaQuery.of(context).size.width*0.11,
+                              width: MediaQuery.of(context).size.width*0.14,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
@@ -1425,7 +1526,7 @@ print(" Name: "+lastFirstEarn.name);
                             ),
                             // TVL
                             Container(
-                              width: MediaQuery.of(context).size.width*0.11,
+                              width: MediaQuery.of(context).size.width*0.14,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
@@ -1450,7 +1551,7 @@ print(" Name: "+lastFirstEarn.name);
                             ),
                             // LP APY
                             Container(
-                              width: MediaQuery.of(context).size.width*0.11,
+                              width: MediaQuery.of(context).size.width*0.14,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
@@ -1479,10 +1580,10 @@ print(" Name: "+lastFirstEarn.name);
                     ),
                     // Deposit Button
                     Align(
-                      alignment: Alignment(0,0.8),
+                      alignment: Alignment(0,0.825),
                       child: Container(
-                        width: MediaQuery.of(context).size.width*0.10,
-                        height: MediaQuery.of(context).size.height*0.035,
+                        width: MediaQuery.of(context).size.width*0.14,
+                        height: MediaQuery.of(context).size.height*0.045,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12.0),
                           color: Colors.amber[600]
@@ -1523,7 +1624,7 @@ print(" Name: "+lastFirstEarn.name);
           Align(
             alignment: Alignment(0, 0.2),
             child: Container(
-              width: MediaQuery.of(context).size.width * .45,
+              width: MediaQuery.of(context).size.width * .4,
               height: MediaQuery.of(context).size.height * .85,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -1535,9 +1636,227 @@ print(" Name: "+lastFirstEarn.name);
               ),
             ),
           ), 
+          // Athlete Title
+          Align(
+            alignment: Alignment(0,-0.75),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .6,
+              child: Text(
+                "AX - " + athlete.name + " APT Farm",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'OpenSans',
+                  fontSize: 28,
+                  fontWeight: FontWeight.w600,
+                ),
+              )
+            )
+          ),
+          // * Note text
+          Align(
+            alignment: Alignment(0,-0.60),
+            child: Container(
+              child: Text(
+                "* Add liquidity to supply LP tokens to your account.\nDeposit LP tokens to earn \$AX rewards.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'OpenSans',
+                  fontSize: 8,
+                  fontStyle: FontStyle.italic
+                )
+              )
+            )
+          ),
+          // Earn, deposit: Top token box
+          Align(
+            alignment: Alignment(0,-0.4),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .3,
+              height: MediaQuery.of(context).size.height * .1,
+              decoration: BoxDecoration(
+                color: Colors.grey[900],
+                borderRadius: BorderRadius.circular(12.0)
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * .1,
+                    padding: EdgeInsets.only(left: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width * .03,
+                          height: MediaQuery.of(context).size.width * .03,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(100)
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15),
+                          child: Text(
+                            "\$AX",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'OpenSans',
+                              fontSize: 21,
+                              fontWeight: FontWeight.w600
+                            )
+                          )
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Text(
+                      "0.00",
+                      style: TextStyle(
+                        color: Colors.grey[350],
+                        fontFamily: 'OpenSans',
+                        fontSize: 21,
+                        fontWeight: FontWeight.w600
+                      )
+                    )
+                  )
+                ]
+              )
+            )
+          ),
+          // Earn, deposit: Bottom token box
+          Align(
+            alignment: Alignment(0,-0.05),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .3,
+              height: MediaQuery.of(context).size.height * .1,
+              decoration: BoxDecoration(
+                color: Colors.grey[900],
+                borderRadius: BorderRadius.circular(12.0)
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * .25,
+                    padding: EdgeInsets.only(left: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width * .03,
+                          height: MediaQuery.of(context).size.width * .03,
+                          decoration: BoxDecoration(
+                            color: Colors.amber[600],
+                            borderRadius: BorderRadius.circular(100)
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15),
+                          child: Text(
+                            athlete.name + " APT",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'OpenSans',
+                              fontSize: 21,
+                              fontWeight: FontWeight.w600
+                            )
+                          )
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Text(
+                      "0.00",
+                      style: TextStyle(
+                        color: Colors.grey[350],
+                        fontFamily: 'OpenSans',
+                        fontSize: 21,
+                        fontWeight: FontWeight.w600
+                      )
+                    )
+                  )
+                ]
+              )
+            )
+          ),
+          // Add liquidity button
+          Align(
+            alignment: Alignment(0,0.27),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .2,
+              height: MediaQuery.of(context).size.height * .075,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(
+                  color: Colors.amber[600]!,
+                  width: 2,
+                ),
+              ),
+              child: TextButton(
+                onPressed: () {},
+                child: Text(
+                  "Add Liquidity",
+                  style: TextStyle(
+                    color: Colors.amber[600],
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                )
+              )
+            )
+          ),
+          // LP Tokens Text
+          Align(
+            alignment: Alignment(0,0.46),
+            child: Text(
+              "LP Tokens: "+"10",
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          // Deposit Liquidity button
+          Align(
+            alignment: Alignment(0,0.7),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .2,
+              height: MediaQuery.of(context).size.height * .075,
+              decoration: BoxDecoration(
+                color: Colors.amber[600],
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(
+                  color: Colors.amber[600]!,
+                  width: 2,
+                ),
+              ),
+              child: TextButton(
+                onPressed: () {},
+                child: Text(
+                  "Deposit Liquidity",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'OpenSans',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                )
+              )
+            )
+          ),
           // 'X' Button
           Align(
-            alignment: Alignment(0.44, -0.82),
+            alignment: Alignment(0.37, -0.82),
             child: Container(
               width: 80,
               height: 50,
@@ -1551,31 +1870,6 @@ print(" Name: "+lastFirstEarn.name);
               )
             )
           ),
-          // Athlete Title
-          Align(
-            alignment: Alignment(0,-0.7),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .6,
-              height: MediaQuery.of(context).size.height * .5,
-              child: Text(
-                "AX - " + athlete.name + " APT Farm",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'OpenSans',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            )
-          ),
-          //
-          Align(
-            alignment: Alignment(0,0),
-            child: Container(
-              
-            )
-          )
         ]
       )
     );
