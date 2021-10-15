@@ -1231,12 +1231,32 @@ print(" Name: "+lastFirstEarn.name);
               width: 80,
               height: 50,
               child: TextButton(
-                onPressed: () {Navigator.pop(context);},
+                  onPressed: () {Navigator.pop(context);},
                 child: Icon(
                   Icons.arrow_back,
                   color: Colors.grey[400],
                   size: 50
                 )
+              )
+            )
+          ), 
+          Align(
+            alignment: Alignment(-0.3, -0.65),
+            child: Container(
+              width: 100,
+              height: 50,
+              child: TextField(
+                decoration: InputDecoration(hintText: athlete.name),
+              )
+            )
+          ), 
+          Align(
+            alignment: Alignment(-0.1, -0.65),
+            child: Container(
+              width: 100,
+              height: 50,
+              child: TextField(
+                decoration: InputDecoration(hintText: (athlete.war[3]).toString().substring(0,6)),
               )
             )
           ), 
@@ -1247,7 +1267,64 @@ print(" Name: "+lastFirstEarn.name);
               height: MediaQuery.of(context).size.height * .5,
               child: buildGraph(athlete.war, athlete.time)
             )
+          ),
+          Align(
+            alignment: Alignment(0.8,0.5),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .06,
+              height: MediaQuery.of(context).size.height * .05,
+              child: RaisedButton(
+                onPressed:(){},
+                
+                child:Text("Buy Long Apt"),
+                color:Colors.green,
+              )
+              
+            )
+          ),
+          Align(
+            alignment: Alignment(0.8,0.7),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .06,
+              height: MediaQuery.of(context).size.height * .05,
+              child: RaisedButton(
+                onPressed:(){},
+                
+                child:Text("Mint"),
+                color:Colors.transparent,
+              )
+              
+            )
+          ),
+          Align(
+            alignment: Alignment(0.95,0.5),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .06,
+              height: MediaQuery.of(context).size.height * .05,
+              child: RaisedButton(
+                onPressed:(){},
+                
+                child:Text("Buy Short Apt"),
+                color:Colors.red,
+              )
+              
+            )
+          ),
+          Align(
+            alignment: Alignment(0.95,0.7),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .06,
+              height: MediaQuery.of(context).size.height * .05,
+              child: RaisedButton(
+                onPressed:(){},
+                
+                child:Text("Redeem"),
+                color:Colors.transparent,
+              )
+              
+            )
           )
+
         ]
       )
     );
