@@ -1339,91 +1339,461 @@ class _HomePageState extends State<HomePage> {
             )
           ), 
           Align(
-            alignment: Alignment(-0.3, -0.65),
-            child: Container(
-              width: 100,
-              height: 50,
-              child: TextField(
-                decoration: InputDecoration(hintText: athlete.name),
+            alignment: Alignment(-0.7, -0.65),
+            child: Text(
+              athlete.name,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 26,
+                fontWeight: FontWeight.w600,
+              ),
+            )
+          ), 
+          Align(
+            alignment: Alignment(-0.4, -0.65),
+            child: Text(
+              athlete.war[3].toString().substring(0,6),
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 26,
+                fontWeight: FontWeight.w600,
               )
             )
           ), 
           Align(
-            alignment: Alignment(-0.1, -0.65),
+            alignment: Alignment(-0.65, 0.2),
             child: Container(
-              width: 100,
-              height: 50,
-              child: TextField(
-                decoration: InputDecoration(hintText: (athlete.war[3]).toString().substring(0,6)),
+              width: MediaQuery.of(context).size.width * .4,
+              height: MediaQuery.of(context).size.height * .35,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 2,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  "Player Stats\nCOMING SOON",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.amber[600],
+                    fontFamily: 'OpenSans',
+                    fontSize: 44,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
               )
-            )
-          ), 
-          Align(
-            alignment: Alignment(0,0),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .6,
-              height: MediaQuery.of(context).size.height * .5,
-              child: buildGraph(athlete.war, athlete.time)
             )
           ),
+          // Scout buy button
           Align(
-            alignment: Alignment(0.8,0.5),
+            alignment: Alignment(0.35, 0.15),
             child: Container(
-              width: MediaQuery.of(context).size.width * .06,
-              height: MediaQuery.of(context).size.height * .05,
-              child: RaisedButton(
-                onPressed:(){},
-                
-                child:Text("Buy Long Apt"),
+              width: MediaQuery.of(context).size.width * .15,
+              height: MediaQuery.of(context).size.height * .065,
+              decoration: BoxDecoration(
                 color:Colors.green,
+                borderRadius: BorderRadius.circular(12.0)
+              ),
+              child: TextButton(
+                onPressed:(){},
+                child:Text(
+                  "Buy Long Apt",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  )
+                ),
               )
-              
             )
           ),
+          // Scout Mint button
           Align(
-            alignment: Alignment(0.8,0.7),
+            alignment: Alignment(0.35,0.45),
             child: Container(
-              width: MediaQuery.of(context).size.width * .06,
-              height: MediaQuery.of(context).size.height * .05,
-              child: RaisedButton(
-                onPressed:(){},
-                
-                child:Text("Mint"),
-                color:Colors.transparent,
+              width: MediaQuery.of(context).size.width * .15,
+              height: MediaQuery.of(context).size.height * .065,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(
+                  color: Colors.amber[600]!,
+                  width: 2
+                )
+              ),
+              child: TextButton(
+                onPressed:() => mintDialog(context, athlete),
+                child:Text(
+                  "Mint",
+                  style: TextStyle(
+                    color: Colors.amber[600],
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  )
+                ),
               )
-              
             )
           ),
+          // scout short button
           Align(
-            alignment: Alignment(0.95,0.5),
+            alignment: Alignment(0.8, 0.15),
             child: Container(
-              width: MediaQuery.of(context).size.width * .06,
-              height: MediaQuery.of(context).size.height * .05,
-              child: RaisedButton(
+              width: MediaQuery.of(context).size.width * .15,
+              height: MediaQuery.of(context).size.height * .065,
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: TextButton(
                 onPressed:(){},
-                
-                child:Text("Buy Short Apt"),
-                color:Colors.red,
+                child:Text(
+                  "Buy Short APT",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  )
+                ),
               )
-              
             )
           ),
+          // scout redeem button
           Align(
-            alignment: Alignment(0.95,0.7),
+            alignment: Alignment(0.8,0.45),
             child: Container(
-              width: MediaQuery.of(context).size.width * .06,
-              height: MediaQuery.of(context).size.height * .05,
-              child: RaisedButton(
+              width: MediaQuery.of(context).size.width * .15,
+              height: MediaQuery.of(context).size.height * .065,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(
+                  color: Colors.amber[600]!,
+                  width: 2
+                )
+              ),
+              child: TextButton(
                 onPressed:(){},
-                
-                child:Text("Redeem"),
-                color:Colors.transparent,
+                child:Text(
+                  "Redeem",
+                  style: TextStyle(
+                    color: Colors.amber[600],
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  )
+                ),
               )
-              
             )
-          )
-
+          ),
         ]
+      )
+    );
+
+    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+  }
+
+  void mintDialog(BuildContext context, Athlete athlete) {
+    Dialog fancyDialog = Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Align(
+        alignment: Alignment(0,0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(
+              color: Colors.grey[400]!,
+              width: 3,
+            ),
+          ),
+          height: MediaQuery.of(context).size.height * 0.65,
+          width: MediaQuery.of(context).size.width * 0.3,
+          child: Stack(
+            children: <Widget>[
+              // Mint Title
+              Align(
+                alignment: Alignment(0, -0.9),
+                child: Text(
+                  "MINT",
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontFamily: 'OpenSans',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // Athlete Name
+              Align(
+                alignment: Alignment(0, -0.65),
+                child: Text(
+                  athlete.name + " APT",
+                  style: TextStyle(
+                    color: Colors.amber[600],
+                    fontFamily: 'OpenSans',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // AX Amount text box
+              Align(
+                alignment: Alignment(0, -0.30),
+                child: Container(
+                  width: MediaQuery.of(context).size.width*0.18,
+                  height: MediaQuery.of(context).size.height*0.08,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(12.0),
+                    border: Border.all(
+                      color: Colors.grey[600]!,
+                      width: 2
+                    )
+                  ),
+                  child: Center(
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontSize: 16
+                      ),
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Input AX Amount"
+                      ),
+                    )
+                  )
+                )
+              ),
+              // text
+              Align(
+                alignment: Alignment(0, 0.05),
+                child: Text(
+                  "You will receive:",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize:16,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // long tokens text
+              Align(
+                alignment: Alignment(0, 0.25),
+                child: Text(
+                  "20 Long "+athlete.name+" APTs",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // short tokens text
+              Align(
+                alignment: Alignment(0, 0.45),
+                child: Text(
+                  "20 Short "+athlete.name+" APTs",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // long tokens text
+              Align(
+                alignment: Alignment(0, 0.85),
+                child: Container(
+                  width: MediaQuery.of(context).size.width*0.18,
+                  height: MediaQuery.of(context).size.height*0.08,
+                  decoration: BoxDecoration(
+                    color: Colors.amber[600],
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      mintConfirmDialog(context, athlete);
+                    },
+                    child: Text(
+                      "Confirm",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      )
+                    )
+                  )
+                )
+              ),
+              // Top 'X'
+              Align(
+                // These values are based on trial & error method
+                alignment: Alignment(0.92, -0.95),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      size: 35,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ),
+            ]
+          ),
+        ),
+      )
+    );
+
+    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+  }
+
+  void mintConfirmDialog(BuildContext context, Athlete athlete) {
+    Dialog fancyDialog = Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Align(
+        alignment: Alignment(0,0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(
+              color: Colors.grey[400]!,
+              width: 3,
+            ),
+          ),
+          height: MediaQuery.of(context).size.height * 0.55,
+          width: MediaQuery.of(context).size.width * 0.3,
+          child: Stack(
+            children: <Widget>[
+              // Mint approved text
+              Align(
+                alignment: Alignment(0, -0.7),
+                child: Text(
+                  "Mint Approved!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // text
+              Align(
+                alignment: Alignment(0, -0.375),
+                child: Text(
+                  "You will have receive:",
+                  style: TextStyle(
+                    color: Colors.grey[100],
+                    fontFamily: 'OpenSans',
+                    fontSize:16,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // long tokens text
+              Align(
+                alignment: Alignment(0, -0.05),
+                child: Text(
+                  "20 Long "+athlete.name+" APTs",
+                  style: TextStyle(
+                    color: Colors.grey[100],
+                    fontFamily: 'OpenSans',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // short tokens text
+              Align(
+                alignment: Alignment(0, 0.2),
+                child: Text(
+                  "20 Short "+athlete.name+" APTs",
+                  style: TextStyle(
+                    color: Colors.grey[100],
+                    fontFamily: 'OpenSans',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // long tokens text
+              Align(
+                alignment: Alignment(0, 0.7),
+                child: Container(
+                  width: MediaQuery.of(context).size.width*0.18,
+                  height: MediaQuery.of(context).size.height*0.08,
+                  decoration: BoxDecoration(
+                    color: Colors.amber[600],
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "Back to Scout",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      )
+                    )
+                  )
+                )
+              ),
+              // Top 'X'
+              Align(
+                // These values are based on trial & error method
+                alignment: Alignment(0.92, -0.95),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      size: 35,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ),
+            ]
+          ),
+        ),
       )
     );
 
