@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   List<String> athNames = [];
   bool firstRun = true;
   double filterText = 20;
-  var earnRange = [0,3];
+  var earnRange = [0, 3];
   bool haveAthletes = false;
   String _value1 = "ETH";
   String _value2 = "USDC";
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-     CoinApi coinList = new CoinApi();
+    CoinApi coinList = new CoinApi();
     return Scaffold(
 
         // NAVIGATION BAR //
@@ -234,17 +234,198 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Column(children: [
                                                 Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            .85,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            .78,
-                                                    color: Colors.red)
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      .85,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      .78,
+                                                  color: Colors.transparent,
+                                                  child:
+                                                      Stack(children: <Widget>[
+                                                    Align(
+                                                        alignment: Alignment(
+                                                            -0.55, -0.96),
+                                                        child: Container(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.7,
+                                                            child: Row(
+                                                              children: <
+                                                                  Widget>[
+                                                                TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      setState(
+                                                                          () {
+                                                                        athleteList =
+                                                                            nflList;
+                                                                        firstRun =
+                                                                            false;
+                                                                      });
+                                                                    },
+                                                                    child: Text(
+                                                                      "NFL",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontFamily:
+                                                                            'OpenSans',
+                                                                        fontSize:
+                                                                            filterText,
+                                                                      ),
+                                                                    )),
+                                                                TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      setState(
+                                                                          () {
+                                                                        athleteList =
+                                                                            [];
+                                                                        firstRun =
+                                                                            false;
+                                                                      });
+                                                                    },
+                                                                    child: Text(
+                                                                      "NBA",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontFamily:
+                                                                            'OpenSans',
+                                                                        fontSize:
+                                                                            filterText,
+                                                                      ),
+                                                                    )),
+                                                                TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      setState(
+                                                                          () {
+                                                                        athleteList =
+                                                                            [];
+                                                                        firstRun =
+                                                                            false;
+                                                                      });
+                                                                    },
+                                                                    child: Text(
+                                                                      "MMA",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontFamily:
+                                                                            'OpenSans',
+                                                                        fontSize:
+                                                                            filterText,
+                                                                      ),
+                                                                    )),
+                                                              ],
+                                                            ))),
+                                                    Align(
+                                                        alignment:
+                                                            Alignment(0, 0),
+                                                        child: FutureBuilder<
+                                                                dynamic>(
+                                                            future: AthleteApi
+                                                                .getAthletesLocally(
+                                                                    context),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              switch (snapshot
+                                                                  .connectionState) {
+                                                                case ConnectionState
+                                                                    .waiting:
+                                                                  // return circle indicator for progress
+                                                                  return Center(
+                                                                    child:
+                                                                        CircularProgressIndicator(),
+                                                                  );
+                                                                default:
+                                                                  nflList =
+                                                                      snapshot
+                                                                          .data;
+                                                                  if (firstRun)
+                                                                    athleteList =
+                                                                        nflList;
+                                                                  return Container(
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.65,
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.8,
+                                                                      child: ListView.builder(
+                                                                          physics: BouncingScrollPhysics(),
+                                                                          itemCount: athleteList.length,
+                                                                          itemBuilder: (context, index) {
+                                                                            final athlete =
+                                                                                athleteList[index];
+                                                                            return Card(
+                                                                                color: Colors.grey[900],
+                                                                                shadowColor: Colors.grey[900],
+                                                                                child: ListTile(
+                                                                                  title: Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                    children: <Widget>[
+                                                                                      Text(athlete.name),
+                                                                                      // Text(athlete.war[athlete.war.length-1].toString().substring(0,6)),
+                                                                                    ],
+                                                                                  ),
+                                                                                  onTap: () => athleteDialog(context, athlete),
+                                                                                ));
+                                                                          }));
+                                                              }
+                                                            })),
+                                                    Align(
+                                                        alignment: Alignment(
+                                                            .97, 0.92),
+                                                        child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            width: 23,
+                                                            height: 23,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          100),
+                                                              color: Colors
+                                                                  .transparent,
+                                                              border:
+                                                                  Border.all(
+                                                                color: Colors
+                                                                        .amber[
+                                                                    600]!,
+                                                                width: 2,
+                                                              ),
+                                                            ),
+                                                            child: TextButton(
+                                                                onPressed: () =>
+                                                                    scoutHintDialog(
+                                                                        context),
+                                                                child: Text(
+                                                                  '?',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                            .amber[
+                                                                        600],
+                                                                    fontSize:
+                                                                        12,
+                                                                  ),
+                                                                ))))
+                                                  ]),
+                                                ),
                                               ]),
                                             ]),
                                       )
@@ -334,44 +515,79 @@ class _HomePageState extends State<HomePage> {
                                                                 .spaceAround,
                                                         children: [
                                                           Container(
-                                                            width: MediaQuery.of(context).size.width *.1,
-                                                            height: MediaQuery.of(context).size.height *.07,
-                                                            child:ElevatedButton(
-                                                              style: dexToggleInactive,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                .1,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                .07,
+                                                            child:
+                                                                ElevatedButton(
+                                                              style:
+                                                                  dexToggleInactive,
                                                               onPressed: () {
                                                                 swap = 0;
-                                                                _onSwapItemTapped(swap);
+                                                                _onSwapItemTapped(
+                                                                    swap);
                                                               },
-                                                              child: Text('Swap'),
+                                                              child:
+                                                                  Text('Swap'),
                                                             ),
                                                           ),
                                                           Container(
-                                                            width: MediaQuery.of(context).size.width *.1,
-                                                            height: MediaQuery.of(context).size.height *.07,
-                                                            child:ElevatedButton(
-                                                              style: dexToggleInactive,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                .1,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                .07,
+                                                            child:
+                                                                ElevatedButton(
+                                                              style:
+                                                                  dexToggleInactive,
                                                               onPressed: () {
                                                                 swap = 1;
-                                                                _onSwapItemTapped(swap);
+                                                                _onSwapItemTapped(
+                                                                    swap);
                                                               },
-                                                              child: Text('Earn'),
+                                                              child:
+                                                                  Text('Earn'),
                                                             ),
                                                           ),
                                                           Container(
-                                                            width: MediaQuery.of(context).size.width *.1,
-                                                            height: MediaQuery.of(context).size.height *.07,
-                                                            child:ElevatedButton(
-                                                              style: dexToggleInactive,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                .1,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                .07,
+                                                            child:
+                                                                ElevatedButton(
+                                                              style:
+                                                                  dexToggleInactive,
                                                               onPressed: () {
                                                                 swap = 2;
-                                                                _onSwapItemTapped(swap);
+                                                                _onSwapItemTapped(
+                                                                    swap);
                                                               },
-                                                              child: Text('Stake'),
+                                                              child:
+                                                                  Text('Stake'),
                                                             ),
                                                           ),
                                                         ],
-                                                      )
-                                                    )
+                                                      ))
                                                 ],
                                               )
                                             ]),
@@ -474,119 +690,150 @@ class _HomePageState extends State<HomePage> {
                                             width: 3,
                                           ),
                                         ),
-                                          child: Stack(
-                                            children: <Widget>[
-                                              Align(
-                                                alignment: Alignment(-0.55, -0.96),
-                                                child: Container(
-                                                  width: MediaQuery.of(context).size.width*0.7,
+                                        child: Stack(children: <Widget>[
+                                          Align(
+                                              alignment:
+                                                  Alignment(-0.55, -0.96),
+                                              child: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.7,
                                                   child: Row(
                                                     children: <Widget>[
                                                       TextButton(
-                                                        onPressed: () {
-                                                          setState((){
-                                                            athleteList=nflList;
-                                                            firstRun = false;
-                                                          });
-                                                        },
-                                                        child: Text(
-                                                          "NFL",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontFamily: 'OpenSans',
-                                                            fontSize: filterText,                                            
-                                                          ),
-                                                        )
-                                                      ),
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              athleteList =
+                                                                  nflList;
+                                                              firstRun = false;
+                                                            });
+                                                          },
+                                                          child: Text(
+                                                            "NFL",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily:
+                                                                  'OpenSans',
+                                                              fontSize:
+                                                                  filterText,
+                                                            ),
+                                                          )),
                                                       TextButton(
-                                                        onPressed: ()   {
-                                                          setState((){
-                                                            athleteList=[];
-                                                            firstRun = false;
-                                                          });
-
-                                                        },
-                                                        child: Text(
-                                                          "NBA",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontFamily: 'OpenSans',
-                                                            fontSize: filterText,                                            
-                                                          ),
-                                                        )
-                                                      ),
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              athleteList = [];
+                                                              firstRun = false;
+                                                            });
+                                                          },
+                                                          child: Text(
+                                                            "NBA",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily:
+                                                                  'OpenSans',
+                                                              fontSize:
+                                                                  filterText,
+                                                            ),
+                                                          )),
                                                       TextButton(
-                                                        onPressed: ()  {
-                                                          setState((){
-                                                            athleteList=[];
-                                                            firstRun = false;
-                                                          });
-                                                        },
-                                                        child: Text(
-                                                          "MMA",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontFamily: 'OpenSans',
-                                                            fontSize: filterText,                                            
-                                                          ),
-                                                        )
-                                                      ),
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              athleteList = [];
+                                                              firstRun = false;
+                                                            });
+                                                          },
+                                                          child: Text(
+                                                            "MMA",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily:
+                                                                  'OpenSans',
+                                                              fontSize:
+                                                                  filterText,
+                                                            ),
+                                                          )),
                                                     ],
-                                                  )
-                                                )
-                                              ),
-                                              Align(
-                                                alignment: Alignment(0, 0),
-                                                child: FutureBuilder<dynamic>(
-                                                  future: AthleteApi.getAthletesLocally(context),
-                                                  builder:(context, snapshot) {
-                                                    switch (snapshot.connectionState) {
-                                                      case ConnectionState.waiting:
+                                                  ))),
+                                          Align(
+                                              alignment: Alignment(0, 0),
+                                              child: FutureBuilder<dynamic>(
+                                                  future: AthleteApi
+                                                      .getAthletesLocally(
+                                                          context),
+                                                  builder: (context, snapshot) {
+                                                    switch (snapshot
+                                                        .connectionState) {
+                                                      case ConnectionState
+                                                          .waiting:
                                                         // return circle indicator for progress
                                                         return Center(
-                                                          child: CircularProgressIndicator(),
+                                                          child:
+                                                              CircularProgressIndicator(),
                                                         );
                                                       default:
                                                         nflList = snapshot.data;
                                                         if (firstRun)
                                                           athleteList = nflList;
                                                         return Container(
-                                                          height: MediaQuery.of(context).size.height * 0.65,
-                                                          width: MediaQuery.of(context).size.width * 0.8,
-                                                          child: ListView.builder(
-                                                            physics: BouncingScrollPhysics(),
-                                                            itemCount: athleteList.length,
-                                                            itemBuilder: (context, index) {
-                                                              final athlete = athleteList[index];
-                                                              return Card(
-                                                                color: Colors.grey[900],
-                                                                shadowColor: Colors.grey[900],
-                                                                child: ListTile(
-                                                                  title: Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                    children: <Widget>[
-                                                                      Text(athlete.name),
-                                                                      // Text(athlete.war[athlete.war.length-1].toString().substring(0,6)),
-                                                                    ],
-                                                                  ),
-                                                                  onTap: () => athleteDialog(context, athlete),
-                                                                )
-                                                              );
-                                                            }
-                                                          )
-                                                        );
+                                                            height: MediaQuery
+                                                                        .of(
+                                                                            context)
+                                                                    .size
+                                                                    .height *
+                                                                0.65,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.8,
+                                                            child: ListView
+                                                                .builder(
+                                                                    physics:
+                                                                        BouncingScrollPhysics(),
+                                                                    itemCount:
+                                                                        athleteList
+                                                                            .length,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      final athlete =
+                                                                          athleteList[
+                                                                              index];
+                                                                      return Card(
+                                                                          color: Colors.grey[
+                                                                              900],
+                                                                          shadowColor: Colors.grey[
+                                                                              900],
+                                                                          child:
+                                                                              ListTile(
+                                                                            title:
+                                                                                Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: <Widget>[
+                                                                                Text(athlete.name),
+                                                                                // Text(athlete.war[athlete.war.length-1].toString().substring(0,6)),
+                                                                              ],
+                                                                            ),
+                                                                            onTap: () =>
+                                                                                athleteDialog(context, athlete),
+                                                                          ));
+                                                                    }));
                                                     }
-                                                  }
-                                                )
-                                              ),
-                                              Align(
-                                                alignment: Alignment(.97, 0.92),
-                                                child: Container(
+                                                  })),
+                                          Align(
+                                              alignment: Alignment(.97, 0.92),
+                                              child: Container(
                                                   alignment: Alignment.center,
                                                   width: 23,
                                                   height: 23,
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(100),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
                                                     color: Colors.transparent,
                                                     border: Border.all(
                                                       color: Colors.amber[600]!,
@@ -594,668 +841,799 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                   ),
                                                   child: TextButton(
-                                                    onPressed: () => scoutHintDialog(context),
-                                                    child: Text(
-                                                      '?',
-                                                      style: TextStyle(
-                                                        color: Colors.amber[600],
-                                                        fontSize: 12,
-                                                      ),
-                                                    )
-                                                  )
-                                                )
-                                              )
-                                            ]
-                                          ),
-                                        ),
-                                      ]
-                                    )
-                                  )
+                                                      onPressed: () =>
+                                                          scoutHintDialog(
+                                                              context),
+                                                      child: Text(
+                                                        '?',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Colors.amber[600],
+                                                          fontSize: 12,
+                                                        ),
+                                                      ))))
+                                        ]),
+                                      ),
+                                    ]))
                           ])));
             }
             // Dex page
             else if (_selectedIndex == 1) {
               return Scaffold(
-                body: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          AssetImage('../assets/images/axBackground.jpeg'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height:MediaQuery.of(context).size.height * .90,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        // Main mobile border box
-                        Container(
-                          width: MediaQuery.of(context).size.width * .9,
-                          height: MediaQuery.of(context).size.height * .79,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.black,
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: 3,
+                  body: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image:
+                              AssetImage('../assets/images/axBackground.jpeg'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .90,
+                        child: Stack(alignment: Alignment.center, children: [
+                          // Main mobile border box
+                          Container(
+                            width: MediaQuery.of(context).size.width * .9,
+                            height: MediaQuery.of(context).size.height * .79,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.black,
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 3,
+                              ),
                             ),
                           ),
-                        ),
-                        // Swap / Earn Button Widget
-                        Align(
-                          alignment: Alignment(0, -0.98),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * .35,
-                            height: MediaQuery.of(context).size.height * .1,
-                            decoration:
-                              BoxDecoration(
-                                borderRadius:BorderRadius.circular(20),
-                                color: Colors.black,
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 3,
-                                ),
-                              ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment .spaceAround,
-                              children: <Widget>[
-                                // Swap Button
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .08,
-                                  height: MediaQuery.of(context).size.height * .055,
-                                  child:
-                                    ElevatedButton(
-                                      style: dexToggleActive,
-                                      onPressed: () {
-                                        swap = 0;
-                                        _onSwapItemTapped(swap);
-                                      },
-                                      child: Text('Swap'),
-                                  ),
-                                ),
-                                // Earn button
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .08,
-                                  height: MediaQuery.of(context).size.height * .055,
-                                  child:
-                                    ElevatedButton(
-                                      style: dexToggleActive,
-                                      onPressed: () {
-                                        swap = 1;
-                                        _onSwapItemTapped(swap);
-                                      },
-                                      child: Text('Earn'),
-                                  ),
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .08,
-                                  height: MediaQuery.of(context).size.height * .055,
-                                  child:
-                                    ElevatedButton(
-                                      style: dexToggleActive,
-                                      onPressed: () {
-                                        swap = 2;
-                                        _onSwapItemTapped(swap);
-                                      },
-                                      child: Text('Stake'),
-                                  ),
-                                ),
-                              ],
-                            )
-                          )
-                        ),
-                        // DexSwap Widget
-                        if (swap==0) 
-                          FutureBuilder<List<Coin>>(
-                            future: coinList.getCoins(context),
-                            builder: (context, snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.waiting:
-                                  return Stack(
-                                    children: <Widget>[
-                                    // Top token box
-                                    Align(
-                                      alignment: Alignment(0, -0.4),
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width*0.4,
-                                        height: MediaQuery.of(context).size.height*0.125,
-                                        child: Center(
-                                          child: Container(
-                                            width: MediaQuery.of(context).size.width*0.35,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                  width: MediaQuery.of(context).size.width*0.08,
-                                                  height: MediaQuery.of(context).size.height*0.08,
-                                                  color: Colors.green
-                                                ),
-                                                Text("0.0"),
-                                              ],
-                                            )
-                                          )
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[850],
-                                          borderRadius: BorderRadius.circular(12),
-                                        )
-                                      ),
+                          // Swap / Earn Button Widget
+                          Align(
+                              alignment: Alignment(0, -0.98),
+                              child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * .35,
+                                  height:
+                                      MediaQuery.of(context).size.height * .1,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.black,
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      width: 3,
                                     ),
-                                    // Bottom token box
-                                    Align(
-                                      alignment: Alignment(0, -0.05),
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width*0.4,
-                                        height: MediaQuery.of(context).size.height*0.125,
-                                        child: Center(
-                                          child: Container(
-                                            width: MediaQuery.of(context).size.width*0.35,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                  width: MediaQuery.of(context).size.width*0.08,
-                                                  height: MediaQuery.of(context).size.height*0.08,
-                                                  color: Colors.orange
-                                                ),
-                                                Text("0.0"),
-                                              ],
-                                            ),
-                                          )
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[850],
-                                          borderRadius: BorderRadius.circular(12),
-                                        )
-                                      ),
-                                    ),
-                                    // switch arrow
-                                    Align(
-                                      alignment: Alignment(0, -0.225),
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width*0.032,
-                                        height: MediaQuery.of(context).size.width*0.032,
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius: BorderRadius.circular(6),
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {},
-                                          child: Icon(
-                                            Icons.arrow_downward_outlined,
-                                            color: Colors.grey[500],
-                                            size: MediaQuery.of(context).size.width*0.022,
-                                          )
-                                        )
-                                      )
-                                    ),
-                                    // buttons
-                                    Align(
-                                      alignment: Alignment(0, 0.4),
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width*0.4,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            // Connect Wallet Button
-                                            Container(
-                                              width: MediaQuery.of(context).size.width*0.15,
-                                              height: MediaQuery.of(context).size.height*0.08,
-                                              decoration: BoxDecoration(
-                                                color: Colors.transparent,
-                                                borderRadius: BorderRadius.circular(12),
-                                                border: Border.all(
-                                                  color: Colors.amber[600]!,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              child: TextButton(
-                                                onPressed: () {},
-                                                child: Text(
-                                                  "Connect Wallet",
-                                                  style: TextStyle(
-                                                    color: Colors.amber[600],
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            // Confirm Swap button
-                                            Container(
-                                              width: MediaQuery.of(context).size.width*0.15,
-                                              height: MediaQuery.of(context).size.height*0.08,
-                                              decoration: BoxDecoration(
-                                                color: Colors.amber[600],
-                                                borderRadius: BorderRadius.circular(12),
-                                                border: Border.all(
-                                                  color: Colors.amber[600]!,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              child: TextButton(
-                                                onPressed: () => {},
-                                                child: Text(
-                                                  "Confirm Swap",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      )
-                                    )
-                                  ]
-                                );
-                              default:
-                                return Container(); 
-                                // List<Coin>? coins = snapshot.data;
-                                // if (_value1 == "ETH") _value1 = coins![0].name;
-                                // for (var c in coins!) {
-                                //   if (c.name == _value1)
-                                //     coin1 = c;
-                                //   if (c.name == _value2)
-                                //     coin2 = c;
-                                // }
-                                // return Column(
-                                //   children: <Widget>[
-                                //     // First Coin Box
-                                //     Container(
-                                //       width: MediaQuery.of(context).size.width*0.4,
-                                //       height: MediaQuery.of(context).size.height*0.125,
-                                //       decoration: BoxDecoration(
-                                //         color: Colors.grey[850],
-                                //         borderRadius: BorderRadius.circular(12),
-                                //       ),
-                                //       child: Row(
-                                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //         children: <Widget>[
-                                //           // top dropdown box
-                                //           Padding(
-                                //             padding: EdgeInsets.only(left: 10),
-                                //             child: Center(
-                                //               child: DropdownButton<String>(
-                                //                 icon: Icon(Icons.keyboard_arrow_down),
-                                //                 value: _value1,
-                                //                 items:coins.map((Coin c) {
-                                //                   return DropdownMenuItem<String>(
-                                //                     child: Text(c.name),
-                                //                     value: c.name
-                                //                   );
-                                //                 }).toList(),
-                                //                 onChanged: (newValue){
-                                //                   setState(() {
-                                //                     _value1 = newValue!;
-                                //                     for (var c in coins)
-                                //                       if (c.name == _value1)
-                                //                         coin1 = c;
-                                //                   });
-                                //                 },
-                                //               )
-                                //             )
-                                //           ),
-                                //           // Text Amount
-                                //           Padding(
-                                //             padding: EdgeInsets.only(right: 10),
-                                //             child: Text(
-                                //               "0.0",
-                                //               style: TextStyle(
-                                //                 color: Colors.white,
-                                //                 fontFamily: 'OpenSans',
-                                //                 fontSize: 20,                                            
-                                //               ),
-                                //             )
-                                //           ),
-                                //         ],
-                                //       )
-                                //     ),
-                                //     Container(
-                                //               height: MediaQuery.of(context).size.height*0.02,
-                                //             ),
-                                //             // Second Coin Box
-                                //             Container(
-                                //               width: MediaQuery.of(context).size.width*0.4,
-                                //               height: MediaQuery.of(context).size.height*0.125,
-                                //               decoration: BoxDecoration(
-                                //                 color: Colors.grey[850],
-                                //                 borderRadius: BorderRadius.circular(12),
-                                //               ),
-                                //               child: Row(
-                                //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //                 children: <Widget>[
-                                //                   // Bottom dropdown box
-                                //                   Padding(
-                                //                     padding: EdgeInsets.only(left: 10),
-                                //                     child: Center(
-                                //                       child: DropdownButton<String>(
-                                //                         icon: Icon(Icons.keyboard_arrow_down),
-                                //                         value: _value2,
-                                //                         items:coins.map((Coin c) {
-                                //                           return DropdownMenuItem<String>(
-                                //                             child: Text(c.name),
-                                //                             value: c.name
-                                //                           );
-                                //                         }).toList(),
-                                //                         onChanged: (newValue){
-                                //                           setState(() {
-                                //                             _value2 = newValue!;
-                                //                             for (var c in coins)
-                                //                               if (c.name == _value2)
-                                //                                 coin2 = c;
-                                //                           });
-                                //                         },
-                                //                       )
-                                //                     )
-                                //                   ),
-                                //                   // Bottom Coin Text Amount
-                                //                   Padding(
-                                //                     padding: EdgeInsets.only(right: 10),
-                                //                     child: Text(
-                                //                       "0.0",
-                                //                       style: TextStyle(
-                                //                         color: Colors.white,
-                                //                         fontFamily: 'OpenSans',
-                                //                         fontSize: 20,                                            
-                                //                       ),
-                                //                     ),
-                                //                   ),
-                                //                 ],
-                                //               ),
-                                //             ),
-                                //   ],
-                                // );
-                              }
-                            }
-                          ),
-                          // End of Swap
-                          
-                        // DexEarn Widget
-                        if (swap==1)
-                          // participating farms text
-                          Stack(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment(0,-0.65),
-                                child: Text(
-                                  "Participating Farms",
-                                  style: TextStyle(
-                                    color: Colors.grey[300],
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 26,                                            
                                   ),
-                                )
-                              ),
-                              // Sports Filter (Earn)
-                              Align(
-                                alignment: Alignment(0,-0.475),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width*0.7,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      if (athleteList == nflList)
-                                        TextButton(
+                                      // Swap Button
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .08,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                .055,
+                                        child: ElevatedButton(
+                                          style: dexToggleActive,
                                           onPressed: () {
-                                            setState((){
-                                              athleteList=nflList;
-                                            });
+                                            swap = 0;
+                                            _onSwapItemTapped(swap);
                                           },
-                                          child: Text(
-                                            "NFL",
-                                            style: TextStyle(
-                                              color: Colors.amber[600],
-                                              fontFamily: 'OpenSans',
-                                              fontSize: filterText, 
-                                              fontWeight: FontWeight.w600                                           
-                                            ),
-                                          )
-                                        )
-                                      else
-                                        TextButton(
-                                          onPressed: () {
-                                            setState((){
-                                              athleteList=nflList;
-                                            });
-                                          },
-                                          child: Text(
-                                            "NFL",
-                                            style: TextStyle(
-                                              color: Colors.grey[800],
-                                              fontFamily: 'OpenSans',
-                                              fontSize: filterText, 
-                                              fontWeight: FontWeight.w600
-                                            ),
-                                          )
+                                          child: Text('Swap'),
                                         ),
-                                      TextButton(
-                                        onPressed: ()   {
-                                          setState((){
-                                            athleteList=[];
-                                          });
-
-                                        },
-                                        child: Text(
-                                          "NBA",
-                                          style: TextStyle(
-                                            color: Colors.grey[800],
-                                            fontFamily: 'OpenSans',
-                                            fontSize: filterText,
-                                            fontWeight: FontWeight.w600
-                                          ),
-                                        )
                                       ),
-                                      TextButton(
-                                        onPressed: ()  {
-                                          setState((){
-                                            athleteList=[];
-                                          });
-                                        },
-                                        child: Text(
-                                          "MMA",
-                                          style: TextStyle(
-                                            color: Colors.grey[800],
-                                            fontFamily: 'OpenSans',
-                                            fontSize: filterText,
-                                            fontWeight: FontWeight.w600
-                                          ),
-                                        )
+                                      // Earn button
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .08,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                .055,
+                                        child: ElevatedButton(
+                                          style: dexToggleActive,
+                                          onPressed: () {
+                                            swap = 1;
+                                            _onSwapItemTapped(swap);
+                                          },
+                                          child: Text('Earn'),
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .08,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                .055,
+                                        child: ElevatedButton(
+                                          style: dexToggleActive,
+                                          onPressed: () {
+                                            swap = 2;
+                                            _onSwapItemTapped(swap);
+                                          },
+                                          child: Text('Stake'),
+                                        ),
                                       ),
                                     ],
-                                  )
-                                )
-                              ),
+                                  ))),
+                          // DexSwap Widget
+                          if (swap == 0)
+                            FutureBuilder<List<Coin>>(
+                                future: coinList.getCoins(context),
+                                builder: (context, snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.waiting:
+                                      return Stack(children: <Widget>[
+                                        // Top token box
+                                        Align(
+                                          alignment: Alignment(0, -0.4),
+                                          child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.125,
+                                              child: Center(
+                                                  child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.35,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: <Widget>[
+                                                          Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.08,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.08,
+                                                              color:
+                                                                  Colors.green),
+                                                          Text("0.0"),
+                                                        ],
+                                                      ))),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[850],
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              )),
+                                        ),
+                                        // Bottom token box
+                                        Align(
+                                          alignment: Alignment(0, -0.05),
+                                          child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.125,
+                                              child: Center(
+                                                  child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.35,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Container(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.08,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.08,
+                                                        color: Colors.orange),
+                                                    Text("0.0"),
+                                                  ],
+                                                ),
+                                              )),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[850],
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              )),
+                                        ),
+                                        // switch arrow
+                                        Align(
+                                            alignment: Alignment(0, -0.225),
+                                            child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.032,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.032,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6),
+                                                ),
+                                                child: TextButton(
+                                                    onPressed: () {},
+                                                    child: Icon(
+                                                      Icons
+                                                          .arrow_downward_outlined,
+                                                      color: Colors.grey[500],
+                                                      size:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.022,
+                                                    )))),
+                                        // buttons
+                                        Align(
+                                            alignment: Alignment(0, 0.4),
+                                            child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    // Connect Wallet Button
+                                                    Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.15,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.08,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            Colors.transparent,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        border: Border.all(
+                                                          color: Colors
+                                                              .amber[600]!,
+                                                          width: 2,
+                                                        ),
+                                                      ),
+                                                      child: TextButton(
+                                                        onPressed: () {},
+                                                        child: Text(
+                                                          "Connect Wallet",
+                                                          style: TextStyle(
+                                                            color: Colors
+                                                                .amber[600],
+                                                            fontFamily:
+                                                                'OpenSans',
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // Confirm Swap button
+                                                    Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.15,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.08,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            Colors.amber[600],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        border: Border.all(
+                                                          color: Colors
+                                                              .amber[600]!,
+                                                          width: 2,
+                                                        ),
+                                                      ),
+                                                      child: TextButton(
+                                                        onPressed: () => {},
+                                                        child: Text(
+                                                          "Confirm Swap",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontFamily:
+                                                                'OpenSans',
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )))
+                                      ]);
+                                    default:
+                                      return Container();
+                                    // List<Coin>? coins = snapshot.data;
+                                    // if (_value1 == "ETH") _value1 = coins![0].name;
+                                    // for (var c in coins!) {
+                                    //   if (c.name == _value1)
+                                    //     coin1 = c;
+                                    //   if (c.name == _value2)
+                                    //     coin2 = c;
+                                    // }
+                                    // return Column(
+                                    //   children: <Widget>[
+                                    //     // First Coin Box
+                                    //     Container(
+                                    //       width: MediaQuery.of(context).size.width*0.4,
+                                    //       height: MediaQuery.of(context).size.height*0.125,
+                                    //       decoration: BoxDecoration(
+                                    //         color: Colors.grey[850],
+                                    //         borderRadius: BorderRadius.circular(12),
+                                    //       ),
+                                    //       child: Row(
+                                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //         children: <Widget>[
+                                    //           // top dropdown box
+                                    //           Padding(
+                                    //             padding: EdgeInsets.only(left: 10),
+                                    //             child: Center(
+                                    //               child: DropdownButton<String>(
+                                    //                 icon: Icon(Icons.keyboard_arrow_down),
+                                    //                 value: _value1,
+                                    //                 items:coins.map((Coin c) {
+                                    //                   return DropdownMenuItem<String>(
+                                    //                     child: Text(c.name),
+                                    //                     value: c.name
+                                    //                   );
+                                    //                 }).toList(),
+                                    //                 onChanged: (newValue){
+                                    //                   setState(() {
+                                    //                     _value1 = newValue!;
+                                    //                     for (var c in coins)
+                                    //                       if (c.name == _value1)
+                                    //                         coin1 = c;
+                                    //                   });
+                                    //                 },
+                                    //               )
+                                    //             )
+                                    //           ),
+                                    //           // Text Amount
+                                    //           Padding(
+                                    //             padding: EdgeInsets.only(right: 10),
+                                    //             child: Text(
+                                    //               "0.0",
+                                    //               style: TextStyle(
+                                    //                 color: Colors.white,
+                                    //                 fontFamily: 'OpenSans',
+                                    //                 fontSize: 20,
+                                    //               ),
+                                    //             )
+                                    //           ),
+                                    //         ],
+                                    //       )
+                                    //     ),
+                                    //     Container(
+                                    //               height: MediaQuery.of(context).size.height*0.02,
+                                    //             ),
+                                    //             // Second Coin Box
+                                    //             Container(
+                                    //               width: MediaQuery.of(context).size.width*0.4,
+                                    //               height: MediaQuery.of(context).size.height*0.125,
+                                    //               decoration: BoxDecoration(
+                                    //                 color: Colors.grey[850],
+                                    //                 borderRadius: BorderRadius.circular(12),
+                                    //               ),
+                                    //               child: Row(
+                                    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //                 children: <Widget>[
+                                    //                   // Bottom dropdown box
+                                    //                   Padding(
+                                    //                     padding: EdgeInsets.only(left: 10),
+                                    //                     child: Center(
+                                    //                       child: DropdownButton<String>(
+                                    //                         icon: Icon(Icons.keyboard_arrow_down),
+                                    //                         value: _value2,
+                                    //                         items:coins.map((Coin c) {
+                                    //                           return DropdownMenuItem<String>(
+                                    //                             child: Text(c.name),
+                                    //                             value: c.name
+                                    //                           );
+                                    //                         }).toList(),
+                                    //                         onChanged: (newValue){
+                                    //                           setState(() {
+                                    //                             _value2 = newValue!;
+                                    //                             for (var c in coins)
+                                    //                               if (c.name == _value2)
+                                    //                                 coin2 = c;
+                                    //                           });
+                                    //                         },
+                                    //                       )
+                                    //                     )
+                                    //                   ),
+                                    //                   // Bottom Coin Text Amount
+                                    //                   Padding(
+                                    //                     padding: EdgeInsets.only(right: 10),
+                                    //                     child: Text(
+                                    //                       "0.0",
+                                    //                       style: TextStyle(
+                                    //                         color: Colors.white,
+                                    //                         fontFamily: 'OpenSans',
+                                    //                         fontSize: 20,
+                                    //                       ),
+                                    //                     ),
+                                    //                   ),
+                                    //                 ],
+                                    //               ),
+                                    //             ),
+                                    //   ],
+                                    // );
+                                  }
+                                }),
+                          // End of Swap
+
+                          // DexEarn Widget
+                          if (swap == 1)
+                            // participating farms text
+                            Stack(children: <Widget>[
+                              Align(
+                                  alignment: Alignment(0, -0.65),
+                                  child: Text(
+                                    "Participating Farms",
+                                    style: TextStyle(
+                                      color: Colors.grey[300],
+                                      fontFamily: 'OpenSans',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 26,
+                                    ),
+                                  )),
+                              // Sports Filter (Earn)
+                              Align(
+                                  alignment: Alignment(0, -0.475),
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.7,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          if (athleteList == nflList)
+                                            TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    athleteList = nflList;
+                                                  });
+                                                },
+                                                child: Text(
+                                                  "NFL",
+                                                  style: TextStyle(
+                                                      color: Colors.amber[600],
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: filterText,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ))
+                                          else
+                                            TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    athleteList = nflList;
+                                                  });
+                                                },
+                                                child: Text(
+                                                  "NFL",
+                                                  style: TextStyle(
+                                                      color: Colors.grey[800],
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: filterText,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                )),
+                                          TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  athleteList = [];
+                                                });
+                                              },
+                                              child: Text(
+                                                "NBA",
+                                                style: TextStyle(
+                                                    color: Colors.grey[800],
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: filterText,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              )),
+                                          TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  athleteList = [];
+                                                });
+                                              },
+                                              child: Text(
+                                                "MMA",
+                                                style: TextStyle(
+                                                    color: Colors.grey[800],
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: filterText,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              )),
+                                        ],
+                                      ))),
                               // LP Horizontal List
                               if (athleteList.isNotEmpty)
                                 Align(
                                   alignment: Alignment(0, 0.25),
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width * .875,
-                                    height: MediaQuery.of(context).size.height * .5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        // Scroll Left
-                                        Container(
-                                          width: MediaQuery.of(context).size.width * 0.055555,
-                                          height: MediaQuery.of(context).size.height * .3,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              earnRange[0] -= earnRange[1];
-                                              if (earnRange[0] < 0)
-                                                earnRange[0] = 0;
-                                              curAthletes = [];
-                                              for (int i=0;i<earnRange[1];i++)
-                                                curAthletes.add(athleteList[earnRange[0]+i]);
-                                              setState(() {
-                                                lastFirstEarn = curAthletes[0];
-                                              });
-                                            },
-                                            style: ButtonStyle(
-                                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-                                            ),
-                                            child: Icon(
-                                              Icons.arrow_back_ios,
-                                              color: Colors.white,
-                                              size: MediaQuery.of(context).size.height*0.075,
-                                            )
-                                          )
-                                        ),
-                                        // LP Cards
-                                        if (curAthletes.isEmpty)
-                                          FutureBuilder<dynamic>(
-                                            future: AthleteApi.getAthletesLocally(context),
-                                            builder:(context, snapshot) {
-                                              switch (snapshot.connectionState) {
-                                                case ConnectionState.waiting:
-                                                  // return circle indicator for progress
-                                                  return Center(
-                                                    child: CircularProgressIndicator(),
-                                                  );
-                                                default:
-                                                  nflList = snapshot.data;
-                                                  athleteList = nflList;
-                                                  for (int i=0;i<earnRange[1]&&i<athleteList.length;i++) 
-                                                    curAthletes.add(athleteList[i]);
-                                                  if (curAthletes.isNotEmpty)
-                                                  lastFirstEarn = curAthletes[0];
-                                                  return LPEarnListView(context);
-                                              }
-                                            }
-                                          )
-                                        //Once < or > is pressed
-                                        // ignore: unnecessary_null_comparison
-                                        else if (lastFirstEarn == curAthletes[0])
-                                          LPEarnListView(context),
-                                        // Scroll Right
-                                        Container(
-                                          width: MediaQuery.of(context).size.width * 0.05,
-                                          height: MediaQuery.of(context).size.height * .3,
-                                          color: Colors.transparent,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              earnRange[0] += earnRange[1];
-                                              if (earnRange[0] > athleteList.length - earnRange[1])
-                                                earnRange[0] = athleteList.length - earnRange[1];
-                                              curAthletes = [];
-                                              for (int i=0;i<earnRange[1];i++)
-                                                curAthletes.add(athleteList[earnRange[0]+i]);
-                                              setState(() {
-                                                lastFirstEarn = curAthletes[0];
-                                              });
-      print(earnRange[0].toString()+"/"+athleteList.length.toString()+"  : "+athleteList[earnRange[0]].name+"  ~  "+curAthletes[0].name);
-      print(" Name: "+lastFirstEarn.name);
-                                            },
-                                            style: ButtonStyle(
-                                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-                                            ),
-                                            child: Icon(
-                                              Icons.arrow_forward_ios,
-                                              color: Colors.white,
-                                              size: MediaQuery.of(context).size.height*0.075,
-                                            )
-                                          )
-                                        ),
-                                      ],
-                                    )
-                                  ),
+                                      width: MediaQuery.of(context).size.width *
+                                          .875,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .5,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          // Scroll Left
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.055555,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  .3,
+                                              child: ElevatedButton(
+                                                  onPressed: () {
+                                                    earnRange[0] -=
+                                                        earnRange[1];
+                                                    if (earnRange[0] < 0)
+                                                      earnRange[0] = 0;
+                                                    curAthletes = [];
+                                                    for (int i = 0;
+                                                        i < earnRange[1];
+                                                        i++)
+                                                      curAthletes.add(
+                                                          athleteList[
+                                                              earnRange[0] +
+                                                                  i]);
+                                                    setState(() {
+                                                      lastFirstEarn =
+                                                          curAthletes[0];
+                                                    });
+                                                  },
+                                                  style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all<Color>(Colors
+                                                                .transparent),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.arrow_back_ios,
+                                                    color: Colors.white,
+                                                    size: MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.075,
+                                                  ))),
+                                          // LP Cards
+                                          if (curAthletes.isEmpty)
+                                            FutureBuilder<dynamic>(
+                                                future: AthleteApi
+                                                    .getAthletesLocally(
+                                                        context),
+                                                builder: (context, snapshot) {
+                                                  switch (snapshot
+                                                      .connectionState) {
+                                                    case ConnectionState
+                                                        .waiting:
+                                                      // return circle indicator for progress
+                                                      return Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      );
+                                                    default:
+                                                      nflList = snapshot.data;
+                                                      athleteList = nflList;
+                                                      for (int i = 0;
+                                                          i < earnRange[1] &&
+                                                              i <
+                                                                  athleteList
+                                                                      .length;
+                                                          i++)
+                                                        curAthletes.add(
+                                                            athleteList[i]);
+                                                      if (curAthletes
+                                                          .isNotEmpty)
+                                                        lastFirstEarn =
+                                                            curAthletes[0];
+                                                      return LPEarnListView(
+                                                          context);
+                                                  }
+                                                })
+                                          //Once < or > is pressed
+                                          // ignore: unnecessary_null_comparison
+                                          else if (lastFirstEarn ==
+                                              curAthletes[0])
+                                            LPEarnListView(context),
+                                          // Scroll Right
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.05,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  .3,
+                                              color: Colors.transparent,
+                                              child: ElevatedButton(
+                                                  onPressed: () {
+                                                    earnRange[0] +=
+                                                        earnRange[1];
+                                                    if (earnRange[0] >
+                                                        athleteList.length -
+                                                            earnRange[1])
+                                                      earnRange[0] =
+                                                          athleteList.length -
+                                                              earnRange[1];
+                                                    curAthletes = [];
+                                                    for (int i = 0;
+                                                        i < earnRange[1];
+                                                        i++)
+                                                      curAthletes.add(
+                                                          athleteList[
+                                                              earnRange[0] +
+                                                                  i]);
+                                                    setState(() {
+                                                      lastFirstEarn =
+                                                          curAthletes[0];
+                                                    });
+                                                    print(earnRange[0]
+                                                            .toString() +
+                                                        "/" +
+                                                        athleteList.length
+                                                            .toString() +
+                                                        "  : " +
+                                                        athleteList[
+                                                                earnRange[0]]
+                                                            .name +
+                                                        "  ~  " +
+                                                        curAthletes[0].name);
+                                                    print(" Name: " +
+                                                        lastFirstEarn.name);
+                                                  },
+                                                  style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all<Color>(Colors
+                                                                .transparent),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.arrow_forward_ios,
+                                                    color: Colors.white,
+                                                    size: MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.075,
+                                                  ))),
+                                        ],
+                                      )),
                                 ),
-                            ]
-                          ),
+                            ]),
                           // End of Earn
-                        // DexStake Widget
-                        if (swap==2)
-                          Stack(
-                            children: <Widget>[
+                          // DexStake Widget
+                          if (swap == 2)
+                            Stack(children: <Widget>[
                               Align(
-                                alignment: Alignment(0, -0.25),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width*0.2,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text("Amount Stacked:"),
-                                      Text("\$3,000.98")
-                                    ],
-                                  )
-                                )
-                              ),
+                                  alignment: Alignment(0, -0.25),
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text("Amount Stacked:"),
+                                          Text("\$3,000.98")
+                                        ],
+                                      ))),
                               Align(
-                                alignment: Alignment(0, 0),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width*0.2,
-                                  height: 30,
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      hintText: "Enter amount to add or withdraw"
-                                    ),
-                                  )
-                                )
-                              ),
+                                  alignment: Alignment(0, 0),
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      height: 30,
+                                      child: TextFormField(
+                                        decoration: InputDecoration(
+                                            hintText:
+                                                "Enter amount to add or withdraw"),
+                                      ))),
                               Align(
-                                alignment: Alignment(0, 0.25),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width*0.2,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                        width: MediaQuery.of(context).size.width*0.08,
-                                        height: 60,
-                                        decoration: BoxDecoration(
-                                          color: Colors.green[800],
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            "Add",
-                                            style: TextStyle(
-                                              color: Colors.white
-                                            ),
-                                          )
-                                        )
-                                      ),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width*0.08,
-                                        height: 60,
-                                        decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            "Withdraw",
-                                            style: TextStyle(
-                                              color: Colors.white
-                                            ),
-                                          )
-                                        )
-                                      ),
-                                    ]
-                                  )
-                                )
-                              )
-                            ]
-                          )
+                                  alignment: Alignment(0, 0.25),
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.08,
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.green[800],
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: TextButton(
+                                                    onPressed: () {},
+                                                    child: Text(
+                                                      "Add",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ))),
+                                            Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.08,
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: TextButton(
+                                                    onPressed: () {},
+                                                    child: Text(
+                                                      "Withdraw",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ))),
+                                          ])))
+                            ])
                           // End of Earn
-                      ]
-                    ),
-                  )
-                )
-              );
+                        ]),
+                      )));
             }
             // Help page
             else {
@@ -1305,12 +1683,11 @@ class _HomePageState extends State<HomePage> {
   // Athlete Popup
   void athleteDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Stack(
-        children: <Widget>[
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Stack(children: <Widget>[
           // Background
           Align(
             alignment: Alignment(0, 0.6),
@@ -1326,327 +1703,258 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-          ), 
+          ),
           // Back Button
           Align(
-            alignment: Alignment(-0.9, -0.65),
-            child: Container(
-              width: 80,
-              height: 50,
-              child: TextButton(
-                  onPressed: () {Navigator.pop(context);},
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.grey[400],
-                  size: 50
-                )
-              )
-            )
-          ), 
+              alignment: Alignment(-0.9, -0.65),
+              child: Container(
+                  width: 80,
+                  height: 50,
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.arrow_back,
+                          color: Colors.grey[400], size: 50)))),
           Align(
-            alignment: Alignment(-0.7, -0.65),
-            child: Text(
-              athlete.name,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'OpenSans',
-                fontSize: 26,
-                fontWeight: FontWeight.w600,
-              ),
-            )
-          ), 
-          Align(
-            alignment: Alignment(-0.4, -0.65),
-            child: Text(
-              athlete.war[3].toString().substring(0,6),
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'OpenSans',
-                fontSize: 26,
-                fontWeight: FontWeight.w600,
-              )
-            )
-          ), 
-          Align(
-            alignment: Alignment(-0.65, 0.2),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .4,
-              height: MediaQuery.of(context).size.height * .35,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2,
+              alignment: Alignment(-0.7, -0.65),
+              child: Text(
+                athlete.name,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'OpenSans',
+                  fontSize: 26,
+                  fontWeight: FontWeight.w600,
                 ),
-              ),
-              child: Center(
-                child: Text(
-                  "Player Stats\nCOMING SOON",
-                  textAlign: TextAlign.center,
+              )),
+          Align(
+              alignment: Alignment(-0.4, -0.65),
+              child: Text(athlete.war[3].toString().substring(0, 6),
                   style: TextStyle(
-                    color: Colors.amber[600],
+                    color: Colors.white,
                     fontFamily: 'OpenSans',
-                    fontSize: 44,
+                    fontSize: 26,
                     fontWeight: FontWeight.w600,
-                  )
-                )
-              )
-            )
-          ),
+                  ))),
+          Align(
+              alignment: Alignment(-0.65, 0.2),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .4,
+                  height: MediaQuery.of(context).size.height * .35,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(12.0),
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 2,
+                    ),
+                  ),
+                  child: Center(
+                      child: Text("Player Stats\nCOMING SOON",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.amber[600],
+                            fontFamily: 'OpenSans',
+                            fontSize: 44,
+                            fontWeight: FontWeight.w600,
+                          ))))),
           // Scout buy button
           Align(
-            alignment: Alignment(0.35, 0.15),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .15,
-              height: MediaQuery.of(context).size.height * .065,
-              decoration: BoxDecoration(
-                color:Colors.green,
-                borderRadius: BorderRadius.circular(12.0)
-              ),
-              child: TextButton(
-                onPressed:(){},
-                child:Text(
-                  "Buy Long Apt",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  )
-                ),
-              )
-            )
-          ),
+              alignment: Alignment(0.35, 0.15),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .15,
+                  height: MediaQuery.of(context).size.height * .065,
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text("Buy Long Apt",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ))),
           // Scout Mint button
           Align(
-            alignment: Alignment(0.35,0.45),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .15,
-              height: MediaQuery.of(context).size.height * .065,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(
-                  color: Colors.amber[600]!,
-                  width: 2
-                )
-              ),
-              child: TextButton(
-                onPressed:() => mintDialog(context, athlete),
-                child:Text(
-                  "Mint",
-                  style: TextStyle(
-                    color: Colors.amber[600],
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  )
-                ),
-              )
-            )
-          ),
+              alignment: Alignment(0.35, 0.45),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .15,
+                  height: MediaQuery.of(context).size.height * .065,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: Colors.amber[600]!, width: 2)),
+                  child: TextButton(
+                    onPressed: () => mintDialog(context, athlete),
+                    child: Text("Mint",
+                        style: TextStyle(
+                          color: Colors.amber[600],
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ))),
           // scout short button
           Align(
-            alignment: Alignment(0.8, 0.15),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .15,
-              height: MediaQuery.of(context).size.height * .065,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: TextButton(
-                onPressed:(){},
-                child:Text(
-                  "Buy Short APT",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  )
-                ),
-              )
-            )
-          ),
+              alignment: Alignment(0.8, 0.15),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .15,
+                  height: MediaQuery.of(context).size.height * .065,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text("Buy Short APT",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ))),
           // scout redeem button
           Align(
-            alignment: Alignment(0.8,0.45),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .15,
-              height: MediaQuery.of(context).size.height * .065,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(
-                  color: Colors.amber[600]!,
-                  width: 2
-                )
-              ),
-              child: TextButton(
-                onPressed:() => redeemDialog(context, athlete),
-                child:Text(
-                  "Redeem",
-                  style: TextStyle(
-                    color: Colors.amber[600],
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  )
-                ),
-              )
-            )
-          ),
-        ]
-      )
-    );
+              alignment: Alignment(0.8, 0.45),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .15,
+                  height: MediaQuery.of(context).size.height * .065,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: Colors.amber[600]!, width: 2)),
+                  child: TextButton(
+                    onPressed: () => redeemDialog(context, athlete),
+                    child: Text("Redeem",
+                        style: TextStyle(
+                          color: Colors.amber[600],
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ))),
+        ]));
 
-    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
   }
 
   // Scout Mint popup
   void mintDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Align(
-        alignment: Alignment(0,0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(12.0),
-            border: Border.all(
-              color: Colors.grey[400]!,
-              width: 3,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Align(
+          alignment: Alignment(0, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                color: Colors.grey[400]!,
+                width: 3,
+              ),
             ),
-          ),
-          height: MediaQuery.of(context).size.height * 0.65,
-          width: MediaQuery.of(context).size.width * 0.3,
-          child: Stack(
-            children: <Widget>[
+            height: MediaQuery.of(context).size.height * 0.65,
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Stack(children: <Widget>[
               // Mint Title
               Align(
-                alignment: Alignment(0, -0.9),
-                child: Text(
-                  "MINT",
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontFamily: 'OpenSans',
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
+                  alignment: Alignment(0, -0.9),
+                  child: Text("MINT",
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontFamily: 'OpenSans',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ))),
               // Athlete Name
               Align(
-                alignment: Alignment(0, -0.65),
-                child: Text(
-                  athlete.name + " APT",
-                  style: TextStyle(
-                    color: Colors.amber[600],
-                    fontFamily: 'OpenSans',
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
+                  alignment: Alignment(0, -0.65),
+                  child: Text(athlete.name + " APT",
+                      style: TextStyle(
+                        color: Colors.amber[600],
+                        fontFamily: 'OpenSans',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ))),
               // AX Amount text box
               Align(
-                alignment: Alignment(0, -0.30),
-                child: Container(
-                  width: MediaQuery.of(context).size.width*0.18,
-                  height: MediaQuery.of(context).size.height*0.08,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: Colors.grey[600]!,
-                      width: 2
-                    )
-                  ),
-                  child: Center(
-                    child: TextFormField(
-                      style: TextStyle(
-                        fontSize: 16
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Input AX Amount"
-                      ),
-                    )
-                  )
-                )
-              ),
+                  alignment: Alignment(0, -0.30),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border:
+                              Border.all(color: Colors.grey[600]!, width: 2)),
+                      child: Center(
+                          child: TextFormField(
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Input AX Amount"),
+                      )))),
               // text
               Align(
-                alignment: Alignment(0, 0.05),
-                child: Text(
-                  "You will receive:",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize:16,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // long tokens text
-              Align(
-                alignment: Alignment(0, 0.25),
-                child: Text(
-                  "20 Long "+athlete.name+" APTs",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // short tokens text
-              Align(
-                alignment: Alignment(0, 0.45),
-                child: Text(
-                  "20 Short "+athlete.name+" APTs",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // long tokens text
-              Align(
-                alignment: Alignment(0, 0.85),
-                child: Container(
-                  width: MediaQuery.of(context).size.width*0.18,
-                  height: MediaQuery.of(context).size.height*0.08,
-                  decoration: BoxDecoration(
-                    color: Colors.amber[600],
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      mintConfirmDialog(context, athlete);
-                    },
-                    child: Text(
-                      "Confirm",
+                  alignment: Alignment(0, 0.05),
+                  child: Text("You will receive:",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.25),
+                  child: Text("20 Long " + athlete.name + " APTs",
+                      style: TextStyle(
+                        color: Colors.white,
                         fontFamily: 'OpenSans',
                         fontSize: 22,
                         fontWeight: FontWeight.w600,
-                      )
-                    )
-                  )
-                )
-              ),
+                      ))),
+              // short tokens text
+              Align(
+                  alignment: Alignment(0, 0.45),
+                  child: Text("20 Short " + athlete.name + " APTs",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.85),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[600],
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            mintConfirmDialog(context, athlete);
+                          },
+                          child: Text("Confirm",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'OpenSans',
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ))))),
               // Top 'X'
               Align(
                 // These values are based on trial & error method
@@ -1668,115 +1976,96 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ]
+            ]),
           ),
-        ),
-      )
-    );
+        ));
 
-    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
   }
 
   // Scout Mint Confirm Popup
   void mintConfirmDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Align(
-        alignment: Alignment(0,0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(12.0),
-            border: Border.all(
-              color: Colors.grey[400]!,
-              width: 3,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Align(
+          alignment: Alignment(0, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                color: Colors.grey[400]!,
+                width: 3,
+              ),
             ),
-          ),
-          height: MediaQuery.of(context).size.height * 0.55,
-          width: MediaQuery.of(context).size.width * 0.3,
-          child: Stack(
-            children: <Widget>[
+            height: MediaQuery.of(context).size.height * 0.55,
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Stack(children: <Widget>[
               // Mint approved text
               Align(
-                alignment: Alignment(0, -0.7),
-                child: Text(
-                  "Mint Approved!",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
+                  alignment: Alignment(0, -0.7),
+                  child: Text("Mint Approved!",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ))),
               // text
               Align(
-                alignment: Alignment(0, -0.375),
-                child: Text(
-                  "You will have receive:",
-                  style: TextStyle(
-                    color: Colors.grey[100],
-                    fontFamily: 'OpenSans',
-                    fontSize:16,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // long tokens text
-              Align(
-                alignment: Alignment(0, -0.05),
-                child: Text(
-                  "20 Long "+athlete.name+" APTs",
-                  style: TextStyle(
-                    color: Colors.grey[100],
-                    fontFamily: 'OpenSans',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // short tokens text
-              Align(
-                alignment: Alignment(0, 0.2),
-                child: Text(
-                  "20 Short "+athlete.name+" APTs",
-                  style: TextStyle(
-                    color: Colors.grey[100],
-                    fontFamily: 'OpenSans',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // long tokens text
-              Align(
-                alignment: Alignment(0, 0.7),
-                child: Container(
-                  width: MediaQuery.of(context).size.width*0.18,
-                  height: MediaQuery.of(context).size.height*0.08,
-                  decoration: BoxDecoration(
-                    color: Colors.amber[600],
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "Back to Scout",
+                  alignment: Alignment(0, -0.375),
+                  child: Text("You will have receive:",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.grey[100],
+                        fontFamily: 'OpenSans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, -0.05),
+                  child: Text("20 Long " + athlete.name + " APTs",
+                      style: TextStyle(
+                        color: Colors.grey[100],
                         fontFamily: 'OpenSans',
                         fontSize: 22,
                         fontWeight: FontWeight.w600,
-                      )
-                    )
-                  )
-                )
-              ),
+                      ))),
+              // short tokens text
+              Align(
+                  alignment: Alignment(0, 0.2),
+                  child: Text("20 Short " + athlete.name + " APTs",
+                      style: TextStyle(
+                        color: Colors.grey[100],
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.7),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[600],
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("Back to Scout",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'OpenSans',
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ))))),
               // Top 'X'
               Align(
                 // These values are based on trial & error method
@@ -1798,172 +2087,135 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ]
+            ]),
           ),
-        ),
-      )
-    );
+        ));
 
-    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
   }
 
   // Scout Redeem Popup
   void redeemDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Align(
-        alignment: Alignment(0,0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(12.0),
-            border: Border.all(
-              color: Colors.grey[400]!,
-              width: 3,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Align(
+          alignment: Alignment(0, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                color: Colors.grey[400]!,
+                width: 3,
+              ),
             ),
-          ),
-          height: MediaQuery.of(context).size.height * 0.65,
-          width: MediaQuery.of(context).size.width * 0.3,
-          child: Stack(
-            children: <Widget>[
+            height: MediaQuery.of(context).size.height * 0.65,
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Stack(children: <Widget>[
               // Mint Title
               Align(
-                alignment: Alignment(0, -0.9),
-                child: Text(
-                  "REDEEM",
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontFamily: 'OpenSans',
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
+                  alignment: Alignment(0, -0.9),
+                  child: Text("REDEEM",
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontFamily: 'OpenSans',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ))),
               // Athlete Name
               Align(
-                alignment: Alignment(0, -0.7),
-                child: Text(
-                  athlete.name + " APT",
-                  style: TextStyle(
-                    color: Colors.amber[600],
-                    fontFamily: 'OpenSans',
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
+                  alignment: Alignment(0, -0.7),
+                  child: Text(athlete.name + " APT",
+                      style: TextStyle(
+                        color: Colors.amber[600],
+                        fontFamily: 'OpenSans',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ))),
               // APT Amount text box
               Align(
-                alignment: Alignment(0, -0.4),
-                child: Container(
-                  width: MediaQuery.of(context).size.width*0.18,
-                  height: MediaQuery.of(context).size.height*0.08,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: Colors.grey[600]!,
-                      width: 2
-                    )
-                  ),
-                  child: Center(
-                    child: TextFormField(
-                      style: TextStyle(
-                        fontSize: 16
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Input APT Amount"
-                      ),
-                    )
-                  )
-                )
-              ),
+                  alignment: Alignment(0, -0.4),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border:
+                              Border.all(color: Colors.grey[600]!, width: 2)),
+                      child: Center(
+                          child: TextFormField(
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Input APT Amount"),
+                      )))),
               // iAPT Amount text box
               Align(
-                alignment: Alignment(0, 0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width*0.18,
-                  height: MediaQuery.of(context).size.height*0.08,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: Colors.grey[600]!,
-                      width: 2
-                    )
-                  ),
-                  child: Center(
-                    child: TextFormField(
-                      style: TextStyle(
-                        fontSize: 16
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Input iAPT Amount"
-                      ),
-                    )
-                  )
-                )
-              ),
+                  alignment: Alignment(0, 0),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border:
+                              Border.all(color: Colors.grey[600]!, width: 2)),
+                      child: Center(
+                          child: TextFormField(
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Input iAPT Amount"),
+                      )))),
               // text
               Align(
-                alignment: Alignment(0, 0.3),
-                child: Text(
-                  "You will receive:",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize:16,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // long tokens text
-              Align(
-                alignment: Alignment(0, 0.5),
-                child: Text(
-                  "20 AX",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 36,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // long tokens text
-              Align(
-                alignment: Alignment(0, 0.85),
-                child: Container(
-                  width: MediaQuery.of(context).size.width*0.18,
-                  height: MediaQuery.of(context).size.height*0.08,
-                  decoration: BoxDecoration(
-                    color: Colors.amber[600],
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      redeemConfirmDialog(context, athlete);
-                    },
-                    child: Text(
-                      "Confirm",
+                  alignment: Alignment(0, 0.3),
+                  child: Text("You will receive:",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontFamily: 'OpenSans',
-                        fontSize: 22,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
-                      )
-                    )
-                  )
-                )
-              ),
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.5),
+                  child: Text("20 AX",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 36,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.85),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[600],
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            redeemConfirmDialog(context, athlete);
+                          },
+                          child: Text("Confirm",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'OpenSans',
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ))))),
               // Top 'X'
               Align(
                 // These values are based on trial & error method
@@ -1985,102 +2237,86 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ]
+            ]),
           ),
-        ),
-      )
-    );
+        ));
 
-    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
   }
 
   // Scout Redeem Confirm Popup
   void redeemConfirmDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Align(
-        alignment: Alignment(0,0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(12.0),
-            border: Border.all(
-              color: Colors.grey[400]!,
-              width: 3,
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Align(
+          alignment: Alignment(0, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                color: Colors.grey[400]!,
+                width: 3,
+              ),
             ),
-          ),
-          height: MediaQuery.of(context).size.height * 0.4,
-          width: MediaQuery.of(context).size.width * 0.3,
-          child: Stack(
-            children: <Widget>[
+            height: MediaQuery.of(context).size.height * 0.4,
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Stack(children: <Widget>[
               // Mint approved text
               Align(
-                alignment: Alignment(0, -0.7),
-                child: Text(
-                  "Redemption Approved!",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
+                  alignment: Alignment(0, -0.7),
+                  child: Text("Redemption Approved!",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ))),
               // text
               Align(
-                alignment: Alignment(0, -0.325),
-                child: Text(
-                  "You have received:",
-                  style: TextStyle(
-                    color: Colors.grey[100],
-                    fontFamily: 'OpenSans',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // long tokens text
-              Align(
-                alignment: Alignment(0, 0.0),
-                child: Text(
-                  "20 AX",
-                  style: TextStyle(
-                    color: Colors.grey[100],
-                    fontFamily: 'OpenSans',
-                    fontSize: 40,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              // long tokens text
-              Align(
-                alignment: Alignment(0, 0.7),
-                child: Container(
-                  width: MediaQuery.of(context).size.width*0.18,
-                  height: MediaQuery.of(context).size.height*0.08,
-                  decoration: BoxDecoration(
-                    color: Colors.amber[600],
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "Back to Scout",
+                  alignment: Alignment(0, -0.325),
+                  child: Text("You have received:",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.grey[100],
                         fontFamily: 'OpenSans',
-                        fontSize: 22,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
-                      )
-                    )
-                  )
-                )
-              ),
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.0),
+                  child: Text("20 AX",
+                      style: TextStyle(
+                        color: Colors.grey[100],
+                        fontFamily: 'OpenSans',
+                        fontSize: 40,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.7),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[600],
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("Back to Scout",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'OpenSans',
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ))))),
               // Top 'X'
               Align(
                 // These values are based on trial & error method
@@ -2102,283 +2338,282 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ]
+            ]),
           ),
-        ),
-      )
-    );
+        ));
 
-    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
   }
 
   // Scout Hint Popup
   void scoutHintDialog(BuildContext context) {
     Dialog fancyDialog = Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Align(alignment: Alignment.bottomRight, child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[900],
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
-          border: Border.all(
-            color: Colors.grey[600]!,
-            width: 2,
-          ),
         ),
-        height: MediaQuery.of(context).size.height * 0.45,
-        width: MediaQuery.of(context).size.width * 0.3,
-        child: Stack(children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * .45,
-            alignment: Alignment.center,
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12),
-              topRight: Radius.circular(12),
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                color: Colors.grey[600]!,
+                width: 2,
               ),
             ),
-            child: Text(
-              "Welcome to the Scout page! This is where you can search Athlete Performance Tokens (APTs)" +
-              " and speculate on their performance.\n\nYou can also execute long/short orders and mint/redeem" +
-              " the APTs of your choice:\n\nLong: Loads a purchase for an APT on the Swap page.\n\nShort: " +
-              "Loads a purchase for an Inverse APT (iAPT) on the Swap page.\n\nMint: Allows you to mint APT and" +
-              " iAPT pairs.\n\nRedeem: Allows you to redeem APT and iAPT pairs for AX Coin.\n\nLearn more about" +
-              " these functions here."
-            )
-          ),
-          Align(
-            // These values are based on trial & error method
-            alignment: Alignment(0.92, -0.95),
-            child: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Icon(
-                  Icons.close,
-                  size: 35,
-                  color: Colors.grey[600],
+            height: MediaQuery.of(context).size.height * 0.45,
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Stack(children: <Widget>[
+              Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * .45,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    ),
+                  ),
+                  child: Text("Welcome to the Scout page! This is where you can search Athlete Performance Tokens (APTs)" +
+                      " and speculate on their performance.\n\nYou can also execute long/short orders and mint/redeem" +
+                      " the APTs of your choice:\n\nLong: Loads a purchase for an APT on the Swap page.\n\nShort: " +
+                      "Loads a purchase for an Inverse APT (iAPT) on the Swap page.\n\nMint: Allows you to mint APT and" +
+                      " iAPT pairs.\n\nRedeem: Allows you to redeem APT and iAPT pairs for AX Coin.\n\nLearn more about" +
+                      " these functions here.")),
+              Align(
+                // These values are based on trial & error method
+                alignment: Alignment(0.92, -0.95),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      size: 35,
+                      color: Colors.grey[600],
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ]),
           ),
-        ]),
-      ),)
-    );
+        ));
 
-    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
   }
 
   // Earn ListView
   Widget LPEarnListView(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width*0.768,
-      height: MediaQuery.of(context).size.height*0.4,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: earnRange[1],
-        itemBuilder: (BuildContext context, int index) {
-          // spacing
-          return Container(
-            width: MediaQuery.of(context).size.width*0.256,
-            height: MediaQuery.of(context).size.height*0.4,
-            child: Center(
-              // Earn LP Container
-              child: Container(
-                width: MediaQuery.of(context).size.width*0.236,
-                height: MediaQuery.of(context).size.height*0.4,
-                decoration: BoxDecoration(
-                  color: Colors.grey[800],
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: Stack(
-                  children: [
-                    // Circle icons
-                    Align(
-                      alignment: Alignment(0, -0.7),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width*0.05,
-                        // circle Icons
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            // AX icon
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.022,
-                              height: MediaQuery.of(context).size.width*0.022,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.black
-                              ),
-                            ),
-                            // APT icon
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.022,
-                              height: MediaQuery.of(context).size.width*0.022,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Colors.amber[600]
-                              ),
-                            ),
-                          ],
-                        )
-                      )
-                    ),
-                    // Athlete APT Name
-                    Align(
-                      alignment: Alignment(0.0, -0.3),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width*0.17,
-                        child: Text(
-                          "AX - " + curAthletes[index].name + " APT",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )
-                      )
-                    ),
-                    // Small Text
-                    Align(
-                      alignment: Alignment(0,0.275),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height*0.09,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            // Total APY
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.14,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Total APY", 
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'OpenSans',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                    )
-                                  ),
-                                  Text(
-                                    "20 %",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'OpenSans',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                    )
-                                  )
-                                ],
-                              )
-                            ),
-                            // TVL
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.14,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "TVL", 
-                                    style: TextStyle(
-                                      color: Colors.grey[200],
-                                      fontFamily: 'OpenSans',
-                                      fontSize: 12,
-                                    )
-                                  ),
-                                  Text(
-                                    "\$1,000,000",
-                                    style: TextStyle(
-                                      color: Colors.grey[200],
-                                      fontFamily: 'OpenSans',
-                                      fontSize: 12,
-                                    )
-                                  )
-                                ],
-                              )
-                            ),
-                            // LP APY
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.14,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "LP APY", 
-                                    style: TextStyle(
-                                      color: Colors.grey[200],
-                                      fontFamily: 'OpenSans',
-                                      fontSize: 12,
-                                    )
-                                  ),
-                                  Text(
-                                    "5 %",
-                                    style: TextStyle(
-                                      color: Colors.grey[200],
-                                      fontFamily: 'OpenSans',
-                                      fontSize: 12,
-                                    )
-                                  )
-                                ],
-                              )
-                            ),
-                          ]
-                        )
-                      )
-                    ),
-                    // Deposit Button
-                    Align(
-                      alignment: Alignment(0,0.825),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width*0.14,
-                        height: MediaQuery.of(context).size.height*0.045,
+        width: MediaQuery.of(context).size.width * 0.768,
+        height: MediaQuery.of(context).size.height * 0.4,
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: earnRange[1],
+            itemBuilder: (BuildContext context, int index) {
+              // spacing
+              return Container(
+                width: MediaQuery.of(context).size.width * 0.256,
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: Center(
+                    // Earn LP Container
+                    child: Container(
+                        width: MediaQuery.of(context).size.width * 0.236,
+                        height: MediaQuery.of(context).size.height * 0.4,
                         decoration: BoxDecoration(
+                          color: Colors.grey[800],
                           borderRadius: BorderRadius.circular(12.0),
-                          color: Colors.amber[600]
                         ),
-                        child: TextButton(
-                          onPressed: () => lpPopupDialog(context, curAthletes[index]),
-                          child: Text(
-                            "Deposit",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'OpenSans',
-                              fontSize: 20,
-                            ),
-                          )
-                        )
-                      )
-                    )
-                  ]
-                )
-              )
-            ),
-          );
-        }
-      )
-    );
+                        child: Stack(children: [
+                          // Circle icons
+                          Align(
+                              alignment: Alignment(0, -0.7),
+                              child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                  // circle Icons
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      // AX icon
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.022,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.022,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            color: Colors.black),
+                                      ),
+                                      // APT icon
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.022,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.022,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            color: Colors.amber[600]),
+                                      ),
+                                    ],
+                                  ))),
+                          // Athlete APT Name
+                          Align(
+                              alignment: Alignment(0.0, -0.3),
+                              child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.17,
+                                  child: Text(
+                                    "AX - " + curAthletes[index].name + " APT",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ))),
+                          // Small Text
+                          Align(
+                              alignment: Alignment(0, 0.275),
+                              child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.09,
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        // Total APY
+                                        Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.14,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text("Total APY",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    )),
+                                                Text("20 %",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ))
+                                              ],
+                                            )),
+                                        // TVL
+                                        Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.14,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text("TVL",
+                                                    style: TextStyle(
+                                                      color: Colors.grey[200],
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 12,
+                                                    )),
+                                                Text("\$1,000,000",
+                                                    style: TextStyle(
+                                                      color: Colors.grey[200],
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 12,
+                                                    ))
+                                              ],
+                                            )),
+                                        // LP APY
+                                        Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.14,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text("LP APY",
+                                                    style: TextStyle(
+                                                      color: Colors.grey[200],
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 12,
+                                                    )),
+                                                Text("5 %",
+                                                    style: TextStyle(
+                                                      color: Colors.grey[200],
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 12,
+                                                    ))
+                                              ],
+                                            )),
+                                      ]))),
+                          // Deposit Button
+                          Align(
+                              alignment: Alignment(0, 0.825),
+                              child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.14,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.045,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      color: Colors.amber[600]),
+                                  child: TextButton(
+                                      onPressed: () => lpPopupDialog(
+                                          context, curAthletes[index]),
+                                      child: Text(
+                                        "Deposit",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 20,
+                                        ),
+                                      ))))
+                        ]))),
+              );
+            }));
   }
 
   // LP Farm Popup
   void lpPopupDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Stack(
-        children: <Widget>[
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Stack(children: <Widget>[
           // Background
           Align(
             alignment: Alignment(0, 0.2),
@@ -2394,189 +2629,154 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-          ), 
+          ),
           // Athlete Title
           Align(
-            alignment: Alignment(0,-0.75),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .6,
-              child: Text(
-                "AX - " + athlete.name + " APT Farm",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'OpenSans',
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            )
-          ),
+              alignment: Alignment(0, -0.75),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .6,
+                  child: Text(
+                    "AX - " + athlete.name + " APT Farm",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ))),
           // * Note text
           Align(
-            alignment: Alignment(0,-0.60),
-            child: Container(
-              child: Text(
-                "* Add liquidity to supply LP tokens to your account.\nDeposit LP tokens to earn \$AX rewards.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'OpenSans',
-                  fontSize: 8,
-                  fontStyle: FontStyle.italic
-                )
-              )
-            )
-          ),
+              alignment: Alignment(0, -0.60),
+              child: Container(
+                  child: Text(
+                      "* Add liquidity to supply LP tokens to your account.\nDeposit LP tokens to earn \$AX rewards.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 8,
+                          fontStyle: FontStyle.italic)))),
           // Earn, deposit: Top token box
           Align(
-            alignment: Alignment(0,-0.4),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .3,
-              height: MediaQuery.of(context).size.height * .1,
-              decoration: BoxDecoration(
-                color: Colors.grey[900],
-                borderRadius: BorderRadius.circular(12.0)
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width * .1,
-                    padding: EdgeInsets.only(left: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+              alignment: Alignment(0, -0.4),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .3,
+                  height: MediaQuery.of(context).size.height * .1,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[900],
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          width: MediaQuery.of(context).size.width * .03,
-                          height: MediaQuery.of(context).size.width * .03,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(100)
+                          width: MediaQuery.of(context).size.width * .1,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width * .03,
+                                height: MediaQuery.of(context).size.width * .03,
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(100)),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: Text("\$AX",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.w600)))
+                            ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text(
-                            "\$AX",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'OpenSans',
-                              fontSize: 21,
-                              fontWeight: FontWeight.w600
-                            )
-                          )
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text(
-                      "0.00",
-                      style: TextStyle(
-                        color: Colors.grey[350],
-                        fontFamily: 'OpenSans',
-                        fontSize: 21,
-                        fontWeight: FontWeight.w600
-                      )
-                    )
-                  )
-                ]
-              )
-            )
-          ),
+                            padding: EdgeInsets.only(right: 20),
+                            child: Text("0.00",
+                                style: TextStyle(
+                                    color: Colors.grey[350],
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.w600)))
+                      ]))),
           // Earn, deposit: Bottom token box
           Align(
-            alignment: Alignment(0,-0.05),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .3,
-              height: MediaQuery.of(context).size.height * .1,
-              decoration: BoxDecoration(
-                color: Colors.grey[900],
-                borderRadius: BorderRadius.circular(12.0)
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width * .25,
-                    padding: EdgeInsets.only(left: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+              alignment: Alignment(0, -0.05),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .3,
+                  height: MediaQuery.of(context).size.height * .1,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[900],
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          width: MediaQuery.of(context).size.width * .03,
-                          height: MediaQuery.of(context).size.width * .03,
-                          decoration: BoxDecoration(
-                            color: Colors.amber[600],
-                            borderRadius: BorderRadius.circular(100)
+                          width: MediaQuery.of(context).size.width * .25,
+                          padding: EdgeInsets.only(left: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width * .03,
+                                height: MediaQuery.of(context).size.width * .03,
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[600],
+                                    borderRadius: BorderRadius.circular(100)),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: Text(athlete.name + " APT",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.w600)))
+                            ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text(
-                            athlete.name + " APT",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'OpenSans',
-                              fontSize: 21,
-                              fontWeight: FontWeight.w600
-                            )
-                          )
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text(
-                      "0.00",
-                      style: TextStyle(
-                        color: Colors.grey[350],
-                        fontFamily: 'OpenSans',
-                        fontSize: 21,
-                        fontWeight: FontWeight.w600
-                      )
-                    )
-                  )
-                ]
-              )
-            )
-          ),
+                            padding: EdgeInsets.only(right: 20),
+                            child: Text("0.00",
+                                style: TextStyle(
+                                    color: Colors.grey[350],
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.w600)))
+                      ]))),
           // Add liquidity button
           Align(
-            alignment: Alignment(0,0.27),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .2,
-              height: MediaQuery.of(context).size.height * .075,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(
-                  color: Colors.amber[600]!,
-                  width: 2,
-                ),
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Add Liquidity",
-                  style: TextStyle(
-                    color: Colors.amber[600],
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
+              alignment: Alignment(0, 0.27),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .2,
+                  height: MediaQuery.of(context).size.height * .075,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(12.0),
+                    border: Border.all(
+                      color: Colors.amber[600]!,
+                      width: 2,
+                    ),
                   ),
-                )
-              )
-            )
-          ),
+                  child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Add Liquidity",
+                        style: TextStyle(
+                          color: Colors.amber[600],
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      )))),
           // LP Tokens Text
           Align(
-            alignment: Alignment(0,0.46),
+            alignment: Alignment(0, 0.46),
             child: Text(
-              "LP Tokens: "+"10",
+              "LP Tokens: " + "10",
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'OpenSans',
@@ -2587,52 +2787,44 @@ class _HomePageState extends State<HomePage> {
           ),
           // Deposit Liquidity button
           Align(
-            alignment: Alignment(0,0.7),
-            child: Container(
-              width: MediaQuery.of(context).size.width * .2,
-              height: MediaQuery.of(context).size.height * .075,
-              decoration: BoxDecoration(
-                color: Colors.amber[600],
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(
-                  color: Colors.amber[600]!,
-                  width: 2,
-                ),
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Deposit Liquidity",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
+              alignment: Alignment(0, 0.7),
+              child: Container(
+                  width: MediaQuery.of(context).size.width * .2,
+                  height: MediaQuery.of(context).size.height * .075,
+                  decoration: BoxDecoration(
+                    color: Colors.amber[600],
+                    borderRadius: BorderRadius.circular(12.0),
+                    border: Border.all(
+                      color: Colors.amber[600]!,
+                      width: 2,
+                    ),
                   ),
-                )
-              )
-            )
-          ),
+                  child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Deposit Liquidity",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      )))),
           // 'X' Button
           Align(
-            alignment: Alignment(0.37, -0.82),
-            child: Container(
-              width: 80,
-              height: 50,
-              child: TextButton(
-                onPressed: () {Navigator.pop(context);},
-                child: Icon(
-                  Icons.close,
-                  color: Colors.grey[400],
-                  size: 50
-                )
-              )
-            )
-          ),
-        ]
-      )
-    );
+              alignment: Alignment(0.37, -0.82),
+              child: Container(
+                  width: 80,
+                  height: 50,
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.close,
+                          color: Colors.grey[400], size: 50)))),
+        ]));
 
-    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
   }
 }
