@@ -562,7 +562,13 @@ class _HomePageState extends State<HomePage> {
                                                                 color: Colors.grey[900],
                                                                 shadowColor: Colors.grey[900],
                                                                 child: ListTile(
-                                                                  title: Text(athlete.name),
+                                                                  title: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    children: <Widget>[
+                                                                      Text(athlete.name),
+                                                                      // Text(athlete.war[athlete.war.length-1].toString().substring(0,6)),
+                                                                    ],
+                                                                  ),
                                                                   onTap: () => athleteDialog(context, athlete),
                                                                 )
                                                               );
@@ -1296,7 +1302,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
   // Athlete Popup
   void athleteDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
@@ -1480,7 +1485,7 @@ class _HomePageState extends State<HomePage> {
                 )
               ),
               child: TextButton(
-                onPressed:(){},
+                onPressed:() => redeemDialog(context, athlete),
                 child:Text(
                   "Redeem",
                   style: TextStyle(
@@ -1500,6 +1505,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(context: context, builder: (BuildContext context) => fancyDialog);
   }
 
+  // Scout Mint popup
   void mintDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
       backgroundColor: Colors.transparent,
@@ -1671,6 +1677,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(context: context, builder: (BuildContext context) => fancyDialog);
   }
 
+  // Scout Mint Confirm Popup
   void mintConfirmDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
       backgroundColor: Colors.transparent,
@@ -1800,6 +1807,311 @@ class _HomePageState extends State<HomePage> {
     showDialog(context: context, builder: (BuildContext context) => fancyDialog);
   }
 
+  // Scout Redeem Popup
+  void redeemDialog(BuildContext context, Athlete athlete) {
+    Dialog fancyDialog = Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Align(
+        alignment: Alignment(0,0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(
+              color: Colors.grey[400]!,
+              width: 3,
+            ),
+          ),
+          height: MediaQuery.of(context).size.height * 0.65,
+          width: MediaQuery.of(context).size.width * 0.3,
+          child: Stack(
+            children: <Widget>[
+              // Mint Title
+              Align(
+                alignment: Alignment(0, -0.9),
+                child: Text(
+                  "REDEEM",
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontFamily: 'OpenSans',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // Athlete Name
+              Align(
+                alignment: Alignment(0, -0.7),
+                child: Text(
+                  athlete.name + " APT",
+                  style: TextStyle(
+                    color: Colors.amber[600],
+                    fontFamily: 'OpenSans',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // APT Amount text box
+              Align(
+                alignment: Alignment(0, -0.4),
+                child: Container(
+                  width: MediaQuery.of(context).size.width*0.18,
+                  height: MediaQuery.of(context).size.height*0.08,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(12.0),
+                    border: Border.all(
+                      color: Colors.grey[600]!,
+                      width: 2
+                    )
+                  ),
+                  child: Center(
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontSize: 16
+                      ),
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Input APT Amount"
+                      ),
+                    )
+                  )
+                )
+              ),
+              // iAPT Amount text box
+              Align(
+                alignment: Alignment(0, 0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width*0.18,
+                  height: MediaQuery.of(context).size.height*0.08,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(12.0),
+                    border: Border.all(
+                      color: Colors.grey[600]!,
+                      width: 2
+                    )
+                  ),
+                  child: Center(
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontSize: 16
+                      ),
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Input iAPT Amount"
+                      ),
+                    )
+                  )
+                )
+              ),
+              // text
+              Align(
+                alignment: Alignment(0, 0.3),
+                child: Text(
+                  "You will receive:",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize:16,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // long tokens text
+              Align(
+                alignment: Alignment(0, 0.5),
+                child: Text(
+                  "20 AX",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 36,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // long tokens text
+              Align(
+                alignment: Alignment(0, 0.85),
+                child: Container(
+                  width: MediaQuery.of(context).size.width*0.18,
+                  height: MediaQuery.of(context).size.height*0.08,
+                  decoration: BoxDecoration(
+                    color: Colors.amber[600],
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      redeemConfirmDialog(context, athlete);
+                    },
+                    child: Text(
+                      "Confirm",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      )
+                    )
+                  )
+                )
+              ),
+              // Top 'X'
+              Align(
+                // These values are based on trial & error method
+                alignment: Alignment(0.92, -0.95),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      size: 35,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ),
+            ]
+          ),
+        ),
+      )
+    );
+
+    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+  }
+
+  // Scout Redeem Confirm Popup
+  void redeemConfirmDialog(BuildContext context, Athlete athlete) {
+    Dialog fancyDialog = Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Align(
+        alignment: Alignment(0,0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(
+              color: Colors.grey[400]!,
+              width: 3,
+            ),
+          ),
+          height: MediaQuery.of(context).size.height * 0.4,
+          width: MediaQuery.of(context).size.width * 0.3,
+          child: Stack(
+            children: <Widget>[
+              // Mint approved text
+              Align(
+                alignment: Alignment(0, -0.7),
+                child: Text(
+                  "Redemption Approved!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // text
+              Align(
+                alignment: Alignment(0, -0.325),
+                child: Text(
+                  "You have received:",
+                  style: TextStyle(
+                    color: Colors.grey[100],
+                    fontFamily: 'OpenSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // long tokens text
+              Align(
+                alignment: Alignment(0, 0.0),
+                child: Text(
+                  "20 AX",
+                  style: TextStyle(
+                    color: Colors.grey[100],
+                    fontFamily: 'OpenSans',
+                    fontSize: 40,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
+              // long tokens text
+              Align(
+                alignment: Alignment(0, 0.7),
+                child: Container(
+                  width: MediaQuery.of(context).size.width*0.18,
+                  height: MediaQuery.of(context).size.height*0.08,
+                  decoration: BoxDecoration(
+                    color: Colors.amber[600],
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "Back to Scout",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      )
+                    )
+                  )
+                )
+              ),
+              // Top 'X'
+              Align(
+                // These values are based on trial & error method
+                alignment: Alignment(0.92, -0.95),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      size: 35,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ),
+            ]
+          ),
+        ),
+      )
+    );
+
+    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+  }
+
+  // Scout Hint Popup
   void scoutHintDialog(BuildContext context) {
     Dialog fancyDialog = Dialog(
       backgroundColor: Colors.transparent,
