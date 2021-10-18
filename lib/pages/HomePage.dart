@@ -234,32 +234,23 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Column(children: [
                                                 Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      .85,
+                                                  width: MediaQuery.of(context).size.width *.85,
                                                   height: MediaQuery.of(context)
                                                           .size
                                                           .height *
                                                       .78,
                                                   color: Colors.transparent,
                                                   child:
-                                                      Stack(children: <Widget>[
-                                                    Align(
-                                                        alignment: Alignment(
-                                                            -0.55, -0.96),
+                                                    Stack(children: <Widget>[
+                                                      // Sports Filter
+                                                      Align(
+                                                        alignment: Alignment(-0.55, -0.96),
                                                         child: Container(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.7,
+                                                          width: MediaQuery.of(context).size.width *0.7,
                                                             child: Row(
-                                                              children: <
-                                                                  Widget>[
+                                                              children: <Widget>[
                                                                 TextButton(
-                                                                    onPressed:
-                                                                        () {
+                                                                    onPressed: () {
                                                                       setState(
                                                                           () {
                                                                         athleteList =
@@ -328,47 +319,30 @@ class _HomePageState extends State<HomePage> {
                                                                     )),
                                                               ],
                                                             ))),
+                                                    // ListView Athlete list
                                                     Align(
-                                                        alignment:
-                                                            Alignment(0, 0),
-                                                        child: FutureBuilder<
-                                                                dynamic>(
-                                                            future: AthleteApi
-                                                                .getAthletesLocally(
-                                                                    context),
-                                                            builder: (context,
-                                                                snapshot) {
-                                                              switch (snapshot
-                                                                  .connectionState) {
-                                                                case ConnectionState
-                                                                    .waiting:
+                                                        alignment: Alignment(0, 0),
+                                                        child: FutureBuilder<dynamic>(
+                                                            future: AthleteApi.getAthletesLocally(context),
+                                                            builder: (context, snapshot) {
+                                                              switch (snapshot.connectionState) {
+                                                                case ConnectionState.waiting:
                                                                   // return circle indicator for progress
                                                                   return Center(
-                                                                    child:
-                                                                        CircularProgressIndicator(),
+                                                                    child: CircularProgressIndicator(),
                                                                   );
                                                                 default:
-                                                                  nflList =
-                                                                      snapshot
-                                                                          .data;
+                                                                  nflList = snapshot.data;
                                                                   if (firstRun)
-                                                                    athleteList =
-                                                                        nflList;
+                                                                    athleteList =nflList;
                                                                   return Container(
-                                                                      height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
-                                                                          0.65,
-                                                                      width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
-                                                                          0.8,
+                                                                      height: MediaQuery.of(context).size.height *0.65,
+                                                                      width: MediaQuery.of(context).size.width *0.8,
                                                                       child: ListView.builder(
                                                                           physics: BouncingScrollPhysics(),
                                                                           itemCount: athleteList.length,
                                                                           itemBuilder: (context, index) {
-                                                                            final athlete =
-                                                                                athleteList[index];
+                                                                            final athlete = athleteList[index];
                                                                             return Card(
                                                                                 color: Colors.grey[900],
                                                                                 shadowColor: Colors.grey[900],
@@ -790,36 +764,25 @@ class _HomePageState extends State<HomePage> {
                                                                     .size
                                                                     .width *
                                                                 0.8,
-                                                            child: ListView
-                                                                .builder(
-                                                                    physics:
-                                                                        BouncingScrollPhysics(),
-                                                                    itemCount:
-                                                                        athleteList
-                                                                            .length,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                            index) {
-                                                                      final athlete =
-                                                                          athleteList[
-                                                                              index];
+                                                            child: ListView.builder(
+                                                              physics: BouncingScrollPhysics(),
+                                                                    itemCount: athleteList.length,
+                                                                    itemBuilder: (context, index) {
+                                                                      final athlete = athleteList[index];
                                                                       return Card(
-                                                                          color: Colors.grey[
-                                                                              900],
-                                                                          shadowColor: Colors.grey[
-                                                                              900],
-                                                                          child:
-                                                                              ListTile(
-                                                                            title:
-                                                                                Row(
+                                                                          color: Colors.grey[900],
+                                                                          shadowColor: Colors.grey[900],
+                                                                          child: ListTile(
+                                                                            title: Row(
                                                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                               children: <Widget>[
                                                                                 Text(athlete.name),
-                                                                                // Text(athlete.war[athlete.war.length-1].toString().substring(0,6)),
+                                                                                Text(athlete.war[athlete.war.length-1].toStringAsFixed(4)),
                                                                               ],
                                                                             ),
-                                                                            onTap: () =>
-                                                                                athleteDialog(context, athlete),
+                                                                            onTap: () {
+                                                                              athleteDialog(context, athlete);
+                                                                            },
                                                                           ));
                                                                     }));
                                                     }
@@ -1706,16 +1669,21 @@ class _HomePageState extends State<HomePage> {
           ),
           // Back Button
           Align(
-              alignment: Alignment(-0.9, -0.65),
-              child: Container(
-                  width: 80,
-                  height: 50,
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_back,
-                          color: Colors.grey[400], size: 50)))),
+            alignment: Alignment(-0.9, -0.65),
+            child: Container(
+              width: 80,
+              height: 50,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.grey[400], size: 50
+                )
+              )
+            )
+          ),
           Align(
               alignment: Alignment(-0.7, -0.65),
               child: Text(
@@ -1728,14 +1696,17 @@ class _HomePageState extends State<HomePage> {
                 ),
               )),
           Align(
-              alignment: Alignment(-0.4, -0.65),
-              child: Text(athlete.war[3].toString().substring(0, 6),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                  ))),
+            alignment: Alignment(-0.4, -0.65),
+            child: Text(
+              athlete.war[athlete.war.length-1].toStringAsFixed(4),
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 26,
+                fontWeight: FontWeight.w600,
+              )
+            )
+          ),
           Align(
               alignment: Alignment(-0.65, 0.2),
               child: Container(
