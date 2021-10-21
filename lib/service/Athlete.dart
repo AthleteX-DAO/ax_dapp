@@ -6,5 +6,9 @@ class Athlete {
   const Athlete({required this.name, required this.time, required this.war});
 
   static Athlete fromJson(json) =>
-      Athlete(name: json['name'], time: json['time'], war: json['war']);
+      Athlete(
+        name: json['name'],
+        time: json['time'],
+        war: json['war']
+      );
 }
