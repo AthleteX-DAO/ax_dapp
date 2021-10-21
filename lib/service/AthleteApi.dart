@@ -1,25 +1,13 @@
-import 'dart:io';
-
+import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 
 class AthleteApi {
-  Future<dynamic> getAthletesLocally() async {
-    File assetBundle = new File('assets/data.json');
-    var data = assetBundle.readAsLines();
-    final body = await data;
+  static Future<List<Athlete>> getAthletesLocally(BuildContext context) async {
+    final assetBundle = DefaultAssetBundle.of(context);
+    final data = await assetBundle.loadString('assets/data.json');
+    final body = json.decode(data);
 
     return body.map<Athlete>(Athlete.fromJson).toList();
-  }
-
-  void fetchData() async {
-    final queryParams = {
-      'query': 'select * from nfl;',
-    };
-    final url = Uri.http('54.38.139.134:9000', '/exec?', queryParams);
-    final response = await get(url);
-    print(response.body);
   }
 }
