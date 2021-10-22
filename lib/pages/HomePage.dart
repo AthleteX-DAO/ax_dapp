@@ -1704,139 +1704,368 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+          // Name | Token Type
+          Align(
+            alignment: Alignment(-0.775, -0.55),
+            child: Container(
+              width: MediaQuery.of(context).size.width*0.25,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  // Name
+                  Text(
+                    athlete.name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontSize: 26,
+                      fontWeight: FontWeight.w600,
+                    )
+                  ),
+                  // |
+                  Text(
+                    '|',
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontFamily: 'OpenSans',
+                      fontSize: 26,
+                    )
+                  ),
+                  // Token Type
+                  Text(
+                    "Seasonal APT",
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontFamily: 'OpenSans',
+                      fontSize: 26,
+                      fontWeight: FontWeight.w600,
+                    )
+                  ),
+                ]
+              )
+            )
+          ),
+          // Coming Soon / soon to be graph
+          Align(
+            alignment: Alignment(-0.675, 0.2),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .5,
+              height: MediaQuery.of(context).size.height * .5,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 2,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  "Player Stats\nCOMING SOON",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.amber[600],
+                    fontFamily: 'OpenSans',
+                    fontSize: 44,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              )
+            )
+          ),
+          // War Price
+          Align(
+            alignment: Alignment(-0.8, -0.36),
+            child: Text(
+              athlete.war[3].toStringAsFixed(4),
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 26,
+                fontWeight: FontWeight.w600,
+              )
+            )
+          ),
+          // Overview Text
+          Align(
+            alignment: Alignment(0.385, -0.54),
+            child: Text(
+              "Overview",
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+              )
+            )
+          ),
+          // Overview Divider
+          Align(
+            alignment: Alignment(0.8, -0.44), 
+            child: Container(
+              width: MediaQuery.of(context).size.width * .275,
+              height: 1,
+              color: Colors.grey
+            )
+          ),
+          // Overview block
+          Align(
+            alignment: Alignment(0.8, -0.175),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .275,
+              height: MediaQuery.of(context).size.height * .3,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  // Sport row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Sport",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "American Football",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                    ]
+                  ),
+                  // league row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "League",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "NFL",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                    ]
+                  ),
+                  // position row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Position",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "Quarterback",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                    ]
+                  ),
+                  // season start row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Season Start",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "September 15, 2021",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                    ]
+                  ),
+                  // Season end row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Season End",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "January 15, 2022",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                    ]
+                  ),
+                ],
+              )
+            )
+          ),
+          // Scout buy button, mint button column
+          Align(
+            alignment: Alignment(0.475, 0.55),
+            child: Container(
+              height: MediaQuery.of(context).size.height * .16,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  // Buy Long APT Button
+                  Container(
+                    width: MediaQuery.of(context).size.width * .125,
+                    height: MediaQuery.of(context).size.height * .06,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(12.0)
+                    ),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Buy Long Apt",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                    )
+                  ),
+                  // Mint button
+                  Container(
+                    width: MediaQuery.of(context).size.width * .125,
+                    height: MediaQuery.of(context).size.height * .06,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: Colors.amber[600]!, width: 2)
+                    ),
+                    child: TextButton(
+                      onPressed: () => mintDialog(context, athlete),
+                      child: Text("Mint",
+                        style: TextStyle(
+                          color: Colors.amber[600],
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                    )
+                  )
+                ],
+              )
+            )
+          ),
+          // scout short button, redeem button column
+          Align(
+            alignment: Alignment(0.835, 0.55),
+            child: Container(
+              height: MediaQuery.of(context).size.height * .16,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  // buy short apt button
+                  Container(
+                    width: MediaQuery.of(context).size.width * .125,
+                    height: MediaQuery.of(context).size.height * .06,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text("Buy Short APT",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      )
+                    )
+                  ),
+                  // scout redeem button
+                  Container(
+                    width: MediaQuery.of(context).size.width * .125,
+                    height: MediaQuery.of(context).size.height * .06,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: Colors.amber[600]!, width: 2)
+                    ),
+                    child: TextButton(
+                      onPressed: () => redeemDialog(context, athlete),
+                      child: Text(
+                        "Redeem",
+                        style: TextStyle(
+                          color: Colors.amber[600],
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                    )
+                  )
+                ],
+              )
+            )
+          ),
           // Back Button
           Align(
-              alignment: Alignment(-0.9, -0.65),
-              child: Container(
-                  width: 80,
-                  height: 50,
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_back,
-                          color: Colors.grey[400], size: 50)))),
-          Align(
-              alignment: Alignment(-0.7, -0.65),
-              child: Text(
-                athlete.name,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'OpenSans',
-                  fontSize: 26,
-                  fontWeight: FontWeight.w600,
-                ),
-              )),
-          Align(
-              alignment: Alignment(-0.4, -0.65),
-              child: Text(athlete.war[3].toStringAsFixed(4),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                  ))),
-          Align(
-              alignment: Alignment(-0.65, 0.2),
-              child: Container(
-                  width: MediaQuery.of(context).size.width * .4,
-                  height: MediaQuery.of(context).size.height * .35,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 2,
-                    ),
-                  ),
-                  child: Center(
-                      child: Text("Player Stats\nCOMING SOON",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.amber[600],
-                            fontFamily: 'OpenSans',
-                            fontSize: 44,
-                            fontWeight: FontWeight.w600,
-                          ))))),
-          // Scout buy button
-          Align(
-              alignment: Alignment(0.35, 0.15),
-              child: Container(
-                  width: MediaQuery.of(context).size.width * .15,
-                  height: MediaQuery.of(context).size.height * .065,
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(12.0)),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text("Buy Long Apt",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        )),
-                  ))),
-          // Scout Mint button
-          Align(
-              alignment: Alignment(0.35, 0.45),
-              child: Container(
-                  width: MediaQuery.of(context).size.width * .15,
-                  height: MediaQuery.of(context).size.height * .065,
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(color: Colors.amber[600]!, width: 2)),
-                  child: TextButton(
-                    onPressed: () => mintDialog(context, athlete),
-                    child: Text("Mint",
-                        style: TextStyle(
-                          color: Colors.amber[600],
-                          fontFamily: 'OpenSans',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        )),
-                  ))),
-          // scout short button
-          Align(
-              alignment: Alignment(0.8, 0.15),
-              child: Container(
-                  width: MediaQuery.of(context).size.width * .15,
-                  height: MediaQuery.of(context).size.height * .065,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text("Buy Short APT",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        )),
-                  ))),
-          // scout redeem button
-          Align(
-              alignment: Alignment(0.8, 0.45),
-              child: Container(
-                  width: MediaQuery.of(context).size.width * .15,
-                  height: MediaQuery.of(context).size.height * .065,
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(color: Colors.amber[600]!, width: 2)),
-                  child: TextButton(
-                    onPressed: () => redeemDialog(context, athlete),
-                    child: Text("Redeem",
-                        style: TextStyle(
-                          color: Colors.amber[600],
-                          fontFamily: 'OpenSans',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        )),
-                  ))),
+            alignment: Alignment(-0.93, -0.66),
+            child: Container(
+              width: 80,
+              height: 50,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.grey[400], size: 50
+                )
+              )
+            )
+          ),
         ]));
 
     showDialog(
