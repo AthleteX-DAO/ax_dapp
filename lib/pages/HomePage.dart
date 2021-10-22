@@ -1324,59 +1324,64 @@ class _HomePageState extends State<HomePage> {
                               Align(
                                   alignment: Alignment(0, -0.475),
                                   child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.7,
+                                      width: MediaQuery.of(context).size.width * 0.7,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
+                                          // Highlight NFL Filter
                                           if (athleteList == nflList)
                                             TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    athleteList = nflList;
-                                                  });
-                                                },
-                                                child: Text(
-                                                  "NFL",
-                                                  style: TextStyle(
-                                                      color: Colors.amber[600],
-                                                      fontFamily: 'OpenSans',
-                                                      fontSize: filterText,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ))
-                                          else
-                                            TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    athleteList = nflList;
-                                                  });
-                                                },
-                                                child: Text(
-                                                  "NFL",
-                                                  style: TextStyle(
-                                                      color: Colors.grey[800],
-                                                      fontFamily: 'OpenSans',
-                                                      fontSize: filterText,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                )),
-                                          TextButton(
                                               onPressed: () {
                                                 setState(() {
-                                                  athleteList = [];
+                                                  athleteList = nflList;
                                                 });
                                               },
                                               child: Text(
-                                                "NBA",
+                                                "NFL",
                                                 style: TextStyle(
-                                                    color: Colors.grey[800],
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: filterText,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              )),
+                                                  color: Colors.amber[600],
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: filterText,
+                                                  fontWeight: FontWeight.w600
+                                                ),
+                                              )
+                                            )
+                                          else
+                                            TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  athleteList = nflList;
+                                                });
+                                              },
+                                              child: Text(
+                                                "NFL",
+                                                style: TextStyle(
+                                                  color: Colors.grey[800],
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: filterText,
+                                                  fontWeight:
+                                                    FontWeight.w600
+                                                  ),
+                                              )
+                                            ),
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                athleteList = [];
+                                              });
+                                            },
+                                            child: Text(
+                                              "NBA",
+                                              style: TextStyle(
+                                                color: Colors.grey[800],
+                                                fontFamily: 'OpenSans',
+                                                fontSize: filterText,
+                                                fontWeight:
+                                                  FontWeight.w600
+                                                ),
+                                            )
+                                          ),
                                           TextButton(
                                               onPressed: () {
                                                 setState(() {
@@ -1386,174 +1391,116 @@ class _HomePageState extends State<HomePage> {
                                               child: Text(
                                                 "MMA",
                                                 style: TextStyle(
-                                                    color: Colors.grey[800],
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: filterText,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              )),
+                                                  color: Colors.grey[800],
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: filterText,
+                                                  fontWeight: FontWeight.w600),
+                                              )
+                                            ),
                                         ],
-                                      ))),
+                                      )
+                                    )
+                                  ),
                               // LP Horizontal List
                               if (athleteList.isNotEmpty)
                                 Align(
                                   alignment: Alignment(0, 0.25),
                                   child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .875,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              .5,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          // Scroll Left
-                                          Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.055555,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .3,
-                                              child: ElevatedButton(
-                                                  onPressed: () {
-                                                    earnRange[0] -=
-                                                        earnRange[1];
-                                                    if (earnRange[0] < 0)
-                                                      earnRange[0] = 0;
-                                                    curAthletes = [];
-                                                    for (int i = 0;
-                                                        i < earnRange[1];
-                                                        i++)
-                                                      curAthletes.add(
-                                                          athleteList[
-                                                              earnRange[0] +
-                                                                  i]);
-                                                    setState(() {
-                                                      lastFirstEarn =
-                                                          curAthletes[0];
-                                                    });
-                                                  },
-                                                  style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all<Color>(Colors
-                                                                .transparent),
-                                                  ),
-                                                  child: Icon(
-                                                    Icons.arrow_back_ios,
-                                                    color: Colors.white,
-                                                    size: MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.075,
-                                                  ))),
-                                          // LP Cards
-                                          if (curAthletes.isEmpty)
-                                            FutureBuilder<dynamic>(
-                                                future: AthleteApi
-                                                    .getAthletesLocally(
-                                                        context),
-                                                builder: (context, snapshot) {
-                                                  switch (snapshot
-                                                      .connectionState) {
-                                                    case ConnectionState
-                                                        .waiting:
-                                                      // return circle indicator for progress
-                                                      return Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      );
-                                                    default:
-                                                      nflList = snapshot.data;
-                                                      athleteList = nflList;
-                                                      for (int i = 0;
-                                                          i < earnRange[1] &&
-                                                              i <
-                                                                  athleteList
-                                                                      .length;
-                                                          i++)
-                                                        curAthletes.add(
-                                                            athleteList[i]);
-                                                      if (curAthletes
-                                                          .isNotEmpty)
-                                                        lastFirstEarn =
-                                                            curAthletes[0];
-                                                      return LPEarnListView(
-                                                          context);
-                                                  }
-                                                })
-                                          //Once < or > is pressed
-                                          // ignore: unnecessary_null_comparison
-                                          else if (lastFirstEarn ==
-                                              curAthletes[0])
-                                            LPEarnListView(context),
-                                          // Scroll Right
-                                          Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.05,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .3,
-                                              color: Colors.transparent,
-                                              child: ElevatedButton(
-                                                  onPressed: () {
-                                                    earnRange[0] +=
-                                                        earnRange[1];
-                                                    if (earnRange[0] >
-                                                        athleteList.length -
-                                                            earnRange[1])
-                                                      earnRange[0] =
-                                                          athleteList.length -
-                                                              earnRange[1];
-                                                    curAthletes = [];
-                                                    for (int i = 0;
-                                                        i < earnRange[1];
-                                                        i++)
-                                                      curAthletes.add(
-                                                          athleteList[
-                                                              earnRange[0] +
-                                                                  i]);
-                                                    setState(() {
-                                                      lastFirstEarn =
-                                                          curAthletes[0];
-                                                    });
-                                                    print(earnRange[0]
-                                                            .toString() +
-                                                        "/" +
-                                                        athleteList.length
-                                                            .toString() +
-                                                        "  : " +
-                                                        athleteList[
-                                                                earnRange[0]]
-                                                            .name +
-                                                        "  ~  " +
-                                                        curAthletes[0].name);
-                                                    print(" Name: " +
-                                                        lastFirstEarn.name);
-                                                  },
-                                                  style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all<Color>(Colors
-                                                                .transparent),
-                                                  ),
-                                                  child: Icon(
-                                                    Icons.arrow_forward_ios,
-                                                    color: Colors.white,
-                                                    size: MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.075,
-                                                  ))),
-                                        ],
-                                      )),
+                                    width: MediaQuery.of(context).size.width *.875,
+                                    height: MediaQuery.of(context).size.height *.5,
+                                    child: Row(
+                                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        // Scroll Left
+                                        Container(
+                                            width: MediaQuery.of(context).size.width *0.055555,
+                                            height: MediaQuery.of(context).size.height *.3,
+                                            child: ElevatedButton(
+                                                onPressed: () {
+                                                  earnRange[0] -= earnRange[1];
+                                                  if (earnRange[0] < 0)
+                                                    earnRange[0] = 0;
+
+                                                  curAthletes = [];
+                                                  for (int i = 0; i < earnRange[1]; i++)
+                                                    curAthletes.add(athleteList[earnRange[0] + i]);
+
+                                                  setState(() {
+                                                    lastFirstEarn = curAthletes[0];
+                                                  });
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                                                ),
+                                                child: Icon(
+                                                  Icons.arrow_back_ios,
+                                                  color: Colors.white,
+                                                  size: MediaQuery.of(context).size.height * 0.075,
+                                                ))),
+                                        // LP Cards
+                                        if (curAthletes.isEmpty)
+                                          FutureBuilder<dynamic>(
+                                            future: AthleteApi.getAthletesLocally(context),
+                                            builder: (context, snapshot) {
+                                              switch (snapshot
+                                                  .connectionState) {
+                                                case ConnectionState
+                                                    .waiting:
+                                                  // return circle indicator for progress
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                default:
+                                                  nflList = snapshot.data;
+                                                  athleteList = nflList;
+                                                  for (int i = 0; i < earnRange[1] && i < athleteList.length; i++)
+                                                    curAthletes.add(athleteList[i]);
+
+                                                  if (curAthletes.isNotEmpty)
+                                                    lastFirstEarn = curAthletes[0];
+                                                  return LPEarnListView(
+                                                      context);
+                                              }
+                                            }
+                                          )
+                                        //Once < or > is pressed
+                                        // ignore: unnecessary_null_comparison
+                                        else if (lastFirstEarn ==
+                                            curAthletes[0])
+                                          LPEarnListView(context),
+                                        // Scroll Right
+                                        Container(
+                                          width: MediaQuery.of(context).size.width *0.05,
+                                          height: MediaQuery.of(context).size.height *.3,
+                                          color: Colors.transparent,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              earnRange[0] += earnRange[1];
+                                              if (earnRange[0] > athleteList.length -earnRange[1])
+                                                earnRange[0] = athleteList.length - earnRange[1];
+
+                                              curAthletes = [];
+                                              for (int i = 0; i < earnRange[1]; i++)
+                                                curAthletes.add(athleteList[earnRange[0] +i]);
+
+                                              setState(() {
+                                                lastFirstEarn =curAthletes[0];
+                                              });
+                                            },
+                                            style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                                            ),
+                                            child: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Colors.white,
+                                              size: MediaQuery.of(context).size.height * 0.075,
+                                            )
+                                          )
+                                        ),
+                                      ],
+                                    )
+                                  ),
                                 ),
                             ]),
                           // End of Earn
@@ -1975,10 +1922,10 @@ class _HomePageState extends State<HomePage> {
           ),
           // Coming Soon / soon to be graph
           Align(
-            alignment: Alignment(-0.675, 0.2),
+            alignment: Alignment(-0.675, 0.05),
             child: Container(
               width: MediaQuery.of(context).size.width * .5,
-              height: MediaQuery.of(context).size.height * .5,
+              height: MediaQuery.of(context).size.height * .45,
               decoration: BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(12.0),
@@ -2029,7 +1976,7 @@ class _HomePageState extends State<HomePage> {
           ),
           // Overview Divider
           Align(
-            alignment: Alignment(0.8, -0.44), 
+            alignment: Alignment(0.8, -0.45), 
             child: Container(
               width: MediaQuery.of(context).size.width * .275,
               height: 1,
@@ -2038,10 +1985,10 @@ class _HomePageState extends State<HomePage> {
           ),
           // Overview block
           Align(
-            alignment: Alignment(0.8, -0.175),
+            alignment: Alignment(0.8, -0.25),
             child: Container(
               width: MediaQuery.of(context).size.width * .275,
-              height: MediaQuery.of(context).size.height * .3,
+              height: MediaQuery.of(context).size.height * .25,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -2171,24 +2118,126 @@ class _HomePageState extends State<HomePage> {
           ),
           // Scout buy button, mint button column
           Align(
-            alignment: Alignment(0.475, 0.55),
+            alignment: Alignment(0.8, 0.4),
             child: Container(
+              width: MediaQuery.of(context).size.width * .275,
               height: MediaQuery.of(context).size.height * .16,
-              child: Column(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  // Buy Long APT Button
-                  Container(
-                    width: MediaQuery.of(context).size.width * .125,
-                    height: MediaQuery.of(context).size.height * .06,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(12.0)
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Buy Long Apt",
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      // Buy Long APT Button
+                      Container(
+                        width: MediaQuery.of(context).size.width * .125,
+                        height: MediaQuery.of(context).size.height * .06,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(12.0)
+                        ),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Buy Long Apt",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'OpenSans',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            )
+                          ),
+                        )
+                      ),
+                      // Mint button
+                      Container(
+                        width: MediaQuery.of(context).size.width * .125,
+                        height: MediaQuery.of(context).size.height * .06,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(color: Colors.amber[600]!, width: 2)
+                        ),
+                        child: TextButton(
+                          onPressed: () => mintDialog(context, athlete),
+                          child: Text("Mint",
+                            style: TextStyle(
+                              color: Colors.amber[600],
+                              fontFamily: 'OpenSans',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            )
+                          ),
+                        )
+                      )
+                    ],
+                  ),
+                  // scout short button, redeem button column
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      // buy short apt button
+                      Container(
+                        width: MediaQuery.of(context).size.width * .125,
+                        height: MediaQuery.of(context).size.height * .06,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text("Buy Short APT",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'OpenSans',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            )
+                          )
+                        )
+                      ),
+                      // scout redeem button
+                      Container(
+                        width: MediaQuery.of(context).size.width * .125,
+                        height: MediaQuery.of(context).size.height * .06,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(color: Colors.amber[600]!, width: 2)
+                        ),
+                        child: TextButton(
+                          onPressed: () => redeemDialog(context, athlete),
+                          child: Text(
+                            "Redeem",
+                            style: TextStyle(
+                              color: Colors.amber[600],
+                              fontFamily: 'OpenSans',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            )
+                          ),
+                        )
+                      )
+                    ],
+                  )
+                ]
+              )
+            )
+          ),
+          // Bottom Stats
+          Align(
+            alignment: Alignment(0, 0.83),
+            child: Container(
+              width: MediaQuery.of(context).size.width * .8,
+              height: MediaQuery.of(context).size.height * .125,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        "Athlete Statistics",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'OpenSans',
@@ -2196,85 +2245,137 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.w600,
                         )
                       ),
-                    )
-                  ),
-                  // Mint button
-                  Container(
-                    width: MediaQuery.of(context).size.width * .125,
-                    height: MediaQuery.of(context).size.height * .06,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(color: Colors.amber[600]!, width: 2)
-                    ),
-                    child: TextButton(
-                      onPressed: () => mintDialog(context, athlete),
-                      child: Text("Mint",
-                        style: TextStyle(
-                          color: Colors.amber[600],
-                          fontFamily: 'OpenSans',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        )
-                      ),
-                    )
-                  )
-                ],
-              )
-            )
-          ),
-          // scout short button, redeem button column
-          Align(
-            alignment: Alignment(0.835, 0.55),
-            child: Container(
-              height: MediaQuery.of(context).size.height * .16,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  // buy short apt button
-                  Container(
-                    width: MediaQuery.of(context).size.width * .125,
-                    height: MediaQuery.of(context).size.height * .06,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text("Buy Short APT",
+                      Text(
+                        "Value",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'OpenSans',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        )
-                      )
-                    )
-                  ),
-                  // scout redeem button
-                  Container(
-                    width: MediaQuery.of(context).size.width * .125,
-                    height: MediaQuery.of(context).size.height * .06,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(color: Colors.amber[600]!, width: 2)
-                    ),
-                    child: TextButton(
-                      onPressed: () => redeemDialog(context, athlete),
-                      child: Text(
-                        "Redeem",
-                        style: TextStyle(
-                          color: Colors.amber[600],
-                          fontFamily: 'OpenSans',
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.w600,
                         )
                       ),
-                    )
-                  )
-                ],
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        "Touchdowns",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "8",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                        )
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        "Fumbles",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "8",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                        )
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        "Snaps",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "8",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                        )
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        "Touchdowns",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "8",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                        )
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        "Fumbles",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        )
+                      ),
+                      Text(
+                        "8",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                        )
+                      ),
+                    ],
+                  ),
+                ]
               )
+            ),
+          ),// Bottom stat Divider
+          Align(
+            alignment: Alignment(0, 0.715), 
+            child: Container(
+              width: MediaQuery.of(context).size.width * .8,
+              height: 1,
+              color: Colors.grey
             )
           ),
           // Back Button
