@@ -760,18 +760,44 @@ class _HomePageState extends State<HomePage> {
                                                                           athleteList[
                                                                               index];
                                                                       return Card(
-                                                                          color: Colors.grey[
-                                                                              900],
-                                                                          shadowColor: Colors.grey[
-                                                                              900],
+                                                                          color: Colors
+                                                                              .transparent,
+                                                                          shadowColor: Colors
+                                                                              .black,
                                                                           child:
                                                                               ListTile(
+                                                                            contentPadding: EdgeInsets.fromLTRB(
+                                                                                0,
+                                                                                10,
+                                                                                0,
+                                                                                10),
                                                                             title:
                                                                                 Row(
                                                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                               children: <Widget>[
-                                                                                Text(athlete.name),
-                                                                                Text(athlete.war[athlete.war.length - 1].toStringAsFixed(4)),
+                                                                                Align(
+                                                                                    alignment: Alignment.centerLeft,
+                                                                                    child: Row(children: [
+                                                                                      Icon(
+                                                                                        Icons.sports_football,
+                                                                                        color: Colors.white,
+                                                                                        size: 25.0,
+                                                                                        semanticLabel: 'Text to announce in accessibility modes',
+                                                                                      ),
+                                                                                      Padding(
+                                                                                        padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                                                                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                                                                          Text(athlete.name, style: TextStyle(fontSize: 20)),
+                                                                                          Text('QB', style: TextStyle(fontSize: 15, color: Colors.white.withOpacity(0.8)), textAlign: TextAlign.left)
+                                                                                        ]),
+                                                                                      ),
+                                                                                    ])),
+                                                                                Align(
+                                                                                    alignment: Alignment.centerRight,
+                                                                                    child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                                                                                      Text('\$' + athlete.war[athlete.war.length - 1].toStringAsFixed(4), style: TextStyle(fontSize: 20)),
+                                                                                      Text('+1.39%', style: TextStyle(fontSize: 15, color: Colors.green.withOpacity(0.8)), textAlign: TextAlign.right)
+                                                                                    ])),
                                                                               ],
                                                                             ),
                                                                             onTap: () =>
