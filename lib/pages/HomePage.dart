@@ -782,7 +782,6 @@ class _HomePageState extends State<HomePage> {
                                                                                         Icons.sports_football,
                                                                                         color: Colors.white,
                                                                                         size: 25.0,
-                                                                                        semanticLabel: 'Text to announce in accessibility modes',
                                                                                       ),
                                                                                       Padding(
                                                                                         padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
@@ -2327,11 +2326,257 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Athlete Popup
-  void athleteDialogMobile(BuildContext context, Athlete athlete) {
-    Dialog fancyDialog = Dialog();
+  // void athleteDialogMobile(BuildContext context, Athlete athlete) {
+  //   Dialog fancyDialog = Dialog(
+  //       backgroundColor: Colors.transparent,
+  //       child: Stack(children: <Widget>[]));
 
-    showDialog(
-        context: context, builder: (BuildContext context) => fancyDialog);
+  //   showDialog(
+  //       context: context, builder: (BuildContext context) => fancyDialog);
+  // }
+
+  void athleteDialogMobile(BuildContext context, athlete) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 100),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: animation,
+            child: child,
+          ),
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return SafeArea(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: Colors.black,
+            child: Column(
+              children: <Widget>[
+                Row(children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    alignment: Alignment.centerLeft,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * .08,
+                    color: Colors.red,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 25.0,
+                      ),
+                    ),
+                  ),
+                ]),
+                Row(children: [
+                  Container(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * .05,
+                      color: Colors.green,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            // Name
+                            Text(athlete.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                            // |
+                            Text(' | ',
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w200,
+                                )),
+                            // Token Type
+                            Text("Seasonal APT",
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w200,
+                                )),
+                          ])),
+                ]),
+                Row(children: [
+                  Stack(children: [
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .4,
+                        color: Colors.red,
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * .4,
+                            // decoration: BoxDecoration(
+                            //   color: Colors.black,
+                            //   borderRadius: BorderRadius.circular(12.0),
+                            //   border: Border.all(
+                            //     color: Colors.grey,
+                            //     width: 2,
+                            //   ),
+                            // ),
+                            child: Center(
+                                child: Text("Player Stats\nCOMING SOON",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.amber[600],
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 44,
+                                      fontWeight: FontWeight.w600,
+                                    ))))),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        '\$' + athlete.war[3].toStringAsFixed(4),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 35,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ])
+                ]),
+                Row(
+                  children: [
+                    Container(
+                        width: MediaQuery.of(context).size.width * .275,
+                        height: MediaQuery.of(context).size.height * .16,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  // Buy Long APT Button
+                                  Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .45,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .06,
+                                      decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(12.0)),
+                                      child: TextButton(
+                                        onPressed: () {},
+                                        child: Text("Buy Long Apt",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                      )),
+                                  // Mint button
+                                  Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .45,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .06,
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          border: Border.all(
+                                              color: Colors.amber[600]!,
+                                              width: 2)),
+                                      child: TextButton(
+                                        onPressed: () =>
+                                            mintDialog(context, athlete),
+                                        child: Text("Mint",
+                                            style: TextStyle(
+                                              color: Colors.amber[600],
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                      ))
+                                ],
+                              ),
+                              // scout short button, redeem button column
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  // buy short apt button
+                                  Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .45,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .06,
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      child: TextButton(
+                                          onPressed: () {},
+                                          child: Text("Buy Short APT",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                              )))),
+                                  // scout redeem button
+                                  Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .45,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .06,
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          border: Border.all(
+                                              color: Colors.amber[600]!,
+                                              width: 2)),
+                                      child: TextButton(
+                                        onPressed: () =>
+                                            redeemDialog(context, athlete),
+                                        child: Text("Redeem",
+                                            style: TextStyle(
+                                              color: Colors.amber[600],
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                      ))
+                                ],
+                              )
+                            ]))
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   // Scout Mint popup
