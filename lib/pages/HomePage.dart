@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   bool haveAthletes = false;
   String _value1 = "ETH";
   String _value2 = "USDC";
+  String sportActive = 'None';
   late Coin coin1;
   late Coin coin2;
   Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
@@ -60,9 +61,9 @@ class _HomePageState extends State<HomePage> {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           // Upper-left Icon
           Padding(
-            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+            padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
             child:
-                Image(image: AssetImage('../assets/images/x.png'), height: 40),
+                Image(image: AssetImage('../assets/images/x.png'), height: 30),
           ),
           // Upper-right connect wallet button
           Padding(
@@ -199,12 +200,12 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Header row
-                            // _mobileHeader(context),
+                            _mobileHeader(context),
                             // Main mobile area
                             Container(
                                 width: MediaQuery.of(context).size.width,
                                 height:
-                                    MediaQuery.of(context).size.height * .91,
+                                    MediaQuery.of(context).size.height * .83,
                                 color: Colors.transparent,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -231,15 +232,28 @@ class _HomePageState extends State<HomePage> {
                                                         setState(() {
                                                           athleteList = nflList;
                                                           firstRun = false;
+                                                          sportActive = 'NFL';
                                                         });
                                                       },
                                                       child: Text(
                                                         "NFL",
                                                         style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: sportActive ==
+                                                                  'NFL'
+                                                              ? Colors
+                                                                  .amber[600]
+                                                              : Colors
+                                                                  .grey[400],
                                                           fontFamily:
                                                               'OpenSans',
                                                           fontSize: filterText,
+                                                          fontWeight:
+                                                              sportActive ==
+                                                                      'NFL'
+                                                                  ? FontWeight
+                                                                      .w600
+                                                                  : FontWeight
+                                                                      .w200,
                                                         ),
                                                       )),
                                                   TextButton(
@@ -247,15 +261,28 @@ class _HomePageState extends State<HomePage> {
                                                         setState(() {
                                                           athleteList = [];
                                                           firstRun = false;
+                                                          sportActive = 'NBA';
                                                         });
                                                       },
                                                       child: Text(
                                                         "NBA",
                                                         style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: sportActive ==
+                                                                  'NBA'
+                                                              ? Colors
+                                                                  .amber[600]
+                                                              : Colors
+                                                                  .grey[400],
                                                           fontFamily:
                                                               'OpenSans',
                                                           fontSize: filterText,
+                                                          fontWeight:
+                                                              sportActive ==
+                                                                      'NBA'
+                                                                  ? FontWeight
+                                                                      .w600
+                                                                  : FontWeight
+                                                                      .w200,
                                                         ),
                                                       )),
                                                   TextButton(
@@ -263,15 +290,28 @@ class _HomePageState extends State<HomePage> {
                                                         setState(() {
                                                           athleteList = [];
                                                           firstRun = false;
+                                                          sportActive = 'MMA';
                                                         });
                                                       },
                                                       child: Text(
                                                         "MMA",
                                                         style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: sportActive ==
+                                                                  'MMA'
+                                                              ? Colors
+                                                                  .amber[600]
+                                                              : Colors
+                                                                  .grey[400],
                                                           fontFamily:
                                                               'OpenSans',
                                                           fontSize: filterText,
+                                                          fontWeight:
+                                                              sportActive ==
+                                                                      'MMA'
+                                                                  ? FontWeight
+                                                                      .w600
+                                                                  : FontWeight
+                                                                      .w200,
                                                         ),
                                                       )),
                                                 ],
@@ -289,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  .83,
+                                                  .75,
                                               color: Colors.transparent,
                                               child: FutureBuilder<dynamic>(
                                                   future: AthleteApi
@@ -315,7 +355,7 @@ class _HomePageState extends State<HomePage> {
                                                                             context)
                                                                     .size
                                                                     .height *
-                                                                0.65,
+                                                                0.5,
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
@@ -394,162 +434,68 @@ class _HomePageState extends State<HomePage> {
                   body: Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                              AssetImage('../assets/images/axBackground.jpeg'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+                      color: Colors.black.withOpacity(.7),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Header row
-                            // _mobileHeader(context),
-                            // Main mobile area
-                            Container(
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * .84,
-                                child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      // Main mobile border box
-                                      Container(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(children: [
+                            _mobileHeader(context),
+                          ]),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
+                                        .82,
+                                    child: Container(
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                .9,
+                                                0.8,
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                .8,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: Colors.black,
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                            width: 3,
-                                          ),
-                                        ),
-                                        child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              .24,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              .1,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                        color: Colors.black,
-                                                        border: Border.all(
-                                                          color: Colors.grey,
-                                                          width: 3,
-                                                        ),
-                                                      ),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        children: [
-                                                          Container(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                .1,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                .07,
-                                                            child:
-                                                                ElevatedButton(
-                                                              style:
-                                                                  dexToggleInactive,
-                                                              onPressed: () {
-                                                                swap = 0;
-                                                                _onSwapItemTapped(
-                                                                    swap);
-                                                              },
-                                                              child:
-                                                                  Text('Swap'),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                .1,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                .07,
-                                                            child:
-                                                                ElevatedButton(
-                                                              style:
-                                                                  dexToggleInactive,
-                                                              onPressed: () {
-                                                                swap = 1;
-                                                                _onSwapItemTapped(
-                                                                    swap);
-                                                              },
-                                                              child:
-                                                                  Text('Earn'),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                .1,
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                .07,
-                                                            child:
-                                                                ElevatedButton(
-                                                              style:
-                                                                  dexToggleInactive,
-                                                              onPressed: () {
-                                                                swap = 2;
-                                                                _onSwapItemTapped(
-                                                                    swap);
-                                                              },
-                                                              child:
-                                                                  Text('Stake'),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ))
-                                                ],
-                                              )
-                                            ]),
-                                      )
-                                    ]))
-                          ])));
+                                                0.7,
+                                        color: Colors.black.withOpacity(.7),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .5,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    .075,
+                                                color: Colors.transparent,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    ElevatedButton(
+                                                        onPressed: () {},
+                                                        child: Text('Swap'),
+                                                        style:
+                                                            dexToggleActiveMobile),
+                                                    ElevatedButton(
+                                                        onPressed: () {},
+                                                        child: Text('Stake'),
+                                                        style:
+                                                            dexToggleInactiveMobile),
+                                                    ElevatedButton(
+                                                        onPressed: () {},
+                                                        child: Text('Earn'),
+                                                        style:
+                                                            dexToggleInactiveMobile),
+                                                  ],
+                                                ))
+                                          ],
+                                        ))),
+                              ]),
+                        ],
+                      )));
             }
             // Help page
             else {
@@ -1947,7 +1893,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             color: Colors.amber[600],
                             fontFamily: 'OpenSans',
-                            fontSize: 44,
+                            fontSize: 30,
                             fontWeight: FontWeight.w600,
                           ))))),
           // War Price
@@ -2325,16 +2271,6 @@ class _HomePageState extends State<HomePage> {
         context: context, builder: (BuildContext context) => fancyDialog);
   }
 
-  // Athlete Popup
-  // void athleteDialogMobile(BuildContext context, Athlete athlete) {
-  //   Dialog fancyDialog = Dialog(
-  //       backgroundColor: Colors.transparent,
-  //       child: Stack(children: <Widget>[]));
-
-  //   showDialog(
-  //       context: context, builder: (BuildContext context) => fancyDialog);
-  // }
-
   void athleteDialogMobile(BuildContext context, athlete) {
     showGeneralDialog(
       context: context,
@@ -2350,20 +2286,21 @@ class _HomePageState extends State<HomePage> {
         );
       },
       pageBuilder: (context, animation, secondaryAnimation) {
-        return SafeArea(
-          child: Container(
+        return Material(
+          child: SingleChildScrollView(
+              child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: Colors.black,
+            color: Colors.black.withOpacity(0.8),
             child: Column(
               children: <Widget>[
                 Row(children: [
                   Container(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                     alignment: Alignment.centerLeft,
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * .08,
-                    color: Colors.red,
+                    color: Colors.transparent,
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
@@ -2380,47 +2317,92 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ]),
+                // athlete name
                 Row(children: [
                   Container(
-                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      padding: EdgeInsets.fromLTRB(25, 0, 0, 0),
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * .05,
-                      color: Colors.green,
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            // Name
-                            Text(athlete.name,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                            // |
-                            Text(' | ',
-                                style: TextStyle(
-                                  color: Colors.grey[400],
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w200,
-                                )),
-                            // Token Type
-                            Text("Seasonal APT",
-                                style: TextStyle(
-                                  color: Colors.grey[400],
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w200,
-                                )),
-                          ])),
+                      height: MediaQuery.of(context).size.height * .03,
+                      color: Colors.transparent,
+                      child: Row(children: <Widget>[
+                        // Name
+                        Text(athlete.name,
+                            style: TextStyle(
+                              color: Colors.grey[400],
+                              fontFamily: 'OpenSans',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w200,
+                            )),
+                        // |
+                        Text(' | ',
+                            style: TextStyle(
+                              color: Colors.grey[400],
+                              fontFamily: 'OpenSans',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w200,
+                            )),
+                        // Token Type
+                        Text("Seasonal APT",
+                            style: TextStyle(
+                              color: Colors.grey[400],
+                              fontFamily: 'OpenSans',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w200,
+                            )),
+                      ]))
                 ]),
+                // athlete war value
+                Row(children: [
+                  Container(
+                      padding: EdgeInsets.fromLTRB(25, 0, 0, 0),
+                      child: Row(
+                        children: [
+                          Text(
+                            '\$' + athlete.war[3].toStringAsFixed(8),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'OpenSans',
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ))
+                ]),
+                // Percent increase
+                Row(children: [
+                  Container(
+                      padding: EdgeInsets.fromLTRB(25, 0, 0, 0),
+                      child: Row(
+                        children: [
+                          Text(
+                            '+\$0.0000234',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontFamily: 'OpenSans',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w200,
+                            ),
+                          ),
+                          Text(
+                            '(1.12%)',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontFamily: 'OpenSans',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w200,
+                            ),
+                          ),
+                        ],
+                      ))
+                ]),
+                //athlete graph
                 Row(children: [
                   Stack(children: [
                     Container(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * .4,
-                        color: Colors.red,
+                        color: Colors.transparent,
                         child: Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * .4,
@@ -2438,39 +2420,29 @@ class _HomePageState extends State<HomePage> {
                                     style: TextStyle(
                                       color: Colors.amber[600],
                                       fontFamily: 'OpenSans',
-                                      fontSize: 44,
+                                      fontSize: 30,
                                       fontWeight: FontWeight.w600,
                                     ))))),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                      child: Text(
-                        '\$' + athlete.war[3].toStringAsFixed(4),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 35,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
                   ])
                 ]),
+                // athlete purchase buttons
                 Row(
                   children: [
                     Container(
-                        width: MediaQuery.of(context).size.width * .275,
-                        height: MediaQuery.of(context).size.height * .16,
+                        color: Colors.transparent,
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .2,
                         child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   // Buy Long APT Button
                                   Container(
                                       width: MediaQuery.of(context).size.width *
-                                          .45,
+                                          .40,
                                       height:
                                           MediaQuery.of(context).size.height *
                                               .06,
@@ -2491,7 +2463,7 @@ class _HomePageState extends State<HomePage> {
                                   // Mint button
                                   Container(
                                       width: MediaQuery.of(context).size.width *
-                                          .45,
+                                          .40,
                                       height:
                                           MediaQuery.of(context).size.height *
                                               .06,
@@ -2509,7 +2481,7 @@ class _HomePageState extends State<HomePage> {
                                             style: TextStyle(
                                               color: Colors.amber[600],
                                               fontFamily: 'OpenSans',
-                                              fontSize: 20,
+                                              fontSize: 18,
                                               fontWeight: FontWeight.w600,
                                             )),
                                       ))
@@ -2518,12 +2490,12 @@ class _HomePageState extends State<HomePage> {
                               // scout short button, redeem button column
                               Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   // buy short apt button
                                   Container(
                                       width: MediaQuery.of(context).size.width *
-                                          .45,
+                                          .40,
                                       height:
                                           MediaQuery.of(context).size.height *
                                               .06,
@@ -2538,13 +2510,13 @@ class _HomePageState extends State<HomePage> {
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontFamily: 'OpenSans',
-                                                fontSize: 20,
+                                                fontSize: 18,
                                                 fontWeight: FontWeight.w600,
                                               )))),
                                   // scout redeem button
                                   Container(
                                       width: MediaQuery.of(context).size.width *
-                                          .45,
+                                          .40,
                                       height:
                                           MediaQuery.of(context).size.height *
                                               .06,
@@ -2562,7 +2534,7 @@ class _HomePageState extends State<HomePage> {
                                             style: TextStyle(
                                               color: Colors.amber[600],
                                               fontFamily: 'OpenSans',
-                                              fontSize: 20,
+                                              fontSize: 18,
                                               fontWeight: FontWeight.w600,
                                             )),
                                       ))
@@ -2570,10 +2542,44 @@ class _HomePageState extends State<HomePage> {
                               )
                             ]))
                   ],
-                )
+                ),
+                // OVERVIEW
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                          padding: EdgeInsets.fromLTRB(30, 10, 0, 0),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * .06,
+                          child: Row(
+                            children: [
+                              Text(
+                                'Overview',
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ))
+                    ]),
+                //divider
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                          width: MediaQuery.of(context).size.width * .9,
+                          height: 1,
+                          color: Colors.grey)
+                    ]),
               ],
             ),
-          ),
+          )),
         );
       },
     );
