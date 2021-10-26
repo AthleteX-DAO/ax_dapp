@@ -1571,6 +1571,289 @@ class _HomePageState extends State<HomePage> {
             // Help page
             else {
               //return Text('empty');
+              return Container(
+                 //mainAxisAlignment:MainAxisAlignment.Center,
+                //alignment: Alignment.center,
+                 width: MediaQuery.of(context).size.width * .9,
+                    height: MediaQuery.of(context).size.height * .79,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.black,
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 3,
+                      ),
+                    ),
+                    child:Column(
+                     mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                      children:
+                      [
+                         Text(
+                        "Frequently Asked Questions",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 26,
+                      ),
+                     ),
+                        Container(
+                          child:Row(
+                            mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                            children:
+                            [
+                              Container
+                              (
+                                child:Column(
+                                  children:
+                                  [
+                                        Container
+                                        (
+
+                                         width: MediaQuery.of(context).size.width * .3,
+                                         height: MediaQuery.of(context).size.height * .15,
+                                         decoration: BoxDecoration(
+                                          color: Colors.grey[850],
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        child:DropdownButton<String>(
+                                          focusColor: Colors.grey,
+                                          //Color:Colors.grey,
+                                          //value: _chosenValue,
+                                          //elevation: 5,
+                                          items: <String>['']
+                                              .map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          style: TextStyle(color: Colors.white),
+                                          iconEnabledColor: Colors.grey,
+                                        ),
+                                      ),
+                                    Container
+                                        (
+
+                                         width: MediaQuery.of(context).size.width * .3,
+                                         height: MediaQuery.of(context).size.height * .15,
+                                         decoration: BoxDecoration(
+                                            color: Colors.grey[850],
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                        child:DropdownButton<String>(
+                                          focusColor: Colors.grey,
+                                          //Color:Colors.grey,
+                                          //value: _chosenValue,
+                                          //elevation: 5,
+                                          items: <String>['']
+                                              .map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          style: TextStyle(color: Colors.white),
+                                          iconEnabledColor: Colors.grey,
+                                        ),
+                                      ),
+                                    Container
+                                        (
+
+                                         width: MediaQuery.of(context).size.width * .3,
+                                         height: MediaQuery.of(context).size.height * .15,
+                                         decoration: BoxDecoration(
+                                              color: Colors.grey[850],
+                                              borderRadius: BorderRadius.circular(12),
+                                            ),
+                                        child:DropdownButton<String>(
+                                          focusColor: Colors.grey,
+                                          //Color:Colors.grey,
+                                          //value: _chosenValue,
+                                          //elevation: 5,
+                                          items: <String>['']
+                                              .map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          style: TextStyle(color: Colors.white),
+                                          iconEnabledColor: Colors.grey,
+                                        ),
+                                      ),
+                                    Container
+                                        (
+
+                                         width: MediaQuery.of(context).size.width * .3,
+                                         height: MediaQuery.of(context).size.height * .15,
+                                         decoration: BoxDecoration(
+                                            color: Colors.grey[850],
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                        child:DropdownButton<String>(
+                                          focusColor: Colors.grey,
+                                          //Color:Colors.grey,
+                                          //value: _chosenValue,
+                                          //elevation: 5,
+                                          items: <String>['']
+                                              .map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          style: TextStyle(color: Colors.white),
+                                          iconEnabledColor: Colors.grey,
+                                        ),
+                                      ),
+                                  ]
+
+                                )
+                              ),
+                              Container
+                              (
+                                child:Column(
+                                  children:
+                                  [
+                                   Container
+                                        (
+
+                                         width: MediaQuery.of(context).size.width * .3,
+                                         height: MediaQuery.of(context).size.height * .15,
+                                         decoration: BoxDecoration(
+                                            color: Colors.grey[850],
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                        child:DropdownButton<String>(
+                                          focusColor: Colors.grey,
+                                          //Color:Colors.grey,
+                                          //value: _chosenValue,
+                                          //elevation: 5,
+                                          items: <String>['']
+                                              .map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          style: TextStyle(color: Colors.white),
+                                          iconEnabledColor: Colors.grey,
+                                        ),
+                                      ),
+                                      Container
+                                        (
+
+                                         width: MediaQuery.of(context).size.width * .3,
+                                         height: MediaQuery.of(context).size.height * .15,
+                                         decoration: BoxDecoration(
+                                            color: Colors.grey[850],
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                        child:DropdownButton<String>(
+                                          focusColor: Colors.grey,
+                                          //Color:Colors.grey,
+                                          //value: _chosenValue,
+                                          //elevation: 5,
+                                          items: <String>['']
+                                              .map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          style: TextStyle(color: Colors.white),
+                                          iconEnabledColor: Colors.grey,
+                                        ),
+                                      ),
+
+                                  Container
+                                        (
+
+                                         width: MediaQuery.of(context).size.width * .3,
+                                         height: MediaQuery.of(context).size.height * .15,
+                                         decoration: BoxDecoration(
+                                            color: Colors.grey[850],
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                        child:DropdownButton<String>(
+                                          focusColor: Colors.grey,
+                                          //Color:Colors.grey,
+                                          //value: _chosenValue,
+                                          //elevation: 5,
+                                          items: <String>['']
+                                              .map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          style: TextStyle(color: Colors.white),
+                                          iconEnabledColor: Colors.grey,
+                                        ),
+                                      ),
+
+                                
+                                Container
+                                        (
+
+                                         width: MediaQuery.of(context).size.width * .3,
+                                         height: MediaQuery.of(context).size.height * .15,
+                                         decoration: BoxDecoration(
+                                            color: Colors.grey[850],
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                        child:DropdownButton<String>(
+                                          focusColor: Colors.grey,
+                                          //Color:Colors.grey,
+                                          //value: _chosenValue,
+                                          //elevation: 5,
+                                          items: <String>['']
+                                              .map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          style: TextStyle(color: Colors.white),
+                                          iconEnabledColor: Colors.grey,
+                                        ),
+                                      ),
+                                  ],
+                              ),
+                            ),
+                            ],
+                          )
+                        )
+                      ],
+                    ),
+              );
+              /** 
+              
               return Stack(children: <Widget>[
                 Align(
                   alignment: Alignment(0, 0),
@@ -1829,6 +2112,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ]);
+              **/
             }
           }
         }));
