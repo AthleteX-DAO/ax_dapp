@@ -36,6 +36,9 @@ class _HomePageState extends State<HomePage> {
   String _value1 = "ETH";
   String _value2 = "USDC";
   String sportActive = 'None';
+  bool swapActive = true;
+  bool stakeActive = false;
+  bool earnActive = false;
   late Coin coin1;
   late Coin coin2;
   Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
@@ -456,41 +459,274 @@ class _HomePageState extends State<HomePage> {
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.7,
-                                        color: Colors.black.withOpacity(.7),
+                                        color: Colors.transparent,
                                         child: Column(
                                           children: <Widget>[
                                             Container(
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                    .5,
+                                                    .55,
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    .075,
-                                                color: Colors.transparent,
+                                                    .06,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.black,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10))),
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceEvenly,
                                                   children: [
+                                                    // swap button
                                                     ElevatedButton(
-                                                        onPressed: () {},
+                                                        onPressed: () {
+                                                          swapActive = true;
+                                                          stakeActive = false;
+                                                          earnActive = false;
+                                                          _onSwapItemTapped(0);
+                                                        },
                                                         child: Text('Swap'),
-                                                        style:
-                                                            dexToggleActiveMobile),
+                                                        style: swapActive ==
+                                                                true
+                                                            ? dexToggleActive
+                                                            : dexToggleInactiveMobile),
+                                                    // stake button
                                                     ElevatedButton(
-                                                        onPressed: () {},
+                                                        onPressed: () {
+                                                          swapActive = false;
+                                                          stakeActive = true;
+                                                          earnActive = false;
+                                                          _onSwapItemTapped(1);
+                                                        },
                                                         child: Text('Stake'),
-                                                        style:
-                                                            dexToggleInactiveMobile),
+                                                        style: stakeActive ==
+                                                                true
+                                                            ? dexToggleActive
+                                                            : dexToggleInactiveMobile),
+                                                    // earn button
                                                     ElevatedButton(
-                                                        onPressed: () {},
+                                                        onPressed: () {
+                                                          swapActive = false;
+                                                          stakeActive = false;
+                                                          earnActive = true;
+                                                          _onSwapItemTapped(2);
+                                                        },
                                                         child: Text('Earn'),
-                                                        style:
-                                                            dexToggleInactiveMobile),
+                                                        style: earnActive ==
+                                                                true
+                                                            ? dexToggleActive
+                                                            : dexToggleInactiveMobile),
                                                   ],
-                                                ))
+                                                )),
+                                            // mobile swap ui
+                                            if (swapActive)
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 50, 0, 0),
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.black
+                                                            .withOpacity(0.7),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    20))),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            .84,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            .45,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        // top token select
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          900],
+                                                                      border:
+                                                                          Border
+                                                                              .all(
+                                                                        color: (Colors
+                                                                            .grey[800])!,
+                                                                      ),
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(20))),
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  .8,
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  .15,
+                                                            )
+                                                          ],
+                                                        ),
+                                                        // bottom token select
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(
+                                                                  0, 5, 0, 0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                        color: Colors.grey[
+                                                                            900],
+                                                                        border: Border
+                                                                            .all(
+                                                                          color:
+                                                                              (Colors.grey[800])!,
+                                                                        ),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(20))),
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    .8,
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    .15,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        // connect wallet button
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(
+                                                                  0, 20, 0, 0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    .8,
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    .07,
+                                                                color: Colors
+                                                                    .transparent,
+                                                                child:
+                                                                    ElevatedButton(
+                                                                  onPressed:
+                                                                      () {},
+                                                                  style: ElevatedButton
+                                                                      .styleFrom(
+                                                                          primary: Colors.grey[
+                                                                              900],
+                                                                          shape:
+                                                                              new RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                new BorderRadius.circular(20.0),
+                                                                          ),
+                                                                          side:
+                                                                              BorderSide(
+                                                                            width:
+                                                                                1.0,
+                                                                            color:
+                                                                                (Colors.grey[800])!,
+                                                                          )),
+                                                                  child: Text(
+                                                                    "Connect Wallet",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          600],
+                                                                      fontFamily:
+                                                                          'OpenSans',
+                                                                      fontSize:
+                                                                          20,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )),
+                                              ),
+
+                                            // mobile stake ui
+                                            if (stakeActive)
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .8,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    .4,
+                                                color: Colors.red,
+                                              ),
+                                            // mobile earn ui
+                                            if (earnActive)
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .8,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    .5,
+                                                color: Colors.blue,
+                                              ),
                                           ],
                                         ))),
                               ]),
@@ -589,7 +825,7 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.black,
                                           border: Border.all(
                                             color: Colors.grey,
-                                            width: 3,
+                                            width: 1,
                                           ),
                                         ),
                                         child: Stack(children: <Widget>[
@@ -1518,285 +1754,267 @@ class _HomePageState extends State<HomePage> {
             else {
               //return Text('empty');
               return Container(
-                 //mainAxisAlignment:MainAxisAlignment.Center,
+                //mainAxisAlignment:MainAxisAlignment.Center,
                 //alignment: Alignment.center,
-                 width: MediaQuery.of(context).size.width * .9,
-                    height: MediaQuery.of(context).size.height * .79,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.black,
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 3,
-                      ),
-                    ),
-                    child:Column(
-                     mainAxisAlignment:MainAxisAlignment.spaceEvenly,
-                      children:
-                      [
-                         Text(
-                        "Frequently Asked Questions",
+                width: MediaQuery.of(context).size.width * .9,
+                height: MediaQuery.of(context).size.height * .79,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.black,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 3,
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "Frequently Asked Questions",
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'OpenSans',
                         fontWeight: FontWeight.w600,
                         fontSize: 26,
                       ),
-                     ),
-                        Container(
-                          child:Row(
-                            mainAxisAlignment:MainAxisAlignment.spaceEvenly,
-                            children:
-                            [
-                              Container
-                              (
-                                child:Column(
-                                  children:
-                                  [
-                                        Container
-                                        (
-
-                                         width: MediaQuery.of(context).size.width * .3,
-                                         height: MediaQuery.of(context).size.height * .15,
-                                         decoration: BoxDecoration(
-                                          color: Colors.grey[850],
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child:DropdownButton<String>(
-                                          focusColor: Colors.grey,
-                                          //Color:Colors.grey,
-                                          //value: _chosenValue,
-                                          //elevation: 5,
-                                          items: <String>['']
-                                              .map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          style: TextStyle(color: Colors.white),
-                                          iconEnabledColor: Colors.grey,
-                                        ),
-                                      ),
-                                    Container
-                                        (
-
-                                         width: MediaQuery.of(context).size.width * .3,
-                                         height: MediaQuery.of(context).size.height * .15,
-                                         decoration: BoxDecoration(
-                                            color: Colors.grey[850],
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                        child:DropdownButton<String>(
-                                          focusColor: Colors.grey,
-                                          //Color:Colors.grey,
-                                          //value: _chosenValue,
-                                          //elevation: 5,
-                                          items: <String>['']
-                                              .map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          style: TextStyle(color: Colors.white),
-                                          iconEnabledColor: Colors.grey,
-                                        ),
-                                      ),
-                                    Container
-                                        (
-
-                                         width: MediaQuery.of(context).size.width * .3,
-                                         height: MediaQuery.of(context).size.height * .15,
-                                         decoration: BoxDecoration(
-                                              color: Colors.grey[850],
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                        child:DropdownButton<String>(
-                                          focusColor: Colors.grey,
-                                          //Color:Colors.grey,
-                                          //value: _chosenValue,
-                                          //elevation: 5,
-                                          items: <String>['']
-                                              .map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          style: TextStyle(color: Colors.white),
-                                          iconEnabledColor: Colors.grey,
-                                        ),
-                                      ),
-                                    Container
-                                        (
-
-                                         width: MediaQuery.of(context).size.width * .3,
-                                         height: MediaQuery.of(context).size.height * .15,
-                                         decoration: BoxDecoration(
-                                            color: Colors.grey[850],
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                        child:DropdownButton<String>(
-                                          focusColor: Colors.grey,
-                                          //Color:Colors.grey,
-                                          //value: _chosenValue,
-                                          //elevation: 5,
-                                          items: <String>['']
-                                              .map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          style: TextStyle(color: Colors.white),
-                                          iconEnabledColor: Colors.grey,
-                                        ),
-                                      ),
-                                  ]
-
-                                )
-                              ),
-                              Container
-                              (
-                                child:Column(
-                                  children:
-                                  [
-                                   Container
-                                        (
-
-                                         width: MediaQuery.of(context).size.width * .3,
-                                         height: MediaQuery.of(context).size.height * .15,
-                                         decoration: BoxDecoration(
-                                            color: Colors.grey[850],
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                        child:DropdownButton<String>(
-                                          focusColor: Colors.grey,
-                                          //Color:Colors.grey,
-                                          //value: _chosenValue,
-                                          //elevation: 5,
-                                          items: <String>['']
-                                              .map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          style: TextStyle(color: Colors.white),
-                                          iconEnabledColor: Colors.grey,
-                                        ),
-                                      ),
-                                      Container
-                                        (
-
-                                         width: MediaQuery.of(context).size.width * .3,
-                                         height: MediaQuery.of(context).size.height * .15,
-                                         decoration: BoxDecoration(
-                                            color: Colors.grey[850],
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                        child:DropdownButton<String>(
-                                          focusColor: Colors.grey,
-                                          //Color:Colors.grey,
-                                          //value: _chosenValue,
-                                          //elevation: 5,
-                                          items: <String>['']
-                                              .map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          style: TextStyle(color: Colors.white),
-                                          iconEnabledColor: Colors.grey,
-                                        ),
-                                      ),
-
-                                  Container
-                                        (
-
-                                         width: MediaQuery.of(context).size.width * .3,
-                                         height: MediaQuery.of(context).size.height * .15,
-                                         decoration: BoxDecoration(
-                                            color: Colors.grey[850],
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                        child:DropdownButton<String>(
-                                          focusColor: Colors.grey,
-                                          //Color:Colors.grey,
-                                          //value: _chosenValue,
-                                          //elevation: 5,
-                                          items: <String>['']
-                                              .map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          style: TextStyle(color: Colors.white),
-                                          iconEnabledColor: Colors.grey,
-                                        ),
-                                      ),
-
-                                
-                                Container
-                                        (
-
-                                         width: MediaQuery.of(context).size.width * .3,
-                                         height: MediaQuery.of(context).size.height * .15,
-                                         decoration: BoxDecoration(
-                                            color: Colors.grey[850],
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                        child:DropdownButton<String>(
-                                          focusColor: Colors.grey,
-                                          //Color:Colors.grey,
-                                          //value: _chosenValue,
-                                          //elevation: 5,
-                                          items: <String>['']
-                                              .map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          style: TextStyle(color: Colors.white),
-                                          iconEnabledColor: Colors.grey,
-                                        ),
-                                      ),
-                                  ],
-                              ),
-                            ),
-                            ],
-                          )
-                        )
-                      ],
                     ),
+                    Container(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                            child: Column(children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * .3,
+                            height: MediaQuery.of(context).size.height * .15,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[850],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: DropdownButton<String>(
+                              focusColor: Colors.grey,
+                              //Color:Colors.grey,
+                              //value: _chosenValue,
+                              //elevation: 5,
+                              items: <String>[
+                                ''
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                );
+                              }).toList(),
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.grey,
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width * .3,
+                            height: MediaQuery.of(context).size.height * .15,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[850],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: DropdownButton<String>(
+                              focusColor: Colors.grey,
+                              //Color:Colors.grey,
+                              //value: _chosenValue,
+                              //elevation: 5,
+                              items: <String>[
+                                ''
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                );
+                              }).toList(),
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.grey,
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width * .3,
+                            height: MediaQuery.of(context).size.height * .15,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[850],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: DropdownButton<String>(
+                              focusColor: Colors.grey,
+                              //Color:Colors.grey,
+                              //value: _chosenValue,
+                              //elevation: 5,
+                              items: <String>[
+                                ''
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                );
+                              }).toList(),
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.grey,
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width * .3,
+                            height: MediaQuery.of(context).size.height * .15,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[850],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: DropdownButton<String>(
+                              focusColor: Colors.grey,
+                              //Color:Colors.grey,
+                              //value: _chosenValue,
+                              //elevation: 5,
+                              items: <String>[
+                                ''
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                );
+                              }).toList(),
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.grey,
+                            ),
+                          ),
+                        ])),
+                        Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * .3,
+                                height:
+                                    MediaQuery.of(context).size.height * .15,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[850],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: DropdownButton<String>(
+                                  focusColor: Colors.grey,
+                                  //Color:Colors.grey,
+                                  //value: _chosenValue,
+                                  //elevation: 5,
+                                  items: <String>['']
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  style: TextStyle(color: Colors.white),
+                                  iconEnabledColor: Colors.grey,
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * .3,
+                                height:
+                                    MediaQuery.of(context).size.height * .15,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[850],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: DropdownButton<String>(
+                                  focusColor: Colors.grey,
+                                  //Color:Colors.grey,
+                                  //value: _chosenValue,
+                                  //elevation: 5,
+                                  items: <String>['']
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  style: TextStyle(color: Colors.white),
+                                  iconEnabledColor: Colors.grey,
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * .3,
+                                height:
+                                    MediaQuery.of(context).size.height * .15,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[850],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: DropdownButton<String>(
+                                  focusColor: Colors.grey,
+                                  //Color:Colors.grey,
+                                  //value: _chosenValue,
+                                  //elevation: 5,
+                                  items: <String>['']
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  style: TextStyle(color: Colors.white),
+                                  iconEnabledColor: Colors.grey,
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * .3,
+                                height:
+                                    MediaQuery.of(context).size.height * .15,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[850],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: DropdownButton<String>(
+                                  focusColor: Colors.grey,
+                                  //Color:Colors.grey,
+                                  //value: _chosenValue,
+                                  //elevation: 5,
+                                  items: <String>['']
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  style: TextStyle(color: Colors.white),
+                                  iconEnabledColor: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ))
+                  ],
+                ),
               );
               /** 
               
