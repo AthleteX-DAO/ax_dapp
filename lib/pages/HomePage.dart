@@ -545,7 +545,7 @@ class _HomePageState extends State<HomePage> {
                                                         MediaQuery.of(context)
                                                                 .size
                                                                 .height *
-                                                            .45,
+                                                            .4,
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -564,31 +564,56 @@ class _HomePageState extends State<HomePage> {
                                                                   .center,
                                                           children: [
                                                             Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                      color: Colors
-                                                                              .grey[
-                                                                          900],
-                                                                      border:
-                                                                          Border
-                                                                              .all(
-                                                                        color: (Colors
-                                                                            .grey[800])!,
-                                                                      ),
-                                                                      borderRadius:
-                                                                          BorderRadius.all(
-                                                                              Radius.circular(20))),
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  .8,
-                                                              height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  .15,
-                                                            )
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                        color: Colors.grey[
+                                                                            900],
+                                                                        border:
+                                                                            Border
+                                                                                .all(
+                                                                          color:
+                                                                              (Colors.grey[800])!,
+                                                                        ),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                20))),
+                                                                width: MediaQuery
+                                                                            .of(
+                                                                                context)
+                                                                        .size
+                                                                        .width *
+                                                                    .8,
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    .13,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Padding(
+                                                                        padding: EdgeInsets.fromLTRB(
+                                                                            15,
+                                                                            15,
+                                                                            0,
+                                                                            0),
+                                                                        child:
+                                                                            Container(
+                                                                          width:
+                                                                              MediaQuery.of(context).size.width * .3,
+                                                                          height:
+                                                                              MediaQuery.of(context).size.height * .05,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Colors.grey[600],
+                                                                              borderRadius: BorderRadius.all(Radius.circular(20))),
+                                                                        )),
+                                                                  ],
+                                                                ))
                                                           ],
                                                         ),
                                                         // bottom token select
@@ -605,28 +630,51 @@ class _HomePageState extends State<HomePage> {
                                                                     .center,
                                                             children: [
                                                               Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                        color: Colors.grey[
-                                                                            900],
-                                                                        border: Border
-                                                                            .all(
-                                                                          color:
-                                                                              (Colors.grey[800])!,
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.all(Radius.circular(20))),
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    .8,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    .15,
-                                                              )
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                          color: Colors.grey[
+                                                                              900],
+                                                                          border: Border
+                                                                              .all(
+                                                                            color:
+                                                                                (Colors.grey[800])!,
+                                                                          ),
+                                                                          borderRadius: BorderRadius.all(Radius.circular(
+                                                                              20))),
+                                                                  width: MediaQuery.of(context)
+                                                                          .size
+                                                                          .width *
+                                                                      .8,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      .13,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Padding(
+                                                                          padding: EdgeInsets.fromLTRB(
+                                                                              15,
+                                                                              15,
+                                                                              0,
+                                                                              0),
+                                                                          child:
+                                                                              Container(
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width * .3,
+                                                                            height:
+                                                                                MediaQuery.of(context).size.height * .05,
+                                                                            decoration:
+                                                                                BoxDecoration(color: Colors.grey[600], borderRadius: BorderRadius.all(Radius.circular(20))),
+                                                                          )),
+                                                                    ],
+                                                                  ))
                                                             ],
                                                           ),
                                                         ),
