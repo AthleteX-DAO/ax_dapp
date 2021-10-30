@@ -1776,7 +1776,7 @@ class _HomePageState extends State<HomePage> {
                                 ]
                               )
                             )
-                            // End of Earn
+                            // End of Stake
                         ]
                       ),
                     )
