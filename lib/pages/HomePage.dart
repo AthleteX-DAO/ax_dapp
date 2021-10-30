@@ -1517,266 +1517,263 @@ class _HomePageState extends State<HomePage> {
                           // End of Earn
                           // DexStake Widget
                           if (swap == 2)
-                            Align(
-                              alignment: Alignment(0,-0.5),
-                              child: Container(
-                                height: MediaQuery.of(context).size.height *0.6,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    // Staking Position text
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *0.4,
-                                      height: MediaQuery.of(context).size.height *0.075,
-                                      child: Text(
-                                        "Staking Position",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.w600,
+                            Container(
+                              height: MediaQuery.of(context).size.height *0.6,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  // Staking Position text
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *0.4,
+                                    height: MediaQuery.of(context).size.height *0.075,
+                                    child: Text(
+                                      "Staking Position",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ),
+                                  // Staking body container
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *0.4,
+                                    height: MediaQuery.of(context).size.height *0.3,
+                                    // column size container
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *0.14,
+                                      height: MediaQuery.of(context).size.height *0.4,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.grey[800],
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 3,
                                         ),
-                                        textAlign: TextAlign.center,
-                                      )
-                                    ),
-                                    // Staking body container
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *0.4,
-                                      height: MediaQuery.of(context).size.height *0.3,
-                                      // column size container
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width *0.14,
-                                        height: MediaQuery.of(context).size.height *0.4,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(20),
-                                          color: Colors.grey[800],
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                            width: 3,
-                                          ),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          
-                                          children: <Widget>[
-                                            //APY text
-                                          Container(
-                                            width: MediaQuery.of(context).size.width *0.30,
-                                            child:Row(
-                                              
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text(
-                                                  "APY:",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                  )
-                                                ),
-                                                Text(
-                                                  "12%",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                            //text2
-                                            Container(
-                                            width: MediaQuery.of(context).size.width *0.30,
-                                            child:Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text(
-                                                  "Amount Staked:",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                  )
-                                                ),
-                                                Text(
-                                                  "100 AX",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                            ),
-                                            //text3
-                                            Container(
-                                            width: MediaQuery.of(context).size.width *0.30,
-                                            child:Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text(
-                                                  "Rewards Earned:",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                  )
-                                                ),
-                                                Text(
-                                                  "50 AX",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                            ),
-                                            //text4
-                                            Container(
-                                            width: MediaQuery.of(context).size.width *0.30,
-                                            child:Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text(
-                                                  "Total Available:",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                  )
-                                                ),
-                                                Text(
-                                                  "150 AX",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                  )
-                                                ),
-                                              ],
-                                            ),
-                                            ),
-                                            //text5
-                                            Container(
-                                            width: MediaQuery.of(context).size.width *0.30,
-                                            child:Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Text(
-                                                  "(Staked+Rewards)",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 16,
-                                                  )
-                                                ),
-                                                
-                                              ],
-                                            ),
-                                            ),
-                                          ],
-                                        )
-                                      )
-                                    ),
-                                    // staking row container
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *0.4,
-                                      height: MediaQuery.of(context).size.height *0.1,
-                                      //width/height
-                                      child: Row(
+                                      ),
+                                      child: Column(
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        
                                         children: <Widget>[
-                                          //Textbuttons
-                                          /** 
-                                          TextButton(
-                                                        onPressed: () {},
-                                                        child: Text(
-                                                          "Stake AX",
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        )
-                                                        ),
-                                              **/  
-                                                Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.15,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.08,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.amber[600],
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  border: Border.all(
-                                                    color: Colors.amber[600]!,
-                                                    width: 2,
-                                                  ),
+                                          //APY text
+                                        Container(
+                                          width: MediaQuery.of(context).size.width *0.30,
+                                          child:Row(
+                                            
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                "APY:",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                )
+                                              ),
+                                              Text(
+                                                "12%",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                          //text2
+                                          Container(
+                                          width: MediaQuery.of(context).size.width *0.30,
+                                          child:Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                "Amount Staked:",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                )
+                                              ),
+                                              Text(
+                                                "100 AX",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                          ),
+                                          //text3
+                                          Container(
+                                          width: MediaQuery.of(context).size.width *0.30,
+                                          child:Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                "Rewards Earned:",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                )
+                                              ),
+                                              Text(
+                                                "50 AX",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                          ),
+                                          //text4
+                                          Container(
+                                          width: MediaQuery.of(context).size.width *0.30,
+                                          child:Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                "Total Available:",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                )
+                                              ),
+                                              Text(
+                                                "150 AX",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                )
+                                              ),
+                                            ],
+                                          ),
+                                          ),
+                                          //text5
+                                          Container(
+                                          width: MediaQuery.of(context).size.width *0.30,
+                                          child:Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                "(Staked+Rewards)",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 16,
+                                                )
+                                              ),
+                                              
+                                            ],
+                                          ),
+                                          ),
+                                        ],
+                                      )
+                                    )
+                                  ),
+                                  // staking row container
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *0.4,
+                                    height: MediaQuery.of(context).size.height *0.1,
+                                    //width/height
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        //Textbuttons
+                                        /** 
+                                        TextButton(
+                                                      onPressed: () {},
+                                                      child: Text(
+                                                        "Stake AX",
+                                                        style: TextStyle(
+                                                            color: Colors.white),
+                                                      )
+                                                      ),
+                                            **/  
+                                              Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.15,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.08,
+                                              decoration: BoxDecoration(
+                                                color: Colors.amber[600],
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: Colors.amber[600]!,
+                                                  width: 2,
                                                 ),
-                                                child: TextButton(
-                                                  onPressed: () => {},
-                                                  child: Text(
-                                                    "Stake AX",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontFamily: 'OpenSans',
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
+                                              ),
+                                              child: TextButton(
+                                                onPressed: () => {},
+                                                child: Text(
+                                                  "Stake AX",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
                                               ),
-                                                Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.15,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.08,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.black,
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  border: Border.all(
+                                            ),
+                                              Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.15,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.08,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: Colors.amber[600]!,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: TextButton(
+                                                onPressed: () => {},
+                                                child: Text(
+                                                  "Unstake AX",
+                                                  style: TextStyle(
                                                     color: Colors.amber[600]!,
-                                                    width: 2,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
-                                                child: TextButton(
-                                                  onPressed: () => {},
-                                                  child: Text(
-                                                    "Unstake AX",
-                                                    style: TextStyle(
-                                                      color: Colors.amber[600]!,
-                                                      fontFamily: 'OpenSans',
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ), 
-                                          /** 
-                                          TextButton(
-                                                        onPressed: () {},
-                                                        child: Text(
-                                                          "Unstake AX",
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        )),
-                                                        **/
-                                        ],
-                                      ),
+                                              ),
+                                            ), 
+                                        /** 
+                                        TextButton(
+                                                      onPressed: () {},
+                                                      child: Text(
+                                                        "Unstake AX",
+                                                        style: TextStyle(
+                                                            color: Colors.white),
+                                                      )),
+                                                      **/
+                                      ],
                                     ),
-                                  ]
-                                )
+                                  ),
+                                ]
                               )
                             )
                             // End of Earn
