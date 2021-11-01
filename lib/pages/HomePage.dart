@@ -1517,9 +1517,9 @@ class _HomePageState extends State<HomePage> {
                           // End of Earn
                           // DexStake Widget
                           if (swap == 2)
-                            Align(
-                              alignment: Alignment(0,-0.5),
-                              child: Container(
+                            //Align(
+                              //alignment: Alignment(0,-0.5),
+                             Container(
                                 height: MediaQuery.of(context).size.height *0.6,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1720,7 +1720,7 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                 ),
                                                 child: TextButton(
-                                                  onPressed: () => {},
+                                                  onPressed: () => stakeDialog(context),
                                                   child: Text(
                                                     "Stake AX",
                                                     style: TextStyle(
@@ -1751,7 +1751,9 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                 ),
                                                 child: TextButton(
-                                                  onPressed: () => {},
+                                                  onPressed: () =>unstakeDialog(context),
+
+                                                  
                                                   child: Text(
                                                     "Unstake AX",
                                                     style: TextStyle(
@@ -1778,7 +1780,7 @@ class _HomePageState extends State<HomePage> {
                                   ]
                                 )
                               )
-                            )
+                            //)
                             // End of Earn
                         ]
                       ),
@@ -3264,6 +3266,799 @@ class _HomePageState extends State<HomePage> {
             ]),
           ),
         ));
+
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
+  }
+   void stakeDialog(BuildContext context) {
+    Dialog fancyDialog = Dialog(
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        
+          child: Container(
+             width: MediaQuery.of(context).size.width *0.4,
+                                      height: MediaQuery.of(context).size.height *0.75,
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                color: Colors.grey[400]!,
+                width: 3,
+              ),
+            ),
+                //child:Align(
+                              //alignment: Alignment(0,-0.5),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height *0.6,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    // Staking Position text
+                                    /** 
+                                    InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.transparent,
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.close,
+                                                    size: 35,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                ),
+                                              ),
+                                              **/
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *0.4,
+                                      height: MediaQuery.of(context).size.height *0.075,
+                                      child: Text(
+                                        "STAKE",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    ),
+                                     Container(
+                                        width: MediaQuery.of(context).size.width * 0.18,
+                                        height: MediaQuery.of(context).size.height * 0.08,
+                                        decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius: BorderRadius.circular(12.0),
+                                            border:
+                                                Border.all(color: Colors.grey[600]!, width: 2)),
+                                        child: Center(
+                                            child: TextFormField(
+                                          style: TextStyle(fontSize: 16),
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: "Input AX Amount"),
+                                        ))),
+                                    // Staking body container
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *0.4,
+                                      height: MediaQuery.of(context).size.height *0.3,
+                                      // column size container
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width *0.14,
+                                        height: MediaQuery.of(context).size.height *0.4,
+                                       
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          
+                                          children: <Widget>[
+                                            //APY text
+                                          Container(
+                                            width: MediaQuery.of(context).size.width *0.30,
+                                            child:Row(
+                                              
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  "Current Staked Balance:",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                                Text(
+                                                  "100 AX",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                            //text2
+                                            
+                                            //text3
+                                           
+                                            //text4
+                                            Container(
+                                            width: MediaQuery.of(context).size.width *0.30,
+                                            child:Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  "+",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                                Text(
+                                                  "150 AX",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                            ),
+                                            
+                                            //text5
+                                            Container(
+                                            width: MediaQuery.of(context).size.width *0.30,
+                                            child:Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  "Funds Added",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 16,
+                                                  )
+                                                ),
+                                                 Text(
+                                                  "(Amount) AX",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                                
+                                              ],
+                                            ),
+                                            ),
+                                            Container(
+                                            width: MediaQuery.of(context).size.width *0.30,
+                                            child:Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  "New Staked Balance",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                                Text(
+                                                  "(Sum) AX",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                            ),
+                                          ],
+                                        )
+                                      )
+                                    ),
+                                    // staking row container
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *0.4,
+                                      height: MediaQuery.of(context).size.height *0.1,
+                                      //width/height
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          //Textbuttons
+                                          /** 
+                                          TextButton(
+                                                        onPressed: () {},
+                                                        child: Text(
+                                                          "Stake AX",
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        )
+                                                        ),
+                                              **/  
+                                                Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.15,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.08,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.amber[600],
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  border: Border.all(
+                                                    color: Colors.amber[600]!,
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    //mintConfirmDialog(context, athlete);
+                                                  },
+                                                  child: Text(
+                                                    "Confirm",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                                
+                                               
+                                          /** 
+                                          TextButton(
+                                                        onPressed: () {},
+                                                        child: Text(
+                                                          "Unstake AX",
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        )),
+                                                        **/
+                                        ],
+                                      ),
+                                    ),
+                                  ]
+                                )
+                              )
+                            //)
+        /** 
+        child: Align(
+          alignment: Alignment(0, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                color: Colors.grey[400]!,
+                width: 3,
+              ),
+            ),
+            height: MediaQuery.of(context).size.height * 0.65,
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Stack(children: <Widget>[
+              // Mint Title
+              Align(
+                  alignment: Alignment(0, -0.9),
+                  child: Text("STAKE",
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontFamily: 'OpenSans',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // Athlete Name
+              
+              // AX Amount text box
+              Align(
+                  alignment: Alignment(0, -0.30),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border:
+                              Border.all(color: Colors.grey[600]!, width: 2)),
+                      child: Center(
+                          child: TextFormField(
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Input AX Amount"),
+                      )))),
+              // text
+              Align(
+                  alignment: Alignment(0, 0.05),
+                  child: Text("You will receive:",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.25),
+                  child: Text("20 Long " +  " APTs",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // short tokens text
+              Align(
+                  alignment: Alignment(0, 0.45),
+                  child: Text("20 Short " + " APTs",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.85),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[600],
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            //mintConfirmDialog(context, athlete);
+                          },
+                          child: Text("Confirm",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'OpenSans',
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ))))),
+              // Top 'X'
+              Align(
+                // These values are based on trial & error method
+                alignment: Alignment(0.92, -0.95),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      size: 35,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        )
+        **/
+          ),
+        );
+
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
+  }
+   void unstakeDialog(BuildContext context) {
+    Dialog fancyDialog = Dialog(
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        
+          child: Container(
+             width: MediaQuery.of(context).size.width *0.4,
+                                      height: MediaQuery.of(context).size.height *0.75,
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                color: Colors.grey[400]!,
+                width: 3,
+              ),
+            ),
+         //child:Align(
+                              alignment: Alignment(0,-0.5),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height *0.6,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    // Staking Position text
+                                    /** 
+                                    InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.transparent,
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.close,
+                                                    size: 35,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                ),
+                                              ),
+                                              **/
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *0.4,
+                                      height: MediaQuery.of(context).size.height *0.075,
+                                      child: Text(
+                                        "UNSTAKE",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    ),
+                                     Container(
+                                        width: MediaQuery.of(context).size.width * 0.18,
+                                        height: MediaQuery.of(context).size.height * 0.08,
+                                        decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius: BorderRadius.circular(12.0),
+                                            border:
+                                                Border.all(color: Colors.grey[600]!, width: 2)),
+                                        child: Center(
+                                            child: TextFormField(
+                                          style: TextStyle(fontSize: 16),
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: "Input AX Amount"),
+                                        ))),
+                                    // Staking body container
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *0.4,
+                                      height: MediaQuery.of(context).size.height *0.3,
+                                      // column size container
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width *0.14,
+                                        height: MediaQuery.of(context).size.height *0.4,
+                                       
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          
+                                          children: <Widget>[
+                                            //APY text
+                                          Container(
+                                            width: MediaQuery.of(context).size.width *0.30,
+                                            child:Row(
+                                              
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  "Current Staked Balance:",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                                Text(
+                                                  "100 AX",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                            //text2
+                                            
+                                            //text3
+                                           
+                                            //text4
+                                            Container(
+                                            width: MediaQuery.of(context).size.width *0.30,
+                                            child:Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  "-",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                                Text(
+                                                  "150 AX",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                            ),
+                                            //text5
+                                            Container(
+                                            width: MediaQuery.of(context).size.width *0.30,
+                                            child:Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  "Funds removed",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 16,
+                                                  )
+                                                ),
+                                                 Text(
+                                                  "(Amount) AX",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                                
+                                              ],
+                                            ),
+                                            ),
+                                             Container(
+                                            width: MediaQuery.of(context).size.width *0.30,
+                                            child:Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  "New Staked Balance",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                                Text(
+                                                  "(Difference) AX",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                            ),
+                                          ],
+                                        )
+                                      )
+                                    ),
+                                    // staking row container
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *0.4,
+                                      height: MediaQuery.of(context).size.height *0.1,
+                                      //width/height
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          //Textbuttons
+                                          /** 
+                                          TextButton(
+                                                        onPressed: () {},
+                                                        child: Text(
+                                                          "Stake AX",
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        )
+                                                        ),
+                                              **/  
+                                                Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.15,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.08,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.amber[600],
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  border: Border.all(
+                                                    color: Colors.amber[600]!,
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    //mintConfirmDialog(context, athlete);
+                                                  },
+                                                  child: Text(
+                                                    "Confirm",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                                
+                                               
+                                          /** 
+                                          TextButton(
+                                                        onPressed: () {},
+                                                        child: Text(
+                                                          "Unstake AX",
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        )),
+                                                        **/
+                                        ],
+                                      ),
+                                    ),
+                                  ]
+                                )
+                              )
+                            //)
+        /** 
+        child: Align(
+          alignment: Alignment(0, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                color: Colors.grey[400]!,
+                width: 3,
+              ),
+            ),
+            height: MediaQuery.of(context).size.height * 0.65,
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Stack(children: <Widget>[
+              // Mint Title
+              Align(
+                  alignment: Alignment(0, -0.9),
+                  child: Text("STAKE",
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontFamily: 'OpenSans',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // Athlete Name
+              
+              // AX Amount text box
+              Align(
+                  alignment: Alignment(0, -0.30),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border:
+                              Border.all(color: Colors.grey[600]!, width: 2)),
+                      child: Center(
+                          child: TextFormField(
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Input AX Amount"),
+                      )))),
+              // text
+              Align(
+                  alignment: Alignment(0, 0.05),
+                  child: Text("You will receive:",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.25),
+                  child: Text("20 Long " +  " APTs",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // short tokens text
+              Align(
+                  alignment: Alignment(0, 0.45),
+                  child: Text("20 Short " + " APTs",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ))),
+              // long tokens text
+              Align(
+                  alignment: Alignment(0, 0.85),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[600],
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            //mintConfirmDialog(context, athlete);
+                          },
+                          child: Text("Confirm",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'OpenSans',
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ))))),
+              // Top 'X'
+              Align(
+                // These values are based on trial & error method
+                alignment: Alignment(0.92, -0.95),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      size: 35,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        )
+        **/
+          ),
+        );
 
     showDialog(
         context: context, builder: (BuildContext context) => fancyDialog);
