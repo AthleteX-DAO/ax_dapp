@@ -192,7 +192,7 @@ final ButtonStyle connectWallet = ElevatedButton.styleFrom(
   onPrimary: Colors.grey[800],
   shape:
       new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
-  side: BorderSide(color: (Colors.amber[500])!, width: 4),
+  side: BorderSide(color: (Colors.amber.withOpacity(0.8)), width: 2),
 );
 
 final ButtonStyle connectWalletDesktopButton = ElevatedButton.styleFrom(
@@ -206,8 +206,20 @@ final ButtonStyle connectWalletDesktopButton = ElevatedButton.styleFrom(
 );
 
 final ButtonStyle dexToggleActive = ElevatedButton.styleFrom(
+  padding: EdgeInsets.all(15),
   textStyle: TextStyle(
-      fontSize: 20, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+      fontSize: 15, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+  primary: Colors.grey[900],
+  onPrimary: Colors.amber[600],
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+  // side: BorderSide(color: (Colors.amber[500])!, width: 4),
+);
+
+final ButtonStyle dexToggleActiveMobile = ElevatedButton.styleFrom(
+  padding: EdgeInsets.all(15),
+  textStyle: TextStyle(
+      fontSize: 15, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
   primary: Colors.grey[900],
   onPrimary: Colors.amber[600],
   shape:
@@ -216,10 +228,22 @@ final ButtonStyle dexToggleActive = ElevatedButton.styleFrom(
 );
 
 final ButtonStyle dexToggleInactive = ElevatedButton.styleFrom(
+  padding: EdgeInsets.all(15),
   textStyle: TextStyle(
-      fontSize: 20, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
+      fontSize: 15, fontFamily: 'OpenSans', fontWeight: FontWeight.w600),
   primary: Colors.transparent,
-  onPrimary: Colors.white,
+  onPrimary: Colors.grey[400],
+  shape:
+      new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+  // side: BorderSide(color: (Colors.amber[500])!, width: 4),
+);
+
+final ButtonStyle dexToggleInactiveMobile = ElevatedButton.styleFrom(
+  padding: EdgeInsets.all(15),
+  textStyle: TextStyle(
+      fontSize: 15, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
+  primary: Colors.transparent,
+  onPrimary: Colors.grey[400],
   shape:
       new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
   // side: BorderSide(color: (Colors.amber[500])!, width: 4),
@@ -232,7 +256,7 @@ final TextStyle athleteText = TextStyle(
     fontWeight: FontWeight.w200);
 
 final TextStyle connectWalletMobile = TextStyle(
-    color: Colors.amber[500],
+    color: Colors.amber.withOpacity(0.8),
     fontSize: 15,
     fontFamily: 'OpenSans',
     fontWeight: FontWeight.w200);
