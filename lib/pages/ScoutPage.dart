@@ -1,4 +1,3 @@
-import 'package:ae_dapp/pages/DexPage.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/style/Style.dart';
