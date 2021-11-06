@@ -154,35 +154,35 @@ class RSSReaderState extends State<RSSReader> {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          
           // ListView that displays the RSS data.
           Expanded(
             flex: 3,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
-                child: ListView.builder(
-                  padding: EdgeInsets.all(5.0),
-                  itemCount: _feed.items!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final item = _feed.items![index];
-                    return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[800],
-                        borderRadius: BorderRadius.all(const Radius.circular(10.0)),
-                      ),
-                      margin: EdgeInsets.only(
-                        bottom: 10.0,
-                      ),
-                      child: ListTile(
-                        title: title(item.title),
-                        trailing: rightIcon(),
-                        contentPadding: EdgeInsets.all(5.0),
-                        onTap: () => openFeed(item.link!),
-                      ),
-                    );
-                  },
-                ),
+              child: ListView.builder(
+                padding: EdgeInsets.all(5.0),
+                itemCount: _feed.items!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final item = _feed.items![index];
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[800],
+                      borderRadius:
+                          BorderRadius.all(const Radius.circular(10.0)),
+                    ),
+                    margin: EdgeInsets.only(
+                      bottom: 10.0,
+                    ),
+                    child: ListTile(
+                      title: title(item.title),
+                      trailing: rightIcon(),
+                      contentPadding: EdgeInsets.all(5.0),
+                      onTap: () => openFeed(item.link!),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ]);
@@ -193,7 +193,7 @@ class RSSReaderState extends State<RSSReader> {
     return Text(
       title,
       style: TextStyle(
-          fontSize: 18.0,
+          fontSize: 15.0,
           fontWeight: FontWeight.w500,
           color: colorHackerHeading),
       maxLines: 2,
