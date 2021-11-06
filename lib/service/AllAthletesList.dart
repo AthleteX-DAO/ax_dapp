@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/pages/PlayerPage.dart';
 
 class AllAthletesList extends StatefulWidget {
   @override
@@ -159,12 +158,12 @@ class _AllAthletesListState extends State<AllAthletesList> {
           }
           return Center(
             child: SizedBox(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.grey[500],
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.grey[500],
+              ),
+              height: 50,
+              width: 50,
             ),
-            height: 50,
-            width: 50,
-          ),
           );
         },
       ),
