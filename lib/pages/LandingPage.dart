@@ -1,18 +1,16 @@
+<<<<<<< HEAD
 import 'package:ae_dapp/pages/EnterKeyPage.dart';
 import 'package:ae_dapp/pages/KeyGenerationPage.dart';
 import 'package:ae_dapp/pages/NavigationBar.dart';
 import 'package:flutter/material.dart';
+=======
+import 'package:flutter/cupertino.dart';
+>>>>>>> 842642b9f85366fb76c604449249b1ec930928ac
 
-class LandingPage extends StatefulWidget {
-  const LandingPage({Key? key}) : super(key: key);
-
-  @override
-  _LandingPageState createState() => _LandingPageState();
-}
-
-class _LandingPageState extends State<LandingPage> {
+class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
 
     double txt = 30;
     double buttonTxt = 20;
@@ -186,5 +184,8 @@ class _LandingPageState extends State<LandingPage> {
         ]
       )
     );
+=======
+    return Text('landing page');
+>>>>>>> 842642b9f85366fb76c604449249b1ec930928ac
   }
 }
