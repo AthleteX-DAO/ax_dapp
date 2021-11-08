@@ -1,5 +1,5 @@
+import 'package:ae_dapp/pages/HomePage.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/pages/NavigationBar.dart';
 import 'package:ae_dapp/service/Singleton.dart';
 
 class KeyGenerationPage extends StatefulWidget {
@@ -126,7 +126,11 @@ class _KeyGenerationPageState extends State<KeyGenerationPage> {
                   )),
               onPressed: () {
                 Navigator.of(context).push(
+<<<<<<< HEAD
                   MaterialPageRoute(builder: (_) => NavigationBar()),
+=======
+                  MaterialPageRoute(builder: (_) => HomePage()),
+>>>>>>> fa8011fb711027b293ee41315324838519b56128
                 );
               },
               style: ButtonStyle(
