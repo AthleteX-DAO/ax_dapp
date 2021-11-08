@@ -249,6 +249,12 @@ final ButtonStyle dexToggleInactiveMobile = ElevatedButton.styleFrom(
   // side: BorderSide(color: (Colors.amber[500])!, width: 4),
 );
 
+final TextStyle FAQtext = TextStyle(
+  fontSize: 30,
+  color: Colors.black,
+  fontWeight: FontWeight.w600,
+);
+
 final TextStyle athleteText = TextStyle(
     letterSpacing: 1,
     color: Colors.white,
