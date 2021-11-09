@@ -2692,7 +2692,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(12.0)),
                                 child: TextButton(
                                   onPressed: () {},
-                                  child: Text("Buy Long Apt",
+                                  child: Text("Buy",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: 'OpenSans',
@@ -2737,7 +2737,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 child: TextButton(
                                     onPressed: () {},
-                                    child: Text("Buy Short APT",
+                                    child: Text("Sell",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'OpenSans',
@@ -3093,7 +3093,7 @@ class _HomePageState extends State<HomePage> {
                                               BorderRadius.circular(12.0)),
                                       child: TextButton(
                                         onPressed: () {},
-                                        child: Text("Buy Long Apt",
+                                        child: Text("Buy",
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontFamily: 'OpenSans',
@@ -3147,7 +3147,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       child: TextButton(
                                           onPressed: () {},
-                                          child: Text("Buy Short APT",
+                                          child: Text("Sell",
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontFamily: 'OpenSans',
