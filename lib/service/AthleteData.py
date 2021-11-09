@@ -1,31 +1,47 @@
 import requests
 import json
+import re
 
 # from requests.sessions import _TextMapping
 
 ATHLETES = []
 
-active_list = [
-    'T.Brady',
-    'P.Mahomes',
-    'J.Allen',
-    'L.Jackson',
-    'D.Adams',
-    'S.Diggs',
-    'C.Ridley',
-    'D.Metcalf',
-    'T.Hill',
-    'D.Henry',
-    'D.Cook',
-    'D.Harris',
-    'N.Harris'
-]
+with open('../../assets/nflAthletes.json', 'r') as athFile:
+    data = athFile.read()
+
+athJson = json.loads(data)
+
+# list of abbreviated names
+active_list = []
+id_list = []
+
+for ath in athJson:
+    id_list.append(ath['id'])
+    active_list.append(ath['name'])
+
+
+# active_list = [
+#     'T.Brady',
+#     'P.Mahomes',
+#     'J.Allen',
+#     'L.Jackson',
+#     'D.Adams',
+#     'S.Diggs',
+#     'C.Ridley',
+#     'D.Metcalf',
+#     'T.Hill',
+#     'D.Henry',
+#     'D.Cook',
+#     'D.Harris',
+#     'N.Harris'
+# ]
 
 host = 'http://54.38.139.134:9000'
 
 class Athlete():
     def __init__(self, name):
         self.name = name
+        self.id = 
         self.team = None
         self.position = None
         self.passingYards = []
