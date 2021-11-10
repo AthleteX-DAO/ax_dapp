@@ -797,6 +797,163 @@ class _HomePageState extends State<HomePage> {
                                                             style: FAQtext),
                                                       )
                                                     ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              .85,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              .6,
+                                                          color: Colors.purple,
+                                                          child:
+                                                              SingleChildScrollView(
+                                                                  child: Column(
+                                                            children: <Widget>[
+                                                              ExpansionTile(
+                                                                  title: Text(
+                                                                      'FAQ'),
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .black,
+                                                                  children: [
+                                                                    Padding(
+                                                                        padding: EdgeInsets.fromLTRB(
+                                                                            10,
+                                                                            10,
+                                                                            10,
+                                                                            20),
+                                                                        child: Text(
+                                                                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla congue lectus et volutpat efficitur. Aliquam facilisis dolor ut laoreet venenatis. Aenean sodales rutrum rutrum. Aenean vel sem vitae orci lacinia dapibus molestie eget lorem. Mauris fermentum nec erat non placerat. Cras suscipit, augue sit amet dapibus egestas, dolor est vestibulum quam, in efficitur eros nisi sit amet eros. Maecenas porttitor, nulla a dapibus luctus, erat augue auctor velit, at iaculis sem augue quis ipsum.')),
+                                                                  ]),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                              ExpansionTile(
+                                                                title:
+                                                                    Text('FAQ'),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                              ),
+                                                            ],
+                                                          )))
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              .9,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              .05,
+                                                          color: Colors.orange,
+                                                          child: TextButton(
+                                                              onPressed: () =>
+                                                                  scoutHintDialog(
+                                                                      context),
+                                                              child: Text(
+                                                                '?',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              )))
+                                                    ],
                                                   )
                                                 ],
                                               ))
