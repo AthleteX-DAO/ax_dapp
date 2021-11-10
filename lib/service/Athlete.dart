@@ -31,12 +31,12 @@ class Athlete {
         team: json['team'],
         position: json['position'],
         passingYards: json['passingYards'],
-        passingTouchDowns: json['passingTouchDowns'],
+        passingTouchDowns: json['passingTouchdowns'],
         reception: json['reception'],
         receiveYards: json['receiveYards'],
         receiveTouch: json['receiveTouch'],
         rushingYards: json['rushingYards'],
         time: json['time'],
-        war: json['war']
+        war: json['price']
       );
 }

@@ -41,7 +41,20 @@ class _HomePageState extends State<HomePage> {
   bool earnActive = false;
   late Coin coin1;
   late Coin coin2;
-  Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
+
+  Athlete lastFirstEarn = Athlete(
+    name: '',
+    team: '',
+    position: '',
+    passingYards: [],
+    passingTouchDowns: [],
+    reception: [],
+    receiveYards: [],
+    receiveTouch: [],
+    rushingYards: [],
+    war: [],
+    time: []
+  );
 
   void _onItemTapped(int index) {
     setState(() {
@@ -406,7 +419,7 @@ class _HomePageState extends State<HomePage> {
                                                                                         padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                                                                                         child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
                                                                                           Text(athlete.name, style: TextStyle(fontSize: 20)),
-                                                                                          Text('QB', style: TextStyle(fontSize: 15, color: Colors.white.withOpacity(0.8)), textAlign: TextAlign.left)
+                                                                                          Text(athlete.position, style: TextStyle(fontSize: 15, color: Colors.white.withOpacity(0.8)), textAlign: TextAlign.left)
                                                                                         ]),
                                                                                       ),
                                                                                     ])),
@@ -918,11 +931,7 @@ class _HomePageState extends State<HomePage> {
                                                           athleteList = nflList;
                                                         return Container(
                                                             height: MediaQuery
-                                                                        .of(
-                                                                            context)
-                                                                    .size
-                                                                    .height *
-                                                                0.65,
+                                                                        .of(context).size.height *0.65,
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
@@ -969,7 +978,7 @@ class _HomePageState extends State<HomePage> {
                                                                                         padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                                                                                         child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
                                                                                           Text(athlete.name, style: TextStyle(fontSize: 20)),
-                                                                                          Text('QB', style: TextStyle(fontSize: 15, color: Colors.white.withOpacity(0.8)), textAlign: TextAlign.left)
+                                                                                          Text(athlete.position, style: TextStyle(fontSize: 15, color: Colors.white.withOpacity(0.8)), textAlign: TextAlign.left)
                                                                                         ]),
                                                                                       ),
                                                                                     ])),
@@ -2421,40 +2430,51 @@ class _HomePageState extends State<HomePage> {
         }));
   }
 
-  Widget buildGraph(List war, List time) {
+  Widget buildGraph(List war, List time, BuildContext context) {
     List<FlSpot> athleteData = [];
 
     for (int i = 0; i < war.length - 1; i++) {
-      athleteData.add(FlSpot(time[i].toDouble(), war[i].toDouble()));
+      // List<String> dateTime = time[i].split("T");
+      // List<String> date = dateTime[0].split("-");
+      // List<String> _time = dateTime[1].split(":");
+      // _time[2].replaceAll('Z','');
+      
+      DateTime dateTime = DateTime.parse(time[i]);
+
+      athleteData.add(FlSpot(dateTime.millisecondsSinceEpoch.toDouble(), war[i].toDouble()));
     }
 
-    return LineChart(
-      LineChartData(
-        lineTouchData: LineTouchData(
-          enabled: true,
-        ),
-        backgroundColor: Colors.grey[800],
-        minX: 0,
-        maxX: 5,
-        minY: 0,
-        maxY: 1,
-        gridData: FlGridData(
-          show: false,
-        ),
-        borderData: FlBorderData(
-          show: false,
-        ),
-        lineBarsData: [
-          LineChartBarData(
-            colors: [(Colors.amber[600])!],
-            spots: athleteData,
-            isCurved: false,
-            barWidth: 2,
-            dotData: FlDotData(show: false),
-            belowBarData: BarAreaData(show: false),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.55,
+      height: MediaQuery.of(context).size.height * 0.40,
+      child: LineChart(
+        LineChartData(
+          lineTouchData: LineTouchData(
+            enabled: true,
           ),
-        ],
-      ),
+          backgroundColor: Colors.grey[800],
+          minX: 0,
+          maxX: 5,
+          minY: 0,
+          maxY: 1,
+          gridData: FlGridData(
+            show: false,
+          ),
+          borderData: FlBorderData(
+            show: false,
+          ),
+          lineBarsData: [
+            LineChartBarData(
+              colors: [(Colors.amber[600])!],
+              spots: athleteData,
+              isCurved: false,
+              barWidth: 2,
+              dotData: FlDotData(show: false),
+              belowBarData: BarAreaData(show: false),
+            ),
+          ],
+        ),
+      )
     );
   }
 
@@ -2523,24 +2543,26 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 2,
-                    ),
+                    // border: Border.all(
+                    //   color: Colors.grey,
+                    //   width: 2,
+                    // ),
                   ),
-                  child: Center(
-                      child: Text("Player Stats\nCOMING SOON",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.amber[600],
-                            fontFamily: 'OpenSans',
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600,
-                          ))))),
+                  child: buildGraph(athlete.war, athlete.time, context)
+                  // child: Center(
+                  //     child: Text("Player Stats\nCOMING SOON",
+                  //         textAlign: TextAlign.center,
+                  //         style: TextStyle(
+                  //           color: Colors.amber[600],
+                  //           fontFamily: 'OpenSans',
+                  //           fontSize: 30,
+                  //           fontWeight: FontWeight.w600,
+                  //         )))
+                          )),
           // War Price
           Align(
               alignment: Alignment(-0.8, -0.36),
-              child: Text(athlete.war[3].toStringAsFixed(4),
+              child: Text(athlete.war[athlete.war.length - 1].toStringAsFixed(4),
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'OpenSans',
@@ -2622,7 +2644,7 @@ class _HomePageState extends State<HomePage> {
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
                                 )),
-                            Text("Quarterback",
+                            Text(athlete.position,
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontFamily: 'OpenSans',
@@ -2799,14 +2821,14 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text("Touchdowns",
+                          Text("Passing Touchdowns",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text("8",
+                          Text(athlete.passingTouchDowns[athlete.passingTouchDowns.length-1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -2817,14 +2839,14 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text("Fumbles",
+                          Text("Passing Yards",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text("8",
+                          Text(athlete.passingYards[athlete.passingYards.length-1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -2835,14 +2857,14 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text("Snaps",
+                          Text("Reception",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text("8",
+                          Text(athlete.reception[athlete.reception.length-1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -2853,14 +2875,14 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text("Touchdowns",
+                          Text("Receive Yards",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text("8",
+                          Text(athlete.receiveYards[athlete.receiveYards.length-1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -2871,14 +2893,14 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text("Fumbles",
+                          Text("Receive Touchdowns",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text("8",
+                          Text(athlete.receiveTouch[athlete.receiveTouch.length-1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -3047,23 +3069,25 @@ class _HomePageState extends State<HomePage> {
                         child: Container(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * .4,
-                            // decoration: BoxDecoration(
-                            //   color: Colors.black,
-                            //   borderRadius: BorderRadius.circular(12.0),
-                            //   border: Border.all(
-                            //     color: Colors.grey,
-                            //     width: 2,
-                            //   ),
-                            // ),
-                            child: Center(
-                                child: Text("Player Stats\nCOMING SOON",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.amber[600],
-                                      fontFamily: 'OpenSans',
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w600,
-                                    ))))),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(12.0),
+                              // border: Border.all(
+                              //   color: Colors.grey,
+                              //   width: 2,
+                              // ),
+                            ),
+                            child: buildGraph(athlete.war, athlete.time, context)
+                            // child: Center(
+                            //     child: Text("Player Stats\nCOMING SOON",
+                            //         textAlign: TextAlign.center,
+                            //         style: TextStyle(
+                            //           color: Colors.amber[600],
+                            //           fontFamily: 'OpenSans',
+                            //           fontSize: 30,
+                            //           fontWeight: FontWeight.w600,
+                            //         )))
+                                    )),
                   ])
                 ]),
                 // athlete purchase buttons
