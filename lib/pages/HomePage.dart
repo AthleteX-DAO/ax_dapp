@@ -781,6 +781,7 @@ class _HomePageState extends State<HomePage> {
                                               color: Colors.green,
                                               child: Column(
                                                 children: [
+                                                  // faq title
                                                   Row(
                                                     children: [
                                                       Container(
@@ -798,6 +799,7 @@ class _HomePageState extends State<HomePage> {
                                                       )
                                                     ],
                                                   ),
+                                                  // faq accordion list
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -926,6 +928,7 @@ class _HomePageState extends State<HomePage> {
                                                           )))
                                                     ],
                                                   ),
+                                                  // faq help button
                                                   Row(
                                                     children: [
                                                       Container(
