@@ -14,6 +14,7 @@ import 'package:ae_dapp/pages/DexPage.dart';
 import 'package:ae_dapp/pages/HelpPage.dart';
 import 'package:flutter/rendering.dart';
 import 'package:webfeed/domain/media/media.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class HomePage extends StatefulWidget {
   @override
@@ -2432,18 +2433,56 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildGraph(List war, List time, BuildContext context) {
     List<FlSpot> athleteData = [];
+    DateTime minTime = DateTime(-1);
+    DateTime maxTime = DateTime(-1);
+    double minWar = -1;
+    double maxWar = -1;
+    bool hour = true;
+    double chartTime = 0;
 
-    for (int i = 0; i < war.length - 1; i++) {
-      // List<String> dateTime = time[i].split("T");
-      // List<String> date = dateTime[0].split("-");
-      // List<String> _time = dateTime[1].split(":");
-      // _time[2].replaceAll('Z','');
-      
-      DateTime dateTime = DateTime.parse(time[i]);
+    if (hour) {
+      DateTime lastHour = DateTime(-1);
+      for (int i = 0; i < war.length - 1; i++) {
+        
+        DateTime dateTime = DateTime.parse(time[i]);
 
-      athleteData.add(FlSpot(dateTime.millisecondsSinceEpoch.toDouble(), war[i].toDouble()));
+        // only new points
+        if (lastHour.year == -1 || (lastHour.isBefore(dateTime) && dateTime.hour != lastHour.hour)) {
+          lastHour = dateTime;
+          // get the min and max time
+          if (minTime.year == -1 || minTime.year == -1) {
+            minTime = dateTime;
+            maxTime = dateTime;
+          }
+          else if (minTime.millisecondsSinceEpoch > dateTime.millisecondsSinceEpoch) {
+            minTime = dateTime;
+          }
+          else if (maxTime.millisecondsSinceEpoch < dateTime.millisecondsSinceEpoch) {
+            maxTime = dateTime;
+          }
+
+          // get the min and max war
+          if (minWar == -1 || maxWar == -1) {
+            minWar = war[i];
+            maxWar = war[i];
+          } else if (minWar > war[i]) {
+            minWar = war[i];
+          } else if (maxWar < war[i]) {
+            maxWar = war[i];
+          }
+
+          athleteData.add(
+            FlSpot(
+              chartTime++, 
+              war[i].toDouble())
+          );
+        }
+        
+      }
+      chartTime--;
+
     }
-
+    
     return Container(
       width: MediaQuery.of(context).size.width * 0.55,
       height: MediaQuery.of(context).size.height * 0.40,
@@ -2454,7 +2493,7 @@ class _HomePageState extends State<HomePage> {
           ),
           backgroundColor: Colors.grey[800],
           minX: 0,
-          maxX: 5,
+          maxX: chartTime,
           minY: 0,
           maxY: 1,
           gridData: FlGridData(
