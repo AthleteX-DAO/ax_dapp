@@ -1,20 +1,14 @@
-import 'dart:html';
-import 'dart:js';
 import 'package:ae_dapp/service/Coin.dart';
 import 'package:ae_dapp/service/CoinApi.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
-import 'package:ae_dapp/service/Controller.dart';
+import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:ae_dapp/style/Style.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/pages/ScoutPage.dart';
-import 'package:ae_dapp/pages/DexPage.dart';
-import 'package:ae_dapp/pages/HelpPage.dart';
 import 'package:flutter/rendering.dart';
-import 'package:webfeed/domain/media/media.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -2174,10 +2168,14 @@ class _HomePageState extends State<HomePage> {
     List<FlSpot> athleteData = [];
     DateTime minTime = DateTime(-1);
     DateTime maxTime = DateTime(-1);
+    DateTime lastDay = DateTime(-1);
     double minWar = -1;
     double maxWar = -1;
     bool hour = true;
     double chartTime = 0;
+
+    
+    List<WarTimeSeries> data = [];
 
     if (hour) {
       DateTime lastHour = DateTime(-1);
@@ -2193,12 +2191,15 @@ class _HomePageState extends State<HomePage> {
             minTime = dateTime;
             maxTime = dateTime;
           }
+          // if the earliest time... record it
           else if (minTime.millisecondsSinceEpoch > dateTime.millisecondsSinceEpoch) {
             minTime = dateTime;
           }
+          // if the latest time... record it
           else if (maxTime.millisecondsSinceEpoch < dateTime.millisecondsSinceEpoch) {
             maxTime = dateTime;
           }
+          // if it is the next day, increase
 
           // get the min and max war
           if (minWar == -1 || maxWar == -1) {
@@ -2209,6 +2210,10 @@ class _HomePageState extends State<HomePage> {
           } else if (maxWar < war[i]) {
             maxWar = war[i];
           }
+// possible solution: https://stackoverflow.com/questions/54049781/how-to-pass-string-parameter-in-line-chart-x-axis-flutter
+          String dating = dateTime.hour.toString() + ":00";
+
+          data.add(WarTimeSeries(dateTime, war[i]));
 
           athleteData.add(
             FlSpot(
@@ -2219,40 +2224,50 @@ class _HomePageState extends State<HomePage> {
         
       }
       chartTime--;
-
     }
     
     return Container(
       width: MediaQuery.of(context).size.width * 0.55,
       height: MediaQuery.of(context).size.height * 0.40,
-      child: LineChart(
-        LineChartData(
-          lineTouchData: LineTouchData(
-            enabled: true,
-          ),
-          backgroundColor: Colors.grey[800],
-          minX: 0,
-          maxX: chartTime,
-          minY: 0,
-          maxY: 1,
-          gridData: FlGridData(
-            show: false,
-          ),
-          borderData: FlBorderData(
-            show: false,
-          ),
-          lineBarsData: [
-            LineChartBarData(
-              colors: [(Colors.amber[600])!],
-              spots: athleteData,
-              isCurved: false,
-              barWidth: 2,
-              dotData: FlDotData(show: false),
-              belowBarData: BarAreaData(show: false),
-            ),
-          ],
-        ),
+      child: SfCartesianChart(
+        series: <ChartSeries>[
+          LineSeries<WarTimeSeries, double>(
+            dataSource: data,
+            xValueMapper: (WarTimeSeries wts, _) => wts.time.hour.toDouble(),
+            yValueMapper: (WarTimeSeries wts, _) => wts.war,
+            pointColorMapper: (WarTimeSeries wts, _) => Colors.amber[600],
+            dataLabelSettings: DataLabelSettings(isVisible: true),
+          )
+        ]
       )
+      // child: LineChart(
+      //   LineChartData(
+      //     lineTouchData: LineTouchData(
+      //       enabled: true,
+      //     ),
+      //     backgroundColor: Colors.grey[800],
+      //     minX: 0,
+      //     maxX: chartTime,
+      //     minY: 0,
+      //     maxY: 1,
+      //     gridData: FlGridData(
+      //       show: false,
+      //     ),
+      //     borderData: FlBorderData(
+      //       show: false,
+      //     ),
+      //     lineBarsData: [
+      //       LineChartBarData(
+      //         colors: [(Colors.amber[600])!],
+      //         spots: athleteData,
+      //         isCurved: false,
+      //         barWidth: 2,
+      //         dotData: FlDotData(show: false),
+      //         belowBarData: BarAreaData(show: false),
+      //       ),
+      //     ],
+      //   ),
+      // )
     );
   }
 
