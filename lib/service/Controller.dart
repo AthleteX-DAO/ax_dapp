@@ -1,5 +1,7 @@
+import 'package:flutter_web3/ethereum.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:web3dart/browser.dart';
 import 'dart:html';
 
 class Controller {
@@ -24,8 +26,12 @@ class Controller {
     init();
   }
 
-  void init() {
+  void init() async {
     _client = Web3Client(_rpcUrl, new Client());
+    if (window.ethereum != null) {
+      updateClient(_client);
+      updateCredentials(await window.ethereum!.requestAccount());
+    }
   }
 
   // Getters

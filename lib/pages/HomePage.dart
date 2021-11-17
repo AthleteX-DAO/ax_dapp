@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html';
 import 'dart:js';
 import 'dart:math';
@@ -24,8 +25,6 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
-class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   int swap = 0;
   int stakingAmount = 0;
@@ -48,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   late Coin coin1;
   late Coin coin2;
   Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
+class _HomePageState extends State<HomePage> {
 
   // Web3 Credentials
   Controller _controller = Controller();
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> checkMetamask() async {
     final eth = window.ethereum;
     if (eth != null) {
-      print("something went wrong!");
+      print("Connecting to Web3!");
       // Immediately
 
       final client = Web3Client.custom(eth.asRpcService());
@@ -121,22 +121,30 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Viewable
-  Future<BigInt> totalBalance() async {
-    return await athleteX.totalSupply();
-  }
+  // Viewable Staking
 
-  Future<BigInt> availableBalance() async {
+  Stream<BigInt> availableBalance() async* {
     EthereumAddress account = await _controller.credentials.extractAddress();
     BigInt returnValue = await athleteX.balanceOf(account);
-    return returnValue;
+    yield returnValue;
   }
 
-  Future<BigInt> stakedAX() async {
+   Stream<BigInt> stakedAX = (() async* {
+       Controller _controller = Controller();
+  StakingRewards _stakingRewards = StakingRewards(
+      address:
+          EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB"),
+      client: Controller().client);
     EthereumAddress account = await _controller.credentials.extractAddress();
-    return BigInt.from(
+    BigInt amountInStakingContract = BigInt.from(
         await _stakingRewards.balanceOf(account) / BigInt.from(pow(10, 18)));
-  }
+
+    Timer.periodic(Duration(seconds: 2), (t) {
+      print('Amount in Staking Contract: $amountInStakingContract \n');
+    });
+
+    yield amountInStakingContract;
+  })().asBroadcastStream();
 
   Future<BigInt> getAPY() async {
     return await _stakingRewards.getRewardForDuration();
@@ -1792,14 +1800,15 @@ class _HomePageState extends State<HomePage> {
                                                                   'OpenSans',
                                                               fontSize: 20,
                                                             )),
-                                                        Text("100 AX",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  'OpenSans',
-                                                              fontSize: 20,
-                                                            )),
+                                                        StreamBuilder(
+                                                            stream: stakedAX.distinct(),
+                                                            builder: (context,
+                                                                    snapshot) =>
+                                                                Text(
+                                                                  '${snapshot.data.toString()} AX',
+                                                                  style:
+                                                                      axSubheader,
+                                                                ))
                                                       ],
                                                     ),
                                                   ),
@@ -1863,7 +1872,9 @@ class _HomePageState extends State<HomePage> {
                                                               fontFamily:
                                                                   'OpenSans',
                                                               fontSize: 20,
-                                                            )),
+                                                            ),
+                                                          );
+                                                        }),
                                                       ],
                                                     ),
                                                   ),
@@ -3717,8 +3728,10 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: TextButton(
                               onPressed: () async {
-                                Navigator.pop(context);
-                                stakeAX();
+                                // Navigator.pop(context);
+                                setState(() {
+                                  stakeAX(stakingAmount);
+                                });
                               },
                               child: Text(
                                 "Confirm",
@@ -3844,9 +3857,7 @@ class _HomePageState extends State<HomePage> {
                                             fontSize: 20,
                                           )),
                                       StreamBuilder(
-                                        stream: Stream.periodic(
-                                                Duration(seconds: 1))
-                                            .asyncMap((event) => stakedAX()),
+                                        stream: stakedAX,
                                         builder: (context, snapshot) => Text(
                                             '${snapshot.data.toString()} AX',
                                             style: TextStyle(
