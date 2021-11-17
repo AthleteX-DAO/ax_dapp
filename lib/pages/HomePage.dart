@@ -82,8 +82,8 @@ class _HomePageState extends State<HomePage> {
 
   // Stake
   Future<void> stakeAX() async {
-    stakingAmount = 1; //should change based on UI (ofc)
-    BigInt stakeAmount = BigInt.from(stakingAmount * (pow(10, 18)));
+   //should change based on UI (ofc)
+    BigInt stakeAmount = BigInt.from(stakingA mount * (pow(10, 18)));
     Credentials stakeCredentials = _controller.credentials;
     Transaction _transaction = Transaction(
         maxGas: 5500000,
@@ -106,7 +106,6 @@ class _HomePageState extends State<HomePage> {
 
   // Unstake
   Future<void> unstakeAX() async {
-    int stakingAmount = 1;
     Credentials wCredentials = _controller.credentials;
     BigInt withdrawAmount = BigInt.from(stakingAmount * (pow(10, 18)));
     Transaction _transaction = Transaction(
@@ -1825,12 +1824,8 @@ class _HomePageState extends State<HomePage> {
                                                               fontSize: 20,
                                                             )),
                                                         StreamBuilder(
-                                                          stream: Stream.periodic(
-                                                                  Duration(
-                                                                      seconds:
-                                                                          3))
-                                                              .asyncMap((event) =>
-                                                                  rewardsEarned()),
+                                                          stream: Stream.periodic(Duration( seconds: 3)).asyncMap((event) =>rewardsEarned()),
+                                                          initialData: 21,
                                                           builder: (context,
                                                                   snapshot) =>
                                                               Text(
@@ -1861,7 +1856,7 @@ class _HomePageState extends State<HomePage> {
                                                                   'OpenSans',
                                                               fontSize: 20,
                                                             )),
-                                                        Text("150 AX",
+                                                        Text("$stakingAmount",
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.white,
@@ -3556,10 +3551,8 @@ class _HomePageState extends State<HomePage> {
                                     border: InputBorder.none,
                                     hintText: "Input AX Amount"),
                                 onChanged: (String amount) {
-                                  int stakeAmount = int.parse(amount);
-
                                   setState(() {
-                                    stakingAmount = stakeAmount;
+                                    stakingAmount = int.parse(amount);
                                     print(stakingAmount);
                                   });
                                 }))),
@@ -3589,16 +3582,30 @@ class _HomePageState extends State<HomePage> {
                                             fontSize: 20,
                                           )),
                                       StreamBuilder(
-                                        stream: Stream.periodic(
-                                                Duration(seconds: 1))
-                                            .asyncMap((event) => stakedAX()),
-                                        builder: (context, snapshot) => Text(
+                                        stream: Stream.periodic(Duration(seconds: 1)).asyncMap((event) => stakedAX()),
+                                        initialData: 21,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData)
+                                          {
+                                            return Text(
                                             '${snapshot.data.toString()} AX',
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontFamily: 'OpenSans',
                                               fontSize: 20,
-                                            )),
+                                            ));
+                                          }
+                                          else 
+                                          {
+                                            return Text(
+                                            '0 AX',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 20,
+                                            ));
+                                          }
+                                        },
                                       )
                                     ],
                                   ),
@@ -3621,7 +3628,7 @@ class _HomePageState extends State<HomePage> {
                                             fontFamily: 'OpenSans',
                                             fontSize: 20,
                                           )),
-                                      Text("150 AX",
+                                      Text("$stakingAmount",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'OpenSans',
@@ -3806,9 +3813,8 @@ class _HomePageState extends State<HomePage> {
                                     border: InputBorder.none,
                                     hintText: "Input AX Amount"),
                                 onChanged: (String amount) {
-                                  int stakeAmount = int.parse(amount);
                                   setState(() {
-                                    stakingAmount = stakeAmount;
+                                    stakingAmount = int.parse(amount);
                                     print(stakingAmount);
                                   });
                                 }))),
@@ -3870,7 +3876,7 @@ class _HomePageState extends State<HomePage> {
                                             fontFamily: 'OpenSans',
                                             fontSize: 20,
                                           )),
-                                      Text("150 AX",
+                                      Text("$stakingAmount",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'OpenSans',
