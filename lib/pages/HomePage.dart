@@ -4,11 +4,10 @@ import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:ae_dapp/style/Style.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class HomePage extends StatefulWidget {
   @override
@@ -2165,17 +2164,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildGraph(List war, List time, BuildContext context) {
-    List<FlSpot> athleteData = [];
-    DateTime minTime = DateTime(-1);
-    DateTime maxTime = DateTime(-1);
-    DateTime lastDay = DateTime(-1);
-    double minWar = -1;
-    double maxWar = -1;
+    List<WarTimeSeries> athleteData = [];
     bool hour = true;
-    double chartTime = 0;
-
-    
-    List<WarTimeSeries> data = [];
+    List<charts.Series<WarTimeSeries, int>> lineSeriesData = [];
 
     if (hour) {
       DateTime lastHour = DateTime(-1);
@@ -2186,60 +2177,52 @@ class _HomePageState extends State<HomePage> {
         // only new points
         if (lastHour.year == -1 || (lastHour.isBefore(dateTime) && dateTime.hour != lastHour.hour)) {
           lastHour = dateTime;
-          // get the min and max time
-          if (minTime.year == -1 || minTime.year == -1) {
-            minTime = dateTime;
-            maxTime = dateTime;
-          }
-          // if the earliest time... record it
-          else if (minTime.millisecondsSinceEpoch > dateTime.millisecondsSinceEpoch) {
-            minTime = dateTime;
-          }
-          // if the latest time... record it
-          else if (maxTime.millisecondsSinceEpoch < dateTime.millisecondsSinceEpoch) {
-            maxTime = dateTime;
-          }
-          // if it is the next day, increase
 
-          // get the min and max war
-          if (minWar == -1 || maxWar == -1) {
-            minWar = war[i];
-            maxWar = war[i];
-          } else if (minWar > war[i]) {
-            minWar = war[i];
-          } else if (maxWar < war[i]) {
-            maxWar = war[i];
-          }
 // possible solution: https://stackoverflow.com/questions/54049781/how-to-pass-string-parameter-in-line-chart-x-axis-flutter
-          String dating = dateTime.hour.toString() + ":00";
-
-          data.add(WarTimeSeries(dateTime, war[i]));
-
           athleteData.add(
-            FlSpot(
-              chartTime++, 
-              war[i].toDouble())
+            WarTimeSeries(dateTime, war[i])
           );
+//try back to working chart and chainging domainaxis
+          // athleteData.add(
+          //   FlSpot(
+          //     dateTime.millisecondsSinceEpoch.toDouble(), 
+          //     war[i].toDouble())
+          // );
         }
         
       }
-      chartTime--;
     }
+
+    lineSeriesData.add(
+      charts.Series(
+        colorFn: (__, _) => charts.ColorUtil.fromDartColor(Color(0xffffb300)),
+        id: 'War Stats',
+        data: athleteData,
+        domainFn: (WarTimeSeries wts, _) => wts.time.millisecondsSinceEpoch,
+        measureFn: (WarTimeSeries wts, _) => wts.war,
+      )
+    );
     
     return Container(
       width: MediaQuery.of(context).size.width * 0.55,
       height: MediaQuery.of(context).size.height * 0.40,
-      child: SfCartesianChart(
-        series: <ChartSeries>[
-          LineSeries<WarTimeSeries, double>(
-            dataSource: data,
-            xValueMapper: (WarTimeSeries wts, _) => wts.time.hour.toDouble(),
-            yValueMapper: (WarTimeSeries wts, _) => wts.war,
-            pointColorMapper: (WarTimeSeries wts, _) => Colors.amber[600],
-            dataLabelSettings: DataLabelSettings(isVisible: true),
-          )
-        ]
-      )
+      child: charts.LineChart(
+        lineSeriesData,
+        defaultRenderer: charts.LineRendererConfig(includeArea: true, stacked: true),
+        animate: true,
+        animationDuration: Duration(seconds: 3),
+        // Sets up a currency formatter for the measure axis.
+        primaryMeasureAxis: new charts.NumericAxisSpec(
+          tickProviderSpec:
+          new charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
+        ),
+        domainAxis: charts.NumericAxisSpec(
+          tickProviderSpec:
+          charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
+          tickFormatterSpec: customChartTickFormatter,
+        ),
+      ),
+    );
       // child: LineChart(
       //   LineChartData(
       //     lineTouchData: LineTouchData(
@@ -2247,7 +2230,7 @@ class _HomePageState extends State<HomePage> {
       //     ),
       //     backgroundColor: Colors.grey[800],
       //     minX: 0,
-      //     maxX: chartTime,
+      //     maxX: maxTime.millisecondsSinceEpoch.toDouble(),
       //     minY: 0,
       //     maxY: 1,
       //     gridData: FlGridData(
@@ -2268,7 +2251,7 @@ class _HomePageState extends State<HomePage> {
       //     ],
       //   ),
       // )
-    );
+    // );
   }
 
   // Athlete Popup

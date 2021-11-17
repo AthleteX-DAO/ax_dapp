@@ -127,6 +127,22 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  charts_common:
+    dependency: transitive
+    description:
+      name: charts_common
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.12.0"
+  charts_flutter:
+    dependency: "direct main"
+    description:
+      path: charts_flutter
+      ref: HEAD
+      resolved-ref: d6adb193ff91d2042941bad388845cbc8c5cd964
+      url: "https://github.com/google/charts"
+    source: git
+    version: "0.12.0"
   checked_yaml:
     dependency: transitive
     description:
@@ -244,13 +260,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
-  flutter_screenutil:
-    dependency: "direct main"
-    description:
-      name: flutter_screenutil
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.0+2"
   flutter_sparkline:
     dependency: "direct main"
     description:
