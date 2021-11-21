@@ -4,10 +4,12 @@ import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:ae_dapp/style/Style.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/flutter.dart' as series;
 
 class HomePage extends StatefulWidget {
   @override
@@ -2164,8 +2166,59 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildGraph(List war, List time, BuildContext context) {
-    List<WarTimeSeries> athleteData = [];
+    // local variables
+    List<series.Series<dynamic, DateTime>> athleteData ;
+    DateTime curTime = DateTime(-1);
+    DateTime lastHour = DateTime(-1);
+    DateTime maxTime = DateTime(-1);
+    List<WarTimeSeries> data = [];
+
+    for(int i = 0; i < war.length; i++) {
+      curTime = DateTime.parse(time[i]);
+      // only new points
+        if (lastHour.year == -1 || (lastHour.isBefore(curTime) && curTime.hour != lastHour.hour)) {
+          lastHour = curTime;
+          // sets maximum if latest time
+          if (maxTime == DateTime(-1)  || maxTime.isBefore(curTime))
+            maxTime = curTime;
+
+          data.add(WarTimeSeries(curTime, war[i]));
+        }
+    }
+
+    athleteData = [
+      new charts.Series<WarTimeSeries, DateTime>(
+        id: 'War',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (WarTimeSeries wts, _) => wts.time,
+        measureFn: (WarTimeSeries wts, _) => wts.war,
+        data: data,
+      )
+    ];
+
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.55,
+      height: MediaQuery.of(context).size.height * 0.40,
+      child: charts.TimeSeriesChart(
+        athleteData,
+        // Sets up a currency formatter for the measure axis.
+        // primaryMeasureAxis: new charts.NumericAxisSpec(
+        //   tickProviderSpec:
+        //   new charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
+        // ),
+        // domainAxis: charts.NumericAxisSpec(
+        //   tickProviderSpec: charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
+        //   tickFormatterSpec: customChartTickFormatter,
+        // ),
+      ),
+    );
+  }
+
+/*
+  Widget buildGraph(List war, List time, BuildContext context) {
+    List<FlSpot> athleteData = [];
     bool hour = true;
+    DateTime maxTime = DateTime(-1);
     List<charts.Series<WarTimeSeries, int>> lineSeriesData = [];
 
     if (hour) {
@@ -2177,83 +2230,85 @@ class _HomePageState extends State<HomePage> {
         // only new points
         if (lastHour.year == -1 || (lastHour.isBefore(dateTime) && dateTime.hour != lastHour.hour)) {
           lastHour = dateTime;
+          if (maxTime == DateTime(-1)  || maxTime.isBefore(dateTime))
+            maxTime = dateTime;
 
 // possible solution: https://stackoverflow.com/questions/54049781/how-to-pass-string-parameter-in-line-chart-x-axis-flutter
-          athleteData.add(
-            WarTimeSeries(dateTime, war[i])
-          );
-//try back to working chart and chainging domainaxis
           // athleteData.add(
-          //   FlSpot(
-          //     dateTime.millisecondsSinceEpoch.toDouble(), 
-          //     war[i].toDouble())
+          //   WarTimeSeries(dateTime, war[i])
           // );
+//try back to working chart and chainging domainaxis
+          athleteData.add(
+            FlSpot(
+              dateTime.millisecondsSinceEpoch.toDouble(), 
+              war[i].toDouble())
+          );
         }
         
       }
     }
 
-    lineSeriesData.add(
-      charts.Series(
-        colorFn: (__, _) => charts.ColorUtil.fromDartColor(Color(0xffffb300)),
-        id: 'War Stats',
-        data: athleteData,
-        domainFn: (WarTimeSeries wts, _) => wts.time.millisecondsSinceEpoch,
-        measureFn: (WarTimeSeries wts, _) => wts.war,
-      )
-    );
+    // lineSeriesData.add(
+    //   charts.Series(
+    //     colorFn: (__, _) => charts.ColorUtil.fromDartColor(Color(0xffffb300)),
+    //     id: 'War Stats',
+    //     data: athleteData,
+    //     domainFn: (WarTimeSeries wts, _) => wts.time.millisecondsSinceEpoch,
+    //     measureFn: (WarTimeSeries wts, _) => wts.war,
+    //   )
+    // );
     
     return Container(
       width: MediaQuery.of(context).size.width * 0.55,
       height: MediaQuery.of(context).size.height * 0.40,
-      child: charts.LineChart(
-        lineSeriesData,
-        defaultRenderer: charts.LineRendererConfig(includeArea: true, stacked: true),
-        animate: true,
-        animationDuration: Duration(seconds: 3),
-        // Sets up a currency formatter for the measure axis.
-        primaryMeasureAxis: new charts.NumericAxisSpec(
-          tickProviderSpec:
-          new charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
-        ),
-        domainAxis: charts.NumericAxisSpec(
-          tickProviderSpec:
-          charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
-          tickFormatterSpec: customChartTickFormatter,
-        ),
-      ),
-    );
-      // child: LineChart(
-      //   LineChartData(
-      //     lineTouchData: LineTouchData(
-      //       enabled: true,
-      //     ),
-      //     backgroundColor: Colors.grey[800],
-      //     minX: 0,
-      //     maxX: maxTime.millisecondsSinceEpoch.toDouble(),
-      //     minY: 0,
-      //     maxY: 1,
-      //     gridData: FlGridData(
-      //       show: false,
-      //     ),
-      //     borderData: FlBorderData(
-      //       show: false,
-      //     ),
-      //     lineBarsData: [
-      //       LineChartBarData(
-      //         colors: [(Colors.amber[600])!],
-      //         spots: athleteData,
-      //         isCurved: false,
-      //         barWidth: 2,
-      //         dotData: FlDotData(show: false),
-      //         belowBarData: BarAreaData(show: false),
-      //       ),
-      //     ],
-      //   ),
-      // )
+    //   child: charts.LineChart(
+    //     lineSeriesData,
+    //     defaultRenderer: charts.LineRendererConfig(includeArea: true, stacked: true),
+    //     animate: true,
+    //     animationDuration: Duration(seconds: 3),
+    //     // Sets up a currency formatter for the measure axis.
+    //     primaryMeasureAxis: new charts.NumericAxisSpec(
+    //       tickProviderSpec:
+    //       new charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
+    //     ),
+    //     domainAxis: charts.NumericAxisSpec(
+    //       tickProviderSpec:
+    //       charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
+    //       tickFormatterSpec: customChartTickFormatter,
+    //     ),
+    //   ),
     // );
+      child: LineChart(
+        LineChartData(
+          lineTouchData: LineTouchData(
+            enabled: true,
+          ),
+          backgroundColor: Colors.grey[800],
+          minX: 0,
+          maxX: maxTime.millisecondsSinceEpoch.toDouble(),
+          minY: 0,
+          maxY: 1,
+          gridData: FlGridData(
+            show: false,
+          ),
+          borderData: FlBorderData(
+            show: false,
+          ),
+          lineBarsData: [
+            LineChartBarData(
+              colors: [(Colors.amber[600])!],
+              spots: athleteData,
+              isCurved: false,
+              barWidth: 2,
+              dotData: FlDotData(show: false),
+              belowBarData: BarAreaData(show: false),
+            ),
+          ],
+        ),
+      )
+    );
   }
-
+*/
   // Athlete Popup
   void athleteDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
