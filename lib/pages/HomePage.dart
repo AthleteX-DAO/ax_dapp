@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:async';
 import 'dart:html';
 import 'dart:js';
 import 'dart:math';
@@ -25,46 +26,45 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-  int _selectedIndex = 0;
-  int swap = 0;
-  int stakingAmount = 0;
-  List<Athlete> athleteList = [];
-  List<Athlete> nflList = [];
-  List<Athlete> otherList = [];
-  List<Container> lpCardList = [];
-  List<Athlete> curAthletes = [];
-  List<String> athNames = [];
-  bool firstRun = true;
-  double filterText = 20;
-  var earnRange = [0, 3];
-  bool haveAthletes = false;
-  String _value1 = "ETH";
-  String _value2 = "USDC";
-  String sportActive = 'None';
-  bool swapActive = true;
-  bool stakeActive = false;
-  bool earnActive = false;
-  late Coin coin1;
-  late Coin coin2;
-  Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
-class _HomePageState extends State<HomePage> {
 
-  // Web3 Credentials
-  Controller _controller = Controller();
-  // Defined Staking
-  EthereumAddress stakingAddr =
-      EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
-  StakingRewards _stakingRewards = StakingRewards(
-      address:
-          EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB"),
-      client: Controller().client);
+int _selectedIndex = 0;
+int swap = 0;
+int stakingAmount = 0;
+List<Athlete> athleteList = [];
+List<Athlete> nflList = [];
+List<Athlete> otherList = [];
+List<Container> lpCardList = [];
+List<Athlete> curAthletes = [];
+List<String> athNames = [];
+bool firstRun = true;
+double filterText = 20;
+var earnRange = [0, 3];
+bool haveAthletes = false;
+String _value1 = "ETH";
+String _value2 = "USDC";
+String sportActive = 'None';
+bool swapActive = true;
+bool stakeActive = false;
+bool earnActive = false;
+late Coin coin1;
+late Coin coin2;
+Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
+// Web3 Credentials
+Controller _controller = Controller();
+// Defined Staking
+EthereumAddress stakingAddr =
+    EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
+
+class _HomePageState extends State<HomePage> {
+  StakingRewards _stakingRewards =
+      StakingRewards(address: stakingAddr, client: _controller.client);
 // Defined AthelteX
   final EthereumAddress axTokenAddr =
       EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
   AthleteX athleteX = AthleteX(
       address:
           EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239"),
-      client: Controller().client);
+      client: _controller.client);
 
   Future<void> checkMetamask() async {
     final eth = window.ethereum;
@@ -80,10 +80,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Stake
+  // Actionables
   Future<void> stakeAX(int amountToStake) async {
-    BigInt stakeAmount = BigInt.from(amountToStake * (pow(10, 18)));
     Credentials stakeCredentials = _controller.credentials;
+    BigInt stakeAmount = BigInt.from(amountToStake * (pow(10, 18)));
     Transaction _transaction = Transaction(
         maxGas: 5500000,
         gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 10));
@@ -98,65 +98,87 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Claim Rewards
   Future<void> claimRewards() async {
     _stakingRewards.getReward(credentials: _controller.credentials);
   }
 
-  // Unstake
-  Future<void> unstakeAX() async {
-    int stakingAmount = 1;
-    Credentials wCredentials = _controller.credentials;
-    BigInt withdrawAmount = BigInt.from(stakingAmount * (pow(10, 18)));
+  Future<void> unstakeAX(int amountToUnstake) async {
+    Credentials stakeCredentials = _controller.credentials;
+    BigInt withdrawAmount = BigInt.from(amountToUnstake * (pow(10, 18)));
     Transaction _transaction = Transaction(
         maxGas: 5500000,
         gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 10));
 
     try {
-      athleteX.approve(stakingAddr, withdrawAmount, credentials: wCredentials);
+      athleteX.approve(stakingAddr, withdrawAmount,
+          credentials: stakeCredentials);
       _stakingRewards.withdraw(withdrawAmount,
-          credentials: wCredentials, transaction: _transaction);
+          credentials: stakeCredentials, transaction: _transaction);
     } catch (e) {
       print("Failed at Withdraw: \n $e");
     }
   }
 
-  // Viewable Staking
-
+  // Viewables
   Stream<BigInt> availableBalance() async* {
     EthereumAddress account = await _controller.credentials.extractAddress();
-    BigInt returnValue = await athleteX.balanceOf(account);
-    yield returnValue;
+    while (true) {
+      BigInt returnValue = await athleteX.balanceOf(account);
+      yield returnValue;
+    }
   }
 
-   Stream<BigInt> stakedAX = (() async* {
-       Controller _controller = Controller();
-  StakingRewards _stakingRewards = StakingRewards(
-      address:
-          EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB"),
-      client: Controller().client);
+  Stream<String> stakedAX() async* {
+    String yieldValue = "";
+    var amountInStakingContract = BigInt.from(Random().nextInt(200));
+    while (true) {
+      await Future.delayed(Duration(seconds: 2));
+      try {
+        EthereumAddress stakingAccount =
+            await _controller.credentials.extractAddress();
+        amountInStakingContract += BigInt.one;
+        yieldValue = "$amountInStakingContract";
+      } catch (e) {
+        print("Something failed while attempting to view staked Amount /n $e");
+        yieldValue = "-";
+      }
+      yield yieldValue;
+    }
+  }
+
+  Stream<String> getAPY() async* {
+    String yieldValue = "0";
+
+    while (true) {
+      // var rewards = await _stakingRewards.getRewardForDuration();
+      // yieldValue = rewards;
+      try {
+        await Future.delayed(Duration(seconds: 2));
+      } catch (e) {
+        print("[Console] Failed at getting APY: \n $e");
+        yieldValue = "-";
+      }
+      yield yieldValue;
+    }
+  }
+
+  Stream<BigInt> rewardsEarned() async* {
+    try {
+      await Future.delayed(Duration(seconds: 2));
+      yield await _stakingRewards.rewardPerToken();
+    } catch (e) {
+      yield BigInt.zero;
+    }
+  }
+
+  Stream<BigInt> unclaimedRewards() async* {
     EthereumAddress account = await _controller.credentials.extractAddress();
-    BigInt amountInStakingContract = BigInt.from(
-        await _stakingRewards.balanceOf(account) / BigInt.from(pow(10, 18)));
-
-    Timer.periodic(Duration(seconds: 2), (t) {
-      print('Amount in Staking Contract: $amountInStakingContract \n');
-    });
-
-    yield amountInStakingContract;
-  })().asBroadcastStream();
-
-  Future<BigInt> getAPY() async {
-    return await _stakingRewards.getRewardForDuration();
-  }
-
-  Future<BigInt> rewardsEarned() async {
-    return await _stakingRewards.rewardPerToken();
-  }
-
-  Future<BigInt> unclaimedRewards() async {
-    EthereumAddress account = await _controller.credentials.extractAddress();
-    return await _stakingRewards.earned(account);
+    try {
+      await Future.delayed(Duration(seconds: 2));
+      yield await _stakingRewards.earned(account);
+    } catch (e) {
+      yield BigInt.zero;
+    }
   }
 
   void _onItemTapped(int index) {
@@ -196,6 +218,16 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () async {},
               ))
         ]));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -1769,14 +1801,28 @@ class _HomePageState extends State<HomePage> {
                                                                   'OpenSans',
                                                               fontSize: 20,
                                                             )),
-                                                        Text("12%",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  'OpenSans',
-                                                              fontSize: 20,
-                                                            )),
+                                                        StreamBuilder(
+                                                          initialData: 0,
+                                                          stream: getAPY(),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            Widget
+                                                                returnWidget =
+                                                                Text(
+                                                                    '${snapshot.data}%',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontFamily:
+                                                                          'OpenSans',
+                                                                      fontSize:
+                                                                          20,
+                                                                    ));
+
+                                                            return returnWidget;
+                                                          },
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -1801,14 +1847,21 @@ class _HomePageState extends State<HomePage> {
                                                               fontSize: 20,
                                                             )),
                                                         StreamBuilder(
-                                                            stream: stakedAX.distinct(),
+                                                            stream: stakedAX(),
+                                                            initialData: 0,
                                                             builder: (context,
-                                                                    snapshot) =>
-                                                                Text(
-                                                                  '${snapshot.data.toString()} AX',
-                                                                  style:
-                                                                      axSubheader,
-                                                                ))
+                                                                snapshot) {
+                                                              Widget
+                                                                  returnWidget;
+                                                              returnWidget =
+                                                                  Text(
+                                                                '${snapshot.data} AX',
+                                                                style:
+                                                                    axSubheader,
+                                                              );
+
+                                                              return returnWidget;
+                                                            })
                                                       ],
                                                     ),
                                                   ),
@@ -1833,19 +1886,22 @@ class _HomePageState extends State<HomePage> {
                                                               fontSize: 20,
                                                             )),
                                                         StreamBuilder(
-                                                          stream: Stream.periodic(
-                                                                  Duration(
-                                                                      seconds:
-                                                                          1))
-                                                              .asyncMap((event) =>
-                                                                  rewardsEarned()),
-                                                          builder: (context,
-                                                                  snapshot) =>
-                                                              Text(
-                                                                  '${snapshot.data.toString()} AX',
-                                                                  style:
-                                                                      axSubheader),
-                                                        ),
+                                                            stream:
+                                                                rewardsEarned(),
+                                                            initialData: 0,
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              Widget
+                                                                  returnWidget;
+                                                              returnWidget =
+                                                                  Text(
+                                                                '${snapshot.data} AX',
+                                                                style:
+                                                                    axSubheader,
+                                                              );
+
+                                                              return returnWidget;
+                                                            }),
                                                       ],
                                                     ),
                                                   ),
@@ -1869,20 +1925,22 @@ class _HomePageState extends State<HomePage> {
                                                                   'OpenSans',
                                                               fontSize: 20,
                                                             )),
-                                                        StreamBuilder(builder:
-                                                            (context,
+                                                        StreamBuilder(
+                                                            stream:
+                                                                rewardsEarned(),
+                                                            initialData: 0,
+                                                            builder: (context,
                                                                 snapshot) {
-                                                          return Text(
-                                                            '${snapshot.data.toString()} AX',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  'OpenSans',
-                                                              fontSize: 20,
-                                                            ),
-                                                          );
-                                                        }),
+                                                              Widget
+                                                                  returnWidget;
+                                                              returnWidget =
+                                                                  Text(
+                                                                '${snapshot.data} AX',
+                                                                style:
+                                                                    axSubheader,
+                                                              );
+                                                              return returnWidget;
+                                                            }),
                                                       ],
                                                     ),
                                                   ),
@@ -3574,7 +3632,6 @@ class _HomePageState extends State<HomePage> {
 
                                   setState(() {
                                     stakingAmount = stakeAmount;
-                                    print(stakingAmount);
                                   });
                                 }))),
                     // Staking body container
@@ -3596,14 +3653,14 @@ class _HomePageState extends State<HomePage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Text("Current Staked Balance:",
+                                      Text("Currently Staked:",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'OpenSans',
                                             fontSize: 20,
                                           )),
                                       StreamBuilder(
-                                        stream: stakedAX,
+                                        stream: stakedAX(),
                                         builder: (context, snapshot) {
                                           Widget returnWidget = Text(
                                               '${snapshot.data.toString()} AX',
@@ -3827,7 +3884,6 @@ class _HomePageState extends State<HomePage> {
                                   int stakeAmount = int.parse(amount);
                                   setState(() {
                                     stakingAmount = stakeAmount;
-                                    print(stakingAmount);
                                   });
                                 }))),
                     // Staking body container
@@ -3856,7 +3912,7 @@ class _HomePageState extends State<HomePage> {
                                             fontSize: 20,
                                           )),
                                       StreamBuilder(
-                                        stream: stakedAX,
+                                        stream: stakedAX(),
                                         builder: (context, snapshot) => Text(
                                             '${snapshot.data.toString()} AX',
                                             style: TextStyle(
@@ -3964,7 +4020,7 @@ class _HomePageState extends State<HomePage> {
                             child: TextButton(
                               onPressed: () async {
                                 Navigator.pop(context);
-                                unstakeAX();
+                                unstakeAX(stakingAmount);
                               },
                               child: Text(
                                 "Confirm",
