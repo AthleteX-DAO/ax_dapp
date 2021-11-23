@@ -3628,8 +3628,6 @@ class _HomePageState extends State<HomePage> {
                                     border: InputBorder.none,
                                     hintText: "Input AX Amount"),
                                 onChanged: (String amount) {
-                                  int stakeAmount = int.parse(amount);
-
                                   setState(() {
                                     stakingAmount = stakeAmount;
                                   });
@@ -3662,15 +3660,26 @@ class _HomePageState extends State<HomePage> {
                                       StreamBuilder(
                                         stream: stakedAX(),
                                         builder: (context, snapshot) {
-                                          Widget returnWidget = Text(
-                                              '${snapshot.data.toString()} AX',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'OpenSans',
-                                                fontSize: 20,
-                                              ));
-
-                                          return returnWidget;
+                                          if (snapshot.hasData)
+                                          {
+                                            return Text(
+                                            '${snapshot.data.toString()} AX',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 20,
+                                            ));
+                                          }
+                                          else 
+                                          {
+                                            return Text(
+                                            '0 AX',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 20,
+                                            ));
+                                          }
                                         },
                                       )
                                     ],
@@ -3694,7 +3703,7 @@ class _HomePageState extends State<HomePage> {
                                             fontFamily: 'OpenSans',
                                             fontSize: 20,
                                           )),
-                                      Text("$stakingAmount AX",
+                                      Text("$stakingAmount",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'OpenSans',
@@ -3881,7 +3890,6 @@ class _HomePageState extends State<HomePage> {
                                     border: InputBorder.none,
                                     hintText: "Input AX Amount"),
                                 onChanged: (String amount) {
-                                  int stakeAmount = int.parse(amount);
                                   setState(() {
                                     stakingAmount = stakeAmount;
                                   });
@@ -3942,7 +3950,7 @@ class _HomePageState extends State<HomePage> {
                                             fontFamily: 'OpenSans',
                                             fontSize: 20,
                                           )),
-                                      Text("$stakingAmount AX",
+                                      Text("$stakingAmount",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'OpenSans',
