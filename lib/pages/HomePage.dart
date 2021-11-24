@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
       await Future.delayed(Duration(seconds: 2));
       yield await _stakingRewards.rewardPerToken();
     } catch (e) {
-      yield BigInt.zero;
+      yield BigInt.from(Random().nextDouble());
     }
   }
 
@@ -3629,7 +3629,7 @@ class _HomePageState extends State<HomePage> {
                                     hintText: "Input AX Amount"),
                                 onChanged: (String amount) {
                                   setState(() {
-                                    stakingAmount = stakeAmount;
+                                    stakingAmount = int.parse(amount);
                                   });
                                 }))),
                     // Staking body container
@@ -3660,25 +3660,21 @@ class _HomePageState extends State<HomePage> {
                                       StreamBuilder(
                                         stream: stakedAX(),
                                         builder: (context, snapshot) {
-                                          if (snapshot.hasData)
-                                          {
+                                          if (snapshot.hasData) {
                                             return Text(
-                                            '${snapshot.data.toString()} AX',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 20,
-                                            ));
-                                          }
-                                          else 
-                                          {
-                                            return Text(
-                                            '0 AX',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 20,
-                                            ));
+                                                '${snapshot.data.toString()} AX',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                ));
+                                          } else {
+                                            return Text('0 AX',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 20,
+                                                ));
                                           }
                                         },
                                       )
@@ -3891,7 +3887,7 @@ class _HomePageState extends State<HomePage> {
                                     hintText: "Input AX Amount"),
                                 onChanged: (String amount) {
                                   setState(() {
-                                    stakingAmount = stakeAmount;
+                                    stakingAmount = int.parse(amount);
                                   });
                                 }))),
                     // Staking body container
