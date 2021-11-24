@@ -7,7 +7,6 @@ class AthleteApi {
     final assetBundle = DefaultAssetBundle.of(context);
     final data = await assetBundle.loadString('assets/data.json');
     final body = json.decode(data);
-
     return body.map<Athlete>(Athlete.fromJson).toList();
   }
 }
