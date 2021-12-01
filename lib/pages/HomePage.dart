@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:async';
 import 'dart:html';
-import 'dart:js';
-import 'dart:math';
 import 'package:ae_dapp/service/Coin.dart';
 import 'package:ae_dapp/service/CoinApi.dart';
 import 'package:ae_dapp/service/Athlete.dart';
@@ -12,15 +9,9 @@ import 'package:ae_dapp/style/Style.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/pages/ScoutPage.dart';
-import 'package:ae_dapp/service/Controller.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:ae_dapp/pages/HelpPage.dart';
 import 'package:flutter/rendering.dart';
 import 'package:web3dart/browser.dart';
-import 'package:webfeed/domain/media/media.dart';
-import 'package:ae_dapp/contracts/StakingRewards.g.dart';
-import 'package:ae_dapp/contracts/AthleteX.g.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -54,24 +45,18 @@ Controller _controller = Controller();
 // Defined Staking
 EthereumAddress stakingAddr =
     EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
-
-class _HomePageState extends State<HomePage> {
-  StakingRewards _stakingRewards =
-      StakingRewards(address: stakingAddr, client: _controller.client);
 // Defined AthelteX
   final EthereumAddress axTokenAddr =
       EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
-  AthleteX athleteX = AthleteX(
-      address:
-          EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239"),
-      client: _controller.client);
+
+class _HomePageState extends State<HomePage> {
 
   Future<void> checkMetamask() async {
     final eth = window.ethereum;
     if (eth != null) {
       print("Connecting to Web3!");
+      
       // Immediately
-
       final client = Web3Client.custom(eth.asRpcService());
       final credentials = await eth.requestAccount();
       _controller.updateClient(client);
@@ -80,106 +65,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Actionables
-  Future<void> stakeAX(int amountToStake) async {
-    Credentials stakeCredentials = _controller.credentials;
-    BigInt stakeAmount = BigInt.from(amountToStake * (pow(10, 18)));
-    Transaction _transaction = Transaction(
-        maxGas: 5500000,
-        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 10));
-
-    try {
-      athleteX.approve(stakingAddr, stakeAmount,
-          credentials: _controller.credentials);
-      _stakingRewards.stake(stakeAmount,
-          credentials: stakeCredentials, transaction: _transaction);
-    } catch (e) {
-      print("Failed at Staking: $e");
-    }
-  }
-
-  Future<void> claimRewards() async {
-    _stakingRewards.getReward(credentials: _controller.credentials);
-  }
-
-  Future<void> unstakeAX(int amountToUnstake) async {
-    Credentials stakeCredentials = _controller.credentials;
-    BigInt withdrawAmount = BigInt.from(amountToUnstake * (pow(10, 18)));
-    Transaction _transaction = Transaction(
-        maxGas: 5500000,
-        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 10));
-
-    try {
-      athleteX.approve(stakingAddr, withdrawAmount,
-          credentials: stakeCredentials);
-      _stakingRewards.withdraw(withdrawAmount,
-          credentials: stakeCredentials, transaction: _transaction);
-    } catch (e) {
-      print("Failed at Withdraw: \n $e");
-    }
-  }
-
-  // Viewables
-  Stream<BigInt> availableBalance() async* {
-    EthereumAddress account = await _controller.credentials.extractAddress();
-    while (true) {
-      BigInt returnValue = await athleteX.balanceOf(account);
-      yield returnValue;
-    }
-  }
-
-  Stream<String> stakedAX() async* {
-    String yieldValue = "";
-    var amountInStakingContract = BigInt.from(Random().nextInt(200));
-    while (true) {
-      await Future.delayed(Duration(seconds: 2));
-      try {
-        EthereumAddress stakingAccount =
-            await _controller.credentials.extractAddress();
-        amountInStakingContract += BigInt.one;
-        yieldValue = "$amountInStakingContract";
-      } catch (e) {
-        print("Something failed while attempting to view staked Amount /n $e");
-        yieldValue = "-";
-      }
-      yield yieldValue;
-    }
-  }
-
-  Stream<String> getAPY() async* {
-    String yieldValue = "0";
-
-    while (true) {
-      // var rewards = await _stakingRewards.getRewardForDuration();
-      // yieldValue = rewards;
-      try {
-        await Future.delayed(Duration(seconds: 2));
-      } catch (e) {
-        print("[Console] Failed at getting APY: \n $e");
-        yieldValue = "-";
-      }
-      yield yieldValue;
-    }
-  }
-
-  Stream<BigInt> rewardsEarned() async* {
-    try {
-      await Future.delayed(Duration(seconds: 2));
-      yield await _stakingRewards.rewardPerToken();
-    } catch (e) {
-      yield BigInt.from(Random().nextDouble());
-    }
-  }
-
-  Stream<BigInt> unclaimedRewards() async* {
-    EthereumAddress account = await _controller.credentials.extractAddress();
-    try {
-      await Future.delayed(Duration(seconds: 2));
-      yield await _stakingRewards.earned(account);
-    } catch (e) {
-      yield BigInt.zero;
-    }
-  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -1803,7 +1688,7 @@ class _HomePageState extends State<HomePage> {
                                                             )),
                                                         StreamBuilder(
                                                           initialData: 0,
-                                                          stream: getAPY(),
+                                                          stream: _controller.getAPY(),
                                                           builder: (context,
                                                               snapshot) {
                                                             Widget
@@ -1847,7 +1732,7 @@ class _HomePageState extends State<HomePage> {
                                                               fontSize: 20,
                                                             )),
                                                         StreamBuilder(
-                                                            stream: stakedAX(),
+                                                            stream: _controller.stakedAX(),
                                                             initialData: 0,
                                                             builder: (context,
                                                                 snapshot) {
@@ -1887,7 +1772,7 @@ class _HomePageState extends State<HomePage> {
                                                             )),
                                                         StreamBuilder(
                                                             stream:
-                                                                rewardsEarned(),
+                                                                _controller.rewardsEarned(),
                                                             initialData: 0,
                                                             builder: (context,
                                                                 snapshot) {
@@ -1927,7 +1812,7 @@ class _HomePageState extends State<HomePage> {
                                                             )),
                                                         StreamBuilder(
                                                             stream:
-                                                                rewardsEarned(),
+                                                                _controller.rewardsEarned(),
                                                             initialData: 0,
                                                             builder: (context,
                                                                 snapshot) {
@@ -3658,7 +3543,7 @@ class _HomePageState extends State<HomePage> {
                                             fontSize: 20,
                                           )),
                                       StreamBuilder(
-                                        stream: stakedAX(),
+                                        stream: _controller.stakedAX(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
                                             return Text(
@@ -3790,7 +3675,7 @@ class _HomePageState extends State<HomePage> {
                               onPressed: () async {
                                 // Navigator.pop(context);
                                 setState(() {
-                                  stakeAX(stakingAmount);
+                                  _controller.stakeAX(stakingAmount);
                                 });
                               },
                               child: Text(
@@ -3916,7 +3801,7 @@ class _HomePageState extends State<HomePage> {
                                             fontSize: 20,
                                           )),
                                       StreamBuilder(
-                                        stream: stakedAX(),
+                                        stream: _controller.stakedAX(),
                                         builder: (context, snapshot) => Text(
                                             '${snapshot.data.toString()} AX',
                                             style: TextStyle(
@@ -4024,7 +3909,7 @@ class _HomePageState extends State<HomePage> {
                             child: TextButton(
                               onPressed: () async {
                                 Navigator.pop(context);
-                                unstakeAX(stakingAmount);
+                                _controller.unstakeAX(stakingAmount);
                               },
                               child: Text(
                                 "Confirm",
