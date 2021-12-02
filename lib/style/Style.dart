@@ -1,6 +1,8 @@
 // flutter format .
 
 import 'package:flutter/material.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import "package:intl/intl.dart";
 
 const double lgTxSize = 52;
 const double mdTxSize = 35;
@@ -302,3 +304,9 @@ final TextStyle comingSoon = TextStyle(
     color: Colors.amber[600],
     fontSize: 40,
     fontWeight: FontWeight.w600);
+
+final customChartTickFormatter =
+  charts.BasicNumericTickFormatterSpec((num? val) {
+    DateTime dt = DateTime.fromMillisecondsSinceEpoch(val!.toInt());
+    return dt.hour.toString() + ":00";
+  });
