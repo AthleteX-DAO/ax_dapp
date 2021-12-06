@@ -1,7 +1,9 @@
 import 'dart:html';
 import 'dart:math';
 
+import 'package:ae_dapp/pages/HomePage.dart';
 import 'package:http/http.dart';
+import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/src/browser/dart_wrappers.dart';
 import 'package:web3dart/src/browser/javascript.dart';
 import 'package:web3dart/web3dart.dart';
@@ -18,9 +20,10 @@ class Controller {
   var eth;
   late Web3Client _client;
   late Credentials _credentials;
+  late AthleteX _athleteX = AthleteX(address: axTokenAddr, client: client);
+  late Erc20 _erc20;
   bool ethIsEnabled = false;
   bool activeChain = false;
-
 
   Controller() {
     // TODO - init controller variables
@@ -40,7 +43,8 @@ class Controller {
   Credentials get credentials => _credentials;
   String get rpc => _rpcUrl;
   String get ws => _wsUrl;
-  EthereumAddress get stakeAddress => stakingAddr;
+  AthleteX get athleteX => _athleteX;
+  Erc20 get genericERC20 => _erc20;
 
   void updateClient(Web3Client _newClient) {
     _client = _newClient;
@@ -58,6 +62,4 @@ class Controller {
 
     return activeChain;
   }
-
-
 }
