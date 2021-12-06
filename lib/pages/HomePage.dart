@@ -13,12 +13,18 @@ import 'package:ae_dapp/pages/ScoutPage.dart';
 import 'package:ae_dapp/pages/DexPage.dart';
 import 'package:ae_dapp/pages/HelpPage.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_web3/ethereum.dart';
+import 'package:flutter_web3/flutter_web3.dart';
+import 'package:web3dart/web3dart.dart';
 import 'package:webfeed/domain/media/media.dart';
+import 'package:ae_dapp/service/StakingController.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
+StakingController _controller = StakingController();
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
@@ -42,6 +48,32 @@ class _HomePageState extends State<HomePage> {
   late Coin coin1;
   late Coin coin2;
   Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
+
+  Future<void> checkMetamask() async {
+    final eth = window.ethereum;
+    if (eth != null) {
+      print("Connecting to Web3!");
+
+      // Immediately
+      final client = Web3Client.custom(eth.asRpcService());
+      final credentials = await eth.requestAccount();
+      _controller.updateClient(client);
+      _controller.updateCredentials(credentials);
+      return;
+    }
+  }
+
+  Future<void> confirmMintAPT() async {
+    return;
+  }
+
+  Future<void> confirmRedeemAPT() async {
+    return;
+  }
+
+  Future<void> confirmSwap() async {
+    return;
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -77,7 +109,9 @@ class _HomePageState extends State<HomePage> {
                   child: Text('Connect Wallet', style: connectWalletMobile),
                 ),
                 style: connectWallet,
-                onPressed: () {},
+                onPressed: () async {
+                  checkMetamask();
+                },
               ))
         ]));
   }
@@ -147,7 +181,9 @@ class _HomePageState extends State<HomePage> {
                                 style: connectWalletDesktop),
                           ),
                           style: connectWalletDesktopButton,
-                          onPressed: () {},
+                          onPressed: () async {
+                            checkMetamask();
+                          },
                         )),
                   )
                 ],
@@ -659,7 +695,9 @@ class _HomePageState extends State<HomePage> {
                                                                 child:
                                                                     ElevatedButton(
                                                                   onPressed:
-                                                                      () {},
+                                                                      () async {
+                                                                    checkMetamask();
+                                                                  },
                                                                   style: ElevatedButton
                                                                       .styleFrom(
                                                                           primary: Colors.grey[
@@ -1447,7 +1485,9 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             child: TextButton(
-                                              onPressed: () {},
+                                              onPressed: () async {
+                                                checkMetamask();
+                                              },
                                               child: Text(
                                                 "Connect Wallet",
                                                 style: TextStyle(
@@ -1479,7 +1519,9 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             child: TextButton(
-                                              onPressed: () => {},
+                                              onPressed: () {
+                                                confirmSwap();
+                                              },
                                               child: Text(
                                                 "Confirm Swap",
                                                 style: TextStyle(
@@ -2897,7 +2939,8 @@ class _HomePageState extends State<HomePage> {
                                     border: Border.all(
                                         color: Colors.amber[600]!, width: 2)),
                                 child: TextButton(
-                                  onPressed: () => mintDialog(context, athlete),
+                                  onPressed: () =>
+                                      {mintDialog(context, athlete)},
                                   child: Text("Mint",
                                       style: TextStyle(
                                         color: Colors.amber[600],
@@ -3514,6 +3557,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: TextButton(
                           onPressed: () {
+                            confirmMintAPT();
                             Navigator.pop(context);
                             mintConfirmDialog(context, athlete);
                           },
@@ -4518,6 +4562,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: TextButton(
                           onPressed: () {
+                            confirmRedeemAPT();
                             Navigator.pop(context);
                             redeemConfirmDialog(context, athlete);
                           },
