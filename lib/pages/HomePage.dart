@@ -5,6 +5,7 @@ import 'package:ae_dapp/service/CoinApi.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/Controller.dart';
+import 'package:ae_dapp/service/StakingController.dart';
 import 'package:ae_dapp/style/Style.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,13 +42,8 @@ late Coin coin1;
 late Coin coin2;
 Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
 // Web3 Credentials
-Controller _controller = Controller();
-// Defined Staking
-EthereumAddress stakingAddr =
-    EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
-// Defined AthelteX
-  final EthereumAddress axTokenAddr =
-      EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
+StakingController _controller = StakingController();
+
 
 class _HomePageState extends State<HomePage> {
 
