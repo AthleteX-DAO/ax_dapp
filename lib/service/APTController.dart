@@ -1,4 +1,5 @@
 import 'package:ae_dapp/service/Controller.dart';
+import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 import '../contracts/LongShortPairCreator.g.dart';
 import '../contracts/LongShortPair.g.dart';
@@ -17,22 +18,23 @@ class APTController extends Controller {
   late ExpiringMultiParty _expiringMultiParty =
       ExpiringMultiParty(address: lspCAddress, client: client);
 
+
   // Actionables
-  Future<void> init() async {
-    _longShortPairCreator.createLongShortPair(
-        expirationTimestamp,
-        collateralPerPair,
-        priceIdentifier,
-        syntheticName,
-        syntheticSymbol,
-        collateralToken,
-        financialProductLibrary,
-        customAncillaryData,
-        prepaidProposerReward,
-        credentials: credentials);
+
+  Future<void> mint(
+      EthereumAddress mintAddress, int collateralAmount, int numTokens) async {
+    try {
+      Erc20 mintingAPT = Erc20(address: mintAddress, client: client);
+      _expiringMultiParty.create(collateralAmount, numTokens,
+          credentials: credentials);
+    } catch (e) {}
   }
 
-  Future<void> mintAPT() async {
-    _expiringMultiPartyCreator.createExpiringMultiParty(params, credentials: credentials);
+  Future<void> redeem(int numTokens) async {
+    try {
+      _expiringMultiParty.redeem(numTokens, credentials: credentials);
+    } catch (e) {
+      print("You are not the token sponsor");
+    }
   }
 }

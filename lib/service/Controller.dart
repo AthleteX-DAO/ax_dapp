@@ -20,6 +20,12 @@ class Controller {
   var eth;
   late Web3Client _client;
   late Credentials _credentials;
+  // Defined Staking
+EthereumAddress stakingAddr =
+    EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
+// Defined AthelteX
+  final EthereumAddress axTokenAddr =
+      EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
   late AthleteX _athleteX = AthleteX(address: axTokenAddr, client: client);
   late Erc20 _erc20;
   bool ethIsEnabled = false;
