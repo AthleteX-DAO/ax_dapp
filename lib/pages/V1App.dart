@@ -1,8 +1,9 @@
 import 'dart:ui';
-
+import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/style/Style.dart';
 import 'package:flutter/rendering.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/flutter.dart' as series;
 
 class V1App extends StatefulWidget {
   @override
@@ -358,14 +359,14 @@ class _V1AppState extends State<V1App> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Container(
-                              height: 18,
-                              width: 35,
+                              height: 24,
+                              width: 40,
                               decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
                               child: TextButton(
                                 onPressed: () {},
                                 child: Text(
                                   "MAX",
-                                  style: textStyle(Colors.grey[400]!, 7, false, false)
+                                  style: textStyle(Colors.grey[400]!, 8, false, false)
                                 )
                               )
                             ),
@@ -461,24 +462,45 @@ class _V1AppState extends State<V1App> {
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width*0.8,
-        height: MediaQuery.of(context).size.height/4,
-        child: ScrollConfiguration(
-          behavior: ScrollConfiguration.of(context).copyWith(
-            dragDevices: {
-              PointerDeviceKind.mouse,
-              PointerDeviceKind.touch,
-            },
-          ),
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              createFarmWidget("AX Farm"),
-              SizedBox(width: 50),
-              createFarmWidget("AX - Tom Brady APT"),
-              SizedBox(width: 50),
-              createFarmWidget("AX - Tom Brady APT"),
-            ]
-          ),
+        height: MediaQuery.of(context).size.height*0.3+100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Participating Farms",
+                style: textStyle(Colors.white, 20, true, false)
+              )
+            ),
+            Container(
+              width: 200,
+              height: 40,
+              decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width*0.8,
+              height: MediaQuery.of(context).size.height/4,
+              child: ScrollConfiguration(
+                behavior: ScrollConfiguration.of(context).copyWith(
+                  dragDevices: {
+                    PointerDeviceKind.mouse,
+                    PointerDeviceKind.touch,
+                  },
+                ),
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    createFarmWidget("AX Farm"),
+                    SizedBox(width: 50),
+                    createFarmWidget("AX - Tom Brady APT"),
+                    SizedBox(width: 50),
+                    createFarmWidget("AX - Tom Brady APT"),
+                  ]
+                ),
+              )
+            )
+          ],
         )
       )
     );
@@ -862,12 +884,182 @@ class _V1AppState extends State<V1App> {
 																),
 																child: TextButton(
 																	onPressed: () => dialog(
-                                    context,
-                                    MediaQuery.of(context).size.height*0.45,
-                                    MediaQuery.of(context).size.width*(2/7),
+                                    context, 
+                                    MediaQuery.of(context).size.height*0.55, 
+                                    MediaQuery.of(context).size.width*.25, 
                                     boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                                    Column (
-                                      
+                                    Container(
+                                      //color: Colors.blue,
+                                      padding: const EdgeInsets.all(20.0),
+                                      margin: const EdgeInsets.all(20.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          // Redeem athlete APT and Close button
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text(
+                                                  "Redeem "+athlete+" APT",
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                child: IconButton(
+                                                  icon: const Icon(
+                                                    Icons.close,
+                                                    color: Colors.white
+                                                    ),
+                                                  onPressed: () => Navigator.pop(context),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          // Sushiswap Text
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: Expanded(
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      children: <TextSpan>[
+                                                        TextSpan(text: "You can redeem APT's at their Book Value for AX.", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                                                        TextSpan(text: "You can access other funds with AX on the Matic network through", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                                                        TextSpan(text: " SushiSwap", style: TextStyle(color: Colors.amber[400], fontSize: 15)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          // Input AX Text (no user input)
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text(
+                                                  "Input AX:",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          // Input AX (user input)
+                                          Container(
+                                            padding: const EdgeInsets.all(10),
+                                            width: 400,
+                                            height: 55,
+                                            decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              borderRadius: BorderRadius.circular(14.0),
+                                              border: Border.all(
+                                                color: Colors.grey[400]!,
+                                                width: 0.5,
+                                              ),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Text(
+                                                    athlete+" APT",
+                                                    style: textStyle(Colors.white, 15, false, false),
+                                                  ),
+                                                ),
+                                                
+                                                Container(
+                                                  height: 18,
+                                                  width: 35,
+                                                  decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                                                  child: TextButton(
+                                                    onPressed: () {},
+                                                    child: Text(
+                                                      "Max",
+                                                      style: textStyle(Colors.grey[400]!, 9, false, false),
+                                                    ),
+                                                  ),
+                                                ),
+                                                // Textfield
+                                                SizedBox(
+                                                  width: 70,
+                                                  child: TextField(
+                                                    style: textStyle(Colors.grey[400]!, 22, false, false),                                                                      
+                                                    decoration: InputDecoration(
+                                                      hintText: '0.00',
+                                                      hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
+                                                      contentPadding: const EdgeInsets.all(9),
+                                                      border: InputBorder.none,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          // Horizontal Divider
+                                          Container(
+                                            child: Divider(
+                                              thickness: 0.35,
+                                              color: Colors.grey[400],
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text(
+                                                  "You recieve:",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  "120 AX",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          // Confirm Button
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                //padding: EdgeInsets.all(20.0),
+                                                width: 175,
+                                                height:50,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.amber[400],
+                                                  borderRadius: BorderRadius.circular(100),
+                                                ),
+                                                child: TextButton(
+                                                  onPressed: () {},
+                                                  child: const Text(
+                                                    "Confirm",
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
 																	child: Text(
@@ -1213,6 +1405,55 @@ class _V1AppState extends State<V1App> {
 			]
 		)
 	);
+  }
+
+  Widget buildGraph(List war, List time, BuildContext context) {
+    // local variables
+    List<series.Series<dynamic, DateTime>> athleteData ;
+    DateTime curTime = DateTime(-1);
+    DateTime lastHour = DateTime(-1);
+    DateTime maxTime = DateTime(-1);
+    List<WarTimeSeries> data = [];
+
+    for(int i = 0; i < war.length; i++) {
+      curTime = DateTime.parse(time[i]);
+      // only new points
+        if (lastHour.year == -1 || (lastHour.isBefore(curTime) && curTime.hour != lastHour.hour)) {
+          lastHour = curTime;
+          // sets maximum if latest time
+          if (maxTime == DateTime(-1)  || maxTime.isBefore(curTime))
+            maxTime = curTime;
+
+          data.add(WarTimeSeries(curTime, war[i]));
+        }
+    }
+
+    athleteData = [
+      new charts.Series<WarTimeSeries, DateTime>(
+        id: 'War',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (WarTimeSeries wts, _) => wts.time,
+        measureFn: (WarTimeSeries wts, _) => wts.war,
+        data: data,
+      )
+    ];
+
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.55,
+      height: MediaQuery.of(context).size.height * 0.40,
+      child: charts.TimeSeriesChart(
+        athleteData,
+        // Sets up a currency formatter for the measure axis.
+        // primaryMeasureAxis: new charts.NumericAxisSpec(
+        //   tickProviderSpec:
+        //   new charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
+        // ),
+        // domainAxis: charts.NumericAxisSpec(
+        //   tickProviderSpec: charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
+        //   tickFormatterSpec: customChartTickFormatter,
+        // ),
+      ),
+    );
   }
 
   Widget createTokenDropdown(String ticker, String fullName) {
