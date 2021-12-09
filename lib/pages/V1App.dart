@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:ae_dapp/service/Athlete.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
 
@@ -11,10 +12,16 @@ class V1App extends StatefulWidget {
 }
 
 class _V1AppState extends State<V1App> {
+  // to delete later
+  Athlete tomBradey = Athlete(name: "Tom Bradey", team: "Tampa Bay Buckaneers", position: "Quarterback", passingYards: [2,3,5], passingTouchDowns: [1,10,3], reception: [4,6,8], receiveYards: [3,5,7], receiveTouch: [9,8,7], rushingYards: [6,5,4], war: [3.543, 1.094, 9.478, 10.231], time: [0,1,2,3]);
+  Athlete nullAthlete = new Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
+
+  // state change variables
   int pageNumber = 0;
 	int cardState = 0;
   int sportState = 0;
-	String cardName = "";
+  Athlete curAthlete = Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
+  bool allFarms = true;
 
 
   @override
@@ -179,20 +186,17 @@ class _V1AppState extends State<V1App> {
               height: MediaQuery.of(context).size.height*0.6,
               child: ListView(
                   children: <Widget>[
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Joe Mann"),
-                    createAthleteCards("Leaf Thomas"),
-                    createAthleteCards("Bob Dylan"),
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Tom Brady"),
-                    createAthleteCards("Tom Brady"),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
+                    createAthleteCards(tomBradey),
                   ]
                 )
               )
@@ -201,7 +205,7 @@ class _V1AppState extends State<V1App> {
         )
       );
     else 
-      return athleteCardView(cardName);
+      return athleteCardView(tomBradey);
   }
 
   Widget desktopTrade(BuildContext context) {
@@ -262,7 +266,7 @@ class _V1AppState extends State<V1App> {
                           onPressed: () => dialog(
                             context,
                             MediaQuery.of(context).size.height*.80,
-                            MediaQuery.of(context).size.width/3,
+                            350,
                             boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -270,7 +274,7 @@ class _V1AppState extends State<V1App> {
                                 // column of elements
                                 Container(
                                   height: MediaQuery.of(context).size.height*.75,
-                                  width: MediaQuery.of(context).size.width*.3,
+                                  width: 300,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
@@ -459,24 +463,80 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget desktopFarm(BuildContext context) {
-    return Center(
-      child: Container(
+
+    return Container(
         width: MediaQuery.of(context).size.width*0.8,
         height: MediaQuery.of(context).size.height*0.3+100,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
                 "Participating Farms",
-                style: textStyle(Colors.white, 20, true, false)
+                style: textStyle(Colors.white, 24, true, false)
               )
             ),
             Container(
               width: 200,
               height: 40,
               decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    if (allFarms)
+                      Container(
+                        width: 85,
+                        decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "All Farms",
+                            style: textStyle(Colors.white, 16, true, false)
+                          )
+                        )
+                      ),
+                    if (allFarms)
+                      Container(
+                        width: 90,
+                        decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
+                        child: TextButton(
+                          onPressed: () {setState(() {allFarms = false;});},
+                          child: Text(
+                            "My Farms",
+                            style: textStyle(Colors.white, 16, true, false)
+                          )
+                        )
+                      ),
+                    if (!allFarms)
+                      Container(
+                        width: 85,
+                        decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
+                        child: TextButton(
+                          onPressed: () {setState(() {allFarms = true;});},
+                          child: Text(
+                            "All Farms",
+                            style: textStyle(Colors.white, 16, true, false)
+                          )
+                        )
+                      ),
+                    if (!allFarms)
+                      Container(
+                        width: 90,
+                        decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "My Farms",
+                            style: textStyle(Colors.white, 16, true, false)
+                          )
+                        )
+                      ),
+                  ],
+                )
+              )
             ),
             Container(
               width: MediaQuery.of(context).size.width*0.8,
@@ -502,7 +562,6 @@ class _V1AppState extends State<V1App> {
             )
           ],
         )
-      )
     );
   }
 
@@ -600,7 +659,7 @@ class _V1AppState extends State<V1App> {
 
     return Container(
       height: MediaQuery.of(context).size.height/4,
-      width: MediaQuery.of(context).size.width/3,
+      width: 500,
       padding: EdgeInsets.symmetric(vertical: 22.5, horizontal: 50),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -699,7 +758,7 @@ class _V1AppState extends State<V1App> {
     );
   }
 
-  Widget athleteCardView(String athlete) {
+  Widget athleteCardView(Athlete athlete) {
 	return Container(
 		color: Colors.black,
 		child: Column(
@@ -719,7 +778,7 @@ class _V1AppState extends State<V1App> {
 									onPressed: () {
 										setState(() {
 											cardState = 0;
-											cardName = "";
+											curAthlete = athlete;
 										});
 									},
 									child: Icon(
@@ -736,7 +795,7 @@ class _V1AppState extends State<V1App> {
 							// Player Name
 							Container(
 								child: Text(
-									athlete,
+									athlete.name,
 									style: textStyle(Colors.white, 28, false, false)
 								)
 							),
@@ -783,6 +842,7 @@ class _V1AppState extends State<V1App> {
 												),
 												borderRadius: BorderRadius.circular(10),
 											),
+                      // child: buildGraph(athlete.war, athlete.time, context)
 										),
 										Container(
 											width: MediaQuery.of(context).size.width*.35,
@@ -902,7 +962,7 @@ class _V1AppState extends State<V1App> {
                                             children: <Widget>[
                                               Container(
                                                 child: Text(
-                                                  "Redeem "+athlete+" APT",
+                                                  "Redeem "+athlete.name+" APT",
                                                   style: const TextStyle(
                                                     fontSize: 20,
                                                     color: Colors.white,
@@ -970,7 +1030,7 @@ class _V1AppState extends State<V1App> {
                                               children: <Widget>[
                                                 Expanded(
                                                   child: Text(
-                                                    athlete+" APT",
+                                                    athlete.name +" APT",
                                                     style: textStyle(Colors.white, 15, false, false),
                                                   ),
                                                 ),
@@ -1508,14 +1568,14 @@ class _V1AppState extends State<V1App> {
   }
 
   // Athlete Cards
-  Widget createAthleteCards(String athName) {
+  Widget createAthleteCards(Athlete athlete) {
     return Container(
       height: 70,
       child: OutlinedButton(
         onPressed: () {
           setState(() {
             cardState = 1;
-            cardName = athName;
+            curAthlete = athlete;
           });
 			  },
         child: Row(
@@ -1539,7 +1599,7 @@ class _V1AppState extends State<V1App> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                      athName,
+                      athlete.name,
                         style: textStyle(Colors.white, 18, false, false)
                       ),
                       Text(
