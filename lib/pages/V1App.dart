@@ -814,7 +814,15 @@ class _V1AppState extends State<V1App> {
 																	borderRadius: BorderRadius.circular(100),
 																),
 																child: TextButton(
-																	onPressed: () {},
+																	onPressed: () => dialog(
+                                    context,
+                                    MediaQuery.of(context).size.height*0.6,
+                                    MediaQuery.of(context).size.width*(2/7),
+                                    boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                                    Column (
+                                      
+                                    ),
+                                  ),
 																	child: Text(
 																		"Buy",
 																		style: TextStyle(
@@ -832,7 +840,15 @@ class _V1AppState extends State<V1App> {
 																	borderRadius: BorderRadius.circular(100),
 																),
 																child: TextButton(
-																	onPressed: () {},
+																	onPressed: () => dialog(
+                                    context,
+                                    MediaQuery.of(context).size.height*0.6,
+                                    MediaQuery.of(context).size.width*(2/7),
+                                    boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                                    Column (
+                                      
+                                    ),
+                                  ),
 																	child: Text(
 																		"Sell",
 																		style: TextStyle(
@@ -859,7 +875,15 @@ class _V1AppState extends State<V1App> {
 																	borderRadius: BorderRadius.circular(100),
 																),
 																child: TextButton(
-																	onPressed: () {},
+																	onPressed: () => dialog(
+                                    context,
+                                    MediaQuery.of(context).size.height*0.45,
+                                    MediaQuery.of(context).size.width*(2/7),
+                                    boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                                    Column (
+                                      
+                                    ),
+                                  ),
 																	child: Text(
 																		"Mint",
 																		style: TextStyle(
@@ -881,7 +905,15 @@ class _V1AppState extends State<V1App> {
 																	borderRadius: BorderRadius.circular(100),
 																),
 																child: TextButton(
-																	onPressed: () {},
+																	onPressed: () => dialog(
+                                    context,
+                                    MediaQuery.of(context).size.height*0.45,
+                                    MediaQuery.of(context).size.width*(2/7),
+                                    boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                                    Column (
+                                      
+                                    ),
+                                  ),
 																	child: Text(
 																		"Redeem",
 																		style: TextStyle(
