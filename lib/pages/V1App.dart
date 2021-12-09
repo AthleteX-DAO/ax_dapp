@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/style/Style.dart';
 import 'package:flutter/rendering.dart';
@@ -10,6 +12,7 @@ class V1App extends StatefulWidget {
 class _V1AppState extends State<V1App> {
   int pageNumber = 0;
 	int cardState = 0;
+  int sportState = 0;
 	String cardName = "";
 
 
@@ -35,6 +38,7 @@ class _V1AppState extends State<V1App> {
           ),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             if (pageNumber == 0)
               desktopScout(context)
@@ -49,6 +53,8 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget desktopScout(BuildContext context) {
+    double sportFilterTxSz = 18;
+
     if (cardState != 1)
       return Center(
         child: Container(
@@ -67,62 +73,62 @@ class _V1AppState extends State<V1App> {
                 children: [
                   Text(
                     "APT List",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white
-                    )
+                    style: textStyle(Colors.white, 18, false, false)
                   ),
                   Text(
                     "|",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white
-                    )
+                    style: textStyle(Colors.white, 18, false, false)
                   ),
                   Container(
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (sportState != 0) setState(() {sportState = 0;});
+                      },
                       child: Text(
                         "ALL",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white
+                        style: textSwapState(
+                          sportState == 0,
+                          textStyle(Colors.white, sportFilterTxSz, false, false),
+                          textStyle(Colors.amber[400]!, sportFilterTxSz, false, true)
                         )
                       ),
                     )
                   ),
                   Container(
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {if (sportState != 1) setState(() {sportState = 1;});},
                       child: Text(
                         "NFL",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white
+                        style: textSwapState(
+                          sportState == 1,
+                          textStyle(Colors.white, sportFilterTxSz, false, false),
+                          textStyle(Colors.amber[400]!, sportFilterTxSz, false, true)
                         )
                       ),
                     )
                   ),
                   Container(
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {if (sportState != 2) setState(() {sportState = 2;});},
                       child: Text(
                         "NBA",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white
+                        style: textSwapState(
+                          sportState == 2,
+                          textStyle(Colors.white, sportFilterTxSz, false, false),
+                          textStyle(Colors.amber[400]!, sportFilterTxSz, false, true)
                         )
                       ),
                     )
                   ),
                   Container(
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {if (sportState != 3) setState(() {sportState = 3;});},
                       child: Text(
                         "MMA",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white
+                        style: textSwapState(
+                          sportState == 3,
+                          textStyle(Colors.white, sportFilterTxSz, false, false),
+                          textStyle(Colors.amber[400]!, sportFilterTxSz, false, true)
                         )
                       ), 
                     )
@@ -138,50 +144,38 @@ class _V1AppState extends State<V1App> {
                   width: 66
                 ),
                 Container(
-                  width: 175,
+                  width: MediaQuery.of(context).size.width*0.15,
                   child: Text(
                     "Athlete",
-                    style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[400]
-                    )
+                    style: textStyle(Colors.grey[400]!, 12, false, false)
                   )
                 ),
                 Container(
-                  width: 125,
+                  width: MediaQuery.of(context).size.width*0.15,
                   child: Text(
                     "Team",
-                    style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[400]
-                    )
+                    style: textStyle(Colors.grey[400]!, 12, false, false)
                   )
                 ),
                 Container(
-                  width: 150,
+                  width: MediaQuery.of(context).size.width*0.1,
                   child: Text(
                     "Market Price / Change",
-                    style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[400]
-                    )
+                    style: textStyle(Colors.grey[400]!, 12, false, false)
                   )
                 ),
                 Container(
-                  width: 150,
+                  width: MediaQuery.of(context).size.width*0.1,
                   child: Text(
                     "Book Value / Change",
-                    style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[400]
-                    )
+                    style: textStyle(Colors.grey[400]!, 12, false, false)
                   )
                 ),
               ]
             ),
             // ListView of Athletes
             Container(
-              height: 385,
+              height: MediaQuery.of(context).size.height*0.6,
               child: ListView(
                   children: <Widget>[
                     createAthleteCards("Tom Brady"),
@@ -237,7 +231,7 @@ class _V1AppState extends State<V1App> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Swap",
-                  style: textStyle(Colors.white, 16, false)
+                  style: textStyle(Colors.white, 16, false, false)
                 )
               ),
               // To-dropdown
@@ -286,7 +280,7 @@ class _V1AppState extends State<V1App> {
                                           children: <Widget>[
                                             Text(
                                               "Select a token",
-                                              style: textStyle(Colors.white, 14, true),
+                                              style: textStyle(Colors.white, 14, true, false),
                                             ),
                                             Container(
                                               child: TextButton(
@@ -306,7 +300,7 @@ class _V1AppState extends State<V1App> {
                                         alignment: Alignment.centerLeft,
                                         child: Text(
                                           "Token Name",
-                                          style: textStyle(Colors.grey[400]!, 12, false)
+                                          style: textStyle(Colors.grey[400]!, 12, false, false)
                                         )
                                       ),
                                       Container(
@@ -340,17 +334,18 @@ class _V1AppState extends State<V1App> {
                             )
                           ),
                           child: Container(
-                            width: 110,
+                            width: 90,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
                                   "AX",
-                                  style: textStyle(Colors.white, 16, true)
+                                  style: textStyle(Colors.white, 16, true, false)
                                 ),
-                                Text(
-                                  "v",
-                                  style: textStyle(Colors.white, 16, true)
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.white,
+                                  size: 25
                                 )
                               ],
                             )
@@ -370,13 +365,13 @@ class _V1AppState extends State<V1App> {
                                 onPressed: () {},
                                 child: Text(
                                   "MAX",
-                                  style: textStyle(Colors.grey[400]!, 7, false)
+                                  style: textStyle(Colors.grey[400]!, 7, false, false)
                                 )
                               )
                             ),
                             Text(
                               "0.00",
-                              style: textStyle(Colors.grey[400]!, 22, false)
+                              style: textStyle(Colors.grey[400]!, 22, false, false)
                             )
                           ]
                         )
@@ -413,7 +408,7 @@ class _V1AppState extends State<V1App> {
                       Container(
                         child: Text(
                           "0.00",
-                          style: textStyle(Colors.grey[400]!, 22, false)
+                          style: textStyle(Colors.grey[400]!, 22, false, false)
                         )
                       )
                     ],
@@ -435,7 +430,7 @@ class _V1AppState extends State<V1App> {
                         onPressed: () {},
                         child: Text(
                           "Connect Wallet",
-                          style: textStyle(Colors.amber[400]!, 16, true),
+                          style: textStyle(Colors.amber[400]!, 16, true, false),
                         )
                       )
                     ),
@@ -448,7 +443,7 @@ class _V1AppState extends State<V1App> {
                         onPressed: () {},
                         child: Text(
                           "Swap",
-                          style: textStyle(Colors.black, 16, true),
+                          style: textStyle(Colors.black, 16, true, false),
                         )
                       )
                     ),
@@ -467,10 +462,13 @@ class _V1AppState extends State<V1App> {
       child: Container(
         width: MediaQuery.of(context).size.width*0.8,
         height: MediaQuery.of(context).size.height/4,
-        child: Scrollbar(
-          controller: ScrollController(),
-          isAlwaysShown: true,
-          interactive: true,
+        child: ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(
+            dragDevices: {
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.touch,
+            },
+          ),
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: <Widget>[
@@ -487,6 +485,8 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget topNavBar(BuildContext context) {
+    double tabTxSz = 24;
+
     return Container(
       width: MediaQuery.of(context).size.width*.9,
       height: 100,
@@ -514,42 +514,49 @@ class _V1AppState extends State<V1App> {
                 Container(
                   child: TextButton(
                     onPressed: () {
-                      setState(() {
-                        pageNumber = 0;
-                      });
+                      if (pageNumber != 0) setState(() {pageNumber = 0;});
                     },
                     child: Text(
                       "Scout",
-                      style: textStyle(Colors.white, 22, true),
+                      style: textSwapState(
+                        pageNumber == 0,
+                        textStyle(Colors.white, tabTxSz, true, false),
+                        textStyle(Colors.amber[400]!, tabTxSz, true, true)
+                      )
+                      
                     )
                   )
                 ),
                 Container(
                   child: TextButton(
                     onPressed: () {
-                      setState(() {
-                        pageNumber = 1;
-                      });
+                      if (pageNumber != 1) setState(() {pageNumber = 1;});
                     },
                     child: Text(
                       "Trade",
-                      style: textStyle(Colors.white, 22, true),
+                      style: textSwapState(
+                        pageNumber == 1,
+                        textStyle(Colors.white, tabTxSz, true, false),
+                        textStyle(Colors.amber[400]!, tabTxSz, true, true)
+                      )
                     )
                   )
                 ),
                 Container(
                   child: TextButton(
                     onPressed: () {
-                      setState(() {
-                        pageNumber = 2;
-                      });
+                      if (pageNumber != 2) setState(() {pageNumber = 2;});
                     },
                     child: Text(
                       "Farm",
-                      style: textStyle(Colors.white, 22, true),
+                      style: textSwapState(
+                        pageNumber == 2,
+                        textStyle(Colors.white, tabTxSz, true, false),
+                        textStyle(Colors.amber[400]!, tabTxSz, true, true)
+                      )
                     )
                   )
-                ),
+                )
               ]
             )
           ),
@@ -560,7 +567,15 @@ class _V1AppState extends State<V1App> {
     );
   }
 
+  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
+    if (condition)
+      return tru;
+    return fls;
+  }
+
   Widget createFarmWidget(String farmName) {
+    TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+
     return Container(
       height: MediaQuery.of(context).size.height/4,
       width: MediaQuery.of(context).size.width/3,
@@ -582,11 +597,7 @@ class _V1AppState extends State<V1App> {
             children: <Widget>[
               Text(
                 farmName,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'OpenSans',
-                  fontSize: 20,
-                ),
+                style: textStyle(Colors.white, 20, false, false)
               ),
               Container(
                 width: 120,
@@ -599,12 +610,7 @@ class _V1AppState extends State<V1App> {
                   onPressed: () {},
                   child: Text(
                     "Deposit",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
-                    ),
+                    style: textStyle(Colors.black, 12, true, false)
                   )
                 )
               ),
@@ -616,19 +622,11 @@ class _V1AppState extends State<V1App> {
             children: <Widget>[
               Text(
                 "TVL",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontFamily: 'OpenSans',
-                  fontSize: 14,
-                ),
+                style: txStyle,
               ),
               Text(
                 "\$1,000,000",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontFamily: 'OpenSans',
-                  fontSize: 14,
-                ),
+                style: txStyle
               )
             ],
           ),
@@ -638,19 +636,11 @@ class _V1AppState extends State<V1App> {
             children: <Widget>[
               Text(
                 "Swap Fee APY",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontFamily: 'OpenSans',
-                  fontSize: 14,
-                ),
+                style: txStyle
               ),
               Text(
                 "20%",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontFamily: 'OpenSans',
-                  fontSize: 14,
-                ),
+                style: txStyle
               )
             ],
           ),
@@ -660,19 +650,11 @@ class _V1AppState extends State<V1App> {
             children: <Widget>[
               Text(
                 "AX Rewards APY",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontFamily: 'OpenSans',
-                  fontSize: 14,
-                ),
+                style: txStyle
               ),
               Text(
                 "10%",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontFamily: 'OpenSans',
-                  fontSize: 14,
-                ),
+                style: txStyle
               )
             ],
           ),
@@ -682,19 +664,11 @@ class _V1AppState extends State<V1App> {
             children: <Widget>[
               Text(
                 "Total APY",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontFamily: 'OpenSans',
-                  fontSize: 14,
-                ),
+                style: txStyle
               ),
               Text(
                 "30%",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontFamily: 'OpenSans',
-                  fontSize: 14,
-                ),
+                style: txStyle
               )
             ],
           ),
@@ -741,10 +715,7 @@ class _V1AppState extends State<V1App> {
 							Container(
 								child: Text(
 									athlete,
-									style: TextStyle(
-										fontSize: 28,
-										color: Colors.white
-									)
+									style: textStyle(Colors.white, 28, false, false)
 								)
 							),
 							// '|' Symbol
@@ -753,19 +724,13 @@ class _V1AppState extends State<V1App> {
 								alignment: Alignment.center,
 								child: Text(
 									"|",
-									style: TextStyle(
-										fontSize: 24,
-										color: Colors.grey[500]
-									)
+									style: textStyle(Colors.grey[600]!, 24, false, false)
 								)
 							),
 							Container(
 								child: Text(
 									"Seasonal APT",
-									style: TextStyle(
-										fontSize: 24,
-										color: Colors.grey[500]
-									)
+									style: textStyle(Colors.grey[600]!, 24, false, false)
 								)
 							),
 						]
@@ -825,10 +790,7 @@ class _V1AppState extends State<V1App> {
                                   ),
 																	child: Text(
 																		"Buy",
-																		style: TextStyle(
-																			fontSize: 20,
-																			color: Colors.black
-																		)
+																		style: textStyle(Colors.black, 20, false, false)
 																	)
 																)
 															),
@@ -851,10 +813,7 @@ class _V1AppState extends State<V1App> {
                                   ),
 																	child: Text(
 																		"Sell",
-																		style: TextStyle(
-																			fontSize: 20,
-																			color: Colors.black
-																		)
+																		style: textStyle(Colors.black, 20, false, false)
 																	)
 																)
 															)
@@ -886,10 +845,7 @@ class _V1AppState extends State<V1App> {
                                   ),
 																	child: Text(
 																		"Mint",
-																		style: TextStyle(
-																			fontSize: 20,
-																			color: Colors.white
-																		)
+																		style: textStyle(Colors.white, 20, false, false)
 																	)
 																)
 															),
@@ -916,10 +872,7 @@ class _V1AppState extends State<V1App> {
                                   ),
 																	child: Text(
 																		"Redeem",
-																		style: TextStyle(
-																			fontSize: 20,
-																			color: Colors.white
-																		)
+																		style: textStyle(Colors.white, 20, false, false)
 																	)
 																)
 															)
@@ -952,10 +905,7 @@ class _V1AppState extends State<V1App> {
 																width: MediaQuery.of(context).size.width*0.175,
 																child: Text(
 																	"Price Overview",
-																	style: TextStyle(
-																		fontSize: 24,
-																		color: Colors.white
-																	)
+																	style: textStyle(Colors.white, 24, false, false)
 																)
 															),
 															Container(
@@ -963,10 +913,7 @@ class _V1AppState extends State<V1App> {
 																alignment: Alignment.bottomLeft,
 																child: Text(
 																	"Current",
-																	style: TextStyle(
-																		fontSize: 14,
-																		color: Colors.grey[400]
-																	)
+																	style: textStyle(Colors.grey[400]!, 14, false, false)
 																)
 															),
 															Container(
@@ -974,10 +921,7 @@ class _V1AppState extends State<V1App> {
 																width: MediaQuery.of(context).size.width*0.075,
 																child: Text(
 																	"All-Time High",
-																	style: TextStyle(
-																		fontSize: 14,
-																		color: Colors.grey[400]
-																	)
+																	style: textStyle(Colors.grey[400]!, 14, false, false)
 																)
 															)
 														]
@@ -993,10 +937,7 @@ class _V1AppState extends State<V1App> {
 																width: MediaQuery.of(context).size.width*0.175,
 																child: Text(
 																	"Market Price",
-																	style: TextStyle(
-																		color: Colors.grey[400],
-																		fontSize: 20
-																	)
+																	style: textStyle(Colors.grey[400]!, 20, false, false)
 																)
 															),
 															Container(
@@ -1006,19 +947,13 @@ class _V1AppState extends State<V1App> {
 																	children: <Widget>[
 																		Text(
 																			"4.18 AX ",
-																			style: TextStyle(
-																				fontSize: 20,
-																				color: Colors.white,
-																			)
+																			style: textStyle(Colors.white, 20, false, false)
 																		),
 																		Container(
 																			//alignment: Alignment.topLeft,
 																			child: Text(
 																				"-2%",
-																				style: TextStyle(
-																					fontSize: 12,
-																					color: Colors.red,
-																				)
+																				style: textStyle(Colors.red, 12, false, false)
 																			)
 																		),
 																	]
@@ -1029,10 +964,7 @@ class _V1AppState extends State<V1App> {
 																width: MediaQuery.of(context).size.width*0.075,
 																child: Text(
 																	"4.20",
-																	style: TextStyle(
-																		fontSize: 20,
-																		color: Colors.grey[400],
-																	)
+																	style: textStyle(Colors.grey[400]!, 20, false, false)
 																)
 															)
 														]
@@ -1044,10 +976,7 @@ class _V1AppState extends State<V1App> {
 																width: MediaQuery.of(context).size.width*0.175,
 																child: Text(
 																	"Book Value",
-																	style: TextStyle(
-																		color: Colors.grey[400],
-																		fontSize: 20
-																	)
+																	style: textStyle(Colors.grey[400]!, 20, false, false)
 																)
 															),
 															Container(
@@ -1057,19 +986,13 @@ class _V1AppState extends State<V1App> {
 																	children: <Widget>[
 																		Text(
 																			"4.24 AX ",
-																			style: TextStyle(
-																				fontSize: 20,
-																				color: Colors.white,
-																			)
+																			style: textStyle(Colors.white, 20, false, false)
 																		),
 																		Container(
 																			//alignment: Alignment.topLeft,
 																			child: Text(
 																				"+4%",
-																				style: TextStyle(
-																					fontSize: 12,
-																					color: Colors.red,
-																				)
+																				style: textStyle(Colors.green, 12, false, false)
 																			)
 																		),
 																	]
@@ -1080,10 +1003,7 @@ class _V1AppState extends State<V1App> {
 																width: MediaQuery.of(context).size.width*0.075,
 																child: Text(
 																	"4.24",
-																	style: TextStyle(
-																		fontSize: 20,
-																		color: Colors.grey[400],
-																	)
+																	style: textStyle(Colors.grey[400]!, 20, false, false)
 																)
 															)
 														]
@@ -1101,10 +1021,7 @@ class _V1AppState extends State<V1App> {
 														alignment: Alignment.centerLeft,
 														child: Text(
 															"Details",
-															style: TextStyle(
-																fontSize: 24,
-																color: Colors.white
-															)
+															style: textStyle(Colors.white, 24, false, false)
 														)
 													),
 													Divider(
@@ -1116,17 +1033,11 @@ class _V1AppState extends State<V1App> {
 														children: <Widget>[
 															Text(
 																"Sport / League",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															),
 															Text(
 																"American Football / NFL",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															)
 														]
 													),
@@ -1135,17 +1046,11 @@ class _V1AppState extends State<V1App> {
 														children: <Widget>[
 															Text(
 																"Team",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															),
 															Text(
 																"Tampa Bay Buckaneers",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															)
 														]
 													),
@@ -1154,17 +1059,11 @@ class _V1AppState extends State<V1App> {
 														children: <Widget>[
 															Text(
 																"Position",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															),
 															Text(
 																"Quarterback",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															)
 														]
 													),
@@ -1173,17 +1072,11 @@ class _V1AppState extends State<V1App> {
 														children: <Widget>[
 															Text(
 																"Season Start",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															),
 															Text(
 																"Sep 1, 2021",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															)
 														]
 													),
@@ -1192,17 +1085,11 @@ class _V1AppState extends State<V1App> {
 														children: <Widget>[
 															Text(
 																"Season End",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															),
 															Text(
 																"Jan 10, 2022",
-																style: TextStyle(
-																	color: Colors.grey[400],
-																	fontSize: 20
-																)
+																style: textStyle(Colors.grey[400]!, 20, false, false)
 															)
 														]
 													),
@@ -1223,10 +1110,7 @@ class _V1AppState extends State<V1App> {
 																	width: 275,
 																	child: Text(
 																		"Key Statistics",
-																		style: TextStyle(
-																			fontSize: 24,
-																			color: Colors.white
-																		)
+																		style: textStyle(Colors.white, 24, false, false)
 																	),
 																),
 																Container(
@@ -1234,10 +1118,7 @@ class _V1AppState extends State<V1App> {
 																	alignment: Alignment.bottomLeft,
 																	child: Text(
 																		"TD",
-																		style: TextStyle(
-																			fontSize: 14,
-																			color: Colors.grey[400]
-																		)
+																		style: textStyle(Colors.grey[400]!, 14, false, false)
 																	),
 																),
 																Container(
@@ -1245,10 +1126,7 @@ class _V1AppState extends State<V1App> {
 																	alignment: Alignment.bottomLeft,
 																	child: Text(
 																		"Cmp",
-																		style: TextStyle(
-																			fontSize: 14,
-																			color: Colors.grey[400]
-																		)
+																		style: textStyle(Colors.grey[400]!, 14, false, false)
 																	),
 																),
 																Container(
@@ -1256,20 +1134,14 @@ class _V1AppState extends State<V1App> {
 																	alignment: Alignment.bottomLeft,
 																	child: Text(
 																		"Cmp %",
-																		style: TextStyle(
-																			fontSize: 14,
-																			color: Colors.grey[400]
-																		)
+																		style: textStyle(Colors.grey[400]!, 14, false, false)
 																	),
 																),
 																Container(
 																	alignment: Alignment.bottomLeft,
 																	child: Text(
 																		"YDS",
-																		style: TextStyle(
-																			fontSize: 14,
-																			color: Colors.grey[400]
-																		)
+																		style: textStyle(Colors.grey[400]!, 14, false, false)
 																	),
 																),
 															]
@@ -1286,10 +1158,7 @@ class _V1AppState extends State<V1App> {
 																width: 275,
 																child: Text(
 																	"Current Stats",
-																	style: TextStyle(
-																		fontSize: 16,
-																		color: Colors.grey[400]
-																	)
+																	style: textStyle(Colors.grey[400]!, 16, false, false)
 																),
 															),
 															Container(
@@ -1297,10 +1166,7 @@ class _V1AppState extends State<V1App> {
 																alignment: Alignment.bottomLeft,
 																child: Text(
 																	"12",
-																	style: TextStyle(
-																		fontSize: 16,
-																		color: Colors.grey[400]
-																	)
+																	style: textStyle(Colors.grey[400]!, 16, false, false)
 																),
 															),
 															Container(
@@ -1308,10 +1174,7 @@ class _V1AppState extends State<V1App> {
 																alignment: Alignment.bottomLeft,
 																child: Text(
 																	"24",
-																	style: TextStyle(
-																		fontSize: 16,
-																		color: Colors.grey[400]
-																	)
+																	style: textStyle(Colors.grey[400]!, 16, false, false)
 																),
 															),
 															Container(
@@ -1319,20 +1182,14 @@ class _V1AppState extends State<V1App> {
 																alignment: Alignment.bottomLeft,
 																child: Text(
 																	"80%",
-																	style: TextStyle(
-																		fontSize: 16,
-																		color: Colors.grey[400]
-																	)
+																	style: textStyle(Colors.grey[400]!, 16, false, false)
 																),
 															),
 															Container(
 																alignment: Alignment.bottomLeft,
 																child: Text(
 																	"2,000",
-																	style: TextStyle(
-																		fontSize: 16,
-																		color: Colors.grey[400]
-																	)
+																	style: textStyle(Colors.grey[400]!, 16, false, false)
 																),
 															),
 														]
@@ -1341,11 +1198,7 @@ class _V1AppState extends State<V1App> {
 														alignment: Alignment.centerLeft,
 														child: Text(
 															"View All Stats",
-															style: TextStyle(
-																color: Colors.amber[400],
-																fontSize: 16,
-																decoration: TextDecoration.underline,
-															)
+															style: textStyle(Colors.amber[400]!, 16, false, true)
 														)
 													)
 												]
@@ -1392,7 +1245,7 @@ class _V1AppState extends State<V1App> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         ticker,
-                        style: textStyle(Colors.white, 14, true),
+                        style: textStyle(Colors.white, 14, true, false),
                       )
                     ),
                     Container(
@@ -1400,7 +1253,7 @@ class _V1AppState extends State<V1App> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         fullName,
-                        style: textStyle(Colors.grey[100]!, 9, false),
+                        style: textStyle(Colors.grey[100]!, 9, false, false),
                       )
                     ),
                   ],
@@ -1419,117 +1272,92 @@ class _V1AppState extends State<V1App> {
       height: 70,
       child: OutlinedButton(
         onPressed: () {
-			setState(() {
-				cardState = 1;
-				cardName = athName;
-			});
-			
-		},
+          setState(() {
+            cardState = 1;
+            cardName = athName;
+          });
+			  },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Row(
-				children: <Widget>[
+              children: <Widget>[
                 // Icon
-				Container(
-				  width: 50,
-				  child: Icon(
-					Icons.sports_football,
-					color: Colors.grey[700]
-				  )
-				),
-				// Athlete Name
-				Container(
-				  width: 175,
-				  child: Column(
-					mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-					crossAxisAlignment: CrossAxisAlignment.start,
-					children: <Widget>[
-					  Text(
-						athName,
-						style: TextStyle(
-						  fontSize: 18,
-						  color: Colors.white
-						)
-					  ),
-					  Text(
-						"Quarterback",
-						style: TextStyle(
-						  fontSize: 10,
-						  color: Colors.grey[700]
-						)
-					  )
-					]
-				  )
-				),
-				// Team
-				Container(
-				  width: 125,
-				  child: Column(
-					mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-					crossAxisAlignment: CrossAxisAlignment.start,
-					children: <Widget>[
-					  Text(
-						"Tampa Bay",
-						style: TextStyle(
-						  fontSize: 18,
-						  color: Colors.grey[700]
-						)
-					  ),
-					  Text(
-						"Buckaneers",
-						style: TextStyle(
-						  fontSize: 10,
-						  color: Colors.grey[700]
-						)
-					  )
-					]
-				  )
-				),
-				// Market Price
-				Container(
-				  width: 150,
-				  child: Row(
-					children: <Widget>[
-					  Text(
-						"\$0.0422",
-						style: TextStyle(
-						  fontSize: 16,
-						  color: Colors.white
-						)
-					  ),
-					  Text(
-						"+%4",
-						style: TextStyle(
-						  fontSize: 12,
-						  color: Colors.green
-						)
-					  )
-					]
-				  )
-				),
-				// Book Price
-				Container(
-				  width: 150,
-				  child: Row(
-					children: <Widget>[
-					  Text(
-						"\$0.0412",
-						style: TextStyle(
-						  fontSize: 16,
-						  color: Colors.white
-						)
-					  ),
-					  Text(
-						"-%2",
-						style: TextStyle(
-						  fontSize: 12,
-						  color: Colors.red
-						)
-					  )
-					]
-				  )
-				),
+                Container(
+                  width: 50,
+                  child: Icon(
+                    Icons.sports_football,
+                    color: Colors.grey[700]
+                  )
+                ),
+                // Athlete Name
+                Container(
+                  width: MediaQuery.of(context).size.width*0.15,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                      athName,
+                        style: textStyle(Colors.white, 18, false, false)
+                      ),
+                      Text(
+                        "Quarterback",
+                        style: textStyle(Colors.grey[700]!, 10, false, false)
+                      )
+                    ]
+                  )
+                ),
+                // Team
+                Container(
+                  width: MediaQuery.of(context).size.width*0.15,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Tampa Bay",
+                        style: textStyle(Colors.white, 18, false, false)
+                      ),
+                      Text(
+                      "Buckaneers",
+                      style: textStyle(Colors.grey[700]!, 10, false, false)
+                      )
+                    ]
+                  )
+                ),
+                // Market Price
+                Container(
+                  width: MediaQuery.of(context).size.width*0.1,
+                  child: Row(
+                  children: <Widget>[
+                    Text(
+                    "\$0.0422",
+                    style: textStyle(Colors.white, 16, false, false)
+                    ),
+                    Text(
+                    "+%4",
+                    style: textStyle(Colors.green, 12, false, false)
+                    )
+                  ]
+                  )
+                ),
+                // Book Price
+                Container(
+                  width: MediaQuery.of(context).size.width*0.1,
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        "\$0.0412",
+                        style: textStyle(Colors.white, 16, false, false)
+                      ),
+                      Text(
+                        "-%2",
+                        style: textStyle(Colors.green, 12, false, false)
+                      )
+                    ]
+                  )
+                ),
               ]
             ),
             Row(
@@ -1546,10 +1374,7 @@ class _V1AppState extends State<V1App> {
                     onPressed: () {},
                     child: Text(
                       "Buy",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black
-                      )
+                      style: textStyle(Colors.black, 16, false, false)
                     )
                   )
                 ),
@@ -1572,10 +1397,7 @@ class _V1AppState extends State<V1App> {
                     onPressed: () {},
                     child: Text(
                       "Mint",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white
-                      )
+                      style: textStyle(Colors.white, 16, false, false)
                     )
                   )
                 )
@@ -1615,19 +1437,36 @@ class _V1AppState extends State<V1App> {
     );
   }
 
-  TextStyle textStyle(Color color, double size, bool isBold) {
+  TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold)
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-      );
+      if (isUline)
+        return TextStyle(
+          color: color,
+          fontFamily: 'OpenSans',
+          fontSize: size,
+          fontWeight: FontWeight.w400,
+          decoration: TextDecoration.underline
+        );
+      else
+        return TextStyle(
+          color: color,
+          fontFamily: 'OpenSans',
+          fontSize: size,
+          fontWeight: FontWeight.w400,
+        );
     else
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
+      if (isUline)
+        return TextStyle(
+          color: color,
+          fontFamily: 'OpenSans',
+          fontSize: size,
+          decoration: TextDecoration.underline
+        );
+      else
+        return TextStyle(
+          color: color,
+          fontFamily: 'OpenSans',
+          fontSize: size,
+        );
   }
 }
