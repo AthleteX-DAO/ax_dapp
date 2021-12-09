@@ -40,6 +40,8 @@ class _V1AppState extends State<V1App> {
               desktopScout(context)
             else if (pageNumber == 1)
               desktopTrade(context)
+            else if (pageNumber == 2)
+              desktopFarm(context)
           ],
         )
       )
@@ -460,6 +462,30 @@ class _V1AppState extends State<V1App> {
     );
   }
 
+  Widget desktopFarm(BuildContext context) {
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width*0.8,
+        height: MediaQuery.of(context).size.height/4,
+        child: Scrollbar(
+          controller: ScrollController(),
+          isAlwaysShown: true,
+          interactive: true,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              createFarmWidget("AX Farm"),
+              SizedBox(width: 50),
+              createFarmWidget("AX - Tom Brady APT"),
+              SizedBox(width: 50),
+              createFarmWidget("AX - Tom Brady APT"),
+            ]
+          ),
+        )
+      )
+    );
+  }
+
   Widget topNavBar(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width*.9,
@@ -529,6 +555,149 @@ class _V1AppState extends State<V1App> {
           ),
           // top Connect Wallet Button
           Container()
+        ],
+      ),
+    );
+  }
+
+  Widget createFarmWidget(String farmName) {
+    return Container(
+      height: MediaQuery.of(context).size.height/4,
+      width: MediaQuery.of(context).size.width/3,
+      padding: EdgeInsets.symmetric(vertical: 22.5, horizontal: 50),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Color(0x80424242),
+        border: Border.all(
+          color: Colors.grey[300]!,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          // Farm Title
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                farmName,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'OpenSans',
+                  fontSize: 20,
+                ),
+              ),
+              Container(
+                width: 120,
+                height: 35,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: Colors.amber[600],
+                ),
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Deposit",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'OpenSans',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11,
+                    ),
+                  )
+                )
+              ),
+            ]
+          ),
+          // TVL
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "TVL",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontFamily: 'OpenSans',
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                "\$1,000,000",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontFamily: 'OpenSans',
+                  fontSize: 14,
+                ),
+              )
+            ],
+          ),
+          // Fee
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Swap Fee APY",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontFamily: 'OpenSans',
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                "20%",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontFamily: 'OpenSans',
+                  fontSize: 14,
+                ),
+              )
+            ],
+          ),
+          // Rewards
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "AX Rewards APY",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontFamily: 'OpenSans',
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                "10%",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontFamily: 'OpenSans',
+                  fontSize: 14,
+                ),
+              )
+            ],
+          ),
+          // Total APY
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Total APY",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontFamily: 'OpenSans',
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                "30%",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontFamily: 'OpenSans',
+                  fontSize: 14,
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );
