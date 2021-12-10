@@ -1,5 +1,5 @@
-import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/service/AthleteApi.dart';
+import 'package:ae_dapp/service/NFLAthlete.dart';
+import 'package:ae_dapp/service/NFLAthleteApi.dart';
 import 'package:flutter/material.dart';
 
 
@@ -15,7 +15,7 @@ class _TestingState extends State<Testing> {
 
   List<String> litems = [];
   final TextEditingController eCtrl = new TextEditingController();
-  List<Athlete> athleteList = [];
+  List<NFLAthlete> athleteList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class _TestingState extends State<Testing> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           return FutureBuilder<dynamic>(
-            future: AthleteApi.getAthletesLocally(context),
+            future: NFLAthleteApi.getAthletesLocally(context),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
