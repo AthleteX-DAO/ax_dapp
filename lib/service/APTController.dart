@@ -1,4 +1,5 @@
 import 'package:ae_dapp/service/Controller.dart';
+import 'package:ae_dapp/service/DEXController.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 import '../contracts/LongShortPairCreator.g.dart';
@@ -18,7 +19,6 @@ class APTController extends Controller {
   late ExpiringMultiParty _expiringMultiParty =
       ExpiringMultiParty(address: lspCAddress, client: client);
 
-
   // Actionables
 
   Future<void> mint(
@@ -35,6 +35,22 @@ class APTController extends Controller {
       _expiringMultiParty.redeem(numTokens, credentials: credentials);
     } catch (e) {
       print("You are not the token sponsor");
+    }
+  }
+
+  Future<void> buy(EthereumAddress aptAddress, int numTokens) async {
+    try {
+      DEXController().swapFromAX(aptAddress, BigInt.from(numTokens));
+    } catch (e) {
+      print("Unable to buy tokens \n $e");
+    }
+  }
+
+  Future<void> sell(EthereumAddress aptAddress, int numTokens) async {
+    try {
+      DEXController().swapforAX(aptAddress, BigInt.from(numTokens));
+    } catch (e) {
+      print('Unable to sell tokens \n $e');
     }
   }
 }
