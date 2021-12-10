@@ -51,6 +51,7 @@ EthereumAddress stakingAddr =
   String get ws => _wsUrl;
   AthleteX get athleteX => _athleteX;
   Erc20 get genericERC20 => _erc20;
+  EthereumAddress get axTokenAddress => axTokenAddr;
 
   void updateClient(Web3Client _newClient) {
     _client = _newClient;
