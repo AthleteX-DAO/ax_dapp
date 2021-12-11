@@ -382,7 +382,30 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                     ),
                   ],
                 ),
-                confirm
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 30.0),
+                      width: 175,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[400],
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          "Confirm",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
