@@ -823,15 +823,7 @@ class _V1AppState extends State<V1App> {
 																height: 50,
 																decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
 																child: TextButton(
-																	onPressed: () => dialog(
-                                    context,
-                                    MediaQuery.of(context).size.height*0.6,
-                                    MediaQuery.of(context).size.width*(2/7),
-                                    boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                                    Column (
-                                      
-                                    ),
-                                  ),
+																	onPressed: () => showDialog(context: context, builder: (BuildContext context) => buyDialog(context, athlete)),
 																	child: Text(
 																		"Buy",
 																		style: textStyle(Colors.black, 20, false, false)
@@ -843,15 +835,7 @@ class _V1AppState extends State<V1App> {
 																height: 50,
 																decoration: boxDecoration(Colors.white, 100, 0, Colors.white),
 																child: TextButton(
-																	onPressed: () => dialog(
-                                    context,
-                                    MediaQuery.of(context).size.height*0.6,
-                                    MediaQuery.of(context).size.width*(2/7),
-                                    boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                                    Column (
-                                      
-                                    ),
-                                  ),
+																	onPressed: () => showDialog(context: context, builder: (BuildContext context) => sellDialog(context, athlete)),
 																	child: Text(
 																		"Sell",
 																		style: textStyle(Colors.black, 20, false, false)
