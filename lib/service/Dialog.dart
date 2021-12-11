@@ -152,7 +152,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                           decoration: InputDecoration(
                             hintText: '0.00',
                             hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
-                            contentPadding: const EdgeInsets.all(10),
+                            contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
                           inputFormatters: [
@@ -469,7 +469,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                           decoration: InputDecoration(
                             hintText: '0.00',
                             hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
-                            contentPadding: const EdgeInsets.all(10),
+                            contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
                           inputFormatters: [
@@ -677,18 +677,18 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: MediaQuery.of(context).size.height*0.6,
+      height: MediaQuery.of(context).size.height*0.45,
       width: MediaQuery.of(context).size.width*(2/9),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
         children: [
           Container(
             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-            height: MediaQuery.of(context).size.height*.35,
+            height: MediaQuery.of(context).size.height*.25,
             width: 350,
             //color: Colors.red,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -789,6 +789,9 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                          ],
                         ),
                       ),
                     ],
@@ -809,13 +812,13 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
             width: 350,
             //color: Colors.red,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 10.0),
+                      margin: EdgeInsets.only(bottom: 5.0),
                       child: Text(
                         "You recieve:",
                         style: TextStyle(
@@ -825,7 +828,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10.0),
+                      margin: EdgeInsets.only(bottom: 5.0),
                       child: Text(
                         "120 AX",
                         style: TextStyle(
@@ -840,7 +843,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 30.0),
+                      margin: EdgeInsets.only(bottom: 30.0),
                       width: 175,
                       height: 45,
                       decoration: BoxDecoration(
@@ -876,18 +879,18 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: MediaQuery.of(context).size.height*0.6,
+      height: MediaQuery.of(context).size.height*0.45,
       width: MediaQuery.of(context).size.width*(2/9),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
         children: [
           Container(
             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-            height: MediaQuery.of(context).size.height*.35,
+            height: MediaQuery.of(context).size.height*.25,
             width: 350,
             //color: Colors.red,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -921,7 +924,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         child: RichText(
                           text: TextSpan(
                             children: <TextSpan>[
-                              TextSpan(text: "You can redeem APT's at their Book Value for AX.", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                              TextSpan(text: "You can mint APT's at their Book Value for AX.", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
                               TextSpan(text: " You can buy AX on the Matic network through", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
                               TextSpan(text: " SushiSwap", style: TextStyle(color: Colors.amber[400], fontSize: 15)),
                             ],
@@ -985,9 +988,12 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                           decoration: InputDecoration(
                             hintText: '0.00',
                             hintStyle: textStyle(Colors.grey[400]!, 22, false,false),
-                            contentPadding: const EdgeInsets.all(10),
+                            contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                          ],
                         ),
                       ),
                     ],
@@ -1008,13 +1014,13 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
             width: 350,
             //color: Colors.red,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 0.0),
+                      margin: EdgeInsets.only(bottom: 5.0),
                       child: Text(
                         "You recieve:",
                         style: TextStyle(
@@ -1024,7 +1030,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 0.0),
+                      margin: EdgeInsets.only(bottom: 5.0),
                       child: Text(
                         "100 "+athlete.name+" APT",
                         style: TextStyle(
@@ -1039,7 +1045,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 30.0),
+                      margin: EdgeInsets.only(bottom: 30.0),
                       width: 175,
                       height: 45,
                       decoration: BoxDecoration(
