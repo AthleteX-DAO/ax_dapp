@@ -209,7 +209,7 @@ class _V1AppState extends State<V1App> {
         )
       );
     else 
-      return athleteCardView(tomBradey);
+      return athleteCardView(curAthlete);
   }
 
   Widget desktopTrade(BuildContext context) {
@@ -1242,16 +1242,16 @@ class _V1AppState extends State<V1App> {
                 );
               default:
                 allAthletes = snapshot.data;
-print(allAthletes.toString());
-                return Container();
-                // return ListView.builder(
-                //   physics: BouncingScrollPhysics(),
-                //   itemCount: allAthletes.length,
-                //   itemBuilder: (context, index) {
-                //     final athlete = allAthletes[index];
-                //     return createAthleteCards(athlete);
-                //   }
-                // );
+// print(allAthletes.toString());
+                // return Container();
+                return ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: allAthletes.length,
+                  itemBuilder: (context, index) {
+                    final athlete = allAthletes[index];
+                    return createAthleteCards(athlete);
+                  }
+                );
             }
           }
         )
@@ -1399,7 +1399,7 @@ print(allAthletes.toString());
                         style: textStyle(Colors.white, 18, false, false)
                       ),
                       Text(
-                        "Quarterback",
+                        athlete.position,
                         style: textStyle(Colors.grey[700]!, 10, false, false)
                       )
                     ]
@@ -1413,12 +1413,12 @@ print(allAthletes.toString());
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "Tampa Bay",
+                        athlete.team,
                         style: textStyle(Colors.white, 18, false, false)
                       ),
                       Text(
-                      "Buckaneers",
-                      style: textStyle(Colors.grey[700]!, 10, false, false)
+                        athlete.team,
+                        style: textStyle(Colors.grey[700]!, 10, false, false)
                       )
                     ]
                   )
@@ -1429,8 +1429,8 @@ print(allAthletes.toString());
                   child: Row(
                   children: <Widget>[
                     Text(
-                    "\$0.0422",
-                    style: textStyle(Colors.white, 16, false, false)
+                      "\$"+athlete.war[athlete.war.length-1].toStringAsFixed(4),
+                      style: textStyle(Colors.white, 16, false, false)
                     ),
                     Text(
                     "+%4",
@@ -1445,12 +1445,12 @@ print(allAthletes.toString());
                   child: Row(
                     children: <Widget>[
                       Text(
-                        "\$0.0412",
+                        "\$"+athlete.war[athlete.war.length-1].toStringAsFixed(4),
                         style: textStyle(Colors.white, 16, false, false)
                       ),
                       Text(
                         "-%2",
-                        style: textStyle(Colors.green, 12, false, false)
+                        style: textStyle(Colors.red, 12, false, false)
                       )
                     ]
                   )

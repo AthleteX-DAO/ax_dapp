@@ -187,7 +187,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(bottom: 40.0),
+                      margin: EdgeInsets.only(top: 30.0),
                       width: 175,
                       height: 45,
                       decoration: BoxDecoration(
@@ -382,30 +382,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(top: 0.0, bottom: 40.0),
-                      width: 175,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.amber[400],
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Confirm",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                confirm
               ],
             ),
           ),
