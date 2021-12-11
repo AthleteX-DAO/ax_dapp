@@ -1,7 +1,7 @@
 import 'package:ae_dapp/service/Coin.dart';
 import 'package:ae_dapp/service/CoinApi.dart';
-import 'package:ae_dapp/service/NFLAthlete.dart';
-import 'package:ae_dapp/service/NFLAthleteApi.dart';
+import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:ae_dapp/style/Style.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -20,11 +20,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   int swap = 0;
-  List<NFLAthlete> athleteList = [];
-  List<NFLAthlete> nflList = [];
-  List<NFLAthlete> otherList = [];
+  List<Athlete> athleteList = [];
+  List<Athlete> nflList = [];
+  List<Athlete> otherList = [];
   List<Container> lpCardList = [];
-  List<NFLAthlete> curAthletes = [];
+  List<Athlete> curAthletes = [];
   List<String> athNames = [];
   bool firstRun = true;
   double filterText = 20;
@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   late Coin coin1;
   late Coin coin2;
 
-  NFLAthlete lastFirstEarn = NFLAthlete(
+  Athlete lastFirstEarn = Athlete(
     name: '',
     team: '',
     position: '',
@@ -344,7 +344,7 @@ class _HomePageState extends State<HomePage> {
                                                   .75,
                                               color: Colors.transparent,
                                               child: FutureBuilder<dynamic>(
-                                                  future: NFLAthleteApi
+                                                  future: AthleteApi
                                                       .getAthletesLocally(
                                                           context),
                                                   builder: (context, snapshot) {
@@ -373,19 +373,11 @@ class _HomePageState extends State<HomePage> {
                                                                     .size
                                                                     .width *
                                                                 0.8,
-                                                            child: ListView
-                                                                .builder(
-                                                                    physics:
-                                                                        BouncingScrollPhysics(),
-                                                                    itemCount:
-                                                                        athleteList
-                                                                            .length,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                            index) {
-                                                                      final athlete =
-                                                                          athleteList[
-                                                                              index];
+                                                            child: ListView.builder(
+                                                                  physics: BouncingScrollPhysics(),
+                                                                    itemCount: athleteList.length,
+                                                                    itemBuilder: (context, index) {
+                                                                      final athlete = athleteList[index];
                                                                       return Card(
                                                                           color: Colors
                                                                               .transparent,
@@ -908,7 +900,7 @@ class _HomePageState extends State<HomePage> {
                                           Align(
                                               alignment: Alignment(0, 0),
                                               child: FutureBuilder<dynamic>(
-                                                  future: NFLAthleteApi
+                                                  future: AthleteApi
                                                       .getAthletesLocally(
                                                           context),
                                                   builder: (context, snapshot) {
@@ -1472,7 +1464,7 @@ class _HomePageState extends State<HomePage> {
                                               // Horizontal List
                                               if (curAthletes.isEmpty)
                                                 FutureBuilder<dynamic>(
-                                                    future: NFLAthleteApi
+                                                    future: AthleteApi
                                                         .getAthletesLocally(
                                                             context),
                                                     builder:
@@ -2158,7 +2150,7 @@ class _HomePageState extends State<HomePage> {
   }
 */
   // Athlete Popup
-  void athleteDialog(BuildContext context, NFLAthlete athlete) {
+  void athleteDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -2929,7 +2921,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Scout Mint popup
-  void mintDialog(BuildContext context, NFLAthlete athlete) {
+  void mintDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -3527,7 +3519,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Scout Mint Confirm Popup
-  void mintConfirmDialog(BuildContext context, NFLAthlete athlete) {
+  void mintConfirmDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -3638,7 +3630,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Scout Redeem Popup
-  void redeemDialog(BuildContext context, NFLAthlete athlete) {
+  void redeemDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -3788,7 +3780,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Scout Redeem Confirm Popup
-  void redeemConfirmDialog(BuildContext context, NFLAthlete athlete) {
+  void redeemConfirmDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -4149,7 +4141,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // LP Farm Popup
-  void lpPopupDialog(BuildContext context, NFLAthlete athlete) {
+  void lpPopupDialog(BuildContext context, Athlete athlete) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(

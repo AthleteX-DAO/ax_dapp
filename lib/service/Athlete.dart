@@ -1,7 +1,7 @@
 import 'package:ae_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 
-class NFLAthlete {
+class Athlete {
   final String name;
   final String team;
   final String position;
@@ -14,7 +14,7 @@ class NFLAthlete {
   final List war;
   final List time;
 
-  const NFLAthlete({
+  const Athlete({
     required this.name,
     required this.team,
     required this.position,
@@ -28,8 +28,8 @@ class NFLAthlete {
     required this.time,
   });
 
-  static NFLAthlete fromJson(json) =>
-      NFLAthlete(
+  static Athlete fromJson(json) =>
+      Athlete(
         name: json['name'],
         team: json['team'],
         position: json['position'],

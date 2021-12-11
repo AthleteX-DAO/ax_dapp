@@ -1,22 +1,22 @@
-import 'package:ae_dapp/service/NFLAthlete.dart';
+import 'package:ae_dapp/service/Athlete.dart';
 
 class UserData {
   
-  List<NFLAthlete> boughtAthletes = [];
+  List<Athlete> boughtAthletes = [];
 
   UserData();
 
-  void addAthlete(NFLAthlete _athlete) {
+  void addAthlete(Athlete _athlete) {
     if (!boughtAthletes.contains(_athlete))
       boughtAthletes.add(_athlete);
   }
 
-  void removeAthlete(NFLAthlete _athlete) {
+  void removeAthlete(Athlete _athlete) {
     if (boughtAthletes.contains(_athlete))
       boughtAthletes.remove(_athlete);
   }
 
-  bool containsAthlete(NFLAthlete _athlete) {
+  bool containsAthlete(Athlete _athlete) {
     return boughtAthletes.contains(_athlete);
   }
 }

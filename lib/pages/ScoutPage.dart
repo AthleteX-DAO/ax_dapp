@@ -1,6 +1,6 @@
 import 'package:ae_dapp/pages/DexPage.dart';
-import 'package:ae_dapp/service/NFLAthlete.dart';
-import 'package:ae_dapp/service/NFLAthleteApi.dart';
+import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/style/Style.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +17,9 @@ class _ScoutPageState extends State<ScoutPage> {
   late String name;
   late List war;
   late List time;
-  late List<NFLAthlete> athleteList;
-  late List<NFLAthlete> nflList;
-  late List<NFLAthlete> otherList;
+  late List<Athlete> athleteList;
+  late List<Athlete> nflList;
+  late List<Athlete> otherList;
   Widget filler = Text("Filler Text");
   double filterText = 20;
   bool firstRun = true;
@@ -81,7 +81,7 @@ class _ScoutPageState extends State<ScoutPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
-        future: NFLAthleteApi.getAthletesLocally(context),
+        future: AthleteApi.getAthletesLocally(context),
         builder: (context, snapshot) {
           nflList = snapshot.data;
           if (firstRun) athleteList = nflList;

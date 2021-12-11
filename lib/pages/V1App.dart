@@ -1,9 +1,10 @@
 import 'dart:ui';
-import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:ae_dapp/service/NFLAthlete.dart';
 import 'package:ae_dapp/service/Dialog.dart';
+import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/service/AthleteApi.dart';
+import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
 
@@ -14,15 +15,16 @@ class V1App extends StatefulWidget {
 
 class _V1AppState extends State<V1App> {
   // Feeling cute... may delete later
-  NFLAthlete tomBradey = NFLAthlete(name: "Tom Bradey", team: "Tampa Bay Buckaneers", position: "Quarterback", passingYards: [2,3,5], passingTouchDowns: [1,10,3], reception: [4,6,8], receiveYards: [3,5,7], receiveTouch: [9,8,7], rushingYards: [6,5,4], war: [3.543, 1.094, 9.478, 10.231], time: [0,1,2,3]);
-  NFLAthlete nullNFLAthlete = new NFLAthlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
+  Athlete tomBradey = Athlete(name: "Tom Bradey", team: "Tampa Bay Buckaneers", position: "Quarterback", passingYards: [2,3,5], passingTouchDowns: [1,10,3], reception: [4,6,8], receiveYards: [3,5,7], receiveTouch: [9,8,7], rushingYards: [6,5,4], war: [3.543, 1.094, 9.478, 10.231], time: [0,1,2,3]);
+  Athlete nullAthlete = new Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
 
   // state change variables
   int pageNumber = 0;
 	int cardState = 0;
   int sportState = 0;
-  NFLAthlete curNFLAthlete = NFLAthlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
+  Athlete curAthlete = Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
   bool allFarms = true;
+  List<Athlete> nflList = [];
 
 
   @override
@@ -183,24 +185,25 @@ class _V1AppState extends State<V1App> {
               ]
             ),
             // ListView of Athletes
-            Container(
-              height: MediaQuery.of(context).size.height*0.6,
-              child: ListView(
-                  children: <Widget>[
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                    createAthleteCards(tomBradey),
-                  ]
-                )
-              )
+            buildAthleteListview(nflList)
+            // Container(
+            //   height: MediaQuery.of(context).size.height*0.6,
+            //   child: ListView(
+            //       children: <Widget>[
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //         createAthleteCards(tomBradey),
+            //       ]
+            //     )
+            //   )
             ]
           )
         )
@@ -728,7 +731,7 @@ class _V1AppState extends State<V1App> {
     );
   }
 
-  Widget athleteCardView(NFLAthlete athlete) {
+  Widget athleteCardView(Athlete athlete) {
 	return Container(
 		child: Column(
 			mainAxisAlignment: MainAxisAlignment.center,
@@ -747,7 +750,7 @@ class _V1AppState extends State<V1App> {
 									onPressed: () {
 										setState(() {
 											cardState = 0;
-											curNFLAthlete = athlete;
+											curAthlete = athlete;
 										});
 									},
 									child: Icon(
@@ -865,15 +868,7 @@ class _V1AppState extends State<V1App> {
 																height: 50,
 																decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
 																child: TextButton(
-																	onPressed: () => dialog(
-                                    context,
-                                    MediaQuery.of(context).size.height*0.45,
-                                    MediaQuery.of(context).size.width*(2/7),
-                                    boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                                    Column (
-                                      
-                                    ),
-                                  ),
+																	onPressed: () => showDialog(context: context, builder: (BuildContext context) => mintDialog(context, athlete)),
 																	child: Text(
 																		"Mint",
 																		style: textStyle(Colors.white, 20, false, false)
@@ -886,175 +881,6 @@ class _V1AppState extends State<V1App> {
 																decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
 																child: TextButton(
 																	onPressed: () => showDialog(context: context, builder: (BuildContext context) => redeemDialog(context, athlete)),
-                                  // dialog(
-                                  //   context, 
-                                  //   MediaQuery.of(context).size.height*0.55, 
-                                  //   MediaQuery.of(context).size.width*.25, 
-                                  //   boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                                  //   Container(
-                                  //     //color: Colors.blue,
-                                  //     padding: const EdgeInsets.all(20.0),
-                                  //     margin: const EdgeInsets.all(20.0),
-                                  //     child: Column(
-                                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  //       crossAxisAlignment: CrossAxisAlignment.center,
-                                  //       children: <Widget>[
-                                  //         // Redeem athlete APT and Close button
-                                  //         Row(
-                                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  //           children: <Widget>[
-                                  //             Container(
-                                  //               child: Text(
-                                  //                 "Redeem "+athlete.name+" APT",
-                                  //                 style: const TextStyle(
-                                  //                   fontSize: 20,
-                                  //                   color: Colors.white,
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //             Container(
-                                  //               child: IconButton(
-                                  //                 icon: const Icon(
-                                  //                   Icons.close,
-                                  //                   color: Colors.white
-                                  //                   ),
-                                  //                 onPressed: () => Navigator.pop(context),
-                                  //               ),
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //         // Sushiswap Text
-                                  //         Row(
-                                  //           children: <Widget>[
-                                  //             Container(
-                                  //               child: Expanded(
-                                  //                 child: RichText(
-                                  //                   text: TextSpan(
-                                  //                     children: <TextSpan>[
-                                  //                       TextSpan(text: "You can redeem APT's at their Book Value for AX.", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
-                                  //                       TextSpan(text: "You can access other funds with AX on the Matic network through", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
-                                  //                       TextSpan(text: " SushiSwap", style: TextStyle(color: Colors.amber[400], fontSize: 15)),
-                                  //                     ],
-                                  //                   ),
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //         // Input AX Text (no user input)
-                                  //         Row(
-                                  //           children: <Widget>[
-                                  //             Container(
-                                  //               child: Text(
-                                  //                 "Input AX:",
-                                  //                 style: TextStyle(
-                                  //                   fontSize: 15,
-                                  //                   color: Colors.grey[600],
-                                  //                 ),
-                                  //               ),
-                                  //             )
-                                  //           ],
-                                  //         ),
-                                  //         // Input AX (user input)
-                                  //         Container(
-                                  //           padding: const EdgeInsets.all(10),
-                                  //           width: 400,
-                                  //           height: 55,
-                                  //           decoration: boxDecoration(Colors.transparent, 14, 0.5, Colors.grey[400]!),
-                                  //           child: Row(
-                                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  //             children: <Widget>[
-                                  //               Expanded(
-                                  //                 child: Text(
-                                  //                   athlete.name +" APT",
-                                  //                   style: textStyle(Colors.white, 15, false, false),
-                                  //                 ),
-                                  //               ),
-                                                
-                                  //               Container(
-                                  //                 height: 18,
-                                  //                 width: 35,
-                                  //                 decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                                  //                 child: TextButton(
-                                  //                   onPressed: () {},
-                                  //                   child: Text(
-                                  //                     "Max",
-                                  //                     style: textStyle(Colors.grey[400]!, 9, false, false),
-                                  //                   ),
-                                  //                 ),
-                                  //               ),
-                                  //               // Textfield
-                                  //               SizedBox(
-                                  //                 width: 70,
-                                  //                 child: TextField(
-                                  //                   style: textStyle(Colors.grey[400]!, 22, false, false),                                                                      
-                                  //                   decoration: InputDecoration(
-                                  //                     hintText: '0.00',
-                                  //                     hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
-                                  //                     contentPadding: const EdgeInsets.all(9),
-                                  //                     border: InputBorder.none,
-                                  //                   ),
-                                  //                 ),
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //         ),
-                                  //         // Horizontal Divider
-                                  //         Container(
-                                  //           child: Divider(
-                                  //             thickness: 0.35,
-                                  //             color: Colors.grey[400],
-                                  //           ),
-                                  //         ),
-                                  //         Row(
-                                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  //           children: <Widget>[
-                                  //             Container(
-                                  //               child: Text(
-                                  //                 "You recieve:",
-                                  //                 style: TextStyle(
-                                  //                   fontSize: 15,
-                                  //                   color: Colors.white,
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //             Container(
-                                  //               child: Text(
-                                  //                 "120 AX",
-                                  //                 style: TextStyle(
-                                  //                   fontSize: 15,
-                                  //                   color: Colors.white,
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //         // Confirm Button
-                                  //         Row(
-                                  //           mainAxisAlignment: MainAxisAlignment.center,
-                                  //           children: <Widget>[
-                                  //             Container(
-                                  //               //padding: EdgeInsets.all(20.0),
-                                  //               width: 175,
-                                  //               height:50,
-                                  //               decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
-                                  //               child: TextButton(
-                                  //                 onPressed: () {},
-                                  //                 child: const Text(
-                                  //                   "Confirm",
-                                  //                   style: TextStyle(
-                                  //                     fontSize: 20,
-                                  //                     color: Colors.black,
-                                  //                   ),
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //   ),
-                                  // ),
 																	child: Text(
 																		"Redeem",
 																		style: textStyle(Colors.white, 20, false, false)
@@ -1400,6 +1226,43 @@ class _V1AppState extends State<V1App> {
 	);
   }
 
+  Widget buildAthleteListview(List<Athlete> allAthletes) {
+    if (allAthletes.isEmpty) {
+      return Container(
+        height: MediaQuery.of(context).size.height*0.6,
+        child: FutureBuilder<dynamic>(
+          future: AthleteApi.getAthletesLocally(context),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                // return circle indicator for progress
+                return Center(
+                  child:
+                      CircularProgressIndicator(),
+                );
+              default:
+                allAthletes = snapshot.data;
+print(allAthletes.toString());
+                return Container();
+                // return ListView.builder(
+                //   physics: BouncingScrollPhysics(),
+                //   itemCount: allAthletes.length,
+                //   itemBuilder: (context, index) {
+                //     final athlete = allAthletes[index];
+                //     return createAthleteCards(athlete);
+                //   }
+                // );
+            }
+          }
+        )
+      );
+    }
+    // if athleteList is not empty
+    else {
+      return Container();
+    }
+  }
+
   Widget buildGraph(List war, List time, BuildContext context) {
     // local variables
     List<series.Series<dynamic, DateTime>> athleteData ;
@@ -1501,14 +1364,14 @@ class _V1AppState extends State<V1App> {
   }
 
   // Athlete Cards
-  Widget createAthleteCards(NFLAthlete athlete) {
+  Widget createAthleteCards(Athlete athlete) {
     return Container(
       height: 70,
       child: OutlinedButton(
         onPressed: () {
           setState(() {
             cardState = 1;
-            curNFLAthlete = athlete;
+            curAthlete = athlete;
           });
 			  },
         child: Row(

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/NFLAthlete.dart';
+import 'package:ae_dapp/service/Athlete.dart';
 import 'dart:convert';
 
-class NFLAthleteApi {
-  static Future<List<NFLAthlete>> getAthletesLocally(BuildContext context) async {
+class AthleteApi {
+  static Future<List<Athlete>> getAthletesLocally(BuildContext context) async {
     final assetBundle = DefaultAssetBundle.of(context);
     final data = await assetBundle.loadString('assets/data.json');
     final body = json.decode(data);
-    return body.map<NFLAthlete>(NFLAthlete.fromJson).toList();
+
+    return body.map<Athlete>(Athlete.fromJson).toList();
   }
 }
