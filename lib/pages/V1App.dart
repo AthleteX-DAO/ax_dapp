@@ -802,12 +802,53 @@ class _V1AppState extends State<V1App> {
 								child: Column(
 									mainAxisAlignment: MainAxisAlignment.spaceAround,
 									children: <Widget>[
-										// Graph goes here
 										Container(
 											width: MediaQuery.of(context).size.width*.350,
 											height: MediaQuery.of(context).size.height*.4,
 											decoration: boxDecoration(Colors.transparent, 10, 1, Colors.grey[400]!),
-                      // child: buildGraph(athlete.war, athlete.time, context)
+                      child: Stack(
+                        children: <Widget>[
+                          // Graph
+                          buildGraph(athlete.war, athlete.time, context),
+                          // Price
+                          Align(
+                            alignment: Alignment(-.85, -.8),
+                            child: Container(
+                              height: 45,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Book Value Chart",
+                                    style: textStyle(Colors.white, 9, false, false)
+                                  ),
+                                  Container(
+                                    width: 130,
+                                    height: 25,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          athlete.war[athlete.war.length-1].toStringAsFixed(4)+" AX",
+                                          style: textStyle(Colors.white, 20, true, false)
+                                        ),
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            "+4%",
+                                            style: textStyle(Colors.green, 12, false, false)
+                                          )
+                                        )
+                                      ],
+                                    )
+                                  )
+                                ],
+                              )
+                            )
+                          ),
+                        ],
+                      )
 										),
 										Container(
 											width: MediaQuery.of(context).size.width*.35,
@@ -1279,8 +1320,8 @@ class _V1AppState extends State<V1App> {
     ];
 
     return Container(
-      width: MediaQuery.of(context).size.width * 0.55,
-      height: MediaQuery.of(context).size.height * 0.40,
+      // width: MediaQuery.of(context).size.width * 0.55,
+      // height: MediaQuery.of(context).size.height * 0.40,
       child: charts.TimeSeriesChart(
         athleteData,
         // Sets up a currency formatter for the measure axis.
