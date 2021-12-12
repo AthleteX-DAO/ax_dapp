@@ -478,12 +478,6 @@ class _V1AppState extends State<V1App> {
     );
   }
 
-  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
-    if (condition)
-      return tru;
-    return fls;
-  }
-
   Widget createFarmWidget(String farmName) {
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
 
@@ -646,17 +640,6 @@ class _V1AppState extends State<V1App> {
     showDialog(context: context, builder: (BuildContext context) => fancyDialog);
   }
 
-  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
-    return BoxDecoration(
-      color: col,
-      borderRadius: BorderRadius.circular(rad),
-      border: Border.all(
-        color: borCol,
-        width: borWid
-      )
-    );
-  }
-
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold)
       if (isUline)
@@ -688,5 +671,22 @@ class _V1AppState extends State<V1App> {
           fontFamily: 'OpenSans',
           fontSize: size,
         );
+  }
+  
+  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
+    if (condition)
+      return tru;
+    return fls;
+  }
+
+  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+    return BoxDecoration(
+      color: col,
+      borderRadius: BorderRadius.circular(rad),
+      border: Border.all(
+        color: borCol,
+        width: borWid
+      )
+    );
   }
 }
