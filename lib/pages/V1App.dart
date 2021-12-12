@@ -21,12 +21,7 @@ class _V1AppState extends State<V1App> {
 
   // state change variables
   int pageNumber = 0;
-	int cardState = 0;
-  int sportState = 0;
-  Athlete curAthlete = Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
   bool allFarms = true;
-  List<Athlete> nflList = [];
-
 
   @override
   Widget build(BuildContext context) {
@@ -513,7 +508,7 @@ class _V1AppState extends State<V1App> {
                 height: 35,
                 decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
                   child: Text(
                     "Deposit",
                     style: textStyle(Colors.black, 12, true, false)

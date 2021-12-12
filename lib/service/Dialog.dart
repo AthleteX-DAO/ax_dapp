@@ -4,6 +4,10 @@ import 'package:ae_dapp/service/Athlete.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 
+Dialog depositDialog(BuildContext context) {
+  return Dialog();
+}
+
 Dialog buyDialog(BuildContext context, Athlete athlete) {
   return Dialog(
     backgroundColor: Colors.transparent,
