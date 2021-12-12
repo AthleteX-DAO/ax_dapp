@@ -315,7 +315,11 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: TextButton(
-                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
+                      //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context));
+                      },
                       child: const Text(
                         "Confirm",
                         style: TextStyle(
@@ -631,7 +635,10 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context));
+                        },
                         child: const Text(
                           "Confirm",
                           style: TextStyle(
@@ -833,7 +840,10 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context));
+                        },
                         child: const Text(
                           "Confirm",
                           style: TextStyle(
@@ -1035,7 +1045,10 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context));
+                        },
                         child: const Text(
                           "Confirm",
                           style: TextStyle(
