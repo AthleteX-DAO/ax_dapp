@@ -21,6 +21,8 @@ class AthletePage extends StatefulWidget {
 class _AthletePageState extends State<AthletePage> {
   Athlete athlete;
   int listView = 0;
+  Athlete curAthlete = Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
+
   _AthletePageState(this.athlete);
 
   @override
