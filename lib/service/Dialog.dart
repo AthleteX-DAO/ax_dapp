@@ -182,7 +182,7 @@ Dialog depositDialog(BuildContext context) {
 
 Dialog buyDialog(BuildContext context, Athlete athlete) {
   double wid = 0.25;
-  double hgt = 0.6;
+  double hgt = 0.7;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -961,114 +961,61 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
 }
 
 Dialog sellDialog(BuildContext context, Athlete athlete) {
-  double wid = 0.25;
-  double hgt = 0.6;
-
   return Dialog(
 <<<<<<< HEAD
     backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(  
+    shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: MediaQuery.of(context).size.height*hgt,
-      width: MediaQuery.of(context).size.width*wid,
+      height: MediaQuery.of(context).size.height*0.57,
+      width: MediaQuery.of(context).size.width*(1/5),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width*(wid-0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Sell "+athlete.name+" APT",
-                    style: textStyle(Colors.white, 20, false, false)
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 30,
+      child: Column (
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+            height: MediaQuery.of(context).size.height*.25,
+            width: 325,
+            //color: Colors.red,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 6.0),
+                      child: Text(
+                        "Sell "+athlete.name+" APT",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              )
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width*(wid-0.04),
-              child: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(text: "You can sell APT's at Market Price for AX.", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
-                    TextSpan(text: " You can access other funds with AX on the Matic network through", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
-                    TextSpan(text: " SushiSwap", style: TextStyle(color: Colors.amber[400], fontSize: 15)),
+                    Container(
+                      margin: EdgeInsets.only(top: 6.0),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.white
+                          ),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ),
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width*(wid-0.04),
-                    child: Text(
-                      "Input APT:",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    width: MediaQuery.of(context).size.width*(wid-0.04),
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(14.0),
-                      border: Border.all(
-                        color: Colors.grey[400]!,
-                        width: 0.5,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            athlete.name+" APT",
-                            style: textStyle(Colors.white, 15, false, false),
-                          ),
-                        ),
-                        Container(
-                          height: 18,
-                          width: 35,
-                          decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              "Max",
-                              style: textStyle(Colors.grey[400]!, 9, false, false),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 70,
-                          child: TextField(
-                            style: textStyle(Colors.grey[400]!, 22, false, false),                                                                      
-                            decoration: InputDecoration(
-                              hintText: '0.00',
-                              hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
-                              contentPadding: const EdgeInsets.all(9),
-                              border: InputBorder.none,
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      child: Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(text: "You can sell APT's at Market Price for AX.", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                              TextSpan(text: " You can access other funds with AX on the Matic network through", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                              TextSpan(text: " SushiSwap", style: TextStyle(color: Colors.amber[400], fontSize: 15)),
                             ],
 =======
       backgroundColor: Colors.transparent,
@@ -1110,54 +1057,59 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
 >>>>>>> parent of 4ae636c (Revert "feat: added deposit pop-up UI for Farm section")
                           ),
                         ),
-                      ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 40.0),
+                      child: Text(
+                        "Input APT:",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  width: 400,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(14.0),
+                    border: Border.all(
+                      color: Colors.grey[400]!,
+                      width: 0.5,
                     ),
 <<<<<<< HEAD
                   ),
-                ],
-              )
-            ),
-            Container(
-              child: Divider(
-                thickness: 0.35,
-                color: Colors.grey[400],
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width*(wid-0.04),
-              height: 100,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
+                      Expanded(
                         child: Text(
-                          "Price",
-                          style: textStyle(Colors.white, 15, false, false)
+                          athlete.name+" APT",
+                          style: textStyle(Colors.white, 15, false, false),
                         ),
                       ),
                       Container(
-                        child: Text(
-                          "0.8 "+athlete.name+" APT per AX",
-                          style: textStyle(Colors.white, 15, false, false)
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "LP Fee",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
+                        height: 18,
+                        width: 35,
+                        decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Max",
+                            style: textStyle(Colors.grey[400]!, 9, false, false),
                           ),
                         ),
                       ),
+<<<<<<< HEAD
                       Container(
                         child: Text(
                           "0.5 AX",
@@ -1192,7 +1144,21 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                                 ],
                               ),
                             ),
+=======
+                      SizedBox(
+                        width: 70,
+                        child: TextField(
+                          style: textStyle(Colors.grey[400]!, 22, false, false),                                                                      
+                          decoration: InputDecoration(
+                            hintText: '0.00',
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
+                            contentPadding: const EdgeInsets.all(9),
+                            border: InputBorder.none,
+>>>>>>> parent of 1584999 (feat: added landingPage and connect button)
                           ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                          ],
                         ),
                       ],
                     ),
@@ -1226,139 +1192,195 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
 <<<<<<< HEAD
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "Market Price Impact",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "-0.04%",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "Minimum Recieved",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "L.J.APT",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "Estimated Slippage",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "~5%",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
+                ),
+              ],
             ),
-            Container(
-              width: MediaQuery.of(context).size.width*(wid-0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 15.0),
-                    child: Text(
-                      "You recieve:",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 15.0),
-                    child: Text(
-                      "120 AX",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+          ),
+          Container(
+            child: Divider(
+              thickness: 0.35,
+              color: Colors.grey[400],
             ),
-            Container(
-              width: MediaQuery.of(context).size.width*(wid-0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
-                    width: 175,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Colors.amber[400],
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: TextButton(
-                      //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context));
-                      },
-                      child: const Text(
-                        "Confirm",
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10.0, bottom: 0.0),
+            height: MediaQuery.of(context).size.height*.25,
+            width: 325,
+            //color: Colors.red,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Price",
                         style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+                          fontSize: 15,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+                    Container(
+                      child: Text(
+                        "0.8 "+athlete.name+" APT per AX",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "LP Fee",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "0.5 AX",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Market Price Impact",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "-0.04%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Minimum Recieved",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "L.J.APT",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Estimated Slippage",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "~5%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 15.0),
+                      child: Text(
+                        "You recieve:",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 15.0),
+                      child: Text(
+                        "120 AX",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
+                      width: 175,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[400],
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context));
+                        },
+                        child: const Text(
+                          "Confirm",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     ),
   );
@@ -2072,7 +2094,7 @@ Dialog confirmTransaction(BuildContext context) {
    );
 }
 
-  TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
+TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold)
       if (isUline)
         return TextStyle(
@@ -2105,7 +2127,7 @@ Dialog confirmTransaction(BuildContext context) {
         );
   }
 
-  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
 >>>>>>> 1584999326735e8fecdc6edb20ef279089b8c083
 =======
