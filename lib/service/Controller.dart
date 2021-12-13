@@ -15,14 +15,14 @@ class Controller {
 
   final String _rpcUrl = 'https://rpc-mumbai.matic.today';
   final String _wsUrl = 'wss://rpc-mumbai.matic.today';
-  // Placeholder for ethers library (window.ethereum)
+
   static const ACTIVE_CHAIN_ID = 80001;
   var eth;
   late Web3Client _client;
   late Credentials _credentials;
   // Defined Staking
-EthereumAddress stakingAddr =
-    EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
+  EthereumAddress stakingAddr =
+      EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
 // Defined AthelteX
   final EthereumAddress axTokenAddr =
       EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
@@ -66,7 +66,23 @@ EthereumAddress stakingAddr =
     _client.getNetworkId() == ACTIVE_CHAIN_ID
         ? activeChain = true
         : activeChain = false;
-
+    
     return activeChain;
+  }
+
+  void switchChain(int chainID) {
+    switch (chainID) {
+      case 80001:
+        break;
+
+      case 137:
+        break;
+      
+      default:
+    }
+  }
+
+  void viewTx(EthereumAddress txAddress) {
+
   }
 }

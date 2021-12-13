@@ -7,7 +7,7 @@ import '../contracts/APTRouter.g.dart';
 import 'package:web3dart/web3dart.dart';
 
 class DEXController extends Controller {
-  final EthereumAddress dexAddress =
+  final EthereumAddress _dexAddress =
       EthereumAddress.fromHex("0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551");
   final EthereumAddress routerAddress =
       EthereumAddress.fromHex("0x7EFc361e568d0038cfB200dF9d9Be27943e19017");
@@ -18,6 +18,7 @@ class DEXController extends Controller {
 
   BigInt get amountOutMin => BigInt.one;
   BigInt get deadline => twoMinuteDeadline;
+  EthereumAddress get dexAddress => _dexAddress;
 
   // Actionables
   Future<void> swap(
@@ -58,8 +59,7 @@ class DEXController extends Controller {
     EthereumAddress to = await credentials.extractAddress();
 
     List<EthereumAddress> path = [tknA, axTokenAddr];
-    _aptRouter.swapExactTokensForAVAX(
-        amountIn, BigInt.one, path, to, deadline,
+    _aptRouter.swapExactTokensForAVAX(amountIn, BigInt.one, path, to, deadline,
         credentials: credentials);
   }
 
