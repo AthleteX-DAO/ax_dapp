@@ -141,14 +141,14 @@ class _DesktopScoutState extends State<DesktopScout> {
               ]
             ),
             // ListView of Athletes
-            buildAthleteListview(nflList)
+            buildListview(nflList)
           ]
         )
       )
     );
   }
 
-  Widget buildAthleteListview(List<Athlete> allAthletes) {
+  Widget buildListview(List<Athlete> allAthletes) {
     if (allAthletes.isEmpty) {
       return Container(
         height: MediaQuery.of(context).size.height*0.6,
@@ -169,7 +169,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                   itemCount: allAthletes.length,
                   itemBuilder: (context, index) {
                     final athlete = allAthletes[index];
-                    return createAthleteCards(athlete);
+                    return createListCards(athlete);
                   }
                 );
             }
@@ -184,7 +184,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   // Athlete Cards
-  Widget createAthleteCards(Athlete athlete) {
+  Widget createListCards(Athlete athlete) {
     return Container(
       height: 70,
       child: OutlinedButton(
@@ -349,6 +349,12 @@ class _DesktopScoutState extends State<DesktopScout> {
         );
   }
 
+  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
+    if (condition)
+      return tru;
+    return fls;
+  }
+
   BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
       color: col,
@@ -358,12 +364,6 @@ class _DesktopScoutState extends State<DesktopScout> {
         width: borWid
       )
     );
-  }
-
-  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
-    if (condition)
-      return tru;
-    return fls;
   }
 
 }
