@@ -426,19 +426,11 @@ class _HomePageState extends State<HomePage> {
                                                                     .size
                                                                     .width *
                                                                 0.8,
-                                                            child: ListView
-                                                                .builder(
-                                                                    physics:
-                                                                        BouncingScrollPhysics(),
-                                                                    itemCount:
-                                                                        athleteList
-                                                                            .length,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                            index) {
-                                                                      final athlete =
-                                                                          athleteList[
-                                                                              index];
+                                                            child: ListView.builder(
+                                                                  physics: BouncingScrollPhysics(),
+                                                                    itemCount: athleteList.length,
+                                                                    itemBuilder: (context, index) {
+                                                                      final athlete = athleteList[index];
                                                                       return Card(
                                                                           color: Colors
                                                                               .transparent,

@@ -1,51 +1,34 @@
+import 'package:ae_dapp/pages/DesktopScout.dart';
+import 'package:ae_dapp/pages/V1App.dart';
+import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/Dialog.dart';
+import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:flutter/material.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/flutter.dart' as series;
 
-class Athlete {
-  final String name;
-  final String team;
-  final String position;
-  final List passingYards;
-  final List passingTouchDowns;
-  final List reception;
-  final List receiveYards;
-  final List receiveTouch;
-  final List rushingYards;
-  final List war;
-  final List time;
+class AthletePage extends StatefulWidget {
+  final Athlete athlete;
+  const AthletePage({
+    Key? key,
+    required this.athlete,
+  }) : super(key: key);
 
-  const Athlete({
-    required this.name,
-    required this.team,
-    required this.position,
-    required this.passingYards,
-    required this.passingTouchDowns,
-    required this.reception,
-    required this.receiveYards,
-    required this.receiveTouch,
-    required this.rushingYards,
-    required this.war,
-    required this.time,
-  });
+  @override
+  _AthletePageState createState() => _AthletePageState(athlete);
+}
 
-  static Athlete fromJson(json) =>
-      Athlete(
-        name: json['name'],
-        team: json['team'],
-        position: json['position'],
-        passingYards: json['passingYards'],
-        passingTouchDowns: json['passingTouchdowns'],
-        reception: json['reception'],
-        receiveYards: json['receiveYards'],
-        receiveTouch: json['receiveTouch'],
-        rushingYards: json['rushingYards'],
-        time: json['time'],
-        war: json['price']
-      );
+class _AthletePageState extends State<AthletePage> {
+  Athlete athlete;
+  int listView = 0;
+  _AthletePageState(this.athlete);
 
-  Widget buildPlayerPage(BuildContext context, int cardState) {
+  @override
+  Widget build(BuildContext context) {
+    if (listView == 1)
+      return DesktopScout();
+      
     return Container(
-      color: Colors.black,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -60,7 +43,9 @@ class Athlete {
                 Container(
                   width: 70,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {listView = 1;});
+                    },
                     child: Icon(
                       Icons.arrow_back,
                       size: 50,
@@ -75,7 +60,7 @@ class Athlete {
                 // Player Name
                 Container(
                   child: Text(
-                    name,
+                    athlete.name,
                     style: textStyle(Colors.white, 28, false, false)
                   )
                 ),
@@ -110,19 +95,53 @@ class Athlete {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      // Graph goes here
                       Container(
                         width: MediaQuery.of(context).size.width*.350,
                         height: MediaQuery.of(context).size.height*.4,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          border: Border.all(
-                            color: Colors.grey[400]!,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        // child: buildGraph(athlete.war, athlete.time, context)
+                        decoration: boxDecoration(Colors.transparent, 10, 1, Colors.grey[400]!),
+                        child: Stack(
+                          children: <Widget>[
+                            // Graph
+                            buildGraph(athlete.war, athlete.time, context),
+                            // Price
+                            Align(
+                              alignment: Alignment(-.85, -.8),
+                              child: Container(
+                                height: 45,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Book Value Chart",
+                                      style: textStyle(Colors.white, 9, false, false)
+                                    ),
+                                    Container(
+                                      width: 130,
+                                      height: 25,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            athlete.war[athlete.war.length-1].toStringAsFixed(4)+" AX",
+                                            style: textStyle(Colors.white, 20, true, false)
+                                          ),
+                                          Container(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              "+4%",
+                                              style: textStyle(Colors.green, 12, false, false)
+                                            )
+                                          )
+                                        ],
+                                      )
+                                    )
+                                  ],
+                                )
+                              )
+                            ),
+                          ],
+                        )
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width*.35,
@@ -136,12 +155,9 @@ class Athlete {
                                 Container(
                                   width: 175,
                                   height: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.amber[400],
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
+                                  decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
                                   child: TextButton(
-                                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => Dialog()),
+                                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => buyDialog(context, athlete)),
                                     child: Text(
                                       "Buy",
                                       style: textStyle(Colors.black, 20, false, false)
@@ -151,12 +167,9 @@ class Athlete {
                                 Container(
                                   width: 175,
                                   height: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
+                                  decoration: boxDecoration(Colors.white, 100, 0, Colors.white),
                                   child: TextButton(
-                                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => Dialog()),
+                                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => sellDialog(context, athlete)),
                                     child: Text(
                                       "Sell",
                                       style: textStyle(Colors.black, 20, false, false)
@@ -171,16 +184,9 @@ class Athlete {
                                 Container(
                                   width: 175,
                                   height: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    border: Border.all(
-                                      color: Colors.white,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
+                                  decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
                                   child: TextButton(
-                                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => Dialog()),
+                                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => mintDialog(context, athlete)),
                                     child: Text(
                                       "Mint",
                                       style: textStyle(Colors.white, 20, false, false)
@@ -190,16 +196,9 @@ class Athlete {
                                 Container(
                                   width: 175,
                                   height: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    border: Border.all(
-                                      color: Colors.white,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
+                                  decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
                                   child: TextButton(
-                                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => redeemDialog(context, this)),
+                                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => redeemDialog(context, athlete)),
                                     child: Text(
                                       "Redeem",
                                       style: textStyle(Colors.white, 20, false, false)
@@ -542,6 +541,44 @@ class Athlete {
           )
         ]
       )
+    );
+  }
+
+  Widget buildGraph(List war, List time, BuildContext context) {
+    // local variables
+    List<series.Series<dynamic, DateTime>> athleteData ;
+    DateTime curTime = DateTime(-1);
+    DateTime lastHour = DateTime(-1);
+    DateTime maxTime = DateTime(-1);
+    List<WarTimeSeries> data = [];
+
+    for(int i = 0; i < war.length; i++) {
+      curTime = DateTime.parse(time[i]);
+      // only new points
+        if (lastHour.year == -1 || (lastHour.isBefore(curTime) && curTime.hour != lastHour.hour)) {
+          lastHour = curTime;
+          // sets maximum if latest time
+          if (maxTime == DateTime(-1)  || maxTime.isBefore(curTime))
+            maxTime = curTime;
+
+          data.add(WarTimeSeries(curTime, war[i]));
+        }
+    }
+
+    athleteData = [
+      new charts.Series<WarTimeSeries, DateTime>(
+        id: 'War',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (WarTimeSeries wts, _) => wts.time,
+        measureFn: (WarTimeSeries wts, _) => wts.war,
+        data: data,
+      )
+    ];
+
+    return Container(
+      child: charts.TimeSeriesChart(
+        athleteData,
+      ),
     );
   }
 
