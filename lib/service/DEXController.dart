@@ -1,5 +1,4 @@
 import 'package:ae_dapp/contracts/Dex.g.dart';
-import 'package:ae_dapp/pages/HomePage.dart';
 import 'package:ae_dapp/service/Controller.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import '../contracts/Dex.g.dart';

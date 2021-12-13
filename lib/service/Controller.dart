@@ -1,7 +1,6 @@
 import 'dart:html';
 import 'dart:math';
 
-import 'package:ae_dapp/pages/HomePage.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/src/browser/dart_wrappers.dart';
