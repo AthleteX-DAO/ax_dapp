@@ -500,7 +500,7 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           // Tabs
           Container(
-            width: MediaQuery.of(context).size.width*.4,
+            width: MediaQuery.of(context).size.width*.35,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -566,7 +566,18 @@ class _V1AppState extends State<V1App> {
             )
           ),
           // top Connect Wallet Button
-          Container()
+          Container(
+            height: 37.5,
+            width: 200,
+            decoration: boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                "Connect Wallet",
+                style: textStyle(Colors.amber[400]!, 16, true, false),
+              ),
+            )
+          )
         ],
       ),
     );
