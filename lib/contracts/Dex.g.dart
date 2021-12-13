@@ -56,8 +56,8 @@ return  (response  [
 /// The optional [atBlock] parameter can be used to view historical data. When
 /// set, the function will be evaluated in the specified block. By default, the
 /// latest on-chain block will be used.
-Future<_i1.EthereumAddress> getPair(_i1.EthereumAddress , _i1.EthereumAddress , {_i1.BlockNum? atBlock}) async  { final function = self.function('getPair');
-final params = [, ];
+Future<_i1.EthereumAddress> getPair(_i1.EthereumAddress tknA, _i1.EthereumAddress tknB, {_i1.BlockNum? atBlock}) async  { final function = self.function('getPair');
+final params = [tknA, tknB];
 final response =  await read(function, params, atBlock);
 return  (response  [
 0

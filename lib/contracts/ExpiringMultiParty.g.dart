@@ -227,8 +227,8 @@ return  (response  [
 /// The optional [atBlock] parameter can be used to view historical data. When
 /// set, the function will be evaluated in the specified block. By default, the
 /// latest on-chain block will be used.
-Future<Liquidations> liquidations(_i1.EthereumAddress , BigInt , {_i1.BlockNum? atBlock}) async  { final function = self.function('liquidations');
-final params = [, ];
+Future<Liquidations> liquidations(_i1.EthereumAddress address, BigInt liqAmnt, {_i1.BlockNum? atBlock}) async  { final function = self.function('liquidations');
+final params = [address, liqAmnt];
 final response =  await read(function, params, atBlock);
 return  Liquidations(response); } 
 /// The optional [atBlock] parameter can be used to view historical data. When
@@ -262,8 +262,8 @@ return  (response  [
 /// The optional [atBlock] parameter can be used to view historical data. When
 /// set, the function will be evaluated in the specified block. By default, the
 /// latest on-chain block will be used.
-Future<Positions> positions(_i1.EthereumAddress , {_i1.BlockNum? atBlock}) async  { final function = self.function('positions');
-final params = [];
+Future<Positions> positions(_i1.EthereumAddress address, {_i1.BlockNum? atBlock}) async  { final function = self.function('positions');
+final params = [address];
 final response =  await read(function, params, atBlock);
 return  Positions(response); } 
 /// The optional [atBlock] parameter can be used to view historical data. When
