@@ -98,6 +98,7 @@ class _V1AppState extends State<V1App> {
                         width: 125,
                         height: 40,
                         decoration: boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!),
+                        //decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
                         child: TextButton(
                           onPressed: () => dialog(
                             context,
@@ -234,10 +235,103 @@ class _V1AppState extends State<V1App> {
                     children: <Widget>[
                       // dropdown
                       Container(
-                        width: 125,
+                        width: 175,
                         height: 40,
                         decoration: boxDecoration(Colors.blue, 100, 0, Colors.blue),
-                        
+                        child: TextButton(
+                          onPressed: () => dialog(
+                            context,
+                            MediaQuery.of(context).size.height*.80,
+                            350,
+                            boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                // column of elements
+                                Container(
+                                  height: MediaQuery.of(context).size.height*.75,
+                                  width: 300,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      // title row and close
+                                      Container(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Text(
+                                              "Select a token",
+                                              style: textStyle(Colors.white, 14, true, false),
+                                            ),
+                                            Container(
+                                              child: TextButton(
+                                                onPressed: () {Navigator.pop(context);},
+                                                child: Icon(
+                                                  Icons.close,
+                                                  size: 30,
+                                                  color: Colors.white,
+                                                )
+                                              )
+                                            )
+                                          ],
+                                        )
+                                      ),
+                                      Container(
+                                        height: 30,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Token Name",
+                                          style: textStyle(Colors.grey[400]!, 12, false, false)
+                                        )
+                                      ),
+                                      Container(
+                                        child: Divider(
+                                          thickness: 1,
+                                          color: Colors.grey[400]
+                                        ),
+                                      ),
+                                      Container(
+                                        height: MediaQuery.of(context).size.height*.6,
+                                        child: ListView(
+                                          children: <Widget>[
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                          ]
+                                        )
+                                      )
+                                    ],
+                                  )
+                                )
+                              ],
+                            )
+                          ),
+                          child: Container(
+                            //width: 90,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "Select a token",
+                                  style: textStyle(Colors.white, 16, true, false)
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.white,
+                                  size: 25
+                                )
+                              ],
+                            )
+                          )
+                        )
                       ),
                       Container(
                         child: Text(
