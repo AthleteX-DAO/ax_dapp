@@ -98,6 +98,7 @@ class _V1AppState extends State<V1App> {
                         width: 125,
                         height: 40,
                         decoration: boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!),
+                        //decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
                         child: TextButton(
                           onPressed: () => dialog(
                             context,
@@ -234,10 +235,103 @@ class _V1AppState extends State<V1App> {
                     children: <Widget>[
                       // dropdown
                       Container(
-                        width: 125,
+                        width: 175,
                         height: 40,
                         decoration: boxDecoration(Colors.blue, 100, 0, Colors.blue),
-                        
+                        child: TextButton(
+                          onPressed: () => dialog(
+                            context,
+                            MediaQuery.of(context).size.height*.80,
+                            350,
+                            boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                // column of elements
+                                Container(
+                                  height: MediaQuery.of(context).size.height*.75,
+                                  width: 300,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      // title row and close
+                                      Container(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Text(
+                                              "Select a token",
+                                              style: textStyle(Colors.white, 14, true, false),
+                                            ),
+                                            Container(
+                                              child: TextButton(
+                                                onPressed: () {Navigator.pop(context);},
+                                                child: Icon(
+                                                  Icons.close,
+                                                  size: 30,
+                                                  color: Colors.white,
+                                                )
+                                              )
+                                            )
+                                          ],
+                                        )
+                                      ),
+                                      Container(
+                                        height: 30,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Token Name",
+                                          style: textStyle(Colors.grey[400]!, 12, false, false)
+                                        )
+                                      ),
+                                      Container(
+                                        child: Divider(
+                                          thickness: 1,
+                                          color: Colors.grey[400]
+                                        ),
+                                      ),
+                                      Container(
+                                        height: MediaQuery.of(context).size.height*.6,
+                                        child: ListView(
+                                          children: <Widget>[
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                            createTokenDropdown("AX", "AthleteX"),
+                                          ]
+                                        )
+                                      )
+                                    ],
+                                  )
+                                )
+                              ],
+                            )
+                          ),
+                          child: Container(
+                            //width: 90,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "Select a token",
+                                  style: textStyle(Colors.white, 16, true, false)
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.white,
+                                  size: 25
+                                )
+                              ],
+                            )
+                          )
+                        )
                       ),
                       Container(
                         child: Text(
@@ -406,7 +500,7 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           // Tabs
           Container(
-            width: MediaQuery.of(context).size.width*.4,
+            width: MediaQuery.of(context).size.width*.35,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -472,16 +566,21 @@ class _V1AppState extends State<V1App> {
             )
           ),
           // top Connect Wallet Button
-          Container()
+          Container(
+            height: 37.5,
+            width: 200,
+            decoration: boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                "Connect Wallet",
+                style: textStyle(Colors.amber[400]!, 16, true, false),
+              ),
+            )
+          )
         ],
       ),
     );
-  }
-
-  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
-    if (condition)
-      return tru;
-    return fls;
   }
 
   Widget createFarmWidget(String farmName) {
@@ -646,17 +745,6 @@ class _V1AppState extends State<V1App> {
     showDialog(context: context, builder: (BuildContext context) => fancyDialog);
   }
 
-  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
-    return BoxDecoration(
-      color: col,
-      borderRadius: BorderRadius.circular(rad),
-      border: Border.all(
-        color: borCol,
-        width: borWid
-      )
-    );
-  }
-
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold)
       if (isUline)
@@ -688,5 +776,22 @@ class _V1AppState extends State<V1App> {
           fontFamily: 'OpenSans',
           fontSize: size,
         );
+  }
+  
+  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
+    if (condition)
+      return tru;
+    return fls;
+  }
+
+  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+    return BoxDecoration(
+      color: col,
+      borderRadius: BorderRadius.circular(rad),
+      border: Border.all(
+        color: borCol,
+        width: borWid
+      )
+    );
   }
 }
