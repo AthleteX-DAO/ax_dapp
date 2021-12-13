@@ -1,4 +1,3 @@
-import 'package:ae_dapp/pages/HomePage.dart';
 import 'package:ae_dapp/pages/LandingPage.dart';
 import 'package:ae_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
