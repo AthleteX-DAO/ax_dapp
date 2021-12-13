@@ -60,11 +60,11 @@ class ExpiringMultiPartyCreator extends _i1.GeneratedContract {
   /// The optional [transaction] parameter can be used to override parameters
   /// like the gas price, nonce and max gas. The `data` and `to` fields will be
   /// set by the contract.
-  Future<String> createExpiringMultiParty(dynamic params,
+  Future<String> createExpiringMultiParty(dynamic param,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
     final function = self.function('createExpiringMultiParty');
-    final params = [params];
+    final params = [param];
     return write(credentials, transaction, function, params);
   }
 
