@@ -9,6 +9,7 @@ import 'package:web3dart/src/browser/javascript.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:ae_dapp/contracts/StakingRewards.g.dart';
 import 'package:ae_dapp/contracts/AthleteX.g.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Controller {
   // RPC & WS are now linked to MATIC-Testnet
@@ -66,7 +67,7 @@ class Controller {
     _client.getNetworkId() == ACTIVE_CHAIN_ID
         ? activeChain = true
         : activeChain = false;
-    
+
     return activeChain;
   }
 
@@ -77,12 +78,13 @@ class Controller {
 
       case 137:
         break;
-      
+
       default:
     }
   }
 
-  void viewTx(EthereumAddress txAddress) {
-
+  void viewTx(String txAddress) async {
+    String urlString = 'https://polygonscan.com/tx/$txAddress';
+    await launch(urlString);
   }
 }
