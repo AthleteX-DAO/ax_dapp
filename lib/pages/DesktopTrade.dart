@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ae_dapp/service/Dialog.dart';
 
 class DesktopTrade extends StatefulWidget {
   const DesktopTrade({Key? key}) : super(key: key);
@@ -320,7 +321,359 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       width: 200,
                       decoration: boxDecoration(Colors.amber[400]!, 100, 4, Colors.amber[400]!),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => dialog(
+                          context, 
+                          MediaQuery.of(context).size.height*.55,
+                          MediaQuery.of(context).size.width*.25, 
+                          boxDecoration(Colors.grey[900]!, 30, 0, Colors.black), 
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // Confirm Swap
+                            children: <Widget>[
+                              Container(
+                                //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                width: MediaQuery.of(context).size.width * .22,
+                                height: 50,
+                                //color: Colors.red,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      "Confirm Swap",
+                                      style: textStyle(Colors.white, 20, false, false),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 30,
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * .22,
+                                height: 50,
+                                //color: Colors.red,
+                                child: Column(
+                                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            "From",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "-\$1.600",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            "Tom Brady APT",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "10.24",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * .22,
+                                alignment: Alignment.center,
+                                child: Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * .22,
+                                height: 50,
+                                //color: Colors.red,
+                                child: Column(
+                                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            "To",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "-\$1.580",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            "Lebron James APT",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "8.48",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Horizontal Linebreak
+                              Container(
+                                child: Divider(
+                                thickness: 0.35,
+                                color: Colors.grey[400],
+                                ),
+                              ),
+                              // Price Information and Confirm Swap Button
+                              Container(
+                                //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                width: MediaQuery.of(context).size.width * .22,
+                                height: 125,
+                                //color: Colors.red,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            "Price",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "1.2 T.B.APT per L.J.APT",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            "LP Fee",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "0.5 AX",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            "Market Price Impact",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "-0.04%",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            "Minimum Recieved",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "8.2 L.J.APT",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                            "Estimated Slippage",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "~5%",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * .22,
+                                height: 30,
+                                //color: Colors.red,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Container(
+                                      margin: EdgeInsets.only(top: 15.0),
+                                      child: Text(
+                                        "You recieve:",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 15.0),
+                                      child: Text(
+                                        "7.98 Lebron James APT",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * .22,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
+                                      width: 210,
+                                      height: 55,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber[400],
+                                        borderRadius: BorderRadius.circular(100),
+                                      ),
+                                      child: TextButton(
+                                        //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  confirmTransaction(context));
+                                        },
+                                        child: const Text(
+                                          "Confirm Swap",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                         child: Text(
                           "Swap",
                           style: textStyle(Colors.black, 16, true, false),
