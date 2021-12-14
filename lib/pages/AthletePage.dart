@@ -29,6 +29,8 @@ class _AthletePageState extends State<AthletePage> {
       return DesktopScout();
       
     return Container(
+      height: MediaQuery.of(context).size.height*0.95,
+      alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -84,7 +86,7 @@ class _AthletePageState extends State<AthletePage> {
           ),
           // Non-title
           Container(
-            height: 600,
+            height: MediaQuery.of(context).size.height*.75,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -216,7 +218,7 @@ class _AthletePageState extends State<AthletePage> {
                 // Stats-Side
                 Container(
                   width: MediaQuery.of(context).size.width*.4,
-                  height: MediaQuery.of(context).size.height*.75,
+                  height: 600,
                   alignment: Alignment.topCenter,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
