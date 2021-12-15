@@ -2,10 +2,11 @@ import 'package:ae_dapp/pages/AthletePage.dart';
 import 'package:ae_dapp/pages/testPage.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
+import 'package:ae_dapp/service/AthleteList.dart';
 import 'package:flutter/material.dart';
 
 class DesktopScout extends StatefulWidget {
-  const DesktopScout({Key? key}) : super(key: key);
+  const DesktopScout({Key? key,}) : super(key: key);
 
   @override
   _DesktopScoutState createState() => _DesktopScoutState();
@@ -16,7 +17,6 @@ class _DesktopScoutState extends State<DesktopScout> {
   int sportState = 0;
   List<Athlete> nflList = [];
   Athlete curAthlete = Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
-  
   
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           children: <Widget>[
             // APT Title & Sport Filter
             Container(
-              width: MediaQuery.of(context).size.width*0.4,
+              width: 400,
               height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -142,15 +142,15 @@ class _DesktopScoutState extends State<DesktopScout> {
               ]
             ),
             // ListView of Athletes
-            buildListview(nflList)
+            buildListview()
           ]
         )
       )
     );
   }
 
-  Widget buildListview(List<Athlete> allAthletes) {
-    if (allAthletes.isEmpty) {
+  Widget buildListview() {
+    if (AthleteList.empty) {
       return Container(
         height: MediaQuery.of(context).size.height*0.6,
         child: FutureBuilder<dynamic>(
@@ -164,12 +164,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                       CircularProgressIndicator(),
                 );
               default:
-                allAthletes = snapshot.data;
+                AthleteList.list = snapshot.data;
                 return ListView.builder(
                   physics: BouncingScrollPhysics(),
-                  itemCount: allAthletes.length,
+                  itemCount: AthleteList.list.length,
                   itemBuilder: (context, index) {
-                    final athlete = allAthletes[index];
+                    final athlete = AthleteList.list[index];
                     return createListCards(athlete);
                   }
                 );
@@ -180,7 +180,14 @@ class _DesktopScoutState extends State<DesktopScout> {
     }
     // if athleteList is not empty
     else {
-      return Container();
+      return ListView.builder(
+        physics: BouncingScrollPhysics(),
+        itemCount: AthleteList.list.length,
+        itemBuilder: (context, index) {
+          final athlete = AthleteList.list[index];
+          return createListCards(athlete);
+        }
+      );
     }
   }
 

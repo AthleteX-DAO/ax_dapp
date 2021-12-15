@@ -1226,7 +1226,7 @@ Dialog confirmTransaction(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: MediaQuery.of(context).size.height * 0.23,
+      height: MediaQuery.of(context).size.height * 0.25,
       width: MediaQuery.of(context).size.width * .23,
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Center(

@@ -1,4 +1,6 @@
 import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/service/AthleteApi.dart';
+import 'package:ae_dapp/service/AthleteList.dart';
 import 'package:ae_dapp/service/Dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -90,124 +92,184 @@ class _DesktopFarmState extends State<DesktopFarm> {
               )
             )
           ),
-          Container(
-            width: MediaQuery.of(context).size.width*0.8,
-            height: MediaQuery.of(context).size.height/4,
-            child: ScrollConfiguration(
-              behavior: ScrollConfiguration.of(context).copyWith(
-                dragDevices: {
-                  PointerDeviceKind.mouse,
-                  PointerDeviceKind.touch,
-                },
-              ),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  createFarmWidget("AX Farm"),
-                  SizedBox(width: 50),
-                  createFarmWidget("AX - Tom Brady APT"),
-                  SizedBox(width: 50),
-                  createFarmWidget("AX - Tom Brady APT"),
-                ]
-              ),
-            )
-          )
+          createFarmList()
         ],
       )
     );
   }
 
-  Widget createFarmWidget(String farmName) {
-    TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+  Widget createFarmList() {
+    List<Farm> farmList = [
+      Farm("AX Farm"),
+    ];
+
+    if (AthleteList.empty)
+      return Container(
+        width: MediaQuery.of(context).size.width*0.8,
+        height: MediaQuery.of(context).size.height/4,
+        child: FutureBuilder<dynamic>(
+          future: AthleteApi.getAthletesLocally(context),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                // return circle indicator for progress
+                return Center(
+                  child:
+                      CircularProgressIndicator(),
+                );
+              default:
+                AthleteList.list = snapshot.data;
+                for (Athlete ath in AthleteList.list)
+                  farmList.add(Farm(
+                    "AX - " + ath.name + " APT"
+                  )
+                );
+                return ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(
+                    dragDevices: {
+                      PointerDeviceKind.mouse,
+                      PointerDeviceKind.touch,
+                    },
+                  ),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: AthleteList.list.length,
+                    itemBuilder: (context, index) {
+                      return createFarmWidget(farmList[index]);
+                    }
+                  )
+                );
+            }
+          }
+        )
+      );
+
+    
+    for (Athlete ath in AthleteList.list)
+      farmList.add(Farm(
+        "AX - " + ath.name + " APT"
+      )
+    );
 
     return Container(
+      width: MediaQuery.of(context).size.width*0.8,
       height: MediaQuery.of(context).size.height/4,
-      width: 500,
-      padding: EdgeInsets.symmetric(vertical: 22.5, horizontal: 50),
-      decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          // Farm Title
-          Row(
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          dragDevices: {
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+          },
+        ),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          physics: BouncingScrollPhysics(),
+          itemCount: AthleteList.list.length,
+          itemBuilder: (context, index) {
+            return createFarmWidget(farmList[index]);
+          }
+        )
+      )
+    );
+  }
+
+  Widget createFarmWidget(Farm farm) {
+    TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+
+    return Row(
+      children: <Widget> [
+        Container(
+          height: MediaQuery.of(context).size.height/4,
+          width: 500,
+          padding: EdgeInsets.symmetric(vertical: 22.5, horizontal: 50),
+          decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                farmName,
-                style: textStyle(Colors.white, 20, false, false)
+              // Farm Title
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    farm.name,
+                    style: textStyle(Colors.white, 20, false, false)
+                  ),
+                  Container(
+                    width: 120,
+                    height: 35,
+                    decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                    child: TextButton(
+                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                      child: Text(
+                        "Deposit",
+                        style: textStyle(Colors.black, 14, true, false)
+                      )
+                    )
+                  ),
+                ]
               ),
-              Container(
-                width: 120,
-                height: 35,
-                decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
-                child: TextButton(
-                  onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
-                  child: Text(
-                    "Deposit",
-                    style: textStyle(Colors.black, 14, true, false)
+              // TVL
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "TVL",
+                    style: txStyle,
+                  ),
+                  Text(
+                    "\$1,000,000",
+                    style: txStyle
                   )
-                )
+                ],
               ),
-            ]
-          ),
-          // TVL
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "TVL",
-                style: txStyle,
+              // Fee
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Swap Fee APY",
+                    style: txStyle
+                  ),
+                  Text(
+                    "20%",
+                    style: txStyle
+                  )
+                ],
               ),
-              Text(
-                "\$1,000,000",
-                style: txStyle
-              )
+              // Rewards
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "AX Rewards APY",
+                    style: txStyle
+                  ),
+                  Text(
+                    "10%",
+                    style: txStyle
+                  )
+                ],
+              ),
+              // Total APY
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Total APY",
+                    style: txStyle
+                  ),
+                  Text(
+                    "30%",
+                    style: txStyle
+                  )
+                ],
+              ),
             ],
           ),
-          // Fee
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Swap Fee APY",
-                style: txStyle
-              ),
-              Text(
-                "20%",
-                style: txStyle
-              )
-            ],
-          ),
-          // Rewards
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "AX Rewards APY",
-                style: txStyle
-              ),
-              Text(
-                "10%",
-                style: txStyle
-              )
-            ],
-          ),
-          // Total APY
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Total APY",
-                style: txStyle
-              ),
-              Text(
-                "30%",
-                style: txStyle
-              )
-            ],
-          ),
-        ],
-      ),
+        ),
+        SizedBox(width: 50),
+      ]
     );
   }
 
@@ -254,4 +316,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
       )
     );
   }
+}
+
+class Farm {
+  final String name;
+
+  Farm(this.name);
 }

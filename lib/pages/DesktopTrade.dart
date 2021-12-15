@@ -1,3 +1,4 @@
+import 'package:ae_dapp/service/Coin.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Dialog.dart';
 
@@ -10,6 +11,7 @@ class DesktopTrade extends StatefulWidget {
 
 class _DesktopTradeState extends State<DesktopTrade> {
   bool allFarms = true;
+  List<Coin> coinList = [];
   
   @override
   Widget build(BuildContext context) {
@@ -53,81 +55,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         decoration: boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!),
                         //decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
                         child: TextButton(
-                          onPressed: () => dialog(
-                            context,
-                            MediaQuery.of(context).size.height*.80,
-                            350,
-                            boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                // column of elements
-                                Container(
-                                  height: MediaQuery.of(context).size.height*.75,
-                                  width: 300,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      // title row and close
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(
-                                              "Select a token",
-                                              style: textStyle(Colors.white, 14, true, false),
-                                            ),
-                                            Container(
-                                              child: TextButton(
-                                                onPressed: () {Navigator.pop(context);},
-                                                child: Icon(
-                                                  Icons.close,
-                                                  size: 30,
-                                                  color: Colors.white,
-                                                )
-                                              )
-                                            )
-                                          ],
-                                        )
-                                      ),
-                                      Container(
-                                        height: 30,
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Token Name",
-                                          style: textStyle(Colors.grey[400]!, 12, false, false)
-                                        )
-                                      ),
-                                      Container(
-                                        child: Divider(
-                                          thickness: 1,
-                                          color: Colors.grey[400]
-                                        ),
-                                      ),
-                                      Container(
-                                        height: MediaQuery.of(context).size.height*.6,
-                                        child: ListView(
-                                          children: <Widget>[
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                          ]
-                                        )
-                                      )
-                                    ],
-                                  )
-                                )
-                              ],
-                            )
-                          ),
+                          onPressed: () => showDialog(context: context, builder: createTokenList),
                           child: Container(
                             width: 90,
                             child: Row(
@@ -192,81 +120,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         height: 40,
                         decoration: boxDecoration(Colors.blue, 100, 0, Colors.blue),
                         child: TextButton(
-                          onPressed: () => dialog(
-                            context,
-                            MediaQuery.of(context).size.height*.80,
-                            350,
-                            boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                // column of elements
-                                Container(
-                                  height: MediaQuery.of(context).size.height*.75,
-                                  width: 300,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      // title row and close
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(
-                                              "Select a token",
-                                              style: textStyle(Colors.white, 14, true, false),
-                                            ),
-                                            Container(
-                                              child: TextButton(
-                                                onPressed: () {Navigator.pop(context);},
-                                                child: Icon(
-                                                  Icons.close,
-                                                  size: 30,
-                                                  color: Colors.white,
-                                                )
-                                              )
-                                            )
-                                          ],
-                                        )
-                                      ),
-                                      Container(
-                                        height: 30,
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Token Name",
-                                          style: textStyle(Colors.grey[400]!, 12, false, false)
-                                        )
-                                      ),
-                                      Container(
-                                        child: Divider(
-                                          thickness: 1,
-                                          color: Colors.grey[400]
-                                        ),
-                                      ),
-                                      Container(
-                                        height: MediaQuery.of(context).size.height*.6,
-                                        child: ListView(
-                                          children: <Widget>[
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                            createTokenDropdown("AX", "AthleteX"),
-                                          ]
-                                        )
-                                      )
-                                    ],
-                                  )
-                                )
-                              ],
-                            )
-                          ),
+                          onPressed: () => showDialog(context: context, builder: createTokenList),
                           child: Container(
                             //width: 90,
                             child: Row(
@@ -689,8 +543,83 @@ class _DesktopTradeState extends State<DesktopTrade> {
       ]
     );
   }
+
+  Dialog createTokenList(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.grey[900],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Container(
+        width: 350,
+        height: MediaQuery.of(context).size.height*.65,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            // column of elements
+            Container(
+              height: MediaQuery.of(context).size.height*.625,
+              width: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        height: 30,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Token Name",
+                          style: textStyle(Colors.grey[400]!, 16, false, false)
+                        )
+                      ),
+                      Container(
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.grey[400],
+                            size: 30
+                          ),
+                        )
+                      )
+                    ]
+                  ),
+                  Container(
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.grey[400]
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height*.625-100,
+                    child: ListView(
+                      children: <Widget>[
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                        createTokenElement("AX", "AthleteX"),
+                      ]
+                    )
+                  )
+                ],
+              )
+            )
+          ],
+        )
+      )
+    );
+  }
   
-  Widget createTokenDropdown(String ticker, String fullName) {
+  Widget createTokenElement(String ticker, String fullName) {
     return Container(
       height: 50,
       child: TextButton(

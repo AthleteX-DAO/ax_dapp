@@ -21,6 +21,7 @@ class _V1AppState extends State<V1App> {
   // state change variables
   int pageNumber = 0;
   bool allFarms = true;
+  List<Athlete> athleteList = [];
 
   @override
   Widget build(BuildContext context) {
