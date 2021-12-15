@@ -5,6 +5,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 
 Dialog depositDialog(BuildContext context) {
+  double amount = 0;
+
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
@@ -80,6 +82,7 @@ Dialog depositDialog(BuildContext context) {
                     SizedBox(
                       width: 70,
                       child: TextFormField(
+                        onChanged: (value) {amount = double.parse(value); print(amount);},
                         style: textStyle(Colors.grey[400]!, 22, false, false),
                         decoration: InputDecoration(
                           hintText: '0.00',
