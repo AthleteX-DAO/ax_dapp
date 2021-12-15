@@ -504,14 +504,27 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                     ),
                     child: TextButton(
                       //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.pop(context);
-                        EthereumAddress aptAddress = EthereumAddress.fromHex("0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22");
-                        APTController().buy(aptAddress, 10);
+                        EthereumAddress aptAddress = EthereumAddress.fromHex(
+                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22");
+                        bool confirmed;
+                        String txString =
+                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
+                        try {
+                          String txString =
+                              await APTController().buy(aptAddress, 10);
+                          confirmed = true;
+                        } catch (e) {
+                          confirmed = false;
+                          String txString =
+                              await APTController().buy(aptAddress, 10);
+                        }
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(
+                                    context, confirmed, txString));
                       },
                       child: const Text(
                         "Confirm",
@@ -820,13 +833,16 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: TextButton(
-                      //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () {
                         Navigator.pop(context);
+                        bool confirmed = true;
+                        String txString =
+                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(
+                                    context, confirmed, txString));
                       },
                       child: const Text(
                         "Confirm",
@@ -1046,10 +1062,13 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           child: TextButton(
                             onPressed: () {
                               Navigator.pop(context);
+                              bool confirmed = false;
+                              String txString =
+                                  "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      confirmTransaction(context));
+                                      confirmTransaction(context, confirmed, txString));
                             },
                             child: const Text(
                               "Confirm",
@@ -1268,10 +1287,13 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                           child: TextButton(
                             onPressed: () {
                               Navigator.pop(context);
+                              bool confirmed = false;
+                              String txString =
+                                  "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      confirmTransaction(context));
+                                      confirmTransaction(context, confirmed, txString));
                             },
                             child: const Text(
                               "Confirm",
@@ -1291,7 +1313,40 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
           )));
 }
 
-Dialog confirmTransaction(BuildContext context) {
+Dialog confirmTransaction(
+    BuildContext context, bool confirmed, String txAddress) {
+  Widget confirmedTransaction = Text(
+    "Transaction Confirmed",
+    style: const TextStyle(
+      fontSize: 20,
+      color: Colors.white,
+    ),
+  );
+  Widget confirmedIcon = Icon(
+    Icons.check_circle_outline,
+    size: 125,
+    color: Colors.amber[400],
+  );
+
+  Widget failedTransaction = Text(
+    "Transaction Failed",
+    style: const TextStyle(
+      fontSize: 20,
+      color: Colors.white,
+    ),
+  );
+  Widget failedIcon = Icon(
+    Icons.cancel_outlined,
+    size: 125,
+    color: Colors.red[400],
+  );
+
+  Widget finalTransaction, finalIcon;
+  confirmed
+      ? finalTransaction = confirmedTransaction
+      : finalTransaction = failedTransaction;
+  confirmed ? finalIcon = confirmedIcon : finalIcon = failedIcon;
+
   return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
@@ -1324,13 +1379,7 @@ Dialog confirmTransaction(BuildContext context) {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text(
-                                "Transaction Confirmed",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              finalTransaction,
                             ],
                           ),
                         ],
@@ -1339,11 +1388,7 @@ Dialog confirmTransaction(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            child: Icon(
-                              Icons.check_circle_outline,
-                              size: 125,
-                              color: Colors.amber[400],
-                            ),
+                            child: finalIcon,
                           ),
                         ],
                       ),
@@ -1360,8 +1405,6 @@ Dialog confirmTransaction(BuildContext context) {
                             ),
                             child: TextButton(
                               onPressed: () {
-                                String txAddress =
-                                    "0x3a97806248dbddbb61d571fc742190904c6ef2917e5499a3a014a4bcab20a386";
                                 Controller().viewTx(txAddress);
                               },
                               child: Text(

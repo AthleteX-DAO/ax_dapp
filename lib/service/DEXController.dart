@@ -20,7 +20,7 @@ class DEXController extends Controller {
   EthereumAddress get dexAddress => _dexAddress;
 
   // Actionables
-  Future<void> swap(
+  Future<String> swap(
       EthereumAddress tokenAAddress,
       EthereumAddress tokenBAddress,
       BigInt tokenAAmount,
@@ -31,41 +31,50 @@ class DEXController extends Controller {
     BigInt amountOutMin = BigInt.from(0.00002);
     List<EthereumAddress> path = [tokenAAddress, tokenBAddress];
     EthereumAddress to = await credentials.extractAddress();
-
+    String txString = "";
     // Deadline is two minutes from 'now'
 
     try {
       tokenA.approve(dexAddress, tokenAAmount, credentials: credentials);
       tokenB.approve(dexAddress, tokenBAmount, credentials: credentials);
-      _aptRouter.swapExactTokensForTokens(
+      txString = await _aptRouter.swapExactTokensForTokens(
           tokenAAmount, amountOutMin, path, to, deadline,
           credentials: credentials);
     } catch (e) {
       print(
           "[Console] Unable to swap [$tokenAAddress, $tokenBAddress] tokens \n $e");
     }
+    return txString;
   }
 
-  Future<void> createPair(EthereumAddress tknA, EthereumAddress tknB) async {
+  Future<String> createPair(EthereumAddress tknA, EthereumAddress tknB) async {
+    String txString;
     try {
-      _dex.createPair(tknA, tknB, credentials: credentials);
+      txString = await _dex.createPair(tknA, tknB, credentials: credentials);
     } catch (e) {
       print("[Console] Unable to create pair /n $e");
+      txString = await _dex.createPair(tknA, tknB, credentials: credentials);
     }
+    return txString;
   }
 
-  Future<void> swapforAX(EthereumAddress tknA, BigInt amountIn) async {
+  Future<String> swapforAX(EthereumAddress tknA, BigInt amountIn) async {
     EthereumAddress to = await credentials.extractAddress();
-
+    String txString;
     List<EthereumAddress> path = [tknA, axTokenAddr];
-    _aptRouter.swapExactTokensForAVAX(amountIn, BigInt.one, path, to, deadline,
+    txString = await _aptRouter.swapExactTokensForAVAX(
+        amountIn, BigInt.one, path, to, deadline,
         credentials: credentials);
+    return txString;
   }
 
-  Future<void> swapFromAX(EthereumAddress tknA, BigInt amountIn) async {
+  Future<String> swapFromAX(EthereumAddress tknA, BigInt amountIn) async {
+    String txString;
     List<EthereumAddress> path = [tknA, axTokenAddr];
     EthereumAddress to = await credentials.extractAddress();
-    _aptRouter.swapExactAVAXForTokens(amountOutMin, path, to, deadline,
+    txString = await _aptRouter.swapExactAVAXForTokens(
+        amountOutMin, path, to, deadline,
         credentials: credentials);
+    return txString;
   }
 }
