@@ -31,6 +31,14 @@ class Controller {
   bool ethIsEnabled = false;
   bool activeChain = false;
 
+  Controller() 
+  {
+    if (window.ethereum != null)
+    {
+      
+    }
+  }
+
   void connect() async {
     final eth = window.ethereum;
     final client = Web3Client.custom(eth!.asRpcService());

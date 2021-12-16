@@ -1,11 +1,20 @@
 import 'package:ae_dapp/contracts/Dex.g.dart';
-import 'package:ae_dapp/service/Controller.dart';
+import 'package:ae_dapp/service/Controller/Controller.dart';
+import 'package:http/http.dart';
 import 'package:web3dart/contracts/erc20.dart';
-import '../contracts/Dex.g.dart';
-import '../contracts/APTRouter.g.dart';
+import '../../contracts/Dex.g.dart';
+import '../../contracts/APTRouter.g.dart';
 import 'package:web3dart/web3dart.dart';
 
 class DEXController extends Controller {
+  late Credentials credentials;
+  late Web3Client client;
+
+  DEXController() {
+    credentials = super.credentials;
+    client = super.client;
+  }
+
   final EthereumAddress _dexAddress =
       EthereumAddress.fromHex("0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551");
   final EthereumAddress routerAddress =

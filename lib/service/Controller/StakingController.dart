@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:web3dart/web3dart.dart';
-import 'package:ae_dapp/service/Controller.dart';
+import 'package:ae_dapp/service/Controller/Controller.dart';
 import 'package:ae_dapp/contracts/StakingRewards.g.dart';
 import 'package:ae_dapp/contracts/AthleteX.g.dart';
 
