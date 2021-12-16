@@ -24,11 +24,19 @@ class _DesktopFarmState extends State<DesktopFarm> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
+          (allFarms) ? Container(
             height: MediaQuery.of(context).size.height*0.15,
             alignment: Alignment.bottomLeft,
             child: Text(
               "Participating Farms",
+              style: textStyle(Colors.white, 24, true, false)
+            )
+          )
+          : Container(
+            height: MediaQuery.of(context).size.height*0.15,
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              "My Farms",
               style: textStyle(Colors.white, 24, true, false)
             )
           ),
@@ -92,8 +100,85 @@ class _DesktopFarmState extends State<DesktopFarm> {
               )
             )
           ),
-          createFarmList()
+          (allFarms) ? createFarmList() : createMyFarmList()
+          //createFarmList()
         ],
+      )
+    );
+  }
+
+  Widget createMyFarmList() {
+    List<Farm> farmList = [
+      Farm("AX Farm"),
+    ];
+
+    if (AthleteList.list.length == 0)
+      return Container(
+        width: MediaQuery.of(context).size.width*0.8,
+        height: MediaQuery.of(context).size.height/4,
+        child: FutureBuilder<dynamic>(
+          future: AthleteApi.getAthletesLocally(context),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                // return circle indicator for progress
+                return Center(
+                  child:
+                      CircularProgressIndicator(),
+                );
+              default:
+                AthleteList.list = snapshot.data;
+                for (Athlete ath in AthleteList.list)
+                  farmList.add(Farm(
+                    "AX - " + ath.name + " APT"
+                  )
+                );
+                return ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(
+                    dragDevices: {
+                      PointerDeviceKind.mouse,
+                      PointerDeviceKind.touch,
+                    },
+                  ),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: AthleteList.list.length,
+                    itemBuilder: (context, index) {
+                      return createMyFarmWidget(farmList[index]);
+                    }
+                  )
+                );
+            }
+          }
+        )
+      );
+
+    
+    for (Athlete ath in AthleteList.list)
+      farmList.add(Farm(
+        "AX - " + ath.name + " APT"
+      )
+    );
+
+    return Container(
+      width: MediaQuery.of(context).size.width*0.8,
+      height: MediaQuery.of(context).size.height/4,
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          dragDevices: {
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+          },
+        ),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          physics: BouncingScrollPhysics(),
+          itemCount: AthleteList.list.length,
+          itemBuilder: (context, index) {
+            return createMyFarmWidget(farmList[index]);
+          }
+        )
       )
     );
   }
