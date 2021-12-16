@@ -4,6 +4,151 @@ import 'package:ae_dapp/service/Athlete.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 
+Dialog wrongNetworkDialog(BuildContext context) {
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: MediaQuery.of(context).size.height * 0.27,
+      width: MediaQuery.of(context).size.width * 0.25,
+      padding: EdgeInsets.all(20),
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Wrong Network",
+                style: textStyle(Colors.white, 18, true, false),
+              ),
+              Container(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.close,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 40),
+                width: MediaQuery.of(context).size.width * 0.2,
+                height: 45,
+                decoration: boxDecoration(
+                    Colors.transparent, 100, 2, Colors.purple[900]!),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Switch to Matic Network",
+                    style: textStyle(Colors.white, 16, false, false),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Dialog walletDialog(BuildContext context) {
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: MediaQuery.of(context).size.height * 0.27,
+      width: MediaQuery.of(context).size.width * 0.25,
+      padding: EdgeInsets.all(20),
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Choose Wallet",
+                style: textStyle(Colors.white, 18, true, false),
+              ),
+              Container(
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                        color: Colors.white,
+                      )))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 40),
+                width: MediaQuery.of(context).size.width * 0.2,
+                height: 45,
+                decoration: boxDecoration(
+                    Colors.transparent, 100, 2, Colors.grey[400]!),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            wrongNetworkDialog(context));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("../assets/images/fox.png"),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "Metamask",
+                        style: textStyle(Colors.white, 16, false, false),
+                      ),
+                      //empty container
+                      Container(
+                        margin: EdgeInsets.only(left: 20),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 Dialog depositDialog(BuildContext context) {
   double amount = 0;
 
@@ -82,7 +227,10 @@ Dialog depositDialog(BuildContext context) {
                     SizedBox(
                       width: 70,
                       child: TextFormField(
-                        onChanged: (value) {amount = double.parse(value); print(amount);},
+                        onChanged: (value) {
+                          amount = double.parse(value);
+                          print(amount);
+                        },
                         style: textStyle(Colors.grey[400]!, 22, false, false),
                         decoration: InputDecoration(
                           hintText: '0.00',
@@ -859,25 +1007,22 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Redeem " + athlete.name + " APT",
-                    style: textStyle(Colors.white, 20, false, false)
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 30,
+                width: MediaQuery.of(context).size.width * (wid - 0.04),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Redeem " + athlete.name + " APT",
+                        style: textStyle(Colors.white, 20, false, false)),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              )
-            ),
+                  ],
+                )),
             Container(
               width: MediaQuery.of(context).size.width * (wid - 0.04),
               child: RichText(
@@ -888,7 +1033,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                       style: textStyle(Colors.grey[600]!, 15, false, false),
                     ),
                     TextSpan(
-                      text: " You can access other funds with AX on the Matic network through",
+                      text:
+                          " You can access other funds with AX on the Matic network through",
                       style: textStyle(Colors.grey[600]!, 15, false, false),
                     ),
                     TextSpan(
@@ -951,12 +1097,14 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           style: textStyle(Colors.grey[400]!, 22, false, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
+                            hintStyle:
+                                textStyle(Colors.grey[400]!, 22, false, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
                           inputFormatters: [
-                            FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                            FilteringTextInputFormatter.allow(
+                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
                           ],
                         ),
                       ),
@@ -1010,9 +1158,9 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                       onPressed: () {
                         Navigator.pop(context);
                         showDialog(
-                          context: context,
-                          builder: (BuildContext context) => confirmTransaction(context)
-                        );
+                            context: context,
+                            builder: (BuildContext context) =>
+                                confirmTransaction(context));
                       },
                       child: Text(
                         "Confirm",
@@ -1048,25 +1196,22 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Mint " + athlete.name + " APT",
-                    style: textStyle(Colors.white, 20, false, false)
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 30,
+                width: MediaQuery.of(context).size.width * (wid - 0.04),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Mint " + athlete.name + " APT",
+                        style: textStyle(Colors.white, 20, false, false)),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              )
-            ),
+                  ],
+                )),
             Container(
               width: MediaQuery.of(context).size.width * (wid - 0.04),
               child: RichText(
@@ -1140,12 +1285,14 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                           style: textStyle(Colors.grey[400]!, 22, false, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
+                            hintStyle:
+                                textStyle(Colors.grey[400]!, 22, false, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
                           inputFormatters: [
-                            FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                            FilteringTextInputFormatter.allow(
+                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
                           ],
                         ),
                       ),
@@ -1199,9 +1346,9 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                       onPressed: () {
                         Navigator.pop(context);
                         showDialog(
-                          context: context,
-                          builder: (BuildContext context) => confirmTransaction(context)
-                        );
+                            context: context,
+                            builder: (BuildContext context) =>
+                                confirmTransaction(context));
                       },
                       child: Text(
                         "Confirm",
@@ -1221,87 +1368,81 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
 
 Dialog confirmTransaction(BuildContext context) {
   return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.0),
-    ),
-    child: Container(
-      height: MediaQuery.of(context).size.height * 0.25,
-      width: MediaQuery.of(context).size.width * .23,
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Center(
-        child: Container(
-          height: MediaQuery.of(context).size.height * .21,
-          width: 400,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * .21,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Container(
+          height: MediaQuery.of(context).size.height * 0.25,
+          width: MediaQuery.of(context).size.width * .23,
+          decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+          child: Center(
+              child: Container(
+            height: MediaQuery.of(context).size.height * .21,
+            width: 400,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                    width: MediaQuery.of(context).size.width * .21,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(width: 40),
+                        Container(
+                          child: Text("Transaction Confirmed",
+                              style: textStyle(Colors.white, 20, false, false)),
+                        ),
+                        Container(
+                          width: 40,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        )
+                      ],
+                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Container(width: 40),
                     Container(
-                      child: Text(
-                        "Transaction Confirmed",
-                        style: textStyle(Colors.white, 20, false, false)
+                      child: Icon(
+                        Icons.check_circle_outline,
+                        size: 90,
+                        color: Colors.amber[400],
                       ),
                     ),
-                    Container(
-                      width: 40,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    )
                   ],
-                )
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: Icon(
-                      Icons.check_circle_outline,
-                      size: 90,
-                      color: Colors.amber[400],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    width: 275,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.amber[400],
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "View on Polygonscan",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 275,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[400],
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "View on Polygonscan",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        )
-      )
-    )
-  );
+                  ],
+                ),
+              ],
+            ),
+          ))));
 }
 
 TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
@@ -1333,10 +1474,10 @@ TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     );
 }
 
-BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+BoxDecoration boxDecoration(
+    Color col, double rad, double borWid, Color borCol) {
   return BoxDecoration(
-    color: col,
-    borderRadius: BorderRadius.circular(rad),
-    border: Border.all(color: borCol, width: borWid)
-  );
+      color: col,
+      borderRadius: BorderRadius.circular(rad),
+      border: Border.all(color: borCol, width: borWid));
 }
