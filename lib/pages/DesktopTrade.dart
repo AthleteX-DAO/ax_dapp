@@ -1,4 +1,6 @@
-import 'package:ae_dapp/service/Coin.dart';
+import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/service/AthleteApi.dart';
+import 'package:ae_dapp/service/AthleteList.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +13,17 @@ class DesktopTrade extends StatefulWidget {
 }
 
 class _DesktopTradeState extends State<DesktopTrade> {
+  double fromAmount = 0.0;
+  double toAmount = 0.0;
   bool allFarms = true;
-  List<Coin> coinList = [];
-  double amount = 0.0;
+  Coin topCoin = Coin("AthleteX", "AX", AssetImage('../assets/images/x.png'));
+  Coin bottomCoin = Coin(
+      "Select a Token", "Select a Token", AssetImage('../assets/images/x.png'));
+  List<Coin> coins = [
+    Coin("AthleteX", "AX", AssetImage('../assets/images/x.png')),
+    Coin("SportX", "SX", AssetImage('../assets/images/x.png')),
+    Coin("Matic/Polygon", "Matic", AssetImage('../assets/images/x.png')),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -29,195 +39,146 @@ class _DesktopTradeState extends State<DesktopTrade> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              //Swap text
               Container(
                   width: wid - 50,
                   alignment: Alignment.centerLeft,
                   child: Text("Swap",
                       style: textStyle(Colors.white, 16, false, false))),
-              Column(
-                children: <Widget>[
-                  //From text
-                  Container(
-                    width: wid - 75,
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Text("From",
-                        style: textStyle(Colors.grey[400]!, 12, false, false)),
-                  ),
-                  // From-dropdown
-                  Container(
-                      width: wid - 50,
-                      height: 75,
-                      alignment: Alignment.center,
-                      decoration: boxDecoration(
-                          Colors.transparent, 20, 0.5, Colors.grey[400]!),
-                      child: Container(
-                          width: wid - 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              // From-dropdown
-                              Container(
-                                  width: 125,
-                                  height: 40,
-                                  decoration: boxDecoration(Colors.grey[800]!,
-                                      100, 0, Colors.grey[800]!),
-                                  //decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
-                                  child: TextButton(
-                                      onPressed: () => showDialog(
-                                          context: context,
-                                          builder: createTokenList),
-                                      child: Container(
-                                          width: 90,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Text("AX",
-                                                  style: textStyle(Colors.white,
-                                                      16, true, false)),
-                                              Icon(Icons.keyboard_arrow_down,
-                                                  color: Colors.white, size: 25)
-                                            ],
-                                          )))),
-                              Container(
-                                  width: 110,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                            height: 24,
-                                            width: 40,
-                                            decoration: boxDecoration(
-                                                Colors.transparent,
-                                                100,
-                                                0.5,
-                                                Colors.grey[400]!),
-                                            child: TextButton(
-                                                onPressed: () {},
-                                                child: Text("MAX",
-                                                    style: textStyle(
-                                                        Colors.grey[400]!,
-                                                        8,
-                                                        false,
-                                                        false)))),
-                                        SizedBox(
-                                          width: 70,
-                                          child: TextFormField(
-                                            onChanged: (value) {
-                                              amount = double.parse(value);
-                                              print(amount);
-                                            },
-                                            style: textStyle(Colors.grey[400]!,
-                                                22, false, false),
-                                            decoration: InputDecoration(
-                                              hintText: '0.00',
-                                              hintStyle: textStyle(
-                                                  Colors.grey[400]!,
-                                                  22,
-                                                  false,
-                                                  false),
-                                              contentPadding:
-                                                  const EdgeInsets.all(9),
-                                              border: InputBorder.none,
-                                            ),
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.allow(
-                                                  (RegExp(
-                                                      r'^(\d+)?\.?\d{0,2}'))),
-                                            ],
+              Column(children: <Widget>[
+                //From text
+                Container(
+                  width: wid - 75,
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.only(bottom: 10),
+                  child: Text("From",
+                      style: textStyle(Colors.grey[400]!, 12, false, false)),
+                ),
+                // From-dropdown
+                Container(
+                    width: wid - 50,
+                    height: 75,
+                    alignment: Alignment.center,
+                    decoration: boxDecoration(
+                        Colors.transparent, 20, 0.5, Colors.grey[400]!),
+                    child: Container(
+                        width: wid - 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // to-dropdown
+                            createTokenButton(topCoin),
+                            Container(
+                                width: 110,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                          height: 24,
+                                          width: 40,
+                                          decoration: boxDecoration(
+                                              Colors.transparent,
+                                              100,
+                                              0.5,
+                                              Colors.grey[400]!),
+                                          child: TextButton(
+                                              onPressed: () {},
+                                              child: Text("MAX",
+                                                  style: textStyle(
+                                                      Colors.grey[400]!,
+                                                      8,
+                                                      false,
+                                                      false)))),
+                                      SizedBox(
+                                        width: 70,
+                                        child: TextFormField(
+                                          onChanged: (value) {
+                                            fromAmount = double.parse(value);
+                                            print(fromAmount);
+                                          },
+                                          style: textStyle(Colors.grey[400]!,
+                                              22, false, false),
+                                          decoration: InputDecoration(
+                                            hintText: '0.00',
+                                            hintStyle: textStyle(
+                                                Colors.grey[400]!,
+                                                22,
+                                                false,
+                                                false),
+                                            contentPadding:
+                                                const EdgeInsets.all(9),
+                                            border: InputBorder.none,
                                           ),
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                          ],
                                         ),
-                                      ]))
-                            ],
-                          ))),
-                ],
-              ),
-
-              Column(
-                children: <Widget>[
-                  //Down arrow
-                  Container(
-                    child: Icon(
-                      Icons.arrow_downward,
-                      size: 20,
-                      color: Colors.grey[400],
-                    ),
+                                      ),
+                                    ]))
+                          ],
+                        ))),
+              ]),
+              Column(children: <Widget>[
+                //Down arrow
+                Container(
+                  child: Icon(
+                    Icons.arrow_downward,
+                    size: 20,
+                    color: Colors.grey[400],
                   ),
-                  //To text
-                  Container(
-                    width: wid - 75,
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      "To",
-                      style: textStyle(Colors.grey[400]!, 12, false, false),
-                    ),
+                ),
+                //To text
+                Container(
+                  width: wid - 75,
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    "To",
+                    style: textStyle(Colors.grey[400]!, 12, false, false),
                   ),
-                  // To-dropdown
-                  Container(
-                      width: wid - 50,
-                      height: 75,
-                      alignment: Alignment.center,
-                      decoration: boxDecoration(
-                          Colors.transparent, 20, 0.5, Colors.grey[400]!),
-                      child: Container(
-                          width: wid - 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              // to-dropdown
-                              Container(
-                                  width: 175,
-                                  height: 40,
-                                  decoration: boxDecoration(
-                                      Colors.blue, 100, 0, Colors.blue),
-                                  child: TextButton(
-                                      onPressed: () => showDialog(
-                                          context: context,
-                                          builder: createTokenList),
-                                      child: Container(
-                                          //width: 90,
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text("Select a token",
-                                              style: textStyle(Colors.white, 16,
-                                                  true, false)),
-                                          Icon(Icons.keyboard_arrow_down,
-                                              color: Colors.white, size: 25)
-                                        ],
-                                      )))),
-                              //Amount box
-                              SizedBox(
-                                width: 70,
-                                child: TextFormField(
-                                  onChanged: (value) {
-                                    amount = double.parse(value);
-                                    print(amount);
-                                  },
-                                  style: textStyle(
+                ),
+                // To-dropdown
+                Container(
+                    width: wid - 50,
+                    height: 75,
+                    alignment: Alignment.center,
+                    decoration: boxDecoration(
+                        Colors.transparent, 20, 0.5, Colors.grey[400]!),
+                    child: Container(
+                        width: wid - 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // dropdown
+                            createTokenButton(bottomCoin),
+                            // Amount box
+                            SizedBox(
+                              width: 70,
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  toAmount = double.parse(value);
+                                  print(toAmount);
+                                },
+                                style: textStyle(
+                                    Colors.grey[400]!, 22, false, false),
+                                decoration: InputDecoration(
+                                  hintText: '0.00',
+                                  hintStyle: textStyle(
                                       Colors.grey[400]!, 22, false, false),
-                                  decoration: InputDecoration(
-                                    hintText: '0.00',
-                                    hintStyle: textStyle(
-                                        Colors.grey[400]!, 22, false, false),
-                                    contentPadding: const EdgeInsets.all(9),
-                                    border: InputBorder.none,
-                                  ),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                        (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                                  ],
+                                  contentPadding: const EdgeInsets.all(9),
+                                  border: InputBorder.none,
                                 ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                ],
                               ),
-                            ],
-                          ))),
-                ],
-              ),
+                            ),
+                          ],
+                        ))),
+              ]),
+              //Swap button container
               Container(
                   width: wid - 50,
                   child: Column(
@@ -712,26 +673,40 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         Container(
                             height:
                                 MediaQuery.of(context).size.height * .625 - 100,
-                            child: ListView(children: <Widget>[
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                              createTokenElement("AX", "AthleteX"),
-                            ]))
+                            child: FutureBuilder<dynamic>(
+                                future: AthleteApi.getAthletesLocally(context),
+                                builder: (context, snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.waiting:
+                                      // return circle indicator for progress
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    default:
+                                      AthleteList.list = snapshot.data;
+                                      for (Athlete ath in AthleteList.list)
+                                        coins.add(Coin(
+                                            ath.name + " APT",
+                                            ath.name + " APT",
+                                            AssetImage(
+                                                '../assets/images/apt.png')));
+
+                                      return ListView.builder(
+                                          physics: BouncingScrollPhysics(),
+                                          itemCount: coins.length,
+                                          itemBuilder: (context, index) {
+                                            return createTokenElement(
+                                                coins[index]);
+                                          });
+                                  }
+                                }))
                       ],
                     ))
               ],
             )));
   }
 
-  Widget createTokenElement(String ticker, String fullName) {
+  Widget createTokenElement(Coin coin) {
     return Container(
         height: 50,
         child: TextButton(
@@ -744,7 +719,16 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   height: 30,
                   width: 60,
                   alignment: Alignment.centerLeft,
-                  child: Container(width: 30, height: 30, color: Colors.black),
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: coin.icon,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
                 ),
                 Container(
                     height: 45,
@@ -756,19 +740,44 @@ class _DesktopTradeState extends State<DesktopTrade> {
                             width: 125,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              ticker,
+                              coin.ticker,
                               style: textStyle(Colors.white, 14, true, false),
                             )),
                         Container(
                             width: 125,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              fullName,
+                              coin.name,
                               style:
                                   textStyle(Colors.grey[100]!, 9, false, false),
                             )),
                       ],
                     ))
+              ],
+            ))));
+  }
+
+  Widget createTokenButton(Coin coin) {
+    BoxDecoration decor =
+        boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
+    if (coin.ticker == "Select a Token")
+      decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+
+    return Container(
+        width: 175,
+        height: 40,
+        decoration: decor,
+        child: TextButton(
+            onPressed: () =>
+                showDialog(context: context, builder: createTokenList),
+            child: Container(
+                //width: 90,
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(coin.ticker,
+                    style: textStyle(Colors.white, 16, true, false)),
+                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
               ],
             ))));
   }
@@ -826,4 +835,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
         borderRadius: BorderRadius.circular(rad),
         border: Border.all(color: borCol, width: borWid));
   }
+}
+
+class Coin {
+  String name;
+  String ticker;
+  AssetImage icon;
+
+  Coin(this.name, this.ticker, this.icon);
 }
