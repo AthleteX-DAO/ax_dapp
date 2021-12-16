@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_web3/ethereum.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
-import 'Controller.dart';
-import 'APTController.dart';
+import 'Controller/Controller.dart';
+import 'Controller/APTController.dart';
 
 Dialog depositDialog(BuildContext context) {
   return Dialog(
@@ -188,7 +188,7 @@ Dialog depositDialog(BuildContext context) {
 Dialog buyDialog(BuildContext context, Athlete athlete) {
   double wid = 0.25;
   double hgt = 0.6;
-
+  APTController _apt = APTController();
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
@@ -513,12 +513,12 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                             "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
                         try {
                           String txString =
-                              await APTController().buy(aptAddress, 10);
+                              await APTController().buy(aptAddress, athlete.war[0]);
                           confirmed = true;
                         } catch (e) {
                           confirmed = false;
                           String txString =
-                              await APTController().buy(aptAddress, 10);
+                              await APTController().buy(aptAddress, athlete.war[0]);
                         }
                         showDialog(
                             context: context,
@@ -1068,7 +1068,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      confirmTransaction(context, confirmed, txString));
+                                      confirmTransaction(
+                                          context, confirmed, txString));
                             },
                             child: const Text(
                               "Confirm",
@@ -1285,15 +1286,16 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                             borderRadius: BorderRadius.circular(100),
                           ),
                           child: TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               Navigator.pop(context);
                               bool confirmed = false;
                               String txString =
-                                  "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
+                                  await APTController().mint(1, 1);
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      confirmTransaction(context, confirmed, txString));
+                                      confirmTransaction(
+                                          context, confirmed, txString));
                             },
                             child: const Text(
                               "Confirm",
