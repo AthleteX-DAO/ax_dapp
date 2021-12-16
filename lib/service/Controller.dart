@@ -1,14 +1,12 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
-import 'dart:math';
 
-import 'package:http/http.dart';
-import 'package:web3dart/contracts/erc20.dart';
-import 'package:web3dart/src/browser/dart_wrappers.dart';
-import 'package:web3dart/src/browser/javascript.dart';
-import 'package:web3dart/web3dart.dart';
-import 'package:ae_dapp/contracts/StakingRewards.g.dart';
 import 'package:ae_dapp/contracts/AthleteX.g.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:web3dart/contracts/erc20.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:web3dart/browser.dart';
+import 'package:http/http.dart';
 
 class Controller {
   // RPC & WS are now linked to MATIC-Testnet
@@ -25,23 +23,26 @@ class Controller {
       EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
 // Defined AthelteX
   final EthereumAddress axTokenAddr =
-      EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
+      EthereumAddress.fromHex("0xaa2b20858EFdaD6eE33Aef91007C73979a87492e");
   late AthleteX _athleteX = AthleteX(address: axTokenAddr, client: client);
   late Erc20 _erc20;
+  late EthereumAddress _publicAddress =
+      EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
   bool ethIsEnabled = false;
   bool activeChain = false;
 
-  Controller() {
-    // TODO - init controller variables
-    init();
+  void connect() async {
+    final eth = window.ethereum;
+    final client = Web3Client.custom(eth!.asRpcService());
+    final credentials = await eth.requestAccount();
+    print("[Console] connecting to the decentralized web!");
+    update(client, credentials);
   }
 
-  void init() async {
-    _client = Web3Client(_rpcUrl, new Client());
-    if (window.ethereum != null) {
-      updateClient(_client);
-      updateCredentials(await window.ethereum!.requestAccount());
-    }
+  void update(var cl, var cr) async {
+    client = cl;
+    credentials = cr;
+    print("[Console] updated client: ${cl} and credentials: ${cr}");
   }
 
   // Getters
@@ -52,13 +53,19 @@ class Controller {
   AthleteX get athleteX => _athleteX;
   Erc20 get genericERC20 => _erc20;
   EthereumAddress get axTokenAddress => axTokenAddr;
+  EthereumAddress get publicAddress => _publicAddress;
 
-  void updateClient(Web3Client _newClient) {
-    _client = _newClient;
+  // Setters
+  set publicAddress(EthereumAddress pA) {
+    _publicAddress = pA;
   }
 
-  void updateCredentials(Credentials _newCredentials) async {
-    _credentials = _newCredentials;
+  set credentials(Credentials creds) {
+    _credentials = creds;
+  }
+
+  set client(Web3Client cl) {
+    _client = cl;
   }
 
   bool checkCorrectChain() {
