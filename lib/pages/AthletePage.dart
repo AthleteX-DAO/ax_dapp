@@ -314,7 +314,7 @@ class _AthletePageState extends State<AthletePage> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        "4.24 AX ",
+                                        "${ athlete.war[athlete.war.length -1].toStringAsFixed(4)} AX ",
                                         style: textStyle(Colors.white, 20, false, false)
                                       ),
                                       Container(
