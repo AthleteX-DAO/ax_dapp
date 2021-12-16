@@ -103,7 +103,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
       Farm("AX Farm"),
     ];
 
-    if (AthleteList.empty)
+    if (AthleteList.list.length == 0)
       return Container(
         width: MediaQuery.of(context).size.width*0.8,
         height: MediaQuery.of(context).size.height/4,

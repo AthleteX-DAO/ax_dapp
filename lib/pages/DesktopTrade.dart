@@ -1,4 +1,6 @@
-import 'package:ae_dapp/service/Coin.dart';
+import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ae_dapp/service/AthleteApi.dart';
+import 'package:ae_dapp/service/AthleteList.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Dialog.dart';
 
@@ -11,8 +13,14 @@ class DesktopTrade extends StatefulWidget {
 
 class _DesktopTradeState extends State<DesktopTrade> {
   bool allFarms = true;
-  List<Coin> coinList = [];
-  
+  Coin topCoin = Coin("AthleteX", "AX", AssetImage('../assets/images/x.png'));
+  Coin bottomCoin = Coin("Select a Token", "Select a Token", AssetImage('../assets/images/x.png'));
+  List<Coin> coins = [
+    Coin("AthleteX", "AX", AssetImage('../assets/images/x.png')),
+    Coin("SportX", "SX", AssetImage('../assets/images/x.png')),
+    Coin("Matic/Polygon", "Matic", AssetImage('../assets/images/x.png')),
+  ];
+
   @override
   Widget build(BuildContext context) {
     double wid = 550;
@@ -49,32 +57,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       // to-dropdown
-                      Container(
-                        width: 125,
-                        height: 40,
-                        decoration: boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!),
-                        //decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
-                        child: TextButton(
-                          onPressed: () => showDialog(context: context, builder: createTokenList),
-                          child: Container(
-                            width: 90,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "AX",
-                                  style: textStyle(Colors.white, 16, true, false)
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Colors.white,
-                                  size: 25
-                                )
-                              ],
-                            )
-                          )
-                        )
-                      ),
+                      createTokenButton(topCoin),
                       Container(
                         width: 100,
                         child: Row(
@@ -115,31 +98,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       // dropdown
-                      Container(
-                        width: 175,
-                        height: 40,
-                        decoration: boxDecoration(Colors.blue, 100, 0, Colors.blue),
-                        child: TextButton(
-                          onPressed: () => showDialog(context: context, builder: createTokenList),
-                          child: Container(
-                            //width: 90,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "Select a token",
-                                  style: textStyle(Colors.white, 16, true, false)
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Colors.white,
-                                  size: 25
-                                )
-                              ],
-                            )
-                          )
-                        )
-                      ),
+                      createTokenButton(bottomCoin),
                       Container(
                         child: Text(
                           "0.00",
@@ -545,6 +504,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   }
 
   Dialog createTokenList(BuildContext context) {
+
     return Dialog(
       backgroundColor: Colors.grey[900],
       shape: RoundedRectangleBorder(
@@ -594,20 +554,29 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height*.625-100,
-                    child: ListView(
-                      children: <Widget>[
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                        createTokenElement("AX", "AthleteX"),
-                      ]
+                    child: FutureBuilder<dynamic>(
+                      future: AthleteApi.getAthletesLocally(context),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            // return circle indicator for progress
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          default:
+                            AthleteList.list = snapshot.data;
+                            for (Athlete ath in AthleteList.list)
+                              coins.add(Coin(ath.name+" APT", ath.name+" APT", AssetImage('../assets/images/apt.png')));
+
+                            return ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              itemCount: coins.length,
+                              itemBuilder: (context, index) {
+                                return createTokenElement(coins[index]);
+                              }
+                            );
+                        }
+                      }
                     )
                   )
                 ],
@@ -619,7 +588,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
     );
   }
   
-  Widget createTokenElement(String ticker, String fullName) {
+  Widget createTokenElement(Coin coin) {
     return Container(
       height: 50,
       child: TextButton(
@@ -635,7 +604,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 child: Container(
                   width: 30,
                   height: 30,
-                  color: Colors.black
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: coin.icon,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 ),
               ),
               Container(
@@ -648,7 +622,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       width: 125,
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        ticker,
+                        coin.ticker,
                         style: textStyle(Colors.white, 14, true, false),
                       )
                     ),
@@ -656,12 +630,40 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       width: 125,
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        fullName,
+                        coin.name,
                         style: textStyle(Colors.grey[100]!, 9, false, false),
                       )
                     ),
                   ],
                 )
+              )
+            ],
+          )
+        )
+      )
+    );
+  }
+
+  Widget createTokenButton(Coin coin) {
+    return Container(
+      width: 175,
+      height: 40,
+      decoration: boxDecoration(Colors.blue, 100, 0, Colors.blue),
+      child: TextButton(
+        onPressed: () => showDialog(context: context, builder: createTokenList),
+        child: Container(
+          //width: 90,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                coin.ticker,
+                style: textStyle(Colors.white, 16, true, false)
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white,
+                size: 25
               )
             ],
           )
@@ -730,4 +732,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
       )
     );
   }
+}
+
+class Coin {
+  String name;
+  String ticker;
+  AssetImage icon;
+
+  Coin(this.name, this.ticker, this.icon);
 }

@@ -17,7 +17,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   int sportState = 0;
   List<Athlete> nflList = [];
   Athlete curAthlete = Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
-  
+
   @override
   Widget build(BuildContext context) {
     double sportFilterTxSz = 18;
@@ -150,7 +150,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   Widget buildListview() {
-    if (AthleteList.empty) {
+    if (AthleteList.list.length == 0) {
       return Container(
         height: MediaQuery.of(context).size.height*0.6,
         child: FutureBuilder<dynamic>(
@@ -164,7 +164,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                       CircularProgressIndicator(),
                 );
               default:
-                AthleteList.list = snapshot.data;
+                nflList = snapshot.data;
+                AthleteList.list = nflList;
                 return ListView.builder(
                   physics: BouncingScrollPhysics(),
                   itemCount: AthleteList.list.length,
@@ -179,14 +180,43 @@ class _DesktopScoutState extends State<DesktopScout> {
       );
     }
     // if athleteList is not empty
+    // all athletes
+    else if (sportState == 0)
+      return Container(
+        height: MediaQuery.of(context).size.height*0.6,
+        child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          itemCount: AthleteList.list.length,
+          itemBuilder: (context, index) {
+            return createListCards(AthleteList.list[index]);
+          }
+        )
+      );
+    // NFL athletes only
+    else if (sportState == 1)
+      return Container(
+        height: MediaQuery.of(context).size.height*0.6,
+        child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          itemCount: nflList.length,
+          itemBuilder: (context, index) {
+            return createListCards(nflList[index]);
+          }
+        )
+      );
+    // other athletes
     else {
-      return ListView.builder(
-        physics: BouncingScrollPhysics(),
-        itemCount: AthleteList.list.length,
-        itemBuilder: (context, index) {
-          final athlete = AthleteList.list[index];
-          return createListCards(athlete);
-        }
+      String spt = "NBA";
+      if (sportState == 3)
+        spt = "MMA";
+      return Container(
+        height: MediaQuery.of(context).size.height*0.6,
+        child: Center(
+          child: Text(
+            "No " + spt + " Athletes Currently",
+            style: textStyle(Colors.white, 32, true, false)
+          )
+        )
       );
     }
   }
