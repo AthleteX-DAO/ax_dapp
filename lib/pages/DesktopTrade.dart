@@ -645,10 +645,14 @@ class _DesktopTradeState extends State<DesktopTrade> {
   }
 
   Widget createTokenButton(Coin coin) {
+    BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
+    if (coin.ticker == "Select a Token")
+      decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+
     return Container(
       width: 175,
       height: 40,
-      decoration: boxDecoration(Colors.blue, 100, 0, Colors.blue),
+      decoration: decor,
       child: TextButton(
         onPressed: () => showDialog(context: context, builder: createTokenList),
         child: Container(
