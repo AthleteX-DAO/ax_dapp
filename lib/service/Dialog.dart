@@ -1445,6 +1445,185 @@ Dialog confirmTransaction(BuildContext context) {
           ))));
 }
 
+Dialog removeDialog(BuildContext context) {
+  double amount = 0;
+
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: MediaQuery.of(context).size.height * 0.55,
+      width: MediaQuery.of(context).size.width * 0.25,
+      padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Remove AX",
+                style: textStyle(Colors.white, 20, false, false),
+              ),
+              Container(
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                        color: Colors.white,
+                      )))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              //Amount Box
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 30),
+                padding: const EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width * 0.2,
+                height: 55,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(14.0),
+                  border: Border.all(
+                    color: Colors.grey[400]!,
+                    width: 0.5,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        "AX",
+                        style: textStyle(Colors.white, 15, false, false),
+                      ),
+                    ),
+                    Container(
+                      height: 18,
+                      width: 35,
+                      decoration: boxDecoration(
+                          Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Max",
+                          style: textStyle(Colors.grey[400]!, 9, false, false),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 70,
+                      child: TextFormField(
+                        onChanged: (value) {amount = double.parse(value); print(amount);},
+                        style: textStyle(Colors.grey[400]!, 22, false, false),
+                        decoration: InputDecoration(
+                          hintText: '0.00',
+                          hintStyle:
+                              textStyle(Colors.grey[400]!, 22, false, false),
+                          contentPadding: const EdgeInsets.all(9),
+                          border: InputBorder.none,
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Current AX Staked",
+                style: textStyle(Colors.grey[400]!, 14, false, false),
+              ),
+              Text(
+                "1,000 AX",
+                style: textStyle(Colors.grey[400]!, 14, false, false),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.only(left: 55),
+                child: Text(
+                  "-",
+                  style: textStyle(Colors.grey[400]!, 14, false, false),
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Funds Removed",
+                style: textStyle(Colors.grey[400]!, 14, false, false),
+              ),
+              Text(
+                "100 AX",
+                style: textStyle(Colors.grey[400]!, 14, false, false),
+              ),
+            ],
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(
+              thickness: 0.35,
+              color: Colors.grey[400],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("New Staked Balance"),
+              Text("1,100 AX"),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
+                width: 175,
+                height: 45,
+                decoration: BoxDecoration(
+                  color: Colors.amber[400],
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "Confirm",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    ),
+  );
+}
+
 TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
   if (isBold) if (isUline)
     return TextStyle(
