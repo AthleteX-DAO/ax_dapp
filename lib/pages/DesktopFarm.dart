@@ -273,6 +273,236 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
   }
 
+  Widget createMyFarmWidget(Farm farm) {
+    TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+    double wid = 0.275;
+    double hgt = 0.275;
+    return Container(
+      height: MediaQuery.of(context).size.height * hgt,
+      width: MediaQuery.of(context).size.width * wid,
+      decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width * (wid - 0.04),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(farm.name, style: TextStyle(fontSize: 17, color: Colors.white)),
+              ],
+            )
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * (wid - 0.04),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Total APY",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "12%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "TVL",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "\$1,000,000",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "LP APY",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "5%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          ),
+          Container(
+            child: Divider(
+                thickness: 0.35,
+                color: Colors.grey[400],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * (wid - 0.04),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("Your Position", style: TextStyle(fontSize: 17, color: Colors.white)),
+              ],
+            )
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * (wid - 0.04),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "AX Provided",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "1,000 AX",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Rewards earned",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "100 AX",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Total AX available (Staked + Earned)",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "1,100 AX",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * (wid - 0.04),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      width: 120,
+                      height: 35,
+                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                        child: Text(
+                          "Deposit",
+                          style: textStyle(Colors.black, 14, true, false)
+                        )
+                      )
+                    ),
+                    Container(
+                      width: 120,
+                      height: 35,
+                      decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
+                        child: Text(
+                          "Remove",
+                          style: textStyle(Colors.amber[600]!, 14, true, false)
+                        )
+                      )
+                    ),
+                  ]
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold)
       if (isUline)
