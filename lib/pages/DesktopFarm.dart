@@ -358,6 +358,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
   }
 
+  // Do not delete this Widget method yet
   Widget createMyFarmWidget(Farm farm) {
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
     double wid = 0.275;
@@ -587,6 +588,160 @@ class _DesktopFarmState extends State<DesktopFarm> {
       ),
     );
   }
+
+  // Do not delete this one either
+  /*Widget createMyFarmWidget(Farm farm) {
+    TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+
+    return Row(
+      children: <Widget> [
+        Container(
+          height: MediaQuery.of(context).size.height/4,
+          width: 500,
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+          decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              // Farm Title
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    farm.name,
+                    style: textStyle(Colors.white, 20, false, false)
+                  ),
+                ]
+              ),
+              // TVL
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Total APY",
+                    style: txStyle,
+                  ),
+                  Text(
+                    "12%",
+                    style: txStyle
+                  )
+                ],
+              ),
+              // Fee
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "TVL",
+                    style: txStyle
+                  ),
+                  Text(
+                    "\$1,000,000",
+                    style: txStyle
+                  )
+                ],
+              ),
+              // Rewards
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "LP APY",
+                    style: txStyle
+                  ),
+                  Text(
+                    "5%",
+                    style: txStyle
+                  )
+                ],
+              ),
+              // Farm Title
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Your Position",
+                    style: textStyle(Colors.white, 20, false, false)
+                  ),
+                ]
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "AX provided",
+                    style: txStyle,
+                  ),
+                  Text(
+                    "1,000 AX",
+                    style: txStyle
+                  )
+                ],
+              ),
+              // Fee
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Rewards Earned",
+                    style: txStyle
+                  ),
+                  Text(
+                    "100 AX",
+                    style: txStyle
+                  )
+                ],
+              ),
+              // Rewards
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Total AX available (Staked + Earned)",
+                    style: txStyle
+                  ),
+                  Text(
+                    "1,100 AX",
+                    style: txStyle
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    width: 120,
+                    height: 35,
+                    decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                    child: TextButton(
+                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                      child: Text(
+                        "Deposit",
+                        style: textStyle(Colors.black, 14, true, false)
+                      )
+                    )
+                  ),
+                  Container(
+                    width: 120,
+                    height: 35,
+                    decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
+                    child: TextButton(
+                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
+                      child: Text(
+                        "Remove",
+                        style: textStyle(Colors.amber[600]!, 14, true, false)
+                      )
+                    )
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: 50),
+      ]
+    );
+  }*/
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold)
