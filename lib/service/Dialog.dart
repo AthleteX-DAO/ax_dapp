@@ -1591,7 +1591,7 @@ Dialog removeDialog(BuildContext context) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("New Staked Balance"),
-              Text("1,100 AX"),
+              Text("1,000 AX"),
             ],
           ),
           Row(
