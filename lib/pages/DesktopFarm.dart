@@ -358,8 +358,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
   }
 
-  // Do not delete this Widget method yet
-  Widget createMyFarmWidget(Farm farm) {
+  // Trying to figure out how to generate the cards for My Farm section. Do not delete any of the createMyFarmWidget methods below
+  // Returning a Container
+  /*Widget createMyFarmWidget(Farm farm) {
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
     double wid = 0.275;
     double hgt = 0.275;
@@ -587,10 +588,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
         ],
       ),
     );
-  }
+  }*/
 
-  // Do not delete this one either
-  /*Widget createMyFarmWidget(Farm farm) {
+  // Returning a Row (This one works. Need to fix container size and padding)
+  Widget createMyFarmWidget(Farm farm) {
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
 
     return Row(
@@ -598,148 +599,409 @@ class _DesktopFarmState extends State<DesktopFarm> {
         Container(
           height: MediaQuery.of(context).size.height/4,
           width: 500,
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+          //padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
           decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               // Farm Title
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    farm.name,
-                    style: textStyle(Colors.white, 20, false, false)
-                  ),
-                ]
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      farm.name,
+                      style: textStyle(Colors.white, 20, false, false)
+                    ),
+                  ]
+                ),
               ),
-              // TVL
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Total APY",
-                    style: txStyle,
-                  ),
-                  Text(
-                    "12%",
-                    style: txStyle
-                  )
-                ],
-              ),
-              // Fee
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "TVL",
-                    style: txStyle
-                  ),
-                  Text(
-                    "\$1,000,000",
-                    style: txStyle
-                  )
-                ],
-              ),
-              // Rewards
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "LP APY",
-                    style: txStyle
-                  ),
-                  Text(
-                    "5%",
-                    style: txStyle
-                  )
-                ],
-              ),
-              // Farm Title
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Your Position",
-                    style: textStyle(Colors.white, 20, false, false)
-                  ),
-                ]
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "AX provided",
-                    style: txStyle,
-                  ),
-                  Text(
-                    "1,000 AX",
-                    style: txStyle
-                  )
-                ],
-              ),
-              // Fee
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Rewards Earned",
-                    style: txStyle
-                  ),
-                  Text(
-                    "100 AX",
-                    style: txStyle
-                  )
-                ],
-              ),
-              // Rewards
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Total AX available (Staked + Earned)",
-                    style: txStyle
-                  ),
-                  Text(
-                    "1,100 AX",
-                    style: txStyle
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    width: 120,
-                    height: 35,
-                    decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
-                    child: TextButton(
-                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
-                      child: Text(
-                        "Deposit",
-                        style: textStyle(Colors.black, 14, true, false)
-                      )
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child:Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Total APY",
+                      style: txStyle,
+                    ),
+                    Text(
+                      "12%",
+                      style: txStyle
                     )
-                  ),
-                  Container(
-                    width: 120,
-                    height: 35,
-                    decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
-                    child: TextButton(
-                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
-                      child: Text(
-                        "Remove",
-                        style: textStyle(Colors.amber[600]!, 14, true, false)
-                      )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "TVL",
+                      style: txStyle
+                    ),
+                    Text(
+                      "\$1,000,000",
+                      style: txStyle
                     )
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "LP APY",
+                      style: txStyle
+                    ),
+                    Text(
+                      "5%",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                child: Divider(
+                  thickness: 0.35,
+                  color: Colors.grey[400],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Your Position",
+                      style: textStyle(Colors.white, 20, false, false)
+                    ),
+                  ]
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "AX provided",
+                      style: txStyle,
+                    ),
+                    Text(
+                      "1,000 AX",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Rewards Earned",
+                      style: txStyle
+                    ),
+                    Text(
+                      "100 AX",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Total AX available (Staked + Earned)",
+                      style: txStyle
+                    ),
+                    Text(
+                      "1,100 AX",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      width: 120,
+                      height: 35,
+                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                        child: Text(
+                          "Deposit",
+                          style: textStyle(Colors.black, 14, true, false)
+                        )
+                      )
+                    ),
+                    Container(
+                      width: 120,
+                      height: 35,
+                      decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
+                        child: Text(
+                          "Remove",
+                          style: textStyle(Colors.amber[600]!, 14, true, false)
+                        )
+                      )
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
         SizedBox(width: 50),
       ]
+    );
+  }
+
+  // Returning a Column
+  /*Widget createMyFarmWidget(Farm farm) {
+    TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+
+    return Column(
+      children: <Widget>[
+        Container(
+          height: MediaQuery.of(context).size.height/4,
+          width: 500,
+          decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(farm.name, style: TextStyle(fontSize: 17, color: Colors.white)),
+                  ],
+                )
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "Total APY",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "12%",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "TVL",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "\$1,000,000",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "LP APY",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "5%",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ),
+              Container(
+                child: Divider(
+                  thickness: 0.35,
+                  color: Colors.grey[400],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Your Position", style: TextStyle(fontSize: 17, color: Colors.white)),
+                  ],
+                )
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "AX Provided",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "1,000 AX",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "Rewards earned",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "100 AX",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "Total AX available (Staked + Earned)",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "1,100 AX",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          width: 120,
+                          height: 35,
+                          decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                          child: TextButton(
+                            onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                            child: Text(
+                              "Deposit",
+                              style: textStyle(Colors.black, 14, true, false)
+                            )
+                          )
+                        ),
+                        Container(
+                          width: 120,
+                          height: 35,
+                          decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
+                          child: TextButton(
+                            onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
+                            child: Text(
+                              "Remove",
+                              style: textStyle(Colors.amber[600]!, 14, true, false)
+                            )
+                          )
+                        ),
+                      ]
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }*/
 
