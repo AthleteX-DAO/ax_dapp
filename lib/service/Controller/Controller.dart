@@ -23,7 +23,7 @@ class Controller {
       EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
 // Defined AthelteX
   final EthereumAddress axTokenAddr =
-      EthereumAddress.fromHex("0xaa2b20858EFdaD6eE33Aef91007C73979a87492e");
+      EthereumAddress.fromHex("0x76d9a6e4cdefc840a47069b71824ad8ff4819e85");
   late AthleteX _athleteX = AthleteX(address: axTokenAddr, client: client);
   late Erc20 _erc20;
   late EthereumAddress _publicAddress =
@@ -31,12 +31,13 @@ class Controller {
   bool ethIsEnabled = false;
   bool activeChain = false;
 
-  Controller() 
-  {
-    if (window.ethereum != null)
-    {
-      
-    }
+  Controller() {
+    if (window.ethereum != null) {}
+  }
+
+  @override
+  void initState() {
+    connect();
   }
 
   void connect() async {
