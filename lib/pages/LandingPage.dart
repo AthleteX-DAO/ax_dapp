@@ -1,6 +1,6 @@
 import 'package:ae_dapp/pages/V1App.dart';
-import 'package:ae_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
+import 'TestPage.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -31,15 +31,14 @@ class _LandingPageState extends State<LandingPage> {
         children: <Widget>[
           //AX Markets Image
           Container(
-            width: MediaQuery.of(context).size.width*0.75,
-            height: MediaQuery.of(context).size.height*0.2,
+            height: 200,
             child: Image(
               image: AssetImage("../assets/images/AXMarkets.png"),
             )
           ),
           // Text
           Container(
-            height: MediaQuery.of(context).size.height*0.2,
+            height: 175,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

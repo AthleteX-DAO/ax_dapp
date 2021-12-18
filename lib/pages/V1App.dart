@@ -2,9 +2,10 @@ import 'dart:html';
 import 'package:ae_dapp/pages/DesktopFarm.dart';
 import 'package:ae_dapp/pages/DesktopScout.dart';
 import 'package:ae_dapp/pages/DesktopTrade.dart';
-import 'package:ae_dapp/service/Controller.dart';
 import 'package:ae_dapp/service/Dialog.dart';
 import 'package:web3dart/browser.dart';
+import 'package:ae_dapp/service/Dialog.dart';
+import 'package:ae_dapp/style/Style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:ae_dapp/service/Athlete.dart';
@@ -44,6 +45,7 @@ class _V1AppState extends State<V1App> {
   // state change variables
   int pageNumber = 0;
   bool allFarms = true;
+  List<Athlete> athleteList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -164,16 +166,13 @@ class _V1AppState extends State<V1App> {
               decoration:
                   boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
               child: TextButton(
-                onPressed: () {
-                  Controller().connect();
-                  // setState(() {
-                  //   connectWalletWidget = Text(
-                  //     "Connected (${Controller().publicAddress})",
-                  //     style: textStyle(Colors.amber[400]!, 16, true, false),
-                  //   );
-                  // });
-                },
-                child: connectWalletWidget,
+                onPressed: () => showDialog(
+                    context: context,
+                    builder: (BuildContext context) => walletDialog(context)),
+                child: Text(
+                  "Connect Wallet",
+                  style: textStyle(Colors.amber[400]!, 16, true, false),
+                ),
               ))
         ],
       ),
