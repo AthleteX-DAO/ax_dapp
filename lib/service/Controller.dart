@@ -9,6 +9,7 @@ import 'package:bip39/bip39.dart'
 class Controller {
   static var client;
   static var credentials;
+  static var publicAddress;
   Controller._privateConstructor();
 
   static final Controller _instance = Controller._privateConstructor();
@@ -28,10 +29,6 @@ class Controller {
 
   factory Controller() {
     return _instance;
-  }
-
-  static set publicAddress(EthereumAddress address) {
-    publicAddress = address;
   }
 
   void createNewMnemonic() {
