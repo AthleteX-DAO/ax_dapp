@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/service/Controller/Controller.dart';
-import 'package:ae_dapp/service/Controller/DEXBehavior.dart';
-import 'package:web3dart/contracts/erc20.dart';
+import 'package:ae_dapp/service/Controller.dart';
+import 'package:ae_dapp/service/Controller/AXT.dart';
+import 'package:ae_dapp/service/Controller/SWAPBehavior.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../contracts/LongShortPairCreator.g.dart';
 import '../../contracts/LongShortPair.g.dart';
 import '../../contracts/ExpiringMultiPartyCreator.g.dart';
 import '../../contracts/ExpiringMultiParty.g.dart';
 
-class APTBehavior extends Controller {
-  Controller _controller = Controller();
+class APTBehavior {
+  SWAPBehavior _swapBehavior = SWAPBehavior();
 
   final EthereumAddress lspCAddress =
       EthereumAddress.fromHex("0x57EE47829369e2EF62fBb423648bec70d0366204");
@@ -20,18 +20,25 @@ class APTBehavior extends Controller {
       EthereumAddress.fromHex("0xF0E8EFFDb48f09e91D2d9124a7D8c327CaD94f30");
 
   late LongShortPairCreator _longShortPairCreator =
-      LongShortPairCreator(address: lspCAddress, client: _controller.client);
+      LongShortPairCreator(address: lspCAddress, client: Controller.client);
   late ExpiringMultiPartyCreator _expiringMultiPartyCreator =
-      ExpiringMultiPartyCreator(address: empCAddress, client: _controller.client);
+      ExpiringMultiPartyCreator(
+          address: empCAddress, client: Controller.client);
+
+  late LongShortPair _longShortPair =
+      LongShortPair(address: lspCAddress, client: Controller.client);
 
   late ExpiringMultiParty _expiringMultiParty =
-      ExpiringMultiParty(address: lspCAddress, client: _controller.client);
-  DEXController _DEX = DEXController();
+      ExpiringMultiParty(address: lspCAddress, client: Controller.client);
+
+  APTBehavior() {}
+
   // late LongShortPair _longShortPair =
   //     LongShortPair(address: lspCAddress, client: client);
   // Actionables
 
   Future<String> mint(int collateralAmount, int numTokens) async {
+    
     String txString;
     Athlete athlete = Athlete(
         name: "Kevin Kamto",
@@ -55,14 +62,11 @@ class APTBehavior extends Controller {
     String syntheticName = athlete.name;
 
     String syntheticSymbol = "ax{$athlete.name}";
-
-    EthereumAddress collateralToken = axTokenAddr;
-
+    EthereumAddress collateralToken = AXT.mumbaiAddress;
     EthereumAddress financialProductLibrary =
         EthereumAddress.fromHex("0xC7B7029373f504949553106c9eb2dAfDd48eF086");
-
-    BigInt prepaidProposerReward = BigInt.zero;
     Uint8List customAncillaryData = Uint8List.fromList(utf8.encode('0'));
+    BigInt prepaidProposerReward = BigInt.zero;
 
     txString = await _longShortPairCreator.createLongShortPair(
         expirationTimestamp,
@@ -74,34 +78,46 @@ class APTBehavior extends Controller {
         financialProductLibrary,
         customAncillaryData,
         prepaidProposerReward,
-        credentials: _controller.credentials);
+        credentials: Controller.credentials);
     return txString;
   }
 
-  Future<void> redeem(int numTokens) async {
+  Future<String> redeem(int numTokens) async {
+    String txString;
+    BigInt theTokens = BigInt.from(numTokens);
     try {
-      _expiringMultiParty.redeem(numTokens, credentials: _controller.credentials);
+      txString = await _longShortPair.redeem(theTokens,
+          credentials: Controller.credentials);
     } catch (e) {
+      txString = "unable to redeem";
       print("You are not the token sponsor");
     }
+
+    return txString;
   }
 
   Future<String> buy(EthereumAddress aptAddress, double numTokens) async {
     String txString;
     try {
-      print("Attempting to buy APT");
-      return _DEX.swapFromAX(aptAddress, BigInt.from(numTokens));
+      txString =
+          await _swapBehavior.swapFromAX(aptAddress, BigInt.from(numTokens));
+      print("[console] bought $aptAddress at ");
     } catch (e) {
+      txString = "Unable to buy $aptAddress";
       print("Unable to buy tokens \n $e");
-      return _DEX.swapFromAX(aptAddress, BigInt.from(numTokens));
     }
+
+    return txString;
   }
 
-  Future<void> sell(EthereumAddress aptAddress, double numTokens) async {
+  Future<String> sell(EthereumAddress aptAddress, double numTokens) async {
+    String txString;
     try {
-      _DEX.swapforAX(aptAddress, BigInt.from(numTokens));
+      txString =
+          await _swapBehavior.swapforAX(aptAddress, BigInt.from(numTokens));
     } catch (e) {
-      print('Unable to sell tokens \n $e');
+      txString = "Unable to sell $aptAddress";
     }
+    return txString;
   }
 }
