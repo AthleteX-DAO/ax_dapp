@@ -12,6 +12,9 @@ class SXT extends Token {
   SXT(String name, String ticker)
       : super(name, ticker) {
     address = mumbaiAddress;
+        if (icon != null) {
+      super.icon = icon;
+    }
     updateERC20(address);
   }
 
