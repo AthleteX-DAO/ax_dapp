@@ -18,11 +18,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
-      //margin: EdgeInsets.only(bottom: 100),
       width: MediaQuery.of(context).size.width*0.8,
       height: MediaQuery.of(context).size.height*0.45+150,
-      //height: MediaQuery.of(context).size.height*0.45+40,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +161,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
 
     return Container(
-      color: Colors.red,
+      // color: Colors.red,
       //padding: EdgeInsets.only(bottom: 40.0),
       width: MediaQuery.of(context).size.width*0.8,
       height: MediaQuery.of(context).size.height*0.35,
@@ -242,7 +239,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
 
     return Container(
-      color: Colors.red,
+      // color: Colors.red,
       margin: EdgeInsets.only(bottom: 100.0),
       width: MediaQuery.of(context).size.width*0.8,
       height: MediaQuery.of(context).size.height*0.25,

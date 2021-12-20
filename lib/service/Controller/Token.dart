@@ -7,7 +7,7 @@ import '../../contracts/ERC20.g.dart';
 class Token {
   String name, ticker;
   AssetImage? icon;
-  EthereumAddress address = EthereumAddress.fromHex("000000000000000000");
+  EthereumAddress address = EthereumAddress.fromHex("0000000000000000000000000000000000000000");
   late ERC20 erc20;
   get client => Controller.client;
   
