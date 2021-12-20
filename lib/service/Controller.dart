@@ -1,68 +1,66 @@
+import 'dart:html';
 import 'dart:math';
-
-import 'package:flutter_web3/ethereum.dart';
-import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:web3dart/browser.dart';
-import 'dart:html';
-import 'package:ae_dapp/contracts/StakingRewards.g.dart';
-import 'package:ae_dapp/contracts/AthleteX.g.dart';
+import 'package:bip39/bip39.dart'
+    as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
 class Controller {
-  // RPC & WS are now linked to MATIC-Testnet
+  static var client;
+  static var credentials;
+  static var publicAddress;
+  Controller._privateConstructor();
 
-  final String _rpcUrl = 'https://rpc-mumbai.matic.today';
-  final String _wsUrl = 'wss://rpc-mumbai.matic.today';
-  // Placeholder for ethers library (window.ethereum)
-  static const ACTIVE_CHAIN_ID = 80001;
-  var eth;
-  late Web3Client _client;
-  late Credentials _credentials;
-  bool ethIsEnabled = false;
+  static final Controller _instance = Controller._privateConstructor();
+
+  /// VARIABLES
+  var rng = new Random().nextInt(999);
+  var mnemonic;
+  var privateAddress;
   bool activeChain = false;
-  // Defined Staking
-  EthereumAddress stakingAddr =
-      EthereumAddress.fromHex("0x9CCf92AF15B81ba843a7dF58693E7125196F30aB");
-// Defined AthelteX
-  final EthereumAddress axTokenAddr =
-      EthereumAddress.fromHex("0x8c086885624c5b823cc6fca7bff54c454d6b5239");
+  static const MAINNET_CHAIN_ID = 137;
+  String mainRPCUrl = "https://polygon-rpc.com";
+  String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
 
-  // Contract Instantiation
-  late StakingRewards _stakingRewards;
-  late AthleteX _athleteX;
-
-  Controller() {
-    // TODO - init controller variables
-    init();
+  set axTokenAddress(EthereumAddress tokenAddress) {
+    axTokenAddress = EthereumAddress.fromHex("${tokenAddress.hex}");
   }
 
-  void init() async {
-    _client = Web3Client(_rpcUrl, new Client());
-    if (window.ethereum != null) {
-      updateClient(_client);
-      updateCredentials(await window.ethereum!.requestAccount());
-    }
+  factory Controller() {
+    return _instance;
   }
 
-  // Getters
-  Web3Client get client => _client;
-  Credentials get credentials => _credentials;
-
-  void updateClient(Web3Client _newClient) {
-    _client = _newClient;
+  void createNewMnemonic() {
+    mnemonic = bip39.generateMnemonic();
   }
 
-  void updateCredentials(Credentials _newCredentials) async {
-    _credentials = _newCredentials;
+  Future<String> retrieveWallet([String? _mnemonic]) async {
+    mnemonic = _mnemonic;
+    privateAddress = bip39.mnemonicToSeedHex(mnemonic);
+    credentials = EthPrivateKey.fromHex(privateAddress);
+    return mnemonic;
   }
 
-  bool checkCorrectChain() {
-    // ignore: unrelated_type_equality_checks
-    _client.getNetworkId() == ACTIVE_CHAIN_ID
-        ? activeChain = true
-        : activeChain = false;
+  // Web functionality
+  void connect() async {
+    final eth = window.ethereum;
+    var newClient = Web3Client.custom(eth!.asRpcService());
+    final credentials = await eth.requestAccount();
+    print("[Console] connecting to the decentralized web!");
+    update(newClient, credentials);
+  }
 
-    return activeChain;
+  void update(Web3Client cl, Credentials cr) async {
+    client = cl;
+    credentials = cr;
+    publicAddress = await cr.extractAddress();
+    print("[Console] updated client: ${cl} and credentials: ${cr}");
+  }
+
+  void viewTx(String txAddress) async {
+    String urlString = 'https://polygonscan.com/tx/$txAddress';
+    await launch(urlString);
   }
 
   // Viewables
