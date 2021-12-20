@@ -1,3 +1,4 @@
+import 'package:ae_dapp/service/Controller/APTBehavior.dart';
 import 'package:ae_dapp/service/Controller/Token.dart';
 import 'package:web3dart/credentials.dart';
 
@@ -5,20 +6,28 @@ import 'package:web3dart/credentials.dart';
 
 class APT extends Token {
   late final EthereumAddress tokenContract; //EMP
+  APTBehavior _aptBehavior = APTBehavior();
   EthereumAddress? optionsContract; //LSP
   late final String name;
 
   var bookPrice, marketPrice;
-  var address;
-  var icon;
 
-  var ticker;
 
-  APT(this.name, this.ticker, this.icon)
-      : super(super.name, super.ticker, super.icon);
+  APT(String name, String ticker) : super(name, ticker);
 
-  buy() {}
-  sell() {}
-  mint() {}
-  redeem() {}
+  buy(double buyAmount) {
+    _aptBehavior.buy(address, buyAmount);
+  }
+
+  sell(double sellAmount) {
+    _aptBehavior.sell(address, sellAmount);
+  }
+
+  mint(int collateral, int mintAmount) {
+    _aptBehavior.mint(collateral, mintAmount);
+  }
+
+  redeem(int redeemAmount) {
+    _aptBehavior.redeem(redeemAmount);
+  }
 }
