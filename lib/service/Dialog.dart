@@ -2041,8 +2041,7 @@ Dialog swapDialog(BuildContext context, String token1, String token2){
                           context: context,
                           builder: (BuildContext
                                   context) =>
-                              confirmTransaction(
-                                  context));
+                              confirmTransaction(context, true, ""));
                     },
                     child: const Text(
                       "Confirm Swap",

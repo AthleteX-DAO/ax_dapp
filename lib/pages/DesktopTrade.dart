@@ -1,6 +1,9 @@
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/AthleteList.dart';
+import 'package:ae_dapp/service/Controller/AXT.dart';
+import 'package:ae_dapp/service/Controller/SXT.dart';
+import 'package:ae_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
@@ -16,13 +19,13 @@ class _DesktopTradeState extends State<DesktopTrade> {
   double fromAmount = 0.0;
   double toAmount = 0.0;
   bool allFarms = true;
-  late Coin topCoin;
-  late Coin bottomCoin;
+  // late Token topCoin;
+  // late Token bottomCoin;
   
-  List<Coin> coins = [
-    Coin("AthleteX", "AX", AssetImage('../assets/images/x.png')),
-    Coin("SportX", "SX", AssetImage('../assets/images/x.png')),
-    Coin("Matic/Polygon", "Matic", AssetImage('../assets/images/x.png')),
+  List<Token> coins = [
+    AXT("AthleteX", "AX", AssetImage('../assets/images/x.png')),
+    SXT("SportX", "SX", AssetImage('../assets/images/x.png')),
+    Token("Matic/Polygon", "Matic", AssetImage('../assets/images/x.png')),
   ];
 
   @override
@@ -66,7 +69,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             // to-dropdown
-                            createTokenButton(topCoin),
+                            createTokenButton(Token("noneYet", "nada")),
                             Container(
                                 width: 110,
                                 child: Row(
@@ -151,7 +154,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             // dropdown
-                            createTokenButton(bottomCoin),
+                            createTokenButton(Token("noneYet", "nada")),
                             // Amount box
                             SizedBox(
                               width: 70,
@@ -280,7 +283,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                     default:
                                       AthleteList.list = snapshot.data;
                                       for (Athlete ath in AthleteList.list)
-                                        coins.add(Coin(
+                                        coins.add(Token(
                                             ath.name + " APT",
                                             ath.name + " APT",
                                             AssetImage(
@@ -301,7 +304,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
             )));
   }
 
-  Widget createTokenElement(Coin coin) {
+  Widget createTokenElement(Token coin) {
     return Container(
         height: 50,
         child: TextButton(
@@ -319,7 +322,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     height: 30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: coin.icon,
+                        image: coin.icon!,
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -352,7 +355,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
             ))));
   }
 
-  Widget createTokenButton(Coin coin) {
+  Widget createTokenButton(Token coin) {
     BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (coin.ticker == "Select a Token")
       decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
@@ -428,12 +431,4 @@ class _DesktopTradeState extends State<DesktopTrade> {
       border: Border.all(color: borCol, width: borWid)
     );
   }
-}
-
-class Coin {
-  String name;
-  String ticker;
-  AssetImage icon;
-
-  Coin(this.name, this.ticker, this.icon);
 }
