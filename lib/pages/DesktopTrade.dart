@@ -376,8 +376,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
             ))));
   }
 
-  void dialog(BuildContext context, double _height, double _width,
-      BoxDecoration _decoration, Widget _child) {
+  void dialog(BuildContext context, double _height, double _width, BoxDecoration _decoration, Widget _child) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -422,12 +421,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
       );
   }
 
-  BoxDecoration boxDecoration(
-      Color col, double rad, double borWid, Color borCol) {
+  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
-        color: col,
-        borderRadius: BorderRadius.circular(rad),
-        border: Border.all(color: borCol, width: borWid));
+      color: col,
+      borderRadius: BorderRadius.circular(rad),
+      border: Border.all(color: borCol, width: borWid)
+    );
   }
 }
 
