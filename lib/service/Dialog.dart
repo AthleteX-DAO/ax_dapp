@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:ae_dapp/service/Controller.dart';
+import 'package:ae_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:flutter/gestures.dart';
@@ -1648,7 +1649,7 @@ Dialog removeDialog(BuildContext context) {
   );
 }
 
-Dialog swapDialog(BuildContext context, String token1, String token2){
+Dialog swapDialog(BuildContext context, Token token1, Token token2){
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
@@ -1734,7 +1735,7 @@ Dialog swapDialog(BuildContext context, String token1, String token2){
                   children: <Widget>[
                     Container(
                       child: Text(
-                        "Tom Brady APT",
+                        token1.name,
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,
@@ -1808,7 +1809,7 @@ Dialog swapDialog(BuildContext context, String token1, String token2){
                   children: <Widget>[
                     Container(
                       child: Text(
-                        "Lebron James APT",
+                        token2.name,
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,
@@ -1865,7 +1866,7 @@ Dialog swapDialog(BuildContext context, String token1, String token2){
                     ),
                     Container(
                       child: Text(
-                        "1.2 T.B.APT per L.J.APT",
+                        "1.2 "+token1.ticker+" per "+token2.ticker,
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.white,
@@ -1940,7 +1941,7 @@ Dialog swapDialog(BuildContext context, String token1, String token2){
                     ),
                     Container(
                       child: Text(
-                        "8.2 L.J.APT",
+                        "8.2 "+token2.ticker,
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.grey[600],
@@ -2003,7 +2004,7 @@ Dialog swapDialog(BuildContext context, String token1, String token2){
                   margin:
                       EdgeInsets.only(top: 15.0),
                   child: Text(
-                    "7.98 Lebron James APT",
+                    "7.98 "+token2.name,
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,
