@@ -1,13 +1,11 @@
 import 'dart:ui';
+import 'package:ae_dapp/service/Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_web3/ethereum.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
-import 'Controller/Controller.dart';
-import 'Controller/APTController.dart';
 
 Dialog wrongNetworkDialog(BuildContext context) {
   return Dialog(
@@ -115,6 +113,8 @@ Dialog walletDialog(BuildContext context) {
                     Colors.transparent, 100, 2, Colors.grey[400]!),
                 child: TextButton(
                   onPressed: () {
+                    Controller _controller = Controller();
+                    _controller.connect();
                     Navigator.pop(context);
                     showDialog(
                         context: context,
@@ -339,7 +339,6 @@ Dialog depositDialog(BuildContext context) {
 Dialog buyDialog(BuildContext context, Athlete athlete) {
   double wid = 0.225;
   double hgt = 0.6;
-  APTController _apt = APTController();
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
@@ -663,13 +662,9 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                         String txString =
                             "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
                         try {
-                          String txString =
-                              await APTController().buy(aptAddress, athlete.war[0]);
                           confirmed = true;
                         } catch (e) {
                           confirmed = false;
-                          String txString =
-                              await APTController().buy(aptAddress, athlete.war[0]);
                         }
                         showDialog(
                             context: context,
@@ -1185,7 +1180,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(context, true, ""));
                       },
                       child: Text(
                         "Confirm",
@@ -1373,7 +1368,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(context, true, ""));
                       },
                       child: Text(
                         "Confirm",
@@ -1391,7 +1386,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   );
 }
 
-Dialog confirmTransaction(BuildContext context) {
+Dialog confirmTransaction(
+    BuildContext context, bool IsConfirmed, String txString) {
   return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
@@ -1548,7 +1544,10 @@ Dialog removeDialog(BuildContext context) {
                     SizedBox(
                       width: 70,
                       child: TextFormField(
-                        onChanged: (value) {amount = double.parse(value); print(amount);},
+                        onChanged: (value) {
+                          amount = double.parse(value);
+                          print(amount);
+                        },
                         style: textStyle(Colors.grey[400]!, 22, false, false),
                         decoration: InputDecoration(
                           hintText: '0.00',

@@ -603,8 +603,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                                         context: context,
                                                         builder: (BuildContext
                                                                 context) =>
-                                                            confirmTransaction(
-                                                                context));
+                                                            confirmTransaction(context, true, ""));
                                                   },
                                                   child: const Text(
                                                     "Confirm Swap",
