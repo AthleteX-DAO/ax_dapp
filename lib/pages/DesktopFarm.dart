@@ -175,12 +175,195 @@ class _DesktopFarmState extends State<DesktopFarm> {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           physics: BouncingScrollPhysics(),
-          itemCount: AthleteList.list.length,
+          itemCount: AthleteList.list.length+1,
           itemBuilder: (context, index) {
+            if(index == 0){
+              return createAXFarmCard(farmList[index]);
+            }
             return createMyFarmWidget(farmList[index]);
           }
         )
       )
+    );
+  }
+
+  // First card of the my farms page is unique
+  Widget createAXFarmCard(Farm farm){
+    TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+
+    return Row(
+      children: <Widget> [
+        Container(
+          height: MediaQuery.of(context).size.height*0.35,
+          width: MediaQuery.of(context).size.width*0.285,
+          decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              // Farm Title
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      farm.name,
+                      style: textStyle(Colors.white, 20, false, false)
+                    ),
+                  ]
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child:Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Total APY",
+                      style: txStyle,
+                    ),
+                    Text(
+                      "12%",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "TVL",
+                      style: txStyle
+                    ),
+                    Text(
+                      "\$1,000,000",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "LP APY",
+                      style: txStyle
+                    ),
+                    Text(
+                      "5%",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                child: Divider(
+                  thickness: 0.35,
+                  color: Colors.grey[400],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Your Position",
+                      style: textStyle(Colors.white, 20, false, false)
+                    ),
+                  ]
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "AX provided",
+                      style: txStyle,
+                    ),
+                    Text(
+                      "1,000 AX",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Rewards Earned",
+                      style: txStyle,
+                    ),
+                    Text(
+                      "100 AX",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Total AX available (Staked + Earned)",
+                      style: txStyle
+                    ),
+                    Text(
+                      "1,100 AX",
+                      style: txStyle
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      width: 120,
+                      height: 35,
+                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                        child: Text(
+                          "Deposit",
+                          style: textStyle(Colors.black, 14, true, false)
+                        )
+                      )
+                    ),
+                    Container(
+                      width: 120,
+                      height: 35,
+                      decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
+                        child: Text(
+                          "Remove",
+                          style: textStyle(Colors.amber[600]!, 14, true, false)
+                        )
+                      )
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: 50),
+      ]
     );
   }
 
@@ -459,11 +642,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "AX provided",
+                      "LP tokens provided",
                       style: txStyle,
                     ),
                     Text(
-                      "1,000 AX",
+                      "100 LP",
                       style: txStyle
                     )
                   ],
@@ -480,22 +663,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     ),
                     Text(
                       "100 AX",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Total AX available (Staked + Earned)",
-                      style: txStyle
-                    ),
-                    Text(
-                      "1,100 AX",
                       style: txStyle
                     )
                   ],
