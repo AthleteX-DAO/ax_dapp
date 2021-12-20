@@ -23,4 +23,9 @@ class Token {
     erc20 = ERC20(address: address, client: client);
   }
 
+  Future<String> approve(EthereumAddress dest, double amount) {
+    // Both need to happen for any transaction
+    BigInt amountToApprove = BigInt.from(amount);
+    return erc20.approve(dest, amountToApprove, credentials: Controller.credentials);
+  }
 }
