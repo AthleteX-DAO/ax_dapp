@@ -3,6 +3,7 @@ import 'package:ae_dapp/pages/testPage.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/AthleteList.dart';
+import 'package:ae_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 
 class DesktopScout extends StatefulWidget {
@@ -323,7 +324,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               height: 30,
                   decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => buyDialog(context, athlete)),
                     child: Text(
                       "Buy",
                       style: textStyle(Colors.black, 16, false, false)
@@ -339,7 +340,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                   height: 30,
                   decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => mintDialog(context, athlete)),
                     child: Text(
                       "Mint",
                       style: textStyle(Colors.white, 16, false, false)
