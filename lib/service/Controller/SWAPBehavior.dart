@@ -6,6 +6,8 @@ import '../../contracts/Dex.g.dart';
 import '../../contracts/APTRouter.g.dart';
 import 'package:web3dart/web3dart.dart';
 
+import 'AXT.dart';
+
 class SWAPBehavior{
 
   final EthereumAddress _dexAddress =
@@ -63,7 +65,7 @@ class SWAPBehavior{
   Future<String> swapforAX(EthereumAddress tknA, BigInt amountIn) async {
     EthereumAddress to = await Controller.credentials.extractAddress();
     String txString;
-    List<EthereumAddress> path = [tknA, axTokenAddr];
+    List<EthereumAddress> path = [tknA, AXT.mumbaiAddress];
     txString = await _aptRouter.swapExactTokensForAVAX(
         amountIn, BigInt.one, path, to, deadline,
         credentials: Controller.credentials);
@@ -72,7 +74,7 @@ class SWAPBehavior{
 
   Future<String> swapFromAX(EthereumAddress tknA, BigInt amountIn) async {
     String txString;
-    List<EthereumAddress> path = [tknA, axTokenAddr];
+    List<EthereumAddress> path = [tknA, AXT.mumbaiAddress];
     EthereumAddress to = await Controller.credentials.extractAddress();
     txString = await _aptRouter.swapExactAVAXForTokens(
         amountOutMin, path, to, deadline,

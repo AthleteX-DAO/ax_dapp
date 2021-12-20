@@ -21,7 +21,6 @@ class AthletePage extends StatefulWidget {
 
 class _AthletePageState extends State<AthletePage> {
   Athlete athlete;
-  APT athleteAPT;
   int listView = 0;
   _AthletePageState(this.athlete);
 
