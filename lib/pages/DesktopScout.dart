@@ -151,38 +151,10 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   Widget buildListview() {
-    if (AthleteList.list.length == 0) {
-      return Container(
-        height: MediaQuery.of(context).size.height*0.6,
-        child: FutureBuilder<dynamic>(
-          future: AthleteApi.getAthletesLocally(context),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                // return circle indicator for progress
-                return Center(
-                  child:
-                      CircularProgressIndicator(),
-                );
-              default:
-                nflList = snapshot.data;
-                AthleteList.list = nflList;
-                return ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: AthleteList.list.length,
-                  itemBuilder: (context, index) {
-                    final athlete = AthleteList.list[index];
-                    return createListCards(athlete);
-                  }
-                );
-            }
-          }
-        )
-      );
-    }
-    // if athleteList is not empty
+    if (nflList.length == 0)
+      nflList = AthleteList.list;
     // all athletes
-    else if (sportState == 0)
+    if (sportState == 0)
       return Container(
         height: MediaQuery.of(context).size.height*0.6,
         child: ListView.builder(
