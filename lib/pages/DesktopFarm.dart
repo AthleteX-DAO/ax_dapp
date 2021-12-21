@@ -111,49 +111,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
       Farm("AX Farm"),
     ];
 
-    if (AthleteList.list.length == 0)
-      return Container(
-        width: MediaQuery.of(context).size.width*0.8,
-        height: MediaQuery.of(context).size.height/4,
-        child: FutureBuilder<dynamic>(
-          future: AthleteApi.getAthletesLocally(context),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                // return circle indicator for progress
-                return Center(
-                  child:
-                      CircularProgressIndicator(),
-                );
-              default:
-                AthleteList.list = snapshot.data;
-                for (Athlete ath in AthleteList.list)
-                  farmList.add(Farm(
-                    "AX - " + ath.name + " APT"
-                  )
-                );
-                return ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(
-                    dragDevices: {
-                      PointerDeviceKind.mouse,
-                      PointerDeviceKind.touch,
-                    },
-                  ),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: BouncingScrollPhysics(),
-                    itemCount: AthleteList.list.length,
-                    itemBuilder: (context, index) {
-                      return createMyFarmWidget(farmList[index]);
-                    }
-                  )
-                );
-            }
-          }
-        )
-      );
-
-    
     for (Athlete ath in AthleteList.list)
       farmList.add(Farm(
         "AX - " + ath.name + " APT"
@@ -372,49 +329,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
       Farm("AX Farm"),
     ];
 
-    if (AthleteList.list.length == 0)
-      return Container(
-        width: MediaQuery.of(context).size.width*0.8,
-        height: MediaQuery.of(context).size.height/4,
-        child: FutureBuilder<dynamic>(
-          future: AthleteApi.getAthletesLocally(context),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                // return circle indicator for progress
-                return Center(
-                  child:
-                      CircularProgressIndicator(),
-                );
-              default:
-                AthleteList.list = snapshot.data;
-                for (Athlete ath in AthleteList.list)
-                  farmList.add(Farm(
-                    "AX - " + ath.name + " APT"
-                  )
-                );
-                return ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(
-                    dragDevices: {
-                      PointerDeviceKind.mouse,
-                      PointerDeviceKind.touch,
-                    },
-                  ),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: BouncingScrollPhysics(),
-                    itemCount: AthleteList.list.length,
-                    itemBuilder: (context, index) {
-                      return createFarmWidget(farmList[index]);
-                    }
-                  )
-                );
-            }
-          }
-        )
-      );
-
-    
     for (Athlete ath in AthleteList.list)
       farmList.add(Farm(
         "AX - " + ath.name + " APT"

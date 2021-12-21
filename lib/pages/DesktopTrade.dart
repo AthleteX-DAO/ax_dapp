@@ -254,77 +254,75 @@ class _DesktopTradeState extends State<DesktopTrade> {
   }
 
   Dialog createTokenList(BuildContext context, int tknNum) {
-    return Dialog(
-        backgroundColor: Colors.grey[900],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Container(
-            width: 350,
-            height: MediaQuery.of(context).size.height * .65,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                // column of elements
-                Container(
-                    height: MediaQuery.of(context).size.height * .625,
-                    width: 300,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                  height: 30,
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Token Name",
-                                      style: textStyle(Colors.grey[400]!, 16,
-                                          false, false))),
-                              Container(
-                                  child: TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Icon(Icons.close,
-                                    color: Colors.grey[400], size: 30),
-                              ))
-                            ]),
-                        Container(
-                          child: Divider(thickness: 1, color: Colors.grey[400]),
-                        ),
-                        Container(
-                            height:
-                                MediaQuery.of(context).size.height * .625 - 100,
-                            child: FutureBuilder<dynamic>(
-                                future: AthleteApi.getAthletesLocally(context),
-                                builder: (context, snapshot) {
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.waiting:
-                                      // return circle indicator for progress
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    default:
-                                      AthleteList.list = snapshot.data;
-                                      for (Athlete ath in AthleteList.list)
-                                        tokens.add(Token(
-                                            ath.name + " APT",
-                                            ath.name + " APT",
-                                            AssetImage(
-                                                '../assets/images/apt.png')));
+    for (Athlete ath in AthleteList.list)
+      tokens.add(Token(
+        ath.name + " APT",
+        ath.name + " APT",
+        AssetImage('../assets/images/apt.png')
+      )
+    );
 
-                                      return ListView.builder(
-                                          physics: BouncingScrollPhysics(),
-                                          itemCount: tokens.length,
-                                          itemBuilder: (context, index) {
-                                            return createTokenElement(
-                                                tokens[index], tknNum);
-                                          });
-                                  }
-                                }))
-                      ],
-                    ))
-              ],
-            )));
+    return Dialog(
+      backgroundColor: Colors.grey[900],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Container(
+        width: 350,
+        height: MediaQuery.of(context).size.height * .65,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            // column of elements
+            Container(
+              height: MediaQuery.of(context).size.height * .625,
+              width: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        height: 30,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Token Name",
+                          style: textStyle(Colors.grey[400]!, 16, false, false)
+                        )
+                      ),
+                      Container(
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.grey[400],
+                            size: 30
+                          ),
+                        )
+                      )
+                    ]
+                  ),
+                  Container(
+                    child: Divider(thickness: 1, color: Colors.grey[400]),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * .625 - 100,
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount: tokens.length,
+                      itemBuilder: (context, index) {
+                        return createTokenElement(tokens[index], tknNum);
+                      }
+                    )
+                  )
+                ],
+              )
+            )
+          ],
+        )
+      )
+    );
   }
 
   Widget createTokenElement(Token token, int tknNum) {
