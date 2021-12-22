@@ -17,96 +17,16 @@ class _DesktopFarmState extends State<DesktopFarm> {
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width*0.8,
-      height: MediaQuery.of(context).size.height*0.45+150,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          (allFarms) ? Container(
-            height: MediaQuery.of(context).size.height*0.15,
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              "Participating Farms",
-              style: textStyle(Colors.white, 24, true, false)
-            )
-          )
-          : Container(
-            height: MediaQuery.of(context).size.height*0.15,
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              "My Farms",
-              style: textStyle(Colors.white, 24, true, false)
-            )
-          ),
-          Container(
-            width: 200,
-            height: 40,
-            decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  if (allFarms)
-                    Container(
-                      width: 85,
-                      decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "All Farms",
-                          style: textStyle(Colors.white, 16, true, false)
-                        )
-                      )
-                    ),
-                  if (allFarms)
-                    Container(
-                      width: 90,
-                      decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
-                      child: TextButton(
-                        onPressed: () {setState(() {allFarms = false;});},
-                        child: Text(
-                          "My Farms",
-                          style: textStyle(Colors.white, 16, true, false)
-                        )
-                      )
-                    ),
-                  if (!allFarms)
-                    Container(
-                      width: 85,
-                      decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
-                      child: TextButton(
-                        onPressed: () {setState(() {allFarms = true;});},
-                        child: Text(
-                          "All Farms",
-                          style: textStyle(Colors.white, 16, true, false)
-                        )
-                      )
-                    ),
-                  if (!allFarms)
-                    Container(
-                      width: 90,
-                      decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "My Farms",
-                          style: textStyle(Colors.white, 16, true, false)
-                        )
-                      )
-                    ),
-                ],
-              )
-            )
-          ),
-          (allFarms) ? createFarmList() : createMyFarmList()
-        ],
+    return Center(
+      child: Container( 
+        width: MediaQuery.of(context).size.width*0.8,
+        height: MediaQuery.of(context).size.height*0.45+170,
+        child: (allFarms) ? allFarmLayout() : myFarmLayout()
       )
     );
   }
 
-  Widget createMyFarmList() {
+  Widget allFarmLayout() {
     List<Farm> farmList = [
       Farm("AX Farm"),
     ];
@@ -117,30 +37,158 @@ class _DesktopFarmState extends State<DesktopFarm> {
       )
     );
 
-    return Container(
-      // color: Colors.red,
-      //padding: EdgeInsets.only(bottom: 40.0),
-      width: MediaQuery.of(context).size.width*0.8,
-      height: MediaQuery.of(context).size.height*0.35,
-      child: ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(
-          dragDevices: {
-            PointerDeviceKind.mouse,
-            PointerDeviceKind.touch,
-          },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(height: MediaQuery.of(context).size.height*0.1,),
+        Container(
+          height: 45,
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            "Participating Farms",
+            style: textStyle(Colors.white, 24, true, false)
+          )
         ),
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          physics: BouncingScrollPhysics(),
-          itemCount: AthleteList.list.length+1,
-          itemBuilder: (context, index) {
-            if(index == 0){
-              return createAXFarmCard(farmList[index]);
-            }
-            return createMyFarmWidget(farmList[index]);
-          }
+        Container(
+          width: 200,
+          height: 40,
+          decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                width: 85,
+                decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "All Farms",
+                    style: textStyle(Colors.white, 16, true, false)
+                  )
+                )
+              ),
+              Container(
+                width: 90,
+                decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
+                child: TextButton(
+                  onPressed: () {setState(() {allFarms = false;});},
+                  child: Text(
+                    "My Farms",
+                    style: textStyle(Colors.white, 16, true, false)
+                  )
+                )
+              )
+            ]
+          )
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width*0.8,
+          height: MediaQuery.of(context).size.height*0.35,
+          child: ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(
+              dragDevices: {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+              },
+            ),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              physics: BouncingScrollPhysics(),
+              itemCount: AthleteList.list.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: MediaQuery.of(context).size.height*0.35,
+                  alignment: Alignment.topLeft,
+                  child: createFarmWidget(farmList[index]));
+              }
+            )
+          )
         )
+      ]
+    );
+  }
+
+  Widget myFarmLayout() {
+    List<Farm> farmList = [
+      Farm("AX Farm"),
+    ];
+
+    for (Athlete ath in AthleteList.list)
+      farmList.add(Farm(
+        "AX - " + ath.name + " APT"
       )
+    );
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(height: MediaQuery.of(context).size.height*0.1,),
+        Container(
+          height: 45,
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            "My Farms",
+            style: textStyle(Colors.white, 24, true, false)
+          )
+        ),
+        Container(
+          width: 200,
+          height: 40,
+          decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                width: 85,
+                decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
+                child: TextButton(
+                  onPressed: () {setState(() {allFarms = true;});},
+                  child: Text(
+                    "All Farms",
+                    style: textStyle(Colors.white, 16, true, false)
+                  )
+                )
+              ),
+              Container(
+                width: 90,
+                decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "My Farms",
+                    style: textStyle(Colors.white, 16, true, false)
+                  )
+                )
+              ),
+            ],
+          )
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width*0.8,
+          height: MediaQuery.of(context).size.height*0.35,
+          child: ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(
+              dragDevices: {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+              },
+            ),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              physics: BouncingScrollPhysics(),
+              itemCount: AthleteList.list.length+1,
+              itemBuilder: (context, index) {
+                if(index == 0){
+                  return createAXFarmCard(farmList[index]);
+                }
+                return createMyFarmWidget(farmList[index]);
+              }
+            )
+          )
+        )
+      ]
     );
   }
 
@@ -324,49 +372,14 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
   }
 
-  Widget createFarmList() {
-    List<Farm> farmList = [
-      Farm("AX Farm"),
-    ];
-
-    for (Athlete ath in AthleteList.list)
-      farmList.add(Farm(
-        "AX - " + ath.name + " APT"
-      )
-    );
-
-    return Container(
-      // color: Colors.red,
-      margin: EdgeInsets.only(bottom: 100.0),
-      width: MediaQuery.of(context).size.width*0.8,
-      height: MediaQuery.of(context).size.height*0.25,
-      child: ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(
-          dragDevices: {
-            PointerDeviceKind.mouse,
-            PointerDeviceKind.touch,
-          },
-        ),
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          physics: BouncingScrollPhysics(),
-          itemCount: AthleteList.list.length,
-          itemBuilder: (context, index) {
-            return createFarmWidget(farmList[index]);
-          }
-        )
-      )
-    );
-  }
-
   Widget createFarmWidget(Farm farm) {
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
 
     return Row(
       children: <Widget> [
         Container(
-          height: MediaQuery.of(context).size.height/4,
-          width: MediaQuery.of(context).size.width*0.25,
+          height: MediaQuery.of(context).size.height*.25,
+          width: 450,
           padding: EdgeInsets.symmetric(vertical: 22.5, horizontal: 50),
           decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
           child: Column(

@@ -159,10 +159,21 @@ class _DesktopTradeState extends State<DesktopTrade> {
               Column(children: <Widget>[
                 //Down arrow
                 Container(
-                  child: Icon(
-                    Icons.arrow_downward,
-                    size: 30,
-                    color: Colors.grey[400],
+                  child: TextButton(
+                    onPressed: () {
+                      if (tkn2 != null) {
+                        Token tmpTkn = tkn1!;
+                        setState(() {
+                          tkn1 = tkn2;
+                          tkn2 = tmpTkn;
+                        });
+                      }
+                    },
+                    child: Icon(
+                      Icons.arrow_downward,
+                      size: 30,
+                      color: Colors.grey[400],
+                    )
                   ),
                 ),
                 //To text
@@ -419,7 +430,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 Icons.keyboard_arrow_down,
                 color: Colors.white,
                 size: 25
-                )
+              )
             ],
           )
         )
