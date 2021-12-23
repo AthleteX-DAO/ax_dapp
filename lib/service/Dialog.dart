@@ -354,22 +354,23 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-                width: MediaQuery.of(context).size.width * (wid - 0.04),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Buy " + athlete.name + " APT",
-                        style: textStyle(Colors.white, 20, false, false)),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onPressed: () => Navigator.pop(context),
+              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Buy " + athlete.name + " APT",
+                      style: textStyle(Colors.white, 20, false, false)),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
                     ),
-                  ],
-                )),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            ),
             Container(
               width: MediaQuery.of(context).size.width * (wid - 0.04),
               child: RichText(
@@ -413,76 +414,77 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
               ),
             ),
             Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  child: Text(
-                    "Input AX:",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(14.0),
-                    border: Border.all(
-                      color: Colors.grey[400]!,
-                      width: 0.5,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          "AX",
-                          style: textStyle(Colors.white, 15, false, false),
-                        ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    child: Text(
+                      "Input AX:",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey[600],
                       ),
-                      Container(
-                        height: 18,
-                        width: 35,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                        child: TextButton(
-                          onPressed: () {},
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(14.0),
+                      border: Border.all(
+                        color: Colors.grey[400]!,
+                        width: 0.5,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
                           child: Text(
-                            "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            "AX",
+                            style: textStyle(Colors.white, 15, false, false),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 70,
-                        child: TextFormField(
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
-                          decoration: InputDecoration(
-                            hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
-                            contentPadding: const EdgeInsets.all(9),
-                            border: InputBorder.none,
+                        Container(
+                          height: 18,
+                          width: 35,
+                          decoration: boxDecoration(
+                              Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Max",
+                              style:
+                                  textStyle(Colors.grey[400]!, 9, false, false),
+                            ),
                           ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 70,
+                          child: TextFormField(
+                            style: textStyle(Colors.grey[400]!, 22, false, false),
+                            decoration: InputDecoration(
+                              hintText: '0.00',
+                              hintStyle:
+                                  textStyle(Colors.grey[400]!, 22, false, false),
+                              contentPadding: const EdgeInsets.all(9),
+                              border: InputBorder.none,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              )
+            ),
             Container(
               child: Divider(
                 thickness: 0.35,
@@ -1011,8 +1013,8 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
 }
 
 Dialog redeemDialog(BuildContext context, Athlete athlete) {
-  double wid = 0.2;
-  double hgt = 0.45;
+  double wid = 0.225;
+  double hgt = 0.6;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1200,8 +1202,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
 }
 
 Dialog mintDialog(BuildContext context, Athlete athlete) {
-  double wid = 0.2;
-  double hgt = 0.45;
+  double wid = 0.225;
+  double hgt = 0.6;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1255,73 +1257,74 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
               ),
             ),
             Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  child: Text(
-                    "Input AX:",
-                    style: textStyle(Colors.grey[600]!, 15, false, false),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(14.0),
-                    border: Border.all(
-                      color: Colors.grey[400]!,
-                      width: 0.5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    child: Text(
+                      "Input AX:",
+                      style: textStyle(Colors.grey[600]!, 15, false, false),
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          "AX",
-                          style: textStyle(Colors.white, 15, false, false),
-                        ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(14.0),
+                      border: Border.all(
+                        color: Colors.grey[400]!,
+                        width: 0.5,
                       ),
-                      Container(
-                        height: 18,
-                        width: 35,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                        child: TextButton(
-                          onPressed: () {},
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
                           child: Text(
-                            "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            "AX",
+                            style: textStyle(Colors.white, 15, false, false),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 70,
-                        child: TextField(
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
-                          decoration: InputDecoration(
-                            hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
-                            contentPadding: const EdgeInsets.all(9),
-                            border: InputBorder.none,
+                        Container(
+                          height: 18,
+                          width: 35,
+                          decoration: boxDecoration(
+                              Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Max",
+                              style:
+                                  textStyle(Colors.grey[400]!, 9, false, false),
+                            ),
                           ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 70,
+                          child: TextField(
+                            style: textStyle(Colors.grey[400]!, 22, false, false),
+                            decoration: InputDecoration(
+                              hintText: '0.00',
+                              hintStyle:
+                                  textStyle(Colors.grey[400]!, 22, false, false),
+                              contentPadding: const EdgeInsets.all(9),
+                              border: InputBorder.none,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              )
+            ),
             Container(
               child: Divider(
                 thickness: 0.35,

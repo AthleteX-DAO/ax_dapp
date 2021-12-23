@@ -14,7 +14,7 @@ class DesktopScout extends StatefulWidget {
 }
 
 class _DesktopScoutState extends State<DesktopScout> {
-  int athletePage = 0;
+  bool athletePage = false;
   int sportState = 0;
   List<Athlete> nflList = [];
   Athlete curAthlete = Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
@@ -22,7 +22,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   @override
   Widget build(BuildContext context) {
     double sportFilterTxSz = 18;
-    if (athletePage == 1)
+    if (athletePage)
       return AthletePage(athlete: curAthlete);
 
     return Center(
@@ -202,7 +202,7 @@ class _DesktopScoutState extends State<DesktopScout> {
         onPressed: () {
           setState(() {
             curAthlete = athlete;
-            athletePage = 1;
+            athletePage = true;
           });
 			  },
         child: Row(
@@ -312,10 +312,28 @@ class _DesktopScoutState extends State<DesktopScout> {
                   height: 30,
                   decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
                   child: TextButton(
-                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => mintDialog(context, athlete)),
-                    child: Text(
-                      "Mint",
-                      style: textStyle(Colors.white, 16, false, false)
+                    onPressed: () {
+                      setState(() {
+                        curAthlete = athlete;
+                        athletePage = true;
+                      });
+                    },
+                    child: Container(
+                      width: 90,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            "View",
+                            style: textStyle(Colors.white, 16, false, false)
+                          ),
+                          Icon(
+                            Icons.arrow_right,
+                            size: 25,
+                            color: Colors.white
+                          )
+                        ],
+                      )
                     )
                   )
                 )
