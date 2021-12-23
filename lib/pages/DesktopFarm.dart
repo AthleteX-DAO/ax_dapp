@@ -20,7 +20,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     return Center(
       child: Container( 
         width: MediaQuery.of(context).size.width*0.8,
-        height: MediaQuery.of(context).size.height*0.45+170,
+        height: MediaQuery.of(context).size.height*0.8,
         child: (allFarms) ? allFarmLayout() : myFarmLayout()
       )
     );
@@ -84,7 +84,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
         ),
         Container(
           width: MediaQuery.of(context).size.width*0.8,
-          height: MediaQuery.of(context).size.height*0.35,
+          height: MediaQuery.of(context).size.height*0.5,
           child: ScrollConfiguration(
             behavior: ScrollConfiguration.of(context).copyWith(
               dragDevices: {
@@ -98,7 +98,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
               itemCount: AthleteList.list.length,
               itemBuilder: (context, index) {
                 return Container(
-                  height: MediaQuery.of(context).size.height*0.35,
+                  height: MediaQuery.of(context).size.height*0.55,
                   alignment: Alignment.topLeft,
                   child: createFarmWidget(farmList[index]));
               }
@@ -167,7 +167,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
         ),
         Container(
           width: MediaQuery.of(context).size.width*0.8,
-          height: MediaQuery.of(context).size.height*0.35,
+          height: MediaQuery.of(context).size.height*0.5,
           child: ScrollConfiguration(
             behavior: ScrollConfiguration.of(context).copyWith(
               dragDevices: {
@@ -199,9 +199,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
     return Row(
       children: <Widget> [
         Container(
-          height: MediaQuery.of(context).size.height*0.35,
-          width: MediaQuery.of(context).size.width*0.285,
-          decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
+          height: MediaQuery.of(context).size.height*0.5,
+          width: 600,
+          decoration: boxDecoration(Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -378,10 +378,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
     return Row(
       children: <Widget> [
         Container(
-          height: MediaQuery.of(context).size.height*.25,
-          width: 450,
+          height: 200,
+          width: 500,
           padding: EdgeInsets.symmetric(vertical: 22.5, horizontal: 50),
-          decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
+          decoration: boxDecoration(Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -478,9 +478,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
     return Row(
       children: <Widget> [
         Container(
-          height: MediaQuery.of(context).size.height*0.35,
-          width: MediaQuery.of(context).size.width*0.285,
-          decoration: boxDecoration(Color(0x80424242), 20, 1, Colors.grey[300]!),
+          height: MediaQuery.of(context).size.height*0.5,
+          width: 600,
+          decoration: boxDecoration(Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[

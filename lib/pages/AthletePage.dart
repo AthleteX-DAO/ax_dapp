@@ -1,5 +1,4 @@
 import 'package:ae_dapp/pages/DesktopScout.dart';
-import 'package:ae_dapp/pages/V1App.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/Controller/APT.dart';
 import 'package:ae_dapp/service/Dialog.dart';
@@ -57,8 +56,11 @@ class _AthletePageState extends State<AthletePage> {
                 ),
                 // Player Name
                 Container(
-                    child: Text(athlete.name,
-                        style: textStyle(Colors.white, 28, false, false))),
+                  child: Text(
+                    athlete.name,
+                    style: textStyle(Colors.white, 28, false, false)
+                  )
+                ),
                 // '|' Symbol
                 Container(
                     width: 50,

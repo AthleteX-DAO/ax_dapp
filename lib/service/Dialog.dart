@@ -1453,7 +1453,7 @@ Dialog confirmTransaction(
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.pop(context),
                         child: Text(
                           "View on Polygonscan",
                           style: TextStyle(
