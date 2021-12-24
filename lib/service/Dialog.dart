@@ -1505,22 +1505,14 @@ Dialog yourAXDialog(BuildContext context) {
               )
             ),
             Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.0675,
-                    width: MediaQuery.of(context).size.width * (wid - 0.04),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        scale: 2.0,
-                        image: AssetImage(
-                            '../assets/images/x.jpg'),
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ],
+              height: MediaQuery.of(context).size.height * 0.0675,
+              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  scale: 2.0,
+                  image: AssetImage('../assets/images/x.jpg'),
+                ),
+                shape: BoxShape.circle,
               ),
             ),
             Container(
