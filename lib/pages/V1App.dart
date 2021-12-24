@@ -39,6 +39,7 @@ class _V1AppState extends State<V1App> {
 
   // state change variables
   int pageNumber = 0;
+  int walletConnected = 1; //flag to check if user has connected their wallet
   bool allFarms = true;
   List<Athlete> athleteList = [];
 
@@ -154,21 +155,103 @@ class _V1AppState extends State<V1App> {
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
                   ])),
-          // top Connect Wallet Button
-          Container(
-              height: 37.5,
-              width: 200,
-              decoration:
-                  boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
-              child: TextButton(
-                onPressed: () => showDialog(
-                    context: context,
-                    builder: (BuildContext context) => walletDialog(context)),
-                child: Text(
-                  "Connect Wallet",
-                  style: textStyle(Colors.amber[400]!, 16, true, false),
-                ),
-              ))
+          if (walletConnected == 0) ...[
+            // top Connect Wallet Button
+            Container(
+                height: 37.5,
+                width: 200,
+                decoration: boxDecoration(
+                    Colors.transparent, 100, 2, Colors.amber[400]!),
+                child: TextButton(
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => walletDialog(context)),
+                  child: Text(
+                    "Connect Wallet",
+                    style: textStyle(Colors.amber[400]!, 16, true, false),
+                  ),
+                )),
+          ] else ...[
+            //top right corner wallet information
+            Container(
+                height: 37.5,
+                width: 700,
+                decoration:
+                    boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    TextButton(
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          const Icon(
+                            Icons.link,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "Matic/Polygon",
+                            style:
+                                textStyle(Colors.grey[400]!, 15, false, false),
+                          )
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          const Icon(
+                            Icons.local_gas_station,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "0.0024 Matic",
+                            style:
+                                textStyle(Colors.grey[400]!, 15, false, false),
+                          )
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          const Icon(
+                            Icons.attach_money,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "10,000 AX",
+                            style:
+                                textStyle(Colors.grey[400]!, 15, false, false),
+                          )
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          const Icon(
+                            Icons.account_balance_wallet,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "0x24fd78...4c22",
+                            style:
+                                textStyle(Colors.grey[400]!, 15, false, false),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ))
+          ]
         ],
       ),
     );
