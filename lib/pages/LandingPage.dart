@@ -1,4 +1,6 @@
 import 'package:ae_dapp/pages/V1App.dart';
+import 'package:ae_dapp/service/AthleteApi.dart';
+import 'package:ae_dapp/service/AthleteList.dart';
 import 'package:flutter/material.dart';
 import 'TestPage.dart';
 
@@ -69,17 +71,32 @@ class _LandingPageState extends State<LandingPage> {
               ],
             )
           ),
-          //Button
+          //Button load athletes
           Container(
             width: 275,
             height: 60,
-            decoration: boxDecoration(Colors.transparent, 100, 4, Colors.amber[400]!),
-            child: TextButton(
-              onPressed: () {setState(() {next = true;});},
-              child: Text(
-                "Start Trading",
-                style: textStyle(Colors.amber[400]!, 26, true, false),
-              )
+            child: FutureBuilder<dynamic>(
+              future: AthleteApi.getAthletesLocally(context),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Center(
+                      child:CircularProgressIndicator(),
+                    );
+                  default:
+                  AthleteList.list = snapshot.data;
+                    return Container(
+                      decoration: boxDecoration(Colors.transparent, 100, 4, Colors.amber[400]!),
+                      child: TextButton(
+                        onPressed: () {setState(() {next = true;});},
+                        child: Text(
+                          "Start Trading",
+                          style: textStyle(Colors.amber[400]!, 26, true, false),
+                        )
+                      )
+                    );
+                }
+              }
             )
           ),
         ]

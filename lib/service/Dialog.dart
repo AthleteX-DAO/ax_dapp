@@ -1,8 +1,12 @@
 import 'dart:ui';
+import 'package:ae_dapp/service/Controller.dart';
+import 'package:ae_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:web3dart/web3dart.dart';
 
 Dialog wrongNetworkDialog(BuildContext context) {
   return Dialog(
@@ -110,6 +114,8 @@ Dialog walletDialog(BuildContext context) {
                     Colors.transparent, 100, 2, Colors.grey[400]!),
                 child: TextButton(
                   onPressed: () {
+                    Controller _controller = Controller();
+                    _controller.connect();
                     Navigator.pop(context);
                     showDialog(
                         context: context,
@@ -334,7 +340,6 @@ Dialog depositDialog(BuildContext context) {
 Dialog buyDialog(BuildContext context, Athlete athlete) {
   double wid = 0.225;
   double hgt = 0.6;
-
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
@@ -349,22 +354,23 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-                width: MediaQuery.of(context).size.width * (wid - 0.04),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Buy " + athlete.name + " APT",
-                        style: textStyle(Colors.white, 20, false, false)),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onPressed: () => Navigator.pop(context),
+              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Buy " + athlete.name + " APT",
+                      style: textStyle(Colors.white, 20, false, false)),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
                     ),
-                  ],
-                )),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            ),
             Container(
               width: MediaQuery.of(context).size.width * (wid - 0.04),
               child: RichText(
@@ -398,7 +404,9 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                       style: TextStyle(color: Colors.amber[400], fontSize: 15),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          print('This should take you somewhere');
+                          String urlString =
+                              "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
+                          launch(urlString);
                         },
                     ),
                   ],
@@ -406,76 +414,77 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
               ),
             ),
             Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  child: Text(
-                    "Input AX:",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(14.0),
-                    border: Border.all(
-                      color: Colors.grey[400]!,
-                      width: 0.5,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          "AX",
-                          style: textStyle(Colors.white, 15, false, false),
-                        ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    child: Text(
+                      "Input AX:",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey[600],
                       ),
-                      Container(
-                        height: 18,
-                        width: 35,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                        child: TextButton(
-                          onPressed: () {},
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(14.0),
+                      border: Border.all(
+                        color: Colors.grey[400]!,
+                        width: 0.5,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
                           child: Text(
-                            "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            "AX",
+                            style: textStyle(Colors.white, 15, false, false),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 70,
-                        child: TextFormField(
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
-                          decoration: InputDecoration(
-                            hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
-                            contentPadding: const EdgeInsets.all(9),
-                            border: InputBorder.none,
+                        Container(
+                          height: 18,
+                          width: 35,
+                          decoration: boxDecoration(
+                              Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Max",
+                              style:
+                                  textStyle(Colors.grey[400]!, 9, false, false),
+                            ),
                           ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 70,
+                          child: TextFormField(
+                            style: textStyle(Colors.grey[400]!, 22, false, false),
+                            decoration: InputDecoration(
+                              hintText: '0.00',
+                              hintStyle:
+                                  textStyle(Colors.grey[400]!, 22, false, false),
+                              contentPadding: const EdgeInsets.all(9),
+                              border: InputBorder.none,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              )
+            ),
             Container(
               child: Divider(
                 thickness: 0.35,
@@ -648,12 +657,23 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                     ),
                     child: TextButton(
                       //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.pop(context);
+                        EthereumAddress aptAddress = EthereumAddress.fromHex(
+                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22");
+                        bool confirmed;
+                        String txString =
+                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
+                        try {
+                          confirmed = true;
+                        } catch (e) {
+                          confirmed = false;
+                        }
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(
+                                    context, confirmed, txString));
                       },
                       child: const Text(
                         "Confirm",
@@ -962,13 +982,16 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: TextButton(
-                      //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () {
                         Navigator.pop(context);
+                        bool confirmed = true;
+                        String txString =
+                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(
+                                    context, confirmed, txString));
                       },
                       child: const Text(
                         "Confirm",
@@ -990,8 +1013,8 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
 }
 
 Dialog redeemDialog(BuildContext context, Athlete athlete) {
-  double wid = 0.2;
-  double hgt = 0.45;
+  double wid = 0.225;
+  double hgt = 0.6;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1160,7 +1183,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(context, true, ""));
                       },
                       child: Text(
                         "Confirm",
@@ -1179,8 +1202,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
 }
 
 Dialog mintDialog(BuildContext context, Athlete athlete) {
-  double wid = 0.2;
-  double hgt = 0.45;
+  double wid = 0.225;
+  double hgt = 0.6;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1234,73 +1257,74 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
               ),
             ),
             Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  child: Text(
-                    "Input AX:",
-                    style: textStyle(Colors.grey[600]!, 15, false, false),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(14.0),
-                    border: Border.all(
-                      color: Colors.grey[400]!,
-                      width: 0.5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    child: Text(
+                      "Input AX:",
+                      style: textStyle(Colors.grey[600]!, 15, false, false),
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          "AX",
-                          style: textStyle(Colors.white, 15, false, false),
-                        ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(14.0),
+                      border: Border.all(
+                        color: Colors.grey[400]!,
+                        width: 0.5,
                       ),
-                      Container(
-                        height: 18,
-                        width: 35,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                        child: TextButton(
-                          onPressed: () {},
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
                           child: Text(
-                            "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            "AX",
+                            style: textStyle(Colors.white, 15, false, false),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 70,
-                        child: TextField(
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
-                          decoration: InputDecoration(
-                            hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
-                            contentPadding: const EdgeInsets.all(9),
-                            border: InputBorder.none,
+                        Container(
+                          height: 18,
+                          width: 35,
+                          decoration: boxDecoration(
+                              Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Max",
+                              style:
+                                  textStyle(Colors.grey[400]!, 9, false, false),
+                            ),
                           ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 70,
+                          child: TextField(
+                            style: textStyle(Colors.grey[400]!, 22, false, false),
+                            decoration: InputDecoration(
+                              hintText: '0.00',
+                              hintStyle:
+                                  textStyle(Colors.grey[400]!, 22, false, false),
+                              contentPadding: const EdgeInsets.all(9),
+                              border: InputBorder.none,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              )
+            ),
             Container(
               child: Divider(
                 thickness: 0.35,
@@ -1348,7 +1372,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(context, true, ""));
                       },
                       child: Text(
                         "Confirm",
@@ -1366,19 +1390,20 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   );
 }
 
-Dialog confirmTransaction(BuildContext context) {
+Dialog confirmTransaction(
+    BuildContext context, bool IsConfirmed, String txString) {
   return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Container(
-          height: MediaQuery.of(context).size.height * 0.25,
+          height: 250,
           width: MediaQuery.of(context).size.width * .23,
           decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
           child: Center(
               child: Container(
-            height: MediaQuery.of(context).size.height * .21,
+            height: 200,
             width: 400,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1428,7 +1453,7 @@ Dialog confirmTransaction(BuildContext context) {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.pop(context),
                         child: Text(
                           "View on Polygonscan",
                           style: TextStyle(
@@ -1523,7 +1548,10 @@ Dialog removeDialog(BuildContext context) {
                     SizedBox(
                       width: 70,
                       child: TextFormField(
-                        onChanged: (value) {amount = double.parse(value); print(amount);},
+                        onChanged: (value) {
+                          amount = double.parse(value);
+                          print(amount);
+                        },
                         style: textStyle(Colors.grey[400]!, 22, false, false),
                         decoration: InputDecoration(
                           hintText: '0.00',
@@ -1624,6 +1652,419 @@ Dialog removeDialog(BuildContext context) {
   );
 }
 
+Dialog swapDialog(BuildContext context, Token token1, Token token2){
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: 500,
+      width: MediaQuery.of(context).size.width * 0.25,
+      padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // Confirm Swap
+        children: <Widget>[
+          Container(
+            //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+            width: MediaQuery.of(context)
+                    .size
+                    .width *
+                .22,
+            height: 50,
+            //color: Colors.red,
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "Confirm Swap",
+                  style: textStyle(Colors.white,
+                      20, false, false),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () =>
+                      Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context)
+                    .size
+                    .width *
+                .22,
+            height: 50,
+            //color: Colors.red,
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "From",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "-\$1.600",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        token1.name,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "10.24",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context)
+                    .size
+                    .width *
+                .22,
+            alignment: Alignment.center,
+            child: Icon(
+              Icons.arrow_downward,
+              color: Colors.white,
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context)
+                    .size
+                    .width *
+                .22,
+            height: 50,
+            //color: Colors.red,
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "To",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "-\$1.580",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        token2.name,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "8.48",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Horizontal Linebreak
+          Container(
+            child: Divider(
+              thickness: 0.35,
+              color: Colors.grey[400],
+            ),
+          ),
+          // Price Information and Confirm Swap Button
+          Container(
+            //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+            width: MediaQuery.of(context)
+                    .size
+                    .width *
+                .22,
+            height: 125,
+            //color: Colors.red,
+            child: Column(
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Price",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "1.2 "+token1.ticker+" per "+token2.ticker,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "LP Fee",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "0.5 AX",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Market Price Impact",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "-0.04%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Minimum Recieved",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "8.2 "+token2.ticker,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "Estimated Slippage",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "~5%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context)
+                    .size
+                    .width *
+                .22,
+            height: 30,
+            //color: Colors.red,
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  margin:
+                      EdgeInsets.only(top: 15.0),
+                  child: Text(
+                    "You recieve:",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin:
+                      EdgeInsets.only(top: 15.0),
+                  child: Text(
+                    "7.98 "+token2.name,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context)
+                    .size
+                    .width *
+                .22,
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(
+                      top: 30.0, bottom: 10.0),
+                  width: 210,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Colors.amber[400],
+                    borderRadius:
+                        BorderRadius.circular(
+                            100),
+                  ),
+                  child: TextButton(
+                    //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext
+                                  context) =>
+                              confirmTransaction(context, true, ""));
+                    },
+                    child: const Text(
+                      "Confirm Swap",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    )
+  );
+}
+
 TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
   if (isBold) if (isUline)
     return TextStyle(
@@ -1653,8 +2094,7 @@ TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     );
 }
 
-BoxDecoration boxDecoration(
-    Color col, double rad, double borWid, Color borCol) {
+BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
   return BoxDecoration(
       color: col,
       borderRadius: BorderRadius.circular(rad),

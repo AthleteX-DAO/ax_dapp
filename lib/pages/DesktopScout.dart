@@ -1,8 +1,9 @@
 import 'package:ae_dapp/pages/AthletePage.dart';
-import 'package:ae_dapp/pages/testPage.dart';
+// import 'package:ae_dapp/pages/testPage.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/AthleteList.dart';
+import 'package:ae_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 
 class DesktopScout extends StatefulWidget {
@@ -13,7 +14,7 @@ class DesktopScout extends StatefulWidget {
 }
 
 class _DesktopScoutState extends State<DesktopScout> {
-  int athletePage = 0;
+  bool athletePage = false;
   int sportState = 0;
   List<Athlete> nflList = [];
   Athlete curAthlete = Athlete(name: "", team: "", position: "", passingYards: [], passingTouchDowns: [], reception: [], receiveYards: [], receiveTouch: [], rushingYards: [], war: [], time: []);
@@ -21,7 +22,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   @override
   Widget build(BuildContext context) {
     double sportFilterTxSz = 18;
-    if (athletePage == 1)
+    if (athletePage)
       return AthletePage(athlete: curAthlete);
 
     return Center(
@@ -150,38 +151,10 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   Widget buildListview() {
-    if (AthleteList.list.length == 0) {
-      return Container(
-        height: MediaQuery.of(context).size.height*0.6,
-        child: FutureBuilder<dynamic>(
-          future: AthleteApi.getAthletesLocally(context),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                // return circle indicator for progress
-                return Center(
-                  child:
-                      CircularProgressIndicator(),
-                );
-              default:
-                nflList = snapshot.data;
-                AthleteList.list = nflList;
-                return ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: AthleteList.list.length,
-                  itemBuilder: (context, index) {
-                    final athlete = AthleteList.list[index];
-                    return createListCards(athlete);
-                  }
-                );
-            }
-          }
-        )
-      );
-    }
-    // if athleteList is not empty
+    if (nflList.length == 0)
+      nflList = AthleteList.list;
     // all athletes
-    else if (sportState == 0)
+    if (sportState == 0)
       return Container(
         height: MediaQuery.of(context).size.height*0.6,
         child: ListView.builder(
@@ -229,7 +202,7 @@ class _DesktopScoutState extends State<DesktopScout> {
         onPressed: () {
           setState(() {
             curAthlete = athlete;
-            athletePage = 1;
+            athletePage = true;
           });
 			  },
         child: Row(
@@ -323,7 +296,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               height: 30,
                   decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () => showDialog(context: context, builder: (BuildContext context) => buyDialog(context, athlete)),
                     child: Text(
                       "Buy",
                       style: textStyle(Colors.black, 16, false, false)
@@ -339,10 +312,28 @@ class _DesktopScoutState extends State<DesktopScout> {
                   height: 30,
                   decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
                   child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Mint",
-                      style: textStyle(Colors.white, 16, false, false)
+                    onPressed: () {
+                      setState(() {
+                        curAthlete = athlete;
+                        athletePage = true;
+                      });
+                    },
+                    child: Container(
+                      width: 90,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            "View",
+                            style: textStyle(Colors.white, 16, false, false)
+                          ),
+                          Icon(
+                            Icons.arrow_right,
+                            size: 25,
+                            color: Colors.white
+                          )
+                        ],
+                      )
                     )
                   )
                 )

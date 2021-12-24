@@ -1,12 +1,8 @@
-import 'dart:ui';
 import 'package:ae_dapp/pages/DesktopFarm.dart';
 import 'package:ae_dapp/pages/DesktopScout.dart';
 import 'package:ae_dapp/pages/DesktopTrade.dart';
-import 'package:ae_dapp/pages/testPage.dart';
 import 'package:ae_dapp/service/Dialog.dart';
-import 'package:ae_dapp/style/Style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:ae_dapp/service/Athlete.dart';
 
 class V1App extends StatefulWidget {
@@ -83,6 +79,10 @@ class _V1AppState extends State<V1App> {
 
   Widget topNavBar(BuildContext context) {
     double tabTxSz = 24;
+    Text connectWalletWidget = Text(
+      "Connect Wallet",
+      style: textStyle(Colors.amber[400]!, 16, true, false),
+    );
 
     return Container(
       width: MediaQuery.of(context).size.width * .9,
