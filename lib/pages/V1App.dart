@@ -233,7 +233,7 @@ class _V1AppState extends State<V1App> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => accountDialog(context)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
