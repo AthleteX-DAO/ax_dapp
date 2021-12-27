@@ -1752,7 +1752,7 @@ Dialog accountDialog(BuildContext context) {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Connected With Metamask", style: textStyle(Colors.grey[600]!, 12, false, false)),
+                          Text("Connected With Metamask", style: textStyle(Colors.grey[600]!, 15, false, false)),
                           Container(
                             width: 75,
                             height: 25,
@@ -1770,13 +1770,23 @@ Dialog accountDialog(BuildContext context) {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          const Icon(
-                            Icons.account_balance_wallet,
-                            color: Colors.white,
-                          ),
-                          Text(
-                            "0x24fd78...4c22",
-                            style: textStyle(Colors.white, 15, false, false),
+                          Container(
+                            width: 185,
+                            height: 30,
+                            //color: Colors.red,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                const Icon(
+                                Icons.account_balance_wallet,
+                                color: Colors.white,
+                                ),
+                                Text(
+                                  "0x24fd78...4c22",
+                                  style: textStyle(Colors.white, 20, false, false),
+                                ),
+                              ],
+                            ),
                           ),
                           Container(
                             width: 75,
@@ -1813,9 +1823,8 @@ Dialog accountDialog(BuildContext context) {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                // Adding a placeholder until I can find the correct icon
                                 const Icon(
-                                  Icons.filter_none,
+                                  Icons.open_in_new,
                                   color: Colors.grey,
                                 ),
                                 Text("Show on Polygonscan", style: textStyle(Colors.grey[400]!, 15, false, false)),
