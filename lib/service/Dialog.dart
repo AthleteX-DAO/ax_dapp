@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:ae_dapp/service/Controller.dart';
+import 'package:ae_dapp/service/Controller/SWAPBehavior.dart';
 import 'package:ae_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
 import 'package:ae_dapp/service/Athlete.dart';
@@ -114,8 +115,7 @@ Dialog walletDialog(BuildContext context) {
                     Colors.transparent, 100, 2, Colors.grey[400]!),
                 child: TextButton(
                   onPressed: () {
-                    Controller _controller = Controller();
-                    _controller.connect();
+                    Controller.connect();
                     Navigator.pop(context);
                     showDialog(
                         context: context,
@@ -1649,417 +1649,372 @@ Dialog removeDialog(BuildContext context) {
   );
 }
 
-Dialog swapDialog(BuildContext context, Token token1, Token token2){
+Dialog swapDialog(BuildContext context, Token token1, Token token2,
+    double amount1, double amount2) {
   return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.0),
-    ),
-    child: Container(
-      height: 500,
-      width: MediaQuery.of(context).size.width * 0.25,
-      padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        // Confirm Swap
-        children: <Widget>[
-          Container(
-            //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-            width: MediaQuery.of(context)
-                    .size
-                    .width *
-                .22,
-            height: 50,
-            //color: Colors.red,
-            child: Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Confirm Swap",
-                  style: textStyle(Colors.white,
-                      20, false, false),
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () =>
-                      Navigator.pop(context),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context)
-                    .size
-                    .width *
-                .22,
-            height: 50,
-            //color: Colors.red,
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "From",
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "-\$1.600",
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        token1.name,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "10.24",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context)
-                    .size
-                    .width *
-                .22,
-            alignment: Alignment.center,
-            child: Icon(
-              Icons.arrow_downward,
-              color: Colors.white,
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context)
-                    .size
-                    .width *
-                .22,
-            height: 50,
-            //color: Colors.red,
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "To",
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "-\$1.580",
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        token2.name,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "8.48",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          // Horizontal Linebreak
-          Container(
-            child: Divider(
-              thickness: 0.35,
-              color: Colors.grey[400],
-            ),
-          ),
-          // Price Information and Confirm Swap Button
-          Container(
-            //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-            width: MediaQuery.of(context)
-                    .size
-                    .width *
-                .22,
-            height: 125,
-            //color: Colors.red,
-            child: Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "Price",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "1.2 "+token1.ticker+" per "+token2.ticker,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "LP Fee",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "0.5 AX",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "Market Price Impact",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "-0.04%",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "Minimum Recieved",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "8.2 "+token2.ticker,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "Estimated Slippage",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "~5%",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context)
-                    .size
-                    .width *
-                .22,
-            height: 30,
-            //color: Colors.red,
-            child: Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  margin:
-                      EdgeInsets.only(top: 15.0),
-                  child: Text(
-                    "You recieve:",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin:
-                      EdgeInsets.only(top: 15.0),
-                  child: Text(
-                    "7.98 "+token2.name,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context)
-                    .size
-                    .width *
-                .22,
-            child: Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(
-                      top: 30.0, bottom: 10.0),
-                  width: 210,
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.amber[400],
-                    borderRadius:
-                        BorderRadius.circular(
-                            100),
-                  ),
-                  child: TextButton(
-                    //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext
-                                  context) =>
-                              confirmTransaction(context, true, ""));
-                    },
-                    child: const Text(
-                      "Confirm Swap",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
       ),
-    )
-  );
+      child: Container(
+        height: 500,
+        width: MediaQuery.of(context).size.width * 0.25,
+        padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Confirm Swap
+          children: <Widget>[
+            Container(
+              //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+              width: MediaQuery.of(context).size.width * .22,
+              height: 50,
+              //color: Colors.red,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Confirm Swap",
+                    style: textStyle(Colors.white, 20, false, false),
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * .22,
+              height: 50,
+              //color: Colors.red,
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "From",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "-\$1.600",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          token1.name,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "10.24",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * .22,
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.arrow_downward,
+                color: Colors.white,
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * .22,
+              height: 50,
+              //color: Colors.red,
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "To",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "-\$1.580",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          token2.name,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "8.48",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // Horizontal Linebreak
+            Container(
+              child: Divider(
+                thickness: 0.35,
+                color: Colors.grey[400],
+              ),
+            ),
+            // Price Information and Confirm Swap Button
+            Container(
+              //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+              width: MediaQuery.of(context).size.width * .22,
+              height: 125,
+              //color: Colors.red,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "Price",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "1.2 " + token1.ticker + " per " + token2.ticker,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "LP Fee",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "0.5 AX",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "Market Price Impact",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "-0.04%",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "Minimum Recieved",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "8.2 " + token2.ticker,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "Estimated Slippage",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "~5%",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * .22,
+              height: 30,
+              //color: Colors.red,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 15.0),
+                    child: Text(
+                      "You recieve:",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 15.0),
+                    child: Text(
+                      "7.98 " + token2.name,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * .22,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
+                    width: 210,
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.amber[400],
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: TextButton(
+                      //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
+                      onPressed: () {
+                        BigInt token1Amount = BigInt.from(amount1);
+                        BigInt token2Amount = BigInt.from(amount2);
+
+                        SWAPBehavior().swap(token1.address, token2.address,
+                            token1Amount, token2Amount);
+
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                confirmTransaction(context, true, ""));
+                      },
+                      child: const Text(
+                        "Confirm Swap",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ));
 }
 
 TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
@@ -2091,7 +2046,8 @@ TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     );
 }
 
-BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+BoxDecoration boxDecoration(
+    Color col, double rad, double borWid, Color borCol) {
   return BoxDecoration(
       color: col,
       borderRadius: BorderRadius.circular(rad),

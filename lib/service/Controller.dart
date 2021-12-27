@@ -43,7 +43,7 @@ class Controller {
   }
 
   // Web functionality
-  void connect() async {
+  static void connect() async {
     final eth = window.ethereum;
     var newClient = Web3Client.custom(eth!.asRpcService());
     final credentials = await eth.requestAccount();
@@ -51,7 +51,7 @@ class Controller {
     update(newClient, credentials);
   }
 
-  void update(Web3Client cl, Credentials cr) async {
+  static void update(Web3Client cl, Credentials cr) async {
     client = cl;
     credentials = cr;
     publicAddress = await cr.extractAddress();

@@ -7,10 +7,12 @@ import '../../contracts/ERC20.g.dart';
 class Token {
   String name, ticker;
   AssetImage? icon;
-  EthereumAddress address = EthereumAddress.fromHex("0000000000000000000000000000000000000000");
+  num? amount;
+  EthereumAddress address =
+      EthereumAddress.fromHex("0000000000000000000000000000000000000000");
   late ERC20 erc20;
   get client => Controller.client;
-  
+
   // All ' token ' classes inherit the SAME controller ( super important!!!)
   Token(this.name, this.ticker, [this.icon]);
 
@@ -26,6 +28,7 @@ class Token {
   Future<String> approve(EthereumAddress dest, double amount) {
     // Both need to happen for any transaction
     BigInt amountToApprove = BigInt.from(amount);
-    return erc20.approve(dest, amountToApprove, credentials: Controller.credentials);
+    return erc20.approve(dest, amountToApprove,
+        credentials: Controller.credentials);
   }
 }

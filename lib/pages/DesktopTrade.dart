@@ -21,7 +21,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   bool allFarms = true;
   Token? tkn1;
   Token? tkn2;
-  
+
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('../assets/images/x.png')),
     SXT("SportX", "SX", AssetImage('../assets/images/x.png')),
@@ -31,6 +31,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   @override
   void initState() {
     tkn1 = tokens[0];
+    tkn2 = tokens[1];
   }
 
   @override
@@ -38,33 +39,33 @@ class _DesktopTradeState extends State<DesktopTrade> {
     double wid = 550;
 
     Widget swapButton = Container(
-      height: 50,
-      width: wid - 50,
-      decoration: boxDecoration(Colors.transparent, 100, 4, Colors.blue),
-      child: TextButton(
-        onPressed: () {},
-        child: Text(
-          "Select token to swap with",
-          style: textStyle(Colors.blue, 16, true, false),
-        )
-      )
-    );
-    if (tkn1 != null && tkn2 != null)
-      swapButton = Container(
         height: 50,
         width: wid - 50,
-        decoration: boxDecoration(Colors.amber[400]!, 100, 4, Colors.amber[400]!),
+        decoration: boxDecoration(Colors.transparent, 100, 4, Colors.blue),
         child: TextButton(
-          onPressed: () {
-            if (tkn1 != null && tkn2 != null)
-              showDialog(context: context, builder: (BuildContext context) => swapDialog(context, tkn1!, tkn2!));
-            },
-          child: Text(
-            "Swap",
-            style: textStyle(Colors.black, 16, true, false),
-          )
-        )
-      );
+            onPressed: () {},
+            child: Text(
+              "Select token to swap with",
+              style: textStyle(Colors.blue, 16, true, false),
+            )));
+    if (tkn1 != null && tkn2 != null)
+      swapButton = Container(
+          height: 50,
+          width: wid - 50,
+          decoration:
+              boxDecoration(Colors.amber[400]!, 100, 4, Colors.amber[400]!),
+          child: TextButton(
+              onPressed: () {
+                if (tkn1 != null && tkn2 != null)
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          swapDialog(context, tkn1!, tkn2!, fromAmount, toAmount));
+              },
+              child: Text(
+                "Swap",
+                style: textStyle(Colors.black, 16, true, false),
+              )));
 
     return Column(children: <Widget>[
       Container(height: MediaQuery.of(context).size.height * 0.15),
@@ -255,87 +256,75 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   Dialog createTokenList(BuildContext context, int tknNum) {
     for (Athlete ath in AthleteList.list)
-      tokens.add(Token(
-        ath.name + " APT",
-        ath.name + " APT",
-        AssetImage('../assets/images/apt.png')
-      )
-    );
+      tokens.add(Token(ath.name + " APT", ath.name + " APT",
+          AssetImage('../assets/images/apt.png')));
 
     return Dialog(
-      backgroundColor: Colors.grey[900],
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Container(
-        width: 350,
-        height: MediaQuery.of(context).size.height * .65,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            // column of elements
-            Container(
-              height: MediaQuery.of(context).size.height * .625,
-              width: 300,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        height: 30,
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Token Name",
-                          style: textStyle(Colors.grey[400]!, 16, false, false)
-                        )
-                      ),
-                      Container(
-                        child: TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.grey[400],
-                            size: 30
-                          ),
-                        )
-                      )
-                    ]
-                  ),
-                  Container(
-                    child: Divider(thickness: 1, color: Colors.grey[400]),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * .625 - 100,
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: tokens.length,
-                      itemBuilder: (context, index) {
-                        return createTokenElement(tokens[index], tknNum);
-                      }
-                    )
-                  )
-                ],
-              )
-            )
-          ],
-        )
-      )
-    );
+        backgroundColor: Colors.grey[900],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Container(
+            width: 350,
+            height: MediaQuery.of(context).size.height * .65,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                // column of elements
+                Container(
+                    height: MediaQuery.of(context).size.height * .625,
+                    width: 300,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                  height: 30,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text("Token Name",
+                                      style: textStyle(Colors.grey[400]!, 16,
+                                          false, false))),
+                              Container(
+                                  child: TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Icon(Icons.close,
+                                    color: Colors.grey[400], size: 30),
+                              ))
+                            ]),
+                        Container(
+                          child: Divider(thickness: 1, color: Colors.grey[400]),
+                        ),
+                        Container(
+                            height:
+                                MediaQuery.of(context).size.height * .625 - 100,
+                            child: ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                itemCount: tokens.length,
+                                itemBuilder: (context, index) {
+                                  return createTokenElement(
+                                      tokens[index], tknNum);
+                                }))
+                      ],
+                    ))
+              ],
+            )));
   }
 
   Widget createTokenElement(Token token, int tknNum) {
     return Container(
         height: 50,
         child: TextButton(
-            onPressed: () {setState(() {
-              if (tknNum == 1)
-                tkn1 = token;
-              else
-                tkn2 = token;
-              Navigator.pop(context);
-            });},
+            onPressed: () {
+              setState(() {
+                if (tknNum == 1)
+                  tkn1 = token;
+                else
+                  tkn2 = token;
+                Navigator.pop(context);
+              });
+            },
             child: Container(
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -384,50 +373,40 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   Widget createTokenButton(int tknNum) {
     String tkr = "Select a Token";
-    BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
-    if (tknNum == 1) { 
-      if (tkn1 == null)
-        decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+    BoxDecoration decor =
+        boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
+    if (tknNum == 1) {
+      if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn1 != null)
-        tkr = tkn1!.ticker;
-    }
-    else { 
-      if (tkn2 == null)
-        decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
-        
-      if (tkn2 != null)
-        tkr = tkn2!.ticker;
+      if (tkn1 != null) tkr = tkn1!.ticker;
+    } else {
+      if (tkn2 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+
+      if (tkn2 != null) tkr = tkn2!.ticker;
     }
 
     return Container(
-      width: 175,
-      height: 40,
-      decoration: decor,
-      child: TextButton(
-        onPressed: () => showDialog(context: context, builder: (BuildContext context) => createTokenList(context, tknNum)),
-        child: Container(
-          //width: 90,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                tkr,
-                style: textStyle(Colors.white, 16, true, false)
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.white,
-                size: 25
-                )
-            ],
-          )
-        )
-      )
-    );
+        width: 175,
+        height: 40,
+        decoration: decor,
+        child: TextButton(
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    createTokenList(context, tknNum)),
+            child: Container(
+                //width: 90,
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(tkr, style: textStyle(Colors.white, 16, true, false)),
+                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
+              ],
+            ))));
   }
 
-  void dialog(BuildContext context, double _height, double _width, BoxDecoration _decoration, Widget _child) {
+  void dialog(BuildContext context, double _height, double _width,
+      BoxDecoration _decoration, Widget _child) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -472,11 +451,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
       );
   }
 
-  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+  BoxDecoration boxDecoration(
+      Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
-      color: col,
-      borderRadius: BorderRadius.circular(rad),
-      border: Border.all(color: borCol, width: borWid)
-    );
+        color: col,
+        borderRadius: BorderRadius.circular(rad),
+        border: Border.all(color: borCol, width: borWid));
   }
 }
