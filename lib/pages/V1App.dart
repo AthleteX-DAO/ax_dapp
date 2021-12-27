@@ -220,9 +220,13 @@ class _V1AppState extends State<V1App> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          const Icon(
-                            Icons.attach_money,
-                            color: Colors.grey,
+                          Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("../assets/images/X_white.png"),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
                           ),
                           Text(
                             "10,000 AX",

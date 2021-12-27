@@ -24,8 +24,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
   
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('../assets/images/x.png')),
-    SXT("SportX", "SX", AssetImage('../assets/images/x.png')),
-    Token("Matic/Polygon", "Matic", AssetImage('../assets/images/x.png')),
+    SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
+    Token("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
   ];
 
   @override

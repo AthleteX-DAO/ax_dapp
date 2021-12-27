@@ -81,7 +81,7 @@ class _LandingPageState extends State<LandingPage> {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                     return Center(
-                      child:CircularProgressIndicator(),
+                      child: CircularProgressIndicator(),
                     );
                   default:
                   AthleteList.list = snapshot.data;
