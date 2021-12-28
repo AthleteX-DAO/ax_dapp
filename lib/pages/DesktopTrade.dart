@@ -24,8 +24,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('../assets/images/x.png')),
-    SXT("SportX", "SX", AssetImage('../assets/images/x.png')),
-    Token("Matic/Polygon", "Matic", AssetImage('../assets/images/x.png')),
+    SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
+    Token("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
   ];
 
   @override
@@ -160,10 +160,21 @@ class _DesktopTradeState extends State<DesktopTrade> {
               Column(children: <Widget>[
                 //Down arrow
                 Container(
-                  child: Icon(
-                    Icons.arrow_downward,
-                    size: 30,
-                    color: Colors.grey[400],
+                  child: TextButton(
+                    onPressed: () {
+                      if (tkn2 != null) {
+                        Token tmpTkn = tkn1!;
+                        setState(() {
+                          tkn1 = tkn2;
+                          tkn2 = tmpTkn;
+                        });
+                      }
+                    },
+                    child: Icon(
+                      Icons.arrow_downward,
+                      size: 30,
+                      color: Colors.grey[400],
+                    )
                   ),
                 ),
                 //To text
@@ -386,23 +397,30 @@ class _DesktopTradeState extends State<DesktopTrade> {
     }
 
     return Container(
-        width: 175,
-        height: 40,
-        decoration: decor,
-        child: TextButton(
-            onPressed: () => showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    createTokenList(context, tknNum)),
-            child: Container(
-                //width: 90,
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(tkr, style: textStyle(Colors.white, 16, true, false)),
-                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
-              ],
-            ))));
+      width: 175,
+      height: 40,
+      decoration: decor,
+      child: TextButton(
+        onPressed: () => showDialog(context: context, builder: (BuildContext context) => createTokenList(context, tknNum)),
+        child: Container(
+          //width: 90,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                tkr,
+                style: textStyle(Colors.white, 16, true, false)
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white,
+                size: 25
+              )
+            ],
+          )
+        )
+      )
+    );
   }
 
   void dialog(BuildContext context, double _height, double _width,

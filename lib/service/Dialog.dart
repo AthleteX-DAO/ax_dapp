@@ -354,22 +354,23 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-                width: MediaQuery.of(context).size.width * (wid - 0.04),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Buy " + athlete.name + " APT",
-                        style: textStyle(Colors.white, 20, false, false)),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onPressed: () => Navigator.pop(context),
+              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Buy " + athlete.name + " APT",
+                      style: textStyle(Colors.white, 20, false, false)),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
                     ),
-                  ],
-                )),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            ),
             Container(
               width: MediaQuery.of(context).size.width * (wid - 0.04),
               child: RichText(
@@ -413,76 +414,77 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
               ),
             ),
             Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  child: Text(
-                    "Input AX:",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(14.0),
-                    border: Border.all(
-                      color: Colors.grey[400]!,
-                      width: 0.5,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          "AX",
-                          style: textStyle(Colors.white, 15, false, false),
-                        ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    child: Text(
+                      "Input AX:",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey[600],
                       ),
-                      Container(
-                        height: 18,
-                        width: 35,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                        child: TextButton(
-                          onPressed: () {},
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(14.0),
+                      border: Border.all(
+                        color: Colors.grey[400]!,
+                        width: 0.5,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
                           child: Text(
-                            "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            "AX",
+                            style: textStyle(Colors.white, 15, false, false),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 70,
-                        child: TextFormField(
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
-                          decoration: InputDecoration(
-                            hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
-                            contentPadding: const EdgeInsets.all(9),
-                            border: InputBorder.none,
+                        Container(
+                          height: 18,
+                          width: 35,
+                          decoration: boxDecoration(
+                              Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Max",
+                              style:
+                                  textStyle(Colors.grey[400]!, 9, false, false),
+                            ),
                           ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 70,
+                          child: TextFormField(
+                            style: textStyle(Colors.grey[400]!, 22, false, false),
+                            decoration: InputDecoration(
+                              hintText: '0.00',
+                              hintStyle:
+                                  textStyle(Colors.grey[400]!, 22, false, false),
+                              contentPadding: const EdgeInsets.all(9),
+                              border: InputBorder.none,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              )
+            ),
             Container(
               child: Divider(
                 thickness: 0.35,
@@ -1011,8 +1013,8 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
 }
 
 Dialog redeemDialog(BuildContext context, Athlete athlete) {
-  double wid = 0.2;
-  double hgt = 0.45;
+  double wid = 0.225;
+  double hgt = 0.6;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1200,8 +1202,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
 }
 
 Dialog mintDialog(BuildContext context, Athlete athlete) {
-  double wid = 0.2;
-  double hgt = 0.45;
+  double wid = 0.225;
+  double hgt = 0.6;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1255,73 +1257,74 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
               ),
             ),
             Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  child: Text(
-                    "Input AX:",
-                    style: textStyle(Colors.grey[600]!, 15, false, false),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(14.0),
-                    border: Border.all(
-                      color: Colors.grey[400]!,
-                      width: 0.5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    child: Text(
+                      "Input AX:",
+                      style: textStyle(Colors.grey[600]!, 15, false, false),
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          "AX",
-                          style: textStyle(Colors.white, 15, false, false),
-                        ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width * (wid - 0.04),
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(14.0),
+                      border: Border.all(
+                        color: Colors.grey[400]!,
+                        width: 0.5,
                       ),
-                      Container(
-                        height: 18,
-                        width: 35,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                        child: TextButton(
-                          onPressed: () {},
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
                           child: Text(
-                            "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            "AX",
+                            style: textStyle(Colors.white, 15, false, false),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 70,
-                        child: TextField(
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
-                          decoration: InputDecoration(
-                            hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
-                            contentPadding: const EdgeInsets.all(9),
-                            border: InputBorder.none,
+                        Container(
+                          height: 18,
+                          width: 35,
+                          decoration: boxDecoration(
+                              Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Max",
+                              style:
+                                  textStyle(Colors.grey[400]!, 9, false, false),
+                            ),
                           ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 70,
+                          child: TextField(
+                            style: textStyle(Colors.grey[400]!, 22, false, false),
+                            decoration: InputDecoration(
+                              hintText: '0.00',
+                              hintStyle:
+                                  textStyle(Colors.grey[400]!, 22, false, false),
+                              contentPadding: const EdgeInsets.all(9),
+                              border: InputBorder.none,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              )
+            ),
             Container(
               child: Divider(
                 thickness: 0.35,
@@ -1450,7 +1453,7 @@ Dialog confirmTransaction(
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.pop(context),
                         child: Text(
                           "View on Polygonscan",
                           style: TextStyle(
@@ -1465,6 +1468,381 @@ Dialog confirmTransaction(
               ],
             ),
           ))));
+}
+
+Dialog yourAXDialog(BuildContext context) {
+  double wid = 0.225;
+  double hgt = 0.525;
+
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: MediaQuery.of(context).size.height * hgt,
+      width: MediaQuery.of(context).size.width * wid,
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Your AX", style: textStyle(Colors.white, 20, false, false)),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.0675,
+              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  scale: 2.0,
+                  image: AssetImage('../assets/images/x.jpg'),
+                ),
+                shape: BoxShape.circle,
+              ),
+            ),
+            Container(
+              child: Text("100.00", style: textStyle(Colors.white, 20, false, false)),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              height: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "Balance:",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "100 AX",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "Unlcaimed:",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "50 AX",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ),
+            Container(
+              child: Divider(
+                thickness: 0.35,
+                color: Colors.grey[400],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              height: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "AX price:",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "\$1.00",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "AX in circulation",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "50,000,000",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "AX total supply:",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "100,000,000",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: 150,
+                    height: 35,
+                    decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Buy AX",
+                        style: textStyle(Colors.black, 14, true, false)
+                      )
+                    )
+                  ),
+                  Container(
+                    width: 150,
+                    height: 35,
+                    decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "+ Add to Wallet",
+                        style: textStyle(Colors.amber[600]!, 14, true, false)
+                      )
+                    )
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Dialog accountDialog(BuildContext context) {
+  double wid = 0.235;
+  double hgt = 0.235;
+
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: MediaQuery.of(context).size.height * hgt,
+      width: MediaQuery.of(context).size.width * wid,
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width * (wid - 0.04),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("Account", style: textStyle(Colors.white, 20, false, false)),
+                IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            )
+          ),
+          Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(10),
+                  width: MediaQuery.of(context).size.width * (wid - 0.04),
+                  height: MediaQuery.of(context).size.height * 0.125,
+                  decoration: BoxDecoration(
+                    //color:Colors.red,
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(14.0),
+                    border: Border.all(
+                      color: Colors.grey[400]!,
+                      width: 0.5,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("Connected With Metamask", style: textStyle(Colors.grey[600]!, 15, false, false)),
+                          Container(
+                            width: 75,
+                            height: 25,
+                            decoration: boxDecoration(Colors.transparent, 100, 0, Colors.blue[800]!),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "Change",
+                                style: textStyle(Colors.blue[300]!, 10, true, false)
+                              )
+                            )
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            width: 185,
+                            height: 30,
+                            //color: Colors.red,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                const Icon(
+                                Icons.account_balance_wallet,
+                                color: Colors.white,
+                                ),
+                                Text(
+                                  "0x24fd78...4c22",
+                                  style: textStyle(Colors.white, 20, false, false),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 75,
+                            height: 25,
+                            decoration: boxDecoration(Colors.transparent, 100, 0, Colors.red[900]!),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "Disconnect",
+                                style: textStyle(Colors.red[900]!, 10, true, false)
+                              )
+                            )
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          TextButton(
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                const Icon(
+                                  Icons.filter_none,
+                                  color: Colors.grey,
+                                ),
+                                Text("Copy Address", style: textStyle(Colors.grey[400]!, 15, false, false)),
+                              ],
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                const Icon(
+                                  Icons.open_in_new,
+                                  color: Colors.grey,
+                                ),
+                                Text("Show on Polygonscan", style: textStyle(Colors.grey[400]!, 15, false, false)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 Dialog removeDialog(BuildContext context) {
