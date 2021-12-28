@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:ae_dapp/service/Athletes.dart';
+import 'package:ax_dapp/service/Athletes.dart';
 
 class BaseballAthletes extends Athletes {
   BaseballAthletes();

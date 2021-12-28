@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/pages/PlayerPage.dart';
+import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/pages/PlayerPage.dart';
 
 class AllAthletesList extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Singleton.dart';
+import 'package:ax_dapp/service/Singleton.dart';
 
 class AXPage extends StatefulWidget {
   @override

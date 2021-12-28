@@ -1,6 +1,6 @@
-import 'package:ae_dapp/pages/EnterKeyPage.dart';
-import 'package:ae_dapp/pages/KeyGenerationPage.dart';
-import 'package:ae_dapp/pages/NavigationBar.dart';
+import 'package:ax_dapp/pages/EnterKeyPage.dart';
+import 'package:ax_dapp/pages/KeyGenerationPage.dart';
+import 'package:ax_dapp/pages/NavigationBar.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {

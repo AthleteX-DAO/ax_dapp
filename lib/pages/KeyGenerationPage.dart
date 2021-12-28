@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/pages/NavigationBar.dart';
-import 'package:ae_dapp/service/Singleton.dart';
+import 'package:ax_dapp/service/Singleton.dart';
 
 class KeyGenerationPage extends StatefulWidget {
   const KeyGenerationPage({Key? key}) : super(key: key);

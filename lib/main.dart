@@ -1,6 +1,6 @@
-import 'package:ae_dapp/pages/LandingPage.dart';
+import 'package:ax_dapp/pages/LandingPage.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Controller.dart';
+import 'package:ax_dapp/service/Controller.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());

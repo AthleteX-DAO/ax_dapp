@@ -1,6 +1,6 @@
-import 'package:ae_dapp/service/RSSReader.dart';
+import 'package:ax_dapp/service/RSSReader.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/Athlete.dart';
 import 'package:search_page/search_page.dart';
 
 class AthletesList extends StatefulWidget {

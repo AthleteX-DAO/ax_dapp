@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:ae_dapp/pages/NavigationBar.dart';
-import 'package:ae_dapp/pages/KeyGenerationPage.dart';
+import 'package:ax_dapp/pages/KeyGenerationPage.dart';
 
 class EnterKeyPage extends StatefulWidget {
   const EnterKeyPage({Key? key}) : super(key: key);

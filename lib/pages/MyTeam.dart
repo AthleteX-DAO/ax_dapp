@@ -1,9 +1,7 @@
-import 'package:ae_dapp/service/AthleteList.dart';
-import 'package:ae_dapp/pages/LandingPage.dart';
-import 'package:ae_dapp/service/Portfolio.dart';
-import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ax_dapp/pages/LandingPage.dart';
+import 'package:ax_dapp/service/Portfolio.dart';
+import 'package:ax_dapp/service/Athlete.dart';
 import 'package:flutter/material.dart';
-import 'package:draggable_home/draggable_home.dart';
 
 class MyTeam extends StatefulWidget {
   MyTeam({Key? key}) : super(key: key);
@@ -13,18 +11,18 @@ class MyTeam extends StatefulWidget {
 }
 
 class _MyTeamState extends State<MyTeam> {
-  static List<Athlete> _AllAthletesList = [];
+  static List<Athlete> _allAthletesList = [];
 
   Widget _buildOwnedAthletesList(List<Athlete>? _futureAthletes) {
-    _AllAthletesList.addAll(_futureAthletes as List<Athlete>);
+    _allAthletesList.addAll(_futureAthletes as List<Athlete>);
 
     return ListView.builder(
-      itemCount: _AllAthletesList.length,
+      itemCount: _allAthletesList.length,
       padding: EdgeInsets.all(16.0),
       itemBuilder: (context, index) {
         if (index.isOdd) return Divider(); /*2*/
         final i = index ~/ 2; // i is every even item in this iteration
-        return _buildRow(_AllAthletesList[i]);
+        return _buildRow(_allAthletesList[i]);
       },
     );
   }

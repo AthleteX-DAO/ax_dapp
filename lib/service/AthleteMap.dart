@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:ae_dapp/service/Athletes.dart';
+import 'package:ax_dapp/service/Athletes.dart';
 
 class AthleteMap {
   AthleteMap() {

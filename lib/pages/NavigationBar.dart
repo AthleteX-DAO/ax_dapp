@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:ae_dapp/pages/MyTeam2.dart';
-import 'package:ae_dapp/pages/TradingBlock.dart';
-import 'package:ae_dapp/pages/AXPage.dart';
-import 'package:ae_dapp/pages/ExplorePage.dart';
+import 'package:ax_dapp/pages/MyTeam2.dart';
+import 'package:ax_dapp/pages/TradingBlock.dart';
+import 'package:ax_dapp/pages/AXPage.dart';
+import 'package:ax_dapp/pages/ExplorePage.dart';
 
 class NavigationBar extends StatefulWidget {
   NavigationBar({Key? key}) : super(key: key);
