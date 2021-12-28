@@ -39,7 +39,7 @@ class _V1AppState extends State<V1App> {
 
   // state change variables
   int pageNumber = 0;
-  int walletConnected = 1; //flag to check if user has connected their wallet
+  bool walletConnected = true; //flag to check if user has connected their wallet
   bool allFarms = true;
   List<Athlete> athleteList = [];
 
@@ -155,7 +155,7 @@ class _V1AppState extends State<V1App> {
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
                   ])),
-          if (walletConnected == 0) ...[
+          if (!walletConnected) ...[
             // top Connect Wallet Button
             Container(
                 height: 37.5,
@@ -165,17 +165,16 @@ class _V1AppState extends State<V1App> {
                 child: TextButton(
                   onPressed: () => showDialog(
                       context: context,
-                      builder: (BuildContext context) => walletDialog(context)),
-                  child: Text(
-                    "Connect Wallet",
-                    style: textStyle(Colors.amber[400]!, 16, true, false),
-                  ),
-                )),
+                      builder: (BuildContext context) => walletDialog(context)
+                    ),
+                  child: connectWalletWidget
+                )
+              ),
           ] else ...[
             //top right corner wallet information
             Container(
-                height: 37.5,
-                width: 700,
+                height: 30,
+                width: 500,
                 decoration:
                     boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
                 child: Row(
@@ -193,7 +192,7 @@ class _V1AppState extends State<V1App> {
                           Text(
                             "Matic/Polygon",
                             style:
-                                textStyle(Colors.grey[400]!, 15, false, false),
+                                textStyle(Colors.grey[400]!, 11, false, false),
                           )
                         ],
                       ),
@@ -210,7 +209,7 @@ class _V1AppState extends State<V1App> {
                           Text(
                             "0.0024 Matic",
                             style:
-                                textStyle(Colors.grey[400]!, 15, false, false),
+                                textStyle(Colors.grey[400]!, 11, false, false),
                           )
                         ],
                       ),
@@ -231,7 +230,7 @@ class _V1AppState extends State<V1App> {
                           Text(
                             "10,000 AX",
                             style:
-                                textStyle(Colors.grey[400]!, 15, false, false),
+                                textStyle(Colors.grey[400]!, 11, false, false),
                           )
                         ],
                       ),
@@ -248,7 +247,7 @@ class _V1AppState extends State<V1App> {
                           Text(
                             "0x24fd78...4c22",
                             style:
-                                textStyle(Colors.grey[400]!, 15, false, false),
+                                textStyle(Colors.grey[400]!, 11, false, false),
                           )
                         ],
                       ),

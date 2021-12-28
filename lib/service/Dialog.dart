@@ -1471,8 +1471,8 @@ Dialog confirmTransaction(
 }
 
 Dialog yourAXDialog(BuildContext context) {
-  double wid = 0.225;
-  double hgt = 0.525;
+  double wid = 0.3;
+  double hgt = 0.6;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1520,7 +1520,7 @@ Dialog yourAXDialog(BuildContext context) {
             ),
             Container(
               width: MediaQuery.of(context).size.width * (wid - 0.04),
-              height: 100,
+              height: 70,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -1663,8 +1663,8 @@ Dialog yourAXDialog(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    width: 150,
-                    height: 35,
+                    width: MediaQuery.of(context).size.width * 0.085,
+                    height: MediaQuery.of(context).size.height*0.035,
                     decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                     child: TextButton(
                       onPressed: () {},
@@ -1675,8 +1675,8 @@ Dialog yourAXDialog(BuildContext context) {
                     )
                   ),
                   Container(
-                    width: 150,
-                    height: 35,
+                    width: MediaQuery.of(context).size.width * 0.085,
+                    height: MediaQuery.of(context).size.height*0.035,
                     decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
                     child: TextButton(
                       onPressed: () {},
@@ -1697,8 +1697,8 @@ Dialog yourAXDialog(BuildContext context) {
 }
 
 Dialog accountDialog(BuildContext context) {
-  double wid = 0.235;
-  double hgt = 0.235;
+  double wid = 475;
+  double hgt = 200;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1706,80 +1706,58 @@ Dialog accountDialog(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: MediaQuery.of(context).size.height * hgt,
-      width: MediaQuery.of(context).size.width * wid,
+      height: hgt,
+      width: wid,
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width * (wid - 0.04),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text("Account", style: textStyle(Colors.white, 20, false, false)),
-                IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            )
-          ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
-                  height: MediaQuery.of(context).size.height * 0.125,
-                  decoration: BoxDecoration(
-                    //color:Colors.red,
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(14.0),
-                    border: Border.all(
-                      color: Colors.grey[400]!,
-                      width: 0.5,
+      alignment: Alignment.center,
+      child: Container(
+        height: hgt*0.875,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: wid*0.9,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Account", style: textStyle(Colors.white, 20, false, false)),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 26,
                     ),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                ],
+              )
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              width: wid*0.925,
+              height: hgt*0.6,
+              decoration: boxDecoration(Colors.transparent, 14, .5, Colors.grey[400]!),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("Connected With Metamask", style: textStyle(Colors.grey[600]!, 15, false, false)),
-                          Container(
-                            width: 75,
-                            height: 25,
-                            decoration: boxDecoration(Colors.transparent, 100, 0, Colors.blue[800]!),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "Change",
-                                style: textStyle(Colors.blue[300]!, 10, true, false)
-                              )
-                            )
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            width: 185,
-                            height: 30,
-                            //color: Colors.red,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Container(
+                        width: wid*.925*0.75,
+                        height: hgt*0.275,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("Connected With Metamask", style: textStyle(Colors.grey[600]!, 13, false, false)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 const Icon(
-                                Icons.account_balance_wallet,
-                                color: Colors.white,
+                                  Icons.account_balance_wallet,
+                                  color: Colors.white,
                                 ),
                                 Text(
                                   "0x24fd78...4c22",
@@ -1787,60 +1765,80 @@ Dialog accountDialog(BuildContext context) {
                                 ),
                               ],
                             ),
-                          ),
-                          Container(
-                            width: 75,
-                            height: 25,
-                            decoration: boxDecoration(Colors.transparent, 100, 0, Colors.red[900]!),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "Disconnect",
-                                style: textStyle(Colors.red[900]!, 10, true, false)
-                              )
-                            )
-                          ),
-                        ],
+                          ],
+                        )
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                const Icon(
-                                  Icons.filter_none,
-                                  color: Colors.grey,
-                                ),
-                                Text("Copy Address", style: textStyle(Colors.grey[400]!, 15, false, false)),
-                              ],
+                      Container(
+                        height: hgt*0.3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              width: 75,
+                              height: 25,
+                              decoration: boxDecoration(Colors.transparent, 100, 0, Colors.blue[800]!),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "Change",
+                                  style: textStyle(Colors.blue[300]!, 10, true, false)
+                                )
+                              )
                             ),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                const Icon(
-                                  Icons.open_in_new,
-                                  color: Colors.grey,
-                                ),
-                                Text("Show on Polygonscan", style: textStyle(Colors.grey[400]!, 15, false, false)),
-                              ],
+                            Container(
+                              width: 75,
+                              height: 25,
+                              decoration: boxDecoration(Colors.transparent, 100, 0, Colors.red[900]!),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "Disconnect",
+                                  style: textStyle(Colors.red[900]!, 10, true, false)
+                                )
+                              )
                             ),
-                          ),
-                        ],
+                          ],
+                        )
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      TextButton(
+                        onPressed: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            const Icon(
+                              Icons.filter_none,
+                              color: Colors.grey,
+                            ),
+                            Text("Copy Address", style: textStyle(Colors.grey[400]!, 15, false, false)),
+                          ],
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            const Icon(
+                              Icons.open_in_new,
+                              color: Colors.grey,
+                            ),
+                            Text("Show on Polygonscan", style: textStyle(Colors.grey[400]!, 15, false, false)),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            )
-          ),
-        ],
-      ),
+                ],
+              ),
+            ),
+          ],
+        )
+      )
     ),
   );
 }
