@@ -1,4 +1,4 @@
-import 'package:ae_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 
 class Athlete {

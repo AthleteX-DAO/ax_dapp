@@ -1,8 +1,8 @@
 import 'dart:ui';
-import 'package:ae_dapp/service/Controller.dart';
-import 'package:ae_dapp/service/Controller/Token.dart';
+import 'package:ax_dapp/service/Controller.dart';
+import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/Athlete.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';

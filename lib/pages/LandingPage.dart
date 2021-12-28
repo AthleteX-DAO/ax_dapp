@@ -1,6 +1,6 @@
-import 'package:ae_dapp/pages/V1App.dart';
-import 'package:ae_dapp/service/AthleteApi.dart';
-import 'package:ae_dapp/service/AthleteList.dart';
+import 'package:ax_dapp/pages/V1App.dart';
+import 'package:ax_dapp/service/AthleteApi.dart';
+import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:flutter/material.dart';
 import 'TestPage.dart';
 

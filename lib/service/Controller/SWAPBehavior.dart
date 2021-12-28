@@ -1,5 +1,5 @@
-import 'package:ae_dapp/contracts/Dex.g.dart';
-import 'package:ae_dapp/service/Controller.dart';
+import 'package:ax_dapp/contracts/Dex.g.dart';
+import 'package:ax_dapp/service/Controller.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import '../../contracts/Dex.g.dart';

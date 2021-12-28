@@ -1,11 +1,11 @@
-import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/service/AthleteApi.dart';
-import 'package:ae_dapp/service/AthleteList.dart';
-import 'package:ae_dapp/service/Controller/AXT.dart';
-import 'package:ae_dapp/service/Controller/SXT.dart';
-import 'package:ae_dapp/service/Controller/Token.dart';
+import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/AthleteApi.dart';
+import 'package:ax_dapp/service/AthleteList.dart';
+import 'package:ax_dapp/service/Controller/AXT.dart';
+import 'package:ax_dapp/service/Controller/SXT.dart';
+import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
 
 class DesktopTrade extends StatefulWidget {

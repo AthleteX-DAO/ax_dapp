@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ae_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/Athlete.dart';
 import 'dart:convert';
 
 class AthleteApi {
