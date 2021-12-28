@@ -3,7 +3,6 @@ import 'package:ax_dapp/service/RSSReader.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fl_chart/fl_chart.dart';
-import 'package:provider/provider.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -154,7 +153,6 @@ class _ExplorePageState extends State<ExplorePage> {
 //                                 ),
 //                               ),
 //                             ),
-                            
                             // generate athlete cards
                             Container(
                               padding: EdgeInsets.symmetric(vertical: 30),

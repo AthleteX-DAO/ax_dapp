@@ -33,6 +33,8 @@ dependencies:
   url_launcher: ^6.0.3
   fl_chart: ^0.36.2
   toggle_switch: ^1.2.0
+  charts_flutter: ^0.11.0
+  syncfusion_flutter_charts: ^18.4.49
 
   
 
@@ -46,8 +48,13 @@ dependencies:
   webfeed: ^0.7.0
   chart_sparkline: ^1.0.5
   flutter_web3: ^2.0.4
-  flutter_screenutil: ^5.0.0+2
+  
 
+dependency_overrides:
+  charts_flutter:
+    git:
+      url: https://github.com/google/charts
+      path: charts_flutter
 
 
 
@@ -80,10 +87,11 @@ flutter:
   assets:
     - assets/images/trophy.png
     - assets/images/AXMarkets.png
-    - assets/images/asu-hero.jpg
-    - assets/images/x.jpg
     - assets/images/x.png
-    - assets/images/background.jpeg
     - assets/data.json
+    - assets/images/fox.png
+    - assets/images/X_white.png
+    - assets/images/sx.png
+    - assets/images/matic.png
     
       

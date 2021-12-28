@@ -1,50 +1,94 @@
 import requests
 import json
+import re
 
-host = 'http://146.59.10.118:9000'
+# from requests.sessions import _TextMapping
 
-sql_query = "select * from nfl;"
+ATHLETES = []
+
+with open('../../assets/nflAthletes.json', 'r') as athFile:
+    data = athFile.read()
+
+athJson = json.loads(data)
+
+# list of abbreviated names
+active_list = []
+id_list = []
+
+for ath in athJson:
+    id_list.append(ath['id'])
+    active_list.append(ath['name'])
+
+
+# active_list = [
+#     'T.Brady',
+#     'P.Mahomes',
+#     'J.Allen',
+#     'L.Jackson',
+#     'D.Adams',
+#     'S.Diggs',
+#     'C.Ridley',
+#     'D.Metcalf',
+#     'T.Hill',
+#     'D.Henry',
+#     'D.Cook',
+#     'D.Harris',
+#     'N.Harris'
+# ]
+
+host = 'https://db.axmarkets.net'
 
 class Athlete():
     def __init__(self, name):
         self.name = name
-        self.history = []
-
-    def add_data(self, pair):
-        self.history.append(pair)
+        self.id = 
+        self.team = None
+        self.position = None
+        self.passingYards = []
+        self.passingTouchdowns = []
+        self.reception = []
+        self.receiveYards = []
+        self.receiveTouch = []
+        self.rushingYards = []
+        self.price = []
+        self.time = []
 
     def make_dict(self):
-        id = self.name[-5:].replace('_', '')
-        return (id, {"name": self.name[:-5].replace('_', ''), "history":self.history})
+        return (id, {"name": self.name, "team":self.team, "position":self.position, "passingYards":self.passingYards, "passingTouchdowns":self.passingTouchdowns, "reception":self.reception, "receiveYards":self.receiveYards, "receiveTouch":self.receiveTouch, "rushingYards":self.rushingYards, "price":self.price, "time":self.time})
 
-ATHLETES = []
+for athlete in active_list: 
+    new_athlete = Athlete(athlete)      
+    try:
+        sql_query = f"select * from nfl where name = '{athlete}'" # loop through current athletes and select only the data one by one
+        response = requests.post(host + '/exec', params={'query': sql_query})
+        json_response = json.loads(response.text)
+        rows = json_response['dataset']
+        # print(rows)
+        new_athlete.team, new_athlete.position = rows[0][1], rows[0][2]
+        for row in rows:
+            new_athlete.passingYards.append(row[3])
+            # print(row[3], 'passing yards')
+            new_athlete.passingTouchdowns.append(row[4])
+            # print(row[4], 'passing touch')
+            new_athlete.reception.append(row[5])
+            # print(row[5], 'reception')
+            new_athlete.receiveYards.append(row[6])
+            # print(row[6], 'receive yards')
+            new_athlete.receiveTouch.append(row[7])
+            # print(row[7], 'receive touch')
+            new_athlete.rushingYards.append(row[8])
+            # print(row[8], 'rushng yards')
+            new_athlete.price.append(row[9])
+            # print(row[9], 'price')
+            new_athlete.time.append(row[10])
+            # print(row[10], 'time')
+        print(new_athlete.name, new_athlete.price)
 
-def is_Active(ATHLETES, name):
-    for athlete in ATHLETES:
-        if athlete.name == name:
-            return True
-    return False
-
-def append_Data(ATHLETES, name, pair):
-    for athlete in ATHLETES:
-        if athlete.name == name:
-            athlete.add_data(pair)
-
-try:
-    response = requests.post(host + '/exec', params={'query': sql_query})
-    json_response = json.loads(response.text)
-    print(json_response)
-    rows = json_response['dataset']
+    except requests.exceptions.RequestException as e:
+        print("Error: %s" % (e))
     
-    for row in rows: # create athlete objects
-        if is_Active(ATHLETES, row[0]) == False:
-            new_entry = Athlete(row[0])
-            ATHLETES.append(new_entry)
-    for row in rows: # append historical data
-        append_Data(ATHLETES, row[0], [ row[2], [row[1]] ])
-        
-except requests.exceptions.RequestException as e:
-  print("Error: %s" % (e))
+    ATHLETES.append(new_athlete)
+
 
 jsondata = []
 for athlete in ATHLETES:
