@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Dart
+name: Deploy
 
 on:
   push:
@@ -24,7 +24,6 @@ jobs:
       # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
       
-            
       - name: Install Flutter
         # You may pin to the exact commit or the version.
         # uses: britannio/action-install-flutter@a486b7e3148e54a76390d849100b9dee819ff810
@@ -33,15 +32,22 @@ jobs:
           # The channel/version of Flutter to be used e.g., beta or 2.0.0
           version: stable
 
-      - name: Install dependencies
-        run: dart pub get
 
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
-      - name: Run tests
-        run: dart test
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Immediately builds the project        
+      - name: Build dApp
+        run: flutter build web --web-renderer auto
         
-      # View the installed Dart version 
-      - name: View Latest Version
-        run: dart --version
+      - name: Deploy Site to Netlify
+        # You may pin to the exact commit or the version.
+        # uses: JacobSamro/netlify-deploy@0b6f8e767776cca844b003e4f409b410b7ee083a
+        uses: JacobSamro/netlify-deploy@v0.6
+        with:
+          # Netlify Auth Token
+          NETLIFY_AUTH_TOKEN: secrets.NETLIFY_TOKEN
+          # ID of your Site
+          NETLIFY_SITE_ID: b90198be-ae81-44fe-9af6-561a4ae0ed3c
+          # Folder to Upload
+          FOLDER_TO_UPLOAD: /build/web

@@ -1,5 +1,5 @@
-name: ae_dapp
-description: A new Flutter project.
+name: ax_dapp
+description: Athlete performance prediction market.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -51,13 +51,9 @@ dependencies:
 
 
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  build_runner: ^2.1.0
-
+dev_dependencies: 
+  test: ^1.16.5
   
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
