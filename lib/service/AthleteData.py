@@ -36,7 +36,7 @@ for ath in athJson:
 #     'N.Harris'
 # ]
 
-host = 'http://54.38.139.134:9000'
+host = 'https://db.axmarkets.net'
 
 class Athlete():
     def __init__(self, name):
@@ -82,7 +82,7 @@ for athlete in active_list:
             # print(row[9], 'price')
             new_athlete.time.append(row[10])
             # print(row[10], 'time')
-        # print(new_athlete.name, new_athlete.price)
+        print(new_athlete.name, new_athlete.price)
 
     except requests.exceptions.RequestException as e:
         print("Error: %s" % (e))

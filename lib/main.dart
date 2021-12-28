@@ -1,4 +1,5 @@
-import 'package:ae_dapp/pages/HomePage.dart';
+import 'package:ae_dapp/pages/LandingPage.dart';
+import 'package:ae_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -17,7 +18,9 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
           primaryColor: Colors.yellow[700],
           accentColor: Colors.black),
-      home: HomePage(),
+          home: LandingPage(),
+      // home: V1App(),
+      // home: HomePage()
     );
   }
 }
