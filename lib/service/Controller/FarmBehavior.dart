@@ -1,4 +1,4 @@
-import 'package:ae_dapp/contracts/StakingRewards.g.dart';
+import 'package:ax_dapp/contracts/StakingRewards.g.dart';
 
 import '../Controller.dart';
 

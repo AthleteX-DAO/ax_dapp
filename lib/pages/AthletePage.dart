@@ -1,8 +1,8 @@
-import 'package:ae_dapp/pages/DesktopScout.dart';
-import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/service/Controller/APT.dart';
-import 'package:ae_dapp/service/Dialog.dart';
-import 'package:ae_dapp/service/WarTimeSeries.dart';
+import 'package:ax_dapp/pages/DesktopScout.dart';
+import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/Controller/APT.dart';
+import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;

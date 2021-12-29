@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/service/Controller.dart';
+import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/Controller.dart';
+import 'package:ax_dapp/service/Controller/AXT.dart';
+import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../contracts/LongShortPair.g.dart';
 import '../../contracts/ExpiringMultiParty.g.dart';

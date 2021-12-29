@@ -1,7 +1,7 @@
-import 'package:ae_dapp/service/Athlete.dart';
-import 'package:ae_dapp/service/AthleteApi.dart';
-import 'package:ae_dapp/service/AthleteList.dart';
-import 'package:ae_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/AthleteApi.dart';
+import 'package:ax_dapp/service/AthleteList.dart';
+import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
