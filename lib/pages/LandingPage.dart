@@ -2,7 +2,7 @@ import 'package:ae_dapp/pages/V1App.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/AthleteList.dart';
 import 'package:flutter/material.dart';
-import 'TestPage.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -19,9 +19,16 @@ class _LandingPageState extends State<LandingPage> {
     if (next)
       return V1App();
       
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    double textSize = _height*0.05;
+    if (_width < _height)
+      textSize = _width*0.05;
+print("Width: "+_width.toString()+", Height: "+_height.toString());
+      
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+      width: _width,
+      height: _height,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage("../assets/images/axBackground.jpeg"),
@@ -33,38 +40,39 @@ class _LandingPageState extends State<LandingPage> {
         children: <Widget>[
           //AX Markets Image
           Container(
-            height: 200,
+            height: _height*0.2,
             child: Image(
               image: AssetImage("../assets/images/AXMarkets.png"),
             )
           ),
           // Text
           Container(
-            height: 175,
+            height: _height*0.3,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 RichText(
                   text: TextSpan(
                     children: <TextSpan>[
-                      TextSpan(text: "TRADE", style: textStyle(Colors.amber[400]!, 32, true, false)),
-                      TextSpan(text: " ATHLETES", style: textStyle(Colors.white, 32, true, false)),
+                      TextSpan(text: "TRADE", style: textStyle(Colors.amber[400]!, textSize, true, false)),
+                      TextSpan(text: " ATHLETES", style: textStyle(Colors.white, textSize, true, false)),
                     ],
                   ),
                 ),
                 RichText(
                   text: TextSpan(
                     children: <TextSpan>[
-                      TextSpan(text: "BUILD", style: textStyle(Colors.amber[400]!, 32, true, false)),
-                      TextSpan(text: " YOUR ROSTER", style: textStyle(Colors.white, 32, true, false)),
+                      TextSpan(text: "BUILD", style: textStyle(Colors.amber[400]!, textSize, true, false)),
+                      TextSpan(text: " YOUR ROSTER", style: textStyle(Colors.white, textSize, true, false)),
                     ],
                   ),
                 ),
                 RichText(
                   text: TextSpan(
                     children: <TextSpan>[
-                      TextSpan(text: "EARN", style: textStyle(Colors.amber[400]!, 32, true, false)),
-                      TextSpan(text: " REWARDS", style: textStyle(Colors.white, 32, true, false)),
+                      TextSpan(text: "EARN", style: textStyle(Colors.amber[400]!, textSize, true, false)),
+                      TextSpan(text: " REWARDS", style: textStyle(Colors.white, textSize, true, false)),
                     ],
                   ),
                 ),
@@ -73,8 +81,8 @@ class _LandingPageState extends State<LandingPage> {
           ),
           //Button load athletes
           Container(
-            width: 275,
-            height: 60,
+            width: _width*0.35,
+            height: _height*0.1,
             child: FutureBuilder<dynamic>(
               future: AthleteApi.getAthletesLocally(context),
               builder: (context, snapshot) {
@@ -91,7 +99,7 @@ class _LandingPageState extends State<LandingPage> {
                         onPressed: () {setState(() {next = true;});},
                         child: Text(
                           "Start Trading",
-                          style: textStyle(Colors.amber[400]!, 26, true, false),
+                          style: textStyle(Colors.amber[400]!, textSize, true, false),
                         )
                       )
                     );
