@@ -29,7 +29,6 @@ dependencies:
   web_socket_channel: ^2.1.0
   flutter_sparkline: ^0.1.0
   velocity_x: ^3.2.0
-  qrscan: ^0.3.1
   url_launcher: ^6.0.3
   fl_chart: ^0.36.2
   toggle_switch: ^1.2.0
