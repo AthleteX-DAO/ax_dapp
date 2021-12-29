@@ -22,13 +22,16 @@ class _DesktopScoutState extends State<DesktopScout> {
   @override
   Widget build(BuildContext context) {
     double sportFilterTxSz = 18;
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+
     if (athletePage)
       return AthletePage(athlete: curAthlete);
 
     return Center(
       child: Container(
-        height: MediaQuery.of(context).size.height*0.9,
-        width: MediaQuery.of(context).size.width*0.85,
+        height: _height*0.9,
+        width: _width*0.85,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,28 +116,28 @@ class _DesktopScoutState extends State<DesktopScout> {
                   width: 66
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width*0.15,
+                  width: _width*0.15,
                   child: Text(
                     "Athlete",
                     style: textStyle(Colors.grey[400]!, 12, false, false)
                   )
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width*0.15,
+                  width: _width*0.15,
                   child: Text(
                     "Team",
                     style: textStyle(Colors.grey[400]!, 12, false, false)
                   )
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width*0.1,
+                  width: _width*0.1,
                   child: Text(
                     "Market Price / Change",
                     style: textStyle(Colors.grey[400]!, 12, false, false)
                   )
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width*0.1,
+                  width: _width*0.1,
                   child: Text(
                     "Book Value / Change",
                     style: textStyle(Colors.grey[400]!, 12, false, false)
@@ -151,12 +154,14 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   Widget buildListview() {
+    double _height = MediaQuery.of(context).size.height;
+
     if (nflList.length == 0)
       nflList = AthleteList.list;
     // all athletes
     if (sportState == 0)
       return Container(
-        height: MediaQuery.of(context).size.height*0.6,
+        height: _height*0.6,
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
           itemCount: AthleteList.list.length,
@@ -168,7 +173,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     // NFL athletes only
     else if (sportState == 1)
       return Container(
-        height: MediaQuery.of(context).size.height*0.6,
+        height: _height*0.6,
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
           itemCount: nflList.length,
@@ -183,7 +188,7 @@ class _DesktopScoutState extends State<DesktopScout> {
       if (sportState == 3)
         spt = "MMA";
       return Container(
-        height: MediaQuery.of(context).size.height*0.6,
+        height: _height*0.6,
         child: Center(
           child: Text(
             "No " + spt + " Athletes Currently",
@@ -196,6 +201,8 @@ class _DesktopScoutState extends State<DesktopScout> {
 
   // Athlete Cards
   Widget createListCards(Athlete athlete) {
+    double _width = MediaQuery.of(context).size.width;
+    
     return Container(
       height: 70,
       child: OutlinedButton(
@@ -220,7 +227,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 ),
                 // Athlete Name
                 Container(
-                  width: MediaQuery.of(context).size.width*0.15,
+                  width: _width*0.15,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,7 +245,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 ),
                 // Team
                 Container(
-                  width: MediaQuery.of(context).size.width*0.15,
+                  width: _width*0.15,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +263,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 ),
                 // Market Price
                 Container(
-                  width: MediaQuery.of(context).size.width*0.1,
+                  width: _width*0.1,
                   child: Row(
                   children: <Widget>[
                     Text(
@@ -272,7 +279,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 ),
                 // Book Price
                 Container(
-                  width: MediaQuery.of(context).size.width*0.1,
+                  width: _width*0.1,
                   child: Row(
                     children: <Widget>[
                       Text(

@@ -24,7 +24,6 @@ class _LandingPageState extends State<LandingPage> {
     double textSize = _height*0.05;
     if (_width < _height)
       textSize = _width*0.05;
-print("Width: "+_width.toString()+", Height: "+_height.toString());
       
     return Container(
       width: _width,
