@@ -50,4 +50,4 @@ jobs:
           # ID of your Site
           NETLIFY_SITE_ID: b90198be-ae81-44fe-9af6-561a4ae0ed3c
           # Folder to Upload
-          FOLDER_TO_UPLOAD: /build/web
+          FOLDER_TO_UPLOAD: build/web
