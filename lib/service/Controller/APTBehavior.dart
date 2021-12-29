@@ -8,10 +8,10 @@ import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../contracts/LongShortPair.g.dart';
 import '../../contracts/ExpiringMultiParty.g.dart';
-import 'package:ae_dapp/service/Controller/AXT.dart';
+import 'package:ax_dapp/service/Controller/AXT.dart';
 import '../../contracts/LongShortPairCreator.g.dart';
 import '../../contracts/ExpiringMultiPartyCreator.g.dart';
-import 'package:ae_dapp/service/Controller/SWAPBehavior.dart';
+import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
 
 class APTBehavior {
   SWAPBehavior _swapBehavior = SWAPBehavior();
