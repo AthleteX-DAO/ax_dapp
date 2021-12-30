@@ -4,8 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('Testing Mainnet ChaID', () {
-    final controller = Controller();
 
-    expect(controller.MAINNET_CHAIN_ID, 137);
+    expect(Controller.MAINNET_CHAIN_ID, 137);
   });
 }
