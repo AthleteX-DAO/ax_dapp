@@ -67,7 +67,7 @@ class Controller {
     networkID = await cl.getNetworkId();
     credentials = cr;
     publicAddress = await cr.extractAddress();
-    print("[Console] updated client: ${cl} and credentials: ${cr}");
+    print("[Console] updated client: $cl and credentials: $cr");
   }
 
   static void switchNetwork() async {
