@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:ax_dapp/service/Controller.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/AXT.dart';
 import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';

@@ -1,6 +1,6 @@
 import 'package:ax_dapp/contracts/StakingRewards.g.dart';
 
-import '../Controller.dart';
+import 'Controller.dart';
 
 class FarmBehavior {
   StakingRewards _rewards =

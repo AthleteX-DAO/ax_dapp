@@ -1,6 +1,6 @@
 // ignore_for_file: unused_field
 
-import 'package:ax_dapp/service/Controller.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/AXT.dart';
 import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
 import 'package:web3dart/web3dart.dart';
