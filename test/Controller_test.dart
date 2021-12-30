@@ -1,3 +1,4 @@
+@TestOn('browser')
 import 'package:ax_dapp/service/Controller.dart';
 import 'package:test/test.dart';
 

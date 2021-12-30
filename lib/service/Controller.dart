@@ -1,8 +1,10 @@
+import 'dart:html';
 import 'dart:math';
-import 'dart:ui';
+// import 'dart:ui';
+import 'package:flutter_web3/ethereum.dart';
+import 'package:flutter_web3/flutter_web3.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:web3dart/browser.dart';
 import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
