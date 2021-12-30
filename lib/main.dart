@@ -1,8 +1,5 @@
 import 'package:ax_dapp/pages/LandingPage.dart';
-import 'package:ax_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Controller.dart';
-import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,8 +15,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       theme: ThemeData(
           brightness: Brightness.dark,
-          primaryColor: Colors.yellow[700],
-          accentColor: Colors.black),
+          primaryColor: Colors.yellow[700], colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black)),
           home: LandingPage(),
       // home: V1App(),
       // home: HomePage()

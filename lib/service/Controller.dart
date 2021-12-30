@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_web_libraries_in_flutter
+
 import 'dart:html';
 import 'dart:math';
 import 'package:url_launcher/url_launcher.dart';
@@ -55,7 +57,7 @@ class Controller {
     client = cl;
     credentials = cr;
     publicAddress = await cr.extractAddress();
-    print("[Console] updated client: ${cl} and credentials: ${cr}");
+    print("[Console] updated client: $cl and credentials: $cr");
   }
 
   void viewTx(String txAddress) async {

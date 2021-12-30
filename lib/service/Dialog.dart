@@ -1,4 +1,5 @@
-import 'dart:ui';
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:ax_dapp/service/Controller.dart';
 import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
@@ -659,6 +660,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                       //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () async {
                         Navigator.pop(context);
+                        // ignore: unused_local_variable
                         EthereumAddress aptAddress = EthereumAddress.fromHex(
                             "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22");
                         bool confirmed;

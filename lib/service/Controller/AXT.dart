@@ -1,8 +1,5 @@
-import 'package:ax_dapp/contracts/AthleteX.g.dart';
 import 'package:flutter/material.dart';
 import 'package:web3dart/web3dart.dart';
-
-import '../Controller.dart';
 import 'Token.dart';
 
 class AXT extends Token {

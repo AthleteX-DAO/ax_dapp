@@ -1,5 +1,4 @@
 import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/AthleteApi.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Controller/AXT.dart';
 import 'package:ax_dapp/service/Controller/SXT.dart';
@@ -30,6 +29,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   @override
   void initState() {
+    super.initState();
     tkn1 = tokens[0];
     tkn2 = tokens[1];
   }
@@ -59,8 +59,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 if (tkn1 != null && tkn2 != null)
                   showDialog(
                       context: context,
-                      builder: (BuildContext context) =>
-                          swapDialog(context, tkn1!, tkn2!, fromAmount, toAmount));
+                      builder: (BuildContext context) => swapDialog(
+                          context, tkn1!, tkn2!, fromAmount, toAmount));
               },
               child: Text(
                 "Swap",
@@ -161,21 +161,20 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 //Down arrow
                 Container(
                   child: TextButton(
-                    onPressed: () {
-                      if (tkn2 != null) {
-                        Token tmpTkn = tkn1!;
-                        setState(() {
-                          tkn1 = tkn2;
-                          tkn2 = tmpTkn;
-                        });
-                      }
-                    },
-                    child: Icon(
-                      Icons.arrow_downward,
-                      size: 30,
-                      color: Colors.grey[400],
-                    )
-                  ),
+                      onPressed: () {
+                        if (tkn2 != null) {
+                          Token tmpTkn = tkn1!;
+                          setState(() {
+                            tkn1 = tkn2;
+                            tkn2 = tmpTkn;
+                          });
+                        }
+                      },
+                      child: Icon(
+                        Icons.arrow_downward,
+                        size: 30,
+                        color: Colors.grey[400],
+                      )),
                 ),
                 //To text
                 Container(
@@ -397,30 +396,23 @@ class _DesktopTradeState extends State<DesktopTrade> {
     }
 
     return Container(
-      width: 175,
-      height: 40,
-      decoration: decor,
-      child: TextButton(
-        onPressed: () => showDialog(context: context, builder: (BuildContext context) => createTokenList(context, tknNum)),
-        child: Container(
-          //width: 90,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                tkr,
-                style: textStyle(Colors.white, 16, true, false)
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.white,
-                size: 25
-              )
-            ],
-          )
-        )
-      )
-    );
+        width: 175,
+        height: 40,
+        decoration: decor,
+        child: TextButton(
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    createTokenList(context, tknNum)),
+            child: Container(
+                //width: 90,
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(tkr, style: textStyle(Colors.white, 16, true, false)),
+                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
+              ],
+            ))));
   }
 
   void dialog(BuildContext context, double _height, double _width,
