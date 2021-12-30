@@ -217,337 +217,338 @@ class _AthletePageState extends State<AthletePage> {
                       ]
                     )
                   ),
-          // Stats-Side
-          Container(
-            width: _width * .4,
-            alignment: Alignment.topCenter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                // Price Overview section
-                Container(
-                  height: 150,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            width: _width * 0.175,
-                            child: Text(
-                              "Price Overview",
-                              style: textStyle(Colors.white, 24, false, false)
-                            )
-                          ),
-                          Container(
-                            width: 200,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    "Current",
-                                    style: textStyle(Colors.grey[400]!, 14, false, false)
-                                  )
-                                ),
-                                Container(
-                                  alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    "All-Time High",
-                                    style: textStyle(Colors.grey[400]!, 14, false, false)
-                                  )
-                                )
-                              ],
-                            )
-                          )
-                        ]
-                      ),
-                      Divider(thickness: 1, color: Colors.grey[400]),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "Market Price",
-                              style: textStyle(Colors.grey[400]!, 20, false, false)
-                            )
-                          ),
-                          Container(
-                            width: 200,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "4.18 AX ",
-                                      style: textStyle(Colors.white, 20, false, false)
-                                    ),
-                                    Container(
-                                      //alignment: Alignment.topLeft,
-                                      child: Text(
-                                        "-2%",
-                                        style: textStyle(Colors.red, 12, false, false)
-                                      )
-                                    ),
-                                  ]
-                                ),
-                                Text(
-                                  "4.20 AX",
-                                  style: textStyle(Colors.grey[400]!, 20, false, false)
-                                )
-                              ]
-                            )
-                          )
-                        ]
-                      ),
-                      Row(
-                        mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            width: _width * 0.175,
-                            child: Text(
-                              "Book Value",
-                              style: textStyle(Colors.grey[400]!, 20, false, false)
-                            )
-                          ),
-                          Container(
-                            width: 200,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "4.24 AX ",
-                                      style: textStyle(Colors.white, 20, false, false)
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        "+4%",
-                                        style: textStyle(Colors.green, 12, false, false)
-                                      )
-                                    ),
-                                  ]
-                                ),
-                                Text(
-                                  "4.24 AX",
-                                  style: textStyle(Colors.grey[400]!, 20, false, false)
-                                )
-                              ]
-                            )
-                          )
-                        ]
-                      ),
-                    ]
-                  )
-                ),
-                // Detail Section
-                Container(
-                  height: 250,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Details",
-                          style: textStyle(Colors.white, 24, false, false)
-                        )
-                      ),
-                      Divider(thickness: 1, color: Colors.grey[400]),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Sport / League",
-                            style: textStyle(Colors.grey[400]!, 20, false, false)
-                          ),
-                          Text(
-                            "American Football / NFL",
-                            style: textStyle(Colors.grey[400]!, 20, false, false)
-                          )
-                        ]
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Team",
-                            style: textStyle(Colors.grey[400]!, 20, false, false)
-                          ),
-                          Text(
-                            "Tampa Bay Buckaneers",
-                            style: textStyle(Colors.grey[400]!, 20, false, false)
-                          )
-                        ]
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Position",
-                            style: textStyle(Colors.grey[400]!, 20, false, false)
-                          ),
-                          Text(
-                            "Quarterback",
-                            style: textStyle(Colors.grey[400]!, 20, false, false)
-                          )
-                        ]
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Season Start",
-                            style: textStyle(Colors.grey[400]!, 20, false, false)
-                          ),
-                          Text(
-                            "Sep 1, 2021",
-                            style: textStyle(Colors.grey[400]!, 20, false, false)
-                          )
-                        ]
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Season End",
-                              style: textStyle(Colors.grey[400]!, 20, false, false)
-                            ),
-                            Text(
-                              "Jan 10, 2022",
-                              style: textStyle(Colors.grey[400]!, 20, false, false)
-                            )
-                          ]
-                        ),
-                      ]
-                    )
-                  ),
-                  // Stats section
+                  // Stats-Side
                   Container(
-                    height: 150,
+                    width: _width * .4,
+                    alignment: Alignment.topCenter,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+                        // Price Overview section
                         Container(
-                          child: Row(
+                          height: 150,
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Container(
-                                child: Text(
-                                  "Key Statistics",
-                                  style: textStyle(Colors.white, 24, false, false)
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    width: _width * 0.175,
+                                    child: Text(
+                                      "Price Overview",
+                                      style: textStyle(Colors.white, 24, false, false)
+                                    )
+                                  ),
+                                  Container(
+                                    width: 200,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            "Current",
+                                            style: textStyle(Colors.grey[400]!, 14, false, false)
+                                          )
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomRight,
+                                          child: Text(
+                                            "All-Time High",
+                                            style: textStyle(Colors.grey[400]!, 14, false, false)
+                                          )
+                                        )
+                                      ],
+                                    )
+                                  )
+                                ]
                               ),
+                              Divider(thickness: 1, color: Colors.grey[400]),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    child: Text(
+                                      "Market Price",
+                                      style: textStyle(Colors.grey[400]!, 20, false, false)
+                                    )
+                                  ),
+                                  Container(
+                                    width: 200,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Text(
+                                              "4.18 AX ",
+                                              style: textStyle(Colors.white, 20, false, false)
+                                            ),
+                                            Container(
+                                              //alignment: Alignment.topLeft,
+                                              child: Text(
+                                                "-2%",
+                                                style: textStyle(Colors.red, 12, false, false)
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        Text(
+                                          "4.20 AX",
+                                          style: textStyle(Colors.grey[400]!, 20, false, false)
+                                        )
+                                      ]
+                                    )
+                                  )
+                                ]
+                              ),
+                              Row(
+                                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    width: _width * 0.175,
+                                    child: Text(
+                                      "Book Value",
+                                      style: textStyle(Colors.grey[400]!, 20, false, false)
+                                    )
+                                  ),
+                                  Container(
+                                    width: 200,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Text(
+                                              "4.24 AX ",
+                                              style: textStyle(Colors.white, 20, false, false)
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                "+4%",
+                                                style: textStyle(Colors.green, 12, false, false)
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        Text(
+                                          "4.24 AX",
+                                          style: textStyle(Colors.grey[400]!, 20, false, false)
+                                        )
+                                      ]
+                                    )
+                                  )
+                                ]
+                              ),
+                            ]
+                          )
+                        ),
+                        // Detail Section
+                        Container(
+                          height: 250,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
                               Container(
-                                width: 260,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Details",
+                                  style: textStyle(Colors.white, 24, false, false)
+                                )
+                              ),
+                              Divider(thickness: 1, color: Colors.grey[400]),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Sport / League",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  ),
+                                  Text(
+                                    "American Football / NFL",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  )
+                                ]
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Team",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  ),
+                                  Text(
+                                    "Tampa Bay Buckaneers",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  )
+                                ]
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Position",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  ),
+                                  Text(
+                                    "Quarterback",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  )
+                                ]
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Season Start",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  ),
+                                  Text(
+                                    "Sep 1, 2021",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  )
+                                ]
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Season End",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  ),
+                                  Text(
+                                    "Jan 10, 2022",
+                                    style: textStyle(Colors.grey[400]!, 20, false, false)
+                                  )
+                                ]
+                              ),
+                            ]
+                          )
+                        ),
+                        // Stats section
+                        Container(
+                          height: 150,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Container(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Container(
-                                      alignment: Alignment.bottomLeft,
                                       child: Text(
-                                        "TD",
-                                        style: textStyle(Colors.grey[400]!, 14, false, false)
+                                        "Key Statistics",
+                                        style: textStyle(Colors.white, 24, false, false)
                                       ),
                                     ),
                                     Container(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Text(
-                                        "Cmp",
-                                            style: textStyle(
-                                                Colors.grey[400]!,
-                                                14,
-                                                false,
-                                                false)),
+                                      width: 260,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Container(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Text(
+                                              "TD",
+                                              style: textStyle(Colors.grey[400]!, 14, false, false)
                                             ),
-                                            Container(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text("Cmp %",
-                                                    style: textStyle(
-                                                        Colors.grey[400]!,
-                                                        14,
-                                                        false,
-                                                        false)),
-                                              ),
-                                              Container(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text("YDS",
-                                                    style: textStyle(
-                                                        Colors.grey[400]!,
-                                                        14,
-                                                        false,
-                                                        false)),
-                                              ),
-                                            ])),
-                                  ])),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Text(
+                                              "Cmp",
+                                              style: textStyle(Colors.grey[400]!, 14, false, false)
+                                            ),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Text(
+                                              "Cmp %",
+                                              style: textStyle(Colors.grey[400]!, 14, false, false)
+                                            ),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Text(
+                                              "YDS",
+                                              style: textStyle(Colors.grey[400]!, 14, false, false)
+                                            ),
+                                          ),
+                                        ]
+                                      )
+                                    ),
+                                  ]
+                                )
+                              ),
                               Divider(thickness: 1, color: Colors.grey[400]),
                               Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text("Current Stats",
-                                          style: textStyle(Colors.grey[400]!,
-                                              16, false, false)),
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    child: Text(
+                                      "Current Stats",
+                                      style: textStyle(Colors.grey[400]!, 16, false, false)
                                     ),
-                                    Container(
-                                        width: 260,
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Container(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text("12",
-                                                    style: textStyle(
-                                                        Colors.grey[400]!,
-                                                        16,
-                                                        false,
-                                                        false)),
-                                              ),
-                                              Container(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text("24",
-                                                    style: textStyle(
-                                                        Colors.grey[400]!,
-                                                        16,
-                                                        false,
-                                                        false)),
-                                              ),
-                                              Container(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text("80%",
-                                                    style: textStyle(
-                                                        Colors.grey[400]!,
-                                                        16,
-                                                        false,
-                                                        false)),
-                                              ),
-                                              Container(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text("2,000",
-                                                    style: textStyle(
-                                                        Colors.grey[400]!,
-                                                        16,
-                                                        false,
-                                                        false)),
-                                              ),
-                                            ]))
-                                  ]),
+                                  ),
+                                  Container(
+                                    width: 260,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            "12",
+                                            style: textStyle(Colors.grey[400]!, 16, false, false)
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            "24",
+                                            style: textStyle(Colors.grey[400]!, 16, false,false)
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            "80%",
+                                            style: textStyle(Colors.grey[400]!, 16, false, false)
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            "2,000",
+                                            style: textStyle(Colors.grey[400]!, 16, false, false)
+                                          ),
+                                        ),
+                                      ]
+                                    )
+                                  )
+                                ]
+                              ),
                               Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("View All Stats",
-                                      style: textStyle(
-                                          Colors.amber[400]!, 16, false, true)))
-                            ])),
-                  ]))
-        ]),
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "View All Stats",
+                                  style: textStyle(Colors.amber[400]!, 16, false, true)
+                                )
+                              ),
+                            ]
+                          )
+                        ),
+                      ]
+                    )
+                  )
+                ]
+              ),
+            )
+          ]
+        )
       )
-    ])));
+    );
   }
 
   Widget graphSide(BuildContext context) {
