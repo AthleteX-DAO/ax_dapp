@@ -46,8 +46,5 @@ jobs:
       #  run: dart analyze
       
       - name: Run linter
-        uses: axel-op/dart-package-analyzer@v3
-        with:
-          # Token to connect to GitHub. Use secrets.GITHUB_TOKEN
-          githubToken: secrets.LINTER_TOKEN
+        run: dart analyze
 
