@@ -1,7 +1,5 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
-
-import 'dart:html';
 import 'dart:math';
+import 'dart:ui';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:web3dart/browser.dart';
