@@ -338,162 +338,168 @@ Dialog depositDialog(BuildContext context) {
 }
 
 Dialog buyDialog(BuildContext context, Athlete athlete) {
-  double wid = 0.225;
-  double hgt = 0.6;
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 400;
+  double edge = 40;
+  if (_width < 405)
+    wid = _width;
+  double hgt = 500;
+  if (_height < 505)
+    hgt = _height;
+
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: MediaQuery.of(context).size.height * hgt,
-      width: MediaQuery.of(context).size.width * wid,
+      height: hgt,
+      width: wid,
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text("Buy " + athlete.name + " APT",
-                      style: textStyle(Colors.white, 20, false, false)),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 30,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                height: 80,
+                width: wid-edge,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Buy " + athlete.name + " APT",
+                      style: textStyle(Colors.white, 20, false, false)
                     ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              )
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              child: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                        text:
-                            "You can redeem APT's at their Book Value for AX.",
-                        style:
-                            TextStyle(color: Colors.grey[600], fontSize: 15)),
-                    TextSpan(
+                    IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                )
+              ),
+              Container(
+                height: 45,
+                width: wid-edge,
+                alignment: Alignment.center,
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "You can redeem APT's at their Book Value for AX.",
+                        style:TextStyle(color: Colors.grey[600], fontSize: 15)
+                      ),
+                      TextSpan(
                         text: " You can buy AX on the Matic network through",
-                        style:
-                            TextStyle(color: Colors.grey[600], fontSize: 15)),
-                    TextSpan(
+                        style: TextStyle(color: Colors.grey[600], fontSize: 15)
+                      ),
+                      TextSpan(
                         text: " SushiSwap",
-                        style:
-                            TextStyle(color: Colors.amber[400], fontSize: 15)),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              child: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "Learn How to buy AX",
-                      style: TextStyle(color: Colors.amber[400], fontSize: 15),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          String urlString =
-                              "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
-                          launch(urlString);
-                        },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width * (wid - 0.04),
-                    child: Text(
-                      "Input AX:",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey[600],
+                        style: TextStyle(color: Colors.amber[400], fontSize: 15)
                       ),
-                    ),
+                    ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    width: MediaQuery.of(context).size.width * (wid - 0.04),
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(14.0),
-                      border: Border.all(
-                        color: Colors.grey[400]!,
-                        width: 0.5,
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                height: 50,
+                width: wid-edge,
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "Learn How to buy AX",
+                        style: TextStyle(color: Colors.amber[400], fontSize: 15),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            String urlString =
+                                "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
+                            launch(urlString);
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 75,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      width: wid-edge,
+                      child: Text(
+                        "Input AX:",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            "AX",
-                            style: textStyle(Colors.white, 15, false, false),
-                          ),
-                        ),
-                        Container(
-                          height: 18,
-                          width: 35,
-                          decoration: boxDecoration(
-                              Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                          child: TextButton(
-                            onPressed: () {},
+                    Container(
+                      width: wid-edge,
+                      height: 55,
+                      decoration: boxDecoration(Colors.transparent, 14, 0.5, Colors.grey[400]!),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(width: 15),
+                          Expanded(
                             child: Text(
-                              "Max",
-                              style:
-                                  textStyle(Colors.grey[400]!, 9, false, false),
+                              "AX",
+                              style: textStyle(Colors.white, 15, false, false),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 70,
-                          child: TextFormField(
-                            style: textStyle(Colors.grey[400]!, 22, false, false),
-                            decoration: InputDecoration(
-                              hintText: '0.00',
-                              hintStyle:
-                                  textStyle(Colors.grey[400]!, 22, false, false),
-                              contentPadding: const EdgeInsets.all(9),
-                              border: InputBorder.none,
+                          Container(
+                            height: 18,
+                            width: 35,
+                            decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "Max",
+                                style: textStyle(Colors.grey[400]!, 9, false, false),
+                              ),
                             ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                            ],
                           ),
-                        ),
-                      ],
+                          Container(width: 25),
+                          SizedBox(
+                            width: 70,
+                            child: TextFormField(
+                              style: textStyle(Colors.grey[400]!, 22, false, false),
+                              decoration: InputDecoration(
+                                hintText: '0.00',
+                                hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
+                                border: InputBorder.none,
+                              ),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
                     ),
-                  ),
-                ],
-              )
-            ),
-            Container(
-              child: Divider(
-                thickness: 0.35,
-                color: Colors.grey[400],
+                  ],
+                )
               ),
-            ),
-            Container(
-                width: MediaQuery.of(context).size.width * (wid - 0.04),
-                height: 100,
+              Container(
+                height: 30,
+                child: Divider(
+                  thickness: 0.35,
+                  color: Colors.grey[400],
+                ),
+              ),
+              Container(
+                width: wid-edge,
+                height: 125,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -511,7 +517,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                         ),
                         Container(
                           child: Text(
-                            "1.2 AX per " + athlete.name + "APT",
+                            "1.2 AX per " + athlete.name + " APT",
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.white,
@@ -613,82 +619,81 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                       ],
                     ),
                   ],
-                )),
-            Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 15.0),
-                    child: Text(
-                      "You recieve:",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 15.0),
-                    child: Text(
-                      "100 " + athlete.name + " APT",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+                )
               ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
-                    width: 175,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Colors.amber[400],
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: TextButton(
-                      //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        EthereumAddress aptAddress = EthereumAddress.fromHex(
-                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22");
-                        bool confirmed;
-                        String txString =
-                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
-                        try {
-                          confirmed = true;
-                        } catch (e) {
-                          confirmed = false;
-                        }
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                confirmTransaction(
-                                    context, confirmed, txString));
-                      },
-                      child: const Text(
-                        "Confirm",
+              Container(
+                width: wid-edge,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "You recieve:",
                         style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+                          fontSize: 15,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Container(
+                      child: Text(
+                        "100 " + athlete.name + " APT",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            )
-          ],
-        ),
+              Container(
+                height: 75,
+                width: wid-edge,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 175,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.amber[400],
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: TextButton(
+                        //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          EthereumAddress aptAddress = EthereumAddress.fromHex(
+                              "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22");
+                          bool confirmed;
+                          String txString =
+                              "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
+                          try {
+                            confirmed = true;
+                          } catch (e) {
+                            confirmed = false;
+                          }
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => confirmTransaction(context, confirmed, txString)
+                          );
+                        },
+                        child: const Text(
+                          "Confirm",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )
+        )
       ),
     ),
   );
