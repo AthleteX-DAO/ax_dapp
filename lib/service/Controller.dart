@@ -21,7 +21,7 @@ class Controller {
   var mnemonic;
   var privateAddress;
   bool activeChain = false;
-  static const MAINNET_CHAIN_ID = 137;
+  final MAINNET_CHAIN_ID = 137;
   String mainRPCUrl = "https://polygon-rpc.com";
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
 
