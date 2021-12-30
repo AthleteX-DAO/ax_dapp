@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/AllAthletesList.dart';
+import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/RSSReader.dart';
 import 'package:flutter/material.dart';
 

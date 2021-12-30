@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/service/Controller.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
@@ -39,7 +40,7 @@ class _V1AppState extends State<V1App> {
 
   // state change variables
   int pageNumber = 0;
-  int walletConnected = 1; //flag to check if user has connected their wallet
+  int walletConnected = 0; //flag to check if user has connected their wallet
   bool allFarms = true;
   List<Athlete> athleteList = [];
 
@@ -155,7 +156,7 @@ class _V1AppState extends State<V1App> {
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
                   ])),
-          if (walletConnected == 0) ...[
+          if (Controller.networkID == Controller.MAINNET_CHAIN_ID) ...[
             // top Connect Wallet Button
             Container(
                 height: 37.5,

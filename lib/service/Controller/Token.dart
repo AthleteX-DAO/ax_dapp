@@ -1,5 +1,9 @@
+import 'dart:html';
+
 import 'package:ax_dapp/service/Controller.dart';
+import 'package:web3dart/src/browser/javascript.dart';
 import 'package:flutter/material.dart';
+import 'package:web3dart/browser.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../contracts/ERC20.g.dart';
 
@@ -30,5 +34,11 @@ class Token {
     BigInt amountToApprove = BigInt.from(amount);
     return erc20.approve(dest, amountToApprove,
         credentials: Controller.credentials);
+  }
+
+  static void addToWallet() {
+    final eth = window.ethereum;
+    RequestArguments paramArgs = RequestArguments(method: 'wallet_watchAsset');
+    eth!.rawRequest('wallet_watchAsset', params: {});
   }
 }
