@@ -98,6 +98,7 @@ Dialog walletDialog(BuildContext context) {
                   child: TextButton(
                       onPressed: () {
                         Navigator.pop(context);
+                        
                       },
                       child: Icon(
                         Icons.close,
@@ -1779,7 +1780,7 @@ Dialog accountDialog(BuildContext context) {
                                 color: Colors.white,
                               ),
                               Text(
-                                "0x24fd78...4c22",
+                                "${Controller.publicAddress}",
                                 style:
                                     textStyle(Colors.white, 20, false, false),
                               ),
@@ -1819,7 +1820,11 @@ Dialog accountDialog(BuildContext context) {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            String urlString =
+                                "https://polygonscan.com/address/${Controller.publicAddress}";
+                            launch(urlString);
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[

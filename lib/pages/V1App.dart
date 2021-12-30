@@ -156,7 +156,7 @@ class _V1AppState extends State<V1App> {
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
                   ])),
-          if (Controller.networkID == Controller.MAINNET_CHAIN_ID) ...[
+          if (Controller.publicAddress == null) ...[
             // top Connect Wallet Button
             Container(
                 height: 37.5,
