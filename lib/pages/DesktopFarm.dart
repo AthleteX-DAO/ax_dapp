@@ -17,16 +17,31 @@ class _DesktopFarmState extends State<DesktopFarm> {
   
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container( 
-        width: MediaQuery.of(context).size.width*0.8,
-        height: MediaQuery.of(context).size.height*0.8,
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    double hgt = _height*0.7;
+    if (_height < 445)
+      hgt = _height;
+      
+    return Container(
+      width: _width,
+      height: _height-57,
+      alignment: Alignment.center,
+      child: Container(
+        width: _width*0.8,
+        height: hgt,
         child: (allFarms) ? allFarmLayout() : myFarmLayout()
       )
     );
   }
 
   Widget allFarmLayout() {
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    bool vertical = true;
+    if (_height < 445)
+      vertical = false;
+
     List<Farm> farmList = [
       Farm("AX Farm"),
     ];
@@ -37,54 +52,63 @@ class _DesktopFarmState extends State<DesktopFarm> {
       )
     );
 
+    Widget toggle = Container(
+      width: 200,
+      height: 40,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Container(
+            width: 85,
+            decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                "All Farms",
+                style: textStyle(Colors.white, 16, true, false)
+              )
+            )
+          ),
+          Container(
+            width: 90,
+            decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
+            child: TextButton(
+              onPressed: () {setState(() {allFarms = false;});},
+              child: Text(
+                "My Farms",
+                style: textStyle(Colors.white, 16, true, false)
+              )
+            )
+          )
+        ]
+      )
+    );
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(height: MediaQuery.of(context).size.height*0.1,),
-        Container(
-          height: 45,
-          alignment: Alignment.bottomLeft,
-          child: Text(
-            "Participating Farms",
-            style: textStyle(Colors.white, 24, true, false)
-          )
-        ),
-        Container(
-          width: 200,
-          height: 40,
-          decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                width: 85,
-                decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "All Farms",
-                    style: textStyle(Colors.white, 16, true, false)
-                  )
-                )
-              ),
-              Container(
-                width: 90,
-                decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
-                child: TextButton(
-                  onPressed: () {setState(() {allFarms = false;});},
-                  child: Text(
-                    "My Farms",
-                    style: textStyle(Colors.white, 16, true, false)
-                  )
-                )
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              height: 45,
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                "Participating Farms",
+                style: textStyle(Colors.white, 24, true, false)
               )
-            ]
-          )
+            ),
+            if (!vertical)
+            toggle,
+          ],
         ),
+        if (vertical)
+        toggle,
         Container(
-          width: MediaQuery.of(context).size.width*0.8,
-          height: MediaQuery.of(context).size.height*0.5,
+          width: _width*0.8,
+          height: _height*0.5,
           child: ScrollConfiguration(
             behavior: ScrollConfiguration.of(context).copyWith(
               dragDevices: {
@@ -95,10 +119,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: BouncingScrollPhysics(),
-              itemCount: AthleteList.list.length,
+              itemCount: AthleteList.list.length+1,
               itemBuilder: (context, index) {
                 return Container(
-                  height: MediaQuery.of(context).size.height*0.55,
+                  height: _height*0.55,
                   alignment: Alignment.topLeft,
                   child: createFarmWidget(farmList[index]));
               }
@@ -110,6 +134,16 @@ class _DesktopFarmState extends State<DesktopFarm> {
   }
 
   Widget myFarmLayout() {
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    double cardHeight = _height*0.5;
+    if (cardHeight < 225)
+      cardHeight = 225;
+
+    bool vertical = true;
+    if (_height < 445)
+      vertical = false;
+    
     List<Farm> farmList = [
       Farm("AX Farm"),
     ];
@@ -120,54 +154,61 @@ class _DesktopFarmState extends State<DesktopFarm> {
       )
     );
 
+    Widget toggle = Container(
+      width: 200,
+      height: 40,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Container(
+            width: 85,
+            decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
+            child: TextButton(
+              onPressed: () {setState(() {allFarms = true;});},
+              child: Text(
+                "All Farms",
+                style: textStyle(Colors.white, 16, true, false)
+              )
+            )
+          ),
+          Container(
+            width: 90,
+            decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                "My Farms",
+                style: textStyle(Colors.white, 16, true, false)
+              )
+            )
+          )
+        ]
+      )
+    );
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(height: MediaQuery.of(context).size.height*0.1,),
-        Container(
-          height: 45,
-          alignment: Alignment.bottomLeft,
-          child: Text(
-            "My Farms",
-            style: textStyle(Colors.white, 24, true, false)
-          )
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              height: 45,
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                "My Farms",
+                style: textStyle(Colors.white, 24, true, false)
+              )
+            ),
+            if (!vertical) toggle,
+          ]
         ),
+        if (vertical) toggle,
         Container(
-          width: 200,
-          height: 40,
-          decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                width: 85,
-                decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
-                child: TextButton(
-                  onPressed: () {setState(() {allFarms = true;});},
-                  child: Text(
-                    "All Farms",
-                    style: textStyle(Colors.white, 16, true, false)
-                  )
-                )
-              ),
-              Container(
-                width: 90,
-                decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "My Farms",
-                    style: textStyle(Colors.white, 16, true, false)
-                  )
-                )
-              ),
-            ],
-          )
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width*0.8,
-          height: MediaQuery.of(context).size.height*0.5,
+          width: _width*0.8,
+          height: cardHeight,
           child: ScrollConfiguration(
             behavior: ScrollConfiguration.of(context).copyWith(
               dragDevices: {
@@ -194,20 +235,25 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
   // First card of the my farms page is unique
   Widget createAXFarmCard(Farm farm){
+    double _height = MediaQuery.of(context).size.height;
+    double cardWidth = 600;
+    double cardHeight = _height*0.5;
+    if (cardHeight < 225)
+      cardHeight = 225;
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
-
+    
     return Row(
       children: <Widget> [
         Container(
-          height: MediaQuery.of(context).size.height*0.5,
-          width: 600,
+          height: cardHeight,
+          width: cardWidth,
           decoration: boxDecoration(Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               // Farm Title
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -219,7 +265,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child:Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -235,7 +281,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -251,7 +297,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -273,7 +319,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -285,7 +331,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -301,7 +347,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -317,7 +363,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -333,7 +379,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -373,95 +419,110 @@ class _DesktopFarmState extends State<DesktopFarm> {
   }
 
   Widget createFarmWidget(Farm farm) {
+    double cardWidth = 500;
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
 
     return Row(
       children: <Widget> [
         Container(
           height: 200,
-          width: 500,
-          padding: EdgeInsets.symmetric(vertical: 22.5, horizontal: 50),
+          width: cardWidth,
           decoration: boxDecoration(Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               // Farm Title
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    farm.name,
-                    style: textStyle(Colors.white, 20, false, false)
-                  ),
-                  Container(
-                    width: 120,
-                    height: 35,
-                    decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
-                    child: TextButton(
-                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
-                      child: Text(
-                        "Deposit",
-                        style: textStyle(Colors.black, 14, true, false)
+              Container(
+                width: cardWidth-50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      farm.name,
+                      style: textStyle(Colors.white, 20, false, false)
+                    ),
+                    Container(
+                      width: 120,
+                      height: 35,
+                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                        child: Text(
+                          "Deposit",
+                          style: textStyle(Colors.black, 14, true, false)
+                        )
                       )
-                    )
-                  ),
-                ]
+                    ),
+                  ]
+                )
               ),
               // TVL
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "TVL",
-                    style: txStyle,
-                  ),
-                  Text(
-                    "\$1,000,000",
-                    style: txStyle
-                  )
-                ],
+              Container(
+                width: cardWidth-50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "TVL",
+                      style: txStyle,
+                    ),
+                    Text(
+                      "\$1,000,000",
+                      style: txStyle
+                    )
+                  ],
+                )
               ),
               // Fee
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Swap Fee APY",
-                    style: txStyle
-                  ),
-                  Text(
-                    "20%",
-                    style: txStyle
-                  )
-                ],
+              Container(
+                width: cardWidth-50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Swap Fee APY",
+                      style: txStyle
+                    ),
+                    Text(
+                      "20%",
+                      style: txStyle
+                    )
+                  ],
+                )
               ),
               // Rewards
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "AX Rewards APY",
-                    style: txStyle
-                  ),
-                  Text(
-                    "10%",
-                    style: txStyle
-                  )
-                ],
+              Container(
+                width: cardWidth-50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "AX Rewards APY",
+                      style: txStyle
+                    ),
+                    Text(
+                      "10%",
+                      style: txStyle
+                    )
+                  ],
+                )
               ),
               // Total APY
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Total APY",
-                    style: txStyle
-                  ),
-                  Text(
-                    "30%",
-                    style: txStyle
-                  )
-                ],
+              Container(
+                width: cardWidth-50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Total APY",
+                      style: txStyle
+                    ),
+                    Text(
+                      "30%",
+                      style: txStyle
+                    )
+                  ],
+                )
               ),
             ],
           ),
@@ -473,20 +534,25 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
   // Returning a Row (This one works. Need to fix container size and padding)
   Widget createMyFarmWidget(Farm farm) {
+    double _height = MediaQuery.of(context).size.height;
+    double cardWidth = 600;
+    double cardHeight = _height*0.5;
+    if (cardHeight < 225)
+      cardHeight = 225;
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
 
     return Row(
       children: <Widget> [
         Container(
-          height: MediaQuery.of(context).size.height*0.5,
-          width: 600,
+          height: cardHeight,
+          width: cardWidth,
           decoration: boxDecoration(Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               // Farm Title
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -498,7 +564,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child:Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -514,7 +580,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -530,7 +596,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -552,7 +618,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -564,7 +630,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -580,7 +646,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -596,7 +662,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
+                width: cardWidth-100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
