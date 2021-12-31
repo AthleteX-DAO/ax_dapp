@@ -1434,12 +1434,12 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
 Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txString) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
-  double wid = 370;
+  double wid = 500;
   double edge = 40;
-  if (_width < 375)
+  if (_width < 505)
     wid = _width;
-  double hgt = 250;
-  if (_height < 255)
+  double hgt = 335;
+  if (_height < 340)
     hgt = _height;
 
   return Dialog(
@@ -1453,7 +1453,7 @@ Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txStrin
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
         child: Center(
           child: Container(
-          height: 200,
+          height: 275,
           width: wid-edge,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1486,7 +1486,7 @@ Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txStrin
                   Container(
                     child: Icon(
                       Icons.check_circle_outline,
-                      size: 90,
+                      size: 150,
                       color: Colors.amber[400],
                     ),
                   ),
