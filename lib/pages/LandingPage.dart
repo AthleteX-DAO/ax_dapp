@@ -2,7 +2,7 @@ import 'package:ae_dapp/pages/V1App.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/AthleteList.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);

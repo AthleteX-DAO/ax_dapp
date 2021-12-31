@@ -261,6 +261,18 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       farm.name,
                       style: textStyle(Colors.white, 20, false, false)
                     ),
+                    Container(
+                      width: 120,
+                      height: 35,
+                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                        child: Text(
+                          "Deposit",
+                          style: textStyle(Colors.black, 14, true, false)
+                        )
+                      )
+                    ),
                   ]
                 ),
               ),
@@ -384,25 +396,25 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Container(
-                      width: 120,
+                      width: 240,
                       height: 35,
                       decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                       child: TextButton(
                         onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
                         child: Text(
-                          "Deposit",
+                          "Claim Rewards",
                           style: textStyle(Colors.black, 14, true, false)
                         )
                       )
                     ),
                     Container(
-                      width: 120,
+                      width: 240,
                       height: 35,
                       decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
                       child: TextButton(
                         onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
                         child: Text(
-                          "Remove",
+                          "Remove Liquidity",
                           style: textStyle(Colors.amber[600]!, 14, true, false)
                         )
                       )
@@ -560,6 +572,18 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       farm.name,
                       style: textStyle(Colors.white, 20, false, false)
                     ),
+                    Container(
+                      width: 120,
+                      height: 35,
+                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                        child: Text(
+                          "Deposit",
+                          style: textStyle(Colors.black, 14, true, false)
+                        )
+                      )
+                    ),
                   ]
                 ),
               ),
@@ -667,25 +691,25 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Container(
-                      width: 120,
+                      width: 240,
                       height: 35,
                       decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                       child: TextButton(
                         onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
                         child: Text(
-                          "Deposit",
+                          "Claim Rewards",
                           style: textStyle(Colors.black, 14, true, false)
                         )
                       )
                     ),
                     Container(
-                      width: 120,
+                      width: 240,
                       height: 35,
                       decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
                       child: TextButton(
                         onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
                         child: Text(
-                          "Remove",
+                          "Remove Liquidity",
                           style: textStyle(Colors.amber[600]!, 14, true, false)
                         )
                       )
