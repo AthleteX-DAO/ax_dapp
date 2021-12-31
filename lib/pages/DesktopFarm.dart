@@ -400,7 +400,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       height: 35,
                       decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                       child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => rewardsClaimed(context)),
                         child: Text(
                           "Claim Rewards",
                           style: textStyle(Colors.black, 14, true, false)
