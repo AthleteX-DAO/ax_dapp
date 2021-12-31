@@ -1430,84 +1430,97 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   );
 }
 
-Dialog confirmTransaction(
-    BuildContext context, bool IsConfirmed, String txString) {
+//dynamic
+Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txString) {
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 370;
+  double edge = 40;
+  if (_width < 375)
+    wid = _width;
+  double hgt = 250;
+  if (_height < 255)
+    hgt = _height;
+
   return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Container(
-          height: 250,
-          width: MediaQuery.of(context).size.width * .23,
-          decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-          child: Center(
-              child: Container(
-            height: 200,
-            width: 400,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                    width: MediaQuery.of(context).size.width * .21,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(width: 40),
-                        Container(
-                          child: Text("Transaction Confirmed",
-                              style: textStyle(Colors.white, 20, false, false)),
-                        ),
-                        Container(
-                          width: 40,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                            ),
-                            onPressed: () => Navigator.pop(context),
+        height: hgt,
+        width: wid,
+        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+        child: Center(
+          child: Container(
+          height: 200,
+          width: wid-edge,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                  width: wid-edge,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(width: 5),
+                      Container(
+                        child: Text("Transaction Confirmed",
+                            style: textStyle(Colors.white, 20, false, false)),
+                      ),
+                      Container(
+                        width: 40,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.white,
                           ),
-                        )
-                      ],
-                    )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      child: Icon(
-                        Icons.check_circle_outline,
-                        size: 90,
-                        color: Colors.amber[400],
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      )
+                    ],
+                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    child: Icon(
+                      Icons.check_circle_outline,
+                      size: 90,
+                      color: Colors.amber[400],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 275,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.amber[400],
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        "View on Polygonscan",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 275,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.amber[400],
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          "View on Polygonscan",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ))));
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )
+      )
+    )
+  );
 }
 
 // dynamic
