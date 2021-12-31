@@ -3,12 +3,13 @@
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/AXT.dart';
 import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
+import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../contracts/LongShortPair.g.dart';
 import '../../contracts/ExpiringMultiParty.g.dart';
 
-class APTBehavior {
-  SWAPBehavior _swapBehavior = SWAPBehavior();
+mixin APTBehavior {
+  Controller controller = Get.find();
   AXT _athleteX = AXT("AthleteX", "AX");
   final EthereumAddress placeholderAddress =
       EthereumAddress.fromHex("0x00000000000000000000000000000000000000");
@@ -21,13 +22,6 @@ class APTBehavior {
   // When we create options put/call behavior
   late LongShortPair _longShortPair;
 
-  APTBehavior(EthereumAddress aptAddress) {
-    _expiringMultiParty =
-        ExpiringMultiParty(address: aptAddress, client: Controller.client);
-  }
-
-  APTBehavior.empty();
-
   // late LongShortPair _longShortPair =
   //     LongShortPair(address: placeholderAddress, client: client);
   // Actionables
@@ -39,7 +33,7 @@ class APTBehavior {
     try {
       txString = await _expiringMultiParty.create(
           collateralAmount, tokensToCreate,
-          credentials: Controller.credentials);
+          credentials: controller.credentials);
     } catch (e) {
       txString = "Unable to create APT $e";
     }
@@ -52,7 +46,7 @@ class APTBehavior {
     BigInt tokensToRedeem = BigInt.from(numTokens);
     try {
       txString = await _expiringMultiParty.redeem(tokensToRedeem,
-          credentials: Controller.credentials);
+          credentials: controller.credentials);
     } catch (e) {
       txString = "unable to redeem";
       print("You are not the token sponsor");

@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
 import 'package:get/get.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:web3dart/contracts/erc20.dart';
@@ -8,7 +9,7 @@ import 'package:web3dart/browser.dart';
 import 'package:web3dart/web3dart.dart';
 
 // Token must be swappable
-class Token extends GetxController {
+class Token extends GetxController with SWAPBehavior {
   Controller controller = Get.find();
   String name, ticker;
   BigInt balance = BigInt.zero;

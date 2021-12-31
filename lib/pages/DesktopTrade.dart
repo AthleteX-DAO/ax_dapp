@@ -64,8 +64,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 if (tkn1 != null && tkn2 != null)
                   showDialog(
                       context: context,
-                      builder: (BuildContext context) => swapDialog(
-                          context, tkn1!, tkn2!, fromAmount, toAmount));
+                      builder: (BuildContext context) => swapDialog(context));
               },
               child: Text(
                 "Swap",

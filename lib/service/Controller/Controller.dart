@@ -25,6 +25,7 @@ class Controller extends GetxController {
   var rng = new Random().nextInt(999);
   var mnemonic = "";
   var privateAddress = "";
+  String latestTx = "";
   var gas = EtherAmount.zero();
   bool activeChain = false;
   static const MAINNET_CHAIN_ID = 137;
@@ -77,6 +78,10 @@ class Controller extends GetxController {
         await Web3Client.custom(eth!.asRpcService()).getBalance(publicAddress);
   }
 
+  void updateTxString(String tx) {
+    latestTx = tx;
+  }
+
   void disconnect() async {
     final eth = window.ethereum;
     walletConnected = eth!.isConnected();
@@ -93,8 +98,8 @@ class Controller extends GetxController {
     eth!.rawRequest('wallet_switchEthereumChain', params: {params});
   }
 
-  void viewTx(String txAddress) async {
-    String urlString = 'https://polygonscan.com/tx/$txAddress';
+  void viewTx() async {
+    String urlString = 'https://polygonscan.com/tx/$latestTx';
     await launch(urlString);
   }
 }

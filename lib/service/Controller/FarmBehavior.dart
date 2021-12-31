@@ -1,10 +1,11 @@
 import 'package:ax_dapp/contracts/StakingRewards.g.dart';
-
+import 'package:get/get.dart';
 import 'Controller.dart';
 
 class FarmBehavior {
+  Controller controller = Get.find();
   StakingRewards _rewards =
-      StakingRewards(address: address, client: Controller.client);
+      StakingRewards(address: address, client: controller.client);
 
   static var address;
 
@@ -12,7 +13,7 @@ class FarmBehavior {
     BigInt amount = BigInt.from(a);
     // ignore: unused_local_variable
     String txString = "";
-    return _rewards.stake(amount, credentials: Controller.credentials);
+    return _rewards.stake(amount, credentials: controller.credentials);
   }
 
   Future<String> deposit(double a) {

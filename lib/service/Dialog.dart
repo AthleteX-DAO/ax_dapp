@@ -122,7 +122,7 @@ Dialog walletDialog(BuildContext context) {
                   onPressed: () {
                     Navigator.pop(context);
                     controller.connect();
-                    
+
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
                     //   showDialog(
                     //       context: context,
@@ -679,7 +679,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) =>
-                              confirmTransaction(context, confirmed, txString));
+                              confirmTransaction(context));
                     },
                     child: const Text(
                       "Confirm",
@@ -995,8 +995,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(
-                                    context, confirmed, txString));
+                                confirmTransaction(context));
                       },
                       child: const Text(
                         "Confirm",
@@ -1188,7 +1187,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context, true, ""));
+                                confirmTransaction(context));
                       },
                       child: Text(
                         "Confirm",
@@ -1376,7 +1375,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context, true, ""));
+                                confirmTransaction(context));
                       },
                       child: Text(
                         "Confirm",
@@ -1394,8 +1393,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   );
 }
 
-Dialog confirmTransaction(
-    BuildContext context, bool IsConfirmed, String txString) {
+Dialog confirmTransaction(BuildContext context) {
+  Controller controller = Get.find();
   return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
@@ -1457,7 +1456,10 @@ Dialog confirmTransaction(
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          controller.viewTx();
+                          Navigator.pop(context);
+                        },
                         child: Text(
                           "View on Polygonscan",
                           style: TextStyle(
@@ -2050,8 +2052,10 @@ Dialog removeDialog(BuildContext context) {
   );
 }
 
-Dialog swapDialog(BuildContext context, Token token1, Token token2,
-    double amount1, double amount2) {
+Dialog swapDialog(BuildContext context) {
+  SwapBehavior swapBehavior = Get.find();
+  Token token1 = swapBehavior.token1;
+
   return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
@@ -2399,7 +2403,7 @@ Dialog swapDialog(BuildContext context, Token token1, Token token2,
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context, true, ""));
+                                confirmTransaction(context));
                       },
                       child: const Text(
                         "Confirm Swap",
