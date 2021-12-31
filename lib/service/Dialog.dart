@@ -157,6 +157,15 @@ Dialog walletDialog(BuildContext context) {
 
 Dialog depositDialog(BuildContext context) {
   double amount = 0;
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 390;
+  double edge = 60;
+  if (_width < 395)
+    wid = _width;
+  double hgt = 450;
+  if (_height < 455)
+    hgt = _height;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -164,8 +173,8 @@ Dialog depositDialog(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: MediaQuery.of(context).size.height * 0.55,
-      width: MediaQuery.of(context).size.width * 0.25,
+      height: hgt,
+      width: wid,
       padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
@@ -198,7 +207,7 @@ Dialog depositDialog(BuildContext context) {
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 30),
                 padding: const EdgeInsets.all(10),
-                width: MediaQuery.of(context).size.width * 0.2,
+                width: wid-edge,
                 height: 55,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
