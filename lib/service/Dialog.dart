@@ -337,6 +337,7 @@ Dialog depositDialog(BuildContext context) {
   );
 }
 
+// dynamic
 Dialog buyDialog(BuildContext context, Athlete athlete) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -1475,9 +1476,17 @@ Dialog confirmTransaction(
           ))));
 }
 
+//dynamic
 Dialog yourAXDialog(BuildContext context) {
-  double wid = 0.3;
-  double hgt = 0.6;
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 400;
+  double edge = 40;
+  if (_width < 405)
+    wid = _width;
+  double hgt = 500;
+  if (_height < 505)
+    hgt = _height;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1485,219 +1494,226 @@ Dialog yourAXDialog(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: MediaQuery.of(context).size.height * hgt,
-      width: MediaQuery.of(context).size.width * wid,
+      height: hgt,
+      width: wid,
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text("Your AX", style: textStyle(Colors.white, 20, false, false)),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 30,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                height: 80,
+                width: wid-edge,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Your AX", style: textStyle(Colors.white, 20, false, false)),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                    onPressed: () => Navigator.pop(context),
+                  ],
+                )
+              ),
+              // 'X' logo
+              Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width * (wid - 0.04),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    scale: 2.0,
+                    image: AssetImage('../assets/images/x.jpg'),
                   ),
-                ],
-              )
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.0675,
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  scale: 2.0,
-                  image: AssetImage('../assets/images/x.jpg'),
+                  shape: BoxShape.circle,
                 ),
-                shape: BoxShape.circle,
               ),
-            ),
-            Container(
-              child: Text("100.00", style: textStyle(Colors.white, 20, false, false)),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              height: 70,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "Balance:",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "100 AX",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "Unlcaimed:",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "50 AX",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ),
-            Container(
-              child: Divider(
-                thickness: 0.35,
-                color: Colors.grey[400],
+              Container(
+                height: 65,
+                alignment: Alignment.center,
+                child: Text("100.00", style: textStyle(Colors.white, 20, false, false)),
               ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
-              height: 100,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "AX price:",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
+              Container(
+                width: wid-edge,
+                height: 70,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "Balance:",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        child: Text(
-                          "\$1.00",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
+                        Container(
+                          child: Text(
+                            "100 AX",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "AX in circulation",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "Unlcaimed:",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        child: Text(
-                          "50,000,000",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
+                        Container(
+                          child: Text(
+                            "50 AX",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "AX total supply:",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
+                      ],
+                    ),
+                  ],
+                )
+              ),
+              Container(
+                child: Divider(
+                  thickness: 0.35,
+                  color: Colors.grey[400],
+                ),
+              ),
+              Container(
+                width: wid-edge,
+                height: 100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "AX price:",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        child: Text(
-                          "100,000,000",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
+                        Container(
+                          child: Text(
+                            "\$1.00",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.085,
-                    height: MediaQuery.of(context).size.height*0.035,
-                    decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Buy AX",
-                        style: textStyle(Colors.black, 14, true, false)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "AX in circulation",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "50,000,000",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "AX total supply:",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "100,000,000",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ),
+              Container(
+                height: 80,
+                width: wid-edge,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      height: 30,
+                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Buy AX",
+                          style: textStyle(Colors.black, 14, true, false)
+                        )
                       )
-                    )
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.085,
-                    height: MediaQuery.of(context).size.height*0.035,
-                    decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "+ Add to Wallet",
-                        style: textStyle(Colors.amber[600]!, 14, true, false)
+                    ),
+                    Container(
+                      width: 150,
+                      height: 30,
+                      decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "+ Add to Wallet",
+                          style: textStyle(Colors.amber[600]!, 14, true, false)
+                        )
                       )
-                    )
-                  ),
-                ],
+                    ),
+                  ]
+                )
               ),
-            ),
-          ],
-        ),
-      ),
-    ),
+            ]
+          )
+        )
+      )
+    )
   );
 }
 

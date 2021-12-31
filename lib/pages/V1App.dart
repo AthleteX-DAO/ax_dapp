@@ -218,8 +218,7 @@ class _V1AppState extends State<V1App> {
     return Container(
       height: 30,
       width: wid,
-      decoration:
-          boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
+      decoration: boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
