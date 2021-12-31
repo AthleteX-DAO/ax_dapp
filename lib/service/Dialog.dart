@@ -155,6 +155,7 @@ Dialog walletDialog(BuildContext context) {
   );
 }
 
+// dynamic 
 Dialog depositDialog(BuildContext context) {
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
@@ -709,7 +710,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
   );
 }
 
-//dynamic
+// dynamic
 Dialog sellDialog(BuildContext context, Athlete athlete) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -1035,7 +1036,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
   );
 }
 
-//dynamic
+// dynamic
 Dialog redeemDialog(BuildContext context, Athlete athlete) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -1232,7 +1233,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
   );
 }
 
-//dynamic
+// dynamic
 Dialog mintDialog(BuildContext context, Athlete athlete) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -1509,7 +1510,7 @@ Dialog confirmTransaction(
           ))));
 }
 
-//dynamic
+// dynamic
 Dialog yourAXDialog(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
