@@ -1,5 +1,7 @@
 // Generated code, do not modify. Run `build_runner build` to re-generate!
 // @dart=2.12
+// ignore_for_file: unused_element
+
 import 'package:web3dart/web3dart.dart' as _i1;
 import 'dart:typed_data' as _i2;
 

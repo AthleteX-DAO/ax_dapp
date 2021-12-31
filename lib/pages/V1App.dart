@@ -1,7 +1,7 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
-import 'package:ax_dapp/service/Controller.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
@@ -46,7 +46,7 @@ class _V1AppState extends State<V1App> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: logic for certain page size
+    
     Widget pageWidget = buildDesktop(context);
 
     return Scaffold(
@@ -81,10 +81,7 @@ class _V1AppState extends State<V1App> {
 
   Widget topNavBar(BuildContext context) {
     double tabTxSz = 24;
-    Text connectWalletWidget = Text(
-      "Connect Wallet",
-      style: textStyle(Colors.amber[400]!, 16, true, false),
-    );
+
 
     return Container(
       width: MediaQuery.of(context).size.width * .9,

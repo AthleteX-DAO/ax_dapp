@@ -5,12 +5,13 @@ import 'dart:html';
 import 'dart:math';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:get/get.dart';
 import 'package:web3dart/src/browser/javascript.dart';
 import 'package:web3dart/browser.dart';
 import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
-class Controller {
+class Controller extends GetxController {
   static var client;
   static var credentials;
   static var publicAddress;
@@ -21,8 +22,8 @@ class Controller {
 
   /// VARIABLES
   var rng = new Random().nextInt(999);
-  var mnemonic;
-  var privateAddress;
+  var mnemonic = "";
+  var privateAddress = "";
   bool activeChain = false;
   static const MAINNET_CHAIN_ID = 137;
   static const TESTNET_CHAIN_ID = 80001;
@@ -39,35 +40,33 @@ class Controller {
 
   void createNewMnemonic() {
     mnemonic = bip39.generateMnemonic();
+    update();
   }
 
   Future<String> retrieveWallet([String? _mnemonic]) async {
-    mnemonic = _mnemonic;
+    mnemonic = _mnemonic!;
     privateAddress = bip39.mnemonicToSeedHex(mnemonic);
     credentials = EthPrivateKey.fromHex(privateAddress);
+    update();
     return mnemonic;
   }
 
   // Web functionality
-  static void connect() async {
+  void connect() async {
     final eth = window.ethereum;
-    var newClient = Web3Client.custom(eth!.asRpcService());
-    final credentials = await eth.requestAccount();
+    client = Web3Client.custom(eth!.asRpcService());
+    credentials = await eth.requestAccount();
     print("[Console] connecting to the decentralized web!");
-    update(newClient, credentials);
+    networkID = await client.getNetworkId();
+    publicAddress = await credentials.extractAddress();
+    print("[Console] updated client: $client and credentials: $credentials");
+    update();
   }
 
-  static void disconnect() async {
+  void disconnect() async {
     final eth = window.ethereum;
     client.dispose();
-  }
-
-  static void update(Web3Client cl, Credentials cr) async {
-    client = cl;
-    networkID = await cl.getNetworkId();
-    credentials = cr;
-    publicAddress = await cr.extractAddress();
-    print("[Console] updated client: ${cl} and credentials: ${cr}");
+    update();
   }
 
   static void switchNetwork() async {
@@ -76,7 +75,6 @@ class Controller {
       {'chainID': '0xf00'}
     ];
     eth!.rawRequest('wallet_switchEthereumChain', params: {params});
-
   }
 
   void viewTx(String txAddress) async {

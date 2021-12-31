@@ -1,17 +1,11 @@
-import 'dart:convert';
-import 'dart:typed_data';
+// ignore_for_file: unused_field
 
-import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/Controller.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/AXT.dart';
 import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../contracts/LongShortPair.g.dart';
 import '../../contracts/ExpiringMultiParty.g.dart';
-import 'package:ax_dapp/service/Controller/AXT.dart';
-import '../../contracts/LongShortPairCreator.g.dart';
-import '../../contracts/ExpiringMultiPartyCreator.g.dart';
-import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
 
 class APTBehavior {
   SWAPBehavior _swapBehavior = SWAPBehavior();

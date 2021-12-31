@@ -1,6 +1,6 @@
-import 'package:ax_dapp/service/AllAthletesList.dart';
 import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/RSSReader.dart';
+import 'package:ax_dapp/service/AthleteApi.dart';
+import 'package:ax_dapp/style/Style.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fl_chart/fl_chart.dart';

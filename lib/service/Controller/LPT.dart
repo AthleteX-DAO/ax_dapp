@@ -1,5 +1,4 @@
 import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:flutter/src/painting/image_resolution.dart';
 import 'package:web3dart/web3dart.dart';
 
 // Liquidity Pool Token
