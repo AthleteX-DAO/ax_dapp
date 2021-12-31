@@ -1026,9 +1026,17 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
   );
 }
 
+//dynamic
 Dialog redeemDialog(BuildContext context, Athlete athlete) {
-  double wid = 0.225;
-  double hgt = 0.6;
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 370;
+  double edge = 40;
+  if (_width < 375)
+    wid = _width;
+  double hgt = 450;
+  if (_height < 455)
+    hgt = _height;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1036,15 +1044,16 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: MediaQuery.of(context).size.height * hgt,
-      width: MediaQuery.of(context).size.width * wid,
+      height: hgt,
+      width: wid,
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-                width: MediaQuery.of(context).size.width * (wid - 0.04),
+                width: wid-edge,
+                //width: MediaQuery.of(context).size.width * (wid - 0.04),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -1061,7 +1070,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   ],
                 )),
             Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              width: wid-edge,
+              //width: MediaQuery.of(context).size.width * (wid - 0.04),
               child: RichText(
                 text: TextSpan(
                   children: <TextSpan>[
@@ -1087,7 +1097,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
+                  width: wid-edge,
+                  //width: MediaQuery.of(context).size.width * (wid - 0.04),
                   child: Text(
                     "Input APT:",
                     style: textStyle(Colors.grey[600]!, 15, false, false),
@@ -1095,7 +1106,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width * (wid - 0.04),
+                  width: wid-edge,
+                  //width: MediaQuery.of(context).size.width * (wid - 0.04),
                   height: 55,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
@@ -1157,7 +1169,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              width: wid-edge,
+              //width: MediaQuery.of(context).size.width * (wid - 0.04),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -1179,7 +1192,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * (wid - 0.04),
+              width: wid-edge,
+              //width: MediaQuery.of(context).size.width * (wid - 0.04),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
