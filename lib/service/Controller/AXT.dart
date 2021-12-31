@@ -17,9 +17,4 @@ class AXT extends Token {
     }
     updateERC20(address);
   }
-
-  Future<BigInt> get balance async 
-  {
-    return  super.balance;
-  }
 }

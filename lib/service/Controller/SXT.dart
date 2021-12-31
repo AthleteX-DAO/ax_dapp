@@ -19,7 +19,7 @@ class SXT extends Token {
 
   Future<String> exec(EthereumAddress dest, BigInt amount) {
     // Both need to happen for any transaction
-    erc20.approve(dest, amount, credentials: Controller.credentials);
-    return erc20.transfer(dest, amount, credentials: Controller.credentials);
+    erc20.approve(dest, amount, credentials: controller.credentials);
+    return erc20.transfer(dest, amount, credentials: controller.credentials);
   }
 }

@@ -1,10 +1,14 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/service/Controller/AXT.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class V1App extends StatefulWidget {
   @override
@@ -40,9 +44,14 @@ class _V1AppState extends State<V1App> {
 
   // state change variables
   int pageNumber = 0;
-  bool walletConnected = true; //flag to check if user has connected their wallet
+  bool walletConnected =
+      true; //flag to check if user has connected their wallet
   bool allFarms = true;
   List<Athlete> athleteList = [];
+  Controller controller =
+      Get.put(Controller()); // Rather Controller controller = Controller();
+  AXT axt = AXT("AthleteX", "AX");
+  Token matic = Token("Polygon", "MATIC");
 
   @override
   Widget build(BuildContext context) {
@@ -80,17 +89,10 @@ class _V1AppState extends State<V1App> {
 
   Widget topNavBar(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
-    double tabTxSz = _width*0.0185;
-    if (tabTxSz < 19)
-      tabTxSz = 19;
-    double tabBxSz = _width*0.3;
-    if (tabBxSz < 247)
-      tabBxSz = 247;
-
-    Text connectWalletWidget = Text(
-      "Connect Wallet",
-      style: textStyle(Colors.amber[400]!, 16, true, false),
-    );
+    double tabTxSz = _width * 0.0185;
+    if (tabTxSz < 19) tabTxSz = 19;
+    double tabBxSz = _width * 0.3;
+    if (tabBxSz < 247) tabBxSz = 247;
 
     return Container(
       width: _width * .95,
@@ -100,100 +102,95 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           // Tabs
           Container(
-            width: tabBxSz,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  width: 50,
-                  height: 50,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('../assets/images/x.png'),
-                        fit: BoxFit.fill,
+              width: tabBxSz,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      width: 50,
+                      height: 50,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('../assets/images/x.png'),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Container(
-                  child: TextButton(
-                    onPressed: () {
-                      if (pageNumber != 0)
-                        setState(() {
-                          pageNumber = 0;
-                        });
-                    },
-                    child: Text("Scout",
-                      style: textSwapState(
-                        pageNumber == 0,
-                        textStyle(Colors.white, tabTxSz, true, false),
-                        textStyle(Colors.amber[400]!, tabTxSz, true, true)
-                      )
-                    )
-                  )
-                ),
-                Container(
-                  child: TextButton(
-                    onPressed: () {
-                      if (pageNumber != 1)
-                        setState(() {
-                          pageNumber = 1;
-                        });
-                    },
-                    child: Text(
-                      "Trade",
-                      style: textSwapState(
-                        pageNumber == 1,
-                        textStyle(Colors.white, tabTxSz, true, false),
-                        textStyle(Colors.amber[400]!, tabTxSz, true, true)
-                      )
-                    )
-                  )
-                ),
-                Container(
-                  child: TextButton(
-                    onPressed: () {
-                      if (pageNumber != 2)
-                        setState(() {
-                          pageNumber = 2;
-                        });
-                    },
-                    child: Text(
-                      "Farm",
-                      style: textSwapState(
-                        pageNumber == 2,
-                        textStyle(Colors.white, tabTxSz, true, false),
-                        textStyle(Colors.amber[400]!, tabTxSz, true, true)
-                      )
-                    )
-                  )
-                ),
-              ]
-            )
-          ),
-          if (!walletConnected) ...[
+                    Container(
+                        child: TextButton(
+                            onPressed: () {
+                              if (pageNumber != 0)
+                                setState(() {
+                                  pageNumber = 0;
+                                });
+                            },
+                            child: Text("Scout",
+                                style: textSwapState(
+                                    pageNumber == 0,
+                                    textStyle(
+                                        Colors.white, tabTxSz, true, false),
+                                    textStyle(Colors.amber[400]!, tabTxSz, true,
+                                        true))))),
+                    Container(
+                        child: TextButton(
+                            onPressed: () {
+                              if (pageNumber != 1)
+                                setState(() {
+                                  pageNumber = 1;
+                                });
+                            },
+                            child: Text("Trade",
+                                style: textSwapState(
+                                    pageNumber == 1,
+                                    textStyle(
+                                        Colors.white, tabTxSz, true, false),
+                                    textStyle(Colors.amber[400]!, tabTxSz, true,
+                                        true))))),
+                    Container(
+                        child: TextButton(
+                            onPressed: () {
+                              if (pageNumber != 2)
+                                setState(() {
+                                  pageNumber = 2;
+                                });
+                            },
+                            child: Text("Farm",
+                                style: textSwapState(
+                                    pageNumber == 2,
+                                    textStyle(
+                                        Colors.white, tabTxSz, true, false),
+                                    textStyle(Colors.amber[400]!, tabTxSz, true,
+                                        true))))),
+                  ])),
+          if (!controller.walletConnected) ...[
             // top Connect Wallet Button
-            Container(
-                height: 37.5,
-                width: 200,
-                decoration: boxDecoration(
-                    Colors.transparent, 100, 2, Colors.amber[400]!),
-                child: TextButton(
-                  onPressed: () => showDialog(
-                      context: context,
-                      builder: (BuildContext context) => walletDialog(context)
-                    ),
-                  child: connectWalletWidget
-                )
-              ),
+            buildConnectWalletButton(),
           ] else ...[
             //top right corner wallet information
-            buildAccountBox("0x83258973294857231101")
+            buildAccountBox(controller.publicAddress.toString())
           ]
         ],
       ),
     );
+  }
+
+  Widget buildConnectWalletButton() {
+    return Container(
+        height: 37.5,
+        width: 200,
+        decoration:
+            boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
+        child: TextButton(
+            onPressed: () => showDialog(
+                    context: context,
+                    builder: (BuildContext context) => walletDialog(context))
+                .then((value) => setState(() {})),
+            child: Text(
+              "Connect Wallet",
+              style: textStyle(Colors.amber[400]!, 16, true, false),
+            )));
   }
 
   Widget buildAccountBox(String accNum) {
@@ -213,92 +210,96 @@ class _V1AppState extends State<V1App> {
 
     String retStr = accNum;
     if (accNum.length > 15)
-      retStr = accNum.substring(0, 7) + "..." + accNum.substring(accNum.length-5, accNum.length-1);
-    
+      retStr = accNum.substring(0, 7) +
+          "..." +
+          accNum.substring(accNum.length - 5, accNum.length);
+
     return Container(
-      height: 30,
-      width: wid,
-      decoration:
-          boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          if (network)
-          TextButton(
-            onPressed: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                const Icon(
-                  Icons.link,
-                  color: Colors.grey,
+        height: 30,
+        width: wid,
+        decoration: boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            if (network)
+              TextButton(
+                onPressed: () {
+                  String urlString = "https://polygonscan.com/";
+                  launch(urlString);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.link,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      "Matic/Polygon",
+                      style: textStyle(Colors.grey[400]!, 11, false, false),
+                    )
+                  ],
                 ),
-                Text(
-                  "Matic/Polygon",
-                  style:
-                      textStyle(Colors.grey[400]!, 11, false, false),
-                )
-              ],
-            ),
-          ),
-          if (matic)
-          TextButton(
-            onPressed: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                const Icon(
-                  Icons.local_gas_station,
-                  color: Colors.grey,
+              ),
+            if (matic)
+              TextButton(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.local_gas_station,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      "${controller.gas}",
+                      style: textStyle(Colors.grey[400]!, 11, false, false),
+                    )
+                  ],
                 ),
-                Text(
-                  "0.0024 Matic",
-                  style:
-                      textStyle(Colors.grey[400]!, 11, false, false),
-                )
-              ],
-            ),
-          ),
-          TextButton(
-            onPressed: () => showDialog(context: context, builder: (BuildContext context) => yourAXDialog(context)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("../assets/images/X_white.png"),
-                      fit: BoxFit.fill,
+              ),
+            TextButton(
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => yourAXDialog(context)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("../assets/images/X_white.png"),
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  "10,000 AX",
-                  style:
-                      textStyle(Colors.grey[400]!, 11, false, false),
-                )
-              ],
+                  Text(
+                    "${axt.balance} AX",
+                    style: textStyle(Colors.grey[400]!, 11, false, false),
+                  ),
+                ],
+              ),
             ),
-          ),
-          TextButton(
-            onPressed: () => showDialog(context: context, builder: (BuildContext context) => accountDialog(context)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                const Icon(
-                  Icons.account_balance_wallet,
-                  color: Colors.grey,
-                ),
-                Text(
-                  retStr,
-                  style: textStyle(Colors.grey[400]!, 11, false, false),
-                )
-              ],
-            ),
-          )
-        ],
-      )
-    );
+            TextButton(
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => accountDialog(context)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  const Icon(
+                    Icons.account_balance_wallet,
+                    color: Colors.grey,
+                  ),
+                  Text(
+                    retStr,
+                    style: textStyle(Colors.grey[400]!, 11, false, false),
+                  )
+                ],
+              ),
+            )
+          ],
+        ));
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {

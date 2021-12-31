@@ -7,24 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:web3dart/browser.dart';
 import 'package:web3dart/web3dart.dart';
 
-
 // Token must be swappable
 class Token extends GetxController {
+  Controller controller = Get.find();
   String name, ticker;
+  BigInt balance = BigInt.zero;
   AssetImage? icon;
   num? amount;
   var address =
       EthereumAddress.fromHex("0000000000000000000000000000000000000000");
   late Erc20 erc20;
-  get client => Controller.client;
+  get client => controller.client;
 
   // All ' token ' classes inherit the SAME controller ( super important!!!)
   Token(this.name, this.ticker, [this.icon]) {
     erc20 = Erc20(address: address, client: client);
+    updateBalance();
   }
 
-  Future<BigInt> get balance {
-    return erc20.balanceOf(Controller.client);
+  Future<void> updateBalance() async {
+    balance = await erc20.balanceOf(controller.publicAddress);
+    update();
   }
 
   void updateERC20(EthereumAddress newAddress) {
@@ -37,7 +40,7 @@ class Token extends GetxController {
     // Both need to happen for any transaction
     BigInt amountToApprove = BigInt.from(amount);
     return erc20.approve(dest, amountToApprove,
-        credentials: Controller.credentials);
+        credentials: controller.credentials);
   }
 
   static void addToWallet() {
