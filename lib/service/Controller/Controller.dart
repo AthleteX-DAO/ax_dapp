@@ -7,26 +7,24 @@ import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:get/get.dart';
-import 'package:web3dart/src/browser/javascript.dart';
 import 'package:web3dart/browser.dart';
 import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
 class Controller extends GetxController {
-  Web3Client client = Web3Client("url", Client());
-  Credentials credentials = EthPrivateKey.createRandom(new Random());
-  EthereumAddress publicAddress =
-      EthereumAddress.fromHex("0xcdaa8c55fB92fbBE61948aDf4Ba8Cf7Ad33DBeF0");
-  int networkID = 0;
+  var client = Web3Client("url", Client()).obs;
+  var credentials;
+  var publicAddress =
+      EthereumAddress.fromHex("0xcdaa8c55fB92fbBE61948aDf4Ba8Cf7Ad33DBeF0").obs;
+  var networkID = 0.obs;
   bool walletConnected = false;
-  Controller._privateConstructor();
 
   /// VARIABLES
   var rng = new Random().nextInt(999);
   var mnemonic = "";
   var privateAddress = "";
   String latestTx = "";
-  var gas = EtherAmount.zero();
+  var gas = EtherAmount.zero().obs;
   bool activeChain = false;
   static const MAINNET_CHAIN_ID = 137;
   static const TESTNET_CHAIN_ID = 80001;
@@ -58,24 +56,24 @@ class Controller extends GetxController {
     return mnemonic;
   }
 
-  // Web functionality
+  // Connect the dapp to metamask and update relevant values
   void connect() async {
     final eth = window.ethereum;
     walletConnected = true;
-    client = Web3Client.custom(eth!.asRpcService());
+    client.value = Web3Client.custom(eth!.asRpcService());
     credentials = await eth.requestAccount();
     print("[Console] connecting to the decentralized web!");
-    networkID = await client.getNetworkId();
-    publicAddress = await credentials.extractAddress();
-    gas = await client.getGasPrice();
+    networkID.value = await client.value.getNetworkId();
+    publicAddress.value = await credentials.extractAddress();
+    gas.value = await client.value.getGasPrice();
     print("[Console] updated client: $client and credentials: $credentials");
     update();
   }
 
   void getCurrentGas() async {
     final eth = window.ethereum;
-    gas =
-        await Web3Client.custom(eth!.asRpcService()).getBalance(publicAddress);
+    gas.value = await Web3Client.custom(eth!.asRpcService())
+        .getBalance(publicAddress.value);
   }
 
   void updateTxString(String tx) {
@@ -85,7 +83,7 @@ class Controller extends GetxController {
   void disconnect() async {
     final eth = window.ethereum;
     walletConnected = eth!.isConnected();
-    client.dispose();
+    client.value.dispose();
 
     update();
   }
@@ -99,7 +97,7 @@ class Controller extends GetxController {
   }
 
   void viewTx() async {
-    String urlString = 'https://polygonscan.com/tx/$latestTx';
+    String urlString = 'https://mumbai.polygonscan.com/tx/$latestTx';
     await launch(urlString);
   }
 }

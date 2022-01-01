@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:web3dart/web3dart.dart';
-
-import 'Controller.dart';
 import 'Token.dart';
 
 class SXT extends Token {

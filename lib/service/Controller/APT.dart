@@ -11,5 +11,6 @@ class APT extends Token with APTBehavior {
 
   var bookPrice, marketPrice;
 
-  APT(String name, String ticker, [EthereumAddress? aptAddress]) : super(name, ticker) {}
+  APT(String name, String ticker, [EthereumAddress? aptAddress])
+      : super(name, ticker);
 }

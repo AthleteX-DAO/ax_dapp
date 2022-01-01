@@ -3,6 +3,7 @@ import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
 import 'package:ax_dapp/service/Controller/AXT.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,7 @@ class _V1AppState extends State<V1App> {
   List<Athlete> athleteList = [];
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
+  SwapController swapController = Get.put(SwapController());
   AXT axt = AXT("AthleteX", "AX");
   Token matic = Token("Polygon", "MATIC");
 
@@ -224,7 +226,7 @@ class _V1AppState extends State<V1App> {
             if (network)
               TextButton(
                 onPressed: () {
-                  String urlString = "https://polygonscan.com/";
+                  String urlString = "https://mumbai.polygonscan.com/";
                   launch(urlString);
                 },
                 child: Row(
@@ -252,7 +254,7 @@ class _V1AppState extends State<V1App> {
                       color: Colors.grey,
                     ),
                     Text(
-                      "${controller.gas}",
+                      "${controller.gas.value}",
                       style: textStyle(Colors.grey[400]!, 11, false, false),
                     )
                   ],

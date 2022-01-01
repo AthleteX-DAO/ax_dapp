@@ -1,6 +1,6 @@
-import 'package:ax_dapp/pages/V1App.dart';
 import 'package:ax_dapp/service/AthleteApi.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
+import 'package:ax_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -12,9 +12,9 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   bool next = false;
-
   @override
   Widget build(BuildContext context) {
+
     if (next)
       return V1App();
       

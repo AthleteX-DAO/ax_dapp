@@ -2,13 +2,13 @@
 
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/AXT.dart';
-import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
+import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../contracts/LongShortPair.g.dart';
 import '../../contracts/ExpiringMultiParty.g.dart';
 
-mixin APTBehavior {
+mixin APTBehavior on Token {
   Controller controller = Get.find();
   AXT _athleteX = AXT("AthleteX", "AX");
   final EthereumAddress placeholderAddress =
@@ -52,31 +52,6 @@ mixin APTBehavior {
       print("You are not the token sponsor");
     }
 
-    return txString;
-  }
-
-  Future<String> buy(EthereumAddress aptAddress, double numTokens) async {
-    String txString;
-    try {
-      txString =
-          await _swapBehavior.swapFromAX(aptAddress, BigInt.from(numTokens));
-      print("[console] bought $aptAddress at ");
-    } catch (e) {
-      txString = "Unable to buy $aptAddress";
-      print("Unable to buy tokens \n $e");
-    }
-
-    return txString;
-  }
-
-  Future<String> sell(EthereumAddress aptAddress, double numTokens) async {
-    String txString;
-    try {
-      txString =
-          await _swapBehavior.swapforAX(aptAddress, BigInt.from(numTokens));
-    } catch (e) {
-      txString = "Unable to sell $aptAddress";
-    }
     return txString;
   }
 }
