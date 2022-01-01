@@ -2136,7 +2136,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                       Container(
                         child: Text(
-                          "${swapController.activeTkn1.value.amount}",
+                          "${swapController.amount1.value}",
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -2200,7 +2200,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                       Container(
                         child: Text(
-                          "${swapController.activeTkn2.value.amount}",
+                          "${swapController.amount2.value}",
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -2242,7 +2242,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                       Container(
                         child: Text(
-                          "1.2 " +
+                          "${swapController.price} " +
                               swapController.activeTkn1.value.ticker +
                               " per " +
                               swapController.activeTkn2.value.ticker,
@@ -2395,6 +2395,8 @@ Dialog swapDialog(BuildContext context) {
                     child: TextButton(
                       //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () {
+                        print('swapping!');
+                        swapController.swap();
                         Navigator.pop(context);
                         showDialog(
                             context: context,

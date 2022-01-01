@@ -1,6 +1,7 @@
 import 'package:ax_dapp/contracts/StakingRewards.g.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:get/get.dart';
+import 'package:web3dart/credentials.dart';
 import 'Controller.dart';
 
 mixin FarmBehavior on Token {
@@ -8,8 +9,9 @@ mixin FarmBehavior on Token {
 
 
   Future<String> stake(double a) {
+  EthereumAddress stakingAddress = EthereumAddress.fromHex(address.value);
   StakingRewards _rewards =
-      StakingRewards(address: address, client: controller.client.value);
+      StakingRewards(address: stakingAddress, client: controller.client.value);
     BigInt amount = BigInt.from(a);
     // ignore: unused_local_variable
     String txString = "";
