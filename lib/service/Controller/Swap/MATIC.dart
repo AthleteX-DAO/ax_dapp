@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:web3dart/web3dart.dart';
-import 'Token.dart';
+import 'package:ax_dapp/service/Controller/Token.dart';
 
 class MATIC extends Token {
   static String polygonAddress = "0x0000000000000000000000000000000000001010";
