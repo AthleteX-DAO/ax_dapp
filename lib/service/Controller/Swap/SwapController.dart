@@ -1,9 +1,8 @@
 import 'package:ax_dapp/contracts/APTRouter.g.dart';
 import 'package:ax_dapp/contracts/Dex.g.dart';
-import 'package:ax_dapp/service/Controller/AXT.dart';
+import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
-import 'AXT.dart';
 import 'package:get/get.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:web3dart/contracts/erc20.dart';

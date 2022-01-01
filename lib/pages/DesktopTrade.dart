@@ -1,9 +1,9 @@
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
-import 'package:ax_dapp/service/Controller/AXT.dart';
-import 'package:ax_dapp/service/Controller/MATIC.dart';
-import 'package:ax_dapp/service/Controller/SXT.dart';
-import 'package:ax_dapp/service/Controller/SwapController.dart';
+import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
+import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
+import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Dialog.dart';
