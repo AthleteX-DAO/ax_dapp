@@ -2,7 +2,7 @@
 
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/AXT.dart';
-import 'package:ax_dapp/service/Controller/SWAPBehavior.dart';
+import 'package:ax_dapp/service/Controller/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
@@ -1844,7 +1844,7 @@ Dialog accountDialog(BuildContext context) {
                           TextButton(
                             onPressed: () {
                               String urlString =
-                                  "https://polygonscan.com/address/${controller.publicAddress}";
+                                  "https://mumbai.polygonscan.com/address/${controller.publicAddress}";
                               launch(urlString);
                             },
                             child: Row(
@@ -2053,8 +2053,7 @@ Dialog removeDialog(BuildContext context) {
 }
 
 Dialog swapDialog(BuildContext context) {
-  SwapBehavior swapBehavior = Get.find();
-  Token token1 = swapBehavior.token1;
+  SwapController swapController = Get.find();
 
   return Dialog(
       backgroundColor: Colors.transparent,
@@ -2128,7 +2127,7 @@ Dialog swapDialog(BuildContext context) {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          token1.name,
+                          swapController.activeTkn1.value.name,
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -2137,7 +2136,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                       Container(
                         child: Text(
-                          "10.24",
+                          "${swapController.activeTkn1.value.amount}",
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -2192,7 +2191,7 @@ Dialog swapDialog(BuildContext context) {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          token2.name,
+                          swapController.activeTkn2.value.name,
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -2201,7 +2200,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                       Container(
                         child: Text(
-                          "8.48",
+                          "${swapController.activeTkn2.value.amount}",
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -2243,7 +2242,10 @@ Dialog swapDialog(BuildContext context) {
                       ),
                       Container(
                         child: Text(
-                          "1.2 " + token1.ticker + " per " + token2.ticker,
+                          "1.2 " +
+                              swapController.activeTkn1.value.ticker +
+                              " per " +
+                              swapController.activeTkn2.value.ticker,
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.white,
@@ -2312,7 +2314,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                       Container(
                         child: Text(
-                          "8.2 " + token2.ticker,
+                          "8.2 " + swapController.activeTkn2.value.ticker,
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
@@ -2367,7 +2369,7 @@ Dialog swapDialog(BuildContext context) {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "7.98 " + token2.name,
+                      "7.98 " + swapController.activeTkn2.value.name,
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,
@@ -2393,12 +2395,6 @@ Dialog swapDialog(BuildContext context) {
                     child: TextButton(
                       //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () {
-                        BigInt token1Amount = BigInt.from(amount1);
-                        BigInt token2Amount = BigInt.from(amount2);
-
-                        SWAPBehavior().swap(token1.address, token2.address,
-                            token1Amount, token2Amount);
-
                         Navigator.pop(context);
                         showDialog(
                             context: context,
