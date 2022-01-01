@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:web3dart/web3dart.dart';
-
-import '../Controller.dart';
 import 'Token.dart';
 
 class SXT extends Token {
@@ -19,7 +17,7 @@ class SXT extends Token {
 
   Future<String> exec(EthereumAddress dest, BigInt amount) {
     // Both need to happen for any transaction
-    erc20.approve(dest, amount, credentials: Controller.credentials);
-    return erc20.transfer(dest, amount, credentials: Controller.credentials);
+    erc20.approve(dest, amount, credentials: controller.credentials);
+    return erc20.transfer(dest, amount, credentials: controller.credentials);
   }
 }

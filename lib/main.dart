@@ -7,16 +7,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // Returns anything!
 
+    // Returns anything!
     return MaterialApp(
       title: "AthleteX",
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       theme: ThemeData(
           brightness: Brightness.dark,
-          primaryColor: Colors.yellow[700], colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black)),
-          home: LandingPage(),
+          primaryColor: Colors.yellow[700],
+          colorScheme: ColorScheme.fromSwatch(brightness: Brightness.dark)
+              .copyWith(secondary: Colors.black)),
+      home: LandingPage(),
       // home: V1App(),
       // home: HomePage()
     );

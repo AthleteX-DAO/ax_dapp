@@ -1,5 +1,5 @@
 @TestOn('browser')
-import 'package:ax_dapp/service/Controller.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:test/test.dart';
 
 void main() {

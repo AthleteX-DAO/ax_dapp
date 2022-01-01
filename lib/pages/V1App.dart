@@ -1,9 +1,15 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/service/Controller/AXT.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/SwapController.dart';
+import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class V1App extends StatefulWidget {
   @override
@@ -39,13 +45,18 @@ class _V1AppState extends State<V1App> {
 
   // state change variables
   int pageNumber = 0;
-  int walletConnected = 1; //flag to check if user has connected their wallet
+  bool walletConnected =
+      true; //flag to check if user has connected their wallet
   bool allFarms = true;
   List<Athlete> athleteList = [];
+  Controller controller =
+      Get.put(Controller()); // Rather Controller controller = Controller();
+  SwapController swapController = Get.put(SwapController());
+  AXT axt = AXT("AthleteX", "AX");
+  Token matic = Token("Polygon", "MATIC");
 
   @override
   Widget build(BuildContext context) {
-    
     Widget pageWidget = buildDesktop(context);
 
     return Scaffold(
@@ -79,18 +90,21 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget topNavBar(BuildContext context) {
-    double tabTxSz = 24;
-
+    double _width = MediaQuery.of(context).size.width;
+    double tabTxSz = _width * 0.0185;
+    if (tabTxSz < 19) tabTxSz = 19;
+    double tabBxSz = _width * 0.3;
+    if (tabBxSz < 247) tabBxSz = 247;
 
     return Container(
-      width: MediaQuery.of(context).size.width * .9,
+      width: _width * .95,
       height: 100,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           // Tabs
           Container(
-              width: MediaQuery.of(context).size.width * .4,
+              width: tabBxSz,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -152,110 +166,142 @@ class _V1AppState extends State<V1App> {
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
                   ])),
-          if (walletConnected == 0) ...[
+          if (!controller.walletConnected) ...[
             // top Connect Wallet Button
-            Container(
-                height: 37.5,
-                width: 200,
-                decoration: boxDecoration(
-                    Colors.transparent, 100, 2, Colors.amber[400]!),
-                child: TextButton(
-                  onPressed: () => showDialog(
-                      context: context,
-                      builder: (BuildContext context) => walletDialog(context)),
-                  child: Text(
-                    "Connect Wallet",
-                    style: textStyle(Colors.amber[400]!, 16, true, false),
-                  ),
-                )),
+            buildConnectWalletButton(),
           ] else ...[
             //top right corner wallet information
-            Container(
-                height: 37.5,
-                width: 700,
-                decoration:
-                    boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    TextButton(
-                      onPressed: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          const Icon(
-                            Icons.link,
-                            color: Colors.grey,
-                          ),
-                          Text(
-                            "Matic/Polygon",
-                            style:
-                                textStyle(Colors.grey[400]!, 15, false, false),
-                          )
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          const Icon(
-                            Icons.local_gas_station,
-                            color: Colors.grey,
-                          ),
-                          Text(
-                            "0.0024 Matic",
-                            style:
-                                textStyle(Colors.grey[400]!, 15, false, false),
-                          )
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => yourAXDialog(context)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage("../assets/images/X_white.png"),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "10,000 AX",
-                            style:
-                                textStyle(Colors.grey[400]!, 15, false, false),
-                          )
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => showDialog(context: context, builder: (BuildContext context) => accountDialog(context)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          const Icon(
-                            Icons.account_balance_wallet,
-                            color: Colors.grey,
-                          ),
-                          Text(
-                            "0x24fd78...4c22",
-                            style:
-                                textStyle(Colors.grey[400]!, 15, false, false),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ))
+            buildAccountBox(controller.publicAddress.toString())
           ]
         ],
       ),
     );
+  }
+
+  Widget buildConnectWalletButton() {
+    return Container(
+        height: 37.5,
+        width: 200,
+        decoration:
+            boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
+        child: TextButton(
+            onPressed: () => showDialog(
+                    context: context,
+                    builder: (BuildContext context) => walletDialog(context))
+                .then((value) => setState(() {})),
+            child: Text(
+              "Connect Wallet",
+              style: textStyle(Colors.amber[400]!, 16, true, false),
+            )));
+  }
+
+  Widget buildAccountBox(String accNum) {
+    double _width = MediaQuery.of(context).size.width;
+    double wid = 500;
+    bool network = true;
+    bool matic = true;
+
+    if (_width < 835) {
+      matic = false;
+      wid = 350;
+    }
+    if (_width < 665) {
+      network = false;
+      wid = 210;
+    }
+
+    String retStr = accNum;
+    if (accNum.length > 15)
+      retStr = accNum.substring(0, 7) +
+          "..." +
+          accNum.substring(accNum.length - 5, accNum.length);
+
+    return Container(
+        height: 30,
+        width: wid,
+        decoration: boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            if (network)
+              TextButton(
+                onPressed: () {
+                  String urlString = "https://mumbai.polygonscan.com/";
+                  launch(urlString);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.link,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      "Matic/Polygon",
+                      style: textStyle(Colors.grey[400]!, 11, false, false),
+                    )
+                  ],
+                ),
+              ),
+            if (matic)
+              TextButton(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.local_gas_station,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      "${controller.gas.value}",
+                      style: textStyle(Colors.grey[400]!, 11, false, false),
+                    )
+                  ],
+                ),
+              ),
+            TextButton(
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => yourAXDialog(context)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("../assets/images/X_white.png"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "${axt.balance} AX",
+                    style: textStyle(Colors.grey[400]!, 11, false, false),
+                  ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => accountDialog(context)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  const Icon(
+                    Icons.account_balance_wallet,
+                    color: Colors.grey,
+                  ),
+                  Text(
+                    retStr,
+                    style: textStyle(Colors.grey[400]!, 11, false, false),
+                  )
+                ],
+              ),
+            )
+          ],
+        ));
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {

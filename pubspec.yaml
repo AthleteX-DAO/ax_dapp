@@ -29,7 +29,6 @@ dependencies:
   web_socket_channel: ^2.1.0
   flutter_sparkline: ^0.1.0
   velocity_x: ^3.2.0
-  qrscan: ^0.3.1
   url_launcher: ^6.0.3
   fl_chart: ^0.36.2
   toggle_switch: ^1.2.0
@@ -48,6 +47,7 @@ dependencies:
   webfeed: ^0.7.0
   chart_sparkline: ^1.0.5
   flutter_web3: ^2.0.4
+  get: ^4.6.1
   
 
 dependency_overrides:
@@ -60,7 +60,7 @@ dependency_overrides:
 
 dev_dependencies: 
   test: ^1.16.5
-  
+  build_runner: ^2.1.0  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

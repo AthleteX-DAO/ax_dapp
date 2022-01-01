@@ -1,18 +1,19 @@
 import 'package:ax_dapp/contracts/StakingRewards.g.dart';
+import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:get/get.dart';
+import 'Controller.dart';
 
-import '../Controller.dart';
+mixin FarmBehavior on Token {
+  Controller controller = Get.find();
 
-class FarmBehavior {
-  StakingRewards _rewards =
-      StakingRewards(address: address, client: Controller.client);
-
-  static var address;
 
   Future<String> stake(double a) {
+  StakingRewards _rewards =
+      StakingRewards(address: address, client: controller.client.value);
     BigInt amount = BigInt.from(a);
     // ignore: unused_local_variable
     String txString = "";
-    return _rewards.stake(amount, credentials: Controller.credentials);
+    return _rewards.stake(amount, credentials: controller.credentials);
   }
 
   Future<String> deposit(double a) {
