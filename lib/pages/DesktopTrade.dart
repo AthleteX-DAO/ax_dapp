@@ -1,6 +1,7 @@
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Controller/AXT.dart';
+import 'package:ax_dapp/service/Controller/MATIC.dart';
 import 'package:ax_dapp/service/Controller/SXT.dart';
 import 'package:ax_dapp/service/Controller/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
@@ -27,7 +28,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('../assets/images/x.png')),
     SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
-    Token("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
+    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
   ];
 
   @override
@@ -40,7 +41,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
-
+    double fromAmount = 0, toAmount = 0;
     double wid = 550;
     double hgt = 380;
     if (_height < 480) hgt = _height;
@@ -55,6 +56,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               "Select token to swap with",
               style: textStyle(Colors.blue, 16, true, false),
             )));
+
     if (tkn1 != null && tkn2 != null)
       swapButton = Container(
           height: 50,
@@ -64,8 +66,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
           child: TextButton(
               onPressed: () {
                 if (tkn1 != null && tkn2 != null)
-                  swapController.activeTkn1.value = tkn1!;
-                swapController.activeTkn2.value = tkn2!;
+                  swapController.updateToken1(tkn1!);
+                swapController.updateAmount1(fromAmount);
+                swapController.updateAmount2(toAmount);
+                swapController.updateAddress1(tkn1!.address.value);
+                swapController.updateAddress2(tkn2!.address.value);
+                swapController.updateToken2(tkn2!);
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => swapDialog(context));
@@ -129,7 +135,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                                 0.5,
                                                 Colors.grey[400]!),
                                             child: TextButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  swapController
+                                                      .activeTkn1.value;
+                                                  print(swapController.amount1);
+                                                },
                                                 child: Text("MAX",
                                                     style: textStyle(
                                                         Colors.grey[400]!,
@@ -141,9 +151,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                           child: TextFormField(
                                             onChanged: (value) {
                                               fromAmount = double.parse(value);
-                                              swapController.activeTkn1.value
-                                                  .amount.value = fromAmount;
-                                              print(fromAmount);
                                             },
                                             style: textStyle(Colors.grey[400]!,
                                                 22, false, false),
@@ -217,9 +224,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                 child: TextFormField(
                                   onChanged: (value) {
                                     toAmount = double.parse(value);
-                                    swapController.activeTkn1.value
-                                                  .amount.value = toAmount;
-                                    print(toAmount);
                                   },
                                   style: textStyle(
                                       Colors.grey[400]!, 22, false, false),
