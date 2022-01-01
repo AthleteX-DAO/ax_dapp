@@ -77,6 +77,7 @@ class Controller extends GetxController {
   }
 
   void updateTxString(String tx) {
+    print("latest txString: $tx");
     latestTx = tx;
   }
 
@@ -84,6 +85,7 @@ class Controller extends GetxController {
     final eth = window.ethereum;
     walletConnected = eth!.isConnected();
     client.value.dispose();
+    client.value.getChainId();
 
     update();
   }
@@ -97,7 +99,10 @@ class Controller extends GetxController {
   }
 
   void viewTx() async {
-    String urlString = 'https://mumbai.polygonscan.com/tx/$latestTx';
+    String urlString = "";
+    latestTx == ""
+        ? urlString = "https://mumbai.polygonscan.com"
+        : urlString = 'https://mumbai.polygonscan.com/tx/$latestTx';
     await launch(urlString);
   }
 }
