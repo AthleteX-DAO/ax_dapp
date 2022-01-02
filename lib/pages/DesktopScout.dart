@@ -29,13 +29,15 @@ class _DesktopScoutState extends State<DesktopScout> {
       return AthletePage(athlete: curAthlete);
 
     return Container(
-      height: _height*0.85-41,
+      // Do not delete any of the changes here yet
+      height: _height*0.85+41,
+      //height: _height*0.85-41,
       width: _width*0.85,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(height: 15),
+          //Container(height: 15),
           // APT Title & Sport Filter
           Container(
             width: 400,
@@ -108,7 +110,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               ]
             ),
           ),
-          Container(height: _height*0.03),
+          //Container(height: _height*0.03),
           // List Headers
           buildListviewHeaders(),
           // ListView of Athletes
