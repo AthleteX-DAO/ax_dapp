@@ -46,7 +46,7 @@ class _V1AppState extends State<V1App> {
   // state change variables
   int pageNumber = 0;
   bool walletConnected =
-      true; //flag to check if user has connected their wallet
+      false; //flag to check if user has connected their wallet
   bool allFarms = true;
   List<Athlete> athleteList = [];
   Controller controller =
@@ -60,8 +60,11 @@ class _V1AppState extends State<V1App> {
     Widget pageWidget = buildDesktop(context);
 
     return Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
           title: topNavBar(context),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
         ),
         body: Container(
             width: MediaQuery.of(context).size.width,
@@ -73,6 +76,23 @@ class _V1AppState extends State<V1App> {
               ),
             ),
             child: pageWidget));
+    // Do not delete this yet. The original code before the changes
+    /*return Scaffold(
+      appBar: AppBar(
+        title: topNavBar(context),
+      ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("../assets/images/blurredBackground.png"),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: pageWidget
+      )
+    );*/
   }
 
   Widget buildDesktop(BuildContext context) {
