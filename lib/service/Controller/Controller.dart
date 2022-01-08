@@ -24,7 +24,8 @@ class Controller extends GetxController {
   var mnemonic = "";
   var privateAddress = "";
   String latestTx = "";
-  var gas = 0.obs;
+  var gas = 0.0.obs;
+  var currentChainId = BigInt.zero.obs;
   bool activeChain = false;
   static const MAINNET_CHAIN_ID = 137;
   static const TESTNET_CHAIN_ID = 80001;
@@ -60,22 +61,38 @@ class Controller extends GetxController {
   void connect() async {
     final eth = window.ethereum;
     walletConnected = true;
+    updateClient();
+    getCurrentGas();
+    getCurrentChainID();
+    print("[Console] updated client: $publicAddress");
+    update();
+  }
+
+  void updateClient() async {
+    final eth = window.ethereum;
     client.value = Web3Client.custom(eth!.asRpcService());
     credentials = await eth.requestAccount();
     print("[Console] connecting to the decentralized web!");
     networkID.value = await client.value.getNetworkId();
     publicAddress.value = await credentials.extractAddress();
-    getCurrentGas();
-    print("[Console] updated client: $client and credentials: $credentials");
-    update();
   }
 
   void getCurrentGas() async {
     final eth = window.ethereum;
-    final unit = EtherUnit.gwei;
-    final amount = await Web3Client.custom(eth!.asRpcService())
+    final ethAmount = await Web3Client.custom(eth!.asRpcService())
         .getBalance(publicAddress.value);
-    gas.value = amount.getValueInUnit(EtherUnit.gwei).toInt();
+    final amount = ethAmount.getInWei;
+    final gweiFactor = BigInt.from(10).pow(9);
+    final gweiAmount = amount * gweiFactor;
+    gas.value = gweiAmount.toDouble();
+    update();
+  }
+
+  void getCurrentChainID() async {
+    var ID = await client.value.getChainId();
+    print('currentChainID: $ID');
+    currentChainId.value = ID;
+    update();
   }
 
   void updateTxString(String tx) {
@@ -87,8 +104,7 @@ class Controller extends GetxController {
     final eth = window.ethereum;
     walletConnected = eth!.isConnected();
     client.value.dispose();
-    client.value.getChainId();
-
+    print("Disconnecting!");
     update();
   }
 
