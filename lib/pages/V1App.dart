@@ -265,7 +265,11 @@ class _V1AppState extends State<V1App> {
               ),
             if (matic)
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.getCurrentGas();
+                  print("getting current gas ${controller.gas}");
+                  setState(() {});
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -274,7 +278,7 @@ class _V1AppState extends State<V1App> {
                       color: Colors.grey,
                     ),
                     Text(
-                      "${controller.gas.value}",
+                      "${controller.gas.value} gwei",
                       style: textStyle(Colors.grey[400]!, 11, false, false),
                     )
                   ],

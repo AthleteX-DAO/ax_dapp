@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:ax_dapp/service/Controller/Controller.dart';
-import 'package:ax_dapp/service/Controller/AXT.dart';
+import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
@@ -356,7 +356,10 @@ Dialog depositDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    showDialog(context: context, builder: (BuildContext context) => depositConfimed(context));
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            depositConfimed(context));
                   },
                   child: const Text(
                     "Confirm",
@@ -1443,7 +1446,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txString) {
+Dialog confirmTransaction(BuildContext context) {
+  Controller controller = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -1706,10 +1710,7 @@ Dialog removalConfimed(BuildContext context) {
                 ),
               ],
             ),
-          )
-        )
-      )
-  );
+          ))));
 }
 
 // dynamic
@@ -1797,10 +1798,7 @@ Dialog depositConfimed(BuildContext context) {
                 ),
               ],
             ),
-          )
-        )
-      )
-  );
+          ))));
 }
 
 // dynamic
@@ -2032,8 +2030,8 @@ Dialog yourAXDialog(BuildContext context) {
 
 // dynamic
 Dialog accountDialog(BuildContext context) {
-  double wid = 475;
-  double hgt = 200;
+  // double wid = 475;
+  // double hgt = 200;
   Controller controller = Get.find();
   String accNum = "${controller.publicAddress}";
   String retStr = accNum.substring(0, 7) +
@@ -2382,7 +2380,10 @@ Dialog removeDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    showDialog(context: context, builder: (BuildContext context) => removalConfimed(context));
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            removalConfimed(context));
                   },
                   child: const Text(
                     "Confirm",
