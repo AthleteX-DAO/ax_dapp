@@ -4,6 +4,7 @@ import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:flutter/gestures.dart';
@@ -1803,6 +1804,7 @@ Dialog depositConfimed(BuildContext context) {
 
 // dynamic
 Dialog yourAXDialog(BuildContext context) {
+  AXT axToken = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 400;
@@ -1881,7 +1883,7 @@ Dialog yourAXDialog(BuildContext context) {
                             ),
                             Container(
                               child: Text(
-                                "100 AX",
+                                "${axToken.balance} AX",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
@@ -1987,7 +1989,7 @@ Dialog yourAXDialog(BuildContext context) {
                             ),
                             Container(
                               child: Text(
-                                "100,000,000",
+                                "${axToken.totalSupply}",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
@@ -2010,7 +2012,11 @@ Dialog yourAXDialog(BuildContext context) {
                               decoration: boxDecoration(Colors.amber[600]!, 100,
                                   0, Colors.amber[600]!),
                               child: TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    String urlString =
+                                        "https://app.sushi.com/en/swap";
+                                    launch(urlString);
+                                  },
                                   child: Text("Buy AX",
                                       style: textStyle(
                                           Colors.black, 14, true, false)))),
@@ -2167,7 +2173,10 @@ Dialog accountDialog(BuildContext context) {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          String textToCopy = controller.publicAddress.value.toString();
+                          Clipboard.setData(ClipboardData(text: textToCopy));
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
@@ -2182,7 +2191,12 @@ Dialog accountDialog(BuildContext context) {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          EthereumAddress pA = controller.publicAddress.value;
+                          String urlString =
+                              "https://polygonscan.com/address/$pA";
+                          launch(urlString);
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[

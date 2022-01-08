@@ -52,7 +52,7 @@ class _V1AppState extends State<V1App> {
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
   SwapController swapController = Get.put(SwapController());
-  AXT axt = AXT("AthleteX", "AX");
+  AXT axt = Get.put(AXT("AthleteX", "AX"));
   Token matic = Token("Polygon", "MATIC");
 
   @override
@@ -246,7 +246,7 @@ class _V1AppState extends State<V1App> {
             if (network)
               TextButton(
                 onPressed: () {
-                  String urlString = "https://mumbai.polygonscan.com/";
+                  String urlString = "https://polygonscan.com/";
                   launch(urlString);
                 },
                 child: Row(
@@ -267,7 +267,8 @@ class _V1AppState extends State<V1App> {
               TextButton(
                 onPressed: () {
                   controller.getCurrentGas();
-                  print("getting current gas ${controller.gas}");
+                  print(
+                      "getting current gas ${controller.gas}, truncated gas: ${controller.truncatedGas.}");
                   setState(() {});
                 },
                 child: Row(
@@ -278,16 +279,20 @@ class _V1AppState extends State<V1App> {
                       color: Colors.grey,
                     ),
                     Text(
-                      "${controller.gas.value} gwei",
+                      "${controller.truncatedGas} gwei",
                       style: textStyle(Colors.grey[400]!, 11, false, false),
                     )
                   ],
                 ),
               ),
             TextButton(
-              onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => yourAXDialog(context)),
+              onPressed: () => {
+                axt.updateBalance(),
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        yourAXDialog(context)).then((value) => setState(() {}))
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -300,7 +305,7 @@ class _V1AppState extends State<V1App> {
                     ),
                   ),
                   Text(
-                    "${axt.balance} AX",
+                    "${axt.balance.value} AX",
                     style: textStyle(Colors.grey[400]!, 11, false, false),
                   ),
                 ],
@@ -308,8 +313,9 @@ class _V1AppState extends State<V1App> {
             ),
             TextButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => accountDialog(context)),
+                      context: context,
+                      builder: (BuildContext context) => accountDialog(context))
+                  .then((value) => setState(() {})),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

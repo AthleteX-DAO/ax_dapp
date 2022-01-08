@@ -24,7 +24,8 @@ class Controller extends GetxController {
   var mnemonic = "";
   var privateAddress = "";
   String latestTx = "";
-  var gas = 0.0.obs;
+  var gas = BigInt.zero.obs;
+  var truncatedGas = "".obs;
   var currentChainId = BigInt.zero.obs;
   bool activeChain = false;
   static const MAINNET_CHAIN_ID = 137;
@@ -84,7 +85,8 @@ class Controller extends GetxController {
     final amount = ethAmount.getInWei;
     final gweiFactor = BigInt.from(10).pow(9);
     final gweiAmount = amount * gweiFactor;
-    gas.value = gweiAmount.toDouble();
+    gas.value = gweiAmount;
+    truncatedGas.value = gas.value.toInt().toStringAsFixed(2);
     update();
   }
 
