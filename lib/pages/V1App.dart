@@ -262,8 +262,11 @@ class _V1AppState extends State<V1App> {
               ),
             TextButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => yourAXDialog(context)),
+                      context: context,
+                      builder: (BuildContext context) => yourAXDialog(context))
+                  .then((value) => (setState(() {
+                        axt.updateBalance();
+                      }))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
