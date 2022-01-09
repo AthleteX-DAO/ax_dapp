@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:ax_dapp/service/Controller/Controller.dart';
-import 'package:ax_dapp/service/Controller/AXT.dart';
+// import 'package:ax_dapp/service/Controller/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
@@ -710,7 +710,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) =>
-                              confirmTransaction(context));
+                              confirmTransaction(context, confirmed, txString));
                     },
                     child: const Text(
                       "Confirm",
@@ -1027,12 +1027,8 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                       onPressed: () {
                         Navigator.pop(context);
                         bool confirmed = true;
-                        String txString =
-                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                        String txString = "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
+                        showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context, confirmed, txString));
                       },
                       child: const Text(
                         "Confirm",
@@ -1230,7 +1226,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(context, true, ""));
                       },
                       child: Text(
                         "Confirm",
@@ -1424,7 +1420,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(context, true, ""));
                       },
                       child: Text(
                         "Confirm",
@@ -1514,7 +1510,7 @@ Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txStrin
                       ),
                       child: TextButton(
                         onPressed: () {
-                          controller.viewTx();
+                          Controller.viewTx();
                           Navigator.pop(context);
                         },
                         child: Text(
@@ -2032,8 +2028,8 @@ Dialog yourAXDialog(BuildContext context) {
 
 // dynamic
 Dialog accountDialog(BuildContext context) {
-  double wid = 475;
-  double hgt = 200;
+  // double wid = 475;
+  // double hgt = 200;
   Controller controller = Get.find();
   String accNum = "${controller.publicAddress}";
   String retStr = accNum.substring(0, 7) +
@@ -2750,7 +2746,7 @@ Dialog swapDialog(BuildContext context) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                confirmTransaction(context));
+                                confirmTransaction(context, true, ""));
                       },
                       child: const Text(
                         "Confirm Swap",

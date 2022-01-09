@@ -23,7 +23,7 @@ class Controller extends GetxController {
   var rng = new Random().nextInt(999);
   var mnemonic = "";
   var privateAddress = "";
-  String latestTx = "";
+  static String latestTx = "";
   var gas = EtherAmount.zero().obs;
   bool activeChain = false;
   static const MAINNET_CHAIN_ID = 137;
@@ -98,7 +98,7 @@ class Controller extends GetxController {
     eth!.rawRequest('wallet_switchEthereumChain', params: {params});
   }
 
-  void viewTx() async {
+  static void viewTx() async {
     String urlString = "";
     latestTx == ""
         ? urlString = "https://mumbai.polygonscan.com"

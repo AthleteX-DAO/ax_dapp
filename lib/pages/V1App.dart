@@ -129,7 +129,7 @@ class _V1AppState extends State<V1App> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Container(
-                      width: 50,
+                      width: 72,
                       height: 50,
                       child: Container(
                         decoration: BoxDecoration(
