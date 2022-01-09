@@ -268,7 +268,7 @@ class _V1AppState extends State<V1App> {
                 onPressed: () {
                   controller.getCurrentGas();
                   print(
-                      "getting current gas ${controller.gas}, truncated gas: ${controller.truncatedGas.}");
+                      "getting current gas ${controller.gas}, truncated gas: ${controller.truncatedGas}");
                   setState(() {});
                 },
                 child: Row(
