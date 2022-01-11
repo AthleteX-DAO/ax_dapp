@@ -182,7 +182,6 @@ Dialog walletDialog(BuildContext context) {
   );
 }
 
-// dynamic
 Dialog depositDialog(BuildContext context) {
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
@@ -371,6 +370,214 @@ Dialog depositDialog(BuildContext context) {
           )
         ],
       ),
+    ),
+  );
+}
+
+// static
+Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
+  double amount = 0;
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 390;
+  double edge = 60;
+  if (_width < 395) wid = _width;
+  double hgt = 450;
+  if (_height < 455) hgt = _height;
+
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: hgt,
+      width: wid,
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              width: wid-edge,
+              height: 80,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      "Deposit Liquidity",
+                      style: textStyle(Colors.white, 20, false, false),
+                    )
+                  ),
+                  Container(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                        color: Colors.white,
+                      )
+                    )
+                  )
+                ],
+              )
+            ),
+            Container(
+              width: wid-edge,
+              margin: EdgeInsets.symmetric(vertical: 5),
+              child: Text(
+                "*Add liquidity to supply LP tokens to your wallet\nDeposit LP tokens to AX rewards",
+                style: textStyle(Colors.grey[600]!, 11, false, false),
+              )
+            ),
+            //Amount Box
+            Container(
+              width: wid - edge,
+              height: 55,
+              decoration: boxDecoration(Colors.transparent, 14, 0.5, Colors.grey[400]!),
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      "AX",
+                      style: textStyle(Colors.white, 15, false, false),
+                    ),
+                  ),
+                  Container(
+                    height: 18,
+                    width: 35,
+                    decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Max",
+                        style: textStyle(Colors.grey[400]!, 9, false, false),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 70,
+                    child: TextFormField(
+                      onChanged: (value) {
+                        amount = double.parse(value);
+                        print(amount);
+                      },
+                      style: textStyle(Colors.grey[400]!, 22, false, false),
+                      decoration: InputDecoration(
+                        hintText: '0.00',
+                        hintStyle:
+                            textStyle(Colors.grey[400]!, 22, false, false),
+                        contentPadding: const EdgeInsets.all(9),
+                        border: InputBorder.none,
+                      ),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            //Amount Box
+            Container(
+              width: wid - edge,
+              height: 55,
+              decoration: boxDecoration(Colors.transparent, 14, 0.5, Colors.grey[400]!),
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      athlete.name + " APT",
+                      style: textStyle(Colors.white, 15, false, false),
+                    ),
+                  ),
+                  Container(
+                    height: 18,
+                    width: 35,
+                    decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Max",
+                        style: textStyle(Colors.grey[400]!, 9, false, false),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 70,
+                    child: TextFormField(
+                      onChanged: (value) {
+                        amount = double.parse(value);
+                        print(amount);
+                      },
+                      style: textStyle(Colors.grey[400]!, 22, false, false),
+                      decoration: InputDecoration(
+                        hintText: '0.00',
+                        hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
+                        contentPadding: const EdgeInsets.all(9),
+                        border: InputBorder.none,
+                      ),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ),
+            Container(
+              width: 175,
+              height: 35,
+              decoration: boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!),
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  showDialog(context: context, builder: (BuildContext context) => depositConfimed(context));
+                },
+                child: Text(
+                  "Add Liquidity",
+                  style: textStyle(Colors.amber[400]!, 20, true, false)
+                )
+              )
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                "LP Tokens: " + "0",
+                style: textStyle(Colors.white, 18, true, false)
+              ),
+            ),
+            Container(
+              width: 175,
+              height: 35,
+              decoration: boxDecoration(Colors.grey, 100, 1, Colors.grey),
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  showDialog(context: context, builder: (BuildContext context) => depositConfimed(context));
+                },
+                child: Text(
+                  "Deposit",
+                  style: textStyle(Colors.black, 16, true, false)
+                ),
+              ),
+            )
+          ],
+        ),
+      )
     ),
   );
 }

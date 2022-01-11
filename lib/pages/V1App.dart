@@ -114,7 +114,7 @@ class _V1AppState extends State<V1App> {
     double tabTxSz = _width * 0.0185;
     if (tabTxSz < 19) tabTxSz = 19;
     double tabBxSz = _width * 0.3;
-    if (tabBxSz < 247) tabBxSz = 247;
+    if (tabBxSz < 270) tabBxSz = 270;
 
     return Container(
       width: _width * .95,
@@ -201,7 +201,7 @@ class _V1AppState extends State<V1App> {
   Widget buildConnectWalletButton() {
     return Container(
         height: 37.5,
-        width: 200,
+        width: 180,
         decoration:
             boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
         child: TextButton(

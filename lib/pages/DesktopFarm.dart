@@ -47,7 +47,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
     for (Athlete ath in AthleteList.list)
       farmList.add(Farm(
-        "AX - " + ath.name + " APT"
+        "AX - " + ath.name + " APT",
+        ath
       )
     );
 
@@ -457,7 +458,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       height: 35,
                       decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                       child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => dualDepositDialog(context, farm.athlete!)),
                         child: Text(
                           "Deposit",
                           style: textStyle(Colors.black, 14, true, false)
@@ -771,6 +772,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
 class Farm {
   final String name;
+  Athlete? athlete;
 
-  Farm(this.name);
+  Farm(this.name, [this.athlete]);
 }
