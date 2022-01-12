@@ -28,34 +28,69 @@ class _AthletePageState extends State<AthletePage> {
 
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+print(_height);
 
-    if (_width < 1160)
+    // normal mode (dual) 
+    if (_width > 1160 && _height > 660)
+      return Container(
+        width: _width,
+        height: _height,
+        child: Center(
+          child: Container(
+            width: _width*0.9,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                graphSide(context),
+                statsSide(context)
+              ],
+            )
+          )
+        )
+      );
+
+    // dual scroll mode
+    if (_width > 1160 && _height < 660)
       return Container(
         height: _height*0.95-57,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Container(
-                height: 625,
-                child: graphSide(context),
-              ),
-              Container(
-                height: 650,
-                child: statsSide(context)
+              Center(
+                child: Container(
+                  width: _width*0.9,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      graphSide(context),
+                      statsSide(context)
+                    ],
+                  )
+                )
               )
             ],
           )
         )
       );
 
+    // stacked scroll
     return Container(
-      width: _width*0.9,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          graphSide(context),
-          statsSide(context)
-        ],
+      height: _height*0.95-57,
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 625,
+              child: graphSide(context),
+            ),
+            Container(
+              height: 650,
+              child: statsSide(context)
+            )
+          ],
+        )
       )
     );
   }
@@ -68,6 +103,7 @@ class _AthletePageState extends State<AthletePage> {
       wid = _width*0.95;
 
     return Container(
+      height: 650,
       child: Column(
         children: <Widget>[
           // title

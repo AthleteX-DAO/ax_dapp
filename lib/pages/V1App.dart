@@ -97,7 +97,7 @@ class _V1AppState extends State<V1App> {
 
   Widget buildDesktop(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         if (pageNumber == 0)
           DesktopScout()
