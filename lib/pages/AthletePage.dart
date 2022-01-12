@@ -28,7 +28,6 @@ class _AthletePageState extends State<AthletePage> {
 
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-print(_height);
 
     // normal mode (dual) 
     if (_width > 1160 && _height > 660)
