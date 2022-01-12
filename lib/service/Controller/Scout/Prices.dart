@@ -20,14 +20,19 @@ class Prices {
   void connect() async {
     connection = PostgreSQLConnection("139.99.74.201", 8812, "qdb",
         username: "admin", password: "quest");
+    print('[Postgres] Attempting Connection to Database');
   }
 
   void confirmConnection() async {
     connection = PostgreSQLConnection("139.99.74.201", 8812, "qdb",
         username: "admin", password: "quest");
-    await connection
-        .open()
-        .then((value) => {print('Connection confirmed /n $value')});
+    try {
+      await connection
+          .open()
+          .then((value) => {print('Connection confirmed /n $value')});
+    } catch (e) {
+      print('[Postgres] Error attempting to open connection : \n $e');
+    }
   }
 
   void getMarketPrice() {}
