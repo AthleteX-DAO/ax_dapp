@@ -474,6 +474,17 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Container(width: 15),
+                          Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage("../assets/images/x.jpg"),
+                              ),
+                            ),
+                          ),
+                          Container(width: 15),
                           Expanded(
                             child: Text(
                               "AX",
