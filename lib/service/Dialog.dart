@@ -2420,7 +2420,7 @@ Dialog accountDialog(BuildContext context) {
                     children: <Widget>[
                       TextButton(
                         onPressed: () {
-                          Clipboard.setData(ClipboardData(text: accNum));
+                          Clipboard.setData(ClipboardData(text: "${controller.publicAddress}"));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
