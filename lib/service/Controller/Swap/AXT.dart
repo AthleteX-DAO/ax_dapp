@@ -11,6 +11,7 @@ class AXT extends Token with ERC20Behavior {
 
   AXT(String name, String ticker, [AssetImage? icon]) : super(name, ticker) {
     updateAddress(mumbaiAddress);
+    updateERC20(mumbaiAddress);
     if (icon != null) {
       super.icon = icon;
     }

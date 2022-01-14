@@ -274,7 +274,7 @@ class _V1AppState extends State<V1App> {
                       color: Colors.grey,
                     ),
                     Text(
-                      "${controller.gas.value}",
+                      "${controller.gasString.value} gwei",
                       style: textStyle(Colors.grey[400]!, 11, false, false),
                     )
                   ],
@@ -282,8 +282,11 @@ class _V1AppState extends State<V1App> {
               ),
             TextButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => yourAXDialog(context)),
+                      context: context,
+                      builder: (BuildContext context) => yourAXDialog(context))
+                  .then((value) => (setState(() {
+                        axt.updateBalance();
+                      }))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

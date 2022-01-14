@@ -24,7 +24,7 @@ class Controller extends GetxController {
   var mnemonic = "";
   var privateAddress = "";
   static String latestTx = "";
-  var gas = EtherAmount.zero().obs;
+  var gasString = "0".obs;
   bool activeChain = false;
   static const MAINNET_CHAIN_ID = 137;
   static const TESTNET_CHAIN_ID = 80001;
@@ -65,15 +65,18 @@ class Controller extends GetxController {
     print("[Console] connecting to the decentralized web!");
     networkID.value = await client.value.getNetworkId();
     publicAddress.value = await credentials.extractAddress();
-    gas.value = await client.value.getGasPrice();
+    var rawGasPrice = await client.value.getGasPrice();
+    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+    gasString.value = "$gasPriceinGwei";
     print("[Console] updated client: $client and credentials: $credentials");
     update();
   }
 
   void getCurrentGas() async {
     final eth = window.ethereum;
-    gas.value = await Web3Client.custom(eth!.asRpcService())
-        .getBalance(publicAddress.value);
+    var rawGasPrice = await client.value.getGasPrice();
+    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+    gasString.value = "$gasPriceinGwei";
   }
 
   void updateTxString(String tx) {
