@@ -2420,7 +2420,7 @@ Dialog accountDialog(BuildContext context) {
                     children: <Widget>[
                       TextButton(
                         onPressed: () {
-                          Clipboard.setData(ClipboardData(text: "0x24fd78...4c22"));
+                          Clipboard.setData(ClipboardData(text: accNum));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
