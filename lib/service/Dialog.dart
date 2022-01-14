@@ -2419,7 +2419,9 @@ Dialog accountDialog(BuildContext context) {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: "0x24fd78...4c22"));
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
