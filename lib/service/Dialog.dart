@@ -689,6 +689,17 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Container(width: 15),
+                          Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage("../assets/images/x.jpg"),
+                              ),
+                            ),
+                          ),
+                          Container(width: 15),
                           Expanded(
                             child: Text(
                               "AX",
@@ -1028,6 +1039,18 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      Container(width: 5),
+                          Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage("../assets/images/apt.png"),
+                              ),
+                            ),
+                          ),
+                      Container(width: 15),
                       Expanded(
                         child: Text(
                           athlete.name + " APT",
@@ -1344,6 +1367,18 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      Container(width: 5),
+                          Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage("../assets/images/apt.png"),
+                              ),
+                            ),
+                          ),
+                      Container(width: 15),
                       Expanded(
                         child: Text(
                           athlete.name + " APT",
@@ -1538,6 +1573,18 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      Container(width: 5),
+                          Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage("../assets/images/x.jpg"),
+                              ),
+                            ),
+                          ),
+                      Container(width: 15),
                       Expanded(
                         child: Text(
                           "AX",
