@@ -150,7 +150,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
     for (Athlete ath in AthleteList.list)
       farmList.add(Farm(
-        "AX - " + ath.name + " APT"
+        "AX - " + ath.name + " APT",
+        ath
       )
     );
 
@@ -433,6 +434,12 @@ class _DesktopFarmState extends State<DesktopFarm> {
   Widget createFarmWidget(Farm farm) {
     double cardWidth = 500;
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+    Dialog participatingDialog;
+    if (farm.athlete == null)
+      participatingDialog = depositDialog(context);
+    else
+      participatingDialog = dualDepositDialog(context, farm.athlete!);
+    
 
     return Row(
       children: <Widget> [
@@ -458,7 +465,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       height: 35,
                       decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                       child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => dualDepositDialog(context, farm.athlete!)),
+                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => participatingDialog),
                         child: Text(
                           "Deposit",
                           style: textStyle(Colors.black, 14, true, false)
@@ -578,8 +585,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                       child: TextButton(
                         onPressed: () {
-print(farm.athlete==null);
-                          // showDialog(context: context, builder: (BuildContext context) => dualDepositDialog(context, farm.athlete!));
+                          showDialog(context: context, builder: (BuildContext context) => dualDepositDialog(context, farm.athlete!));
                         },
                         child: Text(
                           "Deposit",
