@@ -131,13 +131,13 @@ class _V1AppState extends State<V1App> {
                     Container(
                       width: 72,
                       height: 50,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('../assets/images/x.png'),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
+                      child: IconButton(
+                        icon: Image.asset("../assets/images/x.png"),
+                        iconSize: 40,
+                        onPressed: () {
+                          String urlString = "https://www.athletex.io/";
+                          launch(urlString);
+                        },
                       ),
                     ),
                     Container(
