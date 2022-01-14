@@ -398,16 +398,23 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   Widget createTokenButton(int tknNum) {
     String tkr = "Select a Token";
+    AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
     BoxDecoration decor =
         boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
       if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn1 != null) tkr = tkn1!.ticker;
+      if (tkn1 != null) {
+        tkr = tkn1!.ticker;
+        tokenImage = tkn1!.icon;
+      }
     } else {
       if (tkn2 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn2 != null) tkr = tkn2!.ticker;
+      if (tkn2 != null) {
+        tkr = tkn2!.ticker;
+        tokenImage = tkn2!.icon;
+      }
     }
 
     return Container(
@@ -424,7 +431,20 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(tkr, style: textStyle(Colors.white, 16, true, false)),
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: tokenImage!,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+                Container(width: 10),
+                Expanded(
+                  child: Text(tkr, style: textStyle(Colors.white, 16, true, false)),
+                ), 
                 Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
               ],
             ))));
