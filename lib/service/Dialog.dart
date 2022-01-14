@@ -374,7 +374,7 @@ Dialog depositDialog(BuildContext context) {
   );
 }
 
-// static
+// dynamic
 Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
@@ -401,7 +401,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
           children: <Widget>[
             Container(
               width: wid-edge,
-              height: 80,
+              margin: EdgeInsets.only(top: 25, bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -540,7 +540,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
               width: 175,
               height: 35,
               decoration: boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!),
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: EdgeInsets.only(top: 20, bottom: 10),
               child: TextButton(
                 onPressed: () {
                   Navigator.pop(context);

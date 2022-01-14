@@ -222,9 +222,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
               itemCount: AthleteList.list.length+1,
               itemBuilder: (context, index) {
                 if(index == 0){
-                  return createAXFarmCard(farmList[index]);
+                  return createMyFarmAXCard(farmList[index]);
                 }
-                return createMyFarmWidget(farmList[index]);
+                return createMyFarmAPTWidget(farmList[index]);
               }
             )
           )
@@ -234,7 +234,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
   }
 
   // First card of the my farms page is unique
-  Widget createAXFarmCard(Farm farm){
+  Widget createMyFarmAXCard(Farm farm){
     double _height = MediaQuery.of(context).size.height;
     double cardWidth = 600;
     double cardHeight = _height*0.5;
@@ -545,7 +545,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
   }
 
   // Returning a Row (This one works. Need to fix container size and padding)
-  Widget createMyFarmWidget(Farm farm) {
+  Widget createMyFarmAPTWidget(Farm farm) {
     double _height = MediaQuery.of(context).size.height;
     double cardWidth = 600;
     double cardHeight = _height*0.5;
@@ -577,7 +577,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       height: 35,
                       decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                       child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
+                        onPressed: () {
+print(farm.athlete==null);
+                          // showDialog(context: context, builder: (BuildContext context) => dualDepositDialog(context, farm.athlete!));
+                        },
                         child: Text(
                           "Deposit",
                           style: textStyle(Colors.black, 14, true, false)
