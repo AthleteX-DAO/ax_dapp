@@ -276,6 +276,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   .toStringAsFixed(4) +
                               ' AX',
                           style: textStyle(Colors.white, 16, false, false)),
+                      Container(width: 10),
                       Text("+%4",
                           style: textStyle(Colors.green, 12, false, false))
                     ])),
@@ -289,6 +290,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                     .toStringAsFixed(4) +
                                 ' AX',
                             style: textStyle(Colors.white, 16, false, false)),
+                        Container(width: 10),
                         Text("-%2",
                             style: textStyle(Colors.red, 12, false, false))
                       ])),
