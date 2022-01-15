@@ -281,7 +281,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                           style: textStyle(Colors.green, 12, false, false))
                     ])),
                     if (bookVal) ...[
-                      Container(width: 25),
+                      Container(width: 41),
                       // Book Price
                       Container(
                           child: Row(children: <Widget>[
