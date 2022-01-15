@@ -79,7 +79,7 @@ class _LandingPageState extends State<LandingPage> {
           ),
           //Button load athletes
           Container(
-            width: _width*0.35,
+            width: _width*0.25,
             height: _height*0.1,
             child: FutureBuilder<dynamic>(
               future: AthleteApi.getAthletesLocally(context),
