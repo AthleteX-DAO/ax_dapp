@@ -3,6 +3,8 @@
 import 'dart:html';
 
 import 'dart:math';
+import 'package:flutter_web3/ethereum.dart';
+import 'package:flutter_web3/ethers.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
@@ -68,7 +70,7 @@ class Controller extends GetxController {
     var rawGasPrice = await client.value.getGasPrice();
     var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
     gasString.value = "$gasPriceinGwei";
-    print("[Console] updated client: $client and credentials: $credentials");
+    print("[Console] updated client and credentials");
     update();
   }
 
@@ -77,6 +79,8 @@ class Controller extends GetxController {
     var rawGasPrice = await client.value.getGasPrice();
     var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
     gasString.value = "$gasPriceinGwei";
+    print('Getting latest gas... $gasString');
+    update();
   }
 
   void updateTxString(String tx) {
@@ -84,9 +88,14 @@ class Controller extends GetxController {
     latestTx = tx;
   }
 
+  void changeAddress() async {
+    final eth = window.ethereum;
+    eth!.requestAccount();
+  }
+
   void disconnect() async {
     final eth = window.ethereum;
-    walletConnected = eth!.isConnected();
+    walletConnected = false;
     client.value.dispose();
     client.value.getChainId();
 

@@ -191,7 +191,7 @@ class _V1AppState extends State<V1App> {
             buildConnectWalletButton(),
           ] else ...[
             //top right corner wallet information
-            buildAccountBox(controller.publicAddress.toString())
+            buildAccountBox()
           ]
         ],
       ),
@@ -215,7 +215,7 @@ class _V1AppState extends State<V1App> {
             )));
   }
 
-  Widget buildAccountBox(String accNum) {
+  Widget buildAccountBox() {
     double _width = MediaQuery.of(context).size.width;
     double wid = 500;
     bool network = true;
@@ -229,7 +229,9 @@ class _V1AppState extends State<V1App> {
       network = false;
       wid = 210;
     }
+    
 
+    String accNum = controller.publicAddress.value.toString();
     String retStr = accNum;
     if (accNum.length > 15)
       retStr = accNum.substring(0, 7) +
@@ -265,18 +267,20 @@ class _V1AppState extends State<V1App> {
               ),
             if (matic)
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.getCurrentGas();
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     const Icon(
                       Icons.local_gas_station,
                       color: Colors.grey,
-                    ),
+                    ),Obx(() => 
                     Text(
-                      "${controller.gasString.value} gwei",
+                      "${controller.gasString} gwei",
                       style: textStyle(Colors.grey[400]!, 11, false, false),
-                    )
+                    ))
                   ],
                 ),
               ),
@@ -284,9 +288,7 @@ class _V1AppState extends State<V1App> {
               onPressed: () => showDialog(
                       context: context,
                       builder: (BuildContext context) => yourAXDialog(context))
-                  .then((value) => (setState(() {
-                        axt.updateBalance();
-                      }))),
+                  .then((value) => (setState(() {}))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -308,7 +310,7 @@ class _V1AppState extends State<V1App> {
             TextButton(
               onPressed: () => showDialog(
                   context: context,
-                  builder: (BuildContext context) => accountDialog(context)),
+                  builder: (BuildContext context) => accountDialog(context)).then((value) => setState(() {})),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
