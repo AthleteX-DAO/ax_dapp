@@ -5,6 +5,7 @@ import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:ax_dapp/service/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +27,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Token? tkn2;
 
   List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('../assets/images/x.png')),
+    AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
     SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
     MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
   ];
@@ -435,6 +436,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
+                    shape: BoxShape.circle,
                     image: DecorationImage(
                       image: tokenImage!,
                       fit: BoxFit.fill,
