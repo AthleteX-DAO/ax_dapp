@@ -2681,7 +2681,7 @@ Dialog swapDialog(BuildContext context) {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Container(
-        height: 500,
+        height: 450,
         width: MediaQuery.of(context).size.width * 0.25,
         padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
@@ -2843,8 +2843,7 @@ Dialog swapDialog(BuildContext context) {
             Container(
               //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
               width: MediaQuery.of(context).size.width * .22,
-              height: 125,
-              //color: Colors.red,
+              height: 30,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -2874,7 +2873,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                     ],
                   ),
-                  Row(
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -2896,8 +2895,8 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),
-                  Row(
+                  ),*/
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -2919,8 +2918,8 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),
-                  Row(
+                  ),*/
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -2942,8 +2941,8 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),
-                  Row(
+                  ),*/
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -2965,14 +2964,13 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),
+                  ),*/
                 ],
               ),
             ),
             Container(
               width: MediaQuery.of(context).size.width * .22,
               height: 30,
-              //color: Colors.red,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
