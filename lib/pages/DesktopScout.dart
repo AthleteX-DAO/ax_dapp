@@ -180,7 +180,7 @@ class _DesktopScoutState extends State<DesktopScout> {
       return Container(
           height: hgt,
           child: ListView.builder(
-              padding: EdgeInsets.only(top: 0),
+              padding: EdgeInsets.only(top: 10),
               physics: BouncingScrollPhysics(),
               itemCount: AthleteList.list.length,
               itemBuilder: (context, index) {
@@ -191,7 +191,7 @@ class _DesktopScoutState extends State<DesktopScout> {
       return Container(
           height: hgt,
           child: ListView.builder(
-              padding: EdgeInsets.only(top: 0),
+              padding: EdgeInsets.only(top: 10),
               physics: BouncingScrollPhysics(),
               itemCount: nflList.length,
               itemBuilder: (context, index) {
