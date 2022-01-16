@@ -250,7 +250,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     child: Column(
                       children: <Widget>[
                         //Slippage tolerance text
-                        Row(
+                        /*Row(
                           children: <Widget>[
                             Container(
                               width: wid - 75,
@@ -270,7 +270,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               ),
                             ),
                           ],
-                        ),
+                        ),*/
                         // Swap Button
                         swapButton,
                       ],
