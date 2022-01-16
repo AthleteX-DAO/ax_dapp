@@ -3,8 +3,7 @@
 import 'dart:html';
 
 import 'dart:math';
-import 'package:flutter_web3/ethereum.dart';
-import 'package:flutter_web3/ethers.dart';
+import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
@@ -100,6 +99,22 @@ class Controller extends GetxController {
     client.value.getChainId();
 
     update();
+  }
+
+  void addTokenToWallet() async {
+    final eth = window.ethereum;
+    Object tokenParam = {
+      "type":"ERC20"
+      "options":{
+      "address":"0xb60e8dd61c5d32be8058bb8..."
+      "symbol":"FOO"
+      "decimals":18
+      "image":"https: //foo.io/token-ima..."
+      }
+    };
+
+    
+    eth!.rawRequest('wallet_watchAsset', params: tokenParam);
   }
 
   static void switchNetwork() async {
