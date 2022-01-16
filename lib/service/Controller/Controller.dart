@@ -104,16 +104,15 @@ class Controller extends GetxController {
   void addTokenToWallet() async {
     final eth = window.ethereum;
     Object tokenParam = {
-      "type":"ERC20"
-      "options":{
-      "address":"0xb60e8dd61c5d32be8058bb8..."
-      "symbol":"FOO"
-      "decimals":18
-      "image":"https: //foo.io/token-ima..."
+      "type": "ERC20",
+      "options": {
+        "address": "0xb60e8dd61c5d32be8058bb8...",
+        "symbol": "FOO",
+        "decimals": 18,
+        "image": "https: //foo.io/token-ima..."
       }
     };
 
-    
     eth!.rawRequest('wallet_watchAsset', params: tokenParam);
   }
 
