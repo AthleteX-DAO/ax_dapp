@@ -527,6 +527,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
+                            scale: 0.5,
                             image: AssetImage("../assets/images/apt.png"),
                           ),
                         ),
