@@ -258,10 +258,24 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage("../assets/images/x.jpg"),
+                        ),
+                      ),
+                    ),
+                    Container(width: 10),
+                    Expanded(
+                      child: Text(
                       farm.name,
                       style: textStyle(Colors.white, 20, false, false)
+                      ),
                     ),
+                    
                     Container(
                       width: 120,
                       height: 35,
@@ -575,9 +589,33 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage("../assets/images/x.jpg"),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          scale: 0.5,
+                          image: AssetImage("../assets/images/apt.png"),
+                        ),
+                      ),
+                    ),
+                    Container(width: 5),
+                    Expanded(
+                      child: Text(
                       farm.name,
                       style: textStyle(Colors.white, 20, false, false)
+                      ),
                     ),
                     Container(
                       width: 120,
