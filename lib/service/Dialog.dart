@@ -244,6 +244,18 @@ Dialog depositDialog(BuildContext context) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    Container(width: 10),
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage("../assets/images/x.jpg"),
+                        ),
+                      ),
+                    ),
+                    Container(width: 15),
                     Expanded(
                       child: Text(
                         "AX",
@@ -442,6 +454,18 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    Container(width: 10),
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage("../assets/images/x.jpg"),
+                        ),
+                      ),
+                    ),
+                    Container(width: 15),
                     Expanded(
                       child: Text(
                         "AX",
@@ -496,6 +520,18 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      Container(width: 10),
+                      Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage("../assets/images/apt.png"),
+                          ),
+                        ),
+                      ),
+                    Container(width: 15),
                       Expanded(
                         child: Text(
                           athlete.name + " APT",
