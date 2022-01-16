@@ -360,7 +360,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                               context: context,
                               builder: (BuildContext context) =>
                                   removeDialog(context)),
-                          child: Text("Remove Liquidity",
+                          child: Text("Unstake Liquidity",
                               style: textStyle(
                                   Colors.amber[600]!, 14, true, false)))),
                 ],
@@ -635,7 +635,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                               context: context,
                               builder: (BuildContext context) =>
                                   removeDialog(context)),
-                          child: Text("Remove Liquidity",
+                          child: Text("Unstake Liquidity",
                               style: textStyle(
                                   Colors.amber[600]!, 14, true, false)))),
                 ],
