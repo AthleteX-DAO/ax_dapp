@@ -229,7 +229,6 @@ class _V1AppState extends State<V1App> {
       network = false;
       wid = 210;
     }
-    
 
     String accNum = controller.publicAddress.value.toString();
     String retStr = accNum;
@@ -276,11 +275,11 @@ class _V1AppState extends State<V1App> {
                     const Icon(
                       Icons.local_gas_station,
                       color: Colors.grey,
-                    ),Obx(() => 
-                    Text(
-                      "${controller.gasString} gwei",
-                      style: textStyle(Colors.grey[400]!, 11, false, false),
-                    ))
+                    ),
+                    Obx(() => Text(
+                          "${controller.gasString} gwei",
+                          style: textStyle(Colors.grey[400]!, 11, false, false),
+                        ))
                   ],
                 ),
               ),
@@ -309,8 +308,9 @@ class _V1AppState extends State<V1App> {
             ),
             TextButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => accountDialog(context)).then((value) => setState(() {})),
+                      context: context,
+                      builder: (BuildContext context) => accountDialog(context))
+                  .then((value) => setState(() {})),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
