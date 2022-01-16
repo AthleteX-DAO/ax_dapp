@@ -1737,8 +1737,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog confirmTransaction(
-    BuildContext context, bool IsConfirmed, String txString) {
+Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txString) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -3103,8 +3102,7 @@ TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     );
 }
 
-BoxDecoration boxDecoration(
-    Color col, double rad, double borWid, Color borCol) {
+BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
   return BoxDecoration(
       color: col,
       borderRadius: BorderRadius.circular(rad),
