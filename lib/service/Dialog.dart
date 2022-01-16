@@ -209,7 +209,7 @@ Dialog depositDialog(BuildContext context) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Deposit AX",
+                "Stake AX",
                 style: textStyle(Colors.white, 20, false, false),
               ),
               Container(
@@ -372,7 +372,7 @@ Dialog depositDialog(BuildContext context) {
                             depositConfimed(context));
                   },
                   child: const Text(
-                    "Confirm",
+                    "Approve",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
@@ -532,7 +532,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                           ),
                         ),
                       ),
-                    Container(width: 15),
+                      Container(width: 15),
                       Expanded(
                         child: Text(
                           athlete.name + " APT",
@@ -2514,7 +2514,6 @@ Dialog accountDialog(BuildContext context) {
 
 // dynamic
 Dialog removeDialog(BuildContext context) {
-  
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
