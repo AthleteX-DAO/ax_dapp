@@ -52,12 +52,12 @@ class Controller extends GetxController {
   // This will import mnemonics & convert to seed hexes
   Future<bool> importMnemonic(String _mnemonic) async {
     // validate if mnemonic
-    bool isValid = await bip39.validateMnemonic(_mnemonic);
-    if (isValid) {
+    bool isValidMnemonic = bip39.validateMnemonic(_mnemonic);
+    if (isValidMnemonic) {
       seedHex = bip39.mnemonicToSeedHex(_mnemonic);
       mnemonic = _mnemonic;
     }
-    return isValid;
+    return isValidMnemonic;
   }
 
   // Connect the dapp to metamask and update relevant values
@@ -76,8 +76,6 @@ class Controller extends GetxController {
 
   // Connect the client + set credentials
   void connectNative() async {
-    walletConnected = true;
-
     String rpcUrl = "";
     switch (ACTIVE_CHAIN_ID) {
       case 137:
@@ -88,6 +86,7 @@ class Controller extends GetxController {
     }
 
     client.value = Web3Client(rpcUrl, Client());
+
     credentials = EthPrivateKey.fromHex(seedHex);
     print("[Console] connecting to the decentralized web!");
     networkID.value = await client.value.getNetworkId();
