@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -182,6 +183,7 @@ Dialog walletDialog(BuildContext context) {
 }
 
 Dialog depositDialog(BuildContext context) {
+  Controller controller = Get.find();
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -355,31 +357,33 @@ Dialog depositDialog(BuildContext context) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
-                width: 175,
-                height: 45,
-                decoration: BoxDecoration(
-                  color: Colors.amber[400],
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            depositConfimed(context));
-                  },
-                  child: const Text(
-                    "Approve",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
+              //   width: 175,
+              //   height: 45,
+              //   decoration: BoxDecoration(
+              //     color: Colors.amber[400],
+              //     borderRadius: BorderRadius.circular(100),
+              //   ),
+              //   child: TextButton(
+              //     onPressed: () {
+              //       Navigator.pop(context);
+              //       showDialog(
+              //           context: context,
+              //           builder: (BuildContext context) =>
+              //               depositConfimed(context));
+              //     },
+              //     child: const Text(
+              //       "Approve",
+              //       style: TextStyle(
+              //         fontSize: 16,
+              //         color: Colors.black,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              //TO DO fix changing state of approve button
+              ApproveButton(175, 45, 'confirm', false, () => {}, () => {})
             ],
           )
         ],
@@ -1737,7 +1741,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txString) {
+Dialog confirmTransaction(
+    BuildContext context, bool IsConfirmed, String txString) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -3102,7 +3107,8 @@ TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     );
 }
 
-BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+BoxDecoration boxDecoration(
+    Color col, double rad, double borWid, Color borCol) {
   return BoxDecoration(
       color: col,
       borderRadius: BorderRadius.circular(rad),
