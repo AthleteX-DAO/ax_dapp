@@ -140,7 +140,7 @@ Dialog walletDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    controller.connectNative();
+                    controller.connect();
 
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
                     //   showDialog(
