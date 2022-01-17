@@ -140,7 +140,7 @@ Dialog walletDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    controller.connect();
+                    controller.connectNative();
 
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
                     //   showDialog(
@@ -355,7 +355,10 @@ Dialog depositDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    showDialog(context: context, builder: (BuildContext context) => depositConfimed(context));
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            depositConfimed(context));
                   },
                   child: const Text(
                     "Confirm",
@@ -391,194 +394,194 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: hgt,
-      width: wid,
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              width: wid-edge,
-              height: 80,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Deposit Liquidity",
-                      style: textStyle(Colors.white, 20, false, false),
-                    )
-                  ),
-                  Container(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        size: 30,
-                        color: Colors.white,
-                      )
-                    )
-                  )
-                ],
-              )
-            ),
-            Container(
-              width: wid-edge,
-              margin: EdgeInsets.symmetric(vertical: 5),
-              child: Text(
-                "*Add liquidity to supply LP tokens to your wallet\nDeposit LP tokens to AX rewards",
-                style: textStyle(Colors.grey[600]!, 11, false, false),
-              )
-            ),
-            //Amount Box
-            Container(
-              width: wid - edge,
-              height: 55,
-              decoration: boxDecoration(Colors.transparent, 14, 0.5, Colors.grey[400]!),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      "AX",
-                      style: textStyle(Colors.white, 15, false, false),
-                    ),
-                  ),
-                  Container(
-                    height: 18,
-                    width: 35,
-                    decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                    child: TextButton(
-                      onPressed: () {},
+        height: hgt,
+        width: wid,
+        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                  width: wid - edge,
+                  height: 80,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                          child: Text(
+                        "Deposit Liquidity",
+                        style: textStyle(Colors.white, 20, false, false),
+                      )),
+                      Container(
+                          child: TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.close,
+                                size: 30,
+                                color: Colors.white,
+                              )))
+                    ],
+                  )),
+              Container(
+                  width: wid - edge,
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: Text(
+                    "*Add liquidity to supply LP tokens to your wallet\nDeposit LP tokens to AX rewards",
+                    style: textStyle(Colors.grey[600]!, 11, false, false),
+                  )),
+              //Amount Box
+              Container(
+                width: wid - edge,
+                height: 55,
+                decoration: boxDecoration(
+                    Colors.transparent, 14, 0.5, Colors.grey[400]!),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
                       child: Text(
-                        "Max",
-                        style: textStyle(Colors.grey[400]!, 9, false, false),
+                        "AX",
+                        style: textStyle(Colors.white, 15, false, false),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 70,
-                    child: TextFormField(
-                      onChanged: (value) {
-                        amount = double.parse(value);
-                        print(amount);
-                      },
-                      style: textStyle(Colors.grey[400]!, 22, false, false),
-                      decoration: InputDecoration(
-                        hintText: '0.00',
-                        hintStyle:
-                            textStyle(Colors.grey[400]!, 22, false, false),
-                        contentPadding: const EdgeInsets.all(9),
-                        border: InputBorder.none,
-                      ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                            (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            //Amount Box
-            Container(
-              width: wid - edge,
-              height: 55,
-              decoration: boxDecoration(Colors.transparent, 14, 0.5, Colors.grey[400]!),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      athlete.name + " APT",
-                      style: textStyle(Colors.white, 15, false, false),
-                    ),
-                  ),
-                  Container(
-                    height: 18,
-                    width: 35,
-                    decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Max",
-                        style: textStyle(Colors.grey[400]!, 9, false, false),
+                    Container(
+                      height: 18,
+                      width: 35,
+                      decoration: boxDecoration(
+                          Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Max",
+                          style: textStyle(Colors.grey[400]!, 9, false, false),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 70,
-                    child: TextFormField(
-                      onChanged: (value) {
-                        amount = double.parse(value);
-                        print(amount);
-                      },
-                      style: textStyle(Colors.grey[400]!, 22, false, false),
-                      decoration: InputDecoration(
-                        hintText: '0.00',
-                        hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
-                        contentPadding: const EdgeInsets.all(9),
-                        border: InputBorder.none,
+                    SizedBox(
+                      width: 70,
+                      child: TextFormField(
+                        onChanged: (value) {
+                          amount = double.parse(value);
+                          print(amount);
+                        },
+                        style: textStyle(Colors.grey[400]!, 22, false, false),
+                        decoration: InputDecoration(
+                          hintText: '0.00',
+                          hintStyle:
+                              textStyle(Colors.grey[400]!, 22, false, false),
+                          contentPadding: const EdgeInsets.all(9),
+                          border: InputBorder.none,
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                        ],
                       ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                      ],
                     ),
-                  ),
-                ],
-              )
-            ),
-            Container(
-              width: 175,
-              height: 35,
-              decoration: boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  showDialog(context: context, builder: (BuildContext context) => depositConfimed(context));
-                },
-                child: Text(
-                  "Add Liquidity",
-                  style: textStyle(Colors.amber[400]!, 20, true, false)
-                )
-              )
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                "LP Tokens: " + "0",
-                style: textStyle(Colors.white, 18, true, false)
-              ),
-            ),
-            Container(
-              width: 175,
-              height: 35,
-              decoration: boxDecoration(Colors.grey, 100, 1, Colors.grey),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  showDialog(context: context, builder: (BuildContext context) => depositConfimed(context));
-                },
-                child: Text(
-                  "Deposit",
-                  style: textStyle(Colors.black, 16, true, false)
+                  ],
                 ),
               ),
-            )
-          ],
-        ),
-      )
-    ),
+              //Amount Box
+              Container(
+                  width: wid - edge,
+                  height: 55,
+                  decoration: boxDecoration(
+                      Colors.transparent, 14, 0.5, Colors.grey[400]!),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          athlete.name + " APT",
+                          style: textStyle(Colors.white, 15, false, false),
+                        ),
+                      ),
+                      Container(
+                        height: 18,
+                        width: 35,
+                        decoration: boxDecoration(
+                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Max",
+                            style:
+                                textStyle(Colors.grey[400]!, 9, false, false),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 70,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            amount = double.parse(value);
+                            print(amount);
+                          },
+                          style: textStyle(Colors.grey[400]!, 22, false, false),
+                          decoration: InputDecoration(
+                            hintText: '0.00',
+                            hintStyle:
+                                textStyle(Colors.grey[400]!, 22, false, false),
+                            contentPadding: const EdgeInsets.all(9),
+                            border: InputBorder.none,
+                          ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
+              Container(
+                  width: 175,
+                  height: 35,
+                  decoration: boxDecoration(
+                      Colors.transparent, 100, 1, Colors.amber[400]!),
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                depositConfimed(context));
+                      },
+                      child: Text("Add Liquidity",
+                          style:
+                              textStyle(Colors.amber[400]!, 20, true, false)))),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: Text("LP Tokens: " + "0",
+                    style: textStyle(Colors.white, 18, true, false)),
+              ),
+              Container(
+                width: 175,
+                height: 35,
+                decoration: boxDecoration(Colors.grey, 100, 1, Colors.grey),
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            depositConfimed(context));
+                  },
+                  child: Text("Deposit",
+                      style: textStyle(Colors.black, 16, true, false)),
+                ),
+              )
+            ],
+          ),
+        )),
   );
 }
 
@@ -1234,8 +1237,13 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                       onPressed: () {
                         Navigator.pop(context);
                         bool confirmed = true;
-                        String txString = "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
-                        showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context, confirmed, txString));
+                        String txString =
+                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                confirmTransaction(
+                                    context, confirmed, txString));
                       },
                       child: const Text(
                         "Confirm",
@@ -1646,7 +1654,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txString) {
+Dialog confirmTransaction(
+    BuildContext context, bool IsConfirmed, String txString) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -1909,10 +1918,7 @@ Dialog removalConfimed(BuildContext context) {
                 ),
               ],
             ),
-          )
-        )
-      )
-  );
+          ))));
 }
 
 // dynamic
@@ -2000,10 +2006,7 @@ Dialog depositConfimed(BuildContext context) {
                 ),
               ],
             ),
-          )
-        )
-      )
-  );
+          ))));
 }
 
 // dynamic
@@ -2585,7 +2588,10 @@ Dialog removeDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    showDialog(context: context, builder: (BuildContext context) => removalConfimed(context));
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            removalConfimed(context));
                   },
                   child: const Text(
                     "Confirm",

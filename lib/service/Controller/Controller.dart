@@ -56,12 +56,30 @@ class Controller extends GetxController {
     return mnemonic;
   }
 
+  void createWallet() async {
+    // createNewMnemonic()
+    // retrieveWallet
+  }
+
   // Connect the dapp to metamask and update relevant values
   void connect() async {
     final eth = window.ethereum;
     walletConnected = true;
     client.value = Web3Client.custom(eth!.asRpcService());
     credentials = await eth.requestAccount();
+    print("[Console] connecting to the decentralized web!");
+    networkID.value = await client.value.getNetworkId();
+    publicAddress.value = await credentials.extractAddress();
+    gas.value = await client.value.getGasPrice();
+    print("[Console] updated client: $client and credentials: $credentials");
+    update();
+  }
+
+  void connectNative() async {
+    final eth = window.ethereum;
+    walletConnected = true;
+    client.value = Web3Client(testRPCUrl, Client());
+    credentials = await eth!.requestAccount();
     print("[Console] connecting to the decentralized web!");
     networkID.value = await client.value.getNetworkId();
     publicAddress.value = await credentials.extractAddress();
