@@ -1,5 +1,5 @@
-name: ae_dapp
-description: A new Flutter project.
+name: ax_dapp
+description: Athlete performance prediction market.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -29,7 +29,6 @@ dependencies:
   web_socket_channel: ^2.1.0
   flutter_sparkline: ^0.1.0
   velocity_x: ^3.2.0
-  qrscan: ^0.3.1
   url_launcher: ^6.0.3
   fl_chart: ^0.36.2
   toggle_switch: ^1.2.0
@@ -48,6 +47,8 @@ dependencies:
   webfeed: ^0.7.0
   chart_sparkline: ^1.0.5
   flutter_web3: ^2.0.4
+  get: ^4.6.1
+  postgres: ^2.4.3
   
 
 dependency_overrides:
@@ -58,13 +59,9 @@ dependency_overrides:
 
 
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  build_runner: ^2.1.0
-
-  
-
+dev_dependencies: 
+  test: ^1.16.5
+  build_runner: ^2.1.0  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -91,10 +88,11 @@ flutter:
   assets:
     - assets/images/trophy.png
     - assets/images/AXMarkets.png
-    - assets/images/asu-hero.jpg
-    - assets/images/x.jpg
     - assets/images/x.png
-    - assets/images/background.jpeg
     - assets/data.json
+    - assets/images/fox.png
+    - assets/images/X_white.png
+    - assets/images/sx.png
+    - assets/images/matic.png
     
       

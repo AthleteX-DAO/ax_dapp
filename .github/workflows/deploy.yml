@@ -1,0 +1,55 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Note: This workflow uses the latest stable version of the Dart SDK.
+      # You can specify other versions if desired, see documentation here:
+      # https://github.com/dart-lang/setup-dart/blob/main/README.md
+      # - uses: dart-lang/setup-dart@v1
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      
+      - name: Install Flutter
+        # You may pin to the exact commit or the version.
+        # uses: britannio/action-install-flutter@a486b7e3148e54a76390d849100b9dee819ff810
+        uses: britannio/action-install-flutter@v1.1
+        with:
+          # The channel/version of Flutter to be used e.g., beta or 2.0.0
+          version: stable
+
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Immediately builds the project        
+      - name: Build dApp
+        run: flutter build web --web-renderer auto
+        
+      - name: Deploy Site to Netlify
+        # You may pin to the exact commit or the version.
+        # uses: JacobSamro/netlify-deploy@0b6f8e767776cca844b003e4f409b410b7ee083a
+      - uses: jsmrcaga/action-netlify-deploy@v1.1.0
+        with:
+          # Netlify Auth Token
+          NETLIFY_AUTH_TOKEN: secrets.NETLIFY_TOKEN
+          # ID of your Site
+          NETLIFY_SITE_ID: b90198be-ae81-44fe-9af6-561a4ae0ed3c
+#         # Production build
+          NETLIFY_DEPLOY_TO_PROD: true
+          # Folder to Upload
+          NETLIFY_DEPLOY_MESSAGE: "Prod deploy v${{ github.ref }}"

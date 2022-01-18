@@ -1,21 +1,21 @@
 {
-    "name": "ae_dapp",
-    "short_name": "ae_dapp",
+    "name": "AthleteX Markets",
+    "short_name": "ax_dapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Invest in the performance of your favorite athletes",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "icons/Icon-192.png",
+            "src": "icons/x.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "icons/Icon-512.png",
+            "src": "icons/x.png",
             "sizes": "512x512",
             "type": "image/png"
         }
