@@ -38,11 +38,34 @@ class SwapController extends GetxController {
         APTRouter(address: routerAddress, client: controller.client.value);
   }
 
+  Future<void> approve() async {
+    String txString = "";
+    EthereumAddress tokenAAddress = EthereumAddress.fromHex("$address1");
+    EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
+    BigInt tokenAAmount = BigInt.from(amount1.value);
+    BigInt tokenBAmount = BigInt.from(amount2.value);
+    ERC20 tokenA =
+        ERC20(address: tokenAAddress, client: controller.client.value);
+    ERC20 tokenB =
+        ERC20(address: tokenBAddress, client: controller.client.value);
+
+    try {
+      txString = await tokenA.approve(dexAddress, tokenAAmount,
+          credentials: controller.credentials);
+      txString = await tokenB.approve(dexAddress, tokenBAmount,
+          credentials: controller.credentials);
+    } catch (e) {
+      print(e);
+    }
+
+    controller.updateTxString(txString);
+  }
+
   // Actionables
   Future<void> swap() async {
     print(
         "Before the actual swap - print EVERYTHING: \n tknAAddr - $address1.value | tknBAddr = $address2.value \n tknAAmount - $amount1.value | tknBAmount - $amount2.value");
-      
+
     EthereumAddress tokenAAddress = EthereumAddress.fromHex("$address1");
     EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
     BigInt tokenAAmount = BigInt.from(amount1.value);

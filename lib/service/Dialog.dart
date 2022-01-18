@@ -3053,7 +3053,7 @@ Dialog swapDialog(BuildContext context) {
                       //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () {
                         print('swapping!');
-                        swapController.swap();
+                        swapController.approve();
                         Navigator.pop(context);
                         showDialog(
                             context: context,
