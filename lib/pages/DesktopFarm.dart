@@ -15,16 +15,21 @@ class _DesktopFarmState extends State<DesktopFarm> {
   bool allFarms = true;
   List<Farm> everyFarm = [];
   List<Farm> workingFarm = [];
+  List<Farm> farmList = [];
+  List<Farm> farmListFilter = [];
 
   // ignore: must_call_super
   void initState() {
     everyFarm.add(Farm("AX Farm"));
+    farmList.add(Farm("AX Farm"));
 
     for (Athlete ath in AthleteList.list) {
       everyFarm.add(Farm("AX - " + ath.name + " APT", ath));
+      farmList.add(Farm("AX - " + ath.name + " APT", ath));
     }
 
     workingFarm = everyFarm;
+    farmListFilter = farmList;
   }
 
   @override
@@ -135,12 +140,14 @@ class _DesktopFarmState extends State<DesktopFarm> {
     bool vertical = true;
     if (_height < 445) vertical = false;
 
-    List<Farm> farmList = [
+    /*List<Farm> farmList = [
       Farm("AX Farm"),
     ];
 
     for (Athlete ath in AthleteList.list)
-      farmList.add(Farm("AX - " + ath.name + " APT", ath));
+      farmList.add(Farm("AX - " + ath.name + " APT", ath));*/
+
+    //List<Farm> farmListFilter = farmList; 
 
     Widget toggle = Container(
         width: 200,
@@ -185,7 +192,15 @@ class _DesktopFarmState extends State<DesktopFarm> {
                         style: textStyle(Colors.white, 24, true, false))),
                 if (!vertical) toggle,
               ]),
-          if (vertical) toggle,
+          //if (vertical) toggle,
+          if (vertical)
+            Row(
+              children: <Widget>[
+                createSearchBar(),
+                SizedBox(width: 50),
+                toggle
+              ],
+            ),
           Container(
               width: _width * 0.8,
               height: cardHeight,
@@ -199,12 +214,12 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       physics: BouncingScrollPhysics(),
-                      itemCount: AthleteList.list.length + 1,
+                      itemCount: farmListFilter.length,
                       itemBuilder: (context, index) {
                         if (index == 0) {
-                          return createMyFarmAXCard(farmList[index]);
+                          return createMyFarmAXCard(farmListFilter[index]);
                         }
-                        return createMyFarmAPTWidget(farmList[index]);
+                        return createMyFarmAPTWidget(farmListFilter[index]);
                       })))
         ]);
   }
@@ -680,11 +695,12 @@ class _DesktopFarmState extends State<DesktopFarm> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    workingFarm = everyFarm
-                        .where((farm) => farm.name
-                            .toUpperCase()
-                            .contains(value.toUpperCase()))
-                        .toList();
+                    if(!allFarms) {
+                      farmListFilter = farmList.where((farm) => farm.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    }
+                    else {
+                      workingFarm = everyFarm.where((farm) => farm.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    }
                   });
                 },
                 decoration: InputDecoration(
