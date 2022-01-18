@@ -25,8 +25,9 @@ class SwapController extends GetxController {
       EthereumAddress.fromHex("0x76d9a6e4cdefc840a47069b71824ad8ff4819e85");
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
-      DateTime.now().add(const Duration(minutes: 2)).millisecondsSinceEpoch);
-  var deadline = BigInt.zero.obs;
+      DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch);
+  var deadline = BigInt.from(
+      DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch).obs;
   late Dex _dex;
   late APTRouter _aptRouter;
   BigInt amountOutMin = BigInt.zero;
@@ -80,10 +81,6 @@ class SwapController extends GetxController {
     String txString = "";
 
     try {
-      txString = await tokenA.approve(dexAddress, tokenAAmount,
-          credentials: controller.credentials);
-      txString = await tokenB.approve(dexAddress, tokenBAmount,
-          credentials: controller.credentials);
       txString = await _aptRouter.swapExactTokensForTokens(
           tokenAAmount, amountOutMin, path, to, deadline.value,
           credentials: controller.credentials);

@@ -771,7 +771,8 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                                   Colors.grey[400]!, 22, false, false),
                               decoration: InputDecoration(
                                 hintText: '0.00',
-                                hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
+                                hintStyle: textStyle(
+                                    Colors.grey[400]!, 22, false, false),
                                 border: InputBorder.none,
                               ),
                               inputFormatters: [
@@ -3053,12 +3054,16 @@ Dialog swapDialog(BuildContext context) {
                       //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () {
                         print('swapping!');
-                        swapController.approve();
-                        Navigator.pop(context);
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                confirmTransaction(context, true, ""));
+                        swapController.approve().then((value) {
+                          
+                          swapController.swap();
+                          Navigator.pop(context);
+
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  confirmTransaction(context, true, ""));
+                        });
                       },
                       child: const Text(
                         "Confirm Swap",
