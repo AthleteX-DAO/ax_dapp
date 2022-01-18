@@ -771,8 +771,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                                   Colors.grey[400]!, 22, false, false),
                               decoration: InputDecoration(
                                 hintText: '0.00',
-                                hintStyle: textStyle(
-                                    Colors.grey[400]!, 22, false, false),
+                                hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
                                 border: InputBorder.none,
                               ),
                               inputFormatters: [

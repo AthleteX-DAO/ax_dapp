@@ -13,6 +13,19 @@ class DesktopFarm extends StatefulWidget {
 
 class _DesktopFarmState extends State<DesktopFarm> {
   bool allFarms = true;
+  List<Farm> everyFarm = [];
+  List<Farm> workingFarm = [];
+
+  // ignore: must_call_super
+  void initState() {
+    everyFarm.add(Farm("AX Farm"));
+
+    for (Athlete ath in AthleteList.list) {
+      everyFarm.add(Farm("AX - " + ath.name + " APT", ath));
+    }
+
+    workingFarm = everyFarm;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +48,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     bool vertical = true;
+
     if (_height < 445) vertical = false;
-
-    List<Farm> farmList = [
-      Farm("AX Farm"),
-    ];
-
-    for (Athlete ath in AthleteList.list)
-      farmList.add(Farm("AX - " + ath.name + " APT", ath));
 
     Widget toggle = Container(
         width: 200,
@@ -88,7 +95,14 @@ class _DesktopFarmState extends State<DesktopFarm> {
               if (!vertical) toggle,
             ],
           ),
-          if (vertical) toggle,
+          if (vertical)
+            Row(
+              children: <Widget>[
+                createSearchBar(),
+                SizedBox(width: 50),
+                toggle
+              ],
+            ),
           Container(
               width: _width * 0.8,
               height: _height * 0.5,
@@ -102,12 +116,12 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       physics: BouncingScrollPhysics(),
-                      itemCount: AthleteList.list.length + 1,
+                      itemCount: workingFarm.length,
                       itemBuilder: (context, index) {
                         return Container(
                             height: _height * 0.55,
                             alignment: Alignment.topLeft,
-                            child: createFarmWidget(farmList[index]));
+                            child: createFarmWidget(workingFarm[index]));
                       })))
         ]);
   }
@@ -381,8 +395,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     if (farm.athlete == null) {
       farmTitleWidget = farmTitleSingleLogo(farm);
       participatingDialog = depositDialog(context);
-    }
-    else {
+    } else {
       farmTitleWidget = farmTitleDoubleLogo(farm);
       participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
@@ -648,6 +661,46 @@ class _DesktopFarmState extends State<DesktopFarm> {
     ]);
   }
 
+  Widget createSearchBar() {
+    return Container(
+      width: 250,
+      height: 40,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(width: 8),
+          Container(
+            child: Icon(Icons.search, color: Colors.white),
+          ),
+          Container(width: 50),
+          Expanded(
+            child: Container(
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    workingFarm = everyFarm
+                        .where((farm) => farm.name
+                            .toUpperCase()
+                            .contains(value.toUpperCase()))
+                        .toList();
+                  });
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 8.5),
+                  hintText: "Search a farm",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold) if (isUline)
       return TextStyle(
@@ -677,7 +730,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
       );
   }
 
-  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+  BoxDecoration boxDecoration(
+      Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
         color: col,
         borderRadius: BorderRadius.circular(rad),
@@ -688,105 +742,97 @@ class _DesktopFarmState extends State<DesktopFarm> {
     Dialog participatingDialog;
     if (farm.athlete == null) {
       participatingDialog = depositDialog(context);
-    }
-    else {
+    } else {
       participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
     double cardWidth = 500;
     return Container(
-      width: cardWidth - 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: AssetImage("../assets/images/x.jpg"),
+        width: cardWidth - 50,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: 35,
+                height: 35,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage("../assets/images/x.jpg"),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Container(width: 15),
-          Expanded(
-            child: Text(farm.name,
-              style: textStyle(Colors.white, 20, false, false)),
-          ),
-          Container(
-              width: 120,
-              height: 35,
-              decoration: boxDecoration(
-                  Colors.amber[600]!, 100, 0, Colors.amber[600]!),
-              child: TextButton(
-                  onPressed: () => showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          participatingDialog),
-                  child: Text("Stake",
-                      style: textStyle(
-                          Colors.black, 14, true, false)))),
-        ]
-      )
-    );
+              Container(width: 15),
+              Expanded(
+                child: Text(farm.name,
+                    style: textStyle(Colors.white, 20, false, false)),
+              ),
+              Container(
+                  width: 120,
+                  height: 35,
+                  decoration: boxDecoration(
+                      Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                  child: TextButton(
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              participatingDialog),
+                      child: Text("Stake",
+                          style: textStyle(Colors.black, 14, true, false)))),
+            ]));
   }
 
   Widget farmTitleDoubleLogo(Farm farm) {
     Dialog participatingDialog;
     if (farm.athlete == null) {
       participatingDialog = depositDialog(context);
-    }
-    else {
+    } else {
       participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
     double cardWidth = 500;
     return Container(
-      width: cardWidth - 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: AssetImage("../assets/images/x.jpg"),
+        width: cardWidth - 50,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: 35,
+                height: 35,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage("../assets/images/x.jpg"),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                scale: 0.5,
-                image: AssetImage("../assets/images/apt.png"),
+              Container(
+                width: 35,
+                height: 35,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    scale: 0.5,
+                    image: AssetImage("../assets/images/apt.png"),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Container(width: 5),
-          Expanded(
-            child: Text(farm.name,
-              style: textStyle(Colors.white, 20, false, false)),
-          ),
-          Container(
-              width: 120,
-              height: 35,
-              decoration: boxDecoration(
-                  Colors.amber[600]!, 100, 0, Colors.amber[600]!),
-              child: TextButton(
-                  onPressed: () => showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          participatingDialog),
-                  child: Text("Stake",
-                      style: textStyle(
-                          Colors.black, 14, true, false)))),
-        ]
-      )
-    );
+              Container(width: 5),
+              Expanded(
+                child: Text(farm.name,
+                    style: textStyle(Colors.white, 20, false, false)),
+              ),
+              Container(
+                  width: 120,
+                  height: 35,
+                  decoration: boxDecoration(
+                      Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                  child: TextButton(
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              participatingDialog),
+                      child: Text("Stake",
+                          style: textStyle(Colors.black, 14, true, false)))),
+            ]));
   }
 }
 
