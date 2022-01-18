@@ -2189,7 +2189,7 @@ Dialog yourAXDialog(BuildContext context) {
                           children: <Widget>[
                             Container(
                               child: Text(
-                                "Unlcaimed:",
+                                "Unclaimed:",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
