@@ -51,7 +51,18 @@ bool stakeActive = false;
 bool earnActive = false;
 late Coin coin1;
 late Coin coin2;
-Athlete lastFirstEarn = Athlete(name: '', time: [], war: []);
+Athlete lastFirstEarn = Athlete(
+    name: '',
+    time: [],
+    war: [],
+    passingTouchDowns: [],
+    passingYards: [],
+    position: '',
+    receiveTouch: [],
+    receiveYards: [],
+    reception: [],
+    rushingYards: [],
+    team: '');
 // Web3 Credentials
 Controller _controller = Controller();
 // Defined Staking
@@ -183,6 +194,7 @@ class _HomePageState extends State<HomePage> {
       yield BigInt.zero;
     }
   }
+
   int _selectedIndex = 0;
   int swap = 0;
   List<Athlete> athleteList = [];
@@ -205,18 +217,17 @@ class _HomePageState extends State<HomePage> {
   late Coin coin2;
 
   Athlete lastFirstEarn = Athlete(
-    name: '',
-    team: '',
-    position: '',
-    passingYards: [],
-    passingTouchDowns: [],
-    reception: [],
-    receiveYards: [],
-    receiveTouch: [],
-    rushingYards: [],
-    war: [],
-    time: []
-  );
+      name: '',
+      team: '',
+      position: '',
+      passingYards: [],
+      passingTouchDowns: [],
+      reception: [],
+      receiveYards: [],
+      receiveTouch: [],
+      rushingYards: [],
+      war: [],
+      time: []);
 
   void _onItemTapped(int index) {
     setState(() {
@@ -1105,7 +1116,11 @@ class _HomePageState extends State<HomePage> {
                                                           athleteList = nflList;
                                                         return Container(
                                                             height: MediaQuery
-                                                                        .of(context).size.height *0.65,
+                                                                        .of(
+                                                                            context)
+                                                                    .size
+                                                                    .height *
+                                                                0.65,
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
@@ -1217,337 +1232,369 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * .90,
-                        child: Stack(alignment: Alignment.center, children: [
-                          // Main mobile border box
-                          Container(
-                            width: MediaQuery.of(context).size.width * .9,
-                            height: MediaQuery.of(context).size.height * .79,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.black,
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 3,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * .90,
+                          child: Stack(alignment: Alignment.center, children: [
+                            // Main mobile border box
+                            Container(
+                              width: MediaQuery.of(context).size.width * .9,
+                              height: MediaQuery.of(context).size.height * .79,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.black,
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 3,
+                                ),
                               ),
                             ),
-                          ),
-                          // Swap / Earn / Stake Button Widget
-                          Align(
-                              alignment: Alignment(0, -0.98),
-                              child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * .35,
-                                  height:
-                                      MediaQuery.of(context).size.height * .1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.black,
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 3,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      // Swap Button
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .08,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                .055,
-                                        child: ElevatedButton(
-                                          style: dexToggleActive,
-                                          onPressed: () {
-                                            swap = 0;
-                                            _onSwapItemTapped(swap);
-                                          },
-                                          child: Text('Swap'),
-                                        ),
-                                      ),
-                                      // Earn button
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .08,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                .055,
-                                        child: ElevatedButton(
-                                          style: dexToggleActive,
-                                          onPressed: () {
-                                            swap = 1;
-                                            _onSwapItemTapped(swap);
-                                          },
-                                          child: Text('Earn'),
-                                        ),
-                                      ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .08,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                .055,
-                                        child: ElevatedButton(
-                                          style: dexToggleActive,
-                                          onPressed: () {
-                                            swap = 2;
-                                            _onSwapItemTapped(swap);
-                                          },
-                                          child: Text('Stake'),
-                                        ),
-                                      ),
-                                    ],
-                                  ))),
-                          // DexSwap Widget
-                          if (swap == 0)
-                            // FutureBuilder<List<Coin>>(
-                            //     future: coinList.getCoins(context),
-                            //     builder: (context, snapshot) {
-                            //       switch (snapshot.connectionState) {
-                            //         case ConnectionState.waiting:
-                            // return Stack(children: <Widget>[
-                            Stack(children: <Widget>[
-                              // Top token box
-                              Align(
-                                alignment: Alignment(0, -0.4),
+                            // Swap / Earn / Stake Button Widget
+                            Align(
+                                alignment: Alignment(0, -0.98),
                                 child: Container(
                                     width:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.125,
-                                    child: Center(
-                                        child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.35,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.08,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.08,
-                                                    color: Colors.green),
-                                                Text("0.0"),
-                                              ],
-                                            ))),
+                                        MediaQuery.of(context).size.width * .35,
+                                    height:
+                                        MediaQuery.of(context).size.height * .1,
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[850],
-                                      borderRadius: BorderRadius.circular(12),
-                                    )),
-                              ),
-                              // Bottom token box
-                              Align(
-                                alignment: Alignment(0, -0.05),
-                                child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.125,
-                                    child: Center(
-                                        child: Container(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.black,
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 3,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        // Swap Button
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .08,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              .055,
+                                          child: ElevatedButton(
+                                            style: dexToggleActive,
+                                            onPressed: () {
+                                              swap = 0;
+                                              _onSwapItemTapped(swap);
+                                            },
+                                            child: Text('Swap'),
+                                          ),
+                                        ),
+                                        // Earn button
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .08,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              .055,
+                                          child: ElevatedButton(
+                                            style: dexToggleActive,
+                                            onPressed: () {
+                                              swap = 1;
+                                              _onSwapItemTapped(swap);
+                                            },
+                                            child: Text('Earn'),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .08,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              .055,
+                                          child: ElevatedButton(
+                                            style: dexToggleActive,
+                                            onPressed: () {
+                                              swap = 2;
+                                              _onSwapItemTapped(swap);
+                                            },
+                                            child: Text('Stake'),
+                                          ),
+                                        ),
+                                      ],
+                                    ))),
+                            // DexSwap Widget
+                            if (swap == 0)
+                              // FutureBuilder<List<Coin>>(
+                              //     future: coinList.getCoins(context),
+                              //     builder: (context, snapshot) {
+                              //       switch (snapshot.connectionState) {
+                              //         case ConnectionState.waiting:
+                              // return Stack(children: <Widget>[
+                              Stack(children: <Widget>[
+                                // Top token box
+                                Align(
+                                  alignment: Alignment(0, -0.4),
+                                  child: Container(
                                       width: MediaQuery.of(context).size.width *
-                                          0.35,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
+                                          0.4,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.125,
+                                      child: Center(
+                                          child: Container(
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.08,
+                                                  0.35,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.08,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.08,
+                                                      color: Colors.green),
+                                                  Text("0.0"),
+                                                ],
+                                              ))),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[850],
+                                        borderRadius: BorderRadius.circular(12),
+                                      )),
+                                ),
+                                // Bottom token box
+                                Align(
+                                  alignment: Alignment(0, -0.05),
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.125,
+                                      child: Center(
+                                          child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.08,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.08,
+                                                color: Colors.orange),
+                                            Text("0.0"),
+                                          ],
+                                        ),
+                                      )),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[850],
+                                        borderRadius: BorderRadius.circular(12),
+                                      )),
+                                ),
+                                // switch arrow
+                                Align(
+                                    alignment: Alignment(0, -0.225),
+                                    child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.032,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.032,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        child: TextButton(
+                                            onPressed: () {},
+                                            child: Icon(
+                                              Icons.arrow_downward_outlined,
+                                              color: Colors.grey[500],
+                                              size: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.022,
+                                            )))),
+                                // buttons
+                                Align(
+                                    alignment: Alignment(0, 0.4),
+                                    child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            // Connect Wallet Button
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.15,
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height *
                                                   0.08,
-                                              color: Colors.orange),
-                                          Text("0.0"),
-                                        ],
-                                      ),
-                                    )),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[850],
-                                      borderRadius: BorderRadius.circular(12),
-                                    )),
-                              ),
-                              // switch arrow
-                              Align(
-                                  alignment: Alignment(0, -0.225),
-                                  child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.032,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.032,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      child: TextButton(
-                                          onPressed: () {},
-                                          child: Icon(
-                                            Icons.arrow_downward_outlined,
-                                            color: Colors.grey[500],
-                                            size: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.022,
-                                          )))),
-                              // buttons
-                              Align(
-                                  alignment: Alignment(0, 0.4),
-                                  child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.4,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          // Connect Wallet Button
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.15,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.08,
-                                            decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: Colors.amber[600]!,
-                                                width: 2,
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: Colors.amber[600]!,
+                                                  width: 2,
+                                                ),
                                               ),
-                                            ),
-                                            child: TextButton(
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Connect Wallet",
-                                                style: TextStyle(
-                                                  color: Colors.amber[600],
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
+                                              child: TextButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "Connect Wallet",
+                                                  style: TextStyle(
+                                                    color: Colors.amber[600],
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          // Confirm Swap button
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.15,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.08,
-                                            decoration: BoxDecoration(
-                                              color: Colors.amber[600],
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: Colors.amber[600]!,
-                                                width: 2,
+                                            // Confirm Swap button
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.15,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.08,
+                                              decoration: BoxDecoration(
+                                                color: Colors.amber[600],
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: Colors.amber[600]!,
+                                                  width: 2,
+                                                ),
                                               ),
-                                            ),
-                                            child: TextButton(
-                                              onPressed: () => {},
-                                              child: Text(
-                                                "Confirm Swap",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontFamily: 'OpenSans',
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
+                                              child: TextButton(
+                                                onPressed: () => {},
+                                                child: Text(
+                                                  "Confirm Swap",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      )))
-                            ]),
-                          // End of Swap
+                                          ],
+                                        )))
+                              ]),
+                            // End of Swap
 
-                          // DexEarn Widget
-                          if (swap == 1)
-                            // Earn Page
-                            Container(
-                                //width: MediaQuery.of(context).size.width *0.8,
-                                //height: MediaQuery.of(context).size.height *0.85,
-                                padding: EdgeInsets.only(
-                                    top: MediaQuery.of(context).size.height *
-                                        0.175),
-                                // Earn Elements
-                                child: Column(children: <Widget>[
-                                  // Earn Title
-                                  Text("Participating Farms",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.w600)),
-                                  // Sport Filter
-                                  Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.6,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.075,
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            // Highlight NFL Filter
-                                            if (athleteList == nflList)
+                            // DexEarn Widget
+                            if (swap == 1)
+                              // Earn Page
+                              Container(
+                                  //width: MediaQuery.of(context).size.width *0.8,
+                                  //height: MediaQuery.of(context).size.height *0.85,
+                                  padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height *
+                                          0.175),
+                                  // Earn Elements
+                                  child: Column(children: <Widget>[
+                                    // Earn Title
+                                    Text("Participating Farms",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.w600)),
+                                    // Sport Filter
+                                    Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.6,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.075,
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              // Highlight NFL Filter
+                                              if (athleteList == nflList)
+                                                TextButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        athleteList = nflList;
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      "NFL",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.amber[600],
+                                                          fontFamily:
+                                                              'OpenSans',
+                                                          fontSize: filterText,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ))
+                                              else
+                                                TextButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        athleteList = nflList;
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      "NFL",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.grey[800],
+                                                          fontFamily:
+                                                              'OpenSans',
+                                                          fontSize: filterText,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    )),
+                                              // NBA filter button
                                               TextButton(
                                                   onPressed: () {
                                                     setState(() {
-                                                      athleteList = nflList;
+                                                      athleteList = [];
                                                     });
                                                   },
                                                   child: Text(
-                                                    "NFL",
-                                                    style: TextStyle(
-                                                        color:
-                                                            Colors.amber[600],
-                                                        fontFamily: 'OpenSans',
-                                                        fontSize: filterText,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ))
-                                            else
-                                              TextButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      athleteList = nflList;
-                                                    });
-                                                  },
-                                                  child: Text(
-                                                    "NFL",
+                                                    "NBA",
                                                     style: TextStyle(
                                                         color: Colors.grey[800],
                                                         fontFamily: 'OpenSans',
@@ -1555,203 +1602,200 @@ class _HomePageState extends State<HomePage> {
                                                         fontWeight:
                                                             FontWeight.w600),
                                                   )),
-                                            // NBA filter button
-                                            TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    athleteList = [];
-                                                  });
-                                                },
-                                                child: Text(
-                                                  "NBA",
-                                                  style: TextStyle(
-                                                      color: Colors.grey[800],
-                                                      fontFamily: 'OpenSans',
-                                                      fontSize: filterText,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                )),
-                                            // MMA Filter button
-                                            TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    athleteList = [];
-                                                  });
-                                                },
-                                                child: Text(
-                                                  "MMA",
-                                                  style: TextStyle(
-                                                      color: Colors.grey[800],
-                                                      fontFamily: 'OpenSans',
-                                                      fontSize: filterText,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                )),
-                                          ])),
-                                  // Side scroll
-                                  if (athleteList.isNotEmpty)
-                                    Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.875,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.45,
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              // Scroll Left
-                                              Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.045,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      .3,
-                                                  child: ElevatedButton(
-                                                      onPressed: () {
-                                                        earnRange[0] -=
-                                                            earnRange[1];
-                                                        if (earnRange[0] < 0)
-                                                          earnRange[0] = 0;
-
-                                                        curAthletes = [];
-                                                        for (int i = 0;
-                                                            i < earnRange[1];
-                                                            i++)
-                                                          curAthletes.add(
-                                                              athleteList[
-                                                                  earnRange[0] +
-                                                                      i]);
-
-                                                        setState(() {
-                                                          lastFirstEarn =
-                                                              curAthletes[0];
-                                                        });
-                                                      },
-                                                      style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all<Color>(Colors
-                                                                    .transparent),
-                                                      ),
-                                                      child: Icon(
-                                                        Icons.arrow_back_ios,
-                                                        color: Colors.white,
-                                                        size: MediaQuery.of(
-                                                                    context)
+                                              // MMA Filter button
+                                              TextButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      athleteList = [];
+                                                    });
+                                                  },
+                                                  child: Text(
+                                                    "MMA",
+                                                    style: TextStyle(
+                                                        color: Colors.grey[800],
+                                                        fontFamily: 'OpenSans',
+                                                        fontSize: filterText,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  )),
+                                            ])),
+                                    // Side scroll
+                                    if (athleteList.isNotEmpty)
+                                      Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.875,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.45,
+                                          child:
+                                              Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                // Scroll Left
+                                                Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.045,
+                                                    height:
+                                                        MediaQuery.of(context)
                                                                 .size
                                                                 .height *
-                                                            0.075,
-                                                      ))),
-                                              // Horizontal List
-                                              if (curAthletes.isEmpty)
-                                                FutureBuilder<dynamic>(
-                                                    future: AthleteApi
-                                                        .getAthletesLocally(
-                                                            context),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      switch (snapshot
-                                                          .connectionState) {
-                                                        case ConnectionState
-                                                            .waiting:
-                                                          // return circle indicator for progress
-                                                          return Center(
-                                                            child:
-                                                                CircularProgressIndicator(),
-                                                          );
-                                                        default:
-                                                          nflList =
-                                                              snapshot.data;
-                                                          athleteList = nflList;
+                                                            .3,
+                                                    child: ElevatedButton(
+                                                        onPressed: () {
+                                                          earnRange[0] -=
+                                                              earnRange[1];
+                                                          if (earnRange[0] < 0)
+                                                            earnRange[0] = 0;
+
+                                                          curAthletes = [];
                                                           for (int i = 0;
-                                                              i <
-                                                                      earnRange[
-                                                                          1] &&
-                                                                  i <
-                                                                      athleteList
-                                                                          .length;
+                                                              i < earnRange[1];
                                                               i++)
                                                             curAthletes.add(
-                                                                athleteList[i]);
+                                                                athleteList[
+                                                                    earnRange[
+                                                                            0] +
+                                                                        i]);
 
-                                                          if (curAthletes
-                                                              .isNotEmpty)
+                                                          setState(() {
                                                             lastFirstEarn =
                                                                 curAthletes[0];
-
-                                                          return LPEarnListView(
-                                                              context);
-                                                      }
-                                                    })
-                                              //Once < or > is pressed
-                                              // ignore: unnecessary_null_comparison
-                                              else if (lastFirstEarn ==
-                                                  curAthletes[0])
-                                                LPEarnListView(context),
-                                              // Scroll Right
-                                              Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.055555,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      .3,
-                                                  child: ElevatedButton(
-                                                      onPressed: () {
-                                                        earnRange[0] +=
-                                                            earnRange[1];
-                                                        if (earnRange[0] >
-                                                            athleteList.length -
-                                                                earnRange[1])
-                                                          earnRange[0] =
-                                                              athleteList
-                                                                      .length -
-                                                                  earnRange[1];
-
-                                                        curAthletes = [];
-                                                        for (int i = 0;
-                                                            i < earnRange[1];
-                                                            i++)
-                                                          curAthletes.add(
-                                                              athleteList[
-                                                                  earnRange[0] +
+                                                          });
+                                                        },
+                                                        style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(Colors
+                                                                      .transparent),
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.arrow_back_ios,
+                                                          color: Colors.white,
+                                                          size: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.075,
+                                                        ))),
+                                                // Horizontal List
+                                                if (curAthletes.isEmpty)
+                                                  FutureBuilder<dynamic>(
+                                                      future: AthleteApi
+                                                          .getAthletesLocally(
+                                                              context),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        switch (snapshot
+                                                            .connectionState) {
+                                                          case ConnectionState
+                                                              .waiting:
+                                                            // return circle indicator for progress
+                                                            return Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            );
+                                                          default:
+                                                            nflList =
+                                                                snapshot.data;
+                                                            athleteList =
+                                                                nflList;
+                                                            for (int i = 0;
+                                                                i < earnRange[1] &&
+                                                                    i <
+                                                                        athleteList
+                                                                            .length;
+                                                                i++)
+                                                              curAthletes.add(
+                                                                  athleteList[
                                                                       i]);
 
-                                                        setState(() {
-                                                          lastFirstEarn =
-                                                              curAthletes[0];
-                                                        });
-                                                      },
-                                                      style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all<Color>(Colors
-                                                                    .transparent),
-                                                      ),
-                                                      child: Icon(
-                                                        Icons.arrow_forward_ios,
-                                                        color: Colors.white,
-                                                        size: MediaQuery.of(
-                                                                    context)
+                                                            if (curAthletes
+                                                                .isNotEmpty)
+                                                              lastFirstEarn =
+                                                                  curAthletes[
+                                                                      0];
+
+                                                            return LPEarnListView(
+                                                                context);
+                                                        }
+                                                      })
+                                                //Once < or > is pressed
+                                                // ignore: unnecessary_null_comparison
+                                                else if (lastFirstEarn ==
+                                                    curAthletes[0])
+                                                  LPEarnListView(context),
+                                                // Scroll Right
+                                                Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.055555,
+                                                    height:
+                                                        MediaQuery.of(context)
                                                                 .size
                                                                 .height *
-                                                            0.075,
-                                                      ))),
-                                            ]))
-                                ])),
-                          // End of Earn
-                          // DexStake Widget
-                          if (swap == 2)
-                            //Align(
-                            //alignment: Alignment(0,-0.5),
-                            Container(
+                                                            .3,
+                                                    child: ElevatedButton(
+                                                        onPressed: () {
+                                                          earnRange[0] +=
+                                                              earnRange[1];
+                                                          if (earnRange[0] >
+                                                              athleteList
+                                                                      .length -
+                                                                  earnRange[1])
+                                                            earnRange[
+                                                                0] = athleteList
+                                                                    .length -
+                                                                earnRange[1];
+
+                                                          curAthletes = [];
+                                                          for (int i = 0;
+                                                              i < earnRange[1];
+                                                              i++)
+                                                            curAthletes.add(
+                                                                athleteList[
+                                                                    earnRange[
+                                                                            0] +
+                                                                        i]);
+
+                                                          setState(() {
+                                                            lastFirstEarn =
+                                                                curAthletes[0];
+                                                          });
+                                                        },
+                                                        style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(Colors
+                                                                      .transparent),
+                                                        ),
+                                                        child: Icon(
+                                                          Icons
+                                                              .arrow_forward_ios,
+                                                          color: Colors.white,
+                                                          size: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.075,
+                                                        ))),
+                                              ]))
+                                  ])),
+                            // End of Earn
+                            // DexStake Widget
+                            if (swap == 2)
+                              //Align(
+                              //alignment: Alignment(0,-0.5),
+                              Container(
                                 height:
                                     MediaQuery.of(context).size.height * 0.6,
                                 child: Column(
@@ -2004,19 +2048,21 @@ class _HomePageState extends State<HomePage> {
                                               ))),
                                       // staking row container
                                       Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.4,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.1,
-                                        //width/height
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: <Widget>[
-                                            //Textbuttons
-                                            /** 
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.4,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.1,
+                                          //width/height
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: <Widget>[
+                                                //Textbuttons
+                                                /** 
                                           TextButton(
                                                         onPressed: () {},
                                                         child: Text(
@@ -2026,82 +2072,96 @@ class _HomePageState extends State<HomePage> {
                                                         )
                                                         ),
                                               **/
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.15,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.08,
-                                              decoration: BoxDecoration(
-                                                color: Colors.amber[600],
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                border: Border.all(
-                                                  color: Colors.amber[600]!,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              child: TextButton(
-                                                onPressed: () =>
-                                                    stakeDialog(context),
-                                                child: Text(
-                                                  "Stake AX",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.15,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.08,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.amber[600],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    border: Border.all(
+                                                      color: Colors.amber[600]!,
+                                                      width: 2,
+                                                    ),
+                                                  ),
+                                                  child: TextButton(
+                                                    onPressed: () =>
+                                                        stakeDialog(context),
+                                                    child: Text(
+                                                      "Stake AX",
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontFamily: 'OpenSans',
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.15,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.08,
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                border: Border.all(
-                                                  color: Colors.amber[600]!,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              child: TextButton(
-                                                onPressed: () =>
-                                                    unstakeDialog(context),
-                                                child: Text(
-                                                  "Unstake AX",
-                                                  style: TextStyle(
-                                                    color: Colors.amber[600]!,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),))),
-                                      // staking row container
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.4,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.1,
-                                        //width/height
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: <Widget>[
-                                            //Textbuttons
-                                            /** 
+                                                Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.15,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.08,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      border: Border.all(
+                                                        color:
+                                                            Colors.amber[600]!,
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    child: TextButton(
+                                                        onPressed: () =>
+                                                            unstakeDialog(
+                                                                context),
+                                                        child: Text(
+                                                          "Unstake AX",
+                                                          style: TextStyle(
+                                                            color: Colors
+                                                                .amber[600]!,
+                                                            fontFamily:
+                                                                'OpenSans',
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ))),
+                                                // staking row container
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.4,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.1,
+                                                  //width/height
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: <Widget>[
+                                                      //Textbuttons
+                                                      /** 
                                           TextButton(
                                                         onPressed: () {},
                                                         child: Text(
@@ -2111,71 +2171,92 @@ class _HomePageState extends State<HomePage> {
                                                         )
                                                         ),
                                               **/
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.15,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.08,
-                                              decoration: BoxDecoration(
-                                                color: Colors.amber[600],
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                border: Border.all(
-                                                  color: Colors.amber[600]!,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              child: TextButton(
-                                                onPressed: () =>
-                                                    stakeDialog(context),
-                                                child: Text(
-                                                  "Stake AX",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.15,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.08,
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                border: Border.all(
-                                                  color: Colors.amber[600]!,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              child: TextButton(
-                                                onPressed: () =>
-                                                    unstakeDialog(context),
-                                                child: Text(
-                                                  "Unstake AX",
-                                                  style: TextStyle(
-                                                    color: Colors.amber[600]!,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            /** 
+                                                      Container(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.15,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.08,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Colors.amber[600],
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          border: Border.all(
+                                                            color: Colors
+                                                                .amber[600]!,
+                                                            width: 2,
+                                                          ),
+                                                        ),
+                                                        child: TextButton(
+                                                          onPressed: () =>
+                                                              stakeDialog(
+                                                                  context),
+                                                          child: Text(
+                                                            "Stake AX",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontFamily:
+                                                                  'OpenSans',
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.15,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.08,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.black,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          border: Border.all(
+                                                            color: Colors
+                                                                .amber[600]!,
+                                                            width: 2,
+                                                          ),
+                                                        ),
+                                                        child: TextButton(
+                                                          onPressed: () =>
+                                                              unstakeDialog(
+                                                                  context),
+                                                          child: Text(
+                                                            "Unstake AX",
+                                                            style: TextStyle(
+                                                              color: Colors
+                                                                  .amber[600]!,
+                                                              fontFamily:
+                                                                  'OpenSans',
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      /** 
                                           TextButton(
                                                         onPressed: () {},
                                                         child: Text(
@@ -2184,13 +2265,14 @@ class _HomePageState extends State<HomePage> {
                                                               color: Colors.white),
                                                         )),
                                                         **/
-                                          ],
-                                        ),
-                                      ),
-                                    ]))
-                                      ]  // End of Earn
-                  ]),
-                  )])));
+                                                    ],
+                                                  ),
+                                                ),
+                                              ]))
+                                    ] // End of Earn
+                                    ),
+                              )
+                          ]))));
             }
 
             // Help page
@@ -2236,6 +2318,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: DropdownButton<String>(
+                                onChanged: (String) {},
                                 focusColor: Colors.grey,
                                 //Color:Colors.grey,
                                 //value: _chosenValue,
@@ -2263,6 +2346,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: DropdownButton<String>(
+                                onChanged: (String) {},
                                 focusColor: Colors.grey,
                                 //Color:Colors.grey,
                                 //value: _chosenValue,
@@ -2290,6 +2374,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: DropdownButton<String>(
+                                onChanged: (String) {},
                                 focusColor: Colors.grey,
                                 //Color:Colors.grey,
                                 //value: _chosenValue,
@@ -2317,6 +2402,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: DropdownButton<String>(
+                                onChanged: (String) {},
                                 focusColor: Colors.grey,
                                 //Color:Colors.grey,
                                 //value: _chosenValue,
@@ -2349,6 +2435,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: DropdownButton<String>(
+                                    onChanged: (String) {},
                                     focusColor: Colors.grey,
                                     //Color:Colors.grey,
                                     //value: _chosenValue,
@@ -2377,6 +2464,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: DropdownButton<String>(
+                                    onChanged: (String) {},
                                     focusColor: Colors.grey,
                                     //Color:Colors.grey,
                                     //value: _chosenValue,
@@ -2405,6 +2493,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: DropdownButton<String>(
+                                    onChanged: (String) {},
                                     focusColor: Colors.grey,
                                     //Color:Colors.grey,
                                     //value: _chosenValue,
@@ -2433,6 +2522,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: DropdownButton<String>(
+                                    onChanged: (String) {},
                                     focusColor: Colors.grey,
                                     //Color:Colors.grey,
                                     //value: _chosenValue,
@@ -2468,23 +2558,24 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildGraph(List war, List time, BuildContext context) {
     // local variables
-    List<series.Series<dynamic, DateTime>> athleteData ;
+    List<series.Series<dynamic, DateTime>> athleteData;
     DateTime curTime = DateTime(-1);
     DateTime lastHour = DateTime(-1);
     DateTime maxTime = DateTime(-1);
     List<WarTimeSeries> data = [];
 
-    for(int i = 0; i < war.length; i++) {
+    for (int i = 0; i < war.length; i++) {
       curTime = DateTime.parse(time[i]);
       // only new points
-        if (lastHour.year == -1 || (lastHour.isBefore(curTime) && curTime.hour != lastHour.hour)) {
-          lastHour = curTime;
-          // sets maximum if latest time
-          if (maxTime == DateTime(-1)  || maxTime.isBefore(curTime))
-            maxTime = curTime;
+      if (lastHour.year == -1 ||
+          (lastHour.isBefore(curTime) && curTime.hour != lastHour.hour)) {
+        lastHour = curTime;
+        // sets maximum if latest time
+        if (maxTime == DateTime(-1) || maxTime.isBefore(curTime))
+          maxTime = curTime;
 
-          data.add(WarTimeSeries(curTime, war[i]));
-        }
+        data.add(WarTimeSeries(curTime, war[i]));
+      }
     }
 
     athleteData = [
@@ -2690,17 +2781,18 @@ class _HomePageState extends State<HomePage> {
                   //           fontSize: 30,
                   //           fontWeight: FontWeight.w600,
                   //         )))
-                          )),
+                  )),
           // War Price
           Align(
               alignment: Alignment(-0.8, -0.36),
-              child: Text(athlete.war[athlete.war.length - 1].toStringAsFixed(4),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'OpenSans',
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                  ))),
+              child:
+                  Text(athlete.war[athlete.war.length - 1].toStringAsFixed(4),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 26,
+                        fontWeight: FontWeight.w600,
+                      ))),
           // Overview Text
           Align(
               alignment: Alignment(0.385, -0.54),
@@ -2960,7 +3052,9 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text(athlete.passingTouchDowns[athlete.passingTouchDowns.length-1],
+                          Text(
+                              athlete.passingTouchDowns[
+                                  athlete.passingTouchDowns.length - 1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -2978,7 +3072,9 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text(athlete.passingYards[athlete.passingYards.length-1],
+                          Text(
+                              athlete.passingYards[
+                                  athlete.passingYards.length - 1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -2996,7 +3092,7 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text(athlete.reception[athlete.reception.length-1],
+                          Text(athlete.reception[athlete.reception.length - 1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -3014,7 +3110,9 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text(athlete.receiveYards[athlete.receiveYards.length-1],
+                          Text(
+                              athlete.receiveYards[
+                                  athlete.receiveYards.length - 1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -3032,7 +3130,9 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )),
-                          Text(athlete.receiveTouch[athlete.receiveTouch.length-1],
+                          Text(
+                              athlete.receiveTouch[
+                                  athlete.receiveTouch.length - 1],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'OpenSans',
@@ -3209,7 +3309,8 @@ class _HomePageState extends State<HomePage> {
                               //   width: 2,
                               // ),
                             ),
-                            child: buildGraph(athlete.war, athlete.time, context)
+                            child:
+                                buildGraph(athlete.war, athlete.time, context)
                             // child: Center(
                             //     child: Text("Player Stats\nCOMING SOON",
                             //         textAlign: TextAlign.center,
@@ -3219,7 +3320,7 @@ class _HomePageState extends State<HomePage> {
                             //           fontSize: 30,
                             //           fontWeight: FontWeight.w600,
                             //         )))
-                                    )),
+                            )),
                   ])
                 ]),
                 // athlete purchase buttons
