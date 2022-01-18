@@ -12,24 +12,23 @@ import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
 class Controller extends GetxController {
-  var client = Web3Client("url", Client()).obs;
-  var credentials;
-  var publicAddress =
-      EthereumAddress.fromHex("0xcdaa8c55fB92fbBE61948aDf4Ba8Cf7Ad33DBeF0").obs;
-  var networkID = 0.obs;
-  bool walletConnected = false;
-
   /// VARIABLES
-  var rng = new Random().nextInt(999);
+  var seedHex = "";
+  var credentials;
   var mnemonic = "";
-  var privateAddress = "";
-  static String latestTx = "";
-  var gas = EtherAmount.zero().obs;
+  var networkID = 0.obs;
   bool activeChain = false;
+  int ACTIVE_CHAIN_ID = 137;
+  static String latestTx = "";
+  bool walletConnected = false;
+  var gas = EtherAmount.zero().obs;
   static const MAINNET_CHAIN_ID = 137;
   static const TESTNET_CHAIN_ID = 80001;
   String mainRPCUrl = "https://polygon-rpc.com";
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
+  var client = Web3Client("url", Client()).obs;
+  var publicAddress =
+      EthereumAddress.fromHex("0xcdaa8c55fB92fbBE61948aDf4Ba8Cf7Ad33DBeF0").obs;
 
   set axTokenAddress(EthereumAddress tokenAddress) {
     axTokenAddress = EthereumAddress.fromHex("${tokenAddress.hex}");
@@ -43,22 +42,22 @@ class Controller extends GetxController {
     getCurrentGas();
   }
 
+  // This will create mnemonics & convert to seed hexes
   void createNewMnemonic() {
     mnemonic = bip39.generateMnemonic();
+    seedHex = bip39.mnemonicToSeedHex(mnemonic);
     update();
   }
 
-  Future<String> retrieveWallet([String? _mnemonic]) async {
-    mnemonic = _mnemonic!;
-    privateAddress = bip39.mnemonicToSeedHex(mnemonic);
-    credentials = EthPrivateKey.fromHex(privateAddress);
-    update();
-    return mnemonic;
-  }
-
-  void createWallet() async {
-    // createNewMnemonic()
-    // retrieveWallet
+  // This will import mnemonics & convert to seed hexes
+  Future<bool> importMnemonic(String _mnemonic) async {
+    // validate if mnemonic
+    bool isValid = await bip39.validateMnemonic(_mnemonic);
+    if (isValid) {
+      seedHex = bip39.mnemonicToSeedHex(_mnemonic);
+      mnemonic = _mnemonic;
+    }
+    return isValid;
   }
 
   // Connect the dapp to metamask and update relevant values
@@ -75,11 +74,21 @@ class Controller extends GetxController {
     update();
   }
 
+  // Connect the client + set credentials
   void connectNative() async {
-    final eth = window.ethereum;
     walletConnected = true;
-    client.value = Web3Client(testRPCUrl, Client());
-    credentials = await eth!.requestAccount();
+
+    String rpcUrl = "";
+    switch (ACTIVE_CHAIN_ID) {
+      case 137:
+        rpcUrl = mainRPCUrl;
+        break;
+      default:
+        rpcUrl = testRPCUrl;
+    }
+
+    client.value = Web3Client(rpcUrl, Client());
+    credentials = EthPrivateKey.fromHex(seedHex);
     print("[Console] connecting to the decentralized web!");
     networkID.value = await client.value.getNetworkId();
     publicAddress.value = await credentials.extractAddress();
