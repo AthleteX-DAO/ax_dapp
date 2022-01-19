@@ -2545,7 +2545,7 @@ Dialog removeDialog(BuildContext context) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Remove AX",
+                "Unstake AX",
                 style: textStyle(Colors.white, 20, false, false),
               ),
               Container(
@@ -2580,6 +2580,18 @@ Dialog removeDialog(BuildContext context) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    Container(
+                      height: 35,
+                      width: 35,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          scale: 2.0,
+                          image: AssetImage('../assets/images/x.jpg'),
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    Container(width: 15),
                     Expanded(
                       child: Text(
                         "AX",
@@ -2679,7 +2691,7 @@ Dialog removeDialog(BuildContext context) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              /* Container(
                 margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
                 width: 175,
                 height: 45,
@@ -2703,7 +2715,8 @@ Dialog removeDialog(BuildContext context) {
                     ),
                   ),
                 ),
-              ),
+              ), */
+              ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
             ],
           )
         ],
