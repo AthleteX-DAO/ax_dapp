@@ -371,7 +371,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     width: 30,
                     height: 30,
                     decoration: BoxDecoration(
+                      shape: BoxShape.circle,
                       image: DecorationImage(
+                        scale: 0.5,
                         image: token.icon!,
                         fit: BoxFit.fill,
                       ),
