@@ -9,6 +9,7 @@ import 'package:ae_dapp/service/Athlete.dart';
 import 'package:ae_dapp/service/AthleteApi.dart';
 import 'package:ae_dapp/service/WarTimeSeries.dart';
 import 'package:ae_dapp/style/Style.dart';
+import 'package:ax_dapp/service/Coin.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
