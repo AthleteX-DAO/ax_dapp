@@ -108,7 +108,7 @@ class _LandingPageState extends State<LandingPage> {
                     AthleteList.list = snapshot.data;
                     return Container(
                       decoration: boxDecoration(
-                          Colors.transparent, 100, 4, Colors.amber[400]!),
+                          Colors.transparent, 100, 1, Colors.amber[400]!),
                       child: TextButton(
                         onPressed: () {
                           setState(() {
