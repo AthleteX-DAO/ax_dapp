@@ -96,7 +96,7 @@ class Controller extends GetxController {
     final eth = window.ethereum;
     walletConnected = false;
     client.value.dispose();
-    client.value.getChainId();
+    //client.value.getChainId();
 
     update();
   }

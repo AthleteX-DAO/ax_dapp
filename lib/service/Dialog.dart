@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
@@ -2098,6 +2099,7 @@ Dialog depositConfimed(BuildContext context) {
 
 // dynamic
 Dialog yourAXDialog(BuildContext context) {
+  WalletController walletController = Get.put(WalletController());
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 400;
@@ -2134,7 +2136,10 @@ Dialog yourAXDialog(BuildContext context) {
                             color: Colors.white,
                             size: 30,
                           ),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            walletController.getTokenMetrics();
+                            Navigator.pop(context);
+                          },
                         ),
                       ],
                     )),
@@ -2235,14 +2240,16 @@ Dialog yourAXDialog(BuildContext context) {
                               ),
                             ),
                             Container(
-                              child: Text(
-                                "\$1.00",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
+                              child: Obx(
+                                () => Text(
+                                  "${walletController.axPrice}",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey[600],
+                                  ),
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                         Row(
@@ -3055,7 +3062,6 @@ Dialog swapDialog(BuildContext context) {
                       onPressed: () {
                         print('swapping!');
                         swapController.approve().then((value) {
-                          
                           swapController.swap();
                           Navigator.pop(context);
 
