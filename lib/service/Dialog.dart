@@ -2180,11 +2180,13 @@ Dialog yourAXDialog(BuildContext context) {
                               ),
                             ),
                             Container(
-                              child: Text(
-                                "100 AX",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
+                              child: Obx(
+                                () => Text(
+                                  "${walletController.yourBalance} AX",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey[600],
+                                  ),
                                 ),
                               ),
                             ),
