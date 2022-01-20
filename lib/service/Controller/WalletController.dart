@@ -7,9 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class WalletController extends GetxController {
-  var axPrice = 0.0.obs;
-  var axCirculation = 0.obs;
-  var axTotalSupply = 0.obs;
+  var axPrice = "".obs;
+  var axCirculation = "".obs;
+  var axTotalSupply = "".obs;
   var yourBalance = 0.0.obs;
 
   void getYourAXBalance() async {
@@ -22,9 +22,32 @@ class WalletController extends GetxController {
         "https://api.coingecko.com/api/v3/coins/athletex?localization=false&tickers=true");
     var tokenMetrics = await http
         .get(Uri.parse("https://api.coingecko.com/api/v3/coins/athletex"));
-    var jsonTokenMetrics = json.decode(tokenMetrics.body);
-    axPrice.value = jsonTokenMetrics['market_data']['current_price']['usd'];
-    print("[Console] AX Price: $axPrice");
+    if (tokenMetrics.statusCode == 200) {
+      var jsonTokenMetrics = json.decode(tokenMetrics.body);
+      var ap = jsonTokenMetrics['market_data']['current_price']['usd'];
+      if (ap != null) {
+        axPrice.value = "$ap";
+      } else {
+        axPrice.value = "-";
+      }
+      var ts = jsonTokenMetrics['market_data']['total_supply'];
+      if (ts != null) {
+        axTotalSupply.value = "$ts";
+      } else {
+        axTotalSupply.value = "-";
+      }
+      var ac = jsonTokenMetrics['market_data']['circulating_supply'];
+      if (ac != 0) {
+        axCirculation.value = "$ac";
+      } else {
+        axCirculation.value = "-";
+      }
+    } else {
+      throw Exception('Failed to fetch the data from congecko api');
+    }
+
+    print(
+        "[Console] AX Price: $axPrice, AX TotalSupply: $axTotalSupply, AX Circulation: $axCirculation");
     update();
   }
 

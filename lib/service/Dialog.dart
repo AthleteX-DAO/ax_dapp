@@ -89,6 +89,7 @@ Dialog wrongNetworkDialog(BuildContext context) {
 //dynamic
 Dialog walletDialog(BuildContext context) {
   Controller controller = Get.find();
+  WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 450;
@@ -142,6 +143,7 @@ Dialog walletDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    walletController.getTokenMetrics();
                     controller.connect();
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
                     //   showDialog(
@@ -2099,7 +2101,7 @@ Dialog depositConfimed(BuildContext context) {
 
 // dynamic
 Dialog yourAXDialog(BuildContext context) {
-  WalletController walletController = Get.put(WalletController());
+  WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 400;
@@ -2268,7 +2270,7 @@ Dialog yourAXDialog(BuildContext context) {
                             ),
                             Container(
                               child: Text(
-                                "50,000,000",
+                                "${walletController.axCirculation}",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
@@ -2291,7 +2293,7 @@ Dialog yourAXDialog(BuildContext context) {
                             ),
                             Container(
                               child: Text(
-                                "100,000,000",
+                                "${walletController.axTotalSupply}",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],

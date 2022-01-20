@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -52,6 +53,7 @@ class _V1AppState extends State<V1App> {
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
   SwapController swapController = Get.put(SwapController());
+  WalletController walletController = Get.put(WalletController());
   AXT axt = AXT("AthleteX", "AX");
   Token matic = Token("Polygon", "MATIC");
 
