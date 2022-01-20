@@ -1,6 +1,6 @@
 import 'package:web3dart/web3dart.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as Http;
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class WalletController extends GetxController {
@@ -17,11 +17,11 @@ class WalletController extends GetxController {
     // Update circulating Supply, price, total supply in one call
     var theUrl = Uri.parse(
         "https://api.coingecko.com/api/v3/coins/athletex?localization=false&tickers=true");
-    var tokenMetrics = await Http.get(
-        Uri.parse("https://api.coingecko.com/api/v3/coins/athletex"));
-    var allBody = json.decode(tokenMetrics.body);
-    axPrice.value = allBody['market_data']['current_price']['usd'];
-    print("AX Price: $axPrice");
+    var tokenMetrics = await http
+        .get(Uri.parse("https://api.coingecko.com/api/v3/coins/athletex"));
+    var jsonTokenMetrics = json.decode(tokenMetrics.body);
+    axPrice.value = jsonTokenMetrics['market_data']['current_price']['usd'];
+    print("[Console] AX Price: $axPrice");
     update();
   }
 
