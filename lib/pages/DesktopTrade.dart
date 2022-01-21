@@ -498,8 +498,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
     );
   }
 
-  void dialog(BuildContext context, double _height, double _width,
-      BoxDecoration _decoration, Widget _child) {
+  void dialog(BuildContext context, double _height, double _width, BoxDecoration _decoration, Widget _child) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -511,8 +510,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
             decoration: _decoration,
             child: _child));
 
-    showDialog(
-        context: context, builder: (BuildContext context) => fancyDialog);
+    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
@@ -544,8 +542,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
       );
   }
 
-  BoxDecoration boxDecoration(
-      Color col, double rad, double borWid, Color borCol) {
+  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
         color: col,
         borderRadius: BorderRadius.circular(rad),
@@ -554,7 +551,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
 }
 
 class AthleteTokenList extends StatefulWidget {
-  const AthleteTokenList(BuildContext context, int tknNum, {Key? key}) : super(key: key);
+  final BuildContext context;
+  final int tknNum;
+  AthleteTokenList(this.context, this.tknNum);
+  //const AthleteTokenList(BuildContext context, int tknNum, {Key? key}) : super(key: key);
 
   @override
   _AthleteTokenListState createState() => _AthleteTokenListState();
@@ -568,6 +568,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   Token? tkn1;
   Token? tkn2;
   List<Token> tokenListFilter = [];
+  int tokenNumber = 0;
 
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
@@ -581,6 +582,8 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     tkn1 = tokens[0];
     tkn2 = tokens[1];
 
+    tokenNumber = widget.tknNum;
+
     for (Athlete ath in AthleteList.list)
       tokens.add(Token(ath.name + " APT", ath.name + " APT",
           AssetImage('../assets/images/apt.png')));
@@ -590,7 +593,6 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
 
   @override
   Widget build(BuildContext context) {
-    int tknNum = 0;
     double _height = MediaQuery.of(context).size.height;
     return Dialog(
         backgroundColor: Colors.grey[900],
@@ -637,7 +639,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                                 itemCount: tokenListFilter.length,
                                 itemBuilder: (context, index) {
                                   return createTokenElement(
-                                      tokenListFilter[index], tknNum);
+                                      tokenListFilter[index]);
                                 }))
                       ],
                     ))
@@ -683,16 +685,20 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     );
   }
 
-  Widget createTokenElement(Token token, int tknNum) {
+  Widget createTokenElement(Token token) {
     return Container(
         height: 50,
         child: TextButton(
             onPressed: () {
               setState(() {
-                if (tknNum == 1)
+                if (tokenNumber == 1) {
                   tkn1 = token;
-                else
+                  print(tokenNumber);
+                }
+                else {
                   tkn2 = token;
+                  print(tokenNumber);
+                }
                 Navigator.pop(context);
               });
             },
