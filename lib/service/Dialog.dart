@@ -144,6 +144,7 @@ Dialog walletDialog(BuildContext context) {
                   onPressed: () {
                     Navigator.pop(context);
                     walletController.getTokenMetrics();
+                    walletController.getTokenBalance();
                     controller.connect();
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
                     //   showDialog(
@@ -2140,6 +2141,7 @@ Dialog yourAXDialog(BuildContext context) {
                           ),
                           onPressed: () {
                             walletController.getTokenMetrics();
+                            walletController.getTokenBalance();
                             Navigator.pop(context);
                           },
                         ),
@@ -2316,7 +2318,9 @@ Dialog yourAXDialog(BuildContext context) {
                               decoration: boxDecoration(Colors.amber[600]!, 100,
                                   0, Colors.amber[600]!),
                               child: TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    walletController.buyAX();
+                                  },
                                   child: Text("Buy AX",
                                       style: textStyle(
                                           Colors.black, 14, true, false)))),

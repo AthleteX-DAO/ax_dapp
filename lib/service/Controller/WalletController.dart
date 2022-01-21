@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 import 'dart:convert';
@@ -57,6 +58,13 @@ class WalletController extends GetxController {
     yourBalance.value = rawBalance.toDouble();
     print("AX Blance: $yourBalance");
     update();
+  }
+
+  void buyAX() {
+    String AX_ETH =
+        "https://app.sushi.com/swap?inputCurrency=0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df&outputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
+    String urlString = AX_ETH;
+    launch(urlString);
   }
 
   void addTokenToWallet() async {}
