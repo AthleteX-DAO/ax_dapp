@@ -7,9 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class WalletController extends GetxController {
-  var axPrice = "".obs;
-  var axCirculation = "".obs;
-  var axTotalSupply = "".obs;
+  var axPrice = "-".obs;
+  var axCirculation = "-".obs;
+  var axTotalSupply = "-".obs;
   var yourBalance = 0.0.obs;
 
   void getYourAXBalance() async {
@@ -18,31 +18,26 @@ class WalletController extends GetxController {
 
   // Update circulating Supply, price, total supply in one call
   void getTokenMetrics() async {
-    var theUrl = Uri.parse(
-        "https://api.coingecko.com/api/v3/coins/athletex?localization=false&tickers=true");
-    var tokenMetrics = await http
-        .get(Uri.parse("https://api.coingecko.com/api/v3/coins/athletex"));
+    var coinGeckoUrl =
+        Uri.parse("https://api.coingecko.com/api/v3/coins/athletex");
+    var tokenMetrics = await http.get(coinGeckoUrl);
     if (tokenMetrics.statusCode == 200) {
+      // if the request is successful -> get values
       var jsonTokenMetrics = json.decode(tokenMetrics.body);
       var ap = jsonTokenMetrics['market_data']['current_price']['usd'];
       if (ap != null) {
         axPrice.value = "$ap";
-      } else {
-        axPrice.value = "-";
       }
       var ts = jsonTokenMetrics['market_data']['total_supply'];
       if (ts != null) {
         axTotalSupply.value = "$ts";
-      } else {
-        axTotalSupply.value = "-";
       }
       var ac = jsonTokenMetrics['market_data']['circulating_supply'];
       if (ac != 0) {
         axCirculation.value = "$ac";
-      } else {
-        axCirculation.value = "-";
       }
     } else {
+      // if bad request -> throw Exception
       throw Exception('Failed to fetch the data from congecko api');
     }
 
