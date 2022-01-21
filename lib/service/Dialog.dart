@@ -13,6 +13,13 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
+Future<void> testFunction() async {
+  // return Future.delayed(
+  //     Duration(seconds: 1), () => '' //throw Exception('Out of milk'),
+  //     );
+  return;
+}
+
 //dynamic
 Dialog wrongNetworkDialog(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
@@ -183,7 +190,7 @@ Dialog walletDialog(BuildContext context) {
 }
 
 Dialog depositDialog(BuildContext context) {
-  Controller controller = Get.find();
+  SwapController swapController = Get.find();
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -385,7 +392,7 @@ Dialog depositDialog(BuildContext context) {
               //TO DO fix changing state of approve button
               //ApproveButton(175, 45, 'confirm', false, () => {}, () => {})
               //ApproveButton(175, 45, 'Approve', depositConfimed(context))
-              ApproveButton(175, 45, 'Approve')
+              ApproveButton(175, 45, 'Approve', testFunction, depositConfimed)
             ],
           )
         ],
@@ -1925,7 +1932,7 @@ Dialog rewardsClaimed(BuildContext context) {
 }
 
 // dynamic
-Dialog removalConfimed(BuildContext context) {
+Dialog removalConfirmed(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -2522,6 +2529,7 @@ Dialog accountDialog(BuildContext context) {
 
 // dynamic
 Dialog removeDialog(BuildContext context) {
+  SwapController swapController = Get.find();
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -2721,7 +2729,7 @@ Dialog removeDialog(BuildContext context) {
                 ),
               ), */
               //ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
-              ApproveButton(175, 45, 'Approve'),
+              ApproveButton(175, 45, 'Approve', testFunction, removalConfirmed),
             ],
           )
         ],
@@ -3073,7 +3081,6 @@ Dialog swapDialog(BuildContext context) {
                       onPressed: () {
                         print('swapping!');
                         swapController.approve().then((value) {
-                          
                           swapController.swap();
                           Navigator.pop(context);
 

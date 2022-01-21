@@ -51,7 +51,10 @@ class ApproveButton extends StatefulWidget {
   final String text;
   final double width;
   final double height;
-  const ApproveButton(this.width, this.height, this.text);
+  final Future<void> Function() approveCallback;
+  final Dialog Function(BuildContext) confirmDialog;
+  const ApproveButton(this.width, this.height, this.text, this.approveCallback,
+      this.confirmDialog);
   //const ApproveButton(double width, double height, String text, {Key? key}) : super(key: key);
 
   @override
@@ -59,11 +62,10 @@ class ApproveButton extends StatefulWidget {
 }
 
 class _ApproveButtonState extends State<ApproveButton> {
-
   double width = 0;
   double height = 0;
   String text = "";
-  bool approved = true;
+  bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
   int currentState = 0;
@@ -80,11 +82,19 @@ class _ApproveButtonState extends State<ApproveButton> {
     currentState = 0;
   }
 
-  void changeData () {
-    text = "Confirm";
-    fillcolor = Colors.amber;
-    textcolor = Colors.black;
-    approved = false;
+  void changeData() {
+    // approved = false;
+    widget.approveCallback().then((_) {
+      isApproved = true;
+      text = "Confirm";
+      fillcolor = Colors.amber;
+      textcolor = Colors.black;
+    }).catchError((_) {
+      isApproved = false;
+      text = "Approve";
+      fillcolor = Colors.transparent;
+      textcolor = Colors.amber;
+    });
     // Keep track of how many times the state has changed
     currentState += 1;
   }
@@ -103,17 +113,18 @@ class _ApproveButtonState extends State<ApproveButton> {
       child: TextButton(
         onPressed: () {
           // Testing to see how the popup will work when the state is changed
-          if(currentState == 1) {
+          if (isApproved) {
             Navigator.pop(context);
             showDialog(
-            context: context,
-            builder: (BuildContext context) =>
-                depositConfimed(context));
+                context: context,
+                builder: (BuildContext context) =>
+                    widget.confirmDialog(context));
+          } else {
+            setState(() {
+              changeData();
+            });
           }
           //print("Working");
-          setState(() {
-            changeData();
-          });
         },
         child: Text(
           text,
@@ -125,5 +136,4 @@ class _ApproveButtonState extends State<ApproveButton> {
       ),
     );
   }
-  
 }
