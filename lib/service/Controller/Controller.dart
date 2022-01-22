@@ -1,7 +1,6 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
 import 'dart:html';
-
 import 'dart:math';
 import 'dart:convert';
 import 'package:http/http.dart';
@@ -60,12 +59,24 @@ class Controller extends GetxController {
   // Connect the dapp to metamask and update relevant values
   void connect() async {
     final eth = window.ethereum;
+    if (eth == null) {
+      print('[Console] MetaMask is not available');
+      return;
+    }
     walletConnected = true;
-    client.value = Web3Client.custom(eth!.asRpcService());
+    client.value = Web3Client.custom(eth.asRpcService());
     credentials = await eth.requestAccount();
-    print("[Console] connecting to the decentralized web!");
+    print('[Console] connecting the wallet...');
     networkID.value = await client.value.getNetworkId();
+    if (networkID.value != MAINNET_CHAIN_ID &&
+        networkID.value != TESTNET_CHAIN_ID) {
+      print(
+          "[Console] Wrong network ID: $networkID. Connect to mainnet(137) or testnet (80001) and try again");
+      return;
+    }
+    print("[Console] Initial adress: $publicAddress.value");
     publicAddress.value = await credentials.extractAddress();
+    print("[Console] Updated adress: $publicAddress.value");
     var rawGasPrice = await client.value.getGasPrice();
     var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
     gasString.value = "$gasPriceinGwei";
@@ -74,7 +85,6 @@ class Controller extends GetxController {
   }
 
   void getCurrentGas() async {
-    final eth = window.ethereum;
     var rawGasPrice = await client.value.getGasPrice();
     var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
     gasString.value = "$gasPriceinGwei";
@@ -93,11 +103,9 @@ class Controller extends GetxController {
   }
 
   void disconnect() async {
-    final eth = window.ethereum;
     walletConnected = false;
     client.value.dispose();
     //client.value.getChainId();
-
     update();
   }
 

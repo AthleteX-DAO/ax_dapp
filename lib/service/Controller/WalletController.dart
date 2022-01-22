@@ -2,6 +2,7 @@ import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:coingecko_api/coingecko_api.dart';
 import 'dart:convert';
 import 'Controller.dart';
 import 'package:http/http.dart' as http;
@@ -49,14 +50,19 @@ class WalletController extends GetxController {
 
   // Update token balance
   void getTokenBalance() async {
+    print("[Console] Inside getTokenBalance()");
     Controller controller = Get.find();
     var theClient = controller.client.value;
+    print("Client: $theClient");
     var account = controller.publicAddress.value;
+    print("account: $account");
     var address = EthereumAddress.fromHex(AXT.polygonAddress);
+    print("address: $address");
     var ax = Erc20(address: address, client: theClient);
+    print(ax);
     BigInt rawBalance = await ax.balanceOf(account);
     yourBalance.value = rawBalance.toDouble();
-    print("AX Blance: $yourBalance");
+    print("[Console] AX Blance: $yourBalance");
     update();
   }
 

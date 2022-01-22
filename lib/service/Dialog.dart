@@ -143,9 +143,9 @@ Dialog walletDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    controller.connect();
                     walletController.getTokenMetrics();
                     walletController.getTokenBalance();
-                    controller.connect();
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
                     //   showDialog(
                     //       context: context,
