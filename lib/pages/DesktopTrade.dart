@@ -23,8 +23,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
   double fromAmount = 0.0;
   double toAmount = 0.0;
   bool allFarms = true;
-  Token? tkn1;
-  Token? tkn2;
   List<Token> tokenListFilter = [];
 
   List<Token> tokens = [
@@ -36,8 +34,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
   @override
   void initState() {
     super.initState();
-    tkn1 = tokens[0];
-    tkn2 = tokens[1];
+    TradeTokens.tkn1 = tokens[0];
+    TradeTokens.tkn2 = tokens[1];
 
     for (Athlete ath in AthleteList.list)
       tokens.add(Token(ath.name + " APT", ath.name + " APT",
@@ -65,7 +63,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               style: textStyle(Colors.blue, 16, true, false),
             )));
 
-    if (tkn1 != null && tkn2 != null)
+    if (TradeTokens.tkn1 != null && TradeTokens.tkn2 != null)
       swapButton = Container(
           height: 50,
           width: wid - 50,
@@ -73,13 +71,13 @@ class _DesktopTradeState extends State<DesktopTrade> {
               boxDecoration(Colors.amber[400]!, 100, 4, Colors.amber[400]!),
           child: TextButton(
               onPressed: () {
-                if (tkn1 != null && tkn2 != null)
-                  swapController.updateToken1(tkn1!);
+                if (TradeTokens.tkn1 != null && TradeTokens.tkn2 != null)
+                  swapController.updateToken1(TradeTokens.tkn1!);
                 swapController.updateAmount1(fromAmount);
                 swapController.updateAmount2(toAmount);
-                swapController.updateAddress1(tkn1!.address.value);
-                swapController.updateAddress2(tkn2!.address.value);
-                swapController.updateToken2(tkn2!);
+                swapController.updateAddress1(TradeTokens.tkn1!.address.value);
+                swapController.updateAddress2(TradeTokens.tkn2!.address.value);
+                swapController.updateToken2(TradeTokens.tkn2!);
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => swapDialog(context));
@@ -189,13 +187,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   Container(
                     child: TextButton(
                         onPressed: () {
-                          if (tkn2 != null) {
-                            Token tmpTkn = tkn1!;
-                            setState(() {
-                              tkn1 = tkn2;
-                              tkn2 = tmpTkn;
-                            });
-                          }
+                          setState(() {
+                            Token tmpTkn1 = TradeTokens.tkn1!;
+                            Token tmpTkn2 = TradeTokens.tkn2!;
+                            TradeTokens.tkn1 = tmpTkn2;
+                            TradeTokens.tkn2 = tmpTkn1;
+                          });
                         },
                         child: Icon(
                           Icons.arrow_downward,
@@ -289,10 +286,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Dialog createTokenList(BuildContext context, int tknNum) {
     double _height = MediaQuery.of(context).size.height;
 
-    /*for (Athlete ath in AthleteList.list)
-      tokens.add(Token(ath.name + " APT", ath.name + " APT",
-          AssetImage('../assets/images/apt.png')));*/
-
     return Dialog(
         backgroundColor: Colors.grey[900],
         shape: RoundedRectangleBorder(
@@ -353,9 +346,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
             onPressed: () {
               setState(() {
                 if (tknNum == 1)
-                  tkn1 = token;
+                  TradeTokens.tkn1 = token;
                 else
-                  tkn2 = token;
+                  TradeTokens.tkn2 = token;
                 Navigator.pop(context);
               });
             },
@@ -410,22 +403,17 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Widget createTokenButton(int tknNum) {
     String tkr = "Select a Token";
     AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
-    BoxDecoration decor =
-        boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
+    BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
-      if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
-
-      if (tkn1 != null) {
-        tkr = tkn1!.ticker;
-        tokenImage = tkn1!.icon;
-      }
+      setState(() {
+        tkr = TradeTokens.tkn1!.ticker;
+        tokenImage = TradeTokens.tkn1!.icon;
+      });
     } else {
-      if (tkn2 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
-
-      if (tkn2 != null) {
-        tkr = tkn2!.ticker;
-        tokenImage = tkn2!.icon;
-      }
+      setState(() {
+        tkr = TradeTokens.tkn2!.ticker;
+        tokenImage = TradeTokens.tkn2!.icon;
+      });
     }
 
     return Container(
@@ -434,9 +422,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
         decoration: decor,
         child: TextButton(
             onPressed: () => showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    AthleteTokenList(context, tknNum)),
+              context: context,
+              builder: (BuildContext context) => AthleteTokenList(context, tknNum)
+            ),
             child: Container(
                 //width: 90,
                 child: Row(
@@ -497,6 +485,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
       ),
     );
   }
+
+
 
   void dialog(BuildContext context, double _height, double _width, BoxDecoration _decoration, Widget _child) {
     Dialog fancyDialog = Dialog(
@@ -565,8 +555,6 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   double fromAmount = 0.0;
   double toAmount = 0.0;
   bool allFarms = true;
-  Token? tkn1;
-  Token? tkn2;
   List<Token> tokenListFilter = [];
   int tokenNumber = 0;
 
@@ -579,8 +567,8 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   @override
   void initState() {
     super.initState();
-    tkn1 = tokens[0];
-    tkn2 = tokens[1];
+    TradeTokens.tkn1 = tokens[0];
+    TradeTokens.tkn2 = tokens[1];
 
     tokenNumber = widget.tknNum;
 
@@ -692,11 +680,11 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
             onPressed: () {
               setState(() {
                 if (tokenNumber == 1) {
-                  tkn1 = token;
+                  TradeTokens.tkn1 = token;
                   print(tokenNumber);
                 }
                 else {
-                  tkn2 = token;
+                  TradeTokens.tkn2 = token;
                   print(tokenNumber);
                 }
                 Navigator.pop(context);
@@ -755,4 +743,15 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     );
   }
 
+}
+
+class TradeTokens {
+  static Token? tkn1;
+  static Token? tkn2;
+
+  set token1(Token t) {tkn1 = t;}
+  set token2(Token t) {tkn2 = t;}
+
+  Token get token1 {return tkn1!;}
+  Token get token2 {return tkn2!;}
 }
