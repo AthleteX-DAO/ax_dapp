@@ -283,60 +283,57 @@ class _DesktopTradeState extends State<DesktopTrade> {
             )));
   }
 
-  Dialog createTokenList(BuildContext context, int tknNum) {
+  Widget createTokenButton(int tknNum) {
     double _height = MediaQuery.of(context).size.height;
 
-    return Dialog(
-        backgroundColor: Colors.grey[900],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Container(
-            width: 400,
-            height: _height * .65,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+    String tkr = "Select a Token";
+    AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
+    BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
+    if (tknNum == 1) {
+      tkr = TradeTokens.tkn1!.ticker;
+      tokenImage = TradeTokens.tkn1!.icon;
+    } else {
+      tkr = TradeTokens.tkn2!.ticker;
+      tokenImage = TradeTokens.tkn2!.icon;
+    }
+
+    return Container(
+        width: 175,
+        height: 40,
+        decoration: decor,
+        child: TextButton(
+          onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => AthleteTokenList(context, tknNum)
+              );
+            },
+            child: Container(
+                //width: 90,
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                // column of elements
                 Container(
-                    height: _height * .625,
-                    width: 350,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                  height: 30,
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Token Name",
-                                      style: textStyle(Colors.grey[400]!, 16,
-                                          false, false))),
-                              Container(
-                                  child: TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Icon(Icons.close,
-                                    color: Colors.grey[400], size: 30),
-                              ))
-                            ]),
-                        Container(
-                          child: Divider(thickness: 1, color: Colors.grey[400]),
-                        ),
-                        createSearchBar(),
-                        Container(
-                            height: _height * .625 - 100,
-                            child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                itemCount: tokenListFilter.length,
-                                itemBuilder: (context, index) {
-                                  return createTokenElement(
-                                      tokenListFilter[index], tknNum);
-                                }))
-                      ],
-                    ))
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: tokenImage!,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+                Container(width: 10),
+                Expanded(
+                  child: Text(tkr, style: textStyle(Colors.white, 16, true, false)),
+                ), 
+                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
               ],
-            )));
+            )
+          )
+        )
+      );
   }
 
   Widget createTokenElement(Token token, int tknNum) {
@@ -400,56 +397,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
             ))));
   }
 
-  Widget createTokenButton(int tknNum) {
-    String tkr = "Select a Token";
-    AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
-    BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
-    if (tknNum == 1) {
-      setState(() {
-        tkr = TradeTokens.tkn1!.ticker;
-        tokenImage = TradeTokens.tkn1!.icon;
-      });
-    } else {
-      setState(() {
-        tkr = TradeTokens.tkn2!.ticker;
-        tokenImage = TradeTokens.tkn2!.icon;
-      });
-    }
-
-    return Container(
-        width: 175,
-        height: 40,
-        decoration: decor,
-        child: TextButton(
-            onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) => AthleteTokenList(context, tknNum)
-            ),
-            child: Container(
-                //width: 90,
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: tokenImage!,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                Container(width: 10),
-                Expanded(
-                  child: Text(tkr, style: textStyle(Colors.white, 16, true, false)),
-                ), 
-                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
-              ],
-            ))));
-  }
-
   Widget createSearchBar() {
     return Container(
       width: 300,
@@ -460,9 +407,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(width: 8),
-          Container(
-            child: Icon(Icons.search, color: Colors.white),
-          ),
+          Container(child: Icon(Icons.search, color: Colors.white)),
           Container(width: 10),
           Expanded(
             child: Container(
@@ -470,6 +415,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 onChanged: (value) {
                   setState(() {
                     tokenListFilter = tokens.where((token) => token.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    print("List length: "+tokenListFilter.length.toString());
                   });
                 },
                 decoration: InputDecoration(
@@ -484,23 +430,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
         ],
       ),
     );
-  }
-
-
-
-  void dialog(BuildContext context, double _height, double _width, BoxDecoration _decoration, Widget _child) {
-    Dialog fancyDialog = Dialog(
-        backgroundColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Container(
-            height: _height,
-            width: _width,
-            decoration: _decoration,
-            child: _child));
-
-    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
@@ -626,8 +555,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                                 physics: BouncingScrollPhysics(),
                                 itemCount: tokenListFilter.length,
                                 itemBuilder: (context, index) {
-                                  return createTokenElement(
-                                      tokenListFilter[index]);
+                                  return createTokenElement(tokenListFilter[index]);
                                 }))
                       ],
                     ))
@@ -656,7 +584,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    tokenListFilter = tokens.where((token) => token.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    tokenListFilter = tokens.where((token) => token.ticker.toUpperCase().contains(value.toUpperCase())).toList();
                   });
                 },
                 decoration: InputDecoration(
@@ -742,7 +670,6 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
         )
     );
   }
-
 }
 
 class TradeTokens {
