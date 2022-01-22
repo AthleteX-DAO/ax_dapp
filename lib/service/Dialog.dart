@@ -881,7 +881,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          "Minimum Recieved",
+                          "Minimum Received",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
@@ -931,7 +931,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
               children: <Widget>[
                 Container(
                   child: Text(
-                    "You recieve:",
+                    "You receive:",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,
@@ -1222,7 +1222,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            "Minimum Recieved",
+                            "Minimum Received",
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.grey[600],
@@ -1273,7 +1273,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "You recieve:",
+                      "You receive:",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,
@@ -1494,7 +1494,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "You recieve:",
+                      "You receive:",
                       style: textStyle(Colors.white, 15, false, false),
                     ),
                   ),
@@ -1700,7 +1700,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "You recieve:",
+                      "You receive:",
                       style: textStyle(Colors.white, 15, false, false),
                     ),
                   ),
@@ -2990,7 +2990,7 @@ Dialog swapDialog(BuildContext context) {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          "Minimum Recieved",
+                          "Minimum Received",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
@@ -3043,7 +3043,7 @@ Dialog swapDialog(BuildContext context) {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "You recieve:",
+                      "You receive:",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,

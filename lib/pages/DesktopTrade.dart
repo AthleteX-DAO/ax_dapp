@@ -93,7 +93,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
         height: _height - 57,
         alignment: Alignment.center,
         child: Container(
-            // color: Colors.blue,
             height: hgt,
             width: wid,
             decoration: boxDecoration(
@@ -457,10 +456,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
 class AthleteTokenList extends StatefulWidget {
   final BuildContext context;
   final int tknNum;
-  //final Widget Function() createSearchBar;
   final Widget Function(Token, int) createTokenElement;
   AthleteTokenList(this.context, this.tknNum, this.createTokenElement);
-  //const AthleteTokenList(BuildContext context, int tknNum, {Key? key}) : super(key: key);
 
   @override
   _AthleteTokenListState createState() => _AthleteTokenListState();
@@ -574,7 +571,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    tokenListFilter = tokens.where((token) => token.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    tokenListFilter = tokens.where((token) => token.ticker.toUpperCase().contains(value.toUpperCase())).toList();
                   });
                 },
                 decoration: InputDecoration(
