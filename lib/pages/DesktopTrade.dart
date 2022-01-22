@@ -286,66 +286,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
             )));
   }
 
-  Dialog createTokenList(BuildContext context, int tknNum) {
-    double _height = MediaQuery.of(context).size.height;
-
-    /*for (Athlete ath in AthleteList.list)
-      tokens.add(Token(ath.name + " APT", ath.name + " APT",
-          AssetImage('../assets/images/apt.png')));*/
-
-    return Dialog(
-        backgroundColor: Colors.grey[900],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Container(
-            width: 400,
-            height: _height * .65,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                // column of elements
-                Container(
-                    height: _height * .625,
-                    width: 350,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                  height: 30,
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Token Name",
-                                      style: textStyle(Colors.grey[400]!, 16,
-                                          false, false))),
-                              Container(
-                                  child: TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Icon(Icons.close,
-                                    color: Colors.grey[400], size: 30),
-                              ))
-                            ]),
-                        Container(
-                          child: Divider(thickness: 1, color: Colors.grey[400]),
-                        ),
-                        createSearchBar(),
-                        Container(
-                            height: _height * .625 - 100,
-                            child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                itemCount: tokenListFilter.length,
-                                itemBuilder: (context, index) {
-                                  return createTokenElement(
-                                      tokenListFilter[index], tknNum);
-                                }))
-                      ],
-                    ))
-              ],
-            )));
-  }
-
   Widget createTokenElement(Token token, int tknNum) {
     return Container(
         height: 50,
@@ -460,42 +400,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
               ],
             ))));
-  }
-
-  Widget createSearchBar() {
-    return Container(
-      width: 300,
-      height: 40,
-      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
-      child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Container(width: 8),
-          Container(
-            child: Icon(Icons.search, color: Colors.white),
-          ),
-          Container(width: 10),
-          Expanded(
-            child: Container(
-              child: TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    tokenListFilter = tokens.where((token) => token.name.toUpperCase().contains(value.toUpperCase())).toList();
-                  });
-                },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 8.5),
-                  hintText: "Search a name or paste an address",
-                  hintStyle: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   void dialog(BuildContext context, double _height, double _width, BoxDecoration _decoration, Widget _child) {
