@@ -14,7 +14,7 @@ class WalletController extends GetxController {
   var axPrice = "-".obs;
   var axCirculation = "-".obs;
   var axTotalSupply = "-".obs;
-  var yourBalance = 0.0.obs;
+  var yourBalance = "-".obs;
 
   void getYourAXBalance() async {
     update();
@@ -66,12 +66,13 @@ class WalletController extends GetxController {
     try {
       BigInt rawBalance = await ax.balanceOf(walletAddress);
       print("Raw Balance: $rawBalance");
-      yourBalance.value = rawBalance.toDouble();
+      var balanceInWei = EtherAmount.inWei(rawBalance);
+      yourBalance.value = "${balanceInWei.getInEther}";
     } catch (error) {
       print("[Console] Failed to retrive the balance: $error");
     }
 
-    print("[Console] AX Balance: ${yourBalance.toStringAsFixed(2)}");
+    print("[Console] AX Balance: $yourBalance");
     update();
   }
 
