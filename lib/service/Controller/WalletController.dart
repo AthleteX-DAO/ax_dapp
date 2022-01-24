@@ -5,6 +5,7 @@ import 'package:web3dart/web3dart.dart';
 import 'package:coingecko_api/coingecko_api.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'Controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ class WalletController extends GetxController {
   var axPrice = "-".obs;
   var axCirculation = "-".obs;
   var axTotalSupply = "-".obs;
-  var yourBalance = 11.0.obs;
+  var yourBalance = 0.0.obs;
 
   void getYourAXBalance() async {
     update();
@@ -70,7 +71,7 @@ class WalletController extends GetxController {
       print("[Console] Failed to retrive the balance: $error");
     }
 
-    print("[Console] AX Balance: $yourBalance");
+    print("[Console] AX Balance: ${yourBalance.toStringAsFixed(2)}");
     update();
   }
 

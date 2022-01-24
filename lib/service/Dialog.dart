@@ -2164,8 +2164,7 @@ Dialog yourAXDialog(BuildContext context) {
                 Container(
                   height: 65,
                   alignment: Alignment.center,
-                  child: Text("100.00",
-                      style: textStyle(Colors.white, 20, false, false)),
+                  child: Obx(() => Text("${walletController.yourBalance.toStringAsFixed(2)}", style: textStyle(Colors.white, 20, false, false))),
                 ),
                 Container(
                     width: wid - edge,
@@ -2188,7 +2187,7 @@ Dialog yourAXDialog(BuildContext context) {
                             Container(
                               child: Obx(
                                 () => Text(
-                                  "${walletController.yourBalance} AX",
+                                  "${walletController.yourBalance.toStringAsFixed(2)} AX",
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.grey[600],
