@@ -52,6 +52,7 @@ class WalletController extends GetxController {
 
   // Update token balance
   void getTokenBalance() async {
+    var axFormat = NumberFormat.currency(name: "AX", symbol: "α", decimalDigits: 2);
     print("[Console] Inside getTokenBalance()");
     Controller controller = Get.find();
     var theClient = controller.client.value;
