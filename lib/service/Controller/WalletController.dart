@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:coingecko_api/coingecko_api.dart';
+import 'package:http/http.dart';
 import 'dart:convert';
 import 'Controller.dart';
 import 'package:http/http.dart' as http;
@@ -58,10 +59,8 @@ class WalletController extends GetxController {
     print("walletAddress: $walletAddress");
     var tokenAddress = EthereumAddress.fromHex(AXT.polygonAddress);
     print("tokenAddress: $tokenAddress");
-    var ax = Erc20(
-        address: tokenAddress,
-        client: theClient,
-        chainId: controller.networkID.value);
+    Web3Client polygonClient = Web3Client("https://polygon-rpc.com", Client());
+    var ax = Erc20(address: tokenAddress, client: polygonClient);
     print(ax);
     try {
       BigInt rawBalance = await ax.balanceOf(walletAddress);
