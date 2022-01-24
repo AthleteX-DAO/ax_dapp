@@ -12,7 +12,8 @@ import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
 class Controller extends GetxController {
-  var client = Web3Client("url", Client()).obs;
+  var client =
+      Web3Client("https://matic-mumbai.chainstacklabs.com/", Client()).obs;
   var credentials;
   var publicAddress =
       EthereumAddress.fromHex("0xcdaa8c55fB92fbBE61948aDf4Ba8Cf7Ad33DBeF0").obs;
@@ -57,7 +58,7 @@ class Controller extends GetxController {
   }
 
   // Connect the dapp to metamask and update relevant values
-  void connect() async {
+  Future<void> connect() async {
     final eth = window.ethereum;
     if (eth == null) {
       print('[Console] MetaMask is not available');
@@ -66,7 +67,7 @@ class Controller extends GetxController {
     walletConnected = true;
     client.value = Web3Client.custom(eth.asRpcService());
     credentials = await eth.requestAccount();
-    print('[Console] connecting the wallet...');
+    print('[Console] Connecting the wallet...');
     networkID.value = await client.value.getNetworkId();
     if (networkID.value != MAINNET_CHAIN_ID &&
         networkID.value != TESTNET_CHAIN_ID) {
@@ -80,7 +81,7 @@ class Controller extends GetxController {
     var rawGasPrice = await client.value.getGasPrice();
     var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
     gasString.value = "$gasPriceinGwei";
-    print("[Console] updated client and credentials");
+    print("[Console] Updated client and credentials");
     update();
   }
 

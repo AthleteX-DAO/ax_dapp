@@ -12,7 +12,7 @@ class WalletController extends GetxController {
   var axPrice = "-".obs;
   var axCirculation = "-".obs;
   var axTotalSupply = "-".obs;
-  var yourBalance = 0.0.obs;
+  var yourBalance = 11.0.obs;
 
   void getYourAXBalance() async {
     update();
@@ -54,15 +54,24 @@ class WalletController extends GetxController {
     Controller controller = Get.find();
     var theClient = controller.client.value;
     print("Client: $theClient");
-    var account = controller.publicAddress.value;
-    print("account: $account");
-    var address = EthereumAddress.fromHex(AXT.polygonAddress);
-    print("address: $address");
-    var ax = Erc20(address: address, client: theClient);
+    var walletAddress = controller.publicAddress.value;
+    print("walletAddress: $walletAddress");
+    var tokenAddress = EthereumAddress.fromHex(AXT.polygonAddress);
+    print("tokenAddress: $tokenAddress");
+    var ax = Erc20(
+        address: tokenAddress,
+        client: theClient,
+        chainId: controller.networkID.value);
     print(ax);
-    BigInt rawBalance = await ax.balanceOf(account);
-    yourBalance.value = rawBalance.toDouble();
-    print("[Console] AX Blance: $yourBalance");
+    try {
+      BigInt rawBalance = await ax.balanceOf(walletAddress);
+      print("Raw Balance: $rawBalance");
+      yourBalance.value = rawBalance.toDouble();
+    } catch (error) {
+      print("[Console] Failed to retrive the balance: $error");
+    }
+
+    print("[Console] AX Balance: $yourBalance");
     update();
   }
 

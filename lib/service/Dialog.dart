@@ -143,9 +143,11 @@ Dialog walletDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    controller.connect();
-                    walletController.getTokenMetrics();
-                    walletController.getTokenBalance();
+                    controller.connect().then((value) {
+                      walletController.getTokenMetrics();
+                      walletController.getTokenBalance();
+                    });
+
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
                     //   showDialog(
                     //       context: context,
@@ -2248,7 +2250,7 @@ Dialog yourAXDialog(BuildContext context) {
                             Container(
                               child: Obx(
                                 () => Text(
-                                  "${walletController.axPrice}",
+                                  "${walletController.axPrice} USD",
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.grey[600],
