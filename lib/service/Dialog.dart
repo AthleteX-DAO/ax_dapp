@@ -2164,8 +2164,8 @@ Dialog yourAXDialog(BuildContext context) {
                 Container(
                   height: 65,
                   alignment: Alignment.center,
-                  child: Obx(() => Text("$walletController.yourBalance",
-                      style: textStyle(Colors.white, 20, false, false))),
+                  child: Text("${walletController.yourBalance} AX",
+                      style: textStyle(Colors.white, 20, false, false)),
                 ),
                 Container(
                     width: wid - edge,
@@ -2248,13 +2248,11 @@ Dialog yourAXDialog(BuildContext context) {
                               ),
                             ),
                             Container(
-                              child: Obx(
-                                () => Text(
-                                  "${walletController.axPrice} USD",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey[600],
-                                  ),
+                              child: Text(
+                                "${walletController.axPrice} USD",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.grey[600],
                                 ),
                               ),
                             )

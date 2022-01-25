@@ -52,23 +52,20 @@ class WalletController extends GetxController {
 
   // Update token balance
   void getTokenBalance() async {
-    var axFormat = NumberFormat.currency(name: "AX", symbol: "α", decimalDigits: 2);
-    print("[Console] Inside getTokenBalance()");
+    var axFormat =
+        NumberFormat.currency(name: "AX", symbol: "α", decimalDigits: 2);
     Controller controller = Get.find();
     var theClient = controller.client.value;
-    print("Client: $theClient");
     var walletAddress = controller.publicAddress.value;
-    print("walletAddress: $walletAddress");
     var tokenAddress = EthereumAddress.fromHex(AXT.polygonAddress);
-    print("tokenAddress: $tokenAddress");
     Web3Client polygonClient = Web3Client("https://polygon-rpc.com", Client());
     var ax = Erc20(address: tokenAddress, client: polygonClient);
-    print(ax);
     try {
       BigInt rawBalance = await ax.balanceOf(walletAddress);
       print("Raw Balance: $rawBalance");
       var balanceInWei = EtherAmount.inWei(rawBalance);
-      yourBalance.value = "${balanceInWei.getInEther}";
+      var balanceInEther = balanceInWei.getInEther;
+      yourBalance.value = "$balanceInEther";
     } catch (error) {
       print("[Console] Failed to retrive the balance: $error");
     }

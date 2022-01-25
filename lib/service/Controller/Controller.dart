@@ -75,9 +75,7 @@ class Controller extends GetxController {
           "[Console] Wrong network ID: $networkID. Connect to mainnet(137) or testnet (80001) and try again");
       return;
     }
-    print("[Console] Initial adress: $publicAddress.value");
     publicAddress.value = await credentials.extractAddress();
-    print("[Console] Updated adress: $publicAddress.value");
     var rawGasPrice = await client.value.getGasPrice();
     var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
     gasString.value = "$gasPriceinGwei";
