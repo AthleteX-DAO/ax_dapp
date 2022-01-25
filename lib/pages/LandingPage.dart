@@ -42,7 +42,7 @@ class _LandingPageState extends State<LandingPage> {
             )),
         // Text
         Container(
-            height: _height * 0.3,
+            height: 225,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,13 +51,21 @@ class _LandingPageState extends State<LandingPage> {
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                          text: "TRADE",
-                          style: textStyle(
-                              Colors.amber[400]!, textSize, true, false)),
+                        text: "TRADE",
+                        style: TextStyle(
+                          color: Colors.amber[400]!,
+                          fontFamily: 'BebasNeuePro',
+                          fontSize: textSize,
+                        )
+                      ),
                       TextSpan(
-                          text: " ATHLETES",
-                          style:
-                              textStyle(Colors.white, textSize, true, false)),
+                        text: " ATHLETES",
+                        style:TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'BebasNeuePro',
+                          fontSize: textSize,
+                        )
+                      )
                     ],
                   ),
                 ),
@@ -65,13 +73,21 @@ class _LandingPageState extends State<LandingPage> {
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                          text: "BUILD",
-                          style: textStyle(
-                              Colors.amber[400]!, textSize, true, false)),
+                        text: "BUILD",
+                        style: TextStyle(
+                          color: Colors.amber[400]!,
+                          fontFamily: 'BebasNeuePro',
+                          fontSize: textSize,
+                        )
+                      ),
                       TextSpan(
-                          text: " YOUR ROSTER",
-                          style:
-                              textStyle(Colors.white, textSize, true, false)),
+                        text: " YOUR ROSTER",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'BebasNeuePro',
+                          fontSize: textSize,
+                        )
+                      ),
                     ],
                   ),
                 ),
@@ -79,13 +95,21 @@ class _LandingPageState extends State<LandingPage> {
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                          text: "EARN",
-                          style: textStyle(
-                              Colors.amber[400]!, textSize, true, false)),
+                        text: "EARN",
+                        style: TextStyle(
+                          color: Colors.amber[400]!,
+                          fontFamily: 'BebasNeuePro',
+                          fontSize: textSize,
+                        )
+                      ),
                       TextSpan(
-                          text: " REWARDS",
-                          style:
-                              textStyle(Colors.white, textSize, true, false)),
+                        text: " REWARDS",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'BebasNeuePro',
+                          fontSize: textSize,
+                        )
+                      ),
                     ],
                   ),
                 ),
