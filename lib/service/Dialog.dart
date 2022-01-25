@@ -390,8 +390,6 @@ Dialog depositDialog(BuildContext context) {
               //   ),
               // ),
               //TO DO fix changing state of approve button
-              //ApproveButton(175, 45, 'confirm', false, () => {}, () => {})
-              //ApproveButton(175, 45, 'Approve', depositConfimed(context))
               ApproveButton(175, 45, 'Approve', testFunction, depositConfimed)
             ],
           )
