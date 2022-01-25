@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
+import 'package:ax_dapp/pages/DesktopPool.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
@@ -104,6 +105,8 @@ class _V1AppState extends State<V1App> {
         else if (pageNumber == 1)
           DesktopTrade()
         else if (pageNumber == 2)
+          DesktopPool()
+        else if (pageNumber == 3)
           DesktopFarm()
       ],
     );
@@ -178,9 +181,24 @@ class _V1AppState extends State<V1App> {
                                   pageNumber = 2;
                                 });
                             },
-                            child: Text("Farm",
+                            child: Text("Pool",
                                 style: textSwapState(
                                     pageNumber == 2,
+                                    textStyle(
+                                        Colors.white, tabTxSz, true, false),
+                                    textStyle(Colors.amber[400]!, tabTxSz, true,
+                                        true))))),
+                    Container(
+                        child: TextButton(
+                            onPressed: () {
+                              if (pageNumber != 3)
+                                setState(() {
+                                  pageNumber = 3;
+                                });
+                            },
+                            child: Text("Farm",
+                                style: textSwapState(
+                                    pageNumber == 3,
                                     textStyle(
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
