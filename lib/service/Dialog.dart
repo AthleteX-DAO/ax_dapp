@@ -190,7 +190,9 @@ Dialog walletDialog(BuildContext context) {
 
 Dialog depositDialog(BuildContext context) {
   Controller controller = Get.find();
-  double amount = 0;
+  TextEditingController stakeAxInput = TextEditingController();
+  WalletController walletController = Get.find();
+  var amount = 0.0.obs;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 390;
@@ -276,7 +278,13 @@ Dialog depositDialog(BuildContext context) {
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          walletController.getTokenBalance().then((value) {
+                            stakeAxInput.text =
+                                walletController.yourBalance.value;
+                            print(stakeAxInput);
+                          });
+                        },
                         child: Text(
                           "Max",
                           style: textStyle(Colors.grey[400]!, 9, false, false),
@@ -286,9 +294,9 @@ Dialog depositDialog(BuildContext context) {
                     SizedBox(
                       width: 70,
                       child: TextFormField(
+                        controller: stakeAxInput,
                         onChanged: (value) {
-                          amount = double.parse(value);
-                          print(amount);
+                          stakeAxInput.text = value;
                         },
                         style: textStyle(Colors.grey[400]!, 22, false, false),
                         decoration: InputDecoration(
@@ -400,7 +408,8 @@ Dialog depositDialog(BuildContext context) {
 
 // dynamic
 Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
-  double amount = 0;
+  TextEditingController stakeAxInput = TextEditingController();
+  WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 390;
@@ -488,7 +497,13 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          walletController.getTokenBalance().then((value) {
+                            stakeAxInput.text =
+                                walletController.yourBalance.value;
+                            print(stakeAxInput);
+                          });
+                        },
                         child: Text(
                           "Max",
                           style: textStyle(Colors.grey[400]!, 9, false, false),
@@ -498,9 +513,9 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                     SizedBox(
                       width: 70,
                       child: TextFormField(
+                        controller: stakeAxInput,
                         onChanged: (value) {
-                          amount = double.parse(value);
-                          print(amount);
+                          stakeAxInput.text = value;
                         },
                         style: textStyle(Colors.grey[400]!, 22, false, false),
                         decoration: InputDecoration(
@@ -566,10 +581,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       SizedBox(
                         width: 70,
                         child: TextFormField(
-                          onChanged: (value) {
-                            amount = double.parse(value);
-                            print(amount);
-                          },
+                          onChanged: (value) {},
                           style: textStyle(Colors.grey[400]!, 22, false, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
