@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/AthletePage.dart';
+import 'package:ax_dapp/pages/HomePage.dart';
 // import 'package:ax_dapp/pages/testPage.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
@@ -18,6 +19,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   bool athletePage = false;
   int sportState = 0;
   List<Athlete> nflList = [];
+  List<Athlete> nflListFilter = [];
   Athlete curAthlete = Athlete(
       name: "",
       team: "",
@@ -51,10 +53,10 @@ class _DesktopScoutState extends State<DesktopScout> {
               //Container(height: 15),
               // APT Title & Sport Filter
               Container(
-                width: 400,
+                width: _width * 0.85,
                 height: 50,
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text("APT List",
                           style: textStyle(Colors.white, 18, false, false)),
@@ -124,6 +126,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 textStyle(Colors.amber[400]!, sportFilterTxSz,
                                     false, true))),
                       )),
+                      SizedBox(width: _width * 0.56),
+                      Container(
+                        child: createSearchBar(),
+                      ),
                     ]),
               ),
               //Container(height: _height*0.03),
@@ -174,7 +180,11 @@ class _DesktopScoutState extends State<DesktopScout> {
     double _height = MediaQuery.of(context).size.height;
     double hgt = _height * 0.8 - 120;
 
-    if (nflList.length == 0) nflList = AthleteList.list;
+    if (nflList.length == 0) {
+      nflList = AthleteList.list;
+      nflListFilter = nflList;
+    }
+
     // all athletes
     if (sportState == 0)
       return Container(
@@ -182,9 +192,14 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: ListView.builder(
               padding: EdgeInsets.only(top: 10),
               physics: BouncingScrollPhysics(),
-              itemCount: AthleteList.list.length,
+              /*itemCount: AthleteList.list.length,
               itemBuilder: (context, index) {
                 return createListCards(AthleteList.list[index]);
+              }));*/
+              // Since it is only NFL athletes, we will just use this code snippet for the ALL athletes tab
+              itemCount: nflListFilter.length,
+              itemBuilder: (context, index) {
+                return createListCards(nflListFilter[index]);
               }));
     // NFL athletes only
     else if (sportState == 1)
@@ -193,9 +208,9 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: ListView.builder(
               padding: EdgeInsets.only(top: 10),
               physics: BouncingScrollPhysics(),
-              itemCount: nflList.length,
+              itemCount: nflListFilter.length,
               itemBuilder: (context, index) {
-                return createListCards(nflList[index]);
+                return createListCards(nflListFilter[index]);
               }));
     // other athletes
     else {
@@ -344,6 +359,43 @@ class _DesktopScoutState extends State<DesktopScout> {
                     ]
                   ])
                 ])));
+  }
+
+  Widget createSearchBar() {
+    return Container(
+      width: 250,
+      height: 40,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(width: 8),
+          Container(
+            child: Icon(Icons.search, color: Colors.white),
+          ),
+          Container(width: 50),
+          Expanded(
+            child: Container(
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    // This filter will only work if you go onto the NFL tab
+                    nflListFilter = nflList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
+                  });
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 8.5),
+                  hintText: "Search an athlete",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
