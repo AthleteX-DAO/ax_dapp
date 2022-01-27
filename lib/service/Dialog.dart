@@ -2261,7 +2261,7 @@ Dialog yourAXDialog(BuildContext context) {
                           children: <Widget>[
                             Container(
                               child: Text(
-                                "AX in circulation",
+                                "AX in circulation:",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
