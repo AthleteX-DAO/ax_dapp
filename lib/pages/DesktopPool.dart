@@ -1,3 +1,4 @@
+import 'package:ax_dapp/pages/DesktopTrade.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
@@ -43,7 +44,7 @@ class _DesktopPoolState extends State<DesktopPool> {
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
-    double hgt = _height * 0.7;
+    double hgt = _height*0.7;
 
     return Container(
       width: _width,
@@ -58,6 +59,11 @@ class _DesktopPoolState extends State<DesktopPool> {
   }
 
   Widget allLiquidity() {
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    
+    BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
+
     Widget toggle = Container(
       width: 260,
       height: 40,
@@ -95,26 +101,145 @@ class _DesktopPoolState extends State<DesktopPool> {
       )
     );
 
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            height: 45,
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              "Liquidity Pool",
-              style: textStyle(Colors.white, 24, true, false)
-            )
-          ),
-          toggle
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          height: 45,
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            "Liquidity Pool",
+            style: textStyle(Colors.white, 24, true, false)
+          )
+        ),
+        toggle,
+        Container(
+          width: _width*0.75,
+          height: 300,
+          decoration: boxDecoration(Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              // Pool tokens side (add liq.)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        // Top balance text 
+                        Container(),
+                        // Top Token container
+                        Container(
+                          width: 400,
+                          decoration: boxDecoration(Colors.transparent, 20, .5, Colors.grey[400]!),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              // left-half of token box (token)
+                              Container(
+                                width: 175,
+                                height: 40,
+                                decoration: decor,
+                                child: TextButton(
+                                  onPressed: () {},
+                                  // onPressed: () => showDialog(
+                                  //   context: context,
+                                  //   builder: (BuildContext context) => AthleteTokenList(context, tknNum, createTokenElement)),
+                                  // ),
+                                  child: Container(
+                                    width: 145,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          width: 30,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            // image: DecorationImage(
+                                            //   image: tokenImage!,
+                                            //   fit: BoxFit.fill,
+                                            // ),
+                                          ),
+                                        ),
+                                        Container(width: 10),
+                                        Expanded(
+                                          child: Text("todo", style: textStyle(Colors.white, 16, true, false)),
+                                        ), 
+                                        Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
+                                      ],
+                                    )
+                                  )
+                                )
+                              ),
+                              // right-half of token box
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(
+                                      height: 24,
+                                      width: 40,
+                                      decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          swapController.activeTkn1.value;
+                                          print(swapController.amount1);
+                                        },
+                                        child: Text(
+                                          "MAX",
+                                          style: textStyle(Colors.grey[400]!, 8, false, false)
+                                        )
+                                      )
+                                    ),
+                                    SizedBox(
+                                      width: 70,
+                                      child: TextFormField(
+                                        onChanged: (value) {},
+                                        style: textStyle(Colors.grey[400]!, 22, false, false),
+                                        decoration: InputDecoration(
+                                          hintText: '0.00',
+                                          hintStyle: textStyle(Colors.grey[400]!, 22, false, false),
+                                          contentPadding: const EdgeInsets.all(9),
+                                          border: InputBorder.none,
+                                        ),
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              )
+                            ],
+                          )
+                        )
+                      ],
+                    )
+                  )
+                ],
+              ),
+              // Pool details side (add liq.)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  
+                ],
+              ),
+            ],
+          )
+        ),
+        Container(
+          height: _height*0.5-300
+        )
+      ],
     );
   }
 
   Widget myLiquidity() {
+    double _height = MediaQuery.of(context).size.height;
+
     Widget toggle = Container(
       width: 260,
       height: 40,
@@ -146,7 +271,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 style: textStyle(Colors.white, 16, true, false)
               )
             )
-          )
+          ),
         ]
       )
     );
@@ -165,6 +290,9 @@ class _DesktopPoolState extends State<DesktopPool> {
             )
           ),
           toggle,
+          Container(
+            height: _height*0.5,
+          )
         ],
       ),
     );

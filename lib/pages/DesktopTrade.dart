@@ -349,8 +349,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Widget createTokenButton(int tknNum) {
     String tkr = "Select a Token";
     AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
-    BoxDecoration decor =
-        boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
+    BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
       if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
