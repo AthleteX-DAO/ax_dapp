@@ -274,15 +274,16 @@ class _V1AppState extends State<V1App> {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                hoverColor: Colors.amber,
-                icon: Icon(
-                  Icons.help_outline,
-                ),
-                color: Colors.white,
-                iconSize: 25,
-              )
+              // Help icon button, temporarily delete
+              // IconButton(
+              //   onPressed: () {},
+              //   hoverColor: Colors.amber,
+              //   icon: Icon(
+              //     Icons.help_outline,
+              //   ),
+              //   color: Colors.white,
+              //   iconSize: 25,
+              // )
             ],
           ),
         ],
