@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class V1App extends StatefulWidget {
   @override
@@ -61,22 +62,25 @@ class _V1AppState extends State<V1App> {
     Widget pageWidget = buildDesktop(context);
 
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          title: topNavBar(context),
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-        ),
-        body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("../assets/images/blurredBackground.png"),
-                fit: BoxFit.fill,
-              ),
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      appBar: AppBar(
+        title: topNavBar(context),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+      ),
+      body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("../assets/images/blurredBackground.png"),
+              fit: BoxFit.fill,
             ),
-            child: pageWidget));
+          ),
+          child: pageWidget),
+      bottomNavigationBar: bottomNavBar(context),
+    );
     // Do not delete this yet. The original code before the changes
     /*return Scaffold(
       appBar: AppBar(
@@ -211,6 +215,76 @@ class _V1AppState extends State<V1App> {
             //top right corner wallet information
             buildAccountBox()
           ]
+        ],
+      ),
+    );
+  }
+
+  Widget bottomNavBar(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.1,
+      color: Colors.transparent,
+      padding: const EdgeInsets.only(left: 40.0, top: 20.0, right: 40),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                // margin: ,
+                child: InkWell(
+                  child: Text('athletex.io'),
+                  onTap: () => launch('https://www.athletex.io/'),
+                ),
+                width: 72,
+                height: 20,
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                        onPressed: () =>
+                            //Discord button
+                            launch('https://discord.com/invite/WFsyAuzp9V'),
+                        icon: FaIcon(
+                          FontAwesomeIcons.discord,
+                          size: 25,
+                          color: Colors.grey[400],
+                        )),
+                    IconButton(
+                        onPressed: () =>
+                            launch('https://twitter.com/athletex_dao?s=20'),
+                        icon: FaIcon(
+                          FontAwesomeIcons.twitter,
+                          size: 25,
+                          color: Colors.grey[400],
+                        )),
+                    IconButton(
+                        onPressed: () =>
+                            launch('https://github.com/SportsToken'),
+                        icon: FaIcon(
+                          FontAwesomeIcons.github,
+                          size: 25,
+                          color: Colors.grey[400],
+                        )),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                hoverColor: Colors.amber,
+                icon: Icon(
+                  Icons.help_outline,
+                ),
+                color: Colors.white,
+                iconSize: 25,
+              )
+            ],
+          ),
         ],
       ),
     );
