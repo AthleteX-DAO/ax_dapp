@@ -1,13 +1,12 @@
-import 'package:ax_dapp/pages/DesktopTrade.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
+import 'package:ax_dapp/service/AthleteTokenList.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
@@ -22,6 +21,10 @@ class _DesktopPoolState extends State<DesktopPool> {
   SwapController swapController = Get.find();
   bool allLiq = true;
   List<Token> tokenListFilter = [];
+  double fromAmount = 0.0;
+  double toAmount = 0.0;
+  Token? tkn1;
+  Token? tkn2;
 
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
@@ -396,9 +399,27 @@ class _DesktopPoolState extends State<DesktopPool> {
     );
   }
 
-  Widget tokenContainer(int which) {
+  Widget tokenContainer(int tknNum) {
+    String tkr = "Select a Token";
+    AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
     BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
-    
+    if (tknNum == 1) {
+      if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+
+      if (tkn1 != null) {
+        tkr = tkn1!.ticker;
+        tokenImage = tkn1!.icon;
+      }
+    } else {
+      if (tkn2 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+
+      if (tkn2 != null) {
+        tkr = tkn2!.ticker;
+        tokenImage = tkn2!.icon;
+      }
+    }
+
+
     return Container(
       height: 75,
       width: MediaQuery.of(context).size.width*.35,
@@ -413,11 +434,11 @@ class _DesktopPoolState extends State<DesktopPool> {
             height: 40,
             decoration: decor,
             child: TextButton(
-              onPressed: () {},
-              // onPressed: () => showDialog(
-              //   context: context,
-              //   builder: (BuildContext context) => AthleteTokenList(context, tknNum, createTokenElement)),
-              // ),
+              // onPressed: (){},
+              onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) => AthleteTokenList(context, tknNum, createTokenElement),
+              ),
               child: Container(
                 width: 145,
                 child: Row(
@@ -428,15 +449,15 @@ class _DesktopPoolState extends State<DesktopPool> {
                       height: 30,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        // image: DecorationImage(
-                        //   image: tokenImage!,
-                        //   fit: BoxFit.fill,
-                        // ),
+                        image: DecorationImage(
+                          image: tokenImage!,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                     Container(width: 10),
                     Expanded(
-                      child: Text("todo", style: textStyle(Colors.white, 16, true)),
+                      child: Text(tkr, style: textStyle(Colors.white, 16, true)),
                     ), 
                     Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
                   ],
@@ -483,6 +504,72 @@ class _DesktopPoolState extends State<DesktopPool> {
             )
           )
         ],
+      )
+    );
+  }
+  
+  Widget createTokenElement(Token token, int tknNum) {
+    return Container(
+      height: 50,
+      child: TextButton(
+        onPressed: () {
+          setState(() {
+            if (tknNum == 1)
+              tkn1 = token;
+            else
+              tkn2 = token;
+            Navigator.pop(context);
+          });
+        },
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                height: 30,
+                width: 60,
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      scale: 0.5,
+                      image: token.icon!,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 45,
+                // ticker/name column "AX/AthleteX"
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      width: 125,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        token.ticker,
+                        style: textStyle(Colors.white, 14, true),
+                      )
+                    ),
+                    Container(
+                      width: 125,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        token.name,
+                        style: textStyle(Colors.grey[100]!, 9, false),
+                      )
+                    ),
+                  ],
+                )
+              )
+            ],
+          )
+        )
       )
     );
   }
