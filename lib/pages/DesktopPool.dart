@@ -452,3 +452,13 @@ class _DesktopPoolState extends State<DesktopPool> {
         border: Border.all(color: borCol, width: borWid));
   }
 }
+
+
+class Farm {
+  final String name;
+  Athlete? athlete;
+
+  Farm(this.name, [this.athlete]);
+}
+
+
