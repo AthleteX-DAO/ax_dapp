@@ -100,6 +100,159 @@ class _DesktopPoolState extends State<DesktopPool> {
       )
     );
 
+    bool advDetails = false;
+
+    Widget pricePoolShare = Container(
+      height: 275,
+      width: wid/2-40,
+      alignment: Alignment.topRight,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(top: 15),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              (advDetails)
+              ? "Details: Price and Pool Share"
+              : "Details",
+              style: textStyle(Colors.white, 21, true),
+            )
+          ),
+          Container(
+            width: wid/2-95,
+            height: 65,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                // AX per / APT per
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        width: wid/4-70,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "AX per tkn APT:",
+                              style: textStyle(Colors.grey[600]!, 17, false),
+                            ),
+                            Text(
+                              "2.24",
+                              style: textStyle(Colors.white, 17, false),
+                            )
+                          ],
+                        )
+                      ),
+                      Container(
+                        width: wid/4-70,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "tkn APT per AX:",
+                              style: textStyle(Colors.grey[600]!, 17, false),
+                            ),
+                            Text(
+                              "1.48",
+                              style: textStyle(Colors.white, 17, false),
+                            )
+                          ],
+                        )
+                      ),
+                    ],
+                  )
+                ),
+                // pool share / exp. yield
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        width: wid/4-70,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Share of pool:",
+                              style: textStyle(Colors.grey[600]!, 17, false),
+                            ),
+                            Text(
+                              "0.12%",
+                              style: textStyle(Colors.white, 17, false),
+                            )
+                          ],
+                        )
+                      ),
+                      Container(
+                        width: wid/4-70,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Expected yield:",
+                              style: textStyle(Colors.grey[600]!, 17, false),
+                            ),
+                            Text(
+                              "24.12%",
+                              style: textStyle(Colors.white, 17, false),
+                            )
+                          ]
+                        )
+                      ),
+                    ]
+                  )
+                )
+              ],
+            )
+          ),
+          Container(
+            width: wid/2-125,
+            child: RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                      text: "*Add liquidity to earn 0.25% of all trades on this pair",
+                      style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                  TextSpan(
+                      text: " proportional to your share of the pool and receive LP tokens.",
+                      style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                ],
+              ),
+            ),
+          ),
+          (advDetails)
+          ? Container(
+            width: wid/2-95,
+            height: 45,
+            decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                "Add Liquidity",
+                style: textStyle(Colors.black, 16, true),
+              )
+            )
+          )
+          : Container(
+            width: wid/2-95,
+            height: 45,
+            decoration: boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!),
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                "Approve",
+                style: textStyle(Colors.amber[400]!, 16, true),
+              )
+            )
+          )
+        ]
+      )
+    );
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,11 +271,12 @@ class _DesktopPoolState extends State<DesktopPool> {
           height: 300,
           decoration: boxDecoration(Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // Pool tokens side (add liq.)
               Container(
-                height: 250,
+                height: 275,
                 width: wid/2-20,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,6 +284,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
+                        SizedBox(height: 25),
                         // Top balance text 
                         Container(
                           alignment: Alignment.bottomRight,
@@ -169,106 +324,8 @@ class _DesktopPoolState extends State<DesktopPool> {
                 ),
               ),
               // Pool details side (add liq.)
-              Container(
-                width: wid/2-20,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Details: Price and Pool Share",
-                        style: textStyle(Colors.white, 21, true),
-                      )
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        // AX per / APT per
-                        Container(
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                width: (wid/2-20)/2-20,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "AX per tkn APT:",
-                                      style: textStyle(Colors.grey[600]!, 16, false),
-                                    ),
-                                    Text(
-                                      "2.24",
-                                      style: textStyle(Colors.grey[600]!, 16, false),
-                                    )
-                                  ],
-                                )
-                              ),
-                              Container(
-                                width: (wid/2-20)/2-20,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "tkn APT per AX:",
-                                      style: textStyle(Colors.grey[600]!, 16, false),
-                                    ),
-                                    Text(
-                                      "1.48",
-                                      style: textStyle(Colors.grey[600]!, 16, false),
-                                    )
-                                  ],
-                                )
-                              ),
-                            ],
-                          )
-                        ),
-                        // pool share / exp. yield
-                        Container(
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                width: (wid/2-20)/2-20,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "Share of pool:",
-                                      style: textStyle(Colors.grey[600]!, 16, false),
-                                    ),
-                                    Text(
-                                      "0.12%",
-                                      style: textStyle(Colors.grey[600]!, 16, false),
-                                    )
-                                  ],
-                                )
-                              ),
-                              Container(
-                                width: (wid/2-20)/2-20,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "Expected yield:",
-                                      style: textStyle(Colors.grey[600]!, 16, false),
-                                    ),
-                                    Text(
-                                      "24.12%",
-                                      style: textStyle(Colors.grey[600]!, 16, false),
-                                    )
-                                  ],
-                                )
-                              ),
-                            ],
-                          )
-                        )
-                      ],
-                    ),
-                  ],
-                )
-              ),
-            ],
+              pricePoolShare,
+            ]
           )
         ),
         Container(
@@ -344,6 +401,7 @@ class _DesktopPoolState extends State<DesktopPool> {
     
     return Container(
       height: 75,
+      width: MediaQuery.of(context).size.width*.35,
       padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: boxDecoration(Colors.transparent, 20, .5, Colors.grey[400]!),
       child: Row(
@@ -435,7 +493,7 @@ class _DesktopPoolState extends State<DesktopPool> {
         color: color,
         fontFamily: 'OpenSans',
         fontSize: size,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w500,
       );
     else
       return TextStyle(
