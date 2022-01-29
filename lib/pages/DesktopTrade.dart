@@ -1,9 +1,11 @@
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
-import 'package:ax_dapp/service/Controller/AXT.dart';
-import 'package:ax_dapp/service/Controller/SXT.dart';
-import 'package:ax_dapp/service/Controller/SwapController.dart';
+import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
+import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
+import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:ax_dapp/service/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
@@ -23,11 +25,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
   bool allFarms = true;
   Token? tkn1;
   Token? tkn2;
+  List<Token> tokenListFilter = [];
 
   List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('../assets/images/x.png')),
+    AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
     SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
-    Token("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
+    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
   ];
 
   @override
@@ -35,12 +38,18 @@ class _DesktopTradeState extends State<DesktopTrade> {
     super.initState();
     tkn1 = tokens[0];
     tkn2 = tokens[1];
+
+    for (Athlete ath in AthleteList.list)
+      tokens.add(Token(ath.name + " APT", ath.name + " APT",
+          AssetImage('../assets/images/apt.png')));
+
+    tokenListFilter = tokens;
   }
 
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
-
+    double fromAmount = 0, toAmount = 0;
     double wid = 550;
     double hgt = 380;
     if (_height < 480) hgt = _height;
@@ -55,6 +64,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               "Select token to swap with",
               style: textStyle(Colors.blue, 16, true, false),
             )));
+
     if (tkn1 != null && tkn2 != null)
       swapButton = Container(
           height: 50,
@@ -64,8 +74,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
           child: TextButton(
               onPressed: () {
                 if (tkn1 != null && tkn2 != null)
-                  swapController.activeTkn1.value = tkn1!;
-                swapController.activeTkn2.value = tkn2!;
+                  swapController.updateToken1(tkn1!);
+                swapController.updateAmount1(fromAmount);
+                swapController.updateAmount2(toAmount);
+                swapController.updateAddress1(tkn1!.address.value);
+                swapController.updateAddress2(tkn2!.address.value);
+                swapController.updateToken2(tkn2!);
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => swapDialog(context));
@@ -129,7 +143,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                                 0.5,
                                                 Colors.grey[400]!),
                                             child: TextButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  swapController
+                                                      .activeTkn1.value;
+                                                  print(swapController.amount1);
+                                                },
                                                 child: Text("MAX",
                                                     style: textStyle(
                                                         Colors.grey[400]!,
@@ -141,9 +159,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                           child: TextFormField(
                                             onChanged: (value) {
                                               fromAmount = double.parse(value);
-                                              swapController.activeTkn1.value
-                                                  .amount.value = fromAmount;
-                                              print(fromAmount);
                                             },
                                             style: textStyle(Colors.grey[400]!,
                                                 22, false, false),
@@ -217,9 +232,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                 child: TextFormField(
                                   onChanged: (value) {
                                     toAmount = double.parse(value);
-                                    swapController.activeTkn1.value
-                                                  .amount.value = toAmount;
-                                    print(toAmount);
                                   },
                                   style: textStyle(
                                       Colors.grey[400]!, 22, false, false),
@@ -245,7 +257,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     child: Column(
                       children: <Widget>[
                         //Slippage tolerance text
-                        Row(
+                        /*Row(
                           children: <Widget>[
                             Container(
                               width: wid - 75,
@@ -265,7 +277,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               ),
                             ),
                           ],
-                        ),
+                        ),*/
                         // Swap Button
                         swapButton,
                       ],
@@ -277,9 +289,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Dialog createTokenList(BuildContext context, int tknNum) {
     double _height = MediaQuery.of(context).size.height;
 
-    for (Athlete ath in AthleteList.list)
+    /*for (Athlete ath in AthleteList.list)
       tokens.add(Token(ath.name + " APT", ath.name + " APT",
-          AssetImage('../assets/images/apt.png')));
+          AssetImage('../assets/images/apt.png')));*/
 
     return Dialog(
         backgroundColor: Colors.grey[900],
@@ -287,7 +299,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Container(
-            width: 350,
+            width: 400,
             height: _height * .65,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -295,7 +307,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 // column of elements
                 Container(
                     height: _height * .625,
-                    width: 300,
+                    width: 350,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -318,14 +330,15 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         Container(
                           child: Divider(thickness: 1, color: Colors.grey[400]),
                         ),
+                        createSearchBar(),
                         Container(
                             height: _height * .625 - 100,
                             child: ListView.builder(
                                 physics: BouncingScrollPhysics(),
-                                itemCount: tokens.length,
+                                itemCount: tokenListFilter.length,
                                 itemBuilder: (context, index) {
                                   return createTokenElement(
-                                      tokens[index], tknNum);
+                                      tokenListFilter[index], tknNum);
                                 }))
                       ],
                     ))
@@ -394,16 +407,23 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   Widget createTokenButton(int tknNum) {
     String tkr = "Select a Token";
+    AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
     BoxDecoration decor =
         boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
       if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn1 != null) tkr = tkn1!.ticker;
+      if (tkn1 != null) {
+        tkr = tkn1!.ticker;
+        tokenImage = tkn1!.icon;
+      }
     } else {
       if (tkn2 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn2 != null) tkr = tkn2!.ticker;
+      if (tkn2 != null) {
+        tkr = tkn2!.ticker;
+        tokenImage = tkn2!.icon;
+      }
     }
 
     return Container(
@@ -420,10 +440,60 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(tkr, style: textStyle(Colors.white, 16, true, false)),
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: tokenImage!,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+                Container(width: 10),
+                Expanded(
+                  child: Text(tkr, style: textStyle(Colors.white, 16, true, false)),
+                ), 
                 Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
               ],
             ))));
+  }
+
+  Widget createSearchBar() {
+    return Container(
+      width: 300,
+      height: 40,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(width: 8),
+          Container(
+            child: Icon(Icons.search, color: Colors.white),
+          ),
+          Container(width: 10),
+          Expanded(
+            child: Container(
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    tokenListFilter = tokens.where((token) => token.name.toUpperCase().contains(value.toUpperCase())).toList();
+                  });
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 8.5),
+                  hintText: "Search a name or paste an address",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void dialog(BuildContext context, double _height, double _width,

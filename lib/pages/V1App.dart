@@ -1,9 +1,10 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
-import 'package:ax_dapp/service/Controller/AXT.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
-import 'package:ax_dapp/service/Controller/SwapController.dart';
+import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
@@ -46,12 +47,13 @@ class _V1AppState extends State<V1App> {
   // state change variables
   int pageNumber = 0;
   bool walletConnected =
-      true; //flag to check if user has connected their wallet
+      false; //flag to check if user has connected their wallet
   bool allFarms = true;
   List<Athlete> athleteList = [];
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
   SwapController swapController = Get.put(SwapController());
+  WalletController walletController = Get.put(WalletController());
   AXT axt = AXT("AthleteX", "AX");
   Token matic = Token("Polygon", "MATIC");
 
@@ -60,8 +62,11 @@ class _V1AppState extends State<V1App> {
     Widget pageWidget = buildDesktop(context);
 
     return Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
           title: topNavBar(context),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
         ),
         body: Container(
             width: MediaQuery.of(context).size.width,
@@ -73,11 +78,28 @@ class _V1AppState extends State<V1App> {
               ),
             ),
             child: pageWidget));
+    // Do not delete this yet. The original code before the changes
+    /*return Scaffold(
+      appBar: AppBar(
+        title: topNavBar(context),
+      ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("../assets/images/blurredBackground.png"),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: pageWidget
+      )
+    );*/
   }
 
   Widget buildDesktop(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         if (pageNumber == 0)
           DesktopScout()
@@ -94,7 +116,7 @@ class _V1AppState extends State<V1App> {
     double tabTxSz = _width * 0.0185;
     if (tabTxSz < 19) tabTxSz = 19;
     double tabBxSz = _width * 0.3;
-    if (tabBxSz < 247) tabBxSz = 247;
+    if (tabBxSz < 270) tabBxSz = 270;
 
     return Container(
       width: _width * .95,
@@ -109,15 +131,15 @@ class _V1AppState extends State<V1App> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Container(
-                      width: 50,
+                      width: 72,
                       height: 50,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('../assets/images/x.png'),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
+                      child: IconButton(
+                        icon: Image.asset("../assets/images/x.png"),
+                        iconSize: 40,
+                        onPressed: () {
+                          String urlString = "https://www.athletex.io/";
+                          launch(urlString);
+                        },
                       ),
                     ),
                     Container(
@@ -171,7 +193,7 @@ class _V1AppState extends State<V1App> {
             buildConnectWalletButton(),
           ] else ...[
             //top right corner wallet information
-            buildAccountBox(controller.publicAddress.toString())
+            buildAccountBox()
           ]
         ],
       ),
@@ -181,7 +203,7 @@ class _V1AppState extends State<V1App> {
   Widget buildConnectWalletButton() {
     return Container(
         height: 37.5,
-        width: 200,
+        width: 180,
         decoration:
             boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
         child: TextButton(
@@ -195,7 +217,7 @@ class _V1AppState extends State<V1App> {
             )));
   }
 
-  Widget buildAccountBox(String accNum) {
+  Widget buildAccountBox() {
     double _width = MediaQuery.of(context).size.width;
     double wid = 500;
     bool network = true;
@@ -210,6 +232,7 @@ class _V1AppState extends State<V1App> {
       wid = 210;
     }
 
+    String accNum = controller.publicAddress.value.toString();
     String retStr = accNum;
     if (accNum.length > 15)
       retStr = accNum.substring(0, 7) +
@@ -245,7 +268,9 @@ class _V1AppState extends State<V1App> {
               ),
             if (matic)
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.getCurrentGas();
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -253,17 +278,18 @@ class _V1AppState extends State<V1App> {
                       Icons.local_gas_station,
                       color: Colors.grey,
                     ),
-                    Text(
-                      "${controller.gas.value}",
-                      style: textStyle(Colors.grey[400]!, 11, false, false),
-                    )
+                    Obx(() => Text(
+                          "${controller.gasString} gwei",
+                          style: textStyle(Colors.grey[400]!, 11, false, false),
+                        ))
                   ],
                 ),
               ),
             TextButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => yourAXDialog(context)),
+                      context: context,
+                      builder: (BuildContext context) => yourAXDialog(context))
+                  .then((value) => (setState(() {}))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -284,8 +310,9 @@ class _V1AppState extends State<V1App> {
             ),
             TextButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => accountDialog(context)),
+                      context: context,
+                      builder: (BuildContext context) => accountDialog(context))
+                  .then((value) => setState(() {})),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
