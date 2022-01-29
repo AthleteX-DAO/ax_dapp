@@ -1,14 +1,11 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
-import 'dart:html';
-
 import 'dart:math';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:get/get.dart';
-import 'package:web3dart/browser.dart';
 import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
@@ -63,20 +60,20 @@ class Controller extends GetxController {
   }
 
   // Connect the dapp to metamask and update relevant values
-  void connect() async {
-    final eth = window.ethereum;
-    walletConnected = true;
-    client.value = Web3Client.custom(eth!.asRpcService());
-    credentials = await eth.requestAccount();
-    print("[Console] connecting to the decentralized web!");
-    networkID.value = await client.value.getNetworkId();
-    publicAddress.value = await credentials.extractAddress();
-    var rawGasPrice = await client.value.getGasPrice();
-    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
-    gasString.value = "$gasPriceinGwei";
-    print("[Console] updated client and credentials");
-    update();
-  }
+  // void connect() async {
+  //   final eth = window.ethereum;
+  //   walletConnected = true;
+  //   client.value = Web3Client.custom(eth!.asRpcService());
+  //   credentials = await eth.requestAccount();
+  //   print("[Console] connecting to the decentralized web!");
+  //   networkID.value = await client.value.getNetworkId();
+  //   publicAddress.value = await credentials.extractAddress();
+  //   var rawGasPrice = await client.value.getGasPrice();
+  //   var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+  //   gasString.value = "$gasPriceinGwei";
+  //   print("[Console] updated client and credentials");
+  //   update();
+  // }
 
   // Connect the client + set credentials
   void connectNative() async {
@@ -101,7 +98,6 @@ class Controller extends GetxController {
   }
 
   void getCurrentGas() async {
-    final eth = window.ethereum;
     var rawGasPrice = await client.value.getGasPrice();
     var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
     gasString.value = "$gasPriceinGwei";
@@ -115,12 +111,10 @@ class Controller extends GetxController {
   }
 
   void changeAddress() async {
-    final eth = window.ethereum;
-    eth!.requestAccount();
+    
   }
 
   void disconnect() async {
-    final eth = window.ethereum;
     walletConnected = false;
     client.value.dispose();
     // client.value.getChainId();
@@ -128,28 +122,28 @@ class Controller extends GetxController {
     update();
   }
 
-  void addTokenToWallet() async {
-    final eth = window.ethereum;
-    Object tokenParam = {
-      "type": "ERC20",
-      "options": {
-        "address": "0xb60e8dd61c5d32be8058bb8...",
-        "symbol": "FOO",
-        "decimals": 18,
-        "image": "https: //foo.io/token-ima..."
-      }
-    };
+  // void addTokenToWallet() async {
+  //   final eth = window.ethereum;
+  //   Object tokenParam = {
+  //     "type": "ERC20",
+  //     "options": {
+  //       "address": "0xb60e8dd61c5d32be8058bb8...",
+  //       "symbol": "FOO",
+  //       "decimals": 18,
+  //       "image": "https: //foo.io/token-ima..."
+  //     }
+  //   };
 
-    eth!.rawRequest('wallet_watchAsset', params: tokenParam);
-  }
+  //   eth!.rawRequest('wallet_watchAsset', params: tokenParam);
+  // }
 
-  static void switchNetwork() async {
-    final eth = window.ethereum;
-    Object params = [
-      {'chainID': '0xf00'}
-    ];
-    eth!.rawRequest('wallet_switchEthereumChain', params: {params});
-  }
+  // static void switchNetwork() async {
+  //   final eth = window.ethereum;
+  //   Object params = [
+  //     {'chainID': '0xf00'}
+  //   ];
+  //   eth!.rawRequest('wallet_switchEthereumChain', params: {params});
+  // }
 
   static void viewTx() async {
     String urlString = "";
