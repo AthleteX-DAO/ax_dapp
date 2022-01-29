@@ -1,6 +1,6 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, unused_local_variable
 
-import 'dart:html';
+// import 'dart:html';
 import 'package:get/get.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:flutter/material.dart';

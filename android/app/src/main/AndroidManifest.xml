@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ae_dapp">
+    package="com.example.athletexdapp">
    <application
-        android:label="ae_dapp"
+        android:label="AthleteX dApp"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
