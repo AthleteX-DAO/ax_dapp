@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
+import 'package:ax_dapp/pages/DesktopPool.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
@@ -104,6 +105,8 @@ class _V1AppState extends State<V1App> {
         else if (pageNumber == 1)
           DesktopTrade()
         else if (pageNumber == 2)
+          DesktopPool()
+        else if (pageNumber == 3)
           DesktopFarm()
       ],
     );
@@ -131,13 +134,13 @@ class _V1AppState extends State<V1App> {
                     Container(
                       width: 72,
                       height: 50,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('../assets/images/x.png'),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
+                      child: IconButton(
+                        icon: Image.asset("../assets/images/x.png"),
+                        iconSize: 40,
+                        onPressed: () {
+                          String urlString = "https://www.athletex.io/";
+                          launch(urlString);
+                        },
                       ),
                     ),
                     Container(
@@ -178,9 +181,24 @@ class _V1AppState extends State<V1App> {
                                   pageNumber = 2;
                                 });
                             },
-                            child: Text("Farm",
+                            child: Text("Pool",
                                 style: textSwapState(
                                     pageNumber == 2,
+                                    textStyle(
+                                        Colors.white, tabTxSz, true, false),
+                                    textStyle(Colors.amber[400]!, tabTxSz, true,
+                                        true))))),
+                    Container(
+                        child: TextButton(
+                            onPressed: () {
+                              if (pageNumber != 3)
+                                setState(() {
+                                  pageNumber = 3;
+                                });
+                            },
+                            child: Text("Farm",
+                                style: textSwapState(
+                                    pageNumber == 3,
                                     textStyle(
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
@@ -191,7 +209,7 @@ class _V1AppState extends State<V1App> {
             buildConnectWalletButton(),
           ] else ...[
             //top right corner wallet information
-            buildAccountBox(controller.publicAddress.toString())
+            buildAccountBox()
           ]
         ],
       ),
@@ -215,7 +233,7 @@ class _V1AppState extends State<V1App> {
             )));
   }
 
-  Widget buildAccountBox(String accNum) {
+  Widget buildAccountBox() {
     double _width = MediaQuery.of(context).size.width;
     double wid = 500;
     bool network = true;
@@ -230,6 +248,7 @@ class _V1AppState extends State<V1App> {
       wid = 210;
     }
 
+    String accNum = controller.publicAddress.value.toString();
     String retStr = accNum;
     if (accNum.length > 15)
       retStr = accNum.substring(0, 7) +
@@ -265,7 +284,9 @@ class _V1AppState extends State<V1App> {
               ),
             if (matic)
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.getCurrentGas();
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -273,17 +294,18 @@ class _V1AppState extends State<V1App> {
                       Icons.local_gas_station,
                       color: Colors.grey,
                     ),
-                    Text(
-                      "${controller.gas.value}",
-                      style: textStyle(Colors.grey[400]!, 11, false, false),
-                    )
+                    Obx(() => Text(
+                          "${controller.gasString} gwei",
+                          style: textStyle(Colors.grey[400]!, 11, false, false),
+                        ))
                   ],
                 ),
               ),
             TextButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => yourAXDialog(context)),
+                      context: context,
+                      builder: (BuildContext context) => yourAXDialog(context))
+                  .then((value) => (setState(() {}))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -304,8 +326,9 @@ class _V1AppState extends State<V1App> {
             ),
             TextButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => accountDialog(context)),
+                      context: context,
+                      builder: (BuildContext context) => accountDialog(context))
+                  .then((value) => setState(() {})),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

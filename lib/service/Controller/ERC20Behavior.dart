@@ -1,21 +1,29 @@
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 
 mixin ERC20Behavior on Token {
-  var balance = BigInt.zero;
   var maxTokens = 0.0;
-  late ERC20 erc20;
+
   Future<void> updateBalance() async {
-    print("updated balance: ${controller.publicAddress.value}");
-    balance = await erc20.balanceOf(controller.publicAddress.value);
+    updateERC20();
+    balance.value = await erc20.balanceOf(controller.publicAddress.value);
+    print("updated balance: ${balance.value}");
     update();
   }
 
   void updateERC20([String? newAddress]) {
-    updateAddress(newAddress!);
-    EthereumAddress ethAddress = EthereumAddress.fromHex(address.value);
-    erc20 = ERC20(address: ethAddress, client: controller.client.value);
+    String theAddress = "";
+    if (newAddress == null || newAddress == "") {
+      theAddress = address.value;
+    } else {
+      theAddress = newAddress;
+    }
+    print("token address $theAddress");
+    updateAddress(theAddress);
+    EthereumAddress ethAddress = EthereumAddress.fromHex(theAddress);
+    erc20 = Erc20(address: ethAddress, client: controller.client.value);
     update();
   }
 

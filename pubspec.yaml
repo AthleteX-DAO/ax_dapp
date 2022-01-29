@@ -48,6 +48,7 @@ dependencies:
   chart_sparkline: ^1.0.5
   flutter_web3: ^2.0.4
   get: ^4.6.1
+  postgres: ^2.4.3
   
 
 dependency_overrides:
@@ -80,6 +81,7 @@ flutter:
         - asset: assets/fonts/OpenSans-Regular.ttf
         - asset: assets/fonts/OpenSans-ExtraBold.ttf
           weight: 600
+        - asset: assets/fonts/BebasNeuePro.ttf
     - family: PublicSans
       fonts:
         - asset: assets/fonts/PublicSans-Thin.ttf

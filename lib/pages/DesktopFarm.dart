@@ -13,44 +13,48 @@ class DesktopFarm extends StatefulWidget {
 
 class _DesktopFarmState extends State<DesktopFarm> {
   bool allFarms = true;
-  
+  List<Farm> everyFarm = [];
+  List<Farm> workingFarm = [];
+  List<Farm> farmList = [];
+  List<Farm> farmListFilter = [];
+
+  // ignore: must_call_super
+  void initState() {
+    everyFarm.add(Farm("AX Farm"));
+    farmList.add(Farm("AX Farm"));
+
+    for (Athlete ath in AthleteList.list) {
+      everyFarm.add(Farm("AX - " + ath.name + " APT", ath));
+      farmList.add(Farm("AX - " + ath.name + " APT", ath));
+    }
+
+    workingFarm = everyFarm;
+    farmListFilter = farmList;
+  }
+
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    double hgt = _height*0.7;
-    if (_height < 445)
-      hgt = _height;
-      
+    double hgt = _height * 0.7;
+    if (_height < 445) hgt = _height;
+
     return Container(
-      width: _width,
-      height: _height-57,
-      alignment: Alignment.center,
-      child: Container(
-        width: _width*0.8,
-        height: hgt,
-        child: (allFarms) ? allFarmLayout() : myFarmLayout()
-      )
-    );
+        width: _width,
+        height: _height - 57,
+        alignment: Alignment.center,
+        child: Container(
+            width: _width * 0.8,
+            height: hgt,
+            child: (allFarms) ? allFarmLayout() : myFarmLayout()));
   }
 
   Widget allFarmLayout() {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     bool vertical = true;
-    if (_height < 445)
-      vertical = false;
 
-    List<Farm> farmList = [
-      Farm("AX Farm"),
-    ];
-
-    for (Athlete ath in AthleteList.list)
-      farmList.add(Farm(
-        "AX - " + ath.name + " APT",
-        ath
-      )
-    );
+    if (_height < 445) vertical = false;
 
     Widget toggle = Container(
       width: 200,
@@ -60,12 +64,12 @@ class _DesktopFarmState extends State<DesktopFarm> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Container(
-            width: 85,
-            decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                "All Farms",
+              width: 85,
+              decoration: boxDecoration(
+                  Colors.grey[600]!, 100, 0, Colors.transparent),
+              child: TextButton(
+                onPressed: () {},
+                child: Text("All Farms",
                 style: textStyle(Colors.white, 16, true, false)
               )
             )
@@ -74,7 +78,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
             width: 90,
             decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
             child: TextButton(
-              onPressed: () {setState(() {allFarms = false;});},
+              onPressed: () {
+                setState(() {
+                  allFarms = false;
+                });
+              },
               child: Text(
                 "My Farms",
                 style: textStyle(Colors.white, 16, true, false)
@@ -86,391 +94,374 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              height: 45,
-              alignment: Alignment.bottomLeft,
-              child: Text(
-                "Participating Farms",
-                style: textStyle(Colors.white, 24, true, false)
-              )
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                  height: 45,
+                  alignment: Alignment.bottomLeft,
+                  child: Text("Participating Farms",
+                      style: textStyle(Colors.white, 24, true, false))),
+              if (!vertical) toggle,
+            ],
+          ),
+          if (vertical)
+            Row(
+              children: <Widget>[
+                createSearchBar(),
+                SizedBox(width: 50),
+                toggle
+              ],
             ),
-            if (!vertical)
-            toggle,
-          ],
-        ),
-        if (vertical)
-        toggle,
-        Container(
-          width: _width*0.8,
-          height: _height*0.5,
-          child: ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(
-              dragDevices: {
-                PointerDeviceKind.mouse,
-                PointerDeviceKind.touch,
-              },
-            ),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
-              itemCount: AthleteList.list.length+1,
-              itemBuilder: (context, index) {
-                return Container(
-                  height: _height*0.55,
-                  alignment: Alignment.topLeft,
-                  child: createFarmWidget(farmList[index]));
-              }
-            )
-          )
-        )
-      ]
-    );
+          Container(
+              width: _width * 0.8,
+              height: _height * 0.5,
+              child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(
+                    dragDevices: {
+                      PointerDeviceKind.mouse,
+                      PointerDeviceKind.touch,
+                    },
+                  ),
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: workingFarm.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            height: _height * 0.55,
+                            alignment: Alignment.topLeft,
+                            child: createFarmWidget(workingFarm[index]));
+                      })))
+        ]);
   }
 
   Widget myFarmLayout() {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    double cardHeight = _height*0.5;
-    if (cardHeight < 225)
-      cardHeight = 225;
+    double cardHeight = _height * 0.5;
+    if (cardHeight < 225) cardHeight = 225;
 
     bool vertical = true;
-    if (_height < 445)
-      vertical = false;
-    
-    List<Farm> farmList = [
+    if (_height < 445) vertical = false;
+
+    /*List<Farm> farmList = [
       Farm("AX Farm"),
     ];
 
     for (Athlete ath in AthleteList.list)
-      farmList.add(Farm(
-        "AX - " + ath.name + " APT"
-      )
-    );
+      farmList.add(Farm("AX - " + ath.name + " APT", ath));*/
+
+    //List<Farm> farmListFilter = farmList; 
 
     Widget toggle = Container(
-      width: 200,
-      height: 40,
-      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Container(
-            width: 85,
-            decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
-            child: TextButton(
-              onPressed: () {setState(() {allFarms = true;});},
-              child: Text(
-                "All Farms",
-                style: textStyle(Colors.white, 16, true, false)
-              )
-            )
-          ),
-          Container(
-            width: 90,
-            decoration: boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent),
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                "My Farms",
-                style: textStyle(Colors.white, 16, true, false)
-              )
-            )
-          )
-        ]
-      )
-    );
+        width: 200,
+        height: 40,
+        decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                  width: 85,
+                  decoration: boxDecoration(
+                      Colors.transparent, 100, 0, Colors.transparent),
+                  child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          allFarms = true;
+                        });
+                      },
+                      child: Text("All Farms",
+                          style: textStyle(Colors.white, 16, true, false)))),
+              Container(
+                  width: 90,
+                  decoration: boxDecoration(
+                      Colors.grey[600]!, 100, 0, Colors.transparent),
+                  child: TextButton(
+                      onPressed: () {},
+                      child: Text("My Farms",
+                          style: textStyle(Colors.white, 16, true, false))))
+            ]));
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              height: 45,
-              alignment: Alignment.bottomLeft,
-              child: Text(
-                "My Farms",
-                style: textStyle(Colors.white, 24, true, false)
-              )
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                height: 45,
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  "My Farms",
+                  style: textStyle(Colors.white, 24, true, false)
+                )
+              ),
+              if (!vertical) toggle,
+            ]
+          ),
+          //if (vertical) toggle,
+          if (vertical)
+            Row(
+              children: <Widget>[
+                createSearchBar(),
+                SizedBox(width: 50),
+                toggle
+              ],
             ),
-            if (!vertical) toggle,
-          ]
-        ),
-        if (vertical) toggle,
-        Container(
-          width: _width*0.8,
-          height: cardHeight,
-          child: ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(
-              dragDevices: {
-                PointerDeviceKind.mouse,
-                PointerDeviceKind.touch,
-              },
-            ),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
-              itemCount: AthleteList.list.length+1,
-              itemBuilder: (context, index) {
-                if(index == 0){
-                  return createAXFarmCard(farmList[index]);
-                }
-                return createMyFarmWidget(farmList[index]);
-              }
-            )
-          )
-        )
-      ]
-    );
+          Container(
+              width: _width * 0.8,
+              height: cardHeight,
+              child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(
+                    dragDevices: {
+                      PointerDeviceKind.mouse,
+                      PointerDeviceKind.touch,
+                    },
+                  ),
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: farmListFilter.length,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return createMyFarmAXCard(farmListFilter[index]);
+                        }
+                        return createMyFarmAPTWidget(farmListFilter[index]);
+                      })))
+        ]);
   }
 
   // First card of the my farms page is unique
-  Widget createAXFarmCard(Farm farm){
+  Widget createMyFarmAXCard(Farm farm) {
     double _height = MediaQuery.of(context).size.height;
     double cardWidth = 600;
-    double cardHeight = _height*0.5;
-    if (cardHeight < 225)
-      cardHeight = 225;
+    double cardHeight = _height * 0.5;
+    if (cardHeight < 225) cardHeight = 225;
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
-    
-    return Row(
-      children: <Widget> [
-        Container(
-          height: cardHeight,
-          width: cardWidth,
-          decoration: boxDecoration(Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              // Farm Title
-              Container(
-                width: cardWidth-100,
-                child: Row(
+
+    return Row(children: <Widget>[
+      Container(
+        height: cardHeight,
+        width: cardWidth,
+        decoration: boxDecoration(
+            Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            // Farm Title
+            Container(
+              width: cardWidth - 100,
+              child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      farm.name,
-                      style: textStyle(Colors.white, 20, false, false)
-                    ),
                     Container(
-                      width: 120,
+                      width: 35,
                       height: 35,
-                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
-                      child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
-                        child: Text(
-                          "Deposit",
-                          style: textStyle(Colors.black, 14, true, false)
-                        )
-                      )
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage("../assets/images/x.jpg"),
+                        ),
+                      ),
                     ),
-                  ]
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Total APY",
-                      style: txStyle,
+                    Container(width: 10),
+                    Expanded(
+                      child: Text(farm.name,
+                          style: textStyle(Colors.white, 20, false, false)),
                     ),
-                    Text(
-                      "12%",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "TVL",
-                      style: txStyle
-                    ),
-                    Text(
-                      "\$1,000,000",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "LP APY",
-                      style: txStyle
-                    ),
-                    Text(
-                      "5%",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                child: Divider(
-                  thickness: 0.35,
-                  color: Colors.grey[400],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Your Position",
-                      style: textStyle(Colors.white, 20, false, false)
-                    ),
-                  ]
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "AX provided",
-                      style: txStyle,
-                    ),
-                    Text(
-                      "1,000 AX",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Rewards Earned",
-                      style: txStyle,
-                    ),
-                    Text(
-                      "100 AX",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Total AX available (Staked + Earned)",
-                      style: txStyle
-                    ),
-                    Text(
-                      "1,100 AX",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
                     Container(
+                        width: 120,
+                        height: 35,
+                        decoration: boxDecoration(
+                            Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                        child: TextButton(
+                            onPressed: () => showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    depositDialog(context)),
+                            child: Text("Stake",
+                                style:
+                                    textStyle(Colors.black, 14, true, false)))),
+                  ]),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Total APY",
+                    style: txStyle,
+                  ),
+                  Text("12%", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("TVL", style: txStyle),
+                  Text("\$1,000,000", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("LP APY", style: txStyle),
+                  Text("5%", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              child: Divider(
+                thickness: 0.35,
+                color: Colors.grey[400],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Your Position",
+                        style: textStyle(Colors.white, 20, false, false)),
+                  ]),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "AX provided",
+                    style: txStyle,
+                  ),
+                  Text("1,000 AX", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Rewards Earned",
+                    style: txStyle,
+                  ),
+                  Text("100 AX", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Total AX available (Staked + Earned)", style: txStyle),
+                  Text("1,100 AX", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
                       width: 240,
                       height: 35,
-                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                      decoration: boxDecoration(
+                          Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                       child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => rewardsClaimed(context)),
-                        child: Text(
-                          "Claim Rewards",
-                          style: textStyle(Colors.black, 14, true, false)
-                        )
-                      )
-                    ),
-                    Container(
+                          onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  rewardsClaimed(context)),
+                          child: Text("Claim Rewards",
+                              style:
+                                  textStyle(Colors.black, 14, true, false)))),
+                  Container(
                       width: 240,
                       height: 35,
-                      decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
+                      decoration: boxDecoration(
+                          Colors.transparent, 100, 0, Colors.amber[600]!),
                       child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
-                        child: Text(
-                          "Remove Liquidity",
-                          style: textStyle(Colors.amber[600]!, 14, true, false)
-                        )
-                      )
-                    ),
-                  ],
-                ),
+                          onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  removeDialog(context)),
+                          child: Text("Unstake Liquidity",
+                              style: textStyle(
+                                  Colors.amber[600]!, 14, true, false)))),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        SizedBox(width: 50),
-      ]
-    );
+      ),
+      SizedBox(width: 50),
+    ]);
   }
 
   Widget createFarmWidget(Farm farm) {
     double cardWidth = 500;
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+    Dialog participatingDialog;
+    Widget farmTitleWidget;
+    if (farm.athlete == null) {
+      farmTitleWidget = farmTitleSingleLogo(farm);
+      participatingDialog = depositDialog(context);
+    } else {
+      farmTitleWidget = farmTitleDoubleLogo(farm);
+      participatingDialog = dualDepositDialog(context, farm.athlete!);
+    }
 
-    return Row(
-      children: <Widget> [
-        Container(
-          height: 200,
-          width: cardWidth,
-          decoration: boxDecoration(Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              // Farm Title
-              Container(
-                width: cardWidth-50,
+    return Row(children: <Widget>[
+      Container(
+        height: 200,
+        width: cardWidth,
+        decoration: boxDecoration(
+            Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            farmTitleWidget,
+            // Farm Title
+            /*Container(
+                width: cardWidth - 50,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      farm.name,
-                      style: textStyle(Colors.white, 20, false, false)
-                    ),
-                    Container(
-                      width: 120,
-                      height: 35,
-                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
-                      child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => dualDepositDialog(context, farm.athlete!)),
-                        child: Text(
-                          "Deposit",
-                          style: textStyle(Colors.black, 14, true, false)
-                        )
-                      )
-                    ),
-                  ]
-                )
-              ),
-              // TVL
-              Container(
-                width: cardWidth-50,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(farm.name,
+                          style: textStyle(Colors.white, 20, false, false)),
+                      Container(
+                          width: 120,
+                          height: 35,
+                          decoration: boxDecoration(
+                              Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                          child: TextButton(
+                              onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      participatingDialog),
+                              child: Text("Stake",
+                                  style: textStyle(
+                                      Colors.black, 14, true, false)))),
+                    ])),*/
+            // TVL
+            Container(
+                width: cardWidth - 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -478,295 +469,398 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       "TVL",
                       style: txStyle,
                     ),
-                    Text(
-                      "\$1,000,000",
-                      style: txStyle
-                    )
+                    Text("\$1,000,000", style: txStyle)
                   ],
-                )
-              ),
-              // Fee
-              Container(
-                width: cardWidth-50,
+                )),
+            // Fee
+            Container(
+                width: cardWidth - 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      "Swap Fee APY",
-                      style: txStyle
-                    ),
-                    Text(
-                      "20%",
-                      style: txStyle
-                    )
+                    Text("Swap Fee APY", style: txStyle),
+                    Text("20%", style: txStyle)
                   ],
-                )
-              ),
-              // Rewards
-              Container(
-                width: cardWidth-50,
+                )),
+            // Rewards
+            Container(
+                width: cardWidth - 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      "AX Rewards APY",
-                      style: txStyle
-                    ),
-                    Text(
-                      "10%",
-                      style: txStyle
-                    )
+                    Text("AX Rewards APY", style: txStyle),
+                    Text("10%", style: txStyle)
                   ],
-                )
-              ),
-              // Total APY
-              Container(
-                width: cardWidth-50,
+                )),
+            // Total APY
+            Container(
+                width: cardWidth - 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      "Total APY",
-                      style: txStyle
-                    ),
-                    Text(
-                      "30%",
-                      style: txStyle
-                    )
+                    Text("Total APY", style: txStyle),
+                    Text("30%", style: txStyle)
                   ],
-                )
-              ),
-            ],
-          ),
+                )),
+          ],
         ),
-        SizedBox(width: 50),
-      ]
-    );
+      ),
+      SizedBox(width: 50),
+    ]);
   }
 
   // Returning a Row (This one works. Need to fix container size and padding)
-  Widget createMyFarmWidget(Farm farm) {
+  Widget createMyFarmAPTWidget(Farm farm) {
     double _height = MediaQuery.of(context).size.height;
     double cardWidth = 600;
-    double cardHeight = _height*0.5;
-    if (cardHeight < 225)
-      cardHeight = 225;
+    double cardHeight = _height * 0.5;
+    if (cardHeight < 225) cardHeight = 225;
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
 
-    return Row(
-      children: <Widget> [
-        Container(
-          height: cardHeight,
-          width: cardWidth,
-          decoration: boxDecoration(Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              // Farm Title
-              Container(
-                width: cardWidth-100,
-                child: Row(
+    return Row(children: <Widget>[
+      Container(
+        height: cardHeight,
+        width: cardWidth,
+        decoration: boxDecoration(
+            Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            // Farm Title
+            Container(
+              width: cardWidth - 100,
+              child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      farm.name,
-                      style: textStyle(Colors.white, 20, false, false)
-                    ),
                     Container(
-                      width: 120,
+                      width: 35,
                       height: 35,
-                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
-                      child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
-                        child: Text(
-                          "Deposit",
-                          style: textStyle(Colors.black, 14, true, false)
-                        )
-                      )
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage("../assets/images/x.jpg"),
+                        ),
+                      ),
                     ),
-                  ]
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Total APY",
-                      style: txStyle,
-                    ),
-                    Text(
-                      "12%",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "TVL",
-                      style: txStyle
-                    ),
-                    Text(
-                      "\$1,000,000",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "LP APY",
-                      style: txStyle
-                    ),
-                    Text(
-                      "5%",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                child: Divider(
-                  thickness: 0.35,
-                  color: Colors.grey[400],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Your Position",
-                      style: textStyle(Colors.white, 20, false, false)
-                    ),
-                  ]
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "LP tokens provided",
-                      style: txStyle,
-                    ),
-                    Text(
-                      "100 LP",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Rewards Earned",
-                      style: txStyle
-                    ),
-                    Text(
-                      "100 AX",
-                      style: txStyle
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: cardWidth-100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
                     Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          scale: 0.5,
+                          image: AssetImage("../assets/images/apt.png"),
+                        ),
+                      ),
+                    ),
+                    Container(width: 5),
+                    Expanded(
+                      child: Text(farm.name,
+                          style: textStyle(Colors.white, 20, false, false)),
+                    ),
+                    Container(
+                        width: 120,
+                        height: 35,
+                        decoration: boxDecoration(
+                            Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                        child: TextButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      dualDepositDialog(
+                                          context, farm.athlete!));
+                            },
+                            child: Text("Stake",
+                                style:
+                                    textStyle(Colors.black, 14, true, false)))),
+                  ]),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Total APY",
+                    style: txStyle,
+                  ),
+                  Text("12%", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("TVL", style: txStyle),
+                  Text("\$1,000,000", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("LP APY", style: txStyle),
+                  Text("5%", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              child: Divider(
+                thickness: 0.35,
+                color: Colors.grey[400],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Your Position",
+                        style: textStyle(Colors.white, 20, false, false)),
+                  ]),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "LP tokens provided",
+                    style: txStyle,
+                  ),
+                  Text("100 LP", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Rewards Earned", style: txStyle),
+                  Text("100 AX", style: txStyle)
+                ],
+              ),
+            ),
+            Container(
+              width: cardWidth - 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
                       width: 240,
                       height: 35,
-                      decoration: boxDecoration(Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                      decoration: boxDecoration(
+                          Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                       child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => depositDialog(context)),
-                        child: Text(
-                          "Claim Rewards",
-                          style: textStyle(Colors.black, 14, true, false)
-                        )
-                      )
-                    ),
-                    Container(
+                          onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  depositDialog(context)),
+                          child: Text("Claim Rewards",
+                              style:
+                                  textStyle(Colors.black, 14, true, false)))),
+                  Container(
                       width: 240,
                       height: 35,
-                      decoration: boxDecoration(Colors.transparent, 100, 0, Colors.amber[600]!),
+                      decoration: boxDecoration(
+                          Colors.transparent, 100, 0, Colors.amber[600]!),
                       child: TextButton(
-                        onPressed: () => showDialog(context: context, builder: (BuildContext context) => removeDialog(context)),
-                        child: Text(
-                          "Remove Liquidity",
-                          style: textStyle(Colors.amber[600]!, 14, true, false)
-                        )
-                      )
-                    ),
-                  ],
-                ),
+                          onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  removeDialog(context)),
+                          child: Text("Unstake Liquidity",
+                              style: textStyle(
+                                  Colors.amber[600]!, 14, true, false)))),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        SizedBox(width: 50),
-      ]
+      ),
+      SizedBox(width: 50),
+    ]);
+  }
+
+  Widget createSearchBar() {
+    return Container(
+      width: 250,
+      height: 40,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(width: 8),
+          Container(
+            child: Icon(Icons.search, color: Colors.white),
+          ),
+          Container(width: 50),
+          Expanded(
+            child: Container(
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    if(!allFarms) {
+                      farmListFilter = farmList.where((farm) => farm.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    }
+                    else {
+                      workingFarm = everyFarm.where((farm) => farm.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    }
+                  });
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 8.5),
+                  hintText: "Search a farm",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    if (isBold)
-      if (isUline)
-        return TextStyle(
+    if (isBold) if (isUline)
+      return TextStyle(
           color: color,
           fontFamily: 'OpenSans',
           fontSize: size,
           fontWeight: FontWeight.w400,
-          decoration: TextDecoration.underline
-        );
-      else
-        return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-          fontWeight: FontWeight.w400,
-        );
+          decoration: TextDecoration.underline);
     else
-      if (isUline)
-        return TextStyle(
+      return TextStyle(
+        color: color,
+        fontFamily: 'OpenSans',
+        fontSize: size,
+        fontWeight: FontWeight.w400,
+      );
+    else if (isUline)
+      return TextStyle(
           color: color,
           fontFamily: 'OpenSans',
           fontSize: size,
-          decoration: TextDecoration.underline
-        );
-      else
-        return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-        );
+          decoration: TextDecoration.underline);
+    else
+      return TextStyle(
+        color: color,
+        fontFamily: 'OpenSans',
+        fontSize: size,
+      );
   }
-  
-  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+
+  BoxDecoration boxDecoration(
+      Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
-      color: col,
-      borderRadius: BorderRadius.circular(rad),
-      border: Border.all(
-        color: borCol,
-        width: borWid
-      )
-    );
+        color: col,
+        borderRadius: BorderRadius.circular(rad),
+        border: Border.all(color: borCol, width: borWid));
+  }
+
+  Widget farmTitleSingleLogo(Farm farm) {
+    Dialog participatingDialog;
+    if (farm.athlete == null) {
+      participatingDialog = depositDialog(context);
+    } else {
+      participatingDialog = dualDepositDialog(context, farm.athlete!);
+    }
+    double cardWidth = 500;
+    return Container(
+        width: cardWidth - 50,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: 35,
+                height: 35,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage("../assets/images/x.jpg"),
+                  ),
+                ),
+              ),
+              Container(width: 15),
+              Expanded(
+                child: Text(farm.name,
+                    style: textStyle(Colors.white, 20, false, false)),
+              ),
+              Container(
+                  width: 120,
+                  height: 35,
+                  decoration: boxDecoration(
+                      Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                  child: TextButton(
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              participatingDialog),
+                      child: Text("Stake",
+                          style: textStyle(Colors.black, 14, true, false)))),
+            ]));
+  }
+
+  Widget farmTitleDoubleLogo(Farm farm) {
+    Dialog participatingDialog;
+    if (farm.athlete == null) {
+      participatingDialog = depositDialog(context);
+    } else {
+      participatingDialog = dualDepositDialog(context, farm.athlete!);
+    }
+    double cardWidth = 500;
+    return Container(
+        width: cardWidth - 50,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: 35,
+                height: 35,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage("../assets/images/x.jpg"),
+                  ),
+                ),
+              ),
+              Container(
+                width: 35,
+                height: 35,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    scale: 0.5,
+                    image: AssetImage("../assets/images/apt.png"),
+                  ),
+                ),
+              ),
+              Container(width: 5),
+              Expanded(
+                child: Text(farm.name,
+                    style: textStyle(Colors.white, 20, false, false)),
+              ),
+              Container(
+                  width: 120,
+                  height: 35,
+                  decoration: boxDecoration(
+                      Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                  child: TextButton(
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              participatingDialog),
+                      child: Text("Stake",
+                          style: textStyle(Colors.black, 14, true, false)))),
+            ]));
   }
 }
 

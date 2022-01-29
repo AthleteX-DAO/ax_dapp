@@ -3,6 +3,7 @@
 import 'dart:html';
 
 import 'dart:math';
+import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
@@ -22,6 +23,7 @@ class Controller extends GetxController {
   static String latestTx = "";
   bool walletConnected = false;
   var gas = EtherAmount.zero().obs;
+  var gasString = "0".obs;
   static const MAINNET_CHAIN_ID = 137;
   static const TESTNET_CHAIN_ID = 80001;
   String mainRPCUrl = "https://polygon-rpc.com";
@@ -69,8 +71,10 @@ class Controller extends GetxController {
     print("[Console] connecting to the decentralized web!");
     networkID.value = await client.value.getNetworkId();
     publicAddress.value = await credentials.extractAddress();
-    gas.value = await client.value.getGasPrice();
-    print("[Console] updated client: $client and credentials: $credentials");
+    var rawGasPrice = await client.value.getGasPrice();
+    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+    gasString.value = "$gasPriceinGwei";
+    print("[Console] updated client and credentials");
     update();
   }
 
@@ -98,8 +102,11 @@ class Controller extends GetxController {
 
   void getCurrentGas() async {
     final eth = window.ethereum;
-    gas.value = await Web3Client.custom(eth!.asRpcService())
-        .getBalance(publicAddress.value);
+    var rawGasPrice = await client.value.getGasPrice();
+    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+    gasString.value = "$gasPriceinGwei";
+    print('Getting latest gas... $gasString');
+    update();
   }
 
   void updateTxString(String tx) {
@@ -107,13 +114,33 @@ class Controller extends GetxController {
     latestTx = tx;
   }
 
+  void changeAddress() async {
+    final eth = window.ethereum;
+    eth!.requestAccount();
+  }
+
   void disconnect() async {
     final eth = window.ethereum;
-    walletConnected = eth!.isConnected();
+    walletConnected = false;
     client.value.dispose();
-    client.value.getChainId();
+    // client.value.getChainId();
 
     update();
+  }
+
+  void addTokenToWallet() async {
+    final eth = window.ethereum;
+    Object tokenParam = {
+      "type": "ERC20",
+      "options": {
+        "address": "0xb60e8dd61c5d32be8058bb8...",
+        "symbol": "FOO",
+        "decimals": 18,
+        "image": "https: //foo.io/token-ima..."
+      }
+    };
+
+    eth!.rawRequest('wallet_watchAsset', params: tokenParam);
   }
 
   static void switchNetwork() async {
