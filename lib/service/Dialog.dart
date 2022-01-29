@@ -53,7 +53,7 @@ Dialog wrongNetworkDialog(BuildContext context) {
               Container(
                 child: TextButton(
                   onPressed: () {
-                    Controller.switchNetwork();
+                    // Controller.switchNetwork();
                     Navigator.pop(context);
                   },
                   child: Icon(
@@ -148,7 +148,7 @@ Dialog walletDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    controller.connect();
+                    controller.connectNative();
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
                     //   showDialog(
                     //       context: context,
