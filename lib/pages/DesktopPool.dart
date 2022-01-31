@@ -6,6 +6,7 @@ import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -340,6 +341,28 @@ class _DesktopPoolState extends State<DesktopPool> {
 
   Widget myLiquidity() {
     double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery.of(context).size.width;
+
+    List<Widget> poolRows = [];
+    for (int i = 0; i < AthleteList.list.length;) {
+        poolRows.add(Container(
+          alignment: Alignment.topCenter,
+          height: 325,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              // 1 pool per row
+              createPoolCard(AthleteList.list[i++]),
+              // 2 pools per row
+              if (_width > 1100 && i < AthleteList.list.length)
+              createPoolCard(AthleteList.list[i++]),
+              // 3 pools per row
+              if (_width > 1850 && i < AthleteList.list.length)
+              createPoolCard(AthleteList.list[i++])
+            ],
+          )
+        ));
+    }
 
     Widget toggle = Container(
       width: 260,
@@ -393,6 +416,15 @@ class _DesktopPoolState extends State<DesktopPool> {
           toggle,
           Container(
             height: _height*0.5,
+            // child: poolRows[0]
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              physics: BouncingScrollPhysics(),
+              itemCount: poolRows.length,
+              itemBuilder: (context, index) {
+                return poolRows[index];
+              }
+            )
           )
         ],
       ),
@@ -570,6 +602,137 @@ class _DesktopPoolState extends State<DesktopPool> {
             ],
           )
         )
+      )
+    );
+  }
+
+  Widget createPoolCard(Athlete athlete) {
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    double iwid = 400;
+
+    return Container(
+      width: 450,
+      height: 275,
+      decoration: boxDecoration(Colors.grey[900]!, 30, 1, Colors.grey[400]!),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            width: iwid,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "AX / "+athlete.name+" APT",
+              style: textStyle(Colors.white, 24, true),
+            )
+          ),
+          Container(
+            width: iwid,
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Your Pool Tokens:",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                    Text(
+                      "\$1,000,000",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Pooled AX:",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                    Text(
+                      "1,000",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Pooled "+athlete.name+" APT:",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                    Text(
+                      "500",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Your Pool Share:",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                    Text(
+                      "0.12%",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Rewards Accumulated:",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                    Text(
+                      "100 AX",
+                      style: textStyle(Colors.grey[600]!, 16, true),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          ),
+          Container(
+            width: iwid,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                // add button
+                Container(
+                  width: 180,
+                  height: 37.5,
+                  decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Add",
+                      style: textStyle(Colors.black, 20, true),
+                    )
+                  )
+                ),
+                //remove button
+                Container(
+                  width: 180,
+                  height: 37.5,
+                  decoration: boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Remove",
+                      style: textStyle(Colors.amber[400]!, 18, true),
+                    )
+                  )
+                ),
+              ],
+            )
+          ),
+        ],
       )
     );
   }

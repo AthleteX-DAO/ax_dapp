@@ -287,63 +287,68 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   Widget createTokenElement(Token token, int tknNum) {
     return Container(
-        height: 50,
-        child: TextButton(
-            onPressed: () {
-              setState(() {
-                if (tknNum == 1)
-                  tkn1 = token;
-                else
-                  tkn2 = token;
-                Navigator.pop(context);
-              });
-            },
-            child: Container(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container(
+      height: 50,
+      child: TextButton(
+        onPressed: () {
+          setState(() {
+            if (tknNum == 1)
+              tkn1 = token;
+            else
+              tkn2 = token;
+            Navigator.pop(context);
+          });
+        },
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                height: 30,
+                width: 60,
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  width: 30,
                   height: 30,
-                  width: 60,
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        scale: 0.5,
-                        image: token.icon!,
-                        fit: BoxFit.fill,
-                      ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      scale: 0.5,
+                      image: token.icon!,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
-                Container(
-                    height: 45,
-                    // ticker/name column "AX/AthleteX"
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Container(
-                            width: 125,
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              token.ticker,
-                              style: textStyle(Colors.white, 14, true),
-                            )),
-                        Container(
-                            width: 125,
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              token.name,
-                              style:
-                                  textStyle(Colors.grey[100]!, 9, false),
-                            )),
-                      ],
-                    ))
-              ],
-            ))));
+              ),
+              Container(
+                height: 45,
+                // ticker/name column "AX/AthleteX"
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      width: 125,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        token.ticker,
+                        style: textStyle(Colors.white, 14, true),
+                      )
+                    ),
+                    Container(
+                      width: 125,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        token.name,
+                        style: textStyle(Colors.grey[100]!, 9, false),
+                      )
+                    ),
+                  ],
+                )
+              )
+            ],
+          )
+        )
+      )
+    );
   }
 
   Widget createTokenButton(int tknNum) {
