@@ -41,6 +41,9 @@ class _DesktopPoolState extends State<DesktopPool> {
       tokens.add(Token(ath.name + " APT", ath.name + " APT",
           AssetImage('../assets/images/apt.png')));
 
+      tkn1 = tokens[0];
+      tkn2 = tokens[3];
+
     tokenListFilter = tokens;
   }
 
@@ -104,7 +107,7 @@ class _DesktopPoolState extends State<DesktopPool> {
       )
     );
 
-    bool advDetails = false;
+    bool advDetails = true;
 
     Widget pricePoolShare = Container(
       height: 275,
@@ -219,11 +222,13 @@ class _DesktopPoolState extends State<DesktopPool> {
               text: TextSpan(
                 children: <TextSpan>[
                   TextSpan(
-                      text: "*Add liquidity to earn 0.25% of all trades on this pair",
-                      style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                    text: "*Add liquidity to earn 0.25% of all trades on this pair",
+                    style: TextStyle(color: Colors.grey[600], fontSize: 15)
+                  ),
                   TextSpan(
-                      text: " proportional to your share of the pool and receive LP tokens.",
-                      style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                    text: " proportional to your share of the pool and receive LP tokens.",
+                    style: TextStyle(color: Colors.grey[600], fontSize: 15)
+                  ),
                 ],
               ),
             ),
@@ -234,7 +239,9 @@ class _DesktopPoolState extends State<DesktopPool> {
             height: 45,
             decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) => poolAddLiquidity(context, tkn2!.name)),
               child: Text(
                 "Add Liquidity",
                 style: textStyle(Colors.black, 16, true),
@@ -416,15 +423,25 @@ class _DesktopPoolState extends State<DesktopPool> {
           toggle,
           Container(
             height: _height*0.5,
+            child: GridView.count(
+              padding: EdgeInsets.only(top: 0),
+              childAspectRatio: 7/3,
+              crossAxisCount: 2,
+              children: List.generate(AthleteList.list.length, (index) {
+                return Center(
+                  child: createPoolCard(AthleteList.list[index])
+                );
+              }),
+            ),
             // child: poolRows[0]
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              physics: BouncingScrollPhysics(),
-              itemCount: poolRows.length,
-              itemBuilder: (context, index) {
-                return poolRows[index];
-              }
-            )
+            // child: ListView.builder(
+            //   padding: EdgeInsets.symmetric(horizontal: 10),
+            //   physics: BouncingScrollPhysics(),
+            //   itemCount: poolRows.length,
+            //   itemBuilder: (context, index) {
+            //     return poolRows[index];
+            //   }
+            // )
           )
         ],
       ),
@@ -709,7 +726,9 @@ class _DesktopPoolState extends State<DesktopPool> {
                   height: 37.5,
                   decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => poolAddLiquidity(context, tkn2!.name)),
                     child: Text(
                       "Add",
                       style: textStyle(Colors.black, 20, true),
@@ -722,7 +741,9 @@ class _DesktopPoolState extends State<DesktopPool> {
                   height: 37.5,
                   decoration: boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => poolRemoveLiquidity(context, tkn2!.name)),
                     child: Text(
                       "Remove",
                       style: textStyle(Colors.amber[400]!, 18, true),
