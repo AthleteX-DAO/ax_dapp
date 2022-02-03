@@ -117,7 +117,7 @@ class _V1AppState extends State<V1App> {
     double tabTxSz = _width * 0.0185;
     if (tabTxSz < 19) tabTxSz = 19;
     double tabBxSz = _width * 0.3;
-    if (tabBxSz < 270) tabBxSz = 270;
+    if (tabBxSz < 350) tabBxSz = 350;
 
     return Container(
       width: _width * .95,
@@ -217,9 +217,17 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget buildConnectWalletButton() {
+    double _width = MediaQuery.of(context).size.width;
+    double wid = 180;
+    String text = "Connect Wallet";
+    if (_width < 565) {
+      wid = 110;
+      text = "Connect";
+    }
+
     return Container(
         height: 37.5,
-        width: 180,
+        width: wid,
         decoration:
             boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
         child: TextButton(
@@ -228,7 +236,7 @@ class _V1AppState extends State<V1App> {
                     builder: (BuildContext context) => walletDialog(context))
                 .then((value) => setState(() {})),
             child: Text(
-              "Connect Wallet",
+              text,
               style: textStyle(Colors.amber[400]!, 16, true, false),
             )));
   }

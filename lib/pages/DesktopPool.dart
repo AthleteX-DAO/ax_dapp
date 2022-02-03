@@ -51,13 +51,14 @@ class _DesktopPoolState extends State<DesktopPool> {
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
-    double hgt = _height*0.7;
+    double hgt = _height*0.8;
 
     return Container(
       width: _width,
       height: _height - 57,
       alignment: Alignment.center,
       child: Container(
+        color: Colors.lightBlue,
         width: _width * 0.8,
         height: hgt,
         child: (allLiq) ? allLiquidity() : myLiquidity()
@@ -265,7 +266,6 @@ class _DesktopPoolState extends State<DesktopPool> {
     );
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
@@ -356,16 +356,20 @@ class _DesktopPoolState extends State<DesktopPool> {
           alignment: Alignment.topCenter,
           height: 325,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // 1 pool per row
               createPoolCard(AthleteList.list[i++]),
               // 2 pools per row
-              if (_width > 1100 && i < AthleteList.list.length)
-              createPoolCard(AthleteList.list[i++]),
+              if (_width > 1140 && i < AthleteList.list.length) ...{
+                SizedBox(width: 30),
+                createPoolCard(AthleteList.list[i++]),
+              },
               // 3 pools per row
-              if (_width > 1850 && i < AthleteList.list.length)
-              createPoolCard(AthleteList.list[i++])
+              if (_width > 1525 && i < AthleteList.list.length) ... {
+                SizedBox(width: 30,),
+                createPoolCard(AthleteList.list[i++])
+              }
             ],
           )
         ));
@@ -409,7 +413,6 @@ class _DesktopPoolState extends State<DesktopPool> {
 
     return Container(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
@@ -422,26 +425,26 @@ class _DesktopPoolState extends State<DesktopPool> {
           ),
           toggle,
           Container(
-            height: _height*0.5,
-            child: GridView.count(
-              padding: EdgeInsets.only(top: 0),
-              childAspectRatio: 7/3,
-              crossAxisCount: 2,
-              children: List.generate(AthleteList.list.length, (index) {
-                return Center(
-                  child: createPoolCard(AthleteList.list[index])
-                );
-              }),
-            ),
+            // height: _height*0.6,
+            // child: GridView.count(
+            //   padding: EdgeInsets.only(top: 0),
+            //   childAspectRatio: 7/3,
+            //   crossAxisCount: 2,
+            //   children: List.generate(AthleteList.list.length, (index) {
+            //     return Center(
+            //       child: createPoolCard(AthleteList.list[index])
+            //     );
+            //   }),
+            // ),
             // child: poolRows[0]
-            // child: ListView.builder(
-            //   padding: EdgeInsets.symmetric(horizontal: 10),
-            //   physics: BouncingScrollPhysics(),
-            //   itemCount: poolRows.length,
-            //   itemBuilder: (context, index) {
-            //     return poolRows[index];
-            //   }
-            // )
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              physics: BouncingScrollPhysics(),
+              itemCount: poolRows.length,
+              itemBuilder: (context, index) {
+                return poolRows[index];
+              }
+            )
           )
         ],
       ),
@@ -626,10 +629,10 @@ class _DesktopPoolState extends State<DesktopPool> {
   Widget createPoolCard(Athlete athlete) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    double iwid = 400;
+    double iwid = 329;
 
     return Container(
-      width: 450,
+      width: 379,
       height: 275,
       decoration: boxDecoration(Colors.grey[900]!, 30, 1, Colors.grey[400]!),
       child: Column(
@@ -722,7 +725,7 @@ class _DesktopPoolState extends State<DesktopPool> {
               children: <Widget>[
                 // add button
                 Container(
-                  width: 180,
+                  width: 160,
                   height: 37.5,
                   decoration: boxDecoration(Colors.amber[400]!, 100, 0, Colors.amber[400]!),
                   child: TextButton(
@@ -737,7 +740,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 ),
                 //remove button
                 Container(
-                  width: 180,
+                  width: 160,
                   height: 37.5,
                   decoration: boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!),
                   child: TextButton(
