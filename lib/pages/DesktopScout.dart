@@ -185,10 +185,13 @@ class _DesktopScoutState extends State<DesktopScout> {
 
     if (nflList.length == 0) {
       nflList = AthleteList.list;
-      nflListFilter = nflList;
-      // Filter all the athletes
+      nflListFilter = nflList; 
+    }
+
+    if (allList.length == 0) {
+      // Filter all the athletes. For now we only have NFL athletes
       allList = nflList;
-      allListFilter = allList;    
+      allListFilter = allList;   
     }
 
     // all athletes
