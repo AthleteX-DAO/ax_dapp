@@ -417,6 +417,38 @@ class _AthletePageState extends State<AthletePage> {
                     )
                   ]
                 ),
+                Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      width: _width * 0.175,
+                      child: Text(
+                        "MP/BV Ratio",
+                        style: textStyle(Colors.grey[400]!, 20, false, false)
+                      )
+                    ),
+                    Container(
+                      width: 200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "80%",
+                                style: textStyle(Colors.grey[400]!, 20, false, false)
+                              ),
+                            ]
+                          ),
+                          Text(
+                            "120%",
+                            style: textStyle(Colors.grey[400]!, 20, false, false)
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                ),
               ]
             )
           ),
