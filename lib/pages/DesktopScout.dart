@@ -304,7 +304,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               ' AX',
                           style: textStyle(Colors.white, 16, false, false)),
                       Container(width: 10),
-                      Text("+%4",
+                      Text("+4%",
                           style: textStyle(Colors.green, 12, false, false))
                     ])),
                     if (bookVal) ...[
@@ -318,7 +318,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 ' AX',
                             style: textStyle(Colors.white, 16, false, false)),
                         Container(width: 10),
-                        Text("-%2",
+                        Text("-2%",
                             style: textStyle(Colors.red, 12, false, false))
                       ])),
                     ]
