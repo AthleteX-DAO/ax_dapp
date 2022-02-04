@@ -20,6 +20,9 @@ class _DesktopScoutState extends State<DesktopScout> {
   int sportState = 0;
   List<Athlete> nflList = [];
   List<Athlete> nflListFilter = [];
+  // This will hold all the athletes
+  List<Athlete> allList = [];
+  List<Athlete> allListFilter = [];
   Athlete curAthlete = Athlete(
       name: "",
       team: "",
@@ -183,6 +186,9 @@ class _DesktopScoutState extends State<DesktopScout> {
     if (nflList.length == 0) {
       nflList = AthleteList.list;
       nflListFilter = nflList;
+      // Filter all the athletes
+      allList = nflList;
+      allListFilter = allList;    
     }
 
     // all athletes
@@ -196,10 +202,10 @@ class _DesktopScoutState extends State<DesktopScout> {
               itemBuilder: (context, index) {
                 return createListCards(AthleteList.list[index]);
               }));*/
-              // Since it is only NFL athletes, we will just use this code snippet for the ALL athletes tab
-              itemCount: nflListFilter.length,
+              // Build with all the all the athletes
+              itemCount: allListFilter.length,
               itemBuilder: (context, index) {
-                return createListCards(nflListFilter[index]);
+                return createListCards(allListFilter[index]);
               }));
     // NFL athletes only
     else if (sportState == 1)
@@ -382,6 +388,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                   setState(() {
                     // This filter will only work if you go onto the NFL tab
                     nflListFilter = nflList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    // This filter will only work if you go onto the ALL tab
+                    allListFilter = allList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
                   });
                 },
                 decoration: InputDecoration(
