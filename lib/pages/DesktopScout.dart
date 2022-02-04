@@ -5,6 +5,7 @@ import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -383,16 +384,21 @@ class _DesktopScoutState extends State<DesktopScout> {
           Container(
             child: Icon(Icons.search, color: Colors.white),
           ),
-          Container(width: 50),
+          Container(width: 35),
           Expanded(
             child: Container(
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    // This filter will only work if you go onto the NFL tab
-                    nflListFilter = nflList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
-                    // This filter will only work if you go onto the ALL tab
-                    allListFilter = allList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    // Filter all athletes
+                    if (sportState == 0) {
+                      allListFilter = allList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    }
+                    // Filter NFL athletes
+                    else {
+                      nflListFilter = nflList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    }
+
                   });
                 },
                 decoration: InputDecoration(
