@@ -289,6 +289,34 @@ class _AthletePageState extends State<AthletePage> {
   Widget statsSide(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double wid = _width*0.4;
+    String fn(String a)
+    {
+      if(a=="QB")
+      {
+        return "Quarterback";
+      }
+      else if(a=="WR")
+      {
+        return "Widereciever";
+      }
+       else if(a=="DT")
+      {
+        return "Defencetackle";
+      }
+       else if(a=="RB")
+      {
+        return "Runningback";
+      }
+       else if(a=="TE")
+      {
+        return "Tightend";
+      }
+       else if(a=="CB")
+      {
+        return "Cornerback";
+      }
+      return "B";
+    }
     if (_width < 1160)
       wid = _width*0.95;
 
@@ -500,7 +528,7 @@ class _AthletePageState extends State<AthletePage> {
                       style: textStyle(Colors.grey[400]!, 20, false, false)
                     ),
                     Text(
-                      "Quarterback",
+                        fn(athlete.position),
                       style: textStyle(Colors.grey[400]!, 20, false, false)
                     )
                   ]

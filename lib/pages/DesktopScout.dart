@@ -247,7 +247,36 @@ class _DesktopScoutState extends State<DesktopScout> {
 
     double athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
-
+    
+    String fn(String a)
+    {
+      if(a=="QB")
+      {
+        return "Quarterback";
+      }
+      else if(a=="WR")
+      {
+        return "Widereciever";
+      }
+       else if(a=="DT")
+      {
+        return "Defencetackle";
+      }
+       else if(a=="RB")
+      {
+        return "Runningback";
+      }
+       else if(a=="TE")
+      {
+        return "Tightend";
+      }
+       else if(a=="CB")
+      {
+        return "Cornerback";
+      }
+      return "B";
+    }
+    
     return Container(
         height: 70,
         child: OutlinedButton(
@@ -276,7 +305,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               Text(athlete.name,
                                   style: textStyle(
                                       Colors.white, 18, false, false)),
-                              Text(athlete.position,
+                              Text(fn(athlete.position),
                                   style: textStyle(
                                       Colors.grey[700]!, 10, false, false))
                             ])),
