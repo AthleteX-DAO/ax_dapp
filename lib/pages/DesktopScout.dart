@@ -1,6 +1,4 @@
 import 'package:ax_dapp/pages/AthletePage.dart';
-import 'package:ax_dapp/pages/HomePage.dart';
-// import 'package:ax_dapp/pages/testPage.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';

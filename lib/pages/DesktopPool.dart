@@ -73,6 +73,7 @@ print(_width);
     Widget toggle = Container(
       width: 260,
       height: 40,
+      margin: EdgeInsets.symmetric(vertical: _height*0.04),
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -265,7 +266,7 @@ print(_width);
     );
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
@@ -352,32 +353,38 @@ print(_width);
 
     List<Widget> poolRows = [];
     for (int i = 0; i < AthleteList.list.length;) {
-        poolRows.add(Container(
-          alignment: Alignment.topCenter,
-          height: 325,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // 1 pool per row
+      poolRows.add(Container(
+        alignment: Alignment.topCenter,
+        height: 325,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // 1 pool per row
+            createPoolCard(AthleteList.list[i++]),
+            // 2 pools per row
+            if (_width*.8 > 818 && i < AthleteList.list.length) ...{
+              SizedBox(width: 30),
               createPoolCard(AthleteList.list[i++]),
-              // 2 pools per row
-              if (_width > 1140 && i < AthleteList.list.length) ...{
-                SizedBox(width: 30),
-                createPoolCard(AthleteList.list[i++]),
-              },
-              // 3 pools per row
-              if (_width > 1525 && i < AthleteList.list.length) ... {
-                SizedBox(width: 30,),
-                createPoolCard(AthleteList.list[i++])
-              }
-            ],
-          )
-        ));
+            },
+            // 3 pools per row
+            if (_width*.8 > 1227 && i < AthleteList.list.length) ... {
+              SizedBox(width: 30,),
+              createPoolCard(AthleteList.list[i++])
+            },
+            // 4 pools per row
+            if (_width*.8 > 1636 && i < AthleteList.list.length) ... {
+              SizedBox(width: 30,),
+              createPoolCard(AthleteList.list[i++])
+            }
+          ],
+        )
+      ));
     }
 
     Widget toggle = Container(
       width: 260,
       height: 40,
+      margin: EdgeInsets.symmetric(vertical: _height*0.04),
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -412,7 +419,7 @@ print(_width);
     );
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
@@ -425,12 +432,16 @@ print(_width);
         ),
         toggle,
         Container(
+          height: _height * 0.6,
           child: ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 10),
             physics: BouncingScrollPhysics(),
             itemCount: poolRows.length,
             itemBuilder: (context, index) {
-              return poolRows[index];
+              return Container(
+                height: 325,
+                child: poolRows[index]
+              );
             }
           )
         )
