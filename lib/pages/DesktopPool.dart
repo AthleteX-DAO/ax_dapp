@@ -52,13 +52,12 @@ class _DesktopPoolState extends State<DesktopPool> {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
     double hgt = _height*0.8;
-
+print(_width);
     return Container(
       width: _width,
       height: _height - 57,
       alignment: Alignment.center,
       child: Container(
-        color: Colors.lightBlue,
         width: _width * 0.8,
         height: hgt,
         child: (allLiq) ? allLiquidity() : myLiquidity()
@@ -266,6 +265,7 @@ class _DesktopPoolState extends State<DesktopPool> {
     );
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
@@ -411,43 +411,30 @@ class _DesktopPoolState extends State<DesktopPool> {
       )
     );
 
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            height: 45,
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              "My Liquidity",
-              style: textStyle(Colors.white, 24, true)
-            )
-          ),
-          toggle,
-          Container(
-            // height: _height*0.6,
-            // child: GridView.count(
-            //   padding: EdgeInsets.only(top: 0),
-            //   childAspectRatio: 7/3,
-            //   crossAxisCount: 2,
-            //   children: List.generate(AthleteList.list.length, (index) {
-            //     return Center(
-            //       child: createPoolCard(AthleteList.list[index])
-            //     );
-            //   }),
-            // ),
-            // child: poolRows[0]
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              physics: BouncingScrollPhysics(),
-              itemCount: poolRows.length,
-              itemBuilder: (context, index) {
-                return poolRows[index];
-              }
-            )
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          height: 45,
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            "My Liquidity",
+            style: textStyle(Colors.white, 24, true)
           )
-        ],
-      ),
+        ),
+        toggle,
+        Container(
+          child: ListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            physics: BouncingScrollPhysics(),
+            itemCount: poolRows.length,
+            itemBuilder: (context, index) {
+              return poolRows[index];
+            }
+          )
+        )
+      ],
     );
   }
 
