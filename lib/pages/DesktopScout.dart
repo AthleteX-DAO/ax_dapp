@@ -15,6 +15,7 @@ class DesktopScout extends StatefulWidget {
 }
 
 class _DesktopScoutState extends State<DesktopScout> {
+  final myController = TextEditingController();
   bool athletePage = false;
   int sportState = 0;
   List<Athlete> nflList = [];
@@ -34,6 +35,14 @@ class _DesktopScoutState extends State<DesktopScout> {
       rushingYards: [],
       war: [],
       time: []);
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    myController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +76,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                       Container(
                           child: TextButton(
                         onPressed: () {
+                          myController.clear();
                           if (sportState != 0)
                             setState(() {
+                              allListFilter = allList;
                               sportState = 0;
                             });
                         },
@@ -83,8 +94,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                       Container(
                           child: TextButton(
                         onPressed: () {
+                          myController.clear();
                           if (sportState != 1)
                             setState(() {
+                              nflListFilter = nflList;
                               sportState = 1;
                             });
                         },
@@ -415,6 +428,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           Expanded(
             child: Container(
               child: TextFormField(
+                controller: myController,
                 onChanged: (value) {
                   setState(() {
                     // Filter all athletes
