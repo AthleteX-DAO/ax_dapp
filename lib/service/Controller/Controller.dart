@@ -18,13 +18,13 @@ class Controller extends GetxController {
   var mnemonic = "";
   var networkID = 0.obs;
   bool activeChain = false;
-  int ACTIVE_CHAIN_ID = 137;
   static String latestTx = "";
   bool walletConnected = false;
   var gas = EtherAmount.zero().obs;
   var gasString = "0".obs;
   static const MAINNET_CHAIN_ID = 137;
   static const TESTNET_CHAIN_ID = 80001;
+  int ACTIVE_CHAIN_ID = TESTNET_CHAIN_ID;
   String mainRPCUrl = "https://polygon-rpc.com";
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
   var client = Web3Client("url", Client()).obs;
@@ -73,7 +73,7 @@ class Controller extends GetxController {
     credentials = await eth.requestAccount();
     print('[Console] Connecting the wallet...');
     networkID.value = await client.value.getNetworkId();
-    if (networkID.value != MAINNET_CHAIN_ID) {
+    if (networkID.value != TESTNET_CHAIN_ID) {
       print(
           "[Console] Wrong network ID: $networkID. Connect to mainnet(137) and try again");
       return 0;

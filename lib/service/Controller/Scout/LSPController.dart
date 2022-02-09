@@ -26,6 +26,7 @@ class LSPController extends GetxController {
   }
 
   Future<void> mint() async {
+    print("Attempting to MINT LSP");
     final theCredentials = controller.credentials;
     BigInt tokensToCreate = BigInt.from(createAmt.value);
     String txString =
@@ -41,11 +42,13 @@ class LSPController extends GetxController {
 
   void updateCreateAmt(double newAmount) {
     createAmt.value = newAmount;
+    print("creating lsps with collateral: $newAmount");
     update();
   }
 
   void updateRedeemAmt(double newAmount) {
     redeemAmt.value = newAmount;
+    print("redeeming lsps with collateral: $newAmount");
     update();
   }
 }

@@ -16,7 +16,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
 Future<void> testFunction() async {
-  
   return;
 }
 
@@ -1830,7 +1829,6 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                       onPressed: () {
                         // call mint functionality
                         lspController.mint();
-
                         Navigator.pop(context);
                         showDialog(
                             context: context,
