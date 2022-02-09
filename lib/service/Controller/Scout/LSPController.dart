@@ -18,17 +18,19 @@ class LSPController extends GetxController {
   var redeemAmt = 0.0.obs;
   // Hard address listing of all Athletes
 
-  
   LSPController() {
     final theClient = controller.client.value;
-    EthereumAddress address = EthereumAddress.fromHex("0x1145954422AeA78F0E11FE7E10F367405B029834");
+    EthereumAddress address =
+        EthereumAddress.fromHex("0x1145954422AeA78F0E11FE7E10F367405B029834");
     genericLSP = LongShortPair(address: address, client: theClient);
   }
 
   Future<void> mint() async {
     final theCredentials = controller.credentials;
     BigInt tokensToCreate = BigInt.from(createAmt.value);
-    genericLSP.create(tokensToCreate, credentials: theCredentials);
+    String txString =
+        await genericLSP.create(tokensToCreate, credentials: theCredentials);
+    controller.updateTxString(txString); //Sends tx to controller
   }
 
   Future<void> redeem() async {
