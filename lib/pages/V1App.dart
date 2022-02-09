@@ -188,7 +188,10 @@ class _V1AppState extends State<V1App> {
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
                   ])),
-          if (!controller.walletConnected) ...[
+          if (!controller.walletConnected ||
+              (controller.walletConnected &&
+                  controller.networkID.value !=
+                      Controller.MAINNET_CHAIN_ID)) ...[
             // top Connect Wallet Button
             buildConnectWalletButton(),
           ] else ...[

@@ -14,8 +14,86 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
+Dialog connectMetamaskDialog(BuildContext context) {
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 450;
+  double hgt = 200;
+  double edge = 75;
+  if (_width < 405) wid = _width;
+  if (_height < 505) hgt = _height * 0.45;
+  double wid_child = wid - edge;
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: hgt,
+      width: wid,
+      padding: EdgeInsets.all(20),
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Metamask wallet",
+                style: textStyle(Colors.white, 18, true, false),
+              ),
+              Container(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.close,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text('Couldn\'t find MetaMask extension',
+                  style: TextStyle(color: Colors.grey[400]))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 40),
+                width: wid_child,
+                height: 45,
+                decoration: boxDecoration(
+                    Colors.transparent, 100, 2, Colors.purple[900]!),
+                child: TextButton(
+                  onPressed: () {
+                    launch('https://metamask.io/download/');
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Install MetaMask extension",
+                    style: textStyle(Colors.white, 16, false, false),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 //dynamic
 Dialog wrongNetworkDialog(BuildContext context) {
+  Controller controller = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 450;
@@ -47,7 +125,6 @@ Dialog wrongNetworkDialog(BuildContext context) {
               Container(
                 child: TextButton(
                   onPressed: () {
-                    Controller.switchNetwork();
                     Navigator.pop(context);
                   },
                   child: Icon(
@@ -71,6 +148,7 @@ Dialog wrongNetworkDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    controller.switchNetwork();
                   },
                   child: Text(
                     "Switch to Matic Network",
@@ -142,10 +220,27 @@ Dialog walletDialog(BuildContext context) {
                     Colors.transparent, 100, 2, Colors.grey[400]!),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    controller.connect().then((value) {
-                      walletController.getTokenMetrics();
-                      walletController.getTokenBalance();
+                    //Navigator.pop(context);
+                    controller.connect().then((response) {
+                      if (response == -1) {
+                        // No MetaMask
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                connectMetamaskDialog(context));
+                      } else if (response == 0) {
+                        // Wrong network
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                wrongNetworkDialog(context));
+                      } else {
+                        Navigator.pop(context);
+                        walletController.getTokenMetrics();
+                        walletController.getTokenBalance();
+                      }
                     });
 
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {

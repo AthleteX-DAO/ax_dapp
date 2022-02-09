@@ -16,7 +16,9 @@ class Controller extends GetxController {
       Web3Client("https://matic-mumbai.chainstacklabs.com/", Client()).obs;
   var credentials;
   var publicAddress =
-      EthereumAddress.fromHex("0xcdaa8c55fB92fbBE61948aDf4Ba8Cf7Ad33DBeF0").obs;
+      EthereumAddress.fromHex("0x0000000000000000000000000000000000000000").obs;
+  //EthereumAddress.fromHex("0xcdaa8c55fB92fbBE61948aDf4Ba8Cf7Ad33DBeF0").obs;
+
   var networkID = 0.obs;
   bool walletConnected = false;
 
@@ -58,22 +60,21 @@ class Controller extends GetxController {
   }
 
   // Connect the dapp to metamask and update relevant values
-  Future<void> connect() async {
+  Future<int> connect() async {
     final eth = window.ethereum;
     if (eth == null) {
       print('[Console] MetaMask is not available');
-      return;
+      return -1;
     }
     walletConnected = true;
     client.value = Web3Client.custom(eth.asRpcService());
     credentials = await eth.requestAccount();
     print('[Console] Connecting the wallet...');
     networkID.value = await client.value.getNetworkId();
-    if (networkID.value != MAINNET_CHAIN_ID &&
-        networkID.value != TESTNET_CHAIN_ID) {
+    if (networkID.value != MAINNET_CHAIN_ID) {
       print(
-          "[Console] Wrong network ID: $networkID. Connect to mainnet(137) or testnet (80001) and try again");
-      return;
+          "[Console] Wrong network ID: $networkID. Connect to mainnet(137) and try again");
+      return 0;
     }
     publicAddress.value = await credentials.extractAddress();
     var rawGasPrice = await client.value.getGasPrice();
@@ -81,6 +82,7 @@ class Controller extends GetxController {
     gasString.value = "$gasPriceinGwei";
     print("[Console] Updated client and credentials");
     update();
+    return 1;
   }
 
   void getCurrentGas() async {
@@ -123,12 +125,35 @@ class Controller extends GetxController {
     eth!.rawRequest('wallet_watchAsset', params: tokenParam);
   }
 
-  static void switchNetwork() async {
+  Future<bool> switchNetwork() async {
+    print("Inside switchNetwork()");
     final eth = window.ethereum;
-    Object params = [
-      {'chainID': '0xf00'}
+    Object switchParams = [
+      {'chainId': '0x89'}
     ];
-    eth!.rawRequest('wallet_switchEthereumChain', params: {params});
+    try {
+      print("[Console] Trying to switch the network");
+      await eth!.rawRequest('wallet_switchEthereumChain', params: switchParams);
+      print("[Console] Switched the network to mainnet(137, 0x89?)");
+      return true;
+    } catch (error) {
+      print("[Console] Main network not installed on MetaMask");
+      try {
+        Object addParams = [
+          {
+            'chainId': '0x89',
+            'chainName': 'Matic(Mainnet)',
+            'rpcUrls': mainRPCUrl,
+          }
+        ];
+        await eth!.rawRequest('wallet_addEthereumChain', params: addParams);
+        print("[Console] Added a mainnet to the MetaMask");
+        return true;
+      } catch (addError) {
+        print("[Console] Could not add a mainnet to the MetaMask");
+        return false;
+      }
+    }
   }
 
   static void viewTx() async {
