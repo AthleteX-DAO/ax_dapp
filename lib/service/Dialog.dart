@@ -15,6 +15,11 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
+Future<void> testFunction() async {
+  
+  return;
+}
+
 Dialog connectMetamaskDialog(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -42,7 +47,7 @@ Dialog connectMetamaskDialog(BuildContext context) {
             children: [
               Text(
                 "Metamask wallet",
-                style: textStyle(Colors.white, 18, true, false),
+                style: textStyle(Colors.white, 18, true),
               ),
               Container(
                 child: TextButton(
@@ -80,7 +85,7 @@ Dialog connectMetamaskDialog(BuildContext context) {
                   },
                   child: Text(
                     "Install MetaMask extension",
-                    style: textStyle(Colors.white, 16, false, false),
+                    style: textStyle(Colors.white, 16, false),
                   ),
                 ),
               ),
@@ -2267,7 +2272,7 @@ Dialog yourAXDialog(BuildContext context) {
                   height: 65,
                   alignment: Alignment.center,
                   child: Text("${walletController.yourBalance} AX",
-                      style: textStyle(Colors.white, 20, false, false)),
+                      style: textStyle(Colors.white, 20, false)),
                 ),
                 Container(
                     width: wid - edge,
