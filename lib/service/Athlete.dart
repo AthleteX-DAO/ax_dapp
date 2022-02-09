@@ -28,63 +28,53 @@ class Athlete {
     required this.time,
   });
 
-  static Athlete fromJson(json) =>
-      Athlete(
-        name: json['name'],
-        team: json['team'],
-        position: json['position'],
-        passingYards: json['passingYards'],
-        passingTouchDowns: json['passingTouchdowns'],
-        reception: json['reception'],
-        receiveYards: json['receiveYards'],
-        receiveTouch: json['receiveTouch'],
-        rushingYards: json['rushingYards'],
-        time: json['time'],
-        war: json['price']
-      );
-
+  static Athlete fromJson(json) => Athlete(
+      name: json['name'],
+      team: json['team'],
+      position: json['position'],
+      passingYards: json['passingYards'],
+      passingTouchDowns: json['passingTouchdowns'],
+      reception: json['reception'],
+      receiveYards: json['receiveYards'],
+      receiveTouch: json['receiveTouch'],
+      rushingYards: json['rushingYards'],
+      time: json['time'],
+      war: json['price']);
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    if (isBold)
-      if (isUline)
-        return TextStyle(
+    if (isBold) if (isUline)
+      return TextStyle(
           color: color,
           fontFamily: 'OpenSans',
           fontSize: size,
           fontWeight: FontWeight.w400,
-          decoration: TextDecoration.underline
-        );
-      else
-        return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-          fontWeight: FontWeight.w400,
-        );
+          decoration: TextDecoration.underline);
     else
-      if (isUline)
-        return TextStyle(
+      return TextStyle(
+        color: color,
+        fontFamily: 'OpenSans',
+        fontSize: size,
+        fontWeight: FontWeight.w400,
+      );
+    else if (isUline)
+      return TextStyle(
           color: color,
           fontFamily: 'OpenSans',
           fontSize: size,
-          decoration: TextDecoration.underline
-        );
-      else
-        return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-        );
+          decoration: TextDecoration.underline);
+    else
+      return TextStyle(
+        color: color,
+        fontFamily: 'OpenSans',
+        fontSize: size,
+      );
   }
 
-  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+  BoxDecoration boxDecoration(
+      Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
-      color: col,
-      borderRadius: BorderRadius.circular(rad),
-      border: Border.all(
-        color: borCol,
-        width: borWid
-      )
-    );
+        color: col,
+        borderRadius: BorderRadius.circular(rad),
+        border: Border.all(color: borCol, width: borWid));
   }
 }

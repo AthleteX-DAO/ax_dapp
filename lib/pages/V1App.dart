@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
+import 'package:ax_dapp/pages/DesktopPool.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class V1App extends StatefulWidget {
   @override
@@ -52,8 +54,6 @@ class _V1AppState extends State<V1App> {
   List<Athlete> athleteList = [];
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
-  SwapController swapController = Get.put(SwapController());
-  WalletController walletController = Get.put(WalletController());
   AXT axt = AXT("AthleteX", "AX");
   Token matic = Token("Polygon", "MATIC");
 
@@ -62,22 +62,25 @@ class _V1AppState extends State<V1App> {
     Widget pageWidget = buildDesktop(context);
 
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          title: topNavBar(context),
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-        ),
-        body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("../assets/images/blurredBackground.png"),
-                fit: BoxFit.fill,
-              ),
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      appBar: AppBar(
+        title: topNavBar(context),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+      ),
+      body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("../assets/images/blurredBackground.png"),
+              fit: BoxFit.fill,
             ),
-            child: pageWidget));
+          ),
+          child: pageWidget),
+      bottomNavigationBar: bottomNavBar(context),
+    );
     // Do not delete this yet. The original code before the changes
     /*return Scaffold(
       appBar: AppBar(
@@ -106,6 +109,8 @@ class _V1AppState extends State<V1App> {
         else if (pageNumber == 1)
           DesktopTrade()
         else if (pageNumber == 2)
+          DesktopPool()
+        else if (pageNumber == 3)
           DesktopFarm()
       ],
     );
@@ -116,7 +121,7 @@ class _V1AppState extends State<V1App> {
     double tabTxSz = _width * 0.0185;
     if (tabTxSz < 19) tabTxSz = 19;
     double tabBxSz = _width * 0.3;
-    if (tabBxSz < 270) tabBxSz = 270;
+    if (tabBxSz < 350) tabBxSz = 350;
 
     return Container(
       width: _width * .95,
@@ -180,9 +185,24 @@ class _V1AppState extends State<V1App> {
                                   pageNumber = 2;
                                 });
                             },
-                            child: Text("Farm",
+                            child: Text("Pool",
                                 style: textSwapState(
                                     pageNumber == 2,
+                                    textStyle(
+                                        Colors.white, tabTxSz, true, false),
+                                    textStyle(Colors.amber[400]!, tabTxSz, true,
+                                        true))))),
+                    Container(
+                        child: TextButton(
+                            onPressed: () {
+                              if (pageNumber != 3)
+                                setState(() {
+                                  pageNumber = 3;
+                                });
+                            },
+                            child: Text("Farm",
+                                style: textSwapState(
+                                    pageNumber == 3,
                                     textStyle(
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
@@ -203,10 +223,89 @@ class _V1AppState extends State<V1App> {
     );
   }
 
+  Widget bottomNavBar(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.1,
+      color: Colors.transparent,
+      padding: const EdgeInsets.only(left: 40.0, top: 20.0, right: 40),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                // margin: ,
+                child: InkWell(
+                  child: Text('athletex.io'),
+                  onTap: () => launch('https://www.athletex.io/'),
+                ),
+                width: 72,
+                height: 20,
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                        onPressed: () =>
+                            //Discord button
+                            launch('https://discord.com/invite/WFsyAuzp9V'),
+                        icon: FaIcon(
+                          FontAwesomeIcons.discord,
+                          size: 25,
+                          color: Colors.grey[400],
+                        )),
+                    IconButton(
+                        onPressed: () =>
+                            launch('https://twitter.com/athletex_dao?s=20'),
+                        icon: FaIcon(
+                          FontAwesomeIcons.twitter,
+                          size: 25,
+                          color: Colors.grey[400],
+                        )),
+                    IconButton(
+                        onPressed: () =>
+                            launch('https://github.com/SportsToken'),
+                        icon: FaIcon(
+                          FontAwesomeIcons.github,
+                          size: 25,
+                          color: Colors.grey[400],
+                        )),
+                  ],
+                ),
+              ),
+              // Help icon button, temporarily delete
+              // IconButton(
+              //   onPressed: () {},
+              //   hoverColor: Colors.amber,
+              //   icon: Icon(
+              //     Icons.help_outline,
+              //   ),
+              //   color: Colors.white,
+              //   iconSize: 25,
+              // )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buildConnectWalletButton() {
+    double _width = MediaQuery.of(context).size.width;
+    double wid = 180;
+    String text = "Connect Wallet";
+    if (_width < 565) {
+      wid = 110;
+      text = "Connect";
+    }
+
     return Container(
         height: 37.5,
-        width: 180,
+        width: wid,
         decoration:
             boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
         child: TextButton(
@@ -215,7 +314,7 @@ class _V1AppState extends State<V1App> {
                     builder: (BuildContext context) => walletDialog(context))
                 .then((value) => setState(() {})),
             child: Text(
-              "Connect Wallet",
+              text,
               style: textStyle(Colors.amber[400]!, 16, true, false),
             )));
   }
