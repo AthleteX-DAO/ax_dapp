@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
@@ -293,8 +294,7 @@ Dialog depositDialog(BuildContext context) {
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
                           hintText: '0.00',
-                          hintStyle:
-                              textStyle(Colors.grey[400]!, 22, false),
+                          hintStyle: textStyle(Colors.grey[400]!, 22, false),
                           contentPadding: const EdgeInsets.all(9),
                           border: InputBorder.none,
                         ),
@@ -507,8 +507,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
                           hintText: '0.00',
-                          hintStyle:
-                              textStyle(Colors.grey[400]!, 22, false),
+                          hintStyle: textStyle(Colors.grey[400]!, 22, false),
                           contentPadding: const EdgeInsets.all(9),
                           border: InputBorder.none,
                         ),
@@ -560,8 +559,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                           onPressed: () {},
                           child: Text(
                             "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false),
+                            style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
                       ),
@@ -575,8 +573,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false),
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -603,8 +600,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                                 depositConfimed(context));
                       },
                       child: Text("Add Liquidity",
-                          style:
-                              textStyle(Colors.amber[400]!, 20, true)))),
+                          style: textStyle(Colors.amber[400]!, 20, true)))),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
                 child: Text("LP Tokens: " + "0",
@@ -623,8 +619,8 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                         builder: (BuildContext context) =>
                             depositConfimed(context));
                   },
-                  child: Text("Deposit",
-                      style: textStyle(Colors.black, 16, true)),
+                  child:
+                      Text("Deposit", style: textStyle(Colors.black, 16, true)),
                 ),
               )
             ],
@@ -766,8 +762,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                               onPressed: () {},
                               child: Text(
                                 "Max",
-                                style: textStyle(
-                                    Colors.grey[400]!, 9, false),
+                                style: textStyle(Colors.grey[400]!, 9, false),
                               ),
                             ),
                           ),
@@ -775,12 +770,11 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                           SizedBox(
                             width: 70,
                             child: TextFormField(
-                              style: textStyle(
-                                  Colors.grey[400]!, 22, false),
+                              style: textStyle(Colors.grey[400]!, 22, false),
                               decoration: InputDecoration(
                                 hintText: '0.00',
-                                hintStyle: textStyle(
-                                    Colors.grey[400]!, 22, false),
+                                hintStyle:
+                                    textStyle(Colors.grey[400]!, 22, false),
                                 border: InputBorder.none,
                               ),
                               inputFormatters: [
@@ -1118,8 +1112,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                           onPressed: () {},
                           child: Text(
                             "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false),
+                            style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
                       ),
@@ -1129,8 +1122,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false),
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -1345,6 +1337,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
   if (_width < 375) wid = _width;
   double hgt = 450;
   if (_height < 455) hgt = _height;
+  LSPController lspController = Get.find();
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1452,8 +1445,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           onPressed: () {},
                           child: Text(
                             "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false),
+                            style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
                       ),
@@ -1463,8 +1455,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false),
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -1472,6 +1463,10 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                             FilteringTextInputFormatter.allow(
                                 (RegExp(r'^(\d+)?\.?\d{0,2}'))),
                           ],
+                          onChanged: (value) {
+                            double newAmount = double.parse(value);
+                            lspController.updateRedeemAmt(newAmount);
+                          },
                         ),
                       ),
                     ],
@@ -1522,6 +1517,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                     ),
                     child: TextButton(
                       onPressed: () {
+                        lspController.redeem();
                         Navigator.pop(context);
                         showDialog(
                             context: context,
@@ -1553,6 +1549,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   if (_width < 375) wid = _width;
   double hgt = 450;
   if (_height < 455) hgt = _height;
+
+  LSPController lspController = Get.find();
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1658,8 +1656,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                           onPressed: () {},
                           child: Text(
                             "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false),
+                            style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
                       ),
@@ -1669,8 +1666,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false),
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -1678,6 +1674,10 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                             FilteringTextInputFormatter.allow(
                                 (RegExp(r'^(\d+)?\.?\d{0,2}'))),
                           ],
+                          onChanged: (value) {
+                            double newAmount = double.parse(value);
+                            lspController.updateCreateAmt(newAmount);
+                          },
                         ),
                       ),
                     ],
@@ -1728,6 +1728,9 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                     ),
                     child: TextButton(
                       onPressed: () {
+                        // call mint functionality
+                        lspController.mint();
+
                         Navigator.pop(context);
                         showDialog(
                             context: context,
@@ -2163,8 +2166,8 @@ Dialog yourAXDialog(BuildContext context) {
                 Container(
                   height: 65,
                   alignment: Alignment.center,
-                  child: Text("100.00",
-                      style: textStyle(Colors.white, 20, false)),
+                  child:
+                      Text("100.00", style: textStyle(Colors.white, 20, false)),
                 ),
                 Container(
                     width: wid - edge,
@@ -2317,8 +2320,8 @@ Dialog yourAXDialog(BuildContext context) {
                               child: TextButton(
                                   onPressed: () {},
                                   child: Text("Buy AX",
-                                      style: textStyle(
-                                          Colors.black, 14, true)))),
+                                      style:
+                                          textStyle(Colors.black, 14, true)))),
                           Container(
                               width: 150,
                               height: 30,
@@ -2327,8 +2330,8 @@ Dialog yourAXDialog(BuildContext context) {
                               child: TextButton(
                                   onPressed: () {},
                                   child: Text("+ Add to Wallet",
-                                      style: textStyle(Colors.amber[600]!, 14,
-                                          true)))),
+                                      style: textStyle(
+                                          Colors.amber[600]!, 14, true)))),
                         ])),
               ])))));
 }
@@ -2376,8 +2379,7 @@ Dialog accountDialog(BuildContext context) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("Account",
-                        style: textStyle(Colors.white, 20, false)),
+                    Text("Account", style: textStyle(Colors.white, 20, false)),
                     IconButton(
                       icon: const Icon(
                         Icons.close,
@@ -2423,8 +2425,8 @@ Dialog accountDialog(BuildContext context) {
                                       ),
                                       Text(
                                         "$retStr",
-                                        style: textStyle(
-                                            Colors.white, 20, false),
+                                        style:
+                                            textStyle(Colors.white, 20, false),
                                       ),
                                     ],
                                   ),
@@ -2489,8 +2491,7 @@ Dialog accountDialog(BuildContext context) {
                               color: Colors.grey,
                             ),
                             Text("Copy Address",
-                                style: textStyle(
-                                    Colors.grey[400]!, 15, false)),
+                                style: textStyle(Colors.grey[400]!, 15, false)),
                           ],
                         ),
                       ),
@@ -2510,8 +2511,7 @@ Dialog accountDialog(BuildContext context) {
                               color: Colors.grey,
                             ),
                             Text("Show on Polygonscan",
-                                style: textStyle(
-                                    Colors.grey[400]!, 15, false)),
+                                style: textStyle(Colors.grey[400]!, 15, false)),
                           ],
                         ),
                       ),
@@ -2631,8 +2631,7 @@ Dialog removeDialog(BuildContext context) {
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
                           hintText: '0.00',
-                          hintStyle:
-                              textStyle(Colors.grey[400]!, 22, false),
+                          hintStyle: textStyle(Colors.grey[400]!, 22, false),
                           contentPadding: const EdgeInsets.all(9),
                           border: InputBorder.none,
                         ),
@@ -3117,174 +3116,146 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
   if (_height < 455) hgt = _height;
 
   return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.0),
-    ),
-    child: Container(
-      height: hgt,
-      width: wid,
-      padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Add Liquidity",
-                style: textStyle(Colors.white, 20, false),
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 30,
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ]
-          ),
-          // AX & Athlete deposited
-          Container(
-            child: Column(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Container(
+          height: hgt,
+          width: wid,
+          padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+          decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "AX deposited:",
-                      style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "1000",
-                      style: textStyle(Colors.white, 16, false)
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      name+" deposited:",
-                      style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "500",
-                      style: textStyle(Colors.white, 16, false)
-                    )
-                  ],
-                )
-              ],
-            )
-          ),
-          // ax per apt & share of pool
-          Container(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "AX per "+name,
-                      style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "2.24",
-                      style: textStyle(Colors.white, 16, false)
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      name+" per AX:",
-                      style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "1.48",
-                      style: textStyle(Colors.white, 16, false)
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Share of pool:",
-                      style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "0.12%",
-                      style: textStyle(Colors.white, 16, false)
-                    )
-                  ],
-                )
-              ],
-            )
-          ),
-          Divider(
-            thickness: 1,
-            color: Colors.grey[600]
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "You will receive:",
-              style: textStyle(Colors.grey[600]!, 16, false),
-            )
-          ),
-          // bottom receive amount
-          Container(
-            width: wid-100,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          "20.24",
-                          style: textStyle(Colors.white, 38, false),
-                        )
+                      Text(
+                        "Add Liquidity",
+                        style: textStyle(Colors.white, 20, false),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "AX/"+name,
-                            style: textStyle(Colors.white, 16, false),
-                          ),
-                          Text(
-                            "LP Tokens",
-                            style: textStyle(Colors.white, 16, false),
-                          )
-                        ],
-                      )
-                    ],
-                  )
-                ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ]),
+                // AX & Athlete deposited
                 Container(
-                  child: Text(
-                    "*Output is estimated. If the price changes by more than 2%, your transaction will revert.",
-                    style: TextStyle(color: Colors.grey[600], fontSize: 11)
-                  ),
-                ),
-              ],
-            )
-          ),
-          ApproveButton(175, 40, "Approve", testFunction, removalConfirmed)
-        ]
-      )
-    )
-  );
+                    child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "AX deposited:",
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("1000", style: textStyle(Colors.white, 16, false))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          name + " deposited:",
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("500", style: textStyle(Colors.white, 16, false))
+                      ],
+                    )
+                  ],
+                )),
+                // ax per apt & share of pool
+                Container(
+                    child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "AX per " + name,
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("2.24", style: textStyle(Colors.white, 16, false))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          name + " per AX:",
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("1.48", style: textStyle(Colors.white, 16, false))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Share of pool:",
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("0.12%", style: textStyle(Colors.white, 16, false))
+                      ],
+                    )
+                  ],
+                )),
+                Divider(thickness: 1, color: Colors.grey[600]),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "You will receive:",
+                      style: textStyle(Colors.grey[600]!, 16, false),
+                    )),
+                // bottom receive amount
+                Container(
+                    width: wid - 100,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                                child: Text(
+                              "20.24",
+                              style: textStyle(Colors.white, 38, false),
+                            )),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "AX/" + name,
+                                  style: textStyle(Colors.white, 16, false),
+                                ),
+                                Text(
+                                  "LP Tokens",
+                                  style: textStyle(Colors.white, 16, false),
+                                )
+                              ],
+                            )
+                          ],
+                        )),
+                        Container(
+                          child: Text(
+                              "*Output is estimated. If the price changes by more than 2%, your transaction will revert.",
+                              style: TextStyle(
+                                  color: Colors.grey[600], fontSize: 11)),
+                        ),
+                      ],
+                    )),
+                ApproveButton(
+                    175, 40, "Approve", testFunction, removalConfirmed)
+              ])));
 }
-
 
 Dialog poolRemoveLiquidity(BuildContext context, String name) {
   SwapController swapController = Get.find();
@@ -3298,247 +3269,234 @@ Dialog poolRemoveLiquidity(BuildContext context, String name) {
   if (_height < 530) hgt = _height;
 
   return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.0),
-    ),
-    child: Container(
-      height: hgt,
-      width: wid,
-      padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Remove Liquidity",
-                style: textStyle(Colors.white, 20, false),
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 30,
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ]
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Your position:",
-              style: textStyle(Colors.grey[600]!, 16, false),
-            )
-          ),
-          // ax per apt & share of pool
-          Container(
-            height: 100,
-            child: Column(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Container(
+          height: hgt,
+          width: wid,
+          padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+          decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "AX/"+name+" LP Tokens:",
-                      style: textStyle(Colors.white, 16, false),
-                    ),
-                    Text(
-                      "20.24",
-                      style: textStyle(Colors.white, 16, false)
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Share of pool:",
-                      style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "0.12%",
-                      style: textStyle(Colors.white, 16, false)
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "AX deposited:",
-                      style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "1,000",
-                      style: textStyle(Colors.white, 16, false)
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      name+" deposited:",
-                      style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "500",
-                      style: textStyle(Colors.white, 16, false)
-                    )
-                  ],
-                )
-              ],
-            )
-          ),
-          Divider(
-            thickness: 1,
-            color: Colors.grey[600]
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Remove:",
-              style: textStyle(Colors.grey[600]!, 16, false),
-            )
-          ),
-          Container(
-            width: wid,
-            decoration: boxDecoration(Colors.transparent, 20, 0.5, Colors.grey[600]!),
-            child: Container(
-              width: wid-50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  // LP Tokens
-                  Container(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Balance: 20.24",
-                          style: textStyle(Colors.grey[600]!, 9, false),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Remove Liquidity",
+                        style: textStyle(Colors.white, 20, false),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 30,
                         ),
-                        Text(
-                          "LP Tokens",
-                          style: textStyle(Colors.white, 16, false),
-                        )
-                      ],
-                    )
-                  ),
-                  // Max/amount
-                  Container(
-                    width: wid*.325,
-                    child: Row(
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ]),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Your position:",
+                      style: textStyle(Colors.grey[600]!, 16, false),
+                    )),
+                // ax per apt & share of pool
+                Container(
+                    height: 100,
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Container(
-                          height: 17.5,
-                          width: 37.5,
-                          decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[600]!),
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              "MAX",
-                              style: textStyle(Colors.grey[600]!, 9, false),
-                            )
-                          )
-                        ),
-                        SizedBox(
-                          width: 70,
-                          child: TextFormField(
-                            onChanged: (value) {
-                              amount = double.parse(value);
-                              print(amount);
-                            },
-                            style: textStyle(Colors.grey[400]!, 22, false),
-                            decoration: InputDecoration(
-                              hintText: '0.00',
-                              hintStyle:
-                                  textStyle(Colors.grey[400]!, 22, false),
-                              contentPadding: const EdgeInsets.all(9),
-                              border: InputBorder.none,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "AX/" + name + " LP Tokens:",
+                              style: textStyle(Colors.white, 16, false),
                             ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                            ],
-                          ),
+                            Text("20.24",
+                                style: textStyle(Colors.white, 16, false))
+                          ],
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Share of pool:",
+                              style: textStyle(Colors.grey[600]!, 16, false),
+                            ),
+                            Text("0.12%",
+                                style: textStyle(Colors.white, 16, false))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "AX deposited:",
+                              style: textStyle(Colors.grey[600]!, 16, false),
+                            ),
+                            Text("1,000",
+                                style: textStyle(Colors.white, 16, false))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              name + " deposited:",
+                              style: textStyle(Colors.grey[600]!, 16, false),
+                            ),
+                            Text("500",
+                                style: textStyle(Colors.white, 16, false))
+                          ],
+                        )
                       ],
-                    ),
-                  )
-                ],
-              )
-            )
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "You will receive:",
-              style: textStyle(Colors.grey[600]!, 16, false),
-            ),
-          ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "AX per "+name,
+                    )),
+                Divider(thickness: 1, color: Colors.grey[600]),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Remove:",
                       style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "1,000",
-                      style: textStyle(Colors.white, 16, false),
-                    )
-                  ],
+                    )),
+                Container(
+                    width: wid,
+                    decoration: boxDecoration(
+                        Colors.transparent, 20, 0.5, Colors.grey[600]!),
+                    child: Container(
+                        width: wid - 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // LP Tokens
+                            Container(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Balance: 20.24",
+                                      style: textStyle(
+                                          Colors.grey[600]!, 9, false),
+                                    ),
+                                    Text(
+                                      "LP Tokens",
+                                      style: textStyle(Colors.white, 16, false),
+                                    )
+                                  ],
+                                )),
+                            // Max/amount
+                            Container(
+                              width: wid * .325,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                      height: 17.5,
+                                      width: 37.5,
+                                      decoration: boxDecoration(
+                                          Colors.transparent,
+                                          100,
+                                          0.5,
+                                          Colors.grey[600]!),
+                                      child: TextButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            "MAX",
+                                            style: textStyle(
+                                                Colors.grey[600]!, 9, false),
+                                          ))),
+                                  SizedBox(
+                                    width: 70,
+                                    child: TextFormField(
+                                      onChanged: (value) {
+                                        amount = double.parse(value);
+                                        print(amount);
+                                      },
+                                      style: textStyle(
+                                          Colors.grey[400]!, 22, false),
+                                      decoration: InputDecoration(
+                                        hintText: '0.00',
+                                        hintStyle: textStyle(
+                                            Colors.grey[400]!, 22, false),
+                                        contentPadding: const EdgeInsets.all(9),
+                                        border: InputBorder.none,
+                                      ),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ))),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "You will receive:",
+                    style: textStyle(Colors.grey[600]!, 16, false),
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      name+" per AX",
-                      style: textStyle(Colors.grey[600]!, 16, false),
-                    ),
-                    Text(
-                      "500",
-                      style: textStyle(Colors.white, 16, false),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-          ApproveButton(175, 40, "Approve", testFunction, removalConfirmed)
-        ]
-      )
-    )
-  );
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "AX per " + name,
+                            style: textStyle(Colors.grey[600]!, 16, false),
+                          ),
+                          Text(
+                            "1,000",
+                            style: textStyle(Colors.white, 16, false),
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            name + " per AX",
+                            style: textStyle(Colors.grey[600]!, 16, false),
+                          ),
+                          Text(
+                            "500",
+                            style: textStyle(Colors.white, 16, false),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                ApproveButton(
+                    175, 40, "Approve", testFunction, removalConfirmed)
+              ])));
 }
 
-  TextStyle textStyle(Color color, double size, bool isBold) {
-    if (isBold) 
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w500,
-      );
-    else
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
-  }
+TextStyle textStyle(Color color, double size, bool isBold) {
+  if (isBold)
+    return TextStyle(
+      color: color,
+      fontFamily: 'OpenSans',
+      fontSize: size,
+      fontWeight: FontWeight.w500,
+    );
+  else
+    return TextStyle(
+      color: color,
+      fontFamily: 'OpenSans',
+      fontSize: size,
+    );
+}
 
 BoxDecoration boxDecoration(
     Color col, double rad, double borWid, Color borCol) {
