@@ -152,22 +152,19 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                                     style: textStyle(
                                                         Colors.grey[400]!,
                                                         8,
-                                                        false
-                                                        )))),
+                                                        false)))),
                                         SizedBox(
                                           width: 70,
                                           child: TextFormField(
                                             onChanged: (value) {
                                               fromAmount = double.parse(value);
                                             },
-                                            style: textStyle(Colors.grey[400]!,
-                                                22, false),
+                                            style: textStyle(
+                                                Colors.grey[400]!, 22, false),
                                             decoration: InputDecoration(
                                               hintText: '0.00',
                                               hintStyle: textStyle(
-                                                  Colors.grey[400]!,
-                                                  22,
-                                                  false),
+                                                  Colors.grey[400]!, 22, false),
                                               contentPadding:
                                                   const EdgeInsets.all(9),
                                               border: InputBorder.none,
@@ -232,12 +229,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                   onChanged: (value) {
                                     toAmount = double.parse(value);
                                   },
-                                  style: textStyle(
-                                      Colors.grey[400]!, 22, false),
+                                  style:
+                                      textStyle(Colors.grey[400]!, 22, false),
                                   decoration: InputDecoration(
                                     hintText: '0.00',
-                                    hintStyle: textStyle(
-                                        Colors.grey[400]!, 22, false),
+                                    hintStyle:
+                                        textStyle(Colors.grey[400]!, 22, false),
                                     contentPadding: const EdgeInsets.all(9),
                                     border: InputBorder.none,
                                   ),
@@ -287,74 +284,69 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   Widget createTokenElement(Token token, int tknNum) {
     return Container(
-      height: 50,
-      child: TextButton(
-        onPressed: () {
-          setState(() {
-            if (tknNum == 1)
-              tkn1 = token;
-            else
-              tkn2 = token;
-            Navigator.pop(context);
-          });
-        },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                height: 30,
-                width: 60,
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  width: 30,
+        height: 50,
+        child: TextButton(
+            onPressed: () {
+              setState(() {
+                if (tknNum == 1)
+                  tkn1 = token;
+                else
+                  tkn2 = token;
+                Navigator.pop(context);
+              });
+            },
+            child: Container(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
                   height: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      scale: 0.5,
-                      image: token.icon!,
-                      fit: BoxFit.fill,
+                  width: 60,
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        scale: 0.5,
+                        image: token.icon!,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                height: 45,
-                // ticker/name column "AX/AthleteX"
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Container(
-                      width: 125,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        token.ticker,
-                        style: textStyle(Colors.white, 14, true),
-                      )
-                    ),
-                    Container(
-                      width: 125,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        token.name,
-                        style: textStyle(Colors.grey[100]!, 9, false),
-                      )
-                    ),
-                  ],
-                )
-              )
-            ],
-          )
-        )
-      )
-    );
+                Container(
+                    height: 45,
+                    // ticker/name column "AX/AthleteX"
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                            width: 125,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              token.ticker,
+                              style: textStyle(Colors.white, 14, true),
+                            )),
+                        Container(
+                            width: 125,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              token.name,
+                              style: textStyle(Colors.grey[100]!, 9, false),
+                            )),
+                      ],
+                    ))
+              ],
+            ))));
   }
 
   Widget createTokenButton(int tknNum) {
     String tkr = "Select a Token";
     AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
-    BoxDecoration decor = boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
+    BoxDecoration decor =
+        boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
       if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
@@ -399,13 +391,14 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 Container(width: 10),
                 Expanded(
                   child: Text(tkr, style: textStyle(Colors.white, 16, true)),
-                ), 
+                ),
                 Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
               ],
             ))));
   }
 
-  void dialog(BuildContext context, double _height, double _width, BoxDecoration _decoration, Widget _child) {
+  void dialog(BuildContext context, double _height, double _width,
+      BoxDecoration _decoration, Widget _child) {
     Dialog fancyDialog = Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -417,7 +410,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
             decoration: _decoration,
             child: _child));
 
-    showDialog(context: context, builder: (BuildContext context) => fancyDialog);
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
   }
 
   TextStyle textStyle(Color color, double size, bool isBold) {
@@ -436,7 +430,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
       );
   }
 
-  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+  BoxDecoration boxDecoration(
+      Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
         color: col,
         borderRadius: BorderRadius.circular(rad),

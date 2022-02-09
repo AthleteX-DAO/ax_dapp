@@ -197,13 +197,13 @@ class _DesktopScoutState extends State<DesktopScout> {
 
     if (nflList.length == 0) {
       nflList = AthleteList.list;
-      nflListFilter = nflList; 
+      nflListFilter = nflList;
     }
 
     if (allList.length == 0) {
       // Filter all the athletes. For now we only have NFL athletes
       allList = nflList;
-      allListFilter = allList;   
+      allListFilter = allList;
     }
 
     // all athletes
@@ -258,36 +258,24 @@ class _DesktopScoutState extends State<DesktopScout> {
 
     double athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
-    
-    String fn(String a)
-    {
-      if(a=="QB")
-      {
+
+    String fn(String a) {
+      if (a == "QB") {
         return "Quarterback";
-      }
-      else if(a=="WR")
-      {
+      } else if (a == "WR") {
         return "Widereciever";
-      }
-       else if(a=="DT")
-      {
+      } else if (a == "DT") {
         return "Defencetackle";
-      }
-       else if(a=="RB")
-      {
+      } else if (a == "RB") {
         return "Runningback";
-      }
-       else if(a=="TE")
-      {
+      } else if (a == "TE") {
         return "Tightend";
-      }
-       else if(a=="CB")
-      {
+      } else if (a == "CB") {
         return "Cornerback";
       }
       return "B";
     }
-    
+
     return Container(
         height: 70,
         child: OutlinedButton(
@@ -433,13 +421,20 @@ class _DesktopScoutState extends State<DesktopScout> {
                   setState(() {
                     // Filter all athletes
                     if (sportState == 0) {
-                      allListFilter = allList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
+                      allListFilter = allList
+                          .where((athlete) => athlete.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
                     }
                     // Filter NFL athletes
                     else {
-                      nflListFilter = nflList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
+                      nflListFilter = nflList
+                          .where((athlete) => athlete.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
                     }
-
                   });
                 },
                 decoration: InputDecoration(

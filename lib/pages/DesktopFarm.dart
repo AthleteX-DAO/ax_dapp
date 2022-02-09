@@ -57,41 +57,33 @@ class _DesktopFarmState extends State<DesktopFarm> {
     if (_height < 445) vertical = false;
 
     Widget toggle = Container(
-      width: 200,
-      height: 40,
-      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Container(
-              width: 85,
-              decoration: boxDecoration(
-                  Colors.grey[600]!, 100, 0, Colors.transparent),
-              child: TextButton(
-                onPressed: () {},
-                child: Text("All Farms",
-                style: textStyle(Colors.white, 16, true, false)
-              )
-            )
-          ),
-          Container(
-            width: 90,
-            decoration: boxDecoration(Colors.transparent, 100, 0, Colors.transparent),
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  allFarms = false;
-                });
-              },
-              child: Text(
-                "My Farms",
-                style: textStyle(Colors.white, 16, true, false)
-              )
-            )
-          )
-        ]
-      )
-    );
+        width: 200,
+        height: 40,
+        decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                  width: 85,
+                  decoration: boxDecoration(
+                      Colors.grey[600]!, 100, 0, Colors.transparent),
+                  child: TextButton(
+                      onPressed: () {},
+                      child: Text("All Farms",
+                          style: textStyle(Colors.white, 16, true, false)))),
+              Container(
+                  width: 90,
+                  decoration: boxDecoration(
+                      Colors.transparent, 100, 0, Colors.transparent),
+                  child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          allFarms = false;
+                        });
+                      },
+                      child: Text("My Farms",
+                          style: textStyle(Colors.white, 16, true, false))))
+            ]));
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,7 +147,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     for (Athlete ath in AthleteList.list)
       farmList.add(Farm("AX - " + ath.name + " APT", ath));*/
 
-    //List<Farm> farmListFilter = farmList; 
+    //List<Farm> farmListFilter = farmList;
 
     Widget toggle = Container(
         width: 200,
@@ -191,19 +183,15 @@ class _DesktopFarmState extends State<DesktopFarm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                height: 45,
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  "My Farms",
-                  style: textStyle(Colors.white, 24, true, false)
-                )
-              ),
-              if (!vertical) toggle,
-            ]
-          ),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                    height: 45,
+                    alignment: Alignment.bottomLeft,
+                    child: Text("My Farms",
+                        style: textStyle(Colors.white, 24, true, false))),
+                if (!vertical) toggle,
+              ]),
           //if (vertical) toggle,
           if (vertical)
             Row(
@@ -707,11 +695,18 @@ class _DesktopFarmState extends State<DesktopFarm> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    if(!allFarms) {
-                      farmListFilter = farmList.where((farm) => farm.name.toUpperCase().contains(value.toUpperCase())).toList();
-                    }
-                    else {
-                      workingFarm = everyFarm.where((farm) => farm.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    if (!allFarms) {
+                      farmListFilter = farmList
+                          .where((farm) => farm.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
+                    } else {
+                      workingFarm = everyFarm
+                          .where((farm) => farm.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
                     }
                   });
                 },

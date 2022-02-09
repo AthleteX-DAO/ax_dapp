@@ -9,7 +9,5 @@ class FarmController extends GetxController {
 
   final EthereumAddress farmAddress = EthereumAddress.fromHex("hex");
 
-  void deposit() async {
-    
-  }
+  void deposit() async {}
 }

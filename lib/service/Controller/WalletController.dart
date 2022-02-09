@@ -21,7 +21,5 @@ class WalletController extends GetxController {
     update();
   }
 
-  void addTokenToWallet() async {
-    
-  }
+  void addTokenToWallet() async {}
 }

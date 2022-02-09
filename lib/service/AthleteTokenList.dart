@@ -77,8 +77,8 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                                   height: 30,
                                   alignment: Alignment.centerLeft,
                                   child: Text("Token Name",
-                                      style: textStyle(Colors.grey[400]!, 16,
-                                          false))),
+                                      style: textStyle(
+                                          Colors.grey[400]!, 16, false))),
                               Container(
                                   child: TextButton(
                                 onPressed: () => Navigator.pop(context),
@@ -102,11 +102,9 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                       ],
                     ))
               ],
-            )
-        )
-    );
+            )));
   }
-  
+
   Widget createSearchBar() {
     return Container(
       width: 300,
@@ -126,7 +124,11 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    tokenListFilter = tokens.where((token) => token.ticker.toUpperCase().contains(value.toUpperCase())).toList();
+                    tokenListFilter = tokens
+                        .where((token) => token.ticker
+                            .toUpperCase()
+                            .contains(value.toUpperCase()))
+                        .toList();
                   });
                 },
                 decoration: InputDecoration(
@@ -159,11 +161,11 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
       );
   }
 
-  BoxDecoration boxDecoration(Color col, double rad, double borWid, Color borCol) {
+  BoxDecoration boxDecoration(
+      Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
         color: col,
         borderRadius: BorderRadius.circular(rad),
         border: Border.all(color: borCol, width: borWid));
   }
 }
-
