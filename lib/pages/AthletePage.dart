@@ -623,7 +623,7 @@ class _AthletePageState extends State<AthletePage> {
                   children: <Widget>[
                     Container(
                       child: Text(
-                        "Current Stats",
+                        "Current season Stats",
                         style: textStyle(Colors.grey[400]!, 16, false, false)
                       ),
                     ),
