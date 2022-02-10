@@ -25,6 +25,10 @@ class Controller extends GetxController {
   static const MAINNET_CHAIN_ID = 137;
   static const TESTNET_CHAIN_ID = 80001;
   int ACTIVE_CHAIN_ID = TESTNET_CHAIN_ID;
+  static const supportedChains = {
+    137: "https://polygon-rpc.com",
+    80001: "https://matic-mumbai.chainstacklabs.com"
+  };
   String mainRPCUrl = "https://polygon-rpc.com";
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
   var client = Web3Client("url", Client()).obs;
@@ -73,14 +77,19 @@ class Controller extends GetxController {
     credentials = await eth.requestAccount();
     print('[Console] Connecting the wallet...');
     networkID.value = await client.value.getNetworkId();
-    if (networkID.value != TESTNET_CHAIN_ID) {
+    print('[Console] networkID: $networkID');
+    if (!supportedChains.containsKey(networkID.value)) {
       print(
-          "[Console] Wrong network ID: $networkID. Connect to mainnet(137) and try again");
+          "[Console] Wrong network ID: $networkID. Connect to a supported chain and try again");
       return 0;
     }
+    print('[Console] Trying to get the address');
     publicAddress.value = await credentials.extractAddress();
+    print('[Console] Trying to get the rawGasPrice');
     var rawGasPrice = await client.value.getGasPrice();
+    print('[Console] Trying to get the gasPriceinGwei');
     var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+    print('[Console] Trying to get the gasString');
     gasString.value = "$gasPriceinGwei";
     print("[Console] Updated client and credentials");
     update();

@@ -57,8 +57,17 @@ class WalletController extends GetxController {
     Controller controller = Get.find();
     var theClient = controller.client.value;
     var walletAddress = controller.publicAddress.value;
-    var tokenAddress = EthereumAddress.fromHex(AXT.polygonAddress);
-    Web3Client polygonClient = Web3Client("https://polygon-rpc.com", Client());
+    var tokenAddress;
+    if (controller.networkID.value == Controller.MAINNET_CHAIN_ID) {
+      tokenAddress = EthereumAddress.fromHex(AXT.polygonAddress);
+    } else {
+      tokenAddress = EthereumAddress.fromHex(AXT.mumbaiAddress);
+    }
+    var rpcUrl;
+    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
+      rpcUrl = Controller.supportedChains[controller.networkID.value];
+    }
+    Web3Client polygonClient = Web3Client(rpcUrl, Client());
     var ax = Erc20(address: tokenAddress, client: polygonClient);
     try {
       BigInt rawBalance = await ax.balanceOf(walletAddress);

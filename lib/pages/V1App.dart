@@ -220,8 +220,8 @@ class _V1AppState extends State<V1App> {
                   ])),
           if (!controller.walletConnected ||
               (controller.walletConnected &&
-                  controller.networkID.value !=
-                      Controller.TESTNET_CHAIN_ID)) ...[
+                  !Controller.supportedChains
+                      .containsKey(controller.networkID.value))) ...[
             // top Connect Wallet Button
             buildConnectWalletButton(),
           ] else ...[
