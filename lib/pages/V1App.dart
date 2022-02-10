@@ -12,6 +12,7 @@ import 'package:ax_dapp/service/Athlete.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class V1App extends StatefulWidget {
   @override
@@ -56,11 +57,10 @@ class _V1AppState extends State<V1App> {
   SwapController swapController = Get.put(SwapController());
   AXT axt = AXT("AthleteX", "AX");
   Token matic = Token("Polygon", "MATIC");
+  PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
-    Widget pageWidget = buildDesktop(context);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -68,23 +68,6 @@ class _V1AppState extends State<V1App> {
         title: topNavBar(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-      ),
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("../assets/images/blurredBackground.png"),
-              fit: BoxFit.fill,
-            ),
-          ),
-          child: pageWidget),
-      bottomNavigationBar: bottomNavBar(context),
-    );
-    // Do not delete this yet. The original code before the changes
-    /*return Scaffold(
-      appBar: AppBar(
-        title: topNavBar(context),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -95,25 +78,36 @@ class _V1AppState extends State<V1App> {
             fit: BoxFit.fill,
           ),
         ),
-        child: pageWidget
-      )
-    );*/
+        child: buildUI(context),
+      ),
+      bottomNavigationBar:
+          kIsWeb ? bottomNavBar(context) : bottomNavBarAndroid(context),
+    );
   }
 
-  Widget buildDesktop(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        if (pageNumber == 0)
-          DesktopScout()
-        else if (pageNumber == 1)
-          DesktopTrade()
-        else if (pageNumber == 2)
-          DesktopPool()
-        else if (pageNumber == 3)
-          DesktopFarm()
-      ],
-    );
+  Widget buildUI(BuildContext context) {
+    if (kIsWeb) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          if (pageNumber == 0)
+            DesktopScout()
+          else if (pageNumber == 1)
+            DesktopTrade()
+          else if (pageNumber == 2)
+            DesktopPool()
+          else if (pageNumber == 3)
+            DesktopFarm()
+        ],
+      );
+    } else {
+      return PageView(controller: _pageController, children: <Widget>[
+        DesktopScout(),
+        DesktopTrade(),
+        DesktopPool(),
+        DesktopFarm(),
+      ]);
+    }
   }
 
   Widget topNavBar(BuildContext context) {
@@ -290,6 +284,8 @@ class _V1AppState extends State<V1App> {
       ),
     );
   }
+
+  bottomNavBarAndroid(BuildContext context) {}
 
   Widget buildConnectWalletButton() {
     double _width = MediaQuery.of(context).size.width;
