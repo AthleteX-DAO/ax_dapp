@@ -4,7 +4,7 @@ import 'package:ax_dapp/service/Controller/APT.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/credentials.dart';
 import '../../../contracts/LongShortPair.g.dart';
-import '../../../contracts/ERC20.g.dart';
+import 'package:web3dart/contracts/erc20.dart';
 import '../Controller.dart';
 
 // --> Joe burrow
@@ -41,7 +41,7 @@ class LSPController extends GetxController {
   Future<void> approve() async {
     EthereumAddress address =
         EthereumAddress.fromHex("0x76d9a6e4cdefc840a47069b71824ad8ff4819e85");
-    ERC20 axt = ERC20(address: address, client: controller.client.value);
+    Erc20 axt = Erc20(address: address, client: controller.client.value);
     BigInt amount = await genericLSP.collateralPerPair();
     EthereumAddress spender =
         EthereumAddress.fromHex("0xD3E03e36D70F65A00732F9086D994D83A3EaC286");
