@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_svg/flutter_svg.dart';
 
 class V1App extends StatefulWidget {
   @override
@@ -57,7 +58,20 @@ class _V1AppState extends State<V1App> {
   SwapController swapController = Get.put(SwapController());
   AXT axt = AXT("AthleteX", "AX");
   Token matic = Token("Polygon", "MATIC");
-  PageController _pageController = PageController();
+  late PageController _pageController;
+  var _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
+  }
+
+  void animateToPage(int index) {
+    // use this to animate to the page
+    _pageController.animateToPage(index,
+        duration: Duration(milliseconds: 200), curve: Curves.ease);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +88,21 @@ class _V1AppState extends State<V1App> {
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("../assets/images/blurredBackground.png"),
+            image: AssetImage("assets/images/blurredBackground.png"),
             fit: BoxFit.fill,
           ),
         ),
         child: buildUI(context),
       ),
       bottomNavigationBar:
-          kIsWeb ? bottomNavBar(context) : bottomNavBarAndroid(context),
+          kIsWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context),
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   Widget buildUI(BuildContext context) {
@@ -101,12 +121,16 @@ class _V1AppState extends State<V1App> {
         ],
       );
     } else {
-      return PageView(controller: _pageController, children: <Widget>[
-        DesktopScout(),
-        DesktopTrade(),
-        DesktopPool(),
-        DesktopFarm(),
-      ]);
+      return PageView(
+        controller: _pageController,
+        onPageChanged: _onItemTapped,
+        children: <Widget>[
+          DesktopScout(),
+          DesktopTrade(),
+          DesktopPool(),
+          DesktopFarm(),
+        ],
+      );
     }
   }
 
@@ -133,7 +157,7 @@ class _V1AppState extends State<V1App> {
                       width: 72,
                       height: 50,
                       child: IconButton(
-                        icon: Image.asset("../assets/images/x.png"),
+                        icon: Image.asset("assets/images/x.png"),
                         iconSize: 40,
                         onPressed: () {
                           String urlString = "https://www.athletex.io/";
@@ -214,7 +238,7 @@ class _V1AppState extends State<V1App> {
     );
   }
 
-  Widget bottomNavBar(BuildContext context) {
+  Widget bottomNavBarDesktop(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.1,
       color: Colors.transparent,
@@ -285,7 +309,52 @@ class _V1AppState extends State<V1App> {
     );
   }
 
-  bottomNavBarAndroid(BuildContext context) {}
+  bottomNavBarAndroid(BuildContext context) {
+    return BottomNavigationBar(
+      backgroundColor: Colors.transparent,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              animateToPage(0);
+            },
+          ),
+          label: 'Scout',
+        ),
+        BottomNavigationBarItem(
+          icon: IconButton(
+            icon: Icon(Icons.repeat_rounded),
+            onPressed: () {
+              animateToPage(1);
+            },
+          ),
+          label: 'Trade',
+        ),
+        BottomNavigationBarItem(
+          icon: IconButton(
+            icon: Icon(Icons.business),
+            onPressed: () {
+              animateToPage(2);
+            },
+          ),
+          label: 'Pool',
+        ),
+        BottomNavigationBarItem(
+          icon: IconButton(
+            icon: Icon(Icons.business),
+            onPressed: () {
+              animateToPage(3);
+            },
+          ),
+          label: 'Farm',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.white,
+      onTap: _onItemTapped,
+    );
+  }
 
   Widget buildConnectWalletButton() {
     double _width = MediaQuery.of(context).size.width;

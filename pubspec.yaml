@@ -50,6 +50,7 @@ dependencies:
   flutter_web3: ^2.0.4
   get: ^4.6.1
   postgres: ^2.4.3
+  flutter_svg: ^1.0.3
   
 
 dependency_overrides:
@@ -96,11 +97,14 @@ flutter:
     - assets/images/background.jpeg
     - assets/images/blurredBackground.png
     - assets/images/fox.png
+    - assets/images/AthleteX_Logo_Vector.png
     - assets/images/matic.png
     - assets/images/sx.png
     - assets/images/trophy.png
     - assets/images/X_white.png
     - assets/images/x.png
     - assets/data.json
-    
+    - assets/images/barn_icon.svg
+    - assets/images/coins_icon.svg
+    - assets/images/swap_icon.svg
       

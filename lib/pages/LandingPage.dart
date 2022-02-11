@@ -38,8 +38,7 @@ class _LandingPageState extends State<LandingPage> {
             Container(
                 height: _height * 0.2,
                 child: Image(
-                  image:
-                      AssetImage("../assets/images/AthleteX_Logo_Vector.png"),
+                  image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
                 )),
             // Text
             Container(
