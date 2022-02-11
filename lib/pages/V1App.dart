@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 
 class V1App extends StatefulWidget {
   @override
@@ -79,7 +79,7 @@ class _V1AppState extends State<V1App> {
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
-        title: topNavBar(context),
+        title: kIsWeb? topNavBar(context) : topNavBarAndroid(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
@@ -236,6 +236,14 @@ class _V1AppState extends State<V1App> {
         ],
       ),
     );
+  }
+
+  Widget topNavBarAndroid(BuildContext context) {
+    // include the AX logo
+    // include the wallet information once the user has connected their wallet
+    // include a dropdown menu for the ellipses and add links to them
+    // include the divider line
+    return Container();
   }
 
   Widget bottomNavBarDesktop(BuildContext context) {
