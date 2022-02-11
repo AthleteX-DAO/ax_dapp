@@ -9,11 +9,12 @@ import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-//import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class V1App extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class V1App extends StatefulWidget {
 }
 
 class _V1AppState extends State<V1App> {
+  bool isWeb = true;
   // Feeling cute... may delete later
   Athlete tomBradey = Athlete(
       name: "Tom Bradey",
@@ -75,11 +77,14 @@ class _V1AppState extends State<V1App> {
 
   @override
   Widget build(BuildContext context) {
+    //check if device is in landscape and web
+    isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
-        title: kIsWeb? topNavBar(context) : topNavBarAndroid(context),
+        title: isWeb ? topNavBar(context) : topNavBarAndroid(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
@@ -95,7 +100,7 @@ class _V1AppState extends State<V1App> {
         child: buildUI(context),
       ),
       bottomNavigationBar:
-          kIsWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context),
+          isWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context),
     );
   }
 
@@ -106,7 +111,7 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget buildUI(BuildContext context) {
-    if (kIsWeb) {
+    if (isWeb) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -243,7 +248,25 @@ class _V1AppState extends State<V1App> {
     // include the wallet information once the user has connected their wallet
     // include a dropdown menu for the ellipses and add links to them
     // include the divider line
-    return Container();
+    return Container(
+      // color: Colors.grey,
+      width: MediaQuery.of(context).size.width,
+      //height: 30,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: Image.asset("assets/images/x.png"),
+            iconSize: 40,
+            onPressed: () {
+              String urlString = "https://www.athletex.io/";
+              launch(urlString);
+            },
+          ),
+          buildAccountBox(),
+        ],
+      ),
+    );
   }
 
   Widget bottomNavBarDesktop(BuildContext context) {
@@ -341,16 +364,18 @@ class _V1AppState extends State<V1App> {
         ),
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Icon(Icons.business),
             onPressed: () {
               animateToPage(2);
             },
+            icon: FaIcon(
+              FontAwesomeIcons.coins,
+            ),
           ),
           label: 'Pool',
         ),
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Icon(Icons.business),
+            icon: Icon(Icons.holiday_village),
             onPressed: () {
               animateToPage(3);
             },
@@ -412,7 +437,7 @@ class _V1AppState extends State<V1App> {
           accNum.substring(accNum.length - 5, accNum.length);
 
     return Container(
-        height: 30,
+        height: isWeb ? 30 : 40,
         width: wid,
         decoration: boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
         child: Row(
