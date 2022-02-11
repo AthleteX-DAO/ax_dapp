@@ -2,6 +2,7 @@ import 'package:ax_dapp/service/AthleteApi.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -40,75 +41,7 @@ class _LandingPageState extends State<LandingPage> {
                 child: Image(
                   image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
                 )),
-            // Text
-            Container(
-                height: 225,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: "TRADE",
-                              style: TextStyle(
-                                color: Colors.amber[400]!,
-                                fontFamily: 'BebasNeuePro',
-                                fontSize: textSize,
-                              )),
-                          TextSpan(
-                              text: " ATHLETES",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'BebasNeuePro',
-                                fontSize: textSize,
-                              ))
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: "BUILD",
-                              style: TextStyle(
-                                color: Colors.amber[400]!,
-                                fontFamily: 'BebasNeuePro',
-                                fontSize: textSize,
-                              )),
-                          TextSpan(
-                              text: " YOUR ROSTER",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'BebasNeuePro',
-                                fontSize: textSize,
-                              )),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: "EARN",
-                              style: TextStyle(
-                                color: Colors.amber[400]!,
-                                fontFamily: 'BebasNeuePro',
-                                fontSize: textSize,
-                              )),
-                          TextSpan(
-                              text: " REWARDS",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'BebasNeuePro',
-                                fontSize: textSize,
-                              )),
-                        ],
-                      ),
-                    ),
-                  ],
-                )),
+            kIsWeb ? desktopLandingPage(context, textSize) : andoridLandingPage(context),
             //Button load athletes
             Container(
               width: _width * 0.20,
@@ -146,6 +79,96 @@ class _LandingPageState extends State<LandingPage> {
           ]),
     );
   }
+
+  Widget desktopLandingPage(BuildContext context, textSize) {
+    return Container(
+      height: 225,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                    text: "TRADE",
+                    style: TextStyle(
+                      color: Colors.amber[400]!,
+                      fontFamily: 'BebasNeuePro',
+                      fontSize: textSize,
+                    )),
+                TextSpan(
+                    text: " ATHLETES",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'BebasNeuePro',
+                      fontSize: textSize,
+                    ))
+              ],
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                    text: "BUILD",
+                    style: TextStyle(
+                      color: Colors.amber[400]!,
+                      fontFamily: 'BebasNeuePro',
+                      fontSize: textSize,
+                    )),
+                TextSpan(
+                    text: " YOUR ROSTER",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'BebasNeuePro',
+                      fontSize: textSize,
+                    )),
+              ],
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                    text: "EARN",
+                    style: TextStyle(
+                      color: Colors.amber[400]!,
+                      fontFamily: 'BebasNeuePro',
+                      fontSize: textSize,
+                    )),
+                TextSpan(
+                    text: " REWARDS",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'BebasNeuePro',
+                      fontSize: textSize,
+                    )),
+              ],
+            ),
+          ),
+        ],
+      ));
+  }
+
+  
+  Widget andoridLandingPage(BuildContext context) {
+    return Container(
+      height: 150,
+      width: 150,
+      color: Colors.grey[200],
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Login Info Will Go Here",
+            textAlign: TextAlign.center,
+            style: textStyle(Colors.black, 14, false, false),
+          ),
+        ],
+      ),
+    );
+  }
+  
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold) if (isUline)
