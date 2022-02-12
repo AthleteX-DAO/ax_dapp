@@ -69,10 +69,16 @@ class _V1AppState extends State<V1App> {
     _pageController = PageController(initialPage: _selectedIndex);
   }
 
-  void animateToPage(int index) {
+  animateToPage(int index) {
     // use this to animate to the page
     _pageController.animateToPage(index,
         duration: Duration(milliseconds: 200), curve: Curves.ease);
+  }
+
+  iconColor(int index){
+    if(index == _selectedIndex){
+      return Colors.white;
+    }else return Colors.grey;
   }
 
   @override
@@ -342,11 +348,16 @@ class _V1AppState extends State<V1App> {
 
   bottomNavBarAndroid(BuildContext context) {
     return BottomNavigationBar(
+      showUnselectedLabels: true,
       backgroundColor: Colors.transparent,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Icon(Icons.search),
+            icon: Image.asset('assets/images/search.png',
+            height: 24,
+            width: 24,
+             color: iconColor(0),
+            ),
             onPressed: () {
               animateToPage(0);
             },
@@ -355,7 +366,11 @@ class _V1AppState extends State<V1App> {
         ),
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Icon(Icons.repeat_rounded),
+            icon: Image.asset('assets/images/swap.png',
+              height: 24,
+              width: 24,
+              color: iconColor(1),
+            ),
             onPressed: () {
               animateToPage(1);
             },
@@ -364,18 +379,24 @@ class _V1AppState extends State<V1App> {
         ),
         BottomNavigationBarItem(
           icon: IconButton(
+            icon: Image.asset('assets/images/coins.png',
+              height: 24,
+              width: 24,
+              color: iconColor(2),
+            ),
             onPressed: () {
               animateToPage(2);
             },
-            icon: FaIcon(
-              FontAwesomeIcons.coins,
-            ),
           ),
           label: 'Pool',
         ),
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Icon(Icons.holiday_village),
+            icon: Image.asset('assets/images/barn.png',
+              height: 24,
+              width: 24,
+              color: iconColor(3),
+            ),
             onPressed: () {
               animateToPage(3);
             },
@@ -385,6 +406,7 @@ class _V1AppState extends State<V1App> {
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.grey,
       onTap: _onItemTapped,
     );
   }
