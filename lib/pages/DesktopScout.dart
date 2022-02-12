@@ -25,16 +25,17 @@ class _DesktopScoutState extends State<DesktopScout> {
   List<Athlete> allListFilter = [];
   Athlete curAthlete = Athlete(
       name: "",
+      id: 0,
       team: "",
       position: "",
-      passingYards: [],
-      passingTouchDowns: [],
-      reception: [],
-      receiveYards: [],
-      receiveTouch: [],
-      rushingYards: [],
-      war: [],
-      time: []);
+      passingYards: 0,
+      passingTouchDowns: 0,
+      reception: 0,
+      receiveYards: 0,
+      receiveTouch: 0,
+      rushingYards: 0,
+      war: 0,
+      time: "");
 
   @override
   void dispose() {
@@ -326,10 +327,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                     // Market Price / Change
                     Container(
                         child: Row(children: <Widget>[
-                      Text(
-                          athlete.war[athlete.war.length - 1]
-                                  .toStringAsFixed(4) +
-                              ' AX',
+                      Text(athlete.war.toStringAsFixed(4) + ' AX',
                           style: textStyle(Colors.white, 16, false, false)),
                       Container(width: 10),
                       Text("+4%",
@@ -340,10 +338,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       // Book Price
                       Container(
                           child: Row(children: <Widget>[
-                        Text(
-                            athlete.war[athlete.war.length - 1]
-                                    .toStringAsFixed(4) +
-                                ' AX',
+                        Text(athlete.war.toStringAsFixed(4) + ' AX',
                             style: textStyle(Colors.white, 16, false, false)),
                         Container(width: 10),
                         Text("-2%",

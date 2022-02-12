@@ -116,7 +116,8 @@ class _LandingPageState extends State<LandingPage> {
               height: _height * 0.08,
               margin: EdgeInsets.only(bottom: 130.0),
               child: FutureBuilder<dynamic>(
-                  future: AthleteApi.getAthletesLocally(context),
+                  // future: AthleteApi.getAthletesLocally(context),
+                  future: AthleteApi.getAthletesFromIdList(context),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:

@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 
 class Athlete {
   final String name;
+  final int id;
   final String team;
   final String position;
-  final List passingYards;
-  final List passingTouchDowns;
-  final List reception;
-  final List receiveYards;
-  final List receiveTouch;
-  final List rushingYards;
-  final List war;
-  final List time;
+  final double passingYards;
+  final double passingTouchDowns;
+  final double reception;
+  final double receiveYards;
+  final double receiveTouch;
+  final double rushingYards;
+  final double war;
+  final String time;
 
   const Athlete({
     required this.name,
+    required this.id,
     required this.team,
     required this.position,
     required this.passingYards,
@@ -30,15 +32,16 @@ class Athlete {
 
   static Athlete fromJson(json) => Athlete(
       name: json['name'],
+      id: json['id'],
       team: json['team'],
       position: json['position'],
       passingYards: json['passingYards'],
-      passingTouchDowns: json['passingTouchdowns'],
+      passingTouchDowns: json['passingTouchDowns'],
       reception: json['reception'],
       receiveYards: json['receiveYards'],
       receiveTouch: json['receiveTouch'],
       rushingYards: json['rushingYards'],
-      time: json['time'],
+      time: json['timestamp'],
       war: json['price']);
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {

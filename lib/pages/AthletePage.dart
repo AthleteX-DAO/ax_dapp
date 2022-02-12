@@ -142,7 +142,8 @@ class _AthletePageState extends State<AthletePage> {
                           child: Stack(
                             children: <Widget>[
                               // Graph
-                              buildGraph(athlete.war, athlete.time, context),
+                              buildGraph(
+                                  [athlete.war], [athlete.time], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -166,9 +167,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         .spaceBetween,
                                                 children: <Widget>[
                                                   Text(
-                                                      athlete.war[athlete.war
-                                                                      .length -
-                                                                  1]
+                                                      athlete.war
                                                               .toStringAsFixed(
                                                                   4) +
                                                           " AX",

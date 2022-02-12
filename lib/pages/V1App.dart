@@ -20,30 +20,30 @@ class V1App extends StatefulWidget {
 
 class _V1AppState extends State<V1App> {
   // Feeling cute... may delete later
-  Athlete tomBradey = Athlete(
-      name: "Tom Bradey",
-      team: "Tampa Bay Buckaneers",
-      position: "Quarterback",
-      passingYards: [2, 3, 5],
-      passingTouchDowns: [1, 10, 3],
-      reception: [4, 6, 8],
-      receiveYards: [3, 5, 7],
-      receiveTouch: [9, 8, 7],
-      rushingYards: [6, 5, 4],
-      war: [3.543, 1.094, 9.478, 10.231],
-      time: [0, 1, 2, 3]);
-  Athlete nullAthlete = new Athlete(
-      name: "",
-      team: "",
-      position: "",
-      passingYards: [],
-      passingTouchDowns: [],
-      reception: [],
-      receiveYards: [],
-      receiveTouch: [],
-      rushingYards: [],
-      war: [],
-      time: []);
+  // Athlete tomBradey = Athlete(
+  //     name: "Tom Bradey",
+  //     team: "Tampa Bay Buckaneers",
+  //     position: "Quarterback",
+  //     passingYards: [2, 3, 5],
+  //     passingTouchDowns: [1, 10, 3],
+  //     reception: [4, 6, 8],
+  //     receiveYards: [3, 5, 7],
+  //     receiveTouch: [9, 8, 7],
+  //     rushingYards: [6, 5, 4],
+  //     war: [3.543, 1.094, 9.478, 10.231],
+  //     time: [0, 1, 2, 3]);
+  // Athlete nullAthlete = new Athlete(
+  //     name: "",
+  //     team: "",
+  //     position: "",
+  //     passingYards: [],
+  //     passingTouchDowns: [],
+  //     reception: [],
+  //     receiveYards: [],
+  //     receiveTouch: [],
+  //     rushingYards: [],
+  //     war: [],
+  //     time: []);
 
   // state change variables
   int pageNumber = 0;
