@@ -2442,16 +2442,18 @@ Dialog yourAXDialog(BuildContext context) {
                                   child: Text("Buy AX",
                                       style:
                                           textStyle(Colors.black, 14, true)))),
-                          Container(
-                              width: 150,
-                              height: 30,
-                              decoration: boxDecoration(Colors.transparent, 100,
-                                  0, Colors.amber[600]!),
-                              child: TextButton(
-                                  onPressed: () {},
-                                  child: Text("+ Add to Wallet",
-                                      style: textStyle(
-                                          Colors.amber[600]!, 14, true)))),
+
+                     /**  Button currently doesn't work, so obfuscating for now */
+                          // Container(
+                          //     width: 150,
+                          //     height: 30,
+                          //     decoration: boxDecoration(Colors.transparent, 100,
+                          //         0, Colors.amber[600]!),
+                          //     child: TextButton(
+                          //         onPressed: () {},
+                          //         child: Text("+ Add to Wallet",
+                          //             style: textStyle(
+                          //                 Colors.amber[600]!, 14, true)))),
                         ])),
               ])))));
 }
