@@ -7,9 +7,9 @@ import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -75,10 +75,11 @@ class _V1AppState extends State<V1App> {
         duration: Duration(milliseconds: 200), curve: Curves.ease);
   }
 
-  iconColor(int index){
-    if(index == _selectedIndex){
+  iconColor(int index) {
+    if (index == _selectedIndex) {
       return Colors.white;
-    }else return Colors.grey;
+    } else
+      return Colors.grey;
   }
 
   @override
@@ -269,7 +270,13 @@ class _V1AppState extends State<V1App> {
               launch(urlString);
             },
           ),
-          buildAccountBox(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              buildAccountBox(),
+              DropdownMenuMobile(),
+            ],
+          ),
         ],
       ),
     );
@@ -353,10 +360,11 @@ class _V1AppState extends State<V1App> {
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Image.asset('assets/images/search.png',
-            height: 24,
-            width: 24,
-             color: iconColor(0),
+            icon: Image.asset(
+              'assets/images/search.png',
+              height: 24,
+              width: 24,
+              color: iconColor(0),
             ),
             onPressed: () {
               animateToPage(0);
@@ -366,7 +374,8 @@ class _V1AppState extends State<V1App> {
         ),
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Image.asset('assets/images/swap.png',
+            icon: Image.asset(
+              'assets/images/swap.png',
               height: 24,
               width: 24,
               color: iconColor(1),
@@ -379,7 +388,8 @@ class _V1AppState extends State<V1App> {
         ),
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Image.asset('assets/images/coins.png',
+            icon: Image.asset(
+              'assets/images/coins.png',
               height: 24,
               width: 24,
               color: iconColor(2),
@@ -392,7 +402,8 @@ class _V1AppState extends State<V1App> {
         ),
         BottomNavigationBarItem(
           icon: IconButton(
-            icon: Image.asset('assets/images/barn.png',
+            icon: Image.asset(
+              'assets/images/barn.png',
               height: 24,
               width: 24,
               color: iconColor(3),
