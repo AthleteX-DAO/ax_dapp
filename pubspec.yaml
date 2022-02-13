@@ -34,6 +34,7 @@ dependencies:
   toggle_switch: ^1.2.0
   charts_flutter: ^0.11.0
   syncfusion_flutter_charts: ^18.4.49
+  coingecko_api: ^1.0.0
   font_awesome_flutter: ^9.2.0
 
   
@@ -50,6 +51,7 @@ dependencies:
   flutter_web3: ^2.0.4
   get: ^4.6.1
   postgres: ^2.4.3
+  intl: ^0.17.0
   
 
 dependency_overrides:

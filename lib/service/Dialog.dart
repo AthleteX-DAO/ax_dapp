@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -15,13 +16,89 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
 Future<void> testFunction() async {
-  // return Future.delayed(
-  //     Duration(seconds: 1), () => '' //throw Exception('Out of milk'),
-  //     );
   return;
 }
 
+Dialog connectMetamaskDialog(BuildContext context) {
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 450;
+  double hgt = 200;
+  double edge = 75;
+  if (_width < 405) wid = _width;
+  if (_height < 505) hgt = _height * 0.45;
+  double wid_child = wid - edge;
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: hgt,
+      width: wid,
+      padding: EdgeInsets.all(20),
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Metamask wallet",
+                style: textStyle(Colors.white, 18, true),
+              ),
+              Container(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.close,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text('Couldn\'t find MetaMask extension',
+                  style: TextStyle(color: Colors.grey[400]))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 40),
+                width: wid_child,
+                height: 45,
+                decoration: boxDecoration(
+                    Colors.transparent, 100, 2, Colors.purple[900]!),
+                child: TextButton(
+                  onPressed: () {
+                    launch('https://metamask.io/download/');
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Install MetaMask extension",
+                    style: textStyle(Colors.white, 16, false),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+//dynamic
 Dialog wrongNetworkDialog(BuildContext context) {
+  Controller controller = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 450;
@@ -53,7 +130,6 @@ Dialog wrongNetworkDialog(BuildContext context) {
               Container(
                 child: TextButton(
                   onPressed: () {
-                    Controller.switchNetwork();
                     Navigator.pop(context);
                   },
                   child: Icon(
@@ -77,6 +153,7 @@ Dialog wrongNetworkDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    controller.switchNetwork();
                   },
                   child: Text(
                     "Switch to Matic Network",
@@ -95,6 +172,7 @@ Dialog wrongNetworkDialog(BuildContext context) {
 //dynamic
 Dialog walletDialog(BuildContext context) {
   Controller controller = Get.find();
+  WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 450;
@@ -147,8 +225,29 @@ Dialog walletDialog(BuildContext context) {
                     Colors.transparent, 100, 2, Colors.grey[400]!),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    controller.connect();
+                    //Navigator.pop(context);
+                    controller.connect().then((response) {
+                      if (response == -1) {
+                        // No MetaMask
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                connectMetamaskDialog(context));
+                      } else if (response == 0) {
+                        // Wrong network
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                wrongNetworkDialog(context));
+                      } else {
+                        Navigator.pop(context);
+                        walletController.getTokenMetrics();
+                        walletController.getTokenBalance();
+                      }
+                    });
+
                     // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
                     //   showDialog(
                     //       context: context,
@@ -191,7 +290,10 @@ Dialog walletDialog(BuildContext context) {
 
 Dialog depositDialog(BuildContext context) {
   SwapController swapController = Get.find();
-  double amount = 0;
+  Controller controller = Get.find();
+  TextEditingController stakeAxInput = TextEditingController();
+  WalletController walletController = Get.find();
+  var amount = 0.0.obs;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 390;
@@ -277,7 +379,13 @@ Dialog depositDialog(BuildContext context) {
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          walletController.getTokenBalance().then((value) {
+                            stakeAxInput.text =
+                                walletController.yourBalance.value;
+                            print(stakeAxInput);
+                          });
+                        },
                         child: Text(
                           "Max",
                           style: textStyle(Colors.grey[400]!, 9, false),
@@ -287,9 +395,9 @@ Dialog depositDialog(BuildContext context) {
                     SizedBox(
                       width: 70,
                       child: TextFormField(
+                        controller: stakeAxInput,
                         onChanged: (value) {
-                          amount = double.parse(value);
-                          print(amount);
+                          stakeAxInput.text = value;
                         },
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
@@ -402,7 +510,8 @@ Dialog depositDialog(BuildContext context) {
 
 // dynamic
 Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
-  double amount = 0;
+  TextEditingController stakeAxInput = TextEditingController();
+  WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 390;
@@ -490,7 +599,13 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          walletController.getTokenBalance().then((value) {
+                            stakeAxInput.text =
+                                walletController.yourBalance.value;
+                            print(stakeAxInput);
+                          });
+                        },
                         child: Text(
                           "Max",
                           style: textStyle(Colors.grey[400]!, 9, false),
@@ -500,9 +615,9 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                     SizedBox(
                       width: 70,
                       child: TextFormField(
+                        controller: stakeAxInput,
                         onChanged: (value) {
-                          amount = double.parse(value);
-                          print(amount);
+                          stakeAxInput.text = value;
                         },
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
@@ -566,10 +681,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       SizedBox(
                         width: 70,
                         child: TextFormField(
-                          onChanged: (value) {
-                            amount = double.parse(value);
-                            print(amount);
-                          },
+                          onChanged: (value) {},
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
@@ -1730,7 +1842,6 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                       onPressed: () {
                         // call mint functionality
                         lspController.mint();
-
                         Navigator.pop(context);
                         showDialog(
                             context: context,
@@ -2111,6 +2222,7 @@ Dialog depositConfimed(BuildContext context) {
 
 // dynamic
 Dialog yourAXDialog(BuildContext context) {
+  WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 400;
@@ -2147,7 +2259,11 @@ Dialog yourAXDialog(BuildContext context) {
                             color: Colors.white,
                             size: 30,
                           ),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            walletController.getTokenMetrics();
+                            walletController.getTokenBalance();
+                            Navigator.pop(context);
+                          },
                         ),
                       ],
                     )),
@@ -2166,8 +2282,8 @@ Dialog yourAXDialog(BuildContext context) {
                 Container(
                   height: 65,
                   alignment: Alignment.center,
-                  child:
-                      Text("100.00", style: textStyle(Colors.white, 20, false)),
+                  child: Text("${walletController.yourBalance} AX",
+                      style: textStyle(Colors.white, 20, false)),
                 ),
                 Container(
                     width: wid - edge,
@@ -2188,11 +2304,13 @@ Dialog yourAXDialog(BuildContext context) {
                               ),
                             ),
                             Container(
-                              child: Text(
-                                "100 AX",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
+                              child: Obx(
+                                () => Text(
+                                  "${walletController.yourBalance} AX",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey[600],
+                                  ),
                                 ),
                               ),
                             ),
@@ -2249,13 +2367,13 @@ Dialog yourAXDialog(BuildContext context) {
                             ),
                             Container(
                               child: Text(
-                                "\$1.00",
+                                "${walletController.axPrice} USD",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                         Row(
@@ -2272,7 +2390,7 @@ Dialog yourAXDialog(BuildContext context) {
                             ),
                             Container(
                               child: Text(
-                                "50,000,000",
+                                "${walletController.axCirculation}",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
@@ -2295,7 +2413,7 @@ Dialog yourAXDialog(BuildContext context) {
                             ),
                             Container(
                               child: Text(
-                                "100,000,000",
+                                "${walletController.axTotalSupply}",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
@@ -2318,7 +2436,9 @@ Dialog yourAXDialog(BuildContext context) {
                               decoration: boxDecoration(Colors.amber[600]!, 100,
                                   0, Colors.amber[600]!),
                               child: TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    walletController.buyAX();
+                                  },
                                   child: Text("Buy AX",
                                       style:
                                           textStyle(Colors.black, 14, true)))),
