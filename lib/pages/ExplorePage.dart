@@ -72,7 +72,7 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
-        future: AthleteApi.getAthletesLocally(context),
+        future: AthleteApi.getAthletesFromIdList(context),
         builder: (context, snapshot) {
           athleteList = snapshot.data;
 
@@ -177,8 +177,8 @@ class _ExplorePageState extends State<ExplorePage> {
                                             child: ListTile(
                                                 onTap: () => setState(() => {
                                                       name = athlete.name,
-                                                      war = athlete.war,
-                                                      time = athlete.time
+                                                      war = [athlete.war, athlete.war, athlete.war],
+                                                      time = [athlete.time, athlete.time, athlete.time]
                                                     }),
                                                 title: Text(athlete.name)));
                                       }))),
