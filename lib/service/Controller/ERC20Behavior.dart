@@ -9,7 +9,7 @@ mixin ERC20Behavior on Token {
   Future<void> updateBalance() async {
     updateERC20();
     balance.value = await erc20.balanceOf(controller.publicAddress.value);
-    print("updated balance: ${balance.value}");
+    print("[Console] Updated balance: ${balance.value}");
     update();
   }
 
@@ -20,7 +20,7 @@ mixin ERC20Behavior on Token {
     } else {
       theAddress = newAddress;
     }
-    print("token address $theAddress");
+    print("[Console] Token address $theAddress");
     updateAddress(theAddress);
     EthereumAddress ethAddress = EthereumAddress.fromHex(theAddress);
     erc20 = Erc20(address: ethAddress, client: controller.client.value);

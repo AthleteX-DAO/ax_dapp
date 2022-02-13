@@ -16,4 +16,8 @@ class AXT extends Token with ERC20Behavior {
       super.icon = icon;
     }
   }
+
+  void getLatestPrice() {
+    
+  }
 }

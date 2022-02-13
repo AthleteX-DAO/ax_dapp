@@ -2,6 +2,8 @@ import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopPool.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -55,6 +57,15 @@ class _V1AppState extends State<V1App> {
       Get.put(Controller()); // Rather Controller controller = Controller();
   AXT axt = AXT("AthleteX", "AX");
   Token matic = Token("Polygon", "MATIC");
+
+  @override
+  void initState() {
+    // Init the states of everything needed for the whole dapp
+    super.initState();
+    LSPController lspController = Get.put(LSPController());
+    SwapController swapController = Get.put(SwapController());
+    WalletController walletController = Get.put(WalletController());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +218,10 @@ class _V1AppState extends State<V1App> {
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
                   ])),
-          if (!controller.walletConnected) ...[
+          if (!controller.walletConnected ||
+              (controller.walletConnected &&
+                  !Controller.supportedChains
+                      .containsKey(controller.networkID.value))) ...[
             // top Connect Wallet Button
             buildConnectWalletButton(),
           ] else ...[
