@@ -1,4 +1,3 @@
-import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';

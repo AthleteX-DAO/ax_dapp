@@ -1,6 +1,5 @@
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:get/get.dart';
-import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:web3dart/credentials.dart';
 
 class FarmController extends GetxController {
