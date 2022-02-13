@@ -41,7 +41,7 @@ class Controller extends GetxController {
   }
 
   void initState() async {
-    getCurrentGas();
+    // getCurrentGas();
   }
 
   // This will create mnemonics & convert to seed hexes

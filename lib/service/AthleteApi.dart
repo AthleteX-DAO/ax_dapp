@@ -28,14 +28,7 @@ class AthleteApi {
       print(athleteResponse.statusCode);
 
       if (athleteResponse.statusCode == 200) {
-        print("Success");
-        print(athleteResponse.body);
-        print(jsonDecode(athleteResponse.body));
-        //body = json.decode(athleteResponse.body);
-        //var athlete = Athlete.fromJson(jsonDecode(athleteResponse.body));
         var athlete = Athlete.fromJson(jsonDecode(athleteResponse.body));
-        print('athlete object:');
-        print(athlete);
         athletesList.add(athlete);
       } else {
         throw Exception("Failed to load athlete");
