@@ -414,7 +414,7 @@ class _V1AppState extends State<V1App> {
                     ),
                   ),
                   Text(
-                    "${axt.balance} AX",
+                    "AX",
                     style: textStyle(Colors.grey[400]!, 11, false, false),
                   ),
                 ],
