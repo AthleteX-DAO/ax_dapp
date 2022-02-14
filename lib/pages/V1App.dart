@@ -2,6 +2,8 @@ import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopPool.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -24,30 +26,30 @@ class V1App extends StatefulWidget {
 class _V1AppState extends State<V1App> {
   bool isWeb = true;
   // Feeling cute... may delete later
-  Athlete tomBradey = Athlete(
-      name: "Tom Bradey",
-      team: "Tampa Bay Buckaneers",
-      position: "Quarterback",
-      passingYards: [2, 3, 5],
-      passingTouchDowns: [1, 10, 3],
-      reception: [4, 6, 8],
-      receiveYards: [3, 5, 7],
-      receiveTouch: [9, 8, 7],
-      rushingYards: [6, 5, 4],
-      war: [3.543, 1.094, 9.478, 10.231],
-      time: [0, 1, 2, 3]);
-  Athlete nullAthlete = new Athlete(
-      name: "",
-      team: "",
-      position: "",
-      passingYards: [],
-      passingTouchDowns: [],
-      reception: [],
-      receiveYards: [],
-      receiveTouch: [],
-      rushingYards: [],
-      war: [],
-      time: []);
+  // Athlete tomBradey = Athlete(
+  //     name: "Tom Bradey",
+  //     team: "Tampa Bay Buckaneers",
+  //     position: "Quarterback",
+  //     passingYards: [2, 3, 5],
+  //     passingTouchDowns: [1, 10, 3],
+  //     reception: [4, 6, 8],
+  //     receiveYards: [3, 5, 7],
+  //     receiveTouch: [9, 8, 7],
+  //     rushingYards: [6, 5, 4],
+  //     war: [3.543, 1.094, 9.478, 10.231],
+  //     time: [0, 1, 2, 3]);
+  // Athlete nullAthlete = new Athlete(
+  //     name: "",
+  //     team: "",
+  //     position: "",
+  //     passingYards: [],
+  //     passingTouchDowns: [],
+  //     reception: [],
+  //     receiveYards: [],
+  //     receiveTouch: [],
+  //     rushingYards: [],
+  //     war: [],
+  //     time: []);
 
   // state change variables
   int pageNumber = 0;
@@ -57,17 +59,10 @@ class _V1AppState extends State<V1App> {
   List<Athlete> athleteList = [];
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
-  SwapController swapController = Get.put(SwapController());
   AXT axt = AXT("AthleteX", "AX");
   Token matic = Token("Polygon", "MATIC");
   late PageController _pageController;
   var _selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: _selectedIndex);
-  }
 
   animateToPage(int index) {
     // use this to animate to the page
@@ -80,6 +75,16 @@ class _V1AppState extends State<V1App> {
       return Colors.white;
     } else
       return Colors.grey;
+  }
+
+  @override
+  void initState() {
+    // Init the states of everything needed for the whole dapp
+    super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
+    LSPController lspController = Get.put(LSPController());
+    SwapController swapController = Get.put(SwapController());
+    WalletController walletController = Get.put(WalletController());
   }
 
   @override
@@ -222,23 +227,26 @@ class _V1AppState extends State<V1App> {
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
-                    Container(
-                        child: TextButton(
-                            onPressed: () {
-                              if (pageNumber != 3)
-                                setState(() {
-                                  pageNumber = 3;
-                                });
-                            },
-                            child: Text("Farm",
-                                style: textSwapState(
-                                    pageNumber == 3,
-                                    textStyle(
-                                        Colors.white, tabTxSz, true, false),
-                                    textStyle(Colors.amber[400]!, tabTxSz, true,
-                                        true))))),
+                    // Container(
+                    //     child: TextButton(
+                    //         onPressed: () {
+                    //           if (pageNumber != 3)
+                    //             setState(() {
+                    //               pageNumber = 3;
+                    //             });
+                    //         },
+                    //         child: Text("Farm",
+                    //             style: textSwapState(
+                    //                 pageNumber == 3,
+                    //                 textStyle(
+                    //                     Colors.white, tabTxSz, true, false),
+                    //                 textStyle(Colors.amber[400]!, tabTxSz, true,
+                    //                     true))))),
                   ])),
-          if (!controller.walletConnected) ...[
+          if (!controller.walletConnected ||
+              (controller.walletConnected &&
+                  !Controller.supportedChains
+                      .containsKey(controller.networkID.value))) ...[
             // top Connect Wallet Button
             buildConnectWalletButton(),
           ] else ...[
@@ -532,7 +540,7 @@ class _V1AppState extends State<V1App> {
                     ),
                   ),
                   Text(
-                    "${axt.balance} AX",
+                    "AX",
                     style: textStyle(Colors.grey[400]!, 11, false, false),
                   ),
                 ],

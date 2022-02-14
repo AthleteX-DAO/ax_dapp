@@ -3,7 +3,7 @@ import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -25,16 +25,17 @@ class _DesktopScoutState extends State<DesktopScout> {
   List<Athlete> allListFilter = [];
   Athlete curAthlete = Athlete(
       name: "",
+      id: 0,
       team: "",
       position: "",
-      passingYards: [],
-      passingTouchDowns: [],
-      reception: [],
-      receiveYards: [],
-      receiveTouch: [],
-      rushingYards: [],
-      war: [],
-      time: []);
+      passingYards: 0,
+      passingTouchDowns: 0,
+      reception: 0,
+      receiveYards: 0,
+      receiveTouch: 0,
+      rushingYards: 0,
+      war: 0,
+      time: "");
 
   @override
   void dispose() {
@@ -197,13 +198,13 @@ class _DesktopScoutState extends State<DesktopScout> {
 
     if (nflList.length == 0) {
       nflList = AthleteList.list;
-      nflListFilter = nflList; 
+      nflListFilter = nflList;
     }
 
     if (allList.length == 0) {
       // Filter all the athletes. For now we only have NFL athletes
       allList = nflList;
-      allListFilter = allList;   
+      allListFilter = allList;
     }
 
     // all athletes
@@ -258,36 +259,24 @@ class _DesktopScoutState extends State<DesktopScout> {
 
     double athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
-    
-    String fn(String a)
-    {
-      if(a=="QB")
-      {
+
+    String fn(String a) {
+      if (a == "QB") {
         return "Quarterback";
-      }
-      else if(a=="WR")
-      {
+      } else if (a == "WR") {
         return "Widereciever";
-      }
-       else if(a=="DT")
-      {
+      } else if (a == "DT") {
         return "Defencetackle";
-      }
-       else if(a=="RB")
-      {
+      } else if (a == "RB") {
         return "Runningback";
-      }
-       else if(a=="TE")
-      {
+      } else if (a == "TE") {
         return "Tightend";
-      }
-       else if(a=="CB")
-      {
+      } else if (a == "CB") {
         return "Cornerback";
       }
       return "B";
     }
-    
+
     return Container(
         height: 70,
         child: OutlinedButton(
@@ -338,10 +327,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                     // Market Price / Change
                     Container(
                         child: Row(children: <Widget>[
-                      Text(
-                          athlete.war[athlete.war.length - 1]
-                                  .toStringAsFixed(4) +
-                              ' AX',
+                      Text(athlete.war.toStringAsFixed(4) + ' AX',
                           style: textStyle(Colors.white, 16, false, false)),
                       Container(width: 10),
                       Text("+4%",
@@ -352,10 +338,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       // Book Price
                       Container(
                           child: Row(children: <Widget>[
-                        Text(
-                            athlete.war[athlete.war.length - 1]
-                                    .toStringAsFixed(4) +
-                                ' AX',
+                        Text(athlete.war.toStringAsFixed(4) + ' AX',
                             style: textStyle(Colors.white, 16, false, false)),
                         Container(width: 10),
                         Text("-2%",
@@ -433,13 +416,20 @@ class _DesktopScoutState extends State<DesktopScout> {
                   setState(() {
                     // Filter all athletes
                     if (sportState == 0) {
-                      allListFilter = allList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
+                      allListFilter = allList
+                          .where((athlete) => athlete.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
                     }
                     // Filter NFL athletes
                     else {
-                      nflListFilter = nflList.where((athlete) => athlete.name.toUpperCase().contains(value.toUpperCase())).toList();
+                      nflListFilter = nflList
+                          .where((athlete) => athlete.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
                     }
-
                   });
                 },
                 decoration: InputDecoration(

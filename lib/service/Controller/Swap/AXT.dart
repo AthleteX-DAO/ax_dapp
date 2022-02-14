@@ -1,6 +1,5 @@
 import 'package:ax_dapp/service/Controller/ERC20Behavior.dart';
 import 'package:flutter/material.dart';
-import 'package:web3dart/web3dart.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 
 class AXT extends Token with ERC20Behavior {
@@ -15,5 +14,9 @@ class AXT extends Token with ERC20Behavior {
     if (icon != null) {
       super.icon = icon;
     }
+  }
+
+  void getLatestPrice() {
+    
   }
 }
