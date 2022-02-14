@@ -3,6 +3,7 @@ import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class DesktopFarm extends StatefulWidget {
   const DesktopFarm({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class DesktopFarm extends StatefulWidget {
 }
 
 class _DesktopFarmState extends State<DesktopFarm> {
+  bool isWeb = true;
   bool allFarms = true;
   List<Farm> everyFarm = [];
   List<Farm> workingFarm = [];
@@ -34,6 +36,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
   @override
   Widget build(BuildContext context) {
+    isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double hgt = _height * 0.7;
@@ -44,12 +48,14 @@ class _DesktopFarmState extends State<DesktopFarm> {
         height: _height - 57,
         alignment: Alignment.center,
         child: Container(
-            width: _width * 0.8,
+            //outermost dimensions for farm section
+            width: _width * 0.95,
             height: hgt,
             child: (allFarms) ? allFarmLayout() : myFarmLayout()));
   }
 
   Widget allFarmLayout() {
+    //Contains Participating farms, search bar, toggle buttons and cards for all farms
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     bool vertical = true;
@@ -109,7 +115,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
               ],
             ),
           Container(
-              width: _width * 0.8,
+              //contains list of allfarms cards
+              width: _width * 1,
               height: _height * 0.5,
               child: ScrollConfiguration(
                   behavior: ScrollConfiguration.of(context).copyWith(
@@ -119,14 +126,14 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     },
                   ),
                   child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
+                      scrollDirection: isWeb ? Axis.horizontal : Axis.vertical,
                       physics: BouncingScrollPhysics(),
                       itemCount: workingFarm.length,
                       itemBuilder: (context, index) {
                         return Container(
                             height: _height * 0.55,
                             alignment: Alignment.topLeft,
-                            child: createFarmWidget(workingFarm[index]));
+                            child: createAllFarmItem(workingFarm[index]));
                       })))
         ]);
   }
@@ -212,20 +219,20 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     },
                   ),
                   child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
+                      scrollDirection: isWeb ? Axis.horizontal : Axis.vertical,
                       physics: BouncingScrollPhysics(),
                       itemCount: farmListFilter.length,
                       itemBuilder: (context, index) {
                         if (index == 0) {
-                          return createMyFarmAXCard(farmListFilter[index]);
+                          return createMyFarmAXItem(farmListFilter[index]);
                         }
-                        return createMyFarmAPTWidget(farmListFilter[index]);
+                        return createMyFarmAPTItem(farmListFilter[index]);
                       })))
         ]);
   }
 
   // First card of the my farms page is unique
-  Widget createMyFarmAXCard(Farm farm) {
+  Widget createMyFarmAXItem(Farm farm) {
     double _height = MediaQuery.of(context).size.height;
     double cardWidth = 600;
     double cardHeight = _height * 0.5;
@@ -402,31 +409,31 @@ class _DesktopFarmState extends State<DesktopFarm> {
     ]);
   }
 
-  Widget createFarmWidget(Farm farm) {
-    double cardWidth = 500;
+  Widget createAllFarmItem(Farm farm) {
+    MediaQueryData mediaquery = MediaQuery.of(context);
+    double cardWidth = isWeb ? 500 : mediaquery.size.width * 0.9;
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
     Dialog participatingDialog;
     Widget farmTitleWidget;
     if (farm.athlete == null) {
-      farmTitleWidget = farmTitleSingleLogo(farm);
+      farmTitleWidget = farmTitleSingleLogo(farm, cardWidth);
       participatingDialog = depositDialog(context);
     } else {
       farmTitleWidget = farmTitleDoubleLogo(farm);
       participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
 
-    return Row(children: <Widget>[
-      Container(
-        height: 200,
-        width: cardWidth,
-        decoration: boxDecoration(
-            Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            farmTitleWidget,
-            // Farm Title
-            /*Container(
+    return Container(
+      height: 200,
+      width: cardWidth,
+      decoration: boxDecoration(
+          Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          farmTitleWidget,
+          // Farm Title
+          /*Container(
                 width: cardWidth - 50,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -447,58 +454,57 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                   style: textStyle(
                                       Colors.black, 14, true, false)))),
                     ])),*/
-            // TVL
-            Container(
-                width: cardWidth - 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "TVL",
-                      style: txStyle,
-                    ),
-                    Text("\$1,000,000", style: txStyle)
-                  ],
-                )),
-            // Fee
-            Container(
-                width: cardWidth - 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Swap Fee APY", style: txStyle),
-                    Text("20%", style: txStyle)
-                  ],
-                )),
-            // Rewards
-            Container(
-                width: cardWidth - 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("AX Rewards APY", style: txStyle),
-                    Text("10%", style: txStyle)
-                  ],
-                )),
-            // Total APY
-            Container(
-                width: cardWidth - 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Total APY", style: txStyle),
-                    Text("30%", style: txStyle)
-                  ],
-                )),
-          ],
-        ),
+          // TVL
+          Container(
+              width: cardWidth - 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "TVL",
+                    style: txStyle,
+                  ),
+                  Text("\$1,000,000", style: txStyle)
+                ],
+              )),
+          // Fee
+          Container(
+              width: cardWidth - 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Swap Fee APY", style: txStyle),
+                  Text("20%", style: txStyle)
+                ],
+              )),
+          // Rewards
+          Container(
+              width: cardWidth - 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("AX Rewards APY", style: txStyle),
+                  Text("10%", style: txStyle)
+                ],
+              )),
+          // Total APY
+          Container(
+            width: cardWidth - 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("Total APY", style: txStyle),
+                Text("30%", style: txStyle)
+              ],
+            ),
+          ),
+        ],
       ),
-      SizedBox(width: 50),
-    ]);
+    );
   }
 
   // Returning a Row (This one works. Need to fix container size and padding)
-  Widget createMyFarmAPTWidget(Farm farm) {
+  Widget createMyFarmAPTItem(Farm farm) {
     double _height = MediaQuery.of(context).size.height;
     double cardWidth = 600;
     double cardHeight = _height * 0.5;
@@ -761,14 +767,13 @@ class _DesktopFarmState extends State<DesktopFarm> {
         border: Border.all(color: borCol, width: borWid));
   }
 
-  Widget farmTitleSingleLogo(Farm farm) {
+  Widget farmTitleSingleLogo(Farm farm, double cardWidth) {
     Dialog participatingDialog;
     if (farm.athlete == null) {
       participatingDialog = depositDialog(context);
     } else {
       participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
-    double cardWidth = 500;
     return Container(
         width: cardWidth - 50,
         child: Row(

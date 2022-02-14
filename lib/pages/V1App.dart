@@ -227,21 +227,21 @@ class _V1AppState extends State<V1App> {
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
-                    // Container(
-                    //     child: TextButton(
-                    //         onPressed: () {
-                    //           if (pageNumber != 3)
-                    //             setState(() {
-                    //               pageNumber = 3;
-                    //             });
-                    //         },
-                    //         child: Text("Farm",
-                    //             style: textSwapState(
-                    //                 pageNumber == 3,
-                    //                 textStyle(
-                    //                     Colors.white, tabTxSz, true, false),
-                    //                 textStyle(Colors.amber[400]!, tabTxSz, true,
-                    //                     true))))),
+                    Container(
+                        child: TextButton(
+                            onPressed: () {
+                              if (pageNumber != 3)
+                                setState(() {
+                                  pageNumber = 3;
+                                });
+                            },
+                            child: Text("Farm",
+                                style: textSwapState(
+                                    pageNumber == 3,
+                                    textStyle(
+                                        Colors.white, tabTxSz, true, false),
+                                    textStyle(Colors.amber[400]!, tabTxSz, true,
+                                        true))))),
                   ])),
           if (!controller.walletConnected ||
               (controller.walletConnected &&
