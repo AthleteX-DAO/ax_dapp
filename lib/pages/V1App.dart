@@ -367,58 +367,38 @@ class _V1AppState extends State<V1App> {
       backgroundColor: Colors.transparent,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Image.asset(
-              'assets/images/search.png',
-              height: 24,
-              width: 24,
-              color: iconColor(0),
-            ),
-            onPressed: () {
-              animateToPage(0);
-            },
+          icon: Image.asset(
+            'assets/images/search.png',
+            height: 24,
+            width: 24,
+            color: iconColor(0),
           ),
           label: 'Scout',
         ),
         BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Image.asset(
-              'assets/images/swap.png',
-              height: 24,
-              width: 24,
-              color: iconColor(1),
-            ),
-            onPressed: () {
-              animateToPage(1);
-            },
+          icon: Image.asset(
+            'assets/images/swap.png',
+            height: 24,
+            width: 24,
+            color: iconColor(1),
           ),
           label: 'Trade',
         ),
         BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Image.asset(
-              'assets/images/coins.png',
-              height: 24,
-              width: 24,
-              color: iconColor(2),
-            ),
-            onPressed: () {
-              animateToPage(2);
-            },
+          icon: Image.asset(
+            'assets/images/coins.png',
+            height: 24,
+            width: 24,
+            color: iconColor(2),
           ),
           label: 'Pool',
         ),
         BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Image.asset(
-              'assets/images/barn.png',
-              height: 24,
-              width: 24,
-              color: iconColor(3),
-            ),
-            onPressed: () {
-              animateToPage(3);
-            },
+          icon: Image.asset(
+            'assets/images/barn.png',
+            height: 24,
+            width: 24,
+            color: iconColor(3),
           ),
           label: 'Farm',
         ),
@@ -426,7 +406,11 @@ class _V1AppState extends State<V1App> {
       currentIndex: _selectedIndex,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.grey,
-      onTap: _onItemTapped,
+      onTap: (index) {
+        _onItemTapped(index);
+        //Need animate function because we are not using _selectedIndex to build mobile UI
+        animateToPage(index);
+      },
     );
   }
 
