@@ -281,7 +281,16 @@ class _V1AppState extends State<V1App> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              buildAccountBox(),
+              if (!controller.walletConnected ||
+                  (controller.walletConnected &&
+                      !Controller.supportedChains
+                          .containsKey(controller.networkID.value))) ...[
+                // top Connect Wallet Button
+                buildConnectWalletButton(),
+              ] else ...[
+                //top right corner wallet information
+                buildAccountBox()
+              ],
               DropdownMenuMobile(),
             ],
           ),
