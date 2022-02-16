@@ -13,6 +13,7 @@ class DesktopFarm extends StatefulWidget {
 }
 
 class _DesktopFarmState extends State<DesktopFarm> {
+  final myController = TextEditingController();
   bool isWeb = true;
   bool isAllFarms = true;
   List<Farm> allFarmsList = [];
@@ -32,6 +33,14 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
     allFarmsListSearchFilter = allFarmsList;
     myFarmsListSearchFilter = myFarmsList;
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    myController.dispose();
+    super.dispose();
   }
 
   @override
@@ -141,7 +150,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
               child: TextButton(
                   onPressed: () {
                     if (!isAllFarms) {
+                      myController.clear();
                       setState(() {
+                        allFarmsListSearchFilter = allFarmsList;
                         isAllFarms = true;
                       });
                     }
@@ -158,8 +169,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
               child: TextButton(
                   onPressed: () {
                     if (isAllFarms) {
+                      myController.clear();
                       setState(() {
-                        isAllFarms = false;
+                        myFarmsListSearchFilter = myFarmsList;
+                        isAllFarms = false;          
                       });
                     }
                   },
@@ -476,12 +489,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
           Expanded(
             child: Container(
               child: TextFormField(
+                controller: myController,
                 onChanged: (value) {
                   setState(() {
-                    if (value == '') {
-                      myFarmsListSearchFilter = myFarmsList;
-                      allFarmsListSearchFilter = allFarmsList;
-                    }
                     if (!isAllFarms) {
                       myFarmsListSearchFilter = myFarmsList
                           .where((farm) => farm.name
