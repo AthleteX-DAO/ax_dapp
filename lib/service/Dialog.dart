@@ -3200,7 +3200,7 @@ Dialog swapDialog(BuildContext context) {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
-                    width: wid - edge,
+                    width: wid - 180,
                     height: 55,
                     decoration: BoxDecoration(
                       color: Colors.amber[400],
