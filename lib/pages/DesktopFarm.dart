@@ -111,7 +111,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   scrollDirection: isWeb ? Axis.horizontal : Axis.vertical,
                   physics: BouncingScrollPhysics(),
                   //TO DO change this based on allfarms or myfarms is selected - Mauricio
-                  itemCount: allFarmsListSearchFilter.length,
+                  itemCount: isAllFarms
+                      ? allFarmsListSearchFilter.length
+                      : myFarmsListSearchFilter.length,
                   itemBuilder: (context, index) {
                     return isAllFarms
                         ? createAllFarmItem(
