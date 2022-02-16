@@ -58,7 +58,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     //Contains Participating farms, search bar, toggle buttons and cards for all farms
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    double listHeight = isWeb ? 225 : _height * 0.5;
+    double listHeight = isWeb ? 225 : _height * 0.6;
     bool vertical = true;
 
     if (_height < 445) vertical = false;
@@ -93,6 +93,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 },
               ),
               child: ListView.builder(
+                  padding: EdgeInsets.zero,
                   scrollDirection: isWeb ? Axis.horizontal : Axis.vertical,
                   physics: BouncingScrollPhysics(),
                   itemCount: workingFarm.length,
@@ -157,6 +158,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     },
                   ),
                   child: ListView.builder(
+                      padding: EdgeInsets.zero,
                       scrollDirection: isWeb ? Axis.horizontal : Axis.vertical,
                       physics: BouncingScrollPhysics(),
                       itemCount: farmListFilter.length,
@@ -395,7 +397,13 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
   Widget createAllFarmItem(Farm farm, double listHeight) {
     MediaQueryData mediaquery = MediaQuery.of(context);
+    double minCardHeight = 200;
+    double maxCardHeight = 350;
     double cardWidth = isWeb ? 500 : mediaquery.size.width * 0.9;
+    double cardHeight = listHeight * 0.4;
+    if (cardHeight < minCardHeight) cardHeight = minCardHeight;
+    if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
+
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
     Dialog participatingDialog;
     Widget farmTitleWidget;
@@ -408,8 +416,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
     }
 
     return Container(
-      height: listHeight,
+      height: cardHeight,
       width: cardWidth,
+      margin: EdgeInsets.symmetric(vertical: 10),
       decoration: boxDecoration(
           Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),
       child: Column(
