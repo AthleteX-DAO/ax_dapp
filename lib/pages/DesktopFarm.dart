@@ -476,6 +476,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
+                    if (value == '') {
+                      myFarmsListSearchFilter = myFarmsList;
+                      allFarmsListSearchFilter = allFarmsList;
+                    }
                     if (!isAllFarms) {
                       myFarmsListSearchFilter = myFarmsList
                           .where((farm) => farm.name

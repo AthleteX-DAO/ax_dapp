@@ -226,7 +226,6 @@ Dialog walletDialog(BuildContext context) {
                 //Comment this widget for Android
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
                     controller.connect().then((response) {
                       if (response == -1) {
                         // No MetaMask
