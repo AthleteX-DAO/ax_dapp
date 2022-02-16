@@ -9,10 +9,9 @@ class Coin {
     required this.price,
   });
 
-  static Coin fromJson(json) =>
-    Coin(
-      name: json['name'],
-      ticker: json['asset_id'],
-      price: json['price_usd'],
-    );
+  static Coin fromJson(json) => Coin(
+        name: json['name'],
+        ticker: json['asset_id'],
+        price: json['price_usd'],
+      );
 }

@@ -147,7 +147,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     for (Athlete ath in AthleteList.list)
       farmList.add(Farm("AX - " + ath.name + " APT", ath));*/
 
-    //List<Farm> farmListFilter = farmList; 
+    //List<Farm> farmListFilter = farmList;
 
     Widget toggle = Container(
         width: 200,
@@ -695,11 +695,18 @@ class _DesktopFarmState extends State<DesktopFarm> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    if(!allFarms) {
-                      farmListFilter = farmList.where((farm) => farm.name.toUpperCase().contains(value.toUpperCase())).toList();
-                    }
-                    else {
-                      workingFarm = everyFarm.where((farm) => farm.name.toUpperCase().contains(value.toUpperCase())).toList();
+                    if (!allFarms) {
+                      farmListFilter = farmList
+                          .where((farm) => farm.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
+                    } else {
+                      workingFarm = everyFarm
+                          .where((farm) => farm.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
                     }
                   });
                 },

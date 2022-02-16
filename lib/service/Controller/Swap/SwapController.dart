@@ -27,7 +27,8 @@ class SwapController extends GetxController {
   final BigInt twoMinuteDeadline = BigInt.from(
       DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch);
   var deadline = BigInt.from(
-      DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch).obs;
+          DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch)
+      .obs;
   late Dex _dex;
   late APTRouter _aptRouter;
   BigInt amountOutMin = BigInt.zero;

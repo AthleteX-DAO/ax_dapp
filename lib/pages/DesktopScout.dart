@@ -1,9 +1,9 @@
 import 'package:ax_dapp/pages/AthletePage.dart';
-// import 'package:ax_dapp/pages/testPage.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
+
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -15,21 +15,35 @@ class DesktopScout extends StatefulWidget {
 }
 
 class _DesktopScoutState extends State<DesktopScout> {
+  final myController = TextEditingController();
   bool athletePage = false;
   int sportState = 0;
   List<Athlete> nflList = [];
+  List<Athlete> nflListFilter = [];
+  // This will hold all the athletes
+  List<Athlete> allList = [];
+  List<Athlete> allListFilter = [];
   Athlete curAthlete = Athlete(
       name: "",
+      id: 0,
       team: "",
       position: "",
-      passingYards: [],
-      passingTouchDowns: [],
-      reception: [],
-      receiveYards: [],
-      receiveTouch: [],
-      rushingYards: [],
-      war: [],
-      time: []);
+      passingYards: 0,
+      passingTouchDowns: 0,
+      reception: 0,
+      receiveYards: 0,
+      receiveTouch: 0,
+      rushingYards: 0,
+      war: 0,
+      time: "");
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    myController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,21 +54,17 @@ class _DesktopScoutState extends State<DesktopScout> {
     if (athletePage) return AthletePage(athlete: curAthlete);
 
     return Container(
-        // Do not delete any of the changes here yet
         height: _height * 0.85 + 41,
-        //height: _height*0.85-41,
         width: _width * 0.85,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              //Container(height: 15),
               // APT Title & Sport Filter
               Container(
-                width: 400,
+                width: _width * 0.85,
                 height: 50,
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text("APT List",
                           style: textStyle(Colors.white, 18, false, false)),
@@ -63,8 +73,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                       Container(
                           child: TextButton(
                         onPressed: () {
+                          myController.clear();
                           if (sportState != 0)
                             setState(() {
+                              allListFilter = allList;
                               sportState = 0;
                             });
                         },
@@ -79,8 +91,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                       Container(
                           child: TextButton(
                         onPressed: () {
+                          myController.clear();
                           if (sportState != 1)
                             setState(() {
+                              nflListFilter = nflList;
                               sportState = 1;
                             });
                         },
@@ -124,6 +138,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 textStyle(Colors.amber[400]!, sportFilterTxSz,
                                     false, true))),
                       )),
+                      Container(
+                        child: Expanded(
+                          child: Container(),
+                        ),
+                      ),
+                      Container(
+                        child: createSearchBar(),
+                      ),
                     ]),
               ),
               //Container(height: _height*0.03),
@@ -174,7 +196,17 @@ class _DesktopScoutState extends State<DesktopScout> {
     double _height = MediaQuery.of(context).size.height;
     double hgt = _height * 0.8 - 120;
 
-    if (nflList.length == 0) nflList = AthleteList.list;
+    if (nflList.length == 0) {
+      nflList = AthleteList.list;
+      nflListFilter = nflList;
+    }
+
+    if (allList.length == 0) {
+      // Filter all the athletes. For now we only have NFL athletes
+      allList = nflList;
+      allListFilter = allList;
+    }
+
     // all athletes
     if (sportState == 0)
       return Container(
@@ -182,9 +214,14 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: ListView.builder(
               padding: EdgeInsets.only(top: 10),
               physics: BouncingScrollPhysics(),
-              itemCount: AthleteList.list.length,
+              /*itemCount: AthleteList.list.length,
               itemBuilder: (context, index) {
                 return createListCards(AthleteList.list[index]);
+              }));*/
+              // Build with all the all the athletes
+              itemCount: allListFilter.length,
+              itemBuilder: (context, index) {
+                return createListCards(allListFilter[index]);
               }));
     // NFL athletes only
     else if (sportState == 1)
@@ -193,9 +230,9 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: ListView.builder(
               padding: EdgeInsets.only(top: 10),
               physics: BouncingScrollPhysics(),
-              itemCount: nflList.length,
+              itemCount: nflListFilter.length,
               itemBuilder: (context, index) {
-                return createListCards(nflList[index]);
+                return createListCards(nflListFilter[index]);
               }));
     // other athletes
     else {
@@ -222,6 +259,23 @@ class _DesktopScoutState extends State<DesktopScout> {
 
     double athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
+
+    String fn(String a) {
+      if (a == "QB") {
+        return "Quarterback";
+      } else if (a == "WR") {
+        return "Widereciever";
+      } else if (a == "DT") {
+        return "Defencetackle";
+      } else if (a == "RB") {
+        return "Runningback";
+      } else if (a == "TE") {
+        return "Tightend";
+      } else if (a == "CB") {
+        return "Cornerback";
+      }
+      return "B";
+    }
 
     return Container(
         height: 70,
@@ -251,7 +305,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               Text(athlete.name,
                                   style: textStyle(
                                       Colors.white, 18, false, false)),
-                              Text(athlete.position,
+                              Text(fn(athlete.position),
                                   style: textStyle(
                                       Colors.grey[700]!, 10, false, false))
                             ])),
@@ -273,13 +327,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                     // Market Price / Change
                     Container(
                         child: Row(children: <Widget>[
-                      Text(
-                          athlete.war[athlete.war.length - 1]
-                                  .toStringAsFixed(4) +
-                              ' AX',
+                      Text(athlete.war.toStringAsFixed(4) + ' AX',
                           style: textStyle(Colors.white, 16, false, false)),
                       Container(width: 10),
-                      Text("+%4",
+                      Text("+4%",
                           style: textStyle(Colors.green, 12, false, false))
                     ])),
                     if (bookVal) ...[
@@ -287,13 +338,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                       // Book Price
                       Container(
                           child: Row(children: <Widget>[
-                        Text(
-                            athlete.war[athlete.war.length - 1]
-                                    .toStringAsFixed(4) +
-                                ' AX',
+                        Text(athlete.war.toStringAsFixed(4) + ' AX',
                             style: textStyle(Colors.white, 16, false, false)),
                         Container(width: 10),
-                        Text("-%2",
+                        Text("-2%",
                             style: textStyle(Colors.red, 12, false, false))
                       ])),
                     ]
@@ -344,6 +392,58 @@ class _DesktopScoutState extends State<DesktopScout> {
                     ]
                   ])
                 ])));
+  }
+
+  Widget createSearchBar() {
+    return Container(
+      width: 250,
+      height: 40,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(width: 8),
+          Container(
+            child: Icon(Icons.search, color: Colors.white),
+          ),
+          Container(width: 35),
+          Expanded(
+            child: Container(
+              child: TextFormField(
+                controller: myController,
+                onChanged: (value) {
+                  setState(() {
+                    // Filter all athletes
+                    if (sportState == 0) {
+                      allListFilter = allList
+                          .where((athlete) => athlete.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
+                    }
+                    // Filter NFL athletes
+                    else {
+                      nflListFilter = nflList
+                          .where((athlete) => athlete.name
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
+                    }
+                  });
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 8.5),
+                  hintText: "Search an athlete",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {

@@ -31,101 +31,121 @@ class _LandingPageState extends State<LandingPage> {
           fit: BoxFit.fill,
         ),
       ),
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
-              Widget>[
-        //AX Markets Image
-        Container(
-            height: _height * 0.2,
-            child: Image(
-              image: AssetImage("../assets/images/AXMarkets.png"),
-            )),
-        // Text
-        Container(
-            height: _height * 0.3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: "TRADE",
-                          style: textStyle(
-                              Colors.amber[400]!, textSize, true, false)),
-                      TextSpan(
-                          text: " ATHLETES",
-                          style:
-                              textStyle(Colors.white, textSize, true, false)),
-                    ],
-                  ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: "BUILD",
-                          style: textStyle(
-                              Colors.amber[400]!, textSize, true, false)),
-                      TextSpan(
-                          text: " YOUR ROSTER",
-                          style:
-                              textStyle(Colors.white, textSize, true, false)),
-                    ],
-                  ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: "EARN",
-                          style: textStyle(
-                              Colors.amber[400]!, textSize, true, false)),
-                      TextSpan(
-                          text: " REWARDS",
-                          style:
-                              textStyle(Colors.white, textSize, true, false)),
-                    ],
-                  ),
-                ),
-              ],
-            )),
-        //Button load athletes
-        Container(
-          width: _width * 0.20,
-          height: _height * 0.08,
-          margin: EdgeInsets.only(bottom: 130.0),
-          child: FutureBuilder<dynamic>(
-              future: AthleteApi.getAthletesLocally(context),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  default:
-                    AthleteList.list = snapshot.data;
-                    return Container(
-                      decoration: boxDecoration(
-                          Colors.transparent, 100, 1, Colors.amber[400]!),
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            next = true;
-                          });
-                        },
-                        child: Text(
-                          "Start Trading",
-                          style: textStyle(
-                              Colors.amber[400]!, tradingTextSize, true, false),
-                        ),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            //AX Markets Image
+            Container(
+                height: _height * 0.2,
+                child: Image(
+                  image:
+                      AssetImage("../assets/images/AthleteX_Logo_Vector.png"),
+                )),
+            // Text
+            Container(
+                height: 225,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: "TRADE",
+                              style: TextStyle(
+                                color: Colors.amber[400]!,
+                                fontFamily: 'BebasNeuePro',
+                                fontSize: textSize,
+                              )),
+                          TextSpan(
+                              text: " ATHLETES",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'BebasNeuePro',
+                                fontSize: textSize,
+                              ))
+                        ],
                       ),
-                    );
-                }
-              }),
-        ),
-      ]),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: "BUILD",
+                              style: TextStyle(
+                                color: Colors.amber[400]!,
+                                fontFamily: 'BebasNeuePro',
+                                fontSize: textSize,
+                              )),
+                          TextSpan(
+                              text: " YOUR ROSTER",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'BebasNeuePro',
+                                fontSize: textSize,
+                              )),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: "EARN",
+                              style: TextStyle(
+                                color: Colors.amber[400]!,
+                                fontFamily: 'BebasNeuePro',
+                                fontSize: textSize,
+                              )),
+                          TextSpan(
+                              text: " REWARDS",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'BebasNeuePro',
+                                fontSize: textSize,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
+            //Button load athletes
+            Container(
+              width: _width * 0.20,
+              height: _height * 0.08,
+              margin: EdgeInsets.only(bottom: 130.0),
+              child: FutureBuilder<dynamic>(
+                  // future: AthleteApi.getAthletesLocally(context),
+                  future: AthleteApi.getAthletesFromIdList(context),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      default:
+                        AthleteList.list = snapshot.data;
+                        return Container(
+                          decoration: boxDecoration(
+                              Colors.transparent, 100, 1, Colors.amber[400]!),
+                          child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                next = true;
+                              });
+                            },
+                            child: Text(
+                              "Start Trading",
+                              style: textStyle(Colors.amber[400]!,
+                                  tradingTextSize, true, false),
+                            ),
+                          ),
+                        );
+                    }
+                  }),
+            ),
+          ]),
     );
   }
 

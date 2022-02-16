@@ -16,7 +16,6 @@ mixin APTBehavior on Token {
   EthereumAddress empCAddress =
       EthereumAddress.fromHex("0x00000000000000000000000000000000000000");
 
-
   late ExpiringMultiParty _expiringMultiParty;
 
   // When we create options put/call behavior
