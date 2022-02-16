@@ -68,7 +68,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     MediaQueryData mediaquery = MediaQuery.of(context);
     double _width = mediaquery.size.width;
     double _height = mediaquery.size.height;
-    double listHeight = (isWeb && isAllFarms) ? 225 : _height * 0.7;
+    double listHeight = (isWeb && isAllFarms) ? 225 : _height * 0.65;
     //If web and in MyFarms list height 500
     if (isWeb && !isAllFarms) listHeight = 500;
     double listWidth = _width * 0.95;
@@ -76,34 +76,37 @@ class _DesktopFarmState extends State<DesktopFarm> {
     Widget toggle = toggleFarmButton();
 
     return Wrap(runSpacing: _height * 0.02, children: <Widget>[
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            height: 45,
-            alignment: Alignment.bottomLeft,
-            child: isAllFarms
-                ? Text(
-                    "Participating Farms",
-                    style: textStyle(Colors.white, 24, true, false),
-                  )
-                : Container(
-                    height: 45,
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
-                      "My Farms",
+      FittedBox(
+        fit: BoxFit.fill,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              height: 45,
+              alignment: Alignment.bottomLeft,
+              child: isAllFarms
+                  ? Text(
+                      "Participating Farms",
                       style: textStyle(Colors.white, 24, true, false),
+                    )
+                  : Container(
+                      height: 45,
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        "My Farms",
+                        style: textStyle(Colors.white, 24, true, false),
+                      ),
                     ),
-                  ),
-          ),
-          if (!isWeb) toggle,
-        ],
+            ),
+            if (!isWeb) createSearchBar(),
+          ],
+        ),
       ),
       if (isWeb)
         Row(
           children: <Widget>[createSearchBar(), SizedBox(width: 50), toggle],
         ),
-      if (!isWeb) createSearchBar(),
+      if (!isWeb) toggle,
       Container(
           //contains list of allfarms cards
           width: listWidth,
@@ -172,7 +175,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       myController.clear();
                       setState(() {
                         myFarmsListSearchFilter = myFarmsList;
-                        isAllFarms = false;          
+                        isAllFarms = false;
                       });
                     }
                   },
