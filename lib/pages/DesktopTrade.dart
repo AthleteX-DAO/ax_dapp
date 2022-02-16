@@ -98,15 +98,16 @@ class _DesktopTradeState extends State<DesktopTrade> {
             width: wid,
             decoration: boxDecoration(
                 Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
+            padding: EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Container(
+                Column(children: <Widget>[
+                  Container(
                     width: wid - 50,
                     alignment: Alignment.centerLeft,
                     child: Text("Swap",
                         style: textStyle(Colors.white, 16, false))),
-                Column(children: <Widget>[
                   //From text
                   Container(
                     width: wid - 75,
@@ -121,6 +122,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       alignment: Alignment.center,
                       decoration: boxDecoration(
                           Colors.transparent, 20, 0.5, Colors.grey[400]!),
+                      padding: EdgeInsets.symmetric(horizontal: 25),
                       child: Container(
                           width: wid - 100,
                           child: Row(
@@ -215,6 +217,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       alignment: Alignment.center,
                       decoration: boxDecoration(
                           Colors.transparent, 20, 0.5, Colors.grey[400]!),
+                      padding: EdgeInsets.symmetric(horizontal: 25),
                       child: Container(
                           width: wid - 100,
                           child: Row(
