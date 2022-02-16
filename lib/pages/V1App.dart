@@ -91,23 +91,6 @@ class _V1AppState extends State<V1App> {
           child: pageWidget),
       bottomNavigationBar: bottomNavBar(context),
     );
-    // Do not delete this yet. The original code before the changes
-    /*return Scaffold(
-      appBar: AppBar(
-        title: topNavBar(context),
-      ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("../assets/images/blurredBackground.png"),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: pageWidget
-      )
-    );*/
   }
 
   Widget buildDesktop(BuildContext context) {
