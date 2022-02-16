@@ -21,39 +21,41 @@ class LSPController extends GetxController {
   var redeemAmt = 0.0.obs;
   // Hard address listing of all Athletes
 
-  LSPController();
-
-  Future<void> mint() async {
-    //final theClient =        Web3Client("https://matic-mumbai.chainstacklabs.com", Client());
+  LSPController() {
     final tokenClient =
-        Web3Client("https://matic-mumbai.chainstacklabs.com", Client());
+        Web3Client("https://matic-mumbai.chainstacklabs.com", new Client());
     EthereumAddress address =
         EthereumAddress.fromHex("0xD3E03e36D70F65A00732F9086D994D83A3EaC286");
-    genericLSP =
-        LongShortPair(address: address, client: controller.client.value);
+    genericLSP = LongShortPair(address: address, client: tokenClient);
+  }
+
+  Future<void> mint() async {
     print("Attempting to MINT LSP");
     print(await controller.credentials.extractAddress());
     final theCredentials = controller.credentials;
     BigInt tokensToCreate = BigInt.from(createAmt.value);
 
+    // approve().then((value) async {
+    // });
     approve().then((value) async {
-      String txString =
-          await genericLSP.create(tokensToCreate, credentials: theCredentials);
-      controller.updateTxString(txString); //Sends tx to controller
+    String txString =
+        await genericLSP.create(tokensToCreate, credentials: theCredentials);
+        controller.updateTxString(txString); //Sends tx to controller
     });
+
   }
 
   Future<void> approve() async {
-    var amount;
+    BigInt amount = BigInt.parse('250000000000000000');
     print("[Console] Inside approve()");
     EthereumAddress address =
         EthereumAddress.fromHex("0x76d9a6e4cdefc840a47069b71824ad8ff4819e85");
     final tokenClient =
         Web3Client("https://matic-mumbai.chainstacklabs.com", Client());
     Erc20 axt = Erc20(address: address, client: tokenClient);
-    print("[Console] Created a token variable.");
     try {
-      amount = await genericLSP.collateralPerPair();
+      print("[Console] Created a token variable.");
+      
     } catch (error) {
       print(error);
     }
@@ -81,4 +83,6 @@ class LSPController extends GetxController {
     print("redeeming lsps with collateral: $newAmount");
     update();
   }
+
+  Future<void> updateCollateralAmount() async {}
 }
