@@ -139,12 +139,8 @@ class Controller extends GetxController {
   void disconnect() async {
     walletConnected = false;
     client.value.dispose();
-<<<<<<< HEAD
-    // client.value.getChainId();
 
-=======
-    //client.value.getChainId();
->>>>>>> da340838d7f531cd5ba490baca7ea577db8804bf
+    // client.value.getChainId();
     update();
   }
 
