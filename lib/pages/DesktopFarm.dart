@@ -40,8 +40,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    double hgt = _height * 0.7;
-    if (_height < 445) hgt = _height;
+    double sectionHgt = isWeb ? _height * 0.7 : _height * 0.8;
+    if (_height < 445) sectionHgt = _height;
 
     return Container(
         width: _width,
@@ -50,7 +50,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
         child: Container(
             //outermost dimensions for farm section
             width: _width * 0.95,
-            height: hgt,
+            height: sectionHgt,
             child: (allFarms) ? allFarmLayout() : myFarmLayout()));
   }
 
@@ -58,7 +58,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     //Contains Participating farms, search bar, toggle buttons and cards for all farms
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    double listHeight = isWeb ? 225 : _height * 0.6;
+    double listHeight = isWeb ? 225 : _height * 0.7;
     bool vertical = true;
 
     if (_height < 445) vertical = false;

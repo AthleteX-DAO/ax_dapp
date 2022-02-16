@@ -223,6 +223,7 @@ Dialog walletDialog(BuildContext context) {
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
+                //Comment this widget for Android
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
