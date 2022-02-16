@@ -46,7 +46,7 @@ class LSPController extends GetxController {
   }
 
   Future<void> approve() async {
-    BigInt amount = BigInt.parse('250000000000000000');
+    BigInt amount =  BigInt.from(createAmt.value) * BigInt.parse('250000000000000000');
     print("[Console] Inside approve()");
     EthereumAddress address =
         EthereumAddress.fromHex("0x76d9a6e4cdefc840a47069b71824ad8ff4819e85");
