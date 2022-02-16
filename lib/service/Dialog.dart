@@ -225,35 +225,35 @@ Dialog walletDialog(BuildContext context) {
                     Colors.transparent, 100, 2, Colors.grey[400]!),
                 child: TextButton(
                   onPressed: () {
-                    //Navigator.pop(context);
-                    // controller.connect().then((response) {
-                    //   if (response == -1) {
-                    //     // No MetaMask
-                    //     Navigator.pop(context);
-                    //     showDialog(
-                    //         context: context,
-                    //         builder: (BuildContext context) =>
-                    //             connectMetamaskDialog(context));
-                    //   } else if (response == 0) {
-                    //     // Wrong network
-                    //     Navigator.pop(context);
-                    //     showDialog(
-                    //         context: context,
-                    //         builder: (BuildContext context) =>
-                    //             wrongNetworkDialog(context));
-                    //   } else {
-                    //     Navigator.pop(context);
-                    //     walletController.getTokenMetrics();
-                    //     walletController.getTokenBalance();
-                    //   }
-                    // });
+                    Navigator.pop(context);
+                    controller.connect().then((response) {
+                      if (response == -1) {
+                        // No MetaMask
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                connectMetamaskDialog(context));
+                      } else if (response == 0) {
+                        // Wrong network
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                wrongNetworkDialog(context));
+                      } else {
+                        Navigator.pop(context);
+                        walletController.getTokenMetrics();
+                        walletController.getTokenBalance();
+                      }
+                    });
 
-                    // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
-                    //   showDialog(
-                    //       context: context,
-                    //       builder: (BuildContext context) =>
-                    //           wrongNetworkDialog(context));
-                    // }
+                    if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              wrongNetworkDialog(context));
+                    }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

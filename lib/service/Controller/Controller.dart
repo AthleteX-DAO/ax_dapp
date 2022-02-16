@@ -1,12 +1,13 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
-// import 'dart:html';
+import 'dart:html';
 import 'dart:math';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:get/get.dart';
+import 'package:web3dart/browser.dart';
 import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
@@ -65,35 +66,35 @@ class Controller extends GetxController {
   }
 
   // Connect the dapp to metamask and update relevant values
-  // Future<int> connect() async {
-  //   final eth = window.ethereum;
-  //   if (eth == null) {
-  //     print('[Console] MetaMask is not available');
-  //     return -1;
-  //   }
-  //   walletConnected = true;
-  //   client.value = Web3Client.custom(eth.asRpcService());
-  //   credentials = await eth.requestAccount();
-  //   print('[Console] Connecting the wallet...');
-  //   networkID.value = await client.value.getNetworkId();
-  //   print('[Console] networkID: $networkID');
-  //   if (!supportedChains.containsKey(networkID.value)) {
-  //     print(
-  //         "[Console] Wrong network ID: $networkID. Connect to a supported chain and try again");
-  //     return 0;
-  //   }
-  //   print('[Console] Trying to get the address');
-  //   publicAddress.value = await credentials.extractAddress();
-  //   print('[Console] Trying to get the rawGasPrice');
-  //   var rawGasPrice = await client.value.getGasPrice();
-  //   print('[Console] Trying to get the gasPriceinGwei');
-  //   var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
-  //   print('[Console] Trying to get the gasString');
-  //   gasString.value = "$gasPriceinGwei";
-  //   print("[Console] Updated client and credentials");
-  //   update();
-  //   return 1;
-  // }
+  Future<int> connect() async {
+    final eth = window.ethereum;
+    if (eth == null) {
+      print('[Console] MetaMask is not available');
+      return -1;
+    }
+    walletConnected = true;
+    client.value = Web3Client.custom(eth.asRpcService());
+    credentials = await eth.requestAccount();
+    print('[Console] Connecting the wallet...');
+    networkID.value = await client.value.getNetworkId();
+    print('[Console] networkID: $networkID');
+    if (!supportedChains.containsKey(networkID.value)) {
+      print(
+          "[Console] Wrong network ID: $networkID. Connect to a supported chain and try again");
+      return 0;
+    }
+    print('[Console] Trying to get the address');
+    publicAddress.value = await credentials.extractAddress();
+    print('[Console] Trying to get the rawGasPrice');
+    var rawGasPrice = await client.value.getGasPrice();
+    print('[Console] Trying to get the gasPriceinGwei');
+    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+    print('[Console] Trying to get the gasString');
+    gasString.value = "$gasPriceinGwei";
+    print("[Console] Updated client and credentials");
+    update();
+    return 1;
+  }
 
   // Connect the client + set credentials
   void connectNative() async {
@@ -139,51 +140,51 @@ class Controller extends GetxController {
     update();
   }
 
-  // void addTokenToWallet() async {
-  //   final eth = window.ethereum;
-  //   Object tokenParam = {
-  //     "type": "ERC20",
-  //     "options": {
-  //       "address": "0xb60e8dd61c5d32be8058bb8...",
-  //       "symbol": "FOO",
-  //       "decimals": 18,
-  //       "image": "https: //foo.io/token-ima..."
-  //     }
-  //   };
+  void addTokenToWallet() async {
+    final eth = window.ethereum;
+    Object tokenParam = {
+      "type": "ERC20",
+      "options": {
+        "address": "0xb60e8dd61c5d32be8058bb8...",
+        "symbol": "FOO",
+        "decimals": 18,
+        "image": "https: //foo.io/token-ima..."
+      }
+    };
 
-  //   eth!.rawRequest('wallet_watchAsset', params: tokenParam);
-  // }
+    eth!.rawRequest('wallet_watchAsset', params: tokenParam);
+  }
 
-  // Future<bool> switchNetwork() async {
-  //   print("Inside switchNetwork()");
-  //   final eth = window.ethereum;
-  //   Object switchParams = [
-  //     {'chainId': '0x89'}
-  //   ];
-  //   try {
-  //     print("[Console] Trying to switch the network");
-  //     await eth!.rawRequest('wallet_switchEthereumChain', params: switchParams);
-  //     print("[Console] Switched the network to mainnet(137, 0x89?)");
-  //     return true;
-  //   } catch (error) {
-  //     print("[Console] Main network not installed on MetaMask");
-  //     try {
-  //       Object addParams = [
-  //         {
-  //           'chainId': '0x89',
-  //           'chainName': 'Matic(Mainnet)',
-  //           'rpcUrls': mainRPCUrl,
-  //         }
-  //       ];
-  //       await eth!.rawRequest('wallet_addEthereumChain', params: addParams);
-  //       print("[Console] Added a mainnet to the MetaMask");
-  //       return true;
-  //     } catch (addError) {
-  //       print("[Console] Could not add a mainnet to the MetaMask");
-  //       return false;
-  //     }
-  //   }
-  // }
+  Future<bool> switchNetwork() async {
+    print("Inside switchNetwork()");
+    final eth = window.ethereum;
+    Object switchParams = [
+      {'chainId': '0x89'}
+    ];
+    try {
+      print("[Console] Trying to switch the network");
+      await eth!.rawRequest('wallet_switchEthereumChain', params: switchParams);
+      print("[Console] Switched the network to mainnet(137, 0x89?)");
+      return true;
+    } catch (error) {
+      print("[Console] Main network not installed on MetaMask");
+      try {
+        Object addParams = [
+          {
+            'chainId': '0x89',
+            'chainName': 'Matic(Mainnet)',
+            'rpcUrls': mainRPCUrl,
+          }
+        ];
+        await eth!.rawRequest('wallet_addEthereumChain', params: addParams);
+        print("[Console] Added a mainnet to the MetaMask");
+        return true;
+      } catch (addError) {
+        print("[Console] Could not add a mainnet to the MetaMask");
+        return false;
+      }
+    }
+  }
 
   static void viewTx() async {
     String urlString = "";
