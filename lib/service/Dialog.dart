@@ -248,13 +248,6 @@ Dialog walletDialog(BuildContext context) {
                         walletController.getTokenBalance();
                       }
                     });
-
-                    if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              wrongNetworkDialog(context));
-                    }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
