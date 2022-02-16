@@ -60,6 +60,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
     double _width = mediaquery.size.width;
     double _height = mediaquery.size.height;
     double listHeight = (isWeb && isAllFarms) ? 225 : _height * 0.7;
+    //If web and in MyFarms list height 500
+    if (isWeb && !isAllFarms) listHeight = 500;
     double listWidth = _width * 0.95;
 
     Widget toggle = toggleFarmButton();
@@ -92,6 +94,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
         Row(
           children: <Widget>[createSearchBar(), SizedBox(width: 50), toggle],
         ),
+      if (!isWeb) createSearchBar(),
       Container(
           //contains list of allfarms cards
           width: listWidth,
@@ -171,8 +174,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
     //TO DO pass list width so that this method knows width of parent - Mauricio
     //Cannot stablish a height for list items for cross axis alignment, in this case for rows
     //So for rows height is stablished in outer container
-    double minCardHeight = 500;
-    double maxCardHeight = 700;
+    double minCardHeight = 450;
+    double maxCardHeight = 500;
     double cardWidth = isWeb ? 500 : mediaquery.size.width * 0.9;
     double cardHeight = listHeight * 0.7;
     if (cardHeight < minCardHeight) cardHeight = minCardHeight;
@@ -189,6 +192,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
       //participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
     return Container(
+      margin: isWeb
+          ? EdgeInsets.symmetric(horizontal: 10)
+          : EdgeInsets.symmetric(vertical: 10),
       height: cardHeight,
       width: cardWidth,
       decoration: boxDecoration(
