@@ -13,10 +13,12 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   bool next = false;
+  bool isWeb = true;
   @override
   Widget build(BuildContext context) {
     if (next) return V1App();
 
+    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double textSize = _height * 0.05;
@@ -41,7 +43,7 @@ class _LandingPageState extends State<LandingPage> {
                 child: Image(
                   image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
                 )),
-            kIsWeb ? desktopLandingPage(context, textSize) : andoridLandingPage(context),
+            isWeb ? desktopLandingPage(context, textSize) : andoridLandingPage(context),
             //Button load athletes
             Container(
               width: _width * 0.20,
@@ -154,16 +156,36 @@ class _LandingPageState extends State<LandingPage> {
 
   
   Widget andoridLandingPage(BuildContext context) {
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+
     return Container(
-      height: 150,
-      width: 150,
+      height: _height * 0.25,
+      width: _width * 0.65,
       color: Colors.grey[200],
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Login Info Will Go Here",
-            textAlign: TextAlign.center,
-            style: textStyle(Colors.black, 14, false, false),
+            "Login Info",
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'OpenSans',
+              fontSize: 16,
+              decoration: TextDecoration.none,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Container(height: _height * 0.02),
+          Text(
+            "Will Go Here",
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'OpenSans',
+              fontSize: 16,
+              decoration: TextDecoration.none,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ],
       ),
