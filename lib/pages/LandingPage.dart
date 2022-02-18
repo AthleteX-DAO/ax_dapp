@@ -24,6 +24,7 @@ class _LandingPageState extends State<LandingPage> {
     double textSize = _height * 0.05;
     double tradingTextSize = textSize * 0.7;
     if (_width < _height) textSize = _width * 0.05;
+    if (!isWeb) tradingTextSize = textSize * 1.25;
 
     return Container(
       width: _width,
@@ -39,14 +40,15 @@ class _LandingPageState extends State<LandingPage> {
           children: <Widget>[
             //AX Markets Image
             Container(
+              padding: EdgeInsets.only(left: 15, right: 15),
                 height: _height * 0.2,
                 child: Image(
                   image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
                 )),
-            isWeb ? desktopLandingPage(context, textSize) : andoridLandingPage(context),
+            isWeb ? desktopLandingPage(context, textSize) : andoridLandingPage(context, textSize),
             //Button load athletes
             Container(
-              width: _width * 0.20,
+              width: isWeb? _width * 0.20 : _width * 0.55,
               height: _height * 0.08,
               margin: EdgeInsets.only(bottom: 130.0),
               child: FutureBuilder<dynamic>(
@@ -61,8 +63,8 @@ class _LandingPageState extends State<LandingPage> {
                       default:
                         AthleteList.list = snapshot.data;
                         return Container(
-                          decoration: boxDecoration(
-                              Colors.transparent, 100, 1, Colors.amber[400]!),
+                          padding: EdgeInsets.only(left: 15, right: 15),
+                          decoration: isWeb? boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!) : boxDecoration(Colors.amber[300]!.withOpacity(0.15), 100, 1, Colors.transparent),
                           child: TextButton(
                             onPressed: () {
                               setState(() {
@@ -155,7 +157,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   
-  Widget andoridLandingPage(BuildContext context) {
+  Widget andoridLandingPage(BuildContext context, textSize) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
@@ -171,7 +173,7 @@ class _LandingPageState extends State<LandingPage> {
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'OpenSans',
-              fontSize: 16,
+              fontSize: textSize,
               decoration: TextDecoration.none,
               fontWeight: FontWeight.w400,
             ),
@@ -182,7 +184,7 @@ class _LandingPageState extends State<LandingPage> {
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'OpenSans',
-              fontSize: 16,
+              fontSize: textSize,
               decoration: TextDecoration.none,
               fontWeight: FontWeight.w400,
             ),
