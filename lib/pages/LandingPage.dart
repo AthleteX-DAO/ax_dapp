@@ -18,7 +18,8 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     if (next) return V1App();
 
-    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double textSize = _height * 0.05;
@@ -40,20 +41,22 @@ class _LandingPageState extends State<LandingPage> {
           children: <Widget>[
             //AX Markets Image
             Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
+                padding: EdgeInsets.only(left: 15, right: 15),
                 height: _height * 0.2,
                 child: Image(
                   image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
                 )),
-            isWeb ? desktopLandingPage(context, textSize) : andoridLandingPage(context, textSize),
+            isWeb
+                ? desktopLandingPage(context, textSize)
+                : andoridLandingPage(context, textSize),
             //Button load athletes
             Container(
-              width: isWeb? _width * 0.20 : _width * 0.55,
+              width: isWeb ? _width * 0.20 : _width * 0.55,
               height: _height * 0.08,
               margin: EdgeInsets.only(bottom: 130.0),
               child: FutureBuilder<dynamic>(
                   // future: AthleteApi.getAthletesLocally(context),
-                  future: AthleteApi.getAthletesFromIdList(context),
+                  future: AthleteApi.getAthletesFromIdsDict(context),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
@@ -64,7 +67,14 @@ class _LandingPageState extends State<LandingPage> {
                         AthleteList.list = snapshot.data;
                         return Container(
                           padding: EdgeInsets.only(left: 15, right: 15),
-                          decoration: isWeb? boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!) : boxDecoration(Colors.amber[300]!.withOpacity(0.15), 100, 1, Colors.transparent),
+                          decoration: isWeb
+                              ? boxDecoration(Colors.transparent, 100, 1,
+                                  Colors.amber[400]!)
+                              : boxDecoration(
+                                  Colors.amber[300]!.withOpacity(0.15),
+                                  100,
+                                  1,
+                                  Colors.transparent),
                           child: TextButton(
                             onPressed: () {
                               setState(() {
@@ -87,76 +97,75 @@ class _LandingPageState extends State<LandingPage> {
 
   Widget desktopLandingPage(BuildContext context, textSize) {
     return Container(
-      height: 225,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                    text: "TRADE",
-                    style: TextStyle(
-                      color: Colors.amber[400]!,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
-                TextSpan(
-                    text: " ATHLETES",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    ))
-              ],
+        height: 225,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                      text: "TRADE",
+                      style: TextStyle(
+                        color: Colors.amber[400]!,
+                        fontFamily: 'BebasNeuePro',
+                        fontSize: textSize,
+                      )),
+                  TextSpan(
+                      text: " ATHLETES",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'BebasNeuePro',
+                        fontSize: textSize,
+                      ))
+                ],
+              ),
             ),
-          ),
-          RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                    text: "BUILD",
-                    style: TextStyle(
-                      color: Colors.amber[400]!,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
-                TextSpan(
-                    text: " YOUR ROSTER",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
-              ],
+            RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                      text: "BUILD",
+                      style: TextStyle(
+                        color: Colors.amber[400]!,
+                        fontFamily: 'BebasNeuePro',
+                        fontSize: textSize,
+                      )),
+                  TextSpan(
+                      text: " YOUR ROSTER",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'BebasNeuePro',
+                        fontSize: textSize,
+                      )),
+                ],
+              ),
             ),
-          ),
-          RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                    text: "EARN",
-                    style: TextStyle(
-                      color: Colors.amber[400]!,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
-                TextSpan(
-                    text: " REWARDS",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
-              ],
+            RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                      text: "EARN",
+                      style: TextStyle(
+                        color: Colors.amber[400]!,
+                        fontFamily: 'BebasNeuePro',
+                        fontSize: textSize,
+                      )),
+                  TextSpan(
+                      text: " REWARDS",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'BebasNeuePro',
+                        fontSize: textSize,
+                      )),
+                ],
+              ),
             ),
-          ),
-        ],
-      ));
+          ],
+        ));
   }
 
-  
   Widget andoridLandingPage(BuildContext context, textSize) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
@@ -193,7 +202,6 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
-  
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold) if (isUline)
