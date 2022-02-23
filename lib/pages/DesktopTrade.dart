@@ -236,27 +236,55 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               // dropdown
                               createTokenButton(2),
                               // Amount box
-                              SizedBox(
-                                width: 70,
-                                child: TextFormField(
-                                  onChanged: (value) {
-                                    toAmount = double.parse(value);
-                                  },
-                                  style:
-                                      textStyle(Colors.grey[400]!, 22, false),
-                                  decoration: InputDecoration(
-                                    hintText: '0.00',
-                                    hintStyle:
-                                        textStyle(Colors.grey[400]!, 22, false),
-                                    contentPadding: const EdgeInsets.all(9),
-                                    border: InputBorder.none,
-                                  ),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                        (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                                  ],
-                                ),
-                              ),
+                              Container(
+                                width: 110,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                          height: 24,
+                                          width: 40,
+                                          decoration: boxDecoration(
+                                              Colors.transparent,
+                                              100,
+                                              0.5,
+                                              Colors.grey[400]!),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                swapController
+                                                    .activeTkn2.value;
+                                                print(swapController.amount2);
+                                              },
+                                              child: Text("MAX",
+                                                  style: textStyle(
+                                                      Colors.grey[400]!,
+                                                      8,
+                                                      false)))),
+                                      SizedBox(
+                                        width: 70,
+                                        child: TextFormField(
+                                          onChanged: (value) {
+                                            fromAmount = double.parse(value);
+                                          },
+                                          style: textStyle(
+                                              Colors.grey[400]!, 22, false),
+                                          decoration: InputDecoration(
+                                            hintText: '0.00',
+                                            hintStyle: textStyle(
+                                                Colors.grey[400]!, 22, false),
+                                            contentPadding:
+                                                const EdgeInsets.all(9),
+                                            border: InputBorder.none,
+                                          ),
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                                (RegExp(
+                                                    r'^(\d+)?\.?\d{0,2}'))),
+                                          ],
+                                        ),
+                                      ),
+                                    ]))
                             ],
                           ))),
                 ]),
@@ -356,6 +384,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   }
 
   Widget createTokenButton(int tknNum) {
+    double _width = MediaQuery.of(context).size.width;
     String tkr = "Select a Token";
     AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
     BoxDecoration decor =
@@ -377,7 +406,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
     }
 
     return Container(
-        width: 175,
+        width: isWeb ? _width * 0.065 + 50 : _width * 0.35,
         height: 40,
         decoration: decor,
         child: TextButton(
