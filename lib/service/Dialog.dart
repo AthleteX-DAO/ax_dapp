@@ -2852,6 +2852,13 @@ Dialog removeDialog(BuildContext context) {
 
 Dialog swapDialog(BuildContext context) {
   SwapController swapController = Get.find();
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 450;
+  double edge = 90;
+  if (_width < 395) wid = _width;
+  double hgt = 450;
+  if (_height < 455) hgt = _height;
 
   return Dialog(
       backgroundColor: Colors.transparent,
@@ -2859,8 +2866,8 @@ Dialog swapDialog(BuildContext context) {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Container(
-        height: 450,
-        width: MediaQuery.of(context).size.width * 0.25,
+        height: hgt,
+        width: wid,
         padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
         child: Column(
@@ -2869,7 +2876,7 @@ Dialog swapDialog(BuildContext context) {
           children: <Widget>[
             Container(
               //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid- edge,
               height: 50,
               //color: Colors.red,
               child: Row(
@@ -2891,7 +2898,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid - edge,
               height: 50,
               //color: Colors.red,
               child: Column(
@@ -2947,7 +2954,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid-edge,
               alignment: Alignment.center,
               child: Icon(
                 Icons.arrow_downward,
@@ -2955,7 +2962,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid-edge,
               height: 50,
               //color: Colors.red,
               child: Column(
@@ -3020,7 +3027,7 @@ Dialog swapDialog(BuildContext context) {
             // Price Information and Confirm Swap Button
             Container(
               //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid-edge,
               height: 30,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -3147,7 +3154,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid-edge,
               height: 30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -3176,13 +3183,13 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid - edge,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
-                    width: 210,
+                    width: wid - 180,
                     height: 55,
                     decoration: BoxDecoration(
                       color: Colors.amber[400],
