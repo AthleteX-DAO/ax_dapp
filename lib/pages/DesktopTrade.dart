@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class DesktopTrade extends StatefulWidget {
   const DesktopTrade({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Token? tkn1;
   Token? tkn2;
   List<Token> tokenListFilter = [];
+  bool isWeb = true;
 
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
@@ -49,6 +51,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   @override
   Widget build(BuildContext context) {
+    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _height = MediaQuery.of(context).size.height;
     double fromAmount = 0, toAmount = 0;
     double wid = 550;
@@ -91,6 +94,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               )));
 
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15),
         height: _height - 57,
         alignment: Alignment.center,
         child: Container(
@@ -98,19 +102,25 @@ class _DesktopTradeState extends State<DesktopTrade> {
             width: wid,
             decoration: boxDecoration(
                 Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Column(children: <Widget>[
-                  Container(
+                Column(children: <Widget>[  
+                  isWeb ?
+                    Container(
                     width: wid - 50,
                     alignment: Alignment.centerLeft,
-                    child: Text("Swap",
-                        style: textStyle(Colors.white, 16, false))),
+                    child: Text("Swap", style: textStyle(Colors.white, 16, false))) 
+                    :
+                    Container(
+                      width: wid - 50,
+                      alignment: Alignment.center,
+                      child: Text("Token Swap", style: textStyle(Colors.white, 16,false)),
+                    ),
                   //From text
                   Container(
-                    width: wid - 75,
+                    width: wid - 175,
                     alignment: Alignment.centerLeft,
                     child: Text("From",
                         style: textStyle(Colors.grey[400]!, 12, false)),
@@ -122,7 +132,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       alignment: Alignment.center,
                       decoration: boxDecoration(
                           Colors.transparent, 20, 0.5, Colors.grey[400]!),
-                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
                           width: wid - 100,
                           child: Row(
@@ -203,7 +213,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   ),
                   //To text
                   Container(
-                    width: wid - 75,
+                    width: wid - 175,
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "To",
@@ -217,7 +227,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       alignment: Alignment.center,
                       decoration: boxDecoration(
                           Colors.transparent, 20, 0.5, Colors.grey[400]!),
-                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
                           width: wid - 100,
                           child: Row(
