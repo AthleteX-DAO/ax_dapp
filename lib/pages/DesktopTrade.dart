@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class DesktopTrade extends StatefulWidget {
   const DesktopTrade({Key? key}) : super(key: key);
@@ -27,11 +28,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Token? tkn1;
   Token? tkn2;
   List<Token> tokenListFilter = [];
+  bool isWeb = true;
 
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
-    SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
+    SXT("SportX", "SX", AssetImage('../assets/images/SX_Small.png')),
+    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/Polygon_Small.png')),
   ];
 
   @override
@@ -49,6 +51,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   @override
   Widget build(BuildContext context) {
+    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _height = MediaQuery.of(context).size.height;
     double fromAmount = 0, toAmount = 0;
     double wid = 550;
@@ -91,6 +94,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               )));
 
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15),
         height: _height - 57,
         alignment: Alignment.center,
         child: Container(
@@ -98,19 +102,25 @@ class _DesktopTradeState extends State<DesktopTrade> {
             width: wid,
             decoration: boxDecoration(
                 Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Column(children: <Widget>[
-                  Container(
+                Column(children: <Widget>[  
+                  isWeb ?
+                    Container(
                     width: wid - 50,
                     alignment: Alignment.centerLeft,
-                    child: Text("Swap",
-                        style: textStyle(Colors.white, 16, false))),
+                    child: Text("Swap", style: textStyle(Colors.white, 16, false))) 
+                    :
+                    Container(
+                      width: wid - 50,
+                      alignment: Alignment.center,
+                      child: Text("Token Swap", style: textStyle(Colors.white, 16,false)),
+                    ),
                   //From text
                   Container(
-                    width: wid - 75,
+                    width: wid - 175,
                     alignment: Alignment.centerLeft,
                     child: Text("From",
                         style: textStyle(Colors.grey[400]!, 12, false)),
@@ -122,7 +132,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       alignment: Alignment.center,
                       decoration: boxDecoration(
                           Colors.transparent, 20, 0.5, Colors.grey[400]!),
-                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
                           width: wid - 100,
                           child: Row(
@@ -203,7 +213,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   ),
                   //To text
                   Container(
-                    width: wid - 75,
+                    width: wid - 175,
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "To",
@@ -217,7 +227,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       alignment: Alignment.center,
                       decoration: boxDecoration(
                           Colors.transparent, 20, 0.5, Colors.grey[400]!),
-                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
                           width: wid - 100,
                           child: Row(
@@ -226,27 +236,55 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               // dropdown
                               createTokenButton(2),
                               // Amount box
-                              SizedBox(
-                                width: 70,
-                                child: TextFormField(
-                                  onChanged: (value) {
-                                    toAmount = double.parse(value);
-                                  },
-                                  style:
-                                      textStyle(Colors.grey[400]!, 22, false),
-                                  decoration: InputDecoration(
-                                    hintText: '0.00',
-                                    hintStyle:
-                                        textStyle(Colors.grey[400]!, 22, false),
-                                    contentPadding: const EdgeInsets.all(9),
-                                    border: InputBorder.none,
-                                  ),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                        (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                                  ],
-                                ),
-                              ),
+                              Container(
+                                width: 110,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                          height: 24,
+                                          width: 40,
+                                          decoration: boxDecoration(
+                                              Colors.transparent,
+                                              100,
+                                              0.5,
+                                              Colors.grey[400]!),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                swapController
+                                                    .activeTkn2.value;
+                                                print(swapController.amount2);
+                                              },
+                                              child: Text("MAX",
+                                                  style: textStyle(
+                                                      Colors.grey[400]!,
+                                                      8,
+                                                      false)))),
+                                      SizedBox(
+                                        width: 70,
+                                        child: TextFormField(
+                                          onChanged: (value) {
+                                            fromAmount = double.parse(value);
+                                          },
+                                          style: textStyle(
+                                              Colors.grey[400]!, 22, false),
+                                          decoration: InputDecoration(
+                                            hintText: '0.00',
+                                            hintStyle: textStyle(
+                                                Colors.grey[400]!, 22, false),
+                                            contentPadding:
+                                                const EdgeInsets.all(9),
+                                            border: InputBorder.none,
+                                          ),
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                                (RegExp(
+                                                    r'^(\d+)?\.?\d{0,2}'))),
+                                          ],
+                                        ),
+                                      ),
+                                    ]))
                             ],
                           ))),
                 ]),
@@ -346,6 +384,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   }
 
   Widget createTokenButton(int tknNum) {
+    double _width = MediaQuery.of(context).size.width;
     String tkr = "Select a Token";
     AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
     BoxDecoration decor =
@@ -367,7 +406,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
     }
 
     return Container(
-        width: 175,
+        width: isWeb ? _width * 0.065 + 50 : _width * 0.35,
         height: 40,
         decoration: decor,
         child: TextButton(
