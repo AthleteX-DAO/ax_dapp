@@ -7,6 +7,7 @@ import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AthleteTokenList extends StatefulWidget {
   final BuildContext context;
@@ -27,6 +28,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   Token? tkn2;
   List<Token> tokenListFilter = [];
   int tokenNumber = 0;
+  bool isWeb = true;
 
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
@@ -52,6 +54,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
+    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return Dialog(
         backgroundColor: Colors.grey[900],
         shape: RoundedRectangleBorder(
@@ -65,6 +68,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
               children: <Widget>[
                 // column of elements
                 Container(
+                  padding: isWeb ? EdgeInsets.symmetric(vertical: 0, horizontal: 0) : EdgeInsets.symmetric(vertical: 0, horizontal: 25),
                     height: _height * .625,
                     width: 350,
                     child: Column(
@@ -76,10 +80,11 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                               Container(
                                   height: 30,
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Token Name",
+                                  child: Text("Select a Token",
                                       style: textStyle(
                                           Colors.grey[400]!, 16, false))),
                               Container(
+                                alignment: Alignment.centerRight,
                                   child: TextButton(
                                 onPressed: () => Navigator.pop(context),
                                 child: Icon(Icons.close,
@@ -87,9 +92,12 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                               ))
                             ]),
                         Container(
+                          alignment: Alignment.centerLeft,
+                          child: createSearchBar(),
+                        ),  
+                        Container(
                           child: Divider(thickness: 1, color: Colors.grey[400]),
                         ),
-                        createSearchBar(),
                         Container(
                             height: _height * .625 - 100,
                             child: ListView.builder(
@@ -106,6 +114,10 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   }
 
   Widget createSearchBar() {
+    double _height = MediaQuery.of(context).size.height;
+    double textSize = _height * 0.05;
+    double searchBarHintTextSize = textSize * 0.7;
+    searchBarHintTextSize = textSize * 0.30;
     return Container(
       width: 300,
       height: 40,
@@ -135,7 +147,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 8.5),
                   hintText: "Search a name or paste an address",
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Colors.white, fontSize: searchBarHintTextSize),
                 ),
               ),
             ),
