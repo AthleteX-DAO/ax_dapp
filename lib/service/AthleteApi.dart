@@ -5,8 +5,10 @@ import 'package:http/http.dart' as http;
 
 class AthleteApi {
   static final String _baseURL = 'https://db.athletex.io';
-  // static final String _BaseURL = 'http://139.99.74.201:8080';
-
+  static final int mStaffordId = 9038;
+  static final int jChaseId = 22564;
+  static final int jBurrowId = 21693;
+  static final int cKuppId = 18882;
   static Future<List<Athlete>> getAthletesLocally(BuildContext context) async {
     final assetBundle = DefaultAssetBundle.of(context);
     final data = await assetBundle.loadString('assets/data.json');
@@ -21,8 +23,9 @@ class AthleteApi {
   }
 
   static Future<List<Athlete>> getAthletesFromIdList(
+
       BuildContext context) async {
-    List<String> athleteIDs = ['9038', '22564', '21693', '18882'];
+    List<String> athleteIDs = [mStaffordId.toString(), jChaseId.toString(), jBurrowId.toString(), cKuppId.toString()];
     final List<Athlete> athletesList = [];
     for (String id in athleteIDs) {
       final athleteResponse =
@@ -44,7 +47,7 @@ class AthleteApi {
   static Future<List<Athlete>> getAthletesFromIdsDict(
       BuildContext context) async {
     Map<String, List<int>> athleteIdDict = {
-      "ids": [9038, 22564, 21693, 18882],
+      "ids": [mStaffordId, jChaseId, jBurrowId, cKuppId],
     };
     final jsonRequestBody = json.encode(athleteIdDict);
     print(jsonRequestBody);
