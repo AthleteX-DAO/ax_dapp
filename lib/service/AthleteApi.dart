@@ -23,9 +23,13 @@ class AthleteApi {
   }
 
   static Future<List<Athlete>> getAthletesFromIdList(
-
       BuildContext context) async {
-    List<String> athleteIDs = [mStaffordId.toString(), jChaseId.toString(), jBurrowId.toString(), cKuppId.toString()];
+    List<String> athleteIDs = [
+      mStaffordId.toString(),
+      jChaseId.toString(),
+      jBurrowId.toString(),
+      cKuppId.toString()
+    ];
     final List<Athlete> athletesList = [];
     for (String id in athleteIDs) {
       final athleteResponse =
