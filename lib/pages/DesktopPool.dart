@@ -20,7 +20,7 @@ class DesktopPool extends StatefulWidget {
 
 class _DesktopPoolState extends State<DesktopPool> {
   SwapController swapController = Get.find();
-  bool allLiq = true;
+  bool isAllLiquidity = true;
   List<Token> tokenListFilter = [];
   double fromAmount = 0.0;
   double toAmount = 0.0;
@@ -28,9 +28,9 @@ class _DesktopPoolState extends State<DesktopPool> {
   Token? tkn2;
 
   List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
-    SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
+    AXT("AthleteX", "AX", AssetImage('assets/images/x.png')),
+    SXT("SportX", "SX", AssetImage('assets/images/sx.png')),
+    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/matic.png')),
   ];
 
   @override
@@ -39,7 +39,7 @@ class _DesktopPoolState extends State<DesktopPool> {
 
     for (Athlete ath in AthleteList.list)
       tokens.add(Token(ath.name + " APT", ath.name + " APT",
-          AssetImage('../assets/images/apt.png')));
+          AssetImage('assets/images/apt.png')));
 
     tkn1 = tokens[0];
     tkn2 = tokens[3];
@@ -49,60 +49,31 @@ class _DesktopPoolState extends State<DesktopPool> {
 
   @override
   Widget build(BuildContext context) {
-    double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
-    double hgt = _height * 0.8;
+    MediaQueryData mediaquery = MediaQuery.of(context);
+    double _height = mediaquery.size.height;
+    double _width = mediaquery.size.width;
+    double layoutHgt = _height * 0.8;
+    double layoutWdt = _width * 0.8;
+
     print(_width);
     return Container(
         width: _width,
-        height: _height - 57,
+        height: _height - AppBar().preferredSize.height,
         alignment: Alignment.center,
         child: Container(
-            width: _width * 0.8,
-            height: hgt,
-            child: (allLiq) ? allLiquidity() : myLiquidity()));
+            width: layoutWdt,
+            height: layoutHgt,
+            child: (isAllLiquidity)
+                ? allLiquidity(layoutHgt, layoutWdt)
+                : myLiquidity(layoutHgt, layoutWdt)));
   }
 
-  Widget allLiquidity() {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
-    double wid = _width * 0.75;
-
-    Widget toggle = Container(
-        width: 260,
-        height: 40,
-        margin: EdgeInsets.symmetric(vertical: _height * 0.04),
-        decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                  width: 120,
-                  decoration: boxDecoration(
-                      Colors.grey[600]!, 100, 0, Colors.transparent),
-                  child: TextButton(
-                      onPressed: () {},
-                      child: Text("Add Liquidity",
-                          style: textStyle(Colors.white, 16, true)))),
-              Container(
-                  width: 115,
-                  decoration: boxDecoration(
-                      Colors.transparent, 100, 0, Colors.transparent),
-                  child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          allLiq = false;
-                        });
-                      },
-                      child: Text("My Liquidity",
-                          style: textStyle(Colors.white, 16, true))))
-            ]));
-
+  Widget allLiquidity(double layoutHgt, double layoutWdt) {
     bool advDetails = true;
 
     Widget pricePoolShare = Container(
         height: 275,
-        width: wid / 2 - 40,
+        width: layoutWdt / 2 - 40,
         alignment: Alignment.topRight,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +87,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     style: textStyle(Colors.white, 21, true),
                   )),
               Container(
-                  width: wid / 2 - 95,
+                  width: layoutWdt / 2 - 95,
                   height: 65,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,7 +98,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           Container(
-                              width: wid / 4 - 70,
+                              width: layoutWdt / 4 - 70,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -144,7 +115,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                                 ],
                               )),
                           Container(
-                              width: wid / 4 - 70,
+                              width: layoutWdt / 4 - 70,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -168,7 +139,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                             Container(
-                                width: wid / 4 - 70,
+                                width: layoutWdt / 4 - 70,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -185,7 +156,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                                   ],
                                 )),
                             Container(
-                                width: wid / 4 - 70,
+                                width: layoutWdt / 4 - 70,
                                 child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -205,7 +176,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     ],
                   )),
               Container(
-                width: wid / 2 - 125,
+                width: layoutWdt / 2 - 125,
                 child: RichText(
                   text: TextSpan(
                     children: <TextSpan>[
@@ -225,7 +196,7 @@ class _DesktopPoolState extends State<DesktopPool> {
               ),
               (advDetails)
                   ? Container(
-                      width: wid / 2 - 95,
+                      width: layoutWdt / 2 - 95,
                       height: 45,
                       decoration: boxDecoration(
                           Colors.amber[400]!, 100, 0, Colors.amber[400]!),
@@ -239,7 +210,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                             style: textStyle(Colors.black, 16, true),
                           )))
                   : Container(
-                      width: wid / 2 - 95,
+                      width: layoutWdt / 2 - 95,
                       height: 45,
                       decoration: boxDecoration(
                           Colors.transparent, 100, 1, Colors.amber[400]!),
@@ -260,9 +231,9 @@ class _DesktopPoolState extends State<DesktopPool> {
             alignment: Alignment.bottomLeft,
             child: Text("Liquidity Pool",
                 style: textStyle(Colors.white, 24, true))),
-        toggle,
+        togglePoolButton(layoutHgt, layoutWdt),
         Container(
-            width: wid,
+            width: layoutWdt,
             height: 300,
             decoration: boxDecoration(
                 Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
@@ -273,7 +244,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                   // Pool tokens side (add liq.)
                   Container(
                     height: 275,
-                    width: wid / 2 - 20,
+                    width: layoutWdt / 2 - 20,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -317,12 +288,12 @@ class _DesktopPoolState extends State<DesktopPool> {
                   // Pool details side (add liq.)
                   pricePoolShare,
                 ])),
-        Container(height: _height * 0.5 - 300)
+        Container(height: layoutHgt * 0.5 - 300)
       ],
     );
   }
 
-  Widget myLiquidity() {
+  Widget myLiquidity(double layoutHgt, double layoutWdt) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
 
@@ -359,36 +330,6 @@ class _DesktopPoolState extends State<DesktopPool> {
           )));
     }
 
-    Widget toggle = Container(
-        width: 260,
-        height: 40,
-        margin: EdgeInsets.symmetric(vertical: _height * 0.04),
-        decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                  width: 120,
-                  decoration: boxDecoration(
-                      Colors.transparent, 100, 0, Colors.transparent),
-                  child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          allLiq = true;
-                        });
-                      },
-                      child: Text("Add Liquidity",
-                          style: textStyle(Colors.white, 16, true)))),
-              Container(
-                  width: 115,
-                  decoration: boxDecoration(
-                      Colors.grey[600]!, 100, 0, Colors.transparent),
-                  child: TextButton(
-                      onPressed: () {},
-                      child: Text("My Liquidity",
-                          style: textStyle(Colors.white, 16, true)))),
-            ]));
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -398,7 +339,7 @@ class _DesktopPoolState extends State<DesktopPool> {
             alignment: Alignment.bottomLeft,
             child:
                 Text("My Liquidity", style: textStyle(Colors.white, 24, true))),
-        toggle,
+        togglePoolButton(layoutHgt, layoutWdt),
         Container(
             height: _height * 0.6,
             child: ListView.builder(
@@ -414,7 +355,7 @@ class _DesktopPoolState extends State<DesktopPool> {
 
   Widget tokenContainer(int tknNum) {
     String tkr = "Select a Token";
-    AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
+    AssetImage? tokenImage = AssetImage('assets/images/apt.png');
     BoxDecoration decor =
         boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
@@ -516,6 +457,53 @@ class _DesktopPoolState extends State<DesktopPool> {
             ))
           ],
         ));
+  }
+
+  Widget togglePoolButton(double layoutHgt, double layoutWdt) {
+    return Container(
+      width: 260,
+      height: 40,
+      margin: EdgeInsets.symmetric(vertical: layoutHgt * 0.04),
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Container(
+              width: 120,
+              decoration: isAllLiquidity
+                  ? boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent)
+                  : boxDecoration(
+                      Colors.transparent, 100, 0, Colors.transparent),
+              child: TextButton(
+                  onPressed: () {
+                    if (!isAllLiquidity) {
+                      setState(() {
+                        isAllLiquidity = true;
+                      });
+                    }
+                  },
+                  child: Text("Add Liquidity",
+                      style: textStyle(Colors.white, 16, true)))),
+          Container(
+              width: 115,
+              decoration: isAllLiquidity
+                  ? boxDecoration(
+                      Colors.transparent, 100, 0, Colors.transparent)
+                  : boxDecoration(
+                      Colors.grey[600]!, 100, 0, Colors.transparent),
+              child: TextButton(
+                  onPressed: () {
+                    if (isAllLiquidity) {
+                      setState(() {
+                        isAllLiquidity = false;
+                      });
+                    }
+                  },
+                  child: Text("My Liquidity",
+                      style: textStyle(Colors.white, 16, true))))
+        ],
+      ),
+    );
   }
 
   Widget createTokenElement(Token token, int tknNum) {
