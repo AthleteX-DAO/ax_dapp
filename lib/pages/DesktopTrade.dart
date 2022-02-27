@@ -71,7 +71,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
           height: 50,
           width: wid - 50,
           decoration:
-              boxDecoration(Colors.amber[400]!, 100, 4, Colors.amber[400]!),
+              boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!),
           child: TextButton(
               onPressed: () {
                 if (tkn1 != null && tkn2 != null)
@@ -86,8 +86,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     builder: (BuildContext context) => swapDialog(context));
               },
               child: Text(
-                "Swap",
-                style: textStyle(Colors.black, 16, true),
+                "Approve",
+                style: textStyle(Colors.amber[500]!, 16, true),
               )));
 
     return Container(
