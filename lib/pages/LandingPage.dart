@@ -52,44 +52,25 @@ class _LandingPageState extends State<LandingPage> {
             //Button load athletes
             Container(
               width: isWeb ? _width * 0.20 : _width * 0.55,
-              height: _height * 0.08,
+              height: _height * 0.1,
               margin: EdgeInsets.only(bottom: 130.0),
               child: FutureBuilder<dynamic>(
-                  // future: AthleteApi.getAthletesLocally(context),
-                  future: AthleteApi.getAthletesFromIdsDict(context),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      default:
-                        AthleteList.list = snapshot.data;
-                        return Container(
-                          padding: EdgeInsets.only(left: 15, right: 15),
-                          decoration: isWeb
-                              ? boxDecoration(Colors.transparent, 100, 1,
-                                  Colors.amber[400]!)
-                              : boxDecoration(
-                                  Colors.amber[300]!.withOpacity(0.15),
-                                  100,
-                                  1,
-                                  Colors.transparent),
-                          child: TextButton(
-                            onPressed: () {
-                              setState(() {
-                                next = true;
-                              });
-                            },
-                            child: Text(
-                              "Start Trading",
-                              style: textStyle(Colors.amber[400]!,
-                                  tradingTextSize, true, false),
-                            ),
-                          ),
-                        );
-                    }
-                  }),
+                // future: AthleteApi.getAthletesLocally(context),
+                future: AthleteApi.getAthletesFromIdsDict(context),
+                builder: (context, snapshot) {
+                  //Check API response data
+                  if (snapshot.hasError) {
+                    return reloadPageButton(tradingTextSize);
+                  } else if (snapshot.hasData) {
+                    AthleteList.list = snapshot.data;
+                    return startTradingButton(tradingTextSize);
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
             ),
           ]),
     );
@@ -199,6 +180,60 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget reloadPageButton(double tradingTextSize) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          child: Text(
+            'Could not load Athlete\'s information',
+            style: TextStyle(
+                fontSize: 14,
+                color: Colors.red,
+                decoration: TextDecoration.none),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(15),
+          decoration: isWeb
+              ? boxDecoration(Colors.transparent, 100, 1, Colors.red[400]!)
+              : boxDecoration(Colors.red[300]!.withOpacity(0.15), 100, 1,
+                  Colors.transparent),
+          child: TextButton(
+            onPressed: () {
+              setState(() {});
+            },
+            child: Text(
+              "Reload the App",
+              style: textStyle(Colors.red[400]!, tradingTextSize, true, false),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget startTradingButton(double tradingTextSize) {
+    return Container(
+      padding: EdgeInsets.only(left: 15, right: 15),
+      decoration: isWeb
+          ? boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!)
+          : boxDecoration(
+              Colors.amber[300]!.withOpacity(0.15), 100, 1, Colors.transparent),
+      child: TextButton(
+        onPressed: () {
+          setState(() {
+            next = true;
+          });
+        },
+        child: Text(
+          "Start Trading",
+          style: textStyle(Colors.amber[400]!, tradingTextSize, true, false),
+        ),
       ),
     );
   }

@@ -82,7 +82,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                       Colors.grey[600]!, 100, 0, Colors.transparent),
                   child: TextButton(
                       onPressed: () {},
-                      child: Text("Add Liquidity",
+                      child: Text( "Add Liquidity",
                           style: textStyle(Colors.white, 16, true)))),
               Container(
                   width: 115,
@@ -228,15 +228,15 @@ class _DesktopPoolState extends State<DesktopPool> {
                       width: wid / 2 - 95,
                       height: 45,
                       decoration: boxDecoration(
-                          Colors.amber[400]!, 100, 0, Colors.amber[400]!),
+                          Colors.transparent, 100, 0, Colors.amber[400]!),
                       child: TextButton(
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) =>
                                   poolAddLiquidity(context, tkn2!.name)),
                           child: Text(
-                            "Add Liquidity",
-                            style: textStyle(Colors.black, 16, true),
+                            "Approve",
+                            style: textStyle(Colors.amber[500]!, 16, true),
                           )))
                   : Container(
                       width: wid / 2 - 95,

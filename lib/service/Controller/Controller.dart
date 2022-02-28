@@ -93,7 +93,7 @@ class Controller extends GetxController {
     print('[Console] Trying to get the gasPriceinGwei');
     var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
     print('[Console] Trying to get the gasString');
-    gasString.value = "$gasPriceinGwei";
+    gasString.value = "${gasPriceinGwei.toStringAsFixed(2)}";
     print("[Console] Updated client and credentials");
     update();
     return 1;
@@ -139,7 +139,8 @@ class Controller extends GetxController {
   void disconnect() async {
     walletConnected = false;
     client.value.dispose();
-    //client.value.getChainId();
+
+    // client.value.getChainId();
     update();
   }
 

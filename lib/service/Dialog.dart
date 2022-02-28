@@ -1656,6 +1656,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   if (_height < 455) hgt = _height;
 
   LSPController lspController = Get.find();
+  WalletController walletController = Get.find();
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1758,7 +1759,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () { },
                           child: Text(
                             "Max",
                             style: textStyle(Colors.grey[400]!, 9, false),
@@ -1781,6 +1782,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                           ],
                           onChanged: (value) {
                             double newAmount = double.parse(value);
+                            print("new create amt $newAmount");
                             lspController.updateCreateAmt(newAmount);
                           },
                         ),
@@ -1810,10 +1812,11 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
-                    child: Text(
-                      "120 AX",
+                    child: Obx(() => Text(
+                      "${lspController.createAmt} APTS",
                       style: textStyle(Colors.white, 15, false),
                     ),
+                              ),
                   ),
                 ],
               ),
@@ -2850,6 +2853,7 @@ Dialog removeDialog(BuildContext context) {
   );
 }
 
+// dynamic
 Dialog swapDialog(BuildContext context) {
   SwapController swapController = Get.find();
   double _height = MediaQuery.of(context).size.height;

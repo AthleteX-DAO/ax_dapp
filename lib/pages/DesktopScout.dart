@@ -54,21 +54,17 @@ class _DesktopScoutState extends State<DesktopScout> {
     if (athletePage) return AthletePage(athlete: curAthlete);
 
     return Container(
-        // Do not delete any of the changes here yet
         height: _height * 0.85 + 41,
-        //height: _height*0.85-41,
         width: _width * 0.85,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              //Container(height: 15),
               // APT Title & Sport Filter
               Container(
                 width: _width * 0.85,
                 height: 50,
                 child: Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text("APT List",
                           style: textStyle(Colors.white, 18, false, false)),
@@ -142,7 +138,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 textStyle(Colors.amber[400]!, sportFilterTxSz,
                                     false, true))),
                       )),
-                      SizedBox(width: _width * 0.56),
+                      Container(
+                        child: Expanded(
+                          child: Container(),
+                        ),
+                      ),
                       Container(
                         child: createSearchBar(),
                       ),
