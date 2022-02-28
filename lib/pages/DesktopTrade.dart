@@ -71,7 +71,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
           height: 50,
           width: wid - 50,
           decoration:
-              boxDecoration(Colors.amber[400]!, 100, 4, Colors.amber[400]!),
+              boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!),
           child: TextButton(
               onPressed: () {
                 if (tkn1 != null && tkn2 != null)
@@ -86,8 +86,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     builder: (BuildContext context) => swapDialog(context));
               },
               child: Text(
-                "Swap",
-                style: textStyle(Colors.black, 16, true),
+                "Approve",
+                style: textStyle(Colors.amber[500]!, 16, true),
               )));
 
     return Container(
@@ -98,15 +98,16 @@ class _DesktopTradeState extends State<DesktopTrade> {
             width: wid,
             decoration: boxDecoration(
                 Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
+            padding: EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Container(
+                Column(children: <Widget>[
+                  Container(
                     width: wid - 50,
                     alignment: Alignment.centerLeft,
                     child: Text("Swap",
                         style: textStyle(Colors.white, 16, false))),
-                Column(children: <Widget>[
                   //From text
                   Container(
                     width: wid - 75,
@@ -121,6 +122,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       alignment: Alignment.center,
                       decoration: boxDecoration(
                           Colors.transparent, 20, 0.5, Colors.grey[400]!),
+                      padding: EdgeInsets.symmetric(horizontal: 25),
                       child: Container(
                           width: wid - 100,
                           child: Row(
@@ -215,6 +217,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       alignment: Alignment.center,
                       decoration: boxDecoration(
                           Colors.transparent, 20, 0.5, Colors.grey[400]!),
+                      padding: EdgeInsets.symmetric(horizontal: 25),
                       child: Container(
                           width: wid - 100,
                           child: Row(

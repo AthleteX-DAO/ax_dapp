@@ -378,7 +378,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   style: textStyle(Colors.red,
                                                       12, false, false))),
                                         ]),
-                                        Text("${athlete.war} AX",
+                                        Text("${athlete.war.toStringAsFixed(2)} AX",
                                             style: textStyle(Colors.grey[400]!,
                                                 20, false, false))
                                       ]))
@@ -398,7 +398,7 @@ class _AthletePageState extends State<AthletePage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
-                                          Text("4.24 AX ",
+                                          Text("${athlete.war.toStringAsFixed(2)} AX ",
                                               style: textStyle(Colors.white, 20,
                                                   false, false)),
                                           Container(
