@@ -9,11 +9,13 @@ import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class V1App extends StatefulWidget {
   @override
@@ -21,6 +23,7 @@ class V1App extends StatefulWidget {
 }
 
 class _V1AppState extends State<V1App> {
+  bool isWeb = true;
   // Feeling cute... may delete later
   // Athlete tomBradey = Athlete(
   //     name: "Tom Bradey",
@@ -57,11 +60,27 @@ class _V1AppState extends State<V1App> {
       Get.put(Controller()); // Rather Controller controller = Controller();
   AXT axt = AXT("AthleteX", "AX");
   Token matic = Token("Polygon", "MATIC");
+  late PageController _pageController;
+  var _selectedIndex = 0;
+
+  animateToPage(int index) {
+    // use this to animate to the page
+    _pageController.animateToPage(index,
+        duration: Duration(milliseconds: 200), curve: Curves.ease);
+  }
+
+  iconColor(int index) {
+    if (index == _selectedIndex) {
+      return Colors.white;
+    } else
+      return Colors.grey;
+  }
 
   @override
   void initState() {
     // Init the states of everything needed for the whole dapp
     super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
     LSPController lspController = Get.put(LSPController());
     SwapController swapController = Get.put(SwapController());
     WalletController walletController = Get.put(WalletController());
@@ -69,44 +88,66 @@ class _V1AppState extends State<V1App> {
 
   @override
   Widget build(BuildContext context) {
-    Widget pageWidget = buildDesktop(context);
-
+    //check if device is in landscape and web
+    isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
-        title: topNavBar(context),
+        title: isWeb ? topNavBar(context) : topNavBarAndroid(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
       body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("../assets/images/blurredBackground.png"),
-              fit: BoxFit.fill,
-            ),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/blurredBackground.png"),
+            fit: BoxFit.fill,
           ),
-          child: pageWidget),
-      bottomNavigationBar: bottomNavBar(context),
+        ),
+        child: buildUI(context),
+      ),
+      bottomNavigationBar:
+          isWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context),
     );
   }
 
-  Widget buildDesktop(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        if (pageNumber == 0)
-          DesktopScout()
-        else if (pageNumber == 1)
-          DesktopTrade()
-        else if (pageNumber == 2)
-          DesktopPool()
-        else if (pageNumber == 3)
-          DesktopFarm()
-      ],
-    );
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Widget buildUI(BuildContext context) {
+    if (isWeb) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          if (pageNumber == 0)
+            DesktopScout()
+          else if (pageNumber == 1)
+            DesktopTrade()
+          else if (pageNumber == 2)
+            DesktopPool()
+          else if (pageNumber == 3)
+            DesktopFarm()
+        ],
+      );
+    } else {
+      return PageView(
+        controller: _pageController,
+        onPageChanged: _onItemTapped,
+        children: <Widget>[
+          DesktopScout(),
+          DesktopTrade(),
+          DesktopPool(),
+          DesktopFarm(),
+        ],
+      );
+    }
   }
 
   Widget topNavBar(BuildContext context) {
@@ -132,7 +173,7 @@ class _V1AppState extends State<V1App> {
                       width: 72,
                       height: 50,
                       child: IconButton(
-                        icon: Image.asset("../assets/images/x.png"),
+                        icon: Image.asset("assets/images/x.png"),
                         iconSize: 40,
                         onPressed: () {
                           String urlString = "https://www.athletex.io/";
@@ -185,21 +226,21 @@ class _V1AppState extends State<V1App> {
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
                                         true))))),
-                    // Container(
-                    //     child: TextButton(
-                    //         onPressed: () {
-                    //           if (pageNumber != 3)
-                    //             setState(() {
-                    //               pageNumber = 3;
-                    //             });
-                    //         },
-                    //         child: Text("Farm",
-                    //             style: textSwapState(
-                    //                 pageNumber == 3,
-                    //                 textStyle(
-                    //                     Colors.white, tabTxSz, true, false),
-                    //                 textStyle(Colors.amber[400]!, tabTxSz, true,
-                    //                     true))))),
+                    Container(
+                        child: TextButton(
+                            onPressed: () {
+                              if (pageNumber != 3)
+                                setState(() {
+                                  pageNumber = 3;
+                                });
+                            },
+                            child: Text("Farm",
+                                style: textSwapState(
+                                    pageNumber == 3,
+                                    textStyle(
+                                        Colors.white, tabTxSz, true, false),
+                                    textStyle(Colors.amber[400]!, tabTxSz, true,
+                                        true))))),
                   ])),
           if (!controller.walletConnected ||
               (controller.walletConnected &&
@@ -216,7 +257,48 @@ class _V1AppState extends State<V1App> {
     );
   }
 
-  Widget bottomNavBar(BuildContext context) {
+  Widget topNavBarAndroid(BuildContext context) {
+    // include the AX logo
+    // include the wallet information once the user has connected their wallet
+    // include a dropdown menu for the ellipses and add links to them
+    // include the divider line
+    return Container(
+      // color: Colors.grey,
+      width: MediaQuery.of(context).size.width,
+      //height: 30,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: Image.asset("assets/images/x.png"),
+            iconSize: 40,
+            onPressed: () {
+              String urlString = "https://www.athletex.io/";
+              launch(urlString);
+            },
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              if (!controller.walletConnected ||
+                  (controller.walletConnected &&
+                      !Controller.supportedChains
+                          .containsKey(controller.networkID.value))) ...[
+                // top Connect Wallet Button
+                buildConnectWalletButton(),
+              ] else ...[
+                //top right corner wallet information
+                buildAccountBox()
+              ],
+              DropdownMenuMobile(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget bottomNavBarDesktop(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.1,
       color: Colors.transparent,
@@ -287,6 +369,59 @@ class _V1AppState extends State<V1App> {
     );
   }
 
+  bottomNavBarAndroid(BuildContext context) {
+    return BottomNavigationBar(
+      showUnselectedLabels: true,
+      backgroundColor: Colors.transparent,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/search.png',
+            height: 24,
+            width: 24,
+            color: iconColor(0),
+          ),
+          label: 'Scout',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/swap.png',
+            height: 24,
+            width: 24,
+            color: iconColor(1),
+          ),
+          label: 'Trade',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/coins.png',
+            height: 24,
+            width: 24,
+            color: iconColor(2),
+          ),
+          label: 'Pool',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/barn.png',
+            height: 24,
+            width: 24,
+            color: iconColor(3),
+          ),
+          label: 'Farm',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.grey,
+      onTap: (index) {
+        _onItemTapped(index);
+        //Need animate function because we are not using _selectedIndex to build mobile UI
+        animateToPage(index);
+      },
+    );
+  }
+
   Widget buildConnectWalletButton() {
     double _width = MediaQuery.of(context).size.width;
     double wid = 180;
@@ -335,7 +470,7 @@ class _V1AppState extends State<V1App> {
           accNum.substring(accNum.length - 5, accNum.length);
 
     return Container(
-        height: 30,
+        height: isWeb ? 30 : 40,
         width: wid,
         decoration: boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
         child: Row(

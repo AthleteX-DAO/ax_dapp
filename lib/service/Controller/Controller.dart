@@ -1,5 +1,6 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
+//Comment this for Android
 import 'dart:html';
 import 'dart:math';
 import 'dart:convert';
@@ -7,6 +8,7 @@ import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:get/get.dart';
+//Comment this for Android
 import 'package:web3dart/browser.dart';
 import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
@@ -65,6 +67,7 @@ class Controller extends GetxController {
     return isValidMnemonic;
   }
 
+  //Comment this for Android
   // Connect the dapp to metamask and update relevant values
   Future<int> connect() async {
     final eth = window.ethereum;
@@ -131,10 +134,7 @@ class Controller extends GetxController {
     latestTx = tx;
   }
 
-  void changeAddress() async {
-    final eth = window.ethereum;
-    eth!.requestAccount();
-  }
+  void changeAddress() async {}
 
   void disconnect() async {
     walletConnected = false;
@@ -144,6 +144,7 @@ class Controller extends GetxController {
     update();
   }
 
+  //Comment this for Android
   void addTokenToWallet() async {
     final eth = window.ethereum;
     Object tokenParam = {

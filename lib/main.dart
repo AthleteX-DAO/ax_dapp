@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       theme: ThemeData(
+          canvasColor: Colors.transparent,
           brightness: Brightness.dark,
           primaryColor: Colors.yellow[700],
           colorScheme: ColorScheme.fromSwatch(brightness: Brightness.dark)

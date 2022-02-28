@@ -153,7 +153,7 @@ Dialog wrongNetworkDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    controller.switchNetwork();
+                    // controller.switchNetwork();
                   },
                   child: Text(
                     "Switch to Matic Network",
@@ -223,9 +223,9 @@ Dialog walletDialog(BuildContext context) {
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
+                //Comment this widget for Android
                 child: TextButton(
                   onPressed: () {
-                    //Navigator.pop(context);
                     controller.connect().then((response) {
                       if (response == -1) {
                         // No MetaMask
@@ -247,13 +247,6 @@ Dialog walletDialog(BuildContext context) {
                         walletController.getTokenBalance();
                       }
                     });
-
-                    // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
-                    //   showDialog(
-                    //       context: context,
-                    //       builder: (BuildContext context) =>
-                    //           wrongNetworkDialog(context));
-                    // }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

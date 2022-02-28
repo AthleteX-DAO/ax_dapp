@@ -1,4 +1,4 @@
-package com.example.ae_dapp
+package com.example.athletexdapp
 
 import io.flutter.embedding.android.FlutterActivity
 
