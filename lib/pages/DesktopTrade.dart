@@ -120,7 +120,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     ),
                   //From text
                   Container(
-                    width: wid - 175,
+                    width: isWeb ? wid - 50 : wid - 175,
                     alignment: Alignment.centerLeft,
                     child: Text("From",
                         style: textStyle(Colors.grey[400]!, 12, false)),
@@ -213,7 +213,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   ),
                   //To text
                   Container(
-                    width: wid - 175,
+                    width: isWeb ? wid - 50 : wid - 175,
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "To",
@@ -385,6 +385,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   Widget createTokenButton(int tknNum) {
     double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    double textSize = _height * 0.05;
+    double tkrTextSize = textSize * 0.35;
+    if (!isWeb) tkrTextSize = textSize * 0.45;
     String tkr = "Select a Token";
     AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
     BoxDecoration decor =
@@ -432,7 +436,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 ),
                 Container(width: 10),
                 Expanded(
-                  child: Text(tkr, style: textStyle(Colors.white, 16, true)),
+                  child: Text(tkr, style: textStyle(Colors.white, tkrTextSize, true)),
                 ),
                 Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
               ],

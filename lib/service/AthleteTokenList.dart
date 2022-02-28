@@ -116,8 +116,8 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   Widget createSearchBar() {
     double _height = MediaQuery.of(context).size.height;
     double textSize = _height * 0.05;
-    double searchBarHintTextSize = textSize * 0.7;
-    searchBarHintTextSize = textSize * 0.30;
+    double searchBarHintTextSize = textSize * 0.30;
+    if (!isWeb) searchBarHintTextSize = textSize * 0.40;
     return Container(
       width: 300,
       height: 40,
@@ -145,9 +145,9 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 8.5),
+                  contentPadding: EdgeInsets.only(bottom: 10),
                   hintText: "Search a name or paste an address",
-                  hintStyle: TextStyle(color: Colors.white, fontSize: searchBarHintTextSize),
+                  hintStyle: TextStyle(color: Colors.white, fontSize: searchBarHintTextSize, height: 1.5),
                 ),
               ),
             ),
