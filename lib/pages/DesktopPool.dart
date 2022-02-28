@@ -64,163 +64,13 @@ class _DesktopPoolState extends State<DesktopPool> {
             width: layoutWdt,
             height: layoutHgt,
             child: (isAllLiquidity)
-                ? allLiquidity(layoutHgt, layoutWdt)
-                : myLiquidity(layoutHgt, layoutWdt)));
+                ? allLiquidityLayout(layoutHgt, layoutWdt)
+                : myLiquidityLayout(layoutHgt, layoutWdt)));
   }
 
-  Widget allLiquidity(double layoutHgt, double layoutWdt) {
-    bool advDetails = true;
-
-    Widget pricePoolShare = Container(
-        height: 275,
-        width: layoutWdt / 2 - 40,
-        alignment: Alignment.topRight,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                  padding: EdgeInsets.only(top: 15),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    (advDetails) ? "Details: Price and Pool Share" : "Details",
-                    style: textStyle(Colors.white, 21, true),
-                  )),
-              Container(
-                  width: layoutWdt / 2 - 95,
-                  height: 65,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      // AX per / APT per
-                      Container(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Container(
-                              width: layoutWdt / 4 - 70,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "AX per tkn APT:",
-                                    style:
-                                        textStyle(Colors.grey[600]!, 17, false),
-                                  ),
-                                  Text(
-                                    "2.24",
-                                    style: textStyle(Colors.white, 17, false),
-                                  )
-                                ],
-                              )),
-                          Container(
-                              width: layoutWdt / 4 - 70,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "tkn APT per AX:",
-                                    style:
-                                        textStyle(Colors.grey[600]!, 17, false),
-                                  ),
-                                  Text(
-                                    "1.48",
-                                    style: textStyle(Colors.white, 17, false),
-                                  )
-                                ],
-                              )),
-                        ],
-                      )),
-                      // pool share / exp. yield
-                      Container(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                            Container(
-                                width: layoutWdt / 4 - 70,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "Share of pool:",
-                                      style: textStyle(
-                                          Colors.grey[600]!, 17, false),
-                                    ),
-                                    Text(
-                                      "0.12%",
-                                      style: textStyle(Colors.white, 17, false),
-                                    )
-                                  ],
-                                )),
-                            Container(
-                                width: layoutWdt / 4 - 70,
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        "Expected yield:",
-                                        style: textStyle(
-                                            Colors.grey[600]!, 17, false),
-                                      ),
-                                      Text(
-                                        "24.12%",
-                                        style:
-                                            textStyle(Colors.white, 17, false),
-                                      )
-                                    ])),
-                          ]))
-                    ],
-                  )),
-              Container(
-                width: layoutWdt / 2 - 125,
-                child: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text:
-                              "*Add liquidity to earn 0.25% of all trades on this pair",
-                          style:
-                              TextStyle(color: Colors.grey[600], fontSize: 15)),
-                      TextSpan(
-                          text:
-                              " proportional to your share of the pool and receive LP tokens.",
-                          style:
-                              TextStyle(color: Colors.grey[600], fontSize: 15)),
-                    ],
-                  ),
-                ),
-              ),
-              (advDetails)
-                  ? Container(
-                      width: layoutWdt / 2 - 95,
-                      height: 45,
-                      decoration: boxDecoration(
-                          Colors.amber[400]!, 100, 0, Colors.amber[400]!),
-                      child: TextButton(
-                          onPressed: () => showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  poolAddLiquidity(context, tkn2!.name)),
-                          child: Text(
-                            "Add Liquidity",
-                            style: textStyle(Colors.black, 16, true),
-                          )))
-                  : Container(
-                      width: layoutWdt / 2 - 95,
-                      height: 45,
-                      decoration: boxDecoration(
-                          Colors.transparent, 100, 1, Colors.amber[400]!),
-                      child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Approve",
-                            style: textStyle(Colors.amber[400]!, 16, true),
-                          )))
-            ]));
+  Widget allLiquidityLayout(double layoutHgt, double layoutWdt) {
+    //Boolean to show advanced details
+    bool isAdvDetails = true;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -232,68 +82,58 @@ class _DesktopPoolState extends State<DesktopPool> {
             child: Text("Liquidity Pool",
                 style: textStyle(Colors.white, 24, true))),
         togglePoolButton(layoutHgt, layoutWdt),
+        //Liquidity pool grey card
         Container(
-            width: layoutWdt,
-            height: 300,
-            decoration: boxDecoration(
-                Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // Pool tokens side (add liq.)
-                  Container(
-                    height: 275,
-                    width: layoutWdt / 2 - 20,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            SizedBox(height: 25),
-                            // Top balance text
-                            Container(
-                                alignment: Alignment.bottomRight,
-                                padding: EdgeInsets.only(right: 30),
-                                child: Text("Balance: 0.00",
-                                    style: textStyle(
-                                        Colors.grey[600]!, 13, false))),
-                            // Top Token container
-                            tokenContainer(1),
-                          ],
-                        ),
-                        Container(
-                            child: Text(
-                          "+",
-                          style: textStyle(Colors.grey[600]!, 42, true),
-                        )),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            // Bottom balance text
-                            Container(
-                                alignment: Alignment.bottomRight,
-                                padding: EdgeInsets.only(right: 30),
-                                child: Text("Balance: 0.00",
-                                    style: textStyle(
-                                        Colors.grey[600]!, 13, false))),
-                            // Bottom Token container
-                            tokenContainer(2),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Pool details side (add liq.)
-                  pricePoolShare,
-                ])),
+          width: layoutWdt,
+          height: 300,
+          decoration: boxDecoration(
+              Colors.grey[800]!.withOpacity(0.25), 30, 0.5, Colors.grey[400]!),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Pool tokens side (add liq.) -left side of liquidity pool card-
+              Container(
+                height: 275,
+                width: layoutWdt / 2 - 20,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    SizedBox(height: 25),
+                    //Balance text on top of tokenContainer
+                    Container(
+                        alignment: Alignment.bottomRight,
+                        padding: EdgeInsets.only(right: 30),
+                        child: Text("Balance: 0.00",
+                            style: textStyle(Colors.grey[600]!, 13, false))),
+                    //Top Token container
+                    tokenContainer(1),
+                    Container(
+                        child: Text(
+                      "+",
+                      style: textStyle(Colors.grey[600]!, 42, true),
+                    )),
+                    Container(
+                        alignment: Alignment.bottomRight,
+                        padding: EdgeInsets.only(right: 30),
+                        child: Text("Balance: 0.00",
+                            style: textStyle(Colors.grey[600]!, 13, false))),
+                    // Bottom Token container
+                    tokenContainer(2),
+                  ],
+                ),
+              ),
+              // Pool details side (add liq.) -right side of liquidity pool card-
+              pricePoolShareDetails(layoutWdt, layoutHgt, isAdvDetails),
+            ],
+          ),
+        ),
         Container(height: layoutHgt * 0.5 - 300)
       ],
     );
   }
 
-  Widget myLiquidity(double layoutHgt, double layoutWdt) {
+  Widget myLiquidityLayout(double layoutHgt, double layoutWdt) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
 
@@ -501,6 +341,125 @@ class _DesktopPoolState extends State<DesktopPool> {
                   },
                   child: Text("My Liquidity",
                       style: textStyle(Colors.white, 16, true))))
+        ],
+      ),
+    );
+  }
+
+  Widget pricePoolShareDetails(
+      double layoutWdt, double layoutHgt, bool isAdvDetails) {
+    //element width refers to the width of the widget that is returned by this method
+    double elementWdt = layoutWdt / 2 * 0.85;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              (isAdvDetails) ? "Details: Price and Pool Share" : "Details",
+              style: textStyle(Colors.white, 21, true),
+            ),
+          ),
+          Container(
+            width: elementWdt,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "AX per tkn APT:",
+                  style: textStyle(Colors.grey[600]!, 17, false),
+                ),
+                Text(
+                  "2.24",
+                  style: textStyle(Colors.white, 17, false),
+                ),
+                Text(
+                  "Share of pool:",
+                  style: textStyle(Colors.grey[600]!, 17, false),
+                ),
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    "0.12%",
+                    style: textStyle(Colors.white, 17, false),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // pool share / exp. yield
+          Container(
+            width: elementWdt,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "tkn APT per AX:",
+                  style: textStyle(Colors.grey[600]!, 17, false),
+                ),
+                Text(
+                  "1.48",
+                  style: textStyle(Colors.white, 17, false),
+                ),
+                Text(
+                  "Expected yield:",
+                  style: textStyle(Colors.grey[600]!, 17, false),
+                ),
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    "24.12%",
+                    style: textStyle(Colors.white, 17, false),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: elementWdt,
+            child: RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                      text:
+                          "*Add liquidity to earn 0.25% of all trades on this pair",
+                      style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                  TextSpan(
+                      text:
+                          " proportional to your share of the pool and receive LP tokens.",
+                      style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                ],
+              ),
+            ),
+          ),
+          (isAdvDetails)
+              ? Container(
+                  width: elementWdt,
+                  height: 45,
+                  decoration: boxDecoration(
+                      Colors.amber[400]!, 100, 0, Colors.amber[400]!),
+                  child: TextButton(
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              poolAddLiquidity(context, tkn2!.name)),
+                      child: Text(
+                        "Add Liquidity",
+                        style: textStyle(Colors.black, 16, true),
+                      )))
+              : Container(
+                  width: elementWdt,
+                  height: 45,
+                  decoration: boxDecoration(
+                      Colors.transparent, 100, 1, Colors.amber[400]!),
+                  child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Approve",
+                        style: textStyle(Colors.amber[400]!, 16, true),
+                      )))
         ],
       ),
     );
