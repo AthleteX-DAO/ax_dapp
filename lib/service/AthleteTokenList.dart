@@ -94,12 +94,16 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                         Container(
                           alignment: Alignment.centerLeft,
                           child: createSearchBar(),
-                        ),  
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Token Name", style: textStyle(Colors.grey[400]!, 12, false),),
+                        ),   
                         Container(
                           child: Divider(thickness: 1, color: Colors.grey[400]),
                         ),
                         Container(
-                            height: _height * .625 - 100,
+                            height: _height * .625 - 120,
                             child: ListView.builder(
                                 physics: BouncingScrollPhysics(),
                                 itemCount: tokenListFilter.length,

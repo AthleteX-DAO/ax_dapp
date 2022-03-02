@@ -410,7 +410,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
     }
 
     return Container(
-        width: isWeb ? _width * 0.065 + 50 : _width * 0.35,
+      constraints: BoxConstraints(
+        maxWidth: 150,
+        maxHeight: 100,
+      ),
         height: 40,
         decoration: decor,
         child: TextButton(
