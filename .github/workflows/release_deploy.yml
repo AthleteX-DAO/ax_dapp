@@ -8,8 +8,6 @@ name: Deploy
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
@@ -22,6 +20,7 @@ jobs:
       # You can specify other versions if desired, see documentation here:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
       # - uses: dart-lang/setup-dart@v1
+      - name: Download Dart Language
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
       
       - name: Install Flutter
@@ -31,7 +30,6 @@ jobs:
         with:
           # The channel/version of Flutter to be used e.g., beta or 2.0.0
           version: stable
-
 
       - name: Install dependencies
         run: flutter pub get
