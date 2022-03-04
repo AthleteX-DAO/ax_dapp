@@ -7,7 +7,8 @@ name: Deploy Release
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - 'release/**'
 
 jobs:
   build:
@@ -15,7 +16,10 @@ jobs:
       
     steps:
       - run: echo "🎉 Release job was automatically triggered by ${{ github.ref }} event."
-
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: Deploy to Release
         uses: appleboy/ssh-action@master
         with:
@@ -25,7 +29,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: 'cd /home/app &&
           sudo git fetch &&
-          sudo git checkout main &&
+          sudo git checkout ${{ steps.extract_branch.outputs.branch }} &&
           sudo git pull &&
           export PATH=/home/development/flutter/bin:$PATH &&
           echo $PATH &&
