@@ -26,17 +26,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
-          script: 'cd /home/staging'
-      - run: |
-         echo "Get Latest Changes from Develop Branch" 
-         git fetch
-         git checkout develop
-         git pull
-         echo "Update latest flutter dependencies"
-         flutter pub get
-         echo "Build dApp"
-         flutter build web --web-renderer auto
-         echo "Latest debug build deployed to Staging"
+          script: 'cd /home/staging && sudo git fetch && sudo git checkout develop && sudo git pull && sudo flutter pub get && sudo flutter build web --web-renderer auto && echo App Deployed to Staging'
+                 
         
 
          
