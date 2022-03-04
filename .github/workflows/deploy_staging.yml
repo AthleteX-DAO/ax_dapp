@@ -1,0 +1,46 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Deploy Staging
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      JAVA_VERSION: "11.0"
+      FLUTTER_VERSION: "2.10.0"
+      
+    steps:
+      - run: echo "🎉 The job was automatically triggered by ${{ github.ref }} event."
+      
+      - name: Check out repository code
+      - uses: actions/checkout@v2
+
+      - name: Deploy to Staging
+        uses: easingthemes/ssh-deploy@main
+        env:
+         SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+         REMOTE_HOST: ${{ secrets.SSH_HOST_DOMAIN }}
+         REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+         TARGET: ${{ secrets.SSH_REMOTE_DIR }}
+       
+      - run: |
+         echo "Get Latest Changes from Develop Branch" 
+         git fetch
+         git checkout develop
+         git pull
+         echo "Update latest flutter dependencies"
+         flutter pub get
+         echo "Build dApp"
+         flutter build web --web-renderer auto
+         echo "Latest debug build deployed to Staging"
+        
+
+         
+       
