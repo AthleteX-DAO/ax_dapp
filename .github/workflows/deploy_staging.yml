@@ -18,9 +18,6 @@ jobs:
       
     steps:
       - run: echo "🎉 The job was automatically triggered by ${{ github.ref }} event."
-      
-      - name: Check out repository code
-      - uses: actions/checkout@v2
 
       - name: Deploy to Staging
         uses: easingthemes/ssh-deploy@main
