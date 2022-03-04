@@ -26,7 +26,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
-          script: 'su debian && cd /home/staging && sudo git fetch && sudo git checkout develop && sudo git pull && flutter pub get && flutter build web --web-renderer auto && echo App Deployed to Staging'
+          script: 'cd /home/staging && sudo git fetch && sudo git checkout develop && sudo git pull && bash flutter pub get && bash flutter build web --web-renderer auto && echo App Deployed to Staging'
                  
         
 
