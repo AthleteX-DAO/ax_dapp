@@ -25,7 +25,8 @@ jobs:
           host: ${{ secrets.SSH_HOST_DOMAIN }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.PORT }}       
+          port: ${{ secrets.PORT }}
+          script: 'cd ${{ secrets.SSH_STAGING_DIR }}'
       - run: |
          echo "Get Latest Changes from Develop Branch" 
          git fetch
