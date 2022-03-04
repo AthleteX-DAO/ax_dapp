@@ -20,13 +20,12 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by ${{ github.ref }} event."
 
       - name: Deploy to Staging
-        uses: easingthemes/ssh-deploy@main
-        env:
-         SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-         REMOTE_HOST: ${{ secrets.SSH_HOST_DOMAIN }}
-         REMOTE_USER: ${{ secrets.SSH_USERNAME }}
-         TARGET: ${{ secrets.SSH_REMOTE_DIR }}
-       
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_DOMAIN }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}       
       - run: |
          echo "Get Latest Changes from Develop Branch" 
          git fetch
