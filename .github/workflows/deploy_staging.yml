@@ -22,7 +22,7 @@ jobs:
       - name: Deploy to Staging
         uses: easingthemes/ssh-deploy@main
         env:
-         SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+         SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
          REMOTE_HOST: ${{ secrets.SSH_HOST_DOMAIN }}
          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
          TARGET: ${{ secrets.SSH_REMOTE_DIR }}
