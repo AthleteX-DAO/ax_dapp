@@ -413,15 +413,22 @@ class _DesktopScoutState extends State<DesktopScout> {
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
                 Spacer(),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _widgetIndex = 1;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.search,
-                    )),
+                Center(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _widgetIndex = 1;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.search,
+                          size: 20,
+                          color: Colors.grey,
+                        )),
+                  ),
+                ),
               ]),
         ),
         Container(
