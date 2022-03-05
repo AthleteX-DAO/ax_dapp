@@ -68,7 +68,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           // Do not delete any of the changes here yet
           height: _height * 0.85 + 41,
           //height: _height*0.85-41,
-          width: _width * 0.85,
+          width: _width * 0.99,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +168,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                     textStyle(
                         Colors.amber[400]!, sportFilterTxSz, false, true))),
           )),
-          SizedBox(width: _width * 0.56),
+          Spacer(),
           Container(
             child: createSearchBar(),
           ),
@@ -724,12 +724,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 builder: (BuildContext context) =>
                                     buyDialog(context, athlete)),
                             child: Center(
-                              child: Text("View",
-                                  style: textStyle(
-                                      Color.fromRGBO(254, 197, 0, 1.0),
-                                      12,
-                                      false,
-                                      false)),
+                              child: buyText(),
                             ))),
                     if (view) ...[
                       Container(width: 25),
@@ -764,19 +759,34 @@ class _DesktopScoutState extends State<DesktopScout> {
                 ])));
   }
 
+  Widget buyText() {
+    Widget textWidget;
+     if(kIsWeb){
+       textWidget = Text("Buy",
+          style: textStyle(
+              Color.fromRGBO(254, 197, 0, 1.0),
+              12,
+              false,
+              false)
+      );
+    }else{
+       textWidget =Text("View", style: textStyle(Color.fromRGBO(255, 198, 0, 1), 10, false, false));
+    }
+     return textWidget;
+  }
+
   Widget createSearchBar() {
     double widthSize = MediaQuery.of(context).size.width;
-
     return Container(
-      width: widthSize * 0.66,
+      width: searchWidth(widthSize),
       height: 160,
-      decoration: boxDecoration(Color.fromRGBO(118, 118, 128, 0.24), 10, 1,
+      decoration: boxDecoration(Color.fromRGBO(118, 118, 128, 0.24), 20, 1,
           Color.fromRGBO(118, 118, 128, 0.24)),
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Container(width: 8),
+          Container(width: 6),
           Container(
             child: Icon(
               Icons.search,
@@ -829,6 +839,16 @@ class _DesktopScoutState extends State<DesktopScout> {
         ],
       ),
     );
+  }
+
+  double searchWidth(double widthSize){
+    double _width;
+    if(kIsWeb){
+      _width = widthSize * 0.26;
+    }else{
+      _width =widthSize * 0.66;
+    }
+    return _width;
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
