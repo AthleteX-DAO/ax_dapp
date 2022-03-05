@@ -4,6 +4,7 @@ import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 
 class DesktopScout extends StatefulWidget {
@@ -40,6 +41,7 @@ class _DesktopScoutState extends State<DesktopScout> {
       war: 0,
       time: "");
   int _widgetIndex = 0;
+  int _marketVsBookPriceIndex = 0;
 
   @override
   void dispose() {
@@ -71,6 +73,12 @@ class _DesktopScoutState extends State<DesktopScout> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
+                ),
                 //Container(height: 15),
                 // APT Title & Sport Filter
                 Container(
@@ -452,26 +460,50 @@ class _DesktopScoutState extends State<DesktopScout> {
     double athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
 
-    return Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+    return Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
       Container(width: 66),
       Container(
           width: athNameBx,
-          child: Text("Athlete",
-              style: textStyle(Colors.grey[400]!, 12, false, false))),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Athlete",
+                style: TextStyle(color: Colors.grey, fontSize: 12)),
+          )),
       if (team)
         Container(
             width: _width * 0.15,
             child: Text("Team",
                 style: textStyle(Colors.grey[400]!, 12, false, false))),
-      Container(
-          child: Text("Market Price / Change",
-              style: textStyle(Colors.grey[400]!, 12, false, false))),
-      if (bookVal) ...[
-        Container(width: 25),
-        Container(
-            child: Text("Book Value / Change",
-                style: textStyle(Colors.grey[400]!, 12, false, false))),
-      ]
+      IndexedStack(
+        index: _marketVsBookPriceIndex,
+        children: [
+          MaterialButton(
+
+            onPressed: () { setState(() {
+              _marketVsBookPriceIndex = 1;
+          }); }, child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Align(alignment: Alignment.center,child: Text("Market Price", style: TextStyle(color: Colors.grey, fontSize: 10),textAlign: TextAlign.justify,)),
+              Container(margin: EdgeInsets.only(left: 2),child: Align(alignment: Alignment.center,child: Icon(Icons.autorenew, size: 10, color: Colors.grey,)))
+            ],
+          ),
+          ),
+          MaterialButton(onPressed: () { setState(() {
+            _marketVsBookPriceIndex = 0;
+          }); }, child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("Book Value", style: textStyle(Colors.grey[400]!, 10, false, false)),
+              Container(margin: EdgeInsets.only(left: 2),child: Align(alignment: Alignment.center,child: Icon(Icons.autorenew, size: 10, color: Colors.grey,)))
+
+            ],
+          ),
+          ),
+        ],
+      ),
     ]);
   }
 
@@ -609,26 +641,28 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         Colors.grey[700]!, 10, false, false))
                               ])),
                     // Market Price / Change
-                    Container(
-                        child: Row(children: <Widget>[
-                      Text(athlete.war.toStringAsFixed(4) + ' AX',
-                          style: textStyle(Colors.white, 16, false, false)),
-                      Container(width: 10),
-                      Text("+4%",
-                          style: textStyle(Colors.green, 12, false, false))
-                    ])),
-                    if (bookVal) ...[
-                      Container(width: 41),
-                      // Book Price
-                      Container(
-                          child: Row(children: <Widget>[
-                        Text(athlete.war.toStringAsFixed(4) + ' AX',
-                            style: textStyle(Colors.white, 16, false, false)),
-                        Container(width: 10),
-                        Text("-2%",
-                            style: textStyle(Colors.red, 12, false, false))
-                      ])),
-                    ]
+                    IndexedStack(
+                      index: _marketVsBookPriceIndex,
+                      children: [
+                        Container(
+                            child: Row(children: <Widget>[
+                          Text(athlete.war.toStringAsFixed(4) + ' AX',
+                              style: textStyle(Colors.white, 16, false, false)),
+                          Container(width: 10),
+                          Text("+4%",
+                              style: textStyle(Colors.green, 12, false, false))
+                        ])),
+                        Container(
+                            child: Row(children: <Widget>[
+                              Text(athlete.war.toStringAsFixed(4) + ' AX',
+                                  style: textStyle(Colors.white, 16, false, false)),
+                              Container(width: 10),
+                              Text("-2%",
+                                  style: textStyle(Colors.red, 12, false, false))
+                            ])),
+
+                      ],
+                    ),
                   ]),
                   Row(children: <Widget>[
                     // Buy
