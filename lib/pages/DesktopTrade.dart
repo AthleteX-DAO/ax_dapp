@@ -70,8 +70,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
       swapButton = Container(
           height: _height * 0.05,
           width: wid - 50,
-          decoration:
-              boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!),
+          decoration: isWeb? boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
           child: TextButton(
               onPressed: () {
                 if (tkn1 != null && tkn2 != null)
@@ -85,10 +84,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     context: context,
                     builder: (BuildContext context) => swapDialog(context));
               },
-              child: Text(
-                "Approve",
-                style: textStyle(Colors.amber[500]!, 16, true),
-              )));
+              child: Text(isWeb ? "Approve" : "Swap", style: isWeb ? textStyle(Colors.amber[500]!, 16, true) : textStyle(Colors.amber[500]!, 16, true))));
 
     return SafeArea(
       bottom: false,
