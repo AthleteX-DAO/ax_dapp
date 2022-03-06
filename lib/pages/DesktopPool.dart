@@ -27,7 +27,7 @@ class _DesktopPoolState extends State<DesktopPool> {
   Token? tkn1;
   Token? tkn2;
 
-  List<Token> tokens = [
+  List<Token> tokensList = [
     AXT("AthleteX", "AX", AssetImage('assets/images/x.png')),
     SXT("SportX", "SX", AssetImage('assets/images/sx.png')),
     MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/matic.png')),
@@ -38,13 +38,13 @@ class _DesktopPoolState extends State<DesktopPool> {
     super.initState();
 
     for (Athlete ath in AthleteList.list)
-      tokens.add(Token(ath.name + " APT", ath.name + " APT",
+      tokensList.add(Token(ath.name + " APT", ath.name + " APT",
           AssetImage('assets/images/apt.png')));
 
-    tkn1 = tokens[0];
-    tkn2 = tokens[3];
+    tkn1 = tokensList[0];
+    tkn2 = tokensList[3];
 
-    tokenListFilter = tokens;
+    tokenListFilter = tokensList;
   }
 
   @override
@@ -77,10 +77,11 @@ class _DesktopPoolState extends State<DesktopPool> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-            height: 45,
-            alignment: Alignment.bottomLeft,
-            child: Text("Liquidity Pool",
-                style: textStyle(Colors.white, 24, true))),
+          height: 45,
+          alignment: Alignment.bottomLeft,
+          child:
+              Text("Liquidity Pool", style: textStyle(Colors.white, 24, true)),
+        ),
         togglePoolButton(layoutHgt, layoutWdt),
         //Liquidity pool grey card
         Container(
@@ -95,7 +96,7 @@ class _DesktopPoolState extends State<DesktopPool> {
               // Pool tokens side (add liq.) -left side of liquidity pool card-
               Container(
                 height: 275,
-                width: layoutWdt / 2 - 20,
+                width: layoutWdt / 2,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -103,11 +104,11 @@ class _DesktopPoolState extends State<DesktopPool> {
                     //Balance text on top of tokenContainer
                     Container(
                         alignment: Alignment.bottomRight,
-                        padding: EdgeInsets.only(right: 30),
+                        padding: EdgeInsets.only(right: 50),
                         child: Text("Balance: 0.00",
                             style: textStyle(Colors.grey[600]!, 13, false))),
                     //Top Token container
-                    tokenContainer(1),
+                    tokenContainer(1, layoutWdt / 2),
                     Container(
                         child: Text(
                       "+",
@@ -115,11 +116,11 @@ class _DesktopPoolState extends State<DesktopPool> {
                     )),
                     Container(
                         alignment: Alignment.bottomRight,
-                        padding: EdgeInsets.only(right: 30),
+                        padding: EdgeInsets.only(right: 50),
                         child: Text("Balance: 0.00",
                             style: textStyle(Colors.grey[600]!, 13, false))),
                     // Bottom Token container
-                    tokenContainer(2),
+                    tokenContainer(2, layoutWdt / 2),
                   ],
                 ),
               ),
@@ -193,7 +194,8 @@ class _DesktopPoolState extends State<DesktopPool> {
     );
   }
 
-  Widget tokenContainer(int tknNum) {
+  Widget tokenContainer(int tknNum, double elementWdt) {
+    double tokenContainerWdt = elementWdt * 0.9;
     String tkr = "Select a Token";
     AssetImage? tokenImage = AssetImage('assets/images/apt.png');
     BoxDecoration decor =
@@ -215,88 +217,86 @@ class _DesktopPoolState extends State<DesktopPool> {
     }
 
     return Container(
-        height: 75,
-        width: MediaQuery.of(context).size.width * .35,
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        decoration:
-            boxDecoration(Colors.transparent, 20, .5, Colors.grey[400]!),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            // left-half of token box (token)
-            Container(
-                width: 175,
-                height: 40,
-                decoration: decor,
-                child: TextButton(
-                    // onPressed: (){},
-                    onPressed: () => showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AthleteTokenList(
-                              context, tknNum, createTokenElement),
-                        ),
-                    child: Container(
-                        width: 145,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: tokenImage!,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                            Container(width: 10),
-                            Expanded(
-                              child: Text(tkr,
-                                  style: textStyle(Colors.white, 16, true)),
-                            ),
-                            Icon(Icons.keyboard_arrow_down,
-                                color: Colors.white, size: 25)
-                          ],
-                        )))),
-            // right-half of token box
-            Container(
-                child: Row(
-              children: <Widget>[
-                Container(
-                    height: 24,
-                    width: 40,
-                    decoration: boxDecoration(
-                        Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                    child: TextButton(
-                        onPressed: () {
-                          swapController.activeTkn1.value;
-                          print(swapController.amount1);
-                        },
-                        child: Text("MAX",
-                            style: textStyle(Colors.grey[400]!, 8, false)))),
-                SizedBox(
-                  width: 70,
-                  child: TextFormField(
-                    onChanged: (value) {},
-                    style: textStyle(Colors.grey[400]!, 22, false),
-                    decoration: InputDecoration(
-                      hintText: '0.00',
-                      hintStyle: textStyle(Colors.grey[400]!, 22, false),
-                      contentPadding: const EdgeInsets.all(9),
-                      border: InputBorder.none,
+      height: 75,
+      width: tokenContainerWdt,
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      decoration: boxDecoration(Colors.transparent, 20, .5, Colors.grey[400]!),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          // left-half of token box (dropdown menu button containing token)
+          Container(
+            width: 175,
+            height: 40,
+            decoration: decor,
+            child: TextButton(
+              // onPressed: (){},
+              onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    AthleteTokenList(context, tknNum, createTokenElement),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: tokenImage!,
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                    ],
                   ),
+                  Container(width: 10),
+                  Expanded(
+                    child: Text(tkr, style: textStyle(Colors.white, 16, true)),
+                  ),
+                  Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
+                ],
+              ),
+            ),
+          ),
+          // right-half of token box (max button and input box)
+          Container(
+              child: Row(
+            children: <Widget>[
+              Container(
+                  height: 24,
+                  width: 40,
+                  decoration: boxDecoration(
+                      Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                  child: TextButton(
+                      onPressed: () {
+                        swapController.activeTkn1.value;
+                        print(swapController.amount1);
+                      },
+                      child: Text("MAX",
+                          style: textStyle(Colors.grey[400]!, 8, false)))),
+              SizedBox(
+                width: tokenContainerWdt * 0.15,
+                child: TextFormField(
+                  onChanged: (value) {},
+                  style: textStyle(Colors.grey[400]!, 22, false),
+                  decoration: InputDecoration(
+                    hintText: '0.00',
+                    hintStyle: textStyle(Colors.grey[400]!, 22, false),
+                    contentPadding: const EdgeInsets.all(9),
+                    border: InputBorder.none,
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                  ],
                 ),
-              ],
-            ))
-          ],
-        ));
+              ),
+            ],
+          ))
+        ],
+      ),
+    );
   }
 
   Widget togglePoolButton(double layoutHgt, double layoutWdt) {
@@ -351,12 +351,12 @@ class _DesktopPoolState extends State<DesktopPool> {
     //element width refers to the width of the widget that is returned by this method
     double elementWdt = layoutWdt / 2 * 0.85;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.only(top: 20, bottom: 20, right: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            alignment: Alignment.centerLeft,
             child: Text(
               (isAdvDetails) ? "Details: Price and Pool Share" : "Details",
               style: textStyle(Colors.white, 21, true),
@@ -369,22 +369,19 @@ class _DesktopPoolState extends State<DesktopPool> {
               children: <Widget>[
                 Text(
                   "AX per tkn APT:",
-                  style: textStyle(Colors.grey[600]!, 17, false),
+                  style: textStyle(Colors.grey[600]!, 15, false),
                 ),
                 Text(
                   "2.24",
-                  style: textStyle(Colors.white, 17, false),
+                  style: textStyle(Colors.white, 15, false),
                 ),
                 Text(
                   "Share of pool:",
-                  style: textStyle(Colors.grey[600]!, 17, false),
+                  style: textStyle(Colors.grey[600]!, 15, false),
                 ),
-                FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    "0.12%",
-                    style: textStyle(Colors.white, 17, false),
-                  ),
+                Text(
+                  "0.12%",
+                  style: textStyle(Colors.white, 15, false),
                 ),
               ],
             ),
@@ -397,22 +394,19 @@ class _DesktopPoolState extends State<DesktopPool> {
               children: <Widget>[
                 Text(
                   "tkn APT per AX:",
-                  style: textStyle(Colors.grey[600]!, 17, false),
+                  style: textStyle(Colors.grey[600]!, 15, false),
                 ),
                 Text(
                   "1.48",
-                  style: textStyle(Colors.white, 17, false),
+                  style: textStyle(Colors.white, 15, false),
                 ),
                 Text(
                   "Expected yield:",
-                  style: textStyle(Colors.grey[600]!, 17, false),
+                  style: textStyle(Colors.grey[600]!, 15, false),
                 ),
-                FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    "24.12%",
-                    style: textStyle(Colors.white, 17, false),
-                  ),
+                Text(
+                  "24.12%",
+                  style: TextStyle(color: Colors.white),
                 ),
               ],
             ),
