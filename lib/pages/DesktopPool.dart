@@ -135,8 +135,8 @@ class _DesktopPoolState extends State<DesktopPool> {
   }
 
   Widget myLiquidityLayout(double layoutHgt, double layoutWdt) {
-    double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
+    double _height = layoutHgt * 0.8;
+    double _width = layoutWdt;
 
     List<Widget> poolRows = [];
     for (int i = 0; i < AthleteList.list.length;) {
@@ -149,19 +149,19 @@ class _DesktopPoolState extends State<DesktopPool> {
               // 1 pool per row
               createPoolCard(AthleteList.list[i++]),
               // 2 pools per row
-              if (_width * .8 > 818 && i < AthleteList.list.length) ...{
+              if (_width > 818 && i < AthleteList.list.length) ...{
                 SizedBox(width: 30),
                 createPoolCard(AthleteList.list[i++]),
               },
               // 3 pools per row
-              if (_width * .8 > 1227 && i < AthleteList.list.length) ...{
+              if (_width > 1227 && i < AthleteList.list.length) ...{
                 SizedBox(
                   width: 30,
                 ),
                 createPoolCard(AthleteList.list[i++])
               },
               // 4 pools per row
-              if (_width * .8 > 1636 && i < AthleteList.list.length) ...{
+              if (_width > 1636 && i < AthleteList.list.length) ...{
                 SizedBox(
                   width: 30,
                 ),
@@ -182,7 +182,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 Text("My Liquidity", style: textStyle(Colors.white, 24, true))),
         togglePoolButton(layoutHgt, layoutWdt),
         Container(
-            height: _height * 0.6,
+            height: _height,
             child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 physics: BouncingScrollPhysics(),
