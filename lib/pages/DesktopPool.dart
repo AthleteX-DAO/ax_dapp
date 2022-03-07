@@ -10,6 +10,7 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class DesktopPool extends StatefulWidget {
   const DesktopPool({Key? key}) : super(key: key);
@@ -26,6 +27,7 @@ class _DesktopPoolState extends State<DesktopPool> {
   double toAmount = 0.0;
   Token? tkn1;
   Token? tkn2;
+  bool isWeb = true;
 
   List<Token> tokensList = [
     AXT("AthleteX", "AX", AssetImage('assets/images/x.png')),
@@ -52,10 +54,12 @@ class _DesktopPoolState extends State<DesktopPool> {
     MediaQueryData mediaquery = MediaQuery.of(context);
     double _height = mediaquery.size.height;
     double _width = mediaquery.size.width;
+    isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double layoutHgt = _height * 0.8;
-    double layoutWdt = _width * 0.8;
+    double layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
 
-    print(_width);
+    // print(_width);
     return Container(
         width: _width,
         height: _height - AppBar().preferredSize.height,
@@ -71,6 +75,7 @@ class _DesktopPoolState extends State<DesktopPool> {
   Widget allLiquidityLayout(double layoutHgt, double layoutWdt) {
     //Boolean to show advanced details
     bool isAdvDetails = true;
+    double allLiquidityCardHgt = isWeb ? 300 : layoutHgt * 0.75;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -86,52 +91,68 @@ class _DesktopPoolState extends State<DesktopPool> {
         //Liquidity pool grey card
         Container(
           width: layoutWdt,
-          height: 300,
+          height: allLiquidityCardHgt,
           decoration: boxDecoration(
               Colors.grey[800]!.withOpacity(0.25), 30, 0.5, Colors.grey[400]!),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Pool tokens side (add liq.) -left side of liquidity pool card-
-              Container(
-                height: 275,
-                width: layoutWdt / 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    SizedBox(height: 25),
-                    //Balance text on top of tokenContainer
-                    Container(
-                        alignment: Alignment.bottomRight,
-                        padding: EdgeInsets.only(right: 50),
-                        child: Text("Balance: 0.00",
-                            style: textStyle(Colors.grey[600]!, 13, false))),
-                    //Top Token container
-                    tokenContainer(1, layoutWdt / 2),
-                    Container(
-                        child: Text(
-                      "+",
-                      style: textStyle(Colors.grey[600]!, 42, true),
-                    )),
-                    Container(
-                        alignment: Alignment.bottomRight,
-                        padding: EdgeInsets.only(right: 50),
-                        child: Text("Balance: 0.00",
-                            style: textStyle(Colors.grey[600]!, 13, false))),
-                    // Bottom Token container
-                    tokenContainer(2, layoutWdt / 2),
-                  ],
+          //if isWeb return a row structure for all liquidity card, else return a column
+          child: isWeb
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: allLiquidityCardContents(
+                      layoutHgt, layoutWdt, allLiquidityCardHgt, isAdvDetails),
+                )
+              : Column(
+                  children: allLiquidityCardContents(
+                      layoutHgt, layoutWdt, allLiquidityCardHgt, isAdvDetails),
                 ),
-              ),
-              // Pool details side (add liq.) -right side of liquidity pool card-
-              pricePoolShareDetails(layoutWdt, layoutHgt, isAdvDetails),
-            ],
-          ),
         ),
-        Container(height: layoutHgt * 0.5 - 300)
+        //Empty filler space for web
+        if (isWeb) Container(height: layoutHgt * 0.5 - 300),
       ],
     );
+  }
+
+  List<Widget> allLiquidityCardContents(double layoutHgt, double layoutWdt,
+      double allLiquidityCardHgt, bool isAdvDetails) {
+    double elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
+    double elementHgt = isWeb ? 275 : allLiquidityCardHgt * 0.55;
+    //Returns the contents of all liquidity pool card
+    return <Widget>[
+      //Tokens side add liq. -left side of all liquidity pool card in desktop, top of card in mobile-
+      Container(
+        height: elementHgt,
+        width: elementWdt,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            SizedBox(height: 25),
+            //Balance text on top of tokenContainer
+            Container(
+                alignment: Alignment.bottomRight,
+                padding: EdgeInsets.only(right: 50),
+                child: Text("Balance: 0.00",
+                    style: textStyle(Colors.grey[600]!, 13, false))),
+            //Top Token container
+            tokenContainer(1, elementWdt),
+            Container(
+                child: Text(
+              "+",
+              style: textStyle(Colors.grey[600]!, 35, true),
+            )),
+            Container(
+                alignment: Alignment.bottomRight,
+                padding: EdgeInsets.only(right: 50),
+                child: Text("Balance: 0.00",
+                    style: textStyle(Colors.grey[600]!, 13, false))),
+            // Bottom Token container
+            tokenContainer(2, elementWdt),
+          ],
+        ),
+      ),
+      // Pool details side (add liq.) -right side of liquidity pool card, bottom of card in mobile-
+      pricePoolShareDetails(elementWdt, isAdvDetails),
+    ];
   }
 
   Widget myLiquidityLayout(double layoutHgt, double layoutWdt) {
@@ -195,6 +216,8 @@ class _DesktopPoolState extends State<DesktopPool> {
   }
 
   Widget tokenContainer(int tknNum, double elementWdt) {
+    //Returns the tokenContainer containing dropdown menu button with token icon and ticker
+    //element width refers to the width of half the all liquidity card (for desktop only)
     double tokenContainerWdt = elementWdt * 0.9;
     String tkr = "Select a Token";
     AssetImage? tokenImage = AssetImage('assets/images/apt.png');
@@ -217,7 +240,7 @@ class _DesktopPoolState extends State<DesktopPool> {
     }
 
     return Container(
-      height: 75,
+      height: 70,
       width: tokenContainerWdt,
       padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: boxDecoration(Colors.transparent, 20, .5, Colors.grey[400]!),
@@ -346,10 +369,9 @@ class _DesktopPoolState extends State<DesktopPool> {
     );
   }
 
-  Widget pricePoolShareDetails(
-      double layoutWdt, double layoutHgt, bool isAdvDetails) {
+  Widget pricePoolShareDetails(double elementWdt, bool isAdvDetails) {
     //element width refers to the width of the widget that is returned by this method
-    double elementWdt = layoutWdt / 2 * 0.85;
+    elementWdt = isWeb ? elementWdt * 0.85 : elementWdt * 0.9;
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 20, right: 10),
       child: Column(

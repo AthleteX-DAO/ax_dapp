@@ -1759,7 +1759,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
-                          onPressed: () { },
+                          onPressed: () {},
                           child: Text(
                             "Max",
                             style: textStyle(Colors.grey[400]!, 9, false),
@@ -1812,11 +1812,12 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
-                    child: Obx(() => Text(
-                      "${lspController.createAmt} APTS",
-                      style: textStyle(Colors.white, 15, false),
+                    child: Obx(
+                      () => Text(
+                        "${lspController.createAmt} APTS",
+                        style: textStyle(Colors.white, 15, false),
+                      ),
                     ),
-                              ),
                   ),
                 ],
               ),
@@ -2880,7 +2881,7 @@ Dialog swapDialog(BuildContext context) {
           children: <Widget>[
             Container(
               //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              width: wid- edge,
+              width: wid - edge,
               height: 50,
               //color: Colors.red,
               child: Row(
@@ -2958,7 +2959,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: wid-edge,
+              width: wid - edge,
               alignment: Alignment.center,
               child: Icon(
                 Icons.arrow_downward,
@@ -2966,7 +2967,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: wid-edge,
+              width: wid - edge,
               height: 50,
               //color: Colors.red,
               child: Column(
@@ -3031,7 +3032,7 @@ Dialog swapDialog(BuildContext context) {
             // Price Information and Confirm Swap Button
             Container(
               //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              width: wid-edge,
+              width: wid - edge,
               height: 30,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -3158,7 +3159,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: wid-edge,
+              width: wid - edge,
               height: 30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
