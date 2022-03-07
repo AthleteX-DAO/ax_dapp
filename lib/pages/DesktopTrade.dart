@@ -110,8 +110,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       padding: EdgeInsets.only(left: 20.0),
                       width: wid - 50,
                       alignment: Alignment.centerLeft,
-                      child: Text("From",
-                          style: textStyle(Colors.grey[400]!, 12, false)),
+                      child: Text("From", style: textStyle(Colors.grey[400]!, 12, false)),
                     ),
                     Container(
                         width: wid - 50,
@@ -245,6 +244,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   }
 
   Widget createTokenElement(Token token, int tknNum) {
+    double _width = MediaQuery.of(context).size.width;
     return Container(
         height: 50,
         child: TextButton(
@@ -285,14 +285,14 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Container(
-                            width: 125,
+                            width: (_width < 350.0) ? 110 : 125,
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.ticker,
                               style: textStyle(Colors.white, 14, true),
                             )),
                         Container(
-                            width: 125,
+                            width: (_width < 350.0) ? 110 : 125,
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.name,
@@ -305,11 +305,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
   }
 
   Widget createTokenButton(int tknNum) {
-    double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery.of(context).size.width;
     double textSize = _height * 0.05;
-    double tkrTextSize = textSize * 0.35;
-    if (!isWeb) tkrTextSize = textSize * 0.45;
+    double tkrTextSize = textSize * 0.25;
+    if (!isWeb) tkrTextSize = textSize * 0.35;
     String tkr = "Select a Token";
     AssetImage? tokenImage = AssetImage('../assets/images/apt.png');
     BoxDecoration decor =
@@ -332,7 +332,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
     return Container(
       constraints: BoxConstraints(
-        maxWidth: 150,
+        maxWidth: (_width < 350.0) ? 115 : 150,
         maxHeight: 100,
       ),
       height: 40,
