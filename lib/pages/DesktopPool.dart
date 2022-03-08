@@ -112,7 +112,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                   padding: EdgeInsets.only(top: 15),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    (advDetails) ? "Details: Price and Pool Share" : "Details",
+                    detailsText(advDetails),
                     style: textStyle(Colors.white, 21, true),
                   )),
               Container(
@@ -223,32 +223,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                   ),
                 ),
               ),
-              (advDetails)
-                  ? Container(
-                      width: wid / 2 - 95,
-                      height: 45,
-                      decoration: boxDecoration(
-                          Colors.transparent, 100, 0, Colors.amber[400]!),
-                      child: TextButton(
-                          onPressed: () => showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  poolAddLiquidity(context, tkn2!.name)),
-                          child: Text(
-                            "Approve",
-                            style: textStyle(Colors.amber[500]!, 16, true),
-                          )))
-                  : Container(
-                      width: wid / 2 - 95,
-                      height: 45,
-                      decoration: boxDecoration(
-                          Colors.transparent, 100, 1, Colors.amber[400]!),
-                      child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Approve",
-                            style: textStyle(Colors.amber[400]!, 16, true),
-                          )))
+              approveText(advDetails, wid)
             ]));
 
     return Column(
@@ -321,6 +296,37 @@ class _DesktopPoolState extends State<DesktopPool> {
       ],
     );
   }
+
+  Container approveText(bool advDetails, double wid) {
+    return advDetails
+                ? Container(
+                    width: wid / 2 - 95,
+                    height: 45,
+                    decoration: boxDecoration(
+                        Colors.transparent, 100, 0, Colors.amber[400]!),
+                    child: TextButton(
+                        onPressed: () => showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                poolAddLiquidity(context, tkn2!.name)),
+                        child: Text(
+                          "Approve",
+                          style: textStyle(Colors.amber[500]!, 16, true),
+                        )))
+                : Container(
+                    width: wid / 2 - 95,
+                    height: 45,
+                    decoration: boxDecoration(
+                        Colors.transparent, 100, 1, Colors.amber[400]!),
+                    child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Approve",
+                          style: textStyle(Colors.amber[400]!, 16, true),
+                        )));
+  }
+
+  String detailsText(bool advDetails) => advDetails ? "Details: Price and Pool Share" : "Details";
 
   Widget myLiquidity() {
     double _height = MediaQuery.of(context).size.height;
@@ -579,8 +585,6 @@ class _DesktopPoolState extends State<DesktopPool> {
   }
 
   Widget createPoolCard(Athlete athlete) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
     double iwid = 329;
 
     return Container(

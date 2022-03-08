@@ -1,11 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:ax_dapp/service/Controller/APT.dart';
 import 'package:get/get.dart';
-import 'package:web3dart/credentials.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../../contracts/LongShortPair.g.dart';
-import 'package:web3dart/contracts/erc20.dart';
 import 'package:http/http.dart';
 import '../Controller.dart';
 
@@ -46,13 +43,7 @@ class LSPController extends GetxController {
   }
 
   Future<void> approve() async {
-    BigInt amount =  BigInt.from(createAmt.value) * BigInt.parse('250000000000000000');
     print("[Console] Inside approve()");
-    EthereumAddress address =
-        EthereumAddress.fromHex("0x76d9a6e4cdefc840a47069b71824ad8ff4819e85");
-    final tokenClient =
-        Web3Client("https://matic-mumbai.chainstacklabs.com", Client());
-    Erc20 axt = Erc20(address: address, client: tokenClient);
     try {
       print("[Console] Created a token variable.");
       
@@ -60,10 +51,6 @@ class LSPController extends GetxController {
       print(error);
     }
     print("[Console] Got the amount");
-    EthereumAddress spender =
-        EthereumAddress.fromHex("0xD3E03e36D70F65A00732F9086D994D83A3EaC286");
-    String txString =
-        await axt.approve(spender, amount, credentials: controller.credentials);
   }
 
   Future<void> redeem() async {
