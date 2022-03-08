@@ -30,9 +30,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
   bool isWeb = true;
 
   List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
-    SXT("SportX", "SX", AssetImage('../assets/images/SX_Small.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/Polygon_Small.png')),
+    AXT("AthleteX", "AX", AssetImage('assets/images/x.png')),
+    SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
+    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/Polygon_Small.png')),
   ];
 
   @override
@@ -43,7 +43,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
     for (Athlete ath in AthleteList.list)
       tokens.add(Token(ath.name + " APT", ath.name + " APT",
-          AssetImage('../assets/images/apt.png')));
+          AssetImage('assets/images/apt.png')));
 
     tokenListFilter = tokens;
   }
