@@ -61,64 +61,65 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
         ),
-        child: Container(
-            width: isWeb ? _width * 0.20 : _width * 0.55,
-            height: _height * .65,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                // column of elements
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
-                  height: _height * .625,
-                  width: _width * 0.45 + 120,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                              height: 30,
-                              alignment: Alignment.centerLeft,
-                              child: Text("Select a Token",style: textStyle(Colors.grey[400]!, 16, false))),
-                          Container(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Icon(Icons.close,color: Colors.grey[400], size: 30),
-                          ))
-                        ]),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: createSearchBar(),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text("Token Name", style: textStyle(Colors.grey[400]!, 12, false),),
-                      ),   
-                      Container(
-                        child: Divider(thickness: 1, color: Colors.grey[400]),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Container(
-                          height: _height * .625 - 125,
-                          child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              itemCount: tokenListFilter.length,
-                              itemBuilder: (context, index) {
-                                return widget.createTokenElement(
-                                    tokenListFilter[index], tokenNumber);
-                              }
-                          )
+        // SingleChildScrollView prevents bottom overflow when keyboard pops up
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+              width: isWeb ? _width * 0.20 : _width * 0.55,
+              height: _height * .65,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  // column of elements
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                    height: _height * .625,
+                    width: _width * 0.45 + 120,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                                height: 30,
+                                alignment: Alignment.centerLeft,
+                                child: Text("Select a Token",style: textStyle(Colors.grey[400]!, 16, false))),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Icon(Icons.close,color: Colors.grey[400], size: 30),
+                            ))
+                          ]),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: createSearchBar(),
                         ),
-                      )
-                    ],
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Token Name", style: textStyle(Colors.grey[400]!, 12, false),),
+                        ),   
+                        Container(
+                          child: Divider(thickness: 1, color: Colors.grey[400]),
+                        ),
+                        Container(
+                            height: _height * .625 - 125,
+                            child: ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                itemCount: tokenListFilter.length,
+                                itemBuilder: (context, index) {
+                                  return widget.createTokenElement(
+                                      tokenListFilter[index], tokenNumber);
+                                }
+                            )
+                          ),
+                      ],
+                    )
                   )
-                )
-              ],
-            )));
+                ],
+              )),
+        ));
   }
 
   Widget createSearchBar() {
