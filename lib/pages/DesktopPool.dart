@@ -22,14 +22,13 @@ class DesktopPool extends StatefulWidget {
 class _DesktopPoolState extends State<DesktopPool> {
   SwapController swapController = Get.find();
   bool isAllLiquidity = true;
-  List<Token> tokenListFilter = [];
   double fromAmount = 0.0;
   double toAmount = 0.0;
   Token? tkn1;
   Token? tkn2;
   bool isWeb = true;
-
-  List<Token> tokensList = [
+  List<Token> tokenListFilter = [];
+  List<Token> tokenList = [
     AXT("AthleteX", "AX", AssetImage('assets/images/x.png')),
     SXT("SportX", "SX", AssetImage('assets/images/sx.png')),
     MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/matic.png')),
@@ -40,13 +39,13 @@ class _DesktopPoolState extends State<DesktopPool> {
     super.initState();
 
     for (Athlete ath in AthleteList.list)
-      tokensList.add(Token(ath.name + " APT", ath.name + " APT",
+      tokenList.add(Token(ath.name + " APT", ath.name + " APT",
           AssetImage('assets/images/apt.png')));
 
-    tkn1 = tokensList[0];
-    tkn2 = tokensList[3];
+    tkn1 = tokenList[0];
+    tkn2 = tokenList[3];
 
-    tokenListFilter = tokensList;
+    tokenListFilter = tokenList;
   }
 
   @override
@@ -59,7 +58,7 @@ class _DesktopPoolState extends State<DesktopPool> {
     double layoutHgt = _height * 0.8;
     double layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
 
-    // print(_width);
+    print(_width);
     return Container(
         width: _width,
         height: _height - AppBar().preferredSize.height,
@@ -81,19 +80,21 @@ class _DesktopPoolState extends State<DesktopPool> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        //Liquidity Pool Title
         Container(
           height: 45,
           alignment: Alignment.bottomLeft,
           child:
               Text("Liquidity Pool", style: textStyle(Colors.white, 24, true)),
         ),
+        //Toggle Liquidity Button
         togglePoolButton(layoutHgt, layoutWdt),
         //Liquidity pool grey card
         Container(
           width: layoutWdt,
           height: allLiquidityCardHgt,
           decoration: boxDecoration(
-              Colors.grey[800]!.withOpacity(0.25), 30, 0.5, Colors.grey[400]!),
+              Colors.grey[800]!.withOpacity(0.25), 30, 1.5, Colors.grey[400]!),
           //if isWeb return a row structure for all liquidity card, else return a column
           child: isWeb
               ? Row(
@@ -116,17 +117,16 @@ class _DesktopPoolState extends State<DesktopPool> {
   List<Widget> allLiquidityCardContents(double layoutHgt, double layoutWdt,
       double allLiquidityCardHgt, bool isAdvDetails) {
     double elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
-    double elementHgt = isWeb ? 275 : allLiquidityCardHgt * 0.55;
+    double tokensSectionHgt = isWeb ? 275 : allLiquidityCardHgt * 0.55;
     //Returns the contents of all liquidity pool card
     return <Widget>[
       //Tokens side add liq. -left side of all liquidity pool card in desktop, top of card in mobile-
       Container(
-        height: elementHgt,
+        height: tokensSectionHgt,
         width: elementWdt,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            SizedBox(height: 25),
             //Balance text on top of tokenContainer
             Container(
                 alignment: Alignment.bottomRight,
@@ -156,62 +156,301 @@ class _DesktopPoolState extends State<DesktopPool> {
   }
 
   Widget myLiquidityLayout(double layoutHgt, double layoutWdt) {
-    double _height = layoutHgt * 0.8;
-    double _width = layoutWdt;
-
-    List<Widget> poolRows = [];
-    for (int i = 0; i < AthleteList.list.length;) {
-      poolRows.add(Container(
-          alignment: Alignment.topCenter,
-          height: 325,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // 1 pool per row
-              createPoolCard(AthleteList.list[i++]),
-              // 2 pools per row
-              if (_width > 818 && i < AthleteList.list.length) ...{
-                SizedBox(width: 30),
-                createPoolCard(AthleteList.list[i++]),
-              },
-              // 3 pools per row
-              if (_width > 1227 && i < AthleteList.list.length) ...{
-                SizedBox(
-                  width: 30,
-                ),
-                createPoolCard(AthleteList.list[i++])
-              },
-              // 4 pools per row
-              if (_width > 1636 && i < AthleteList.list.length) ...{
-                SizedBox(
-                  width: 30,
-                ),
-                createPoolCard(AthleteList.list[i++])
-              }
-            ],
-          )));
-    }
+    double titleHgt = layoutHgt * 0.05;
+    double gridHgt = layoutHgt * 0.8;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Row(
+          //My Liquidity title
+          children: [
+            Container(
+              height: titleHgt,
+              width: layoutWdt * 0.4,
+              alignment: Alignment.bottomLeft,
+              child: Text("My Liquidity",
+                  style: textStyle(Colors.white, 24, true)),
+            ),
+            //searchbar for mobile (next to title)
+            if (!isWeb) createMyLiquiditySearchBar(layoutHgt, layoutWdt),
+          ],
+        ),
+        Row(
+          children: [
+            togglePoolButton(layoutHgt, layoutWdt),
+            //searchbar for desktop (next to toggle button)
+            if (isWeb) createMyLiquiditySearchBar(layoutHgt, layoutWdt),
+          ],
+        ),
         Container(
-            height: 45,
-            alignment: Alignment.bottomLeft,
-            child:
-                Text("My Liquidity", style: textStyle(Colors.white, 24, true))),
-        togglePoolButton(layoutHgt, layoutWdt),
-        Container(
-            height: _height,
-            child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                physics: BouncingScrollPhysics(),
-                itemCount: poolRows.length,
-                itemBuilder: (context, index) {
-                  return Container(height: 325, child: poolRows[index]);
-                }))
+          height: gridHgt,
+          child: myLiquidityLayoutGrid(layoutHgt, layoutWdt),
+        )
       ],
+    );
+  }
+
+  Widget createMyLiquiditySearchBar(double layoutHgt, double layoutWdt) {
+    return Container(
+      //1 - title width
+      width: isWeb ? 300 : layoutWdt * 0.6,
+      //same as title
+      height: isWeb ? 40 : layoutHgt * 0.05,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(width: 8),
+          Container(
+            child: Icon(Icons.search, color: Colors.white),
+          ),
+          Container(width: 10),
+          Expanded(
+            child: Container(
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    tokenListFilter = tokenList
+                        .where((token) => token.name
+                            .toUpperCase()
+                            .contains(value.toUpperCase()))
+                        .toList();
+                  });
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 8.5),
+                  hintText: "Search a farm",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget myLiquidityLayoutGrid(double layoutHgt, double layoutWdt) {
+    return GridView.builder(
+      padding: EdgeInsets.zero,
+      gridDelegate: isWeb
+          ? const SliverGridDelegateWithMaxCrossAxisExtent(
+              //delegate max width for desktop
+              maxCrossAxisExtent: 600,
+              mainAxisExtent: 265,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+            )
+          : SliverGridDelegateWithFixedCrossAxisCount(
+              //delegate count of 1 for mobile
+              crossAxisCount: 1,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              mainAxisExtent: 265,
+            ),
+      itemCount: tokenListFilter.length,
+      itemBuilder: (BuildContext ctx, index) {
+        return myLiquidityPoolGridItem(tokenListFilter[index], layoutWdt);
+      },
+    );
+  }
+
+  Widget myLiquidityPoolGridItem(Token athleteToken, double layoutWdt) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(30),
+      child: GridTile(
+        child: Container(
+          padding: EdgeInsets.all(25),
+          decoration: boxDecoration(
+              Colors.grey[800]!.withOpacity(0.25), 30, 1.5, Colors.grey[400]!),
+          child: Column(
+            children: <Widget>[
+              //Item's title with icons
+              Row(
+                children: [
+                  //AX icon
+                  Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/x.png"),
+                      ),
+                    ),
+                  ),
+                  //Token icon, if token does not have icon use default icon
+                  if (athleteToken.icon != null) ...[
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/apt.png"),
+                        ),
+                      ),
+                    ),
+                  ] else ...[
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage(athleteToken.icon as String),
+                        ),
+                      ),
+                    ),
+                  ],
+                  //title
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "AX / " + athleteToken.name,
+                      style: textStyle(Colors.white, 24, true),
+                    ),
+                  ),
+                ],
+              ),
+              //Pool token information
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Your Pool Tokens:",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "\$1,000,000",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Pooled AX:",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "1,000",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Pooled " + athleteToken.name + " APT:",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "500",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Your Pool Share:",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "0.12%",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Rewards Accumulated:",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "100 AX",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              //Item's Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  // add button
+                  Container(
+                      width: (isWeb) ? 155 : (layoutWdt / 2) - 30,
+                      height: 37.5,
+                      decoration: boxDecoration(
+                          Colors.amber[400]!, 100, 0, Colors.amber[400]!),
+                      child: TextButton(
+                          onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  poolAddLiquidity(context, tkn2!.name)),
+                          child: Text(
+                            "Add",
+                            style: textStyle(Colors.black, 20, true),
+                          ))),
+                  //remove button
+                  Container(
+                      width: (isWeb) ? 155 : (layoutWdt / 2) - 30,
+                      height: 37.5,
+                      decoration: boxDecoration(
+                          Colors.transparent, 100, 1, Colors.amber[400]!),
+                      child: TextButton(
+                          onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  poolRemoveLiquidity(context, tkn2!.name)),
+                          child: Text(
+                            "Remove",
+                            style: textStyle(Colors.amber[400]!, 18, true),
+                          ))),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -323,16 +562,17 @@ class _DesktopPoolState extends State<DesktopPool> {
   }
 
   Widget togglePoolButton(double layoutHgt, double layoutWdt) {
+    double toggleWdt = isWeb ? 260 : layoutWdt;
     return Container(
-      width: 260,
-      height: 40,
+      width: toggleWdt,
+      height: isWeb ? 40 : layoutHgt * 0.05,
       margin: EdgeInsets.symmetric(vertical: layoutHgt * 0.04),
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Container(
-              width: 120,
+              width: isWeb ? 120 : (toggleWdt / 2) - 5,
               decoration: isAllLiquidity
                   ? boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent)
                   : boxDecoration(
@@ -348,7 +588,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                   child: Text("Add Liquidity",
                       style: textStyle(Colors.white, 16, true)))),
           Container(
-              width: 115,
+              width: isWeb ? 120 : (toggleWdt / 2) - 5,
               decoration: isAllLiquidity
                   ? boxDecoration(
                       Colors.transparent, 100, 0, Colors.transparent)
@@ -457,14 +697,16 @@ class _DesktopPoolState extends State<DesktopPool> {
                   decoration: boxDecoration(
                       Colors.amber[400]!, 100, 0, Colors.amber[400]!),
                   child: TextButton(
-                      onPressed: () => showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              poolAddLiquidity(context, tkn2!.name)),
-                      child: Text(
-                        "Add Liquidity",
-                        style: textStyle(Colors.black, 16, true),
-                      )))
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            poolAddLiquidity(context, tkn2!.name)),
+                    child: Text(
+                      "Add Liquidity",
+                      style: textStyle(Colors.black, 16, true),
+                    ),
+                  ),
+                )
               : Container(
                   width: elementWdt,
                   height: 45,
@@ -482,6 +724,7 @@ class _DesktopPoolState extends State<DesktopPool> {
   }
 
   Widget createTokenElement(Token token, int tknNum) {
+    //Callback function that is called when token is chosen from AthleteTokenList widget
     return Container(
         height: 50,
         child: TextButton(
@@ -539,137 +782,6 @@ class _DesktopPoolState extends State<DesktopPool> {
                     ))
               ],
             ))));
-  }
-
-  Widget createPoolCard(Athlete athlete) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
-    double iwid = 329;
-
-    return Container(
-        width: 379,
-        height: 275,
-        decoration: boxDecoration(Colors.grey[900]!, 30, 1, Colors.grey[400]!),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-                width: iwid,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "AX / " + athlete.name + " APT",
-                  style: textStyle(Colors.white, 24, true),
-                )),
-            Container(
-                width: iwid,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Your Pool Tokens:",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                        Text(
-                          "\$1,000,000",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Pooled AX:",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                        Text(
-                          "1,000",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Pooled " + athlete.name + " APT:",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                        Text(
-                          "500",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Your Pool Share:",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                        Text(
-                          "0.12%",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Rewards Accumulated:",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                        Text(
-                          "100 AX",
-                          style: textStyle(Colors.grey[600]!, 16, true),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-            Container(
-                width: iwid,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    // add button
-                    Container(
-                        width: 160,
-                        height: 37.5,
-                        decoration: boxDecoration(
-                            Colors.amber[400]!, 100, 0, Colors.amber[400]!),
-                        child: TextButton(
-                            onPressed: () => showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    poolAddLiquidity(context, tkn2!.name)),
-                            child: Text(
-                              "Add",
-                              style: textStyle(Colors.black, 20, true),
-                            ))),
-                    //remove button
-                    Container(
-                        width: 160,
-                        height: 37.5,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 1, Colors.amber[400]!),
-                        child: TextButton(
-                            onPressed: () => showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    poolRemoveLiquidity(context, tkn2!.name)),
-                            child: Text(
-                              "Remove",
-                              style: textStyle(Colors.amber[400]!, 18, true),
-                            ))),
-                  ],
-                )),
-          ],
-        ));
   }
 
   TextStyle textStyle(Color color, double size, bool isBold) {
