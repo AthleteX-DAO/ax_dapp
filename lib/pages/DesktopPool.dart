@@ -62,6 +62,10 @@ class _DesktopPoolState extends State<DesktopPool> {
     return Container(
         width: _width,
         height: _height - AppBar().preferredSize.height,
+        //Top margin of Pool section is equal to height + 1 of AppBar on mobile only
+        margin: isWeb
+            ? EdgeInsets.zero
+            : EdgeInsets.only(top: AppBar().preferredSize.height + 10),
         alignment: Alignment.center,
         child: Container(
             width: layoutWdt,
@@ -73,8 +77,9 @@ class _DesktopPoolState extends State<DesktopPool> {
 
   Widget allLiquidityLayout(double layoutHgt, double layoutWdt) {
     //Boolean to show advanced details
+    //Using 87% of layoutHgt at the moment (76) Pool Card + (5) Title + (6) Toggle Button
     bool isAdvDetails = true;
-    double allLiquidityCardHgt = isWeb ? 300 : layoutHgt * 0.75;
+    double allLiquidityCardHgt = isWeb ? 300 : layoutHgt * 0.76;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -82,7 +87,7 @@ class _DesktopPoolState extends State<DesktopPool> {
       children: <Widget>[
         //Liquidity Pool Title
         Container(
-          height: 45,
+          height: isWeb ? 45 : layoutHgt * 0.05,
           alignment: Alignment.bottomLeft,
           child:
               Text("Liquidity Pool", style: textStyle(Colors.white, 24, true)),
@@ -157,7 +162,7 @@ class _DesktopPoolState extends State<DesktopPool> {
 
   Widget myLiquidityLayout(double layoutHgt, double layoutWdt) {
     double titleHgt = layoutHgt * 0.05;
-    double gridHgt = layoutHgt * 0.8;
+    double gridHgt = layoutHgt * 0.75;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -565,7 +570,7 @@ class _DesktopPoolState extends State<DesktopPool> {
     double toggleWdt = isWeb ? 260 : layoutWdt;
     return Container(
       width: toggleWdt,
-      height: isWeb ? 40 : layoutHgt * 0.05,
+      height: isWeb ? 40 : layoutHgt * 0.06,
       margin: EdgeInsets.symmetric(vertical: layoutHgt * 0.04),
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
       child: Row(
