@@ -5,6 +5,8 @@ import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
+import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
+import 'package:get/get.dart';
 
 class AthletePage extends StatefulWidget {
   final Athlete athlete;
@@ -21,6 +23,14 @@ class _AthletePageState extends State<AthletePage> {
   Athlete athlete;
   int listView = 0;
   _AthletePageState(this.athlete);
+
+  @override
+  void initState() {
+    super.initState();
+    final LSPController lspController = Get.find();
+    lspController.updateAptAddress(athlete.id);
+    print(athlete.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -378,7 +388,8 @@ class _AthletePageState extends State<AthletePage> {
                                                   style: textStyle(Colors.red,
                                                       12, false, false))),
                                         ]),
-                                        Text("${athlete.war.toStringAsFixed(2)} AX",
+                                        Text(
+                                            "${athlete.war.toStringAsFixed(2)} AX",
                                             style: textStyle(Colors.grey[400]!,
                                                 20, false, false))
                                       ]))
@@ -398,7 +409,8 @@ class _AthletePageState extends State<AthletePage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
-                                          Text("${athlete.war.toStringAsFixed(2)} AX ",
+                                          Text(
+                                              "${athlete.war.toStringAsFixed(2)} AX ",
                                               style: textStyle(Colors.white, 20,
                                                   false, false)),
                                           Container(
