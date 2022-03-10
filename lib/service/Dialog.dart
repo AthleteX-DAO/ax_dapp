@@ -2980,11 +2980,16 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                       Container(
-                        child: Text(
-                          "-\$1.580",
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[600],
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: "-\$1.580",
+                                  style: TextStyle(color: Colors.grey[600], fontSize: 10)),
+                              TextSpan(
+                                  text: " (0.079%)",
+                                  style: TextStyle(color: Colors.red[900], fontSize: 10)),
+                            ],
                           ),
                         ),
                       ),
@@ -3185,10 +3190,9 @@ Dialog swapDialog(BuildContext context) {
                   Container(
                     margin: isWeb? EdgeInsets.only(top: 30.0, bottom: 10.0) : EdgeInsets.only(bottom: 5.0),
                     width: wid - 180,
-                    height: _height * 0.05,
+                    height: isWeb ? _height * 0.05 : _height * 0.06,
                     decoration: isWeb? boxDecoration(Colors.amber[400]!, 100, 1, Colors.transparent) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 100, 1, Colors.transparent),
                     child: TextButton(
-                      //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () {
                         print('swapping!');
                         swapController.approve().then((value) {
@@ -3203,7 +3207,8 @@ Dialog swapDialog(BuildContext context) {
                       },
                       child: Text(
                         "Confirm Swap",
-                        style: isWeb ? textStyle(Colors.black, 20, true) : textStyle(Colors.amber[500]!, 20, true),
+                        textAlign: TextAlign.center,
+                        style: isWeb ? textStyle(Colors.black, 20, true) : textStyle(Colors.amber[500]!, 15, true),
                       ),
                     ),
                   ),

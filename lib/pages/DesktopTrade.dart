@@ -6,7 +6,6 @@ import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +29,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   bool isWeb = true;
 
   List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('assets/images/x.png')),
+    AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
     SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
     MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/Polygon_Small.png')),
   ];
@@ -41,9 +40,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
     tkn1 = tokens[0];
     tkn2 = tokens[1];
 
-    for (Athlete ath in AthleteList.list)
-      tokens.add(Token(ath.name + " APT", ath.name + " APT",
-          AssetImage('assets/images/apt.png')));
+    for (Athlete ath in AthleteList.list) {
+      tokens.add(Token(ath.name + " APT", ath.name + " APT", AssetImage('assets/images/apt.png')));
+    }      
 
     tokenListFilter = tokens;
   }
@@ -68,7 +67,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
     if (tkn1 != null && tkn2 != null)
       swapButton = Container(
-          height: _height * 0.05,
+          margin: isWeb ? EdgeInsets.only(top: 30.0) :EdgeInsets.only(top: 20.0),
+          height: isWeb? _height * 0.05 : _height * 0.06,
           width: wid - 50,
           decoration: isWeb? boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
           child: TextButton(
@@ -93,7 +93,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
           height: _height - 114,
           alignment: Alignment.center,
           child: Container(
-              height: _height * 0.45,
+              height: _height * 0.475,
               width: wid,
               decoration: boxDecoration(Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -359,7 +359,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               ),
               Container(width: 10),
               Expanded(
-                child: Text(tkr, style: textStyle(Colors.white, tkrTextSize, true)),
+                child: Text(tkr, overflow: TextOverflow.ellipsis, style: textStyle(Colors.white, tkrTextSize, true)),
               ),
               Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
             ],

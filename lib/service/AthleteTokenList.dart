@@ -30,7 +30,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   bool isWeb = true;
 
   List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('assets/images/x.png')),
+    AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
     SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
     MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/Polygon_Small.png')),
   ];
@@ -44,8 +44,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     tokenNumber = widget.tknNum;
 
     for (Athlete ath in AthleteList.list) {
-      tokens.add(Token(ath.name + " Long", ath.name + " Long", AssetImage('assets/images/apt.png')));
-      tokens.add(Token(ath.name + " Short", ath.name + " Short", AssetImage('assets/images/apt.png')));
+      tokens.add(Token(ath.name + " APT", ath.name + " APT", AssetImage('assets/images/apt.png')));
     }    
 
     tokenListFilter = tokens;
