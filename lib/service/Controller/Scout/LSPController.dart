@@ -36,15 +36,15 @@ class LSPController extends GetxController {
     // approve().then((value) async {
     // });
     approve().then((value) async {
-    String txString =
-        await genericLSP.create(tokensToCreate, credentials: theCredentials);
-        controller.updateTxString(txString); //Sends tx to controller
+      String txString =
+          await genericLSP.create(tokensToCreate, credentials: theCredentials);
+      controller.updateTxString(txString); //Sends tx to controller
     });
-
   }
 
   Future<void> approve() async {
-    BigInt amount =  BigInt.from(createAmt.value) * BigInt.parse('250000000000000000');
+    BigInt amount =
+        BigInt.from(createAmt.value) * BigInt.parse('250000000000000000');
     print("[Console] Inside approve()");
     EthereumAddress address =
         EthereumAddress.fromHex("0x76d9a6e4cdefc840a47069b71824ad8ff4819e85");
@@ -53,15 +53,17 @@ class LSPController extends GetxController {
     Erc20 axt = Erc20(address: address, client: tokenClient);
     try {
       print("[Console] Created a token variable.");
-      
     } catch (error) {
       print(error);
     }
     print("[Console] Got the amount");
     EthereumAddress spender =
         EthereumAddress.fromHex("0xD3E03e36D70F65A00732F9086D994D83A3EaC286");
-    String txString =
-        await axt.approve(spender, amount, credentials: controller.credentials);
+    try {
+      await axt.approve(spender, amount, credentials: controller.credentials);
+    } catch (e) {
+      print("[Console] Could not approve: $e");
+    }
   }
 
   Future<void> redeem() async {
