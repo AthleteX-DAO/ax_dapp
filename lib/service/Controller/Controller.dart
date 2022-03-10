@@ -2,8 +2,6 @@
 
 //Comment this for Android
 import 'dart:html';
-import 'dart:math';
-import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
@@ -26,7 +24,7 @@ class Controller extends GetxController {
   var gasString = "0".obs;
   static const MAINNET_CHAIN_ID = 137;
   static const TESTNET_CHAIN_ID = 80001;
-  int ACTIVE_CHAIN_ID = TESTNET_CHAIN_ID;
+  int activeChainId = TESTNET_CHAIN_ID;
   static const supportedChains = {
     137: "https://polygon-rpc.com",
     80001: "https://matic-mumbai.chainstacklabs.com"
@@ -102,7 +100,7 @@ class Controller extends GetxController {
   // Connect the client + set credentials
   void connectNative() async {
     String rpcUrl = "";
-    switch (ACTIVE_CHAIN_ID) {
+    switch (activeChainId) {
       case 137:
         rpcUrl = mainRPCUrl;
         break;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Dialog.dart';
+// import 'package:ax_dapp/service/Dialog.dart';
 
 // DO NOT DELETE THE CODE
 /*class ApproveButton extends StatelessWidget {

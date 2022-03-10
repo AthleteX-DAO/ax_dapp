@@ -4,16 +4,13 @@ import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:web3dart/web3dart.dart';
 
 Future<void> testFunction() async {
   return;
@@ -98,7 +95,6 @@ Dialog connectMetamaskDialog(BuildContext context) {
 
 //dynamic
 Dialog wrongNetworkDialog(BuildContext context) {
-  Controller controller = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 450;
@@ -282,11 +278,8 @@ Dialog walletDialog(BuildContext context) {
 }
 
 Dialog depositDialog(BuildContext context) {
-  SwapController swapController = Get.find();
-  Controller controller = Get.find();
   TextEditingController stakeAxInput = TextEditingController();
   WalletController walletController = Get.find();
-  var amount = 0.0.obs;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 390;
@@ -1065,8 +1058,6 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                     //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                     onPressed: () async {
                       Navigator.pop(context);
-                      EthereumAddress aptAddress = EthereumAddress.fromHex(
-                          "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22");
                       bool confirmed;
                       String txString =
                           "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
@@ -1656,7 +1647,6 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   if (_height < 455) hgt = _height;
 
   LSPController lspController = Get.find();
-  WalletController walletController = Get.find();
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -2645,7 +2635,6 @@ Dialog accountDialog(BuildContext context) {
 
 // dynamic
 Dialog removeDialog(BuildContext context) {
-  SwapController swapController = Get.find();
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -3231,12 +3220,9 @@ Dialog swapDialog(BuildContext context) {
 }
 
 Dialog poolAddLiquidity(BuildContext context, String name) {
-  SwapController swapController = Get.find();
-  double amount = 0;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 390;
-  double edge = 60;
   if (_width < 395) wid = _width;
   double hgt = 450;
   if (_height < 455) hgt = _height;
@@ -3384,12 +3370,10 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
 }
 
 Dialog poolRemoveLiquidity(BuildContext context, String name) {
-  SwapController swapController = Get.find();
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 390;
-  double edge = 60;
   if (_width < 395) wid = _width;
   double hgt = 525;
   if (_height < 530) hgt = _height;
