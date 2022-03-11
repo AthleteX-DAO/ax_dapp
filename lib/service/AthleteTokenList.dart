@@ -42,9 +42,12 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
 
     tokenNumber = widget.tknNum;
 
-    for (Athlete ath in AthleteList.list)
-      tokens.add(Token(ath.name + " APT", ath.name + " APT",
+    for (Athlete ath in AthleteList.list) {
+      tokens.add(Token(ath.name + " Long", ath.name + " Long",
           AssetImage('../assets/images/apt.png')));
+      tokens.add(Token(ath.name + " Short", ath.name + " Short",
+          AssetImage('../assets/images/apt.png')));
+    }
 
     tokenListFilter = tokens;
   }

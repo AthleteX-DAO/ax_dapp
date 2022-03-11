@@ -64,7 +64,7 @@ class LSPController extends GetxController {
 
   void updateAptAddress(int athleteId) {
     if (AXT.idToAddress.containsKey(athleteId)) {
-      aptAddress.value = AXT.idToAddress[athleteId] as String;
+      aptAddress.value = AXT.idToAddress[athleteId]![0];
       print("[Console] Updated the aptAddress to $aptAddress");
     } else {
       aptAddress.value = '';
