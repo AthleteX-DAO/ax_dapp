@@ -199,7 +199,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
     if (cardHeight < minCardHeight) cardHeight = minCardHeight;
     if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
-    Dialog participatingDialog;
     Widget farmTitleWidget;
     if (farm.athlete == null) {
       farmTitleWidget = farmTitleSingleLogo(farm, cardWidth);
@@ -382,14 +381,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
     if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
 
     TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
-    Dialog participatingDialog;
     Widget farmTitleWidget;
     if (farm.athlete == null) {
       farmTitleWidget = farmTitleSingleLogo(farm, cardWidth);
-      participatingDialog = depositDialog(context);
     } else {
       farmTitleWidget = farmTitleDoubleLogo(farm);
-      participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
 
     return Container(

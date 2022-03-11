@@ -159,10 +159,8 @@ class _DesktopScoutState extends State<DesktopScout> {
   Widget buildListviewHeaders() {
     double _width = MediaQuery.of(context).size.width;
 
-    bool view = true;
     bool team = true;
     bool bookVal = true;
-    if (_width < 910) view = false;
     if (_width < 684) team = false;
     if (_width < 575) bookVal = false;
 
