@@ -1,10 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
-import 'dart:io';
-
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:ax_dapp/service/Controller/APT.dart';
 import 'package:get/get.dart';
-import 'package:web3dart/credentials.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../../contracts/LongShortPair.g.dart';
 import 'package:web3dart/contracts/erc20.dart';

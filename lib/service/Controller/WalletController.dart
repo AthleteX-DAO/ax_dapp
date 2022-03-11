@@ -2,10 +2,8 @@ import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:coingecko_api/coingecko_api.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
-import 'package:intl/intl.dart';
 import 'Controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -52,10 +50,8 @@ class WalletController extends GetxController {
 
   // Update token balance
   Future<void> getTokenBalance() async {
-    var axFormat =
-        NumberFormat.currency(name: "AX", symbol: "α", decimalDigits: 2);
+
     Controller controller = Get.find();
-    var theClient = controller.client.value;
     var walletAddress = controller.publicAddress.value;
     var tokenAddress;
     if (controller.networkID.value == Controller.MAINNET_CHAIN_ID) {
@@ -84,9 +80,9 @@ class WalletController extends GetxController {
   }
 
   void buyAX() {
-    String AX_ETH =
+    String axEth =
         "https://app.sushi.com/swap?inputCurrency=0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df&outputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
-    String urlString = AX_ETH;
+    String urlString = axEth;
     launch(urlString);
   }
 

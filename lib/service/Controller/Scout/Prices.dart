@@ -39,8 +39,6 @@ class Prices {
 
   void query(String name) async {
     print("QUERY: this came in: $name");
-    String query =
-        "SELECT $name, first(price) as StartingPrice, last(price) as LatestPrice from nfl;";
 
     List<List<dynamic>> results = await connection.query(
         "SELECT @name, first(price) as StartingPrice, last(price) as LatestPrice from nfl",

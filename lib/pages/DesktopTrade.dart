@@ -6,7 +6,6 @@ import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
