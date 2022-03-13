@@ -83,6 +83,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
             isWeb ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
+            width: isWeb ? 300 : layoutWdt / 2,
             height: isWeb ? 45 : layoutHgt * 0.05,
             child: isAllFarms
                 ? Text(
@@ -437,7 +438,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
   Widget createSearchBar(double layoutWdt, double layoutHgt) {
     return Container(
-      width: 250,
+      width: isWeb ? 250 : layoutWdt / 2,
       height: isWeb ? 40 : layoutHgt * 0.05,
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
       child: Row(
