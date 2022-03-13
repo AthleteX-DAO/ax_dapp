@@ -75,38 +75,37 @@ class _DesktopFarmState extends State<DesktopFarm> {
     //If web and in MyFarms list height 500
     if (isWeb && !isAllFarms) listHeight = 500;
 
-    Widget toggle = toggleFarmButton();
+    Widget toggle = toggleFarmButton(layoutWdt, layoutHgt);
 
     return Wrap(runSpacing: layoutHgt * 0.02, children: <Widget>[
-      FittedBox(
-        fit: BoxFit.fill,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              height: 45,
-              alignment: Alignment.bottomLeft,
-              child: isAllFarms
-                  ? Text(
-                      "Participating Farms",
+      Row(
+        mainAxisAlignment:
+            isWeb ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            height: isWeb ? 45 : layoutHgt * 0.05,
+            child: isAllFarms
+                ? Text(
+                    "Participating Farms",
+                    style: textStyle(Colors.white, 24, true, false),
+                  )
+                : Container(
+                    child: Text(
+                      "My Farms",
                       style: textStyle(Colors.white, 24, true, false),
-                    )
-                  : Container(
-                      height: 45,
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        "My Farms",
-                        style: textStyle(Colors.white, 24, true, false),
-                      ),
                     ),
-            ),
-            if (!isWeb) createSearchBar(),
-          ],
-        ),
+                  ),
+          ),
+          if (!isWeb) createSearchBar(layoutWdt, layoutHgt),
+        ],
       ),
       if (isWeb)
         Row(
-          children: <Widget>[createSearchBar(), SizedBox(width: 50), toggle],
+          children: <Widget>[
+            createSearchBar(layoutWdt, layoutHgt),
+            SizedBox(width: 50),
+            toggle
+          ],
         ),
       if (!isWeb) toggle,
       Container(
@@ -140,16 +139,16 @@ class _DesktopFarmState extends State<DesktopFarm> {
     ]);
   }
 
-  Container toggleFarmButton() {
+  Container toggleFarmButton(double layoutWdt, double layoutHgt) {
     return Container(
-      width: 200,
+      width: isWeb ? 200 : layoutWdt,
       height: 40,
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Container(
-              width: 85,
+              width: isWeb ? 90 : (layoutWdt / 2) - 5,
               decoration: isAllFarms
                   ? boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent)
                   : boxDecoration(
@@ -167,7 +166,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   child: Text("All Farms",
                       style: textStyle(Colors.white, 16, true, false)))),
           Container(
-              width: 90,
+              width: isWeb ? 90 : (layoutWdt / 2) - 5,
               decoration: isAllFarms
                   ? boxDecoration(
                       Colors.transparent, 100, 0, Colors.transparent)
@@ -333,8 +332,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
-                    //width takes into account padding for card's content
-                    width: isWeb ? 240 : (cardWidth / 2) - 25,
+                    //subtract padding for card's content for mobile
+                    width: isWeb ? 215 : (cardWidth / 2) - 25,
                     height: 35,
                     decoration: boxDecoration(
                         Colors.amber[600]!, 100, 0, Colors.amber[600]!),
@@ -436,10 +435,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
   }
 
-  Widget createSearchBar() {
+  Widget createSearchBar(double layoutWdt, double layoutHgt) {
     return Container(
       width: 250,
-      height: 40,
+      height: isWeb ? 40 : layoutHgt * 0.05,
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
