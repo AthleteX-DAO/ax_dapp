@@ -528,7 +528,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
     if (farm.athlete == null) {
       participatingDialog = depositDialog(context, cardWidth, isWeb);
     } else {
-      participatingDialog = dualDepositDialog(context, farm.athlete!);
+      participatingDialog =
+          dualDepositDialog(context, farm.athlete!, cardWidth, isWeb);
     }
     return Container(
         width: cardWidth,
@@ -571,7 +572,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
     if (farm.athlete == null) {
       participatingDialog = depositDialog(context, cardWidth, isWeb);
     } else {
-      participatingDialog = dualDepositDialog(context, farm.athlete!);
+      participatingDialog =
+          dualDepositDialog(context, farm.athlete!, cardWidth, isWeb);
     }
     return Container(
         width: cardWidth,

@@ -500,18 +500,19 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
 }
 
 // dynamic
-Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
+Dialog dualDepositDialog(
+    BuildContext context, Athlete athlete, double layoutWdt, bool isWeb) {
   TextEditingController stakeAxInput = TextEditingController();
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
-  double _width = MediaQuery.of(context).size.width;
   double wid = 390;
-  double edge = 60;
-  if (_width < 395) wid = _width;
+  wid = isWeb ? wid : layoutWdt;
   double hgt = 450;
   if (_height < 455) hgt = _height;
+  double dialogHorPadding = 30;
 
   return Dialog(
+    insetPadding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
@@ -519,6 +520,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
     child: Container(
         height: hgt,
         width: wid,
+        padding: EdgeInsets.symmetric(horizontal: dialogHorPadding),
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
         child: SingleChildScrollView(
           child: Column(
@@ -526,7 +528,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                  width: wid - edge,
+                  width: wid,
                   margin: EdgeInsets.only(top: 25, bottom: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -549,7 +551,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                     ],
                   )),
               Container(
-                  width: wid - edge,
+                  width: wid,
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     "*Add liquidity to supply LP tokens to your wallet\nDeposit LP tokens to AX rewards",
@@ -557,7 +559,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                   )),
               //Amount Box
               Container(
-                width: wid - edge,
+                width: wid,
                 height: 55,
                 decoration: boxDecoration(
                     Colors.transparent, 14, 0.5, Colors.grey[400]!),
@@ -628,7 +630,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
               ),
               //Amount Box
               Container(
-                  width: wid - edge,
+                  width: wid,
                   height: 55,
                   decoration: boxDecoration(
                       Colors.transparent, 14, 0.5, Colors.grey[400]!),
@@ -690,7 +692,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                   )),
               Container(
                   width: 175,
-                  height: 35,
+                  height: 45,
                   decoration: boxDecoration(
                       Colors.transparent, 100, 1, Colors.amber[400]!),
                   margin: EdgeInsets.only(top: 20, bottom: 10),
@@ -711,7 +713,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
               ),
               Container(
                 width: 175,
-                height: 35,
+                height: 40,
                 decoration: boxDecoration(Colors.grey, 100, 1, Colors.grey),
                 margin: EdgeInsets.symmetric(vertical: 10),
                 child: TextButton(
