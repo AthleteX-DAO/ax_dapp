@@ -209,7 +209,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
       //Dialog show on stake button press (already inside farmTitleWidget method)
       //participatingDialog = depositDialog(context);
     } else {
-      farmTitleWidget = farmTitleDoubleLogo(farm);
+      farmTitleWidget = farmTitleDoubleLogo(farm, cardWidth);
       //participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
     return Container(
@@ -380,7 +380,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     if (farm.athlete == null) {
       farmTitleWidget = farmTitleSingleLogo(farm, cardWidth);
     } else {
-      farmTitleWidget = farmTitleDoubleLogo(farm);
+      farmTitleWidget = farmTitleDoubleLogo(farm, cardWidth);
     }
 
     return Container(
@@ -523,9 +523,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
   }
 
   Widget farmTitleSingleLogo(Farm farm, double cardWidth) {
+    //Dialog that appears when stake button is pressed
     Dialog participatingDialog;
     if (farm.athlete == null) {
-      participatingDialog = depositDialog(context);
+      participatingDialog = depositDialog(context, cardWidth, isWeb);
     } else {
       participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
@@ -564,16 +565,16 @@ class _DesktopFarmState extends State<DesktopFarm> {
             ]));
   }
 
-  Widget farmTitleDoubleLogo(Farm farm) {
+  Widget farmTitleDoubleLogo(Farm farm, double cardWidth) {
     Dialog participatingDialog;
+    cardWidth = isWeb ? 500 : cardWidth;
     if (farm.athlete == null) {
-      participatingDialog = depositDialog(context);
+      participatingDialog = depositDialog(context, cardWidth, isWeb);
     } else {
       participatingDialog = dualDepositDialog(context, farm.athlete!);
     }
-    double cardWidth = 500;
     return Container(
-        width: cardWidth - 50,
+        width: cardWidth,
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

@@ -219,55 +219,55 @@ Dialog walletDialog(BuildContext context) {
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
-                //Comment this widget for Android
-                child: TextButton(
-                  onPressed: () {
-                    controller.connect().then((response) {
-                      if (response == -1) {
-                        // No MetaMask
-                        Navigator.pop(context);
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                connectMetamaskDialog(context));
-                      } else if (response == 0) {
-                        // Wrong network
-                        Navigator.pop(context);
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                wrongNetworkDialog(context));
-                      } else {
-                        Navigator.pop(context);
-                        walletController.getTokenMetrics();
-                        walletController.getTokenBalance();
-                      }
-                    });
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("../assets/images/fox.png"),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Metamask",
-                        style: textStyle(Colors.white, 16, false),
-                      ),
-                      //empty container
-                      Container(
-                        margin: EdgeInsets.only(left: 20),
-                      ),
-                    ],
-                  ),
-                ),
+                // //Comment this widget (TextButton) for Android
+                // child: TextButton(
+                //   onPressed: () {
+                //     controller.connect().then((response) {
+                //       if (response == -1) {
+                //         // No MetaMask
+                //         Navigator.pop(context);
+                //         showDialog(
+                //             context: context,
+                //             builder: (BuildContext context) =>
+                //                 connectMetamaskDialog(context));
+                //       } else if (response == 0) {
+                //         // Wrong network
+                //         Navigator.pop(context);
+                //         showDialog(
+                //             context: context,
+                //             builder: (BuildContext context) =>
+                //                 wrongNetworkDialog(context));
+                //       } else {
+                //         Navigator.pop(context);
+                //         walletController.getTokenMetrics();
+                //         walletController.getTokenBalance();
+                //       }
+                //     });
+                //   },
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: <Widget>[
+                //       Container(
+                //         height: 30,
+                //         width: 30,
+                //         decoration: BoxDecoration(
+                //           image: DecorationImage(
+                //             image: AssetImage("assets/images/fox.png"),
+                //             fit: BoxFit.fill,
+                //           ),
+                //         ),
+                //       ),
+                //       Text(
+                //         "Metamask",
+                //         style: textStyle(Colors.white, 16, false),
+                //       ),
+                //       //empty container
+                //       Container(
+                //         margin: EdgeInsets.only(left: 20),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ),
             ],
           ),
@@ -277,18 +277,19 @@ Dialog walletDialog(BuildContext context) {
   );
 }
 
-Dialog depositDialog(BuildContext context) {
+Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
   TextEditingController stakeAxInput = TextEditingController();
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
-  double _width = MediaQuery.of(context).size.width;
   double wid = 390;
-  double edge = 60;
-  if (_width < 395) wid = _width;
+  wid = isWeb ? wid : layoutWdt;
   double hgt = 450;
   if (_height < 455) hgt = _height;
+  double dialogHorPadding = 30;
 
   return Dialog(
+    //remove inset padding to increase width of child widget
+    insetPadding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
@@ -296,7 +297,7 @@ Dialog depositDialog(BuildContext context) {
     child: Container(
       height: hgt,
       width: wid,
-      padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+      padding: EdgeInsets.symmetric(vertical: 22, horizontal: dialogHorPadding),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -327,8 +328,9 @@ Dialog depositDialog(BuildContext context) {
               //Amount Box
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 30),
-                padding: const EdgeInsets.all(10),
-                width: wid - edge,
+                // padding: const EdgeInsets.all(10),
+                // Amount box was overflowing by 30px after using dialogHorPadding
+                width: wid - dialogHorPadding - 30,
                 height: 55,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
@@ -338,20 +340,22 @@ Dialog depositDialog(BuildContext context) {
                     width: 0.5,
                   ),
                 ),
+                //Amount box content
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Container(width: 10),
+                    //Icon image
                     Container(
                       width: 35,
                       height: 35,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage("../assets/images/x.jpg"),
+                          image: AssetImage("assets/images/x.png"),
                         ),
                       ),
                     ),
+                    //Empty space between icon image and ticker
                     Container(width: 15),
                     Expanded(
                       child: Text(
@@ -359,9 +363,10 @@ Dialog depositDialog(BuildContext context) {
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ),
+                    //Max button
                     Container(
-                      height: 18,
-                      width: 35,
+                      height: 28,
+                      width: 48,
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
@@ -379,7 +384,7 @@ Dialog depositDialog(BuildContext context) {
                       ),
                     ),
                     SizedBox(
-                      width: 70,
+                      width: 80,
                       child: TextFormField(
                         controller: stakeAxInput,
                         onChanged: (value) {
@@ -568,7 +573,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage("../assets/images/x.jpg"),
+                          image: AssetImage("assets/images/x.png"),
                         ),
                       ),
                     ),
@@ -640,7 +645,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: AssetImage("../assets/images/apt.png"),
+                            image: AssetImage("assets/images/apt.png"),
                           ),
                         ),
                       ),
@@ -840,7 +845,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage("../assets/images/x.jpg"),
+                                image: AssetImage("assets/images/x.png"),
                               ),
                             ),
                           ),
@@ -1188,7 +1193,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: AssetImage("../assets/images/apt.png"),
+                            image: AssetImage("assets/images/apt.png"),
                           ),
                         ),
                       ),
@@ -1521,7 +1526,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: AssetImage("../assets/images/apt.png"),
+                            image: AssetImage("assets/images/apt.png"),
                           ),
                         ),
                       ),
@@ -1732,7 +1737,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage("../assets/images/x.jpg"),
+                            image: AssetImage("assets/images/x.png"),
                           ),
                         ),
                       ),
@@ -2261,7 +2266,7 @@ Dialog yourAXDialog(BuildContext context) {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       scale: 2.0,
-                      image: AssetImage('../assets/images/x.jpg'),
+                      image: AssetImage('assets/images/x.png'),
                     ),
                     shape: BoxShape.circle,
                   ),
@@ -2704,7 +2709,7 @@ Dialog removeDialog(BuildContext context) {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           scale: 2.0,
-                          image: AssetImage('../assets/images/x.jpg'),
+                          image: AssetImage('assets/images/x.png'),
                         ),
                         shape: BoxShape.circle,
                       ),
