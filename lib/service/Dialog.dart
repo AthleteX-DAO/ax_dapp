@@ -1684,7 +1684,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: "You can mint APT's at their Book Value for AX.",
+                      text: "You can mint APT's at the collateralization rate of 10,000 AX per pair.",
                       style: textStyle(Colors.grey[600]!, 15, false),
                     ),
                     TextSpan(
@@ -1706,7 +1706,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                 Container(
                   width: wid - edge,
                   child: Text(
-                    "Input AX:",
+                    "Create APT Pairs:",
                     style: textStyle(Colors.grey[600]!, 15, false),
                   ),
                 ),
@@ -1732,14 +1732,14 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage("../assets/images/x.jpg"),
+                            image: AssetImage("../assets/images/apt.png"),
                           ),
                         ),
                       ),
                       Container(width: 15),
                       Expanded(
                         child: Text(
-                          "AX",
+                          "APTs",
                           style: textStyle(Colors.white, 15, false),
                         ),
                       ),
