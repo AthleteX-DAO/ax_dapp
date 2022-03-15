@@ -40,7 +40,7 @@ class LSPController extends GetxController {
 
   Future<void> approve(
       LongShortPair genericLSP, EthereumAddress address) async {
-    print("collaterall amount: ${await genericLSP.collateralPerPair()}");
+    print("[Console] Collateral amount: ${await genericLSP.collateralPerPair()}");
     BigInt transferAmount = await genericLSP.collateralPerPair();
     BigInt amount = BigInt.from(createAmt.value) * transferAmount;
     print("[Console] Inside approve()");
@@ -70,7 +70,6 @@ class LSPController extends GetxController {
       aptAddress.value = '';
       throw Exception("Player id is not supported!");
     }
-
     update();
   }
 
