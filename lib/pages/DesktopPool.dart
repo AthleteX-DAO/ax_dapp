@@ -38,7 +38,6 @@ class _DesktopPoolState extends State<DesktopPool> {
   void initState() {
     super.initState();
 
-<<<<<<< HEAD
     for (Athlete ath in AthleteList.list) {
       tokens.add(Token(ath.name + " Long", ath.name + " Long",
           AssetImage('../assets/images/apt.png')));
@@ -47,14 +46,6 @@ class _DesktopPoolState extends State<DesktopPool> {
     }
     tkn1 = tokens[1];
     tkn2 = tokens[3];
-=======
-    for (Athlete ath in AthleteList.list)
-      tokenList.add(Token(ath.name + " APT", ath.name + " APT",
-          AssetImage('assets/images/apt.png')));
-
-    tkn1 = tokenList[0];
-    tkn2 = tokenList[3];
->>>>>>> develop
 
     tokenListFilter = tokenList;
   }
@@ -86,176 +77,11 @@ class _DesktopPoolState extends State<DesktopPool> {
                 : myLiquidityLayout(layoutHgt, layoutWdt)));
   }
 
-<<<<<<< HEAD
-  Widget allLiquidity() {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
-    double wid = _width * 0.75;
-
-    Widget toggle = Container(
-        width: 260,
-        height: 40,
-        margin: EdgeInsets.symmetric(vertical: _height * 0.04),
-        decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                  width: 120,
-                  decoration: boxDecoration(
-                      Colors.grey[600]!, 100, 0, Colors.transparent),
-                  child: TextButton(
-                      onPressed: () {},
-                      child: Text("Add Liquidity",
-                          style: textStyle(Colors.white, 16, true)))),
-              Container(
-                  width: 115,
-                  decoration: boxDecoration(
-                      Colors.transparent, 100, 0, Colors.transparent),
-                  child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          allLiq = false;
-                        });
-                      },
-                      child: Text("My Liquidity",
-                          style: textStyle(Colors.white, 16, true))))
-            ]));
-
-    bool advDetails = true;
-
-    Widget pricePoolShare = Container(
-        height: 275,
-        width: wid / 2 - 40,
-        alignment: Alignment.topRight,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                  padding: EdgeInsets.only(top: 15),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    detailsText(advDetails),
-                    style: textStyle(Colors.white, 21, true),
-                  )),
-              Container(
-                  width: wid / 2 - 95,
-                  height: 65,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      // AX per / APT per
-                      Container(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Container(
-                              width: wid / 4 - 70,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "AX per tkn APT:",
-                                    style:
-                                        textStyle(Colors.grey[600]!, 17, false),
-                                  ),
-                                  Text(
-                                    "2.24",
-                                    style: textStyle(Colors.white, 17, false),
-                                  )
-                                ],
-                              )),
-                          Container(
-                              width: wid / 4 - 70,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "tkn APT per AX:",
-                                    style:
-                                        textStyle(Colors.grey[600]!, 17, false),
-                                  ),
-                                  Text(
-                                    "1.48",
-                                    style: textStyle(Colors.white, 17, false),
-                                  )
-                                ],
-                              )),
-                        ],
-                      )),
-                      // pool share / exp. yield
-                      Container(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                            Container(
-                                width: wid / 4 - 70,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "Share of pool:",
-                                      style: textStyle(
-                                          Colors.grey[600]!, 17, false),
-                                    ),
-                                    Text(
-                                      "0.12%",
-                                      style: textStyle(Colors.white, 17, false),
-                                    )
-                                  ],
-                                )),
-                            Container(
-                                width: wid / 4 - 70,
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        "Expected yield:",
-                                        style: textStyle(
-                                            Colors.grey[600]!, 17, false),
-                                      ),
-                                      Text(
-                                        "24.12%",
-                                        style:
-                                            textStyle(Colors.white, 17, false),
-                                      )
-                                    ])),
-                          ]))
-                    ],
-                  )),
-              Container(
-                width: wid / 2 - 125,
-                child: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text:
-                              "*Add liquidity to earn 0.25% of all trades on this pair",
-                          style:
-                              TextStyle(color: Colors.grey[600], fontSize: 15)),
-                      TextSpan(
-                          text:
-                              " proportional to your share of the pool and receive LP tokens.",
-                          style:
-                              TextStyle(color: Colors.grey[600], fontSize: 15)),
-                    ],
-                  ),
-                ),
-              ),
-              approveText(advDetails, wid)
-            ]));
-=======
   Widget allLiquidityLayout(double layoutHgt, double layoutWdt) {
     //Boolean to show advanced details
     //Using 87% of layoutHgt at the moment (76) Pool Card + (5) Title + (6) Toggle Button
     bool isAdvDetails = true;
     double allLiquidityCardHgt = isWeb ? 300 : layoutHgt * 0.76;
->>>>>>> develop
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -295,106 +121,6 @@ class _DesktopPoolState extends State<DesktopPool> {
     );
   }
 
-<<<<<<< HEAD
-  Container approveText(bool advDetails, double wid) {
-    return advDetails
-        ? Container(
-            width: wid / 2 - 95,
-            height: 45,
-            decoration:
-                boxDecoration(Colors.transparent, 100, 0, Colors.amber[400]!),
-            child: TextButton(
-                onPressed: () => showDialog(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        poolAddLiquidity(context, tkn2!.name)),
-                child: Text(
-                  "Approve",
-                  style: textStyle(Colors.amber[500]!, 16, true),
-                )))
-        : Container(
-            width: wid / 2 - 95,
-            height: 45,
-            decoration:
-                boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!),
-            child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Approve",
-                  style: textStyle(Colors.amber[400]!, 16, true),
-                )));
-  }
-
-  String detailsText(bool advDetails) =>
-      advDetails ? "Details: Price and Pool Share" : "Details";
-
-  Widget myLiquidity() {
-    double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
-
-    List<Widget> poolRows = [];
-    for (int i = 0; i < AthleteList.list.length;) {
-      poolRows.add(Container(
-          alignment: Alignment.topCenter,
-          height: 325,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // 1 pool per row
-              createPoolCard(AthleteList.list[i++]),
-              // 2 pools per row
-              if (_width * .8 > 818 && i < AthleteList.list.length) ...{
-                SizedBox(width: 30),
-                createPoolCard(AthleteList.list[i++]),
-              },
-              // 3 pools per row
-              if (_width * .8 > 1227 && i < AthleteList.list.length) ...{
-                SizedBox(
-                  width: 30,
-                ),
-                createPoolCard(AthleteList.list[i++])
-              },
-              // 4 pools per row
-              if (_width * .8 > 1636 && i < AthleteList.list.length) ...{
-                SizedBox(
-                  width: 30,
-                ),
-                createPoolCard(AthleteList.list[i++])
-              }
-            ],
-          )));
-    }
-
-    Widget toggle = Container(
-        width: 260,
-        height: 40,
-        margin: EdgeInsets.symmetric(vertical: _height * 0.04),
-        decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                  width: 120,
-                  decoration: boxDecoration(
-                      Colors.transparent, 100, 0, Colors.transparent),
-                  child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          allLiq = true;
-                        });
-                      },
-                      child: Text("Add Liquidity",
-                          style: textStyle(Colors.white, 16, true)))),
-              Container(
-                  width: 115,
-                  decoration: boxDecoration(
-                      Colors.grey[600]!, 100, 0, Colors.transparent),
-                  child: TextButton(
-                      onPressed: () {},
-                      child: Text("My Liquidity",
-                          style: textStyle(Colors.white, 16, true)))),
-            ]));
-=======
   List<Widget> allLiquidityCardContents(double layoutHgt, double layoutWdt,
       double allLiquidityCardHgt, bool isAdvDetails) {
     double elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
@@ -439,7 +165,6 @@ class _DesktopPoolState extends State<DesktopPool> {
   Widget myLiquidityLayout(double layoutHgt, double layoutWdt) {
     double titleHgt = layoutHgt * 0.05;
     double gridHgt = layoutHgt * 0.75;
->>>>>>> develop
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
