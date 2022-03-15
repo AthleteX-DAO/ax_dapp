@@ -1,5 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
-
+import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../../contracts/LongShortPair.g.dart';
@@ -17,59 +17,60 @@ class LSPController extends GetxController {
   late LongShortPair genericLSP;
   var createAmt = 0.0.obs;
   var redeemAmt = 0.0.obs;
+  var aptAddress = ''.obs;
+  final tokenClient =
+      Web3Client("https://matic-mumbai.chainstacklabs.com", new Client());
   // Hard address listing of all Athletes
 
-  LSPController() {
-    final tokenClient =
-        Web3Client("https://matic-mumbai.chainstacklabs.com", new Client());
-    EthereumAddress address =
-        EthereumAddress.fromHex("0xD3E03e36D70F65A00732F9086D994D83A3EaC286");
-    genericLSP = LongShortPair(address: address, client: tokenClient);
-  }
+  LSPController();
 
   Future<void> mint() async {
+    EthereumAddress address = EthereumAddress.fromHex(aptAddress.value);
+    genericLSP = LongShortPair(address: address, client: tokenClient);
     print("Attempting to MINT LSP");
-    print(await controller.credentials.extractAddress());
     final theCredentials = controller.credentials;
-    BigInt tokensToCreate = BigInt.from(createAmt.value);
-
-    // approve().then((value) async {
-    // });
-    approve().then((value) async {
+    BigInt tokensToCreate =
+        BigInt.from(createAmt.value) * BigInt.from(1000000000000000000);
+    approve(genericLSP, address).then((value) async {
       String txString =
           await genericLSP.create(tokensToCreate, credentials: theCredentials);
       controller.updateTxString(txString); //Sends tx to controller
     });
   }
 
-  Future<void> approve() async {
-    BigInt amount =
-        BigInt.from(createAmt.value) * BigInt.parse('250000000000000000');
+  Future<void> approve(
+      LongShortPair genericLSP, EthereumAddress address) async {
+    print("[Console] Collateral amount: ${await genericLSP.collateralPerPair()}");
+    BigInt transferAmount = await genericLSP.collateralPerPair();
+    BigInt amount = BigInt.from(createAmt.value) * transferAmount;
     print("[Console] Inside approve()");
-    EthereumAddress address =
-        EthereumAddress.fromHex("0x76d9a6e4cdefc840a47069b71824ad8ff4819e85");
-    final tokenClient =
-        Web3Client("https://matic-mumbai.chainstacklabs.com", Client());
-    Erc20 axt = Erc20(address: address, client: tokenClient);
+    EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.mumbaiAddress);
+    Erc20 axt = Erc20(address: axtaddress, client: tokenClient);
     try {
-      print("[Console] Created a token variable.");
-    } catch (error) {
-      print(error);
-    }
-    print("[Console] Got the amount");
-    EthereumAddress spender =
-        EthereumAddress.fromHex("0xD3E03e36D70F65A00732F9086D994D83A3EaC286");
-    try {
-      await axt.approve(spender, amount, credentials: controller.credentials);
+      await axt.approve(address, amount, credentials: controller.credentials);
     } catch (e) {
       print("[Console] Could not approve: $e");
     }
   }
 
   Future<void> redeem() async {
+    EthereumAddress address = EthereumAddress.fromHex(aptAddress.value);
+    genericLSP = LongShortPair(address: address, client: tokenClient);
     final theCredentials = controller.credentials;
-    BigInt tokensToRedeem = BigInt.from(redeemAmt.value);
+    BigInt tokensToRedeem =
+        BigInt.from(redeemAmt.value) * BigInt.from(1000000000000000000);
     genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
+  }
+
+  void updateAptAddress(int athleteId) {
+    if (AXT.idToAddress.containsKey(athleteId)) {
+      aptAddress.value = AXT.idToAddress[athleteId] as String;
+      print("[Console] Updated the aptAddress to $aptAddress");
+    } else {
+      aptAddress.value = '';
+      throw Exception("Player id is not supported!");
+    }
+    update();
   }
 
   void updateCreateAmt(double newAmount) {

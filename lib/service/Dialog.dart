@@ -1750,7 +1750,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
-                          onPressed: () { },
+                          onPressed: () {},
                           child: Text(
                             "Max",
                             style: textStyle(Colors.grey[400]!, 9, false),
@@ -1803,11 +1803,12 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
-                    child: Obx(() => Text(
-                      "${lspController.createAmt} APTS",
-                      style: textStyle(Colors.white, 15, false),
+                    child: Obx(
+                      () => Text(
+                        "${lspController.createAmt} APTS",
+                        style: textStyle(Colors.white, 15, false),
+                      ),
                     ),
-                              ),
                   ),
                 ],
               ),
@@ -2944,7 +2945,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: wid-edge,
+              width: wid - edge,
               alignment: Alignment.center,
               child: Icon(
                 Icons.arrow_downward,
@@ -2952,7 +2953,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: wid-edge,
+              width: wid - edge,
               height: 50,
               child: Column(
                 children: <Widget>[
@@ -3145,7 +3146,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: wid-edge,
+              width: wid - edge,
               height: 30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
