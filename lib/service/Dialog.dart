@@ -2642,17 +2642,17 @@ Dialog accountDialog(BuildContext context) {
 }
 
 // dynamic
-Dialog removeDialog(BuildContext context) {
+Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
-  double _width = MediaQuery.of(context).size.width;
   double wid = 390;
-  double edge = 60;
-  if (_width < 395) wid = _width;
+  wid = isWeb ? wid : layoutWdt;
   double hgt = 450;
   if (_height < 455) hgt = _height;
+  double dialogHorPadding = 30;
 
   return Dialog(
+    insetPadding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
@@ -2660,7 +2660,7 @@ Dialog removeDialog(BuildContext context) {
     child: Container(
       height: hgt,
       width: wid,
-      padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+      padding: EdgeInsets.symmetric(vertical: 22, horizontal: dialogHorPadding),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -2691,8 +2691,7 @@ Dialog removeDialog(BuildContext context) {
               //Amount Box
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 30),
-                padding: const EdgeInsets.all(10),
-                width: wid - edge,
+                width: wid - dialogHorPadding - 30,
                 height: 55,
                 decoration: BoxDecoration(
                   color: Colors.transparent,

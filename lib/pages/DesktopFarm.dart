@@ -355,7 +355,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                         onPressed: () => showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                removeDialog(context)),
+                                removeDialog(context, cardWidth, isWeb)),
                         child: Text("Unstake Liquidity",
                             style: textStyle(
                                 Colors.amber[600]!, 14, true, false)))),
