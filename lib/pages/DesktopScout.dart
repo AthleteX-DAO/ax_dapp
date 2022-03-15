@@ -20,8 +20,8 @@ class _DesktopScoutState extends State<DesktopScout> {
   int sportState = 0;
   List<Athlete> nflList = [];
   List<Athlete> nflListFilter = [];
-  String tt = "All Sports";
-  String tt2 = "Long";
+  String allSportsTitle = "All Sports";
+  String longTitle = "Long";
 
   // This will hold all the athletes
   List<Athlete> allList = [];
@@ -191,7 +191,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                     child: Row(
                       children: [
                         Text(
-                          tt,
+                          allSportsTitle,
                           style: TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                         Icon(
@@ -224,7 +224,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               allListFilter = allList;
                               sportState = 0;
                             });
-                          tt = "All Sports";
+                          allSportsTitle = "All Sports";
                         },
                       ),
                       PopupMenuItem(
@@ -256,7 +256,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             setState(() {
                               nflListFilter = nflList;
                               sportState = 1;
-                              tt = "NFL";
+                              allSportsTitle = "NFL";
                             });
                         },
                       ),
@@ -286,7 +286,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                           if (sportState != 2)
                             setState(() {
                               sportState = 2;
-                              tt = "NBA";
+                              allSportsTitle = "NBA";
                             });
                         },
                       ),
@@ -317,7 +317,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             setState(() {
                               sportState = 3;
                             });
-                          tt = "MMA";
+                          allSportsTitle = "MMA";
                         },
                       ),
                       PopupMenuItem(
@@ -347,7 +347,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             setState(() {
                               sportState = 4;
                             });
-                          tt = "Soccer";
+                          allSportsTitle = "Soccer";
                         },
                       ),
                     ],
@@ -360,7 +360,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                   child: Row(
                     children: [
                       Text(
-                        tt2,
+                        longTitle,
                         style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                       Icon(
@@ -382,7 +382,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ),
                       onTap: () {
                         setState(() {
-                          tt2 = "Long";
+                          longTitle = "Long";
                         });
                       },
                     ),
@@ -399,7 +399,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ),
                       onTap: () {
                         setState(() {
-                          tt2 = "Short";
+                          longTitle = "Short";
                         });
                       },
                     ),
