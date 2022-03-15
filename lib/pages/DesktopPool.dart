@@ -34,6 +34,12 @@ class _DesktopPoolState extends State<DesktopPool> {
     MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/matic.png')),
   ];
 
+  List<Token> tokens = [
+    AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
+    SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
+    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
+  ];
+
   @override
   void initState() {
     super.initState();
