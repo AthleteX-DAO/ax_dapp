@@ -220,54 +220,54 @@ Dialog walletDialog(BuildContext context) {
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
                 //Comment this widget (TextButton) for Android
-                child: TextButton(
-                  onPressed: () {
-                    controller.connect().then((response) {
-                      if (response == -1) {
-                        // No MetaMask
-                        Navigator.pop(context);
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                connectMetamaskDialog(context));
-                      } else if (response == 0) {
-                        // Wrong network
-                        Navigator.pop(context);
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                wrongNetworkDialog(context));
-                      } else {
-                        Navigator.pop(context);
-                        walletController.getTokenMetrics();
-                        walletController.getTokenBalance();
-                      }
-                    });
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/fox.png"),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Metamask",
-                        style: textStyle(Colors.white, 16, false),
-                      ),
-                      //empty container
-                      Container(
-                        margin: EdgeInsets.only(left: 20),
-                      ),
-                    ],
-                  ),
-                ),
+                // child: TextButton(
+                //   onPressed: () {
+                //     controller.connect().then((response) {
+                //       if (response == -1) {
+                //         // No MetaMask
+                //         Navigator.pop(context);
+                //         showDialog(
+                //             context: context,
+                //             builder: (BuildContext context) =>
+                //                 connectMetamaskDialog(context));
+                //       } else if (response == 0) {
+                //         // Wrong network
+                //         Navigator.pop(context);
+                //         showDialog(
+                //             context: context,
+                //             builder: (BuildContext context) =>
+                //                 wrongNetworkDialog(context));
+                //       } else {
+                //         Navigator.pop(context);
+                //         walletController.getTokenMetrics();
+                //         walletController.getTokenBalance();
+                //       }
+                //     });
+                //   },
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: <Widget>[
+                //       Container(
+                //         height: 30,
+                //         width: 30,
+                //         decoration: BoxDecoration(
+                //           image: DecorationImage(
+                //             image: AssetImage("assets/images/fox.png"),
+                //             fit: BoxFit.fill,
+                //           ),
+                //         ),
+                //       ),
+                //       Text(
+                //         "Metamask",
+                //         style: textStyle(Colors.white, 16, false),
+                //       ),
+                //       //empty container
+                //       Container(
+                //         margin: EdgeInsets.only(left: 20),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ),
             ],
           ),
@@ -587,8 +587,8 @@ Dialog dualDepositDialog(
                       ),
                     ),
                     Container(
-                      height: 18,
-                      width: 35,
+                      height: 28,
+                      width: 48,
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
@@ -659,8 +659,8 @@ Dialog dualDepositDialog(
                         ),
                       ),
                       Container(
-                        height: 18,
-                        width: 35,
+                        height: 28,
+                        width: 48,
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
@@ -859,8 +859,8 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                             ),
                           ),
                           Container(
-                            height: 18,
-                            width: 35,
+                            height: 28,
+                            width: 48,
                             decoration: boxDecoration(Colors.transparent, 100,
                                 0.5, Colors.grey[400]!),
                             child: TextButton(
@@ -1207,8 +1207,8 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                         ),
                       ),
                       Container(
-                        height: 18,
-                        width: 35,
+                        height: 28,
+                        width: 48,
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
@@ -1540,8 +1540,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                         ),
                       ),
                       Container(
-                        height: 18,
-                        width: 35,
+                        height: 28,
+                        width: 48,
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
@@ -1751,8 +1751,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         ),
                       ),
                       Container(
-                        height: 18,
-                        width: 35,
+                        height: 28,
+                        width: 48,
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
@@ -2723,8 +2723,8 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
                       ),
                     ),
                     Container(
-                      height: 18,
-                      width: 35,
+                      height: 28,
+                      width: 48,
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
