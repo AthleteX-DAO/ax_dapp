@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 
 class AthleteApi {
   static final String _baseURL = 'https://db.athletex.io';
+  // static final String _baseURL = 'http://139.99.74.201:8080';
+
   static final int mStaffordId = 9038;
   static final int jChaseId = 22564;
   static final int jBurrowId = 21693;
