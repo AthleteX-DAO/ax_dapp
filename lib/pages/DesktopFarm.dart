@@ -192,7 +192,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
   // First card of the my farms page is unique
   Widget createMyFarmItem(Farm farm, double listHeight, double layoutWidth) {
-    MediaQueryData mediaquery = MediaQuery.of(context);
     //TO DO pass list width so that this method knows width of parent - Mauricio
     //Cannot stablish a height for list items for cross axis alignment, in this case for rows
     //So for rows height is stablished in outer container
