@@ -2,8 +2,8 @@ import 'package:ax_dapp/pages/AthletePage.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -20,6 +20,9 @@ class _DesktopScoutState extends State<DesktopScout> {
   int sportState = 0;
   List<Athlete> nflList = [];
   List<Athlete> nflListFilter = [];
+  String allSportsTitle = "All Sports";
+  String longTitle = "Long";
+
   // This will hold all the athletes
   List<Athlete> allList = [];
   List<Athlete> allListFilter = [];
@@ -36,6 +39,8 @@ class _DesktopScoutState extends State<DesktopScout> {
       rushingYards: 0,
       war: 0,
       time: "");
+  int _widgetIndex = 0;
+  int _marketVsBookPriceIndex = 0;
 
   @override
   void dispose() {
@@ -47,147 +52,498 @@ class _DesktopScoutState extends State<DesktopScout> {
 
   @override
   Widget build(BuildContext context) {
-    double sportFilterTxSz = 18;
+    double sportFilterTxSz = 14;
+    double sportFilterIconSz = 14;
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
     if (athletePage) return AthletePage(athlete: curAthlete);
 
-    return Container(
-        height: _height * 0.85 + 41,
-        width: _width * 0.85,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // APT Title & Sport Filter
-              Container(
-                width: _width * 0.85,
-                height: 50,
-                child: Row(
-                    children: [
-                      Text("APT List",
-                          style: textStyle(Colors.white, 18, false, false)),
-                      Text("|",
-                          style: textStyle(Colors.white, 18, false, false)),
-                      Container(
-                          child: TextButton(
-                        onPressed: () {
+    return SingleChildScrollView(
+      physics: ClampingScrollPhysics(),
+      child: Container(
+          margin: EdgeInsets.only(top: 20),
+          // Do not delete any of the changes here yet
+          height: _height * 0.85 + 41,
+          //height: _height*0.85-41,
+          width: _width * 0.99,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
+                ),
+                //Container(height: 15),
+                // APT Title & Sport Filter
+                Container(
+                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                  width: _width * 1,
+                  height: 40,
+                  child: kIsWeb
+                      ? buildFilterMenuWeb(sportFilterTxSz, _width)
+                      : buildFilterMenu(sportFilterTxSz, sportFilterIconSz),
+                ),
+                //Container(height: _height*0.03),
+                // List Headers
+                buildListviewHeaders(),
+                // ListView of Athletes
+                buildListview()
+              ])),
+    );
+  }
+
+  Row buildFilterMenuWeb(double sportFilterTxSz, double _width) {
+    return Row(
+        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text("APT List", style: textStyle(Colors.white, 18, false, false)),
+          Text("|", style: textStyle(Colors.white, 18, false, false)),
+          Container(
+              child: TextButton(
+            onPressed: () {
+              myController.clear();
+              if (sportState != 0)
+                setState(() {
+                  allListFilter = allList;
+                  sportState = 0;
+                });
+            },
+            child: Text("ALL",
+                style: textSwapState(
+                    sportState == 0,
+                    textStyle(Colors.white, sportFilterTxSz, false, false),
+                    textStyle(
+                        Colors.amber[400]!, sportFilterTxSz, false, true))),
+          )),
+          Container(
+              child: TextButton(
+            onPressed: () {
+              myController.clear();
+              if (sportState != 1)
+                setState(() {
+                  nflListFilter = nflList;
+                  sportState = 1;
+                });
+            },
+            child: Text("NFL",
+                style: textSwapState(
+                    sportState == 1,
+                    textStyle(Colors.white, sportFilterTxSz, false, false),
+                    textStyle(
+                        Colors.amber[400]!, sportFilterTxSz, false, true))),
+          )),
+          Container(
+              child: TextButton(
+            onPressed: () {
+              if (sportState != 2)
+                setState(() {
+                  sportState = 2;
+                });
+            },
+            child: Text("NBA",
+                style: textSwapState(
+                    sportState == 2,
+                    textStyle(Colors.white, sportFilterTxSz, false, false),
+                    textStyle(
+                        Colors.amber[400]!, sportFilterTxSz, false, true))),
+          )),
+          Container(
+              child: TextButton(
+            onPressed: () {
+              if (sportState != 3)
+                setState(() {
+                  sportState = 3;
+                });
+            },
+            child: Text("MMA",
+                style: textSwapState(
+                    sportState == 3,
+                    textStyle(Colors.white, sportFilterTxSz, false, false),
+                    textStyle(
+                        Colors.amber[400]!, sportFilterTxSz, false, true))),
+          )),
+          Spacer(),
+          Container(
+            child: createSearchBar(),
+          ),
+        ]);
+  }
+
+  IndexedStack buildFilterMenu(
+      double sportFilterTxSz, double sportFilterIconSz) {
+    return IndexedStack(
+      index: _widgetIndex,
+      children: [
+        Container(
+          height: 20,
+          child: Row(
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text("APT List",
+                    style: textStyle(Colors.white, 18, false, false)),
+                Text("|", style: textStyle(Colors.white, 18, false, false)),
+                SizedBox(
+                  child: PopupMenuButton(
+                    child: Row(
+                      children: [
+                        Text(
+                          allSportsTitle,
+                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down_sharp,
+                          color: Colors.grey,
+                        )
+                      ],
+                    ),
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 1,
+                        child: ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("All Sports",
+                                  style: textSwapState(
+                                      sportState == 0,
+                                      textStyle(Colors.white, sportFilterTxSz,
+                                          false, false),
+                                      textStyle(Colors.amber[400]!,
+                                          sportFilterTxSz, false, true))),
+                            ],
+                          ),
+                        ),
+                        onTap: () {
                           myController.clear();
                           if (sportState != 0)
                             setState(() {
                               allListFilter = allList;
                               sportState = 0;
                             });
+                          allSportsTitle = "All Sports";
                         },
-                        child: Text("ALL",
-                            style: textSwapState(
-                                sportState == 0,
-                                textStyle(Colors.white, sportFilterTxSz, false,
-                                    false),
-                                textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                    false, true))),
-                      )),
-                      Container(
-                          child: TextButton(
-                        onPressed: () {
+                      ),
+                      PopupMenuItem(
+                        height: 5,
+                        value: 1,
+                        child: ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.only(right: 8),
+                                  child: Icon(
+                                    Icons.sports_football,
+                                    size: sportFilterIconSz,
+                                  )),
+                              Text("NFL",
+                                  style: textSwapState(
+                                      sportState == 1,
+                                      textStyle(Colors.white, sportFilterTxSz,
+                                          false, false),
+                                      textStyle(Colors.amber[400]!,
+                                          sportFilterTxSz, false, true))),
+                            ],
+                          ),
+                        ),
+                        onTap: () {
                           myController.clear();
                           if (sportState != 1)
                             setState(() {
                               nflListFilter = nflList;
                               sportState = 1;
+                              allSportsTitle = "NFL";
                             });
                         },
-                        child: Text("NFL",
-                            style: textSwapState(
-                                sportState == 1,
-                                textStyle(Colors.white, sportFilterTxSz, false,
-                                    false),
-                                textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                    false, true))),
-                      )),
-                      Container(
-                          child: TextButton(
-                        onPressed: () {
+                      ),
+                      PopupMenuItem(
+                        value: 1,
+                        child: ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.only(right: 8),
+                                  child: Icon(
+                                    Icons.sports_basketball,
+                                    size: sportFilterIconSz,
+                                  )),
+                              Text("NBA",
+                                  style: textSwapState(
+                                      sportState == 2,
+                                      textStyle(Colors.white, sportFilterTxSz,
+                                          false, false),
+                                      textStyle(Colors.amber[400]!,
+                                          sportFilterTxSz, false, true))),
+                            ],
+                          ),
+                        ),
+                        onTap: () {
                           if (sportState != 2)
                             setState(() {
                               sportState = 2;
+                              allSportsTitle = "NBA";
                             });
                         },
-                        child: Text("NBA",
-                            style: textSwapState(
-                                sportState == 2,
-                                textStyle(Colors.white, sportFilterTxSz, false,
-                                    false),
-                                textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                    false, true))),
-                      )),
-                      Container(
-                          child: TextButton(
-                        onPressed: () {
+                      ),
+                      PopupMenuItem(
+                        value: 1,
+                        child: ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.only(right: 8),
+                                  child: Icon(
+                                    Icons.sports_kabaddi,
+                                    size: sportFilterIconSz,
+                                  )),
+                              Text("MMA",
+                                  style: textSwapState(
+                                      sportState == 3,
+                                      textStyle(Colors.white, sportFilterTxSz,
+                                          false, false),
+                                      textStyle(Colors.amber[400]!,
+                                          sportFilterTxSz, false, true))),
+                            ],
+                          ),
+                        ),
+                        onTap: () {
                           if (sportState != 3)
                             setState(() {
                               sportState = 3;
                             });
+                          allSportsTitle = "MMA";
                         },
-                        child: Text("MMA",
-                            style: textSwapState(
-                                sportState == 3,
-                                textStyle(Colors.white, sportFilterTxSz, false,
-                                    false),
-                                textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                    false, true))),
-                      )),
-                      Container(
-                        child: Expanded(
-                          child: Container(),
+                      ),
+                      PopupMenuItem(
+                        value: 1,
+                        child: ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.only(right: 8),
+                                  child: Icon(
+                                    Icons.sports_soccer,
+                                    size: sportFilterIconSz,
+                                  )),
+                              Text("Soccer",
+                                  style: textSwapState(
+                                      sportState == 4,
+                                      textStyle(Colors.white, sportFilterTxSz,
+                                          false, false),
+                                      textStyle(Colors.amber[400]!,
+                                          sportFilterTxSz, false, true))),
+                            ],
+                          ),
+                        ),
+                        onTap: () {
+                          if (sportState != 4)
+                            setState(() {
+                              sportState = 4;
+                            });
+                          allSportsTitle = "Soccer";
+                        },
+                      ),
+                    ],
+                    offset: Offset(0, 45),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
+                ),
+                PopupMenuButton(
+                  child: Row(
+                    children: [
+                      Text(
+                        longTitle,
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_down_sharp,
+                        color: Colors.grey,
+                      )
+                    ],
+                  ),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 1,
+                      child: ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Long"),
+                          ],
                         ),
                       ),
-                      Container(
-                        child: createSearchBar(),
+                      onTap: () {
+                        setState(() {
+                          longTitle = "Long";
+                        });
+                      },
+                    ),
+                    PopupMenuItem(
+                      height: 5,
+                      value: 1,
+                      child: ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Short"),
+                          ],
+                        ),
                       ),
-                    ]),
-              ),
-              //Container(height: _height*0.03),
-              // List Headers
-              buildListviewHeaders(),
-              // ListView of Athletes
-              buildListview()
-            ]));
+                      onTap: () {
+                        setState(() {
+                          longTitle = "Short";
+                        });
+                      },
+                    ),
+                  ],
+                  offset: Offset(0, 45),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                ),
+                Spacer(),
+                Center(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _widgetIndex = 1;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.search,
+                          size: 20,
+                          color: Colors.grey,
+                        )),
+                  ),
+                ),
+              ]),
+        ),
+        Container(
+            height: 40,
+            child: Row(
+              children: [
+                Container(
+                  child: Expanded(
+                    child: Row(
+                      children: [
+                        createSearchBar(),
+                        Spacer(),
+                      ],
+                    ),
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    setState(() {
+                      _widgetIndex = 0;
+                    });
+                  },
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                        color: Color.fromRGBO(254, 197, 0, 1), fontSize: 17),
+                  ),
+                )
+              ],
+            ))
+      ],
+    );
   }
 
   Widget buildListviewHeaders() {
     double _width = MediaQuery.of(context).size.width;
 
     bool team = true;
-    bool bookVal = true;
     if (_width < 684) team = false;
-    if (_width < 575) bookVal = false;
 
     double athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
 
-    return Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-      Container(width: 66),
-      Container(
-          width: athNameBx,
-          child: Text("Athlete",
-              style: textStyle(Colors.grey[400]!, 12, false, false))),
-      if (team)
-        Container(
-            width: _width * 0.15,
-            child: Text("Team",
-                style: textStyle(Colors.grey[400]!, 12, false, false))),
-      Container(
-          child: Text("Market Price / Change",
-              style: textStyle(Colors.grey[400]!, 12, false, false))),
-      if (bookVal) ...[
-        Container(width: 25),
-        Container(
-            child: Text("Book Value / Change",
-                style: textStyle(Colors.grey[400]!, 12, false, false))),
-      ]
-    ]);
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(width: 66),
+          Container(
+              width: athNameBx,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Athlete",
+                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+              )),
+          if (team)
+            Container(
+                width: _width * 0.15,
+                child: Text("Team",
+                    style: textStyle(Colors.grey[400]!, 12, false, false))),
+          IndexedStack(
+            index: _marketVsBookPriceIndex,
+            children: [
+              MaterialButton(
+                onPressed: () {
+                  setState(() {
+                    _marketVsBookPriceIndex = 1;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Market Price",
+                          style: TextStyle(color: Colors.grey, fontSize: 10),
+                          textAlign: TextAlign.justify,
+                        )),
+                    Container(
+                        margin: EdgeInsets.only(left: 2),
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.autorenew,
+                              size: 10,
+                              color: Colors.grey,
+                            )))
+                  ],
+                ),
+              ),
+              MaterialButton(
+                onPressed: () {
+                  setState(() {
+                    _marketVsBookPriceIndex = 0;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Book Value",
+                        style: textStyle(Colors.grey[400]!, 10, false, false)),
+                    Container(
+                        margin: EdgeInsets.only(left: 2),
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.autorenew,
+                              size: 10,
+                              color: Colors.grey,
+                            )))
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ]);
   }
 
   Widget buildListview() {
@@ -236,6 +592,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     else {
       String spt = "NBA";
       if (sportState == 3) spt = "MMA";
+      if (sportState == 4) spt = "Soccer";
       return Container(
           height: hgt,
           child: Center(
@@ -250,11 +607,8 @@ class _DesktopScoutState extends State<DesktopScout> {
 
     bool view = true;
     bool team = true;
-    bool bookVal = true;
     if (_width < 910) view = false;
     if (_width < 689) team = false;
-    if (_width < 575) bookVal = false;
-
     double athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
 
@@ -323,42 +677,46 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         Colors.grey[700]!, 10, false, false))
                               ])),
                     // Market Price / Change
-                    Container(
-                        child: Row(children: <Widget>[
-                      Text(athlete.war.toStringAsFixed(4) + ' AX',
-                          style: textStyle(Colors.white, 16, false, false)),
-                      Container(width: 10),
-                      Text("+4%",
-                          style: textStyle(Colors.green, 12, false, false))
-                    ])),
-                    if (bookVal) ...[
-                      Container(width: 41),
-                      // Book Price
-                      Container(
-                          child: Row(children: <Widget>[
-                        Text(athlete.war.toStringAsFixed(4) + ' AX',
-                            style: textStyle(Colors.white, 16, false, false)),
-                        Container(width: 10),
-                        Text("-2%",
-                            style: textStyle(Colors.red, 12, false, false))
-                      ])),
-                    ]
+                    IndexedStack(
+                      index: _marketVsBookPriceIndex,
+                      children: [
+                        Container(
+                            child: Row(children: <Widget>[
+                          Text(athlete.war.toStringAsFixed(4) + ' AX',
+                              style: textStyle(Colors.white, 16, false, false)),
+                          Container(width: 10),
+                          Text("+4%",
+                              style: textStyle(Colors.green, 12, false, false))
+                        ])),
+                        Container(
+                            child: Row(children: <Widget>[
+                          Text(athlete.war.toStringAsFixed(4) + ' AX',
+                              style: textStyle(Colors.white, 16, false, false)),
+                          Container(width: 10),
+                          Text("-2%",
+                              style: textStyle(Colors.red, 12, false, false))
+                        ])),
+                      ],
+                    ),
                   ]),
                   Row(children: <Widget>[
                     // Buy
                     Container(
-                        width: 100,
-                        height: 30,
+                        width: _width * 0.20,
+                        height: 36,
                         decoration: boxDecoration(
-                            Colors.amber[400]!, 100, 0, Colors.amber[400]!),
+                            Color.fromRGBO(254, 197, 0, 0.2),
+                            100,
+                            0,
+                            Color.fromRGBO(254, 197, 0, 0.2)),
                         child: TextButton(
                             onPressed: () => showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
                                     buyDialog(context, athlete)),
-                            child: Text("Buy",
-                                style: textStyle(
-                                    Colors.black, 16, false, false)))),
+                            child: Center(
+                              child: buyText(),
+                            ))),
                     if (view) ...[
                       Container(width: 25),
                       // Mint
@@ -375,7 +733,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 });
                               },
                               child: Container(
-                                  width: 90,
+                                  width: 60,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -392,18 +750,36 @@ class _DesktopScoutState extends State<DesktopScout> {
                 ])));
   }
 
+  Widget buyText() {
+    Widget textWidget;
+    if (kIsWeb) {
+      textWidget = Text("Buy",
+          style: textStyle(Color.fromRGBO(254, 197, 0, 1.0), 12, false, false));
+    } else {
+      textWidget = Text("View",
+          style: textStyle(Color.fromRGBO(255, 198, 0, 1), 10, false, false));
+    }
+    return textWidget;
+  }
+
   Widget createSearchBar() {
+    double widthSize = MediaQuery.of(context).size.width;
     return Container(
-      width: 250,
-      height: 40,
-      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
+      width: searchWidth(widthSize),
+      height: 160,
+      decoration: boxDecoration(Color.fromRGBO(118, 118, 128, 0.24), 20, 1,
+          Color.fromRGBO(118, 118, 128, 0.24)),
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Container(width: 8),
+          Container(width: 6),
           Container(
-            child: Icon(Icons.search, color: Colors.white),
+            child: Icon(
+              Icons.search,
+              color: Color.fromRGBO(235, 235, 245, 0.6),
+              size: 20,
+            ),
           ),
           Container(width: 35),
           Expanded(
@@ -434,14 +810,32 @@ class _DesktopScoutState extends State<DesktopScout> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 8.5),
                   hintText: "Search an athlete",
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle:
+                      TextStyle(color: Color.fromRGBO(235, 235, 245, 0.6)),
                 ),
               ),
+            ),
+          ),
+          Container(
+            child: Icon(
+              Icons.mic,
+              color: Color.fromRGBO(235, 235, 245, 0.6),
+              size: 20,
             ),
           ),
         ],
       ),
     );
+  }
+
+  double searchWidth(double widthSize) {
+    double _width;
+    if (kIsWeb) {
+      _width = widthSize * 0.26;
+    } else {
+      _width = widthSize * 0.66;
+    }
+    return _width;
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
