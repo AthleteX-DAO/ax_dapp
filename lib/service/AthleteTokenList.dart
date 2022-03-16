@@ -7,6 +7,7 @@ import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AthleteTokenList extends StatefulWidget {
   final BuildContext context;
@@ -22,16 +23,16 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   SwapController swapController = Get.find();
   double fromAmount = 0.0;
   double toAmount = 0.0;
-  bool allFarms = true;
   Token? tkn1;
   Token? tkn2;
   List<Token> tokenListFilter = [];
   int tokenNumber = 0;
+  bool isWeb = true;
 
   List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
-    SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
+    AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
+    SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
+    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/Polygon_Small.png')),
   ];
 
   @override
@@ -42,9 +43,9 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
 
     tokenNumber = widget.tknNum;
 
-    for (Athlete ath in AthleteList.list)
-      tokens.add(Token(ath.name + " APT", ath.name + " APT",
-          AssetImage('../assets/images/apt.png')));
+    for (Athlete ath in AthleteList.list) {
+      tokens.add(Token(ath.name + " APT", ath.name + " APT", AssetImage('assets/images/apt.png')));
+    }    
 
     tokenListFilter = tokens;
   }
@@ -52,60 +53,79 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery.of(context).size.width;
+    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return Dialog(
         backgroundColor: Colors.grey[900],
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(25.0),
         ),
-        child: Container(
-            width: 400,
-            height: _height * .65,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                // column of elements
-                Container(
+        // SingleChildScrollView prevents bottom overflow when keyboard pops up
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+              width: isWeb ? _width * 0.20 : _width * 0.55,
+              height: _height * .65,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  // column of elements
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
                     height: _height * .625,
-                    width: 350,
+                    width: _width * 0.45 + 120,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                  height: 30,
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Token Name",
-                                      style: textStyle(
-                                          Colors.grey[400]!, 16, false))),
-                              Container(
-                                  child: TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Icon(Icons.close,
-                                    color: Colors.grey[400], size: 30),
-                              ))
-                            ]),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                                height: 30,
+                                alignment: Alignment.centerLeft,
+                                child: Text("Select a Token",style: textStyle(Colors.grey[400]!, 16, false))),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Icon(Icons.close,color: Colors.grey[400], size: 30),
+                            ))
+                          ]),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: createSearchBar(),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Token Name", style: textStyle(Colors.grey[400]!, 12, false),),
+                        ),   
                         Container(
                           child: Divider(thickness: 1, color: Colors.grey[400]),
                         ),
-                        createSearchBar(),
                         Container(
-                            height: _height * .625 - 100,
+                            height: _height * .625 - 125,
                             child: ListView.builder(
                                 physics: BouncingScrollPhysics(),
                                 itemCount: tokenListFilter.length,
                                 itemBuilder: (context, index) {
                                   return widget.createTokenElement(
                                       tokenListFilter[index], tokenNumber);
-                                }))
+                                }
+                            )
+                          ),
                       ],
-                    ))
-              ],
-            )));
+                    )
+                  )
+                ],
+              )),
+        ));
   }
 
   Widget createSearchBar() {
+    double _height = MediaQuery.of(context).size.height;
+    double textSize = _height * 0.05;
+    double searchBarHintTextSize = textSize * 0.30;
+    if (!isWeb) searchBarHintTextSize = textSize * 0.40;
     return Container(
       width: 300,
       height: 40,
@@ -133,9 +153,9 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 8.5),
+                  contentPadding: EdgeInsets.only(bottom: 10),
                   hintText: "Search a name or paste an address",
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Colors.white, fontSize: searchBarHintTextSize, height: 1.5),
                 ),
               ),
             ),
