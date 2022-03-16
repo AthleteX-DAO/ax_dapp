@@ -11,6 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<void> testFunction() async {
   return;
@@ -2845,14 +2846,14 @@ Dialog removeDialog(BuildContext context) {
 
 // dynamic
 Dialog swapDialog(BuildContext context) {
+  bool isWeb = true;
+  isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   SwapController swapController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 450;
   double edge = 90;
   if (_width < 395) wid = _width;
-  double hgt = 450;
-  if (_height < 455) hgt = _height;
 
   return Dialog(
       backgroundColor: Colors.transparent,
@@ -2860,7 +2861,7 @@ Dialog swapDialog(BuildContext context) {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Container(
-        height: hgt,
+        height: isWeb? _height * 0.55 : _height * 0.65,
         width: wid,
         padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
@@ -2869,10 +2870,8 @@ Dialog swapDialog(BuildContext context) {
           // Confirm Swap
           children: <Widget>[
             Container(
-              //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              width: wid - edge,
+              width: wid- edge,
               height: 50,
-              //color: Colors.red,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -2894,9 +2893,7 @@ Dialog swapDialog(BuildContext context) {
             Container(
               width: wid - edge,
               height: 50,
-              //color: Colors.red,
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2958,9 +2955,7 @@ Dialog swapDialog(BuildContext context) {
             Container(
               width: wid - edge,
               height: 50,
-              //color: Colors.red,
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2975,11 +2970,16 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                       Container(
-                        child: Text(
-                          "-\$1.580",
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[600],
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: "-\$1.580",
+                                  style: TextStyle(color: Colors.grey[600], fontSize: 10)),
+                              TextSpan(
+                                  text: " (0.079%)",
+                                  style: TextStyle(color: Colors.red[900], fontSize: 10)),
+                            ],
                           ),
                         ),
                       ),
@@ -3011,7 +3011,6 @@ Dialog swapDialog(BuildContext context) {
                 ],
               ),
             ),
-            // Horizontal Linebreak
             Container(
               child: Divider(
                 thickness: 0.35,
@@ -3020,9 +3019,8 @@ Dialog swapDialog(BuildContext context) {
             ),
             // Price Information and Confirm Swap Button
             Container(
-              //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              width: wid - edge,
-              height: 30,
+              width: wid-edge,
+              height: 100,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -3052,7 +3050,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                     ],
                   ),
-                  /*Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -3074,8 +3072,8 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),*/
-                  /*Row(
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -3097,8 +3095,8 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),*/
-                  /*Row(
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -3120,8 +3118,8 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),*/
-                  /*Row(
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -3143,7 +3141,7 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),*/
+                  ),
                 ],
               ),
             ),
@@ -3154,7 +3152,6 @@ Dialog swapDialog(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 15.0),
                     child: Text(
                       "You receive:",
                       style: TextStyle(
@@ -3164,7 +3161,6 @@ Dialog swapDialog(BuildContext context) {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 15.0),
                     child: Text(
                       "7.98 " + swapController.activeTkn2.value.name,
                       style: TextStyle(
@@ -3182,15 +3178,11 @@ Dialog swapDialog(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
+                    margin: isWeb? EdgeInsets.only(top: 30.0, bottom: 10.0) : EdgeInsets.only(bottom: 5.0),
                     width: wid - 180,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: Colors.amber[400],
-                      borderRadius: BorderRadius.circular(100),
-                    ),
+                    height: isWeb ? _height * 0.05 : _height * 0.06,
+                    decoration: isWeb? boxDecoration(Colors.amber[400]!, 100, 1, Colors.transparent) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 100, 1, Colors.transparent),
                     child: TextButton(
-                      //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () {
                         print('swapping!');
                         swapController.approve().then((value) {
@@ -3203,12 +3195,10 @@ Dialog swapDialog(BuildContext context) {
                                   confirmTransaction(context, true, ""));
                         });
                       },
-                      child: const Text(
+                      child: Text(
                         "Confirm Swap",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
+                        textAlign: TextAlign.center,
+                        style: isWeb ? textStyle(Colors.black, 20, true) : textStyle(Colors.amber[500]!, 15, true),
                       ),
                     ),
                   ),
