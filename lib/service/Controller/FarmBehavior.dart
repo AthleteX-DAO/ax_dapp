@@ -7,11 +7,10 @@ import 'Controller.dart';
 mixin FarmBehavior on Token {
   Controller controller = Get.find();
 
-
   Future<String> stake(double a) {
-  EthereumAddress stakingAddress = EthereumAddress.fromHex(address.value);
-  StakingRewards _rewards =
-      StakingRewards(address: stakingAddress, client: controller.client.value);
+    EthereumAddress stakingAddress = EthereumAddress.fromHex(address.value);
+    StakingRewards _rewards = StakingRewards(
+        address: stakingAddress, client: controller.client.value);
     BigInt amount = BigInt.from(a);
     // ignore: unused_local_variable
     String txString = "";

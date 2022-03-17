@@ -1,0 +1,42 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Deploy Release
+
+on:
+  push:
+    branches:
+      - 'release/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - run: echo "🎉 Release job was automatically triggered by ${{ github.ref }} event."
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: Deploy to Release
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_DOMAIN }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: 'cd /home/app &&
+          sudo git fetch &&
+          sudo git checkout ${{ steps.extract_branch.outputs.branch }} &&
+          sudo git pull &&
+          export PATH=/home/development/flutter/bin:$PATH &&
+          echo $PATH &&
+          flutter pub get &&
+          flutter build web --web-renderer auto &&
+          echo App Deployed to Release'
+                 
+        
+
+         

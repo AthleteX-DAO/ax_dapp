@@ -3,16 +3,96 @@
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:web3dart/web3dart.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+Future<void> testFunction() async {
+  return;
+}
+
+Dialog connectMetamaskDialog(BuildContext context) {
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 450;
+  double hgt = 200;
+  double edge = 75;
+  if (_width < 405) wid = _width;
+  if (_height < 505) hgt = _height * 0.45;
+  double wid_child = wid - edge;
+  return Dialog(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Container(
+      height: hgt,
+      width: wid,
+      padding: EdgeInsets.all(20),
+      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Metamask wallet",
+                style: textStyle(Colors.white, 18, true),
+              ),
+              Container(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.close,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Text('Couldn\'t find MetaMask extension',
+                  style: TextStyle(color: Colors.grey[400]))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 40),
+                width: wid_child,
+                height: 45,
+                decoration: boxDecoration(
+                    Colors.transparent, 100, 2, Colors.purple[900]!),
+                child: TextButton(
+                  onPressed: () {
+                    launch('https://metamask.io/download/');
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Install MetaMask extension",
+                    style: textStyle(Colors.white, 16, false),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
 
 //dynamic
 Dialog wrongNetworkDialog(BuildContext context) {
@@ -42,12 +122,11 @@ Dialog wrongNetworkDialog(BuildContext context) {
             children: [
               Text(
                 "Wrong Network",
-                style: textStyle(Colors.white, 18, true, false),
+                style: textStyle(Colors.white, 18, true),
               ),
               Container(
                 child: TextButton(
                   onPressed: () {
-                    Controller.switchNetwork();
                     Navigator.pop(context);
                   },
                   child: Icon(
@@ -71,10 +150,11 @@ Dialog wrongNetworkDialog(BuildContext context) {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    // controller.switchNetwork();
                   },
                   child: Text(
                     "Switch to Matic Network",
-                    style: textStyle(Colors.white, 16, false, false),
+                    style: textStyle(Colors.white, 16, false),
                   ),
                 ),
               ),
@@ -117,7 +197,7 @@ Dialog walletDialog(BuildContext context) {
             children: [
               Text(
                 "Choose Wallet",
-                style: textStyle(Colors.white, 18, true, false),
+                style: textStyle(Colors.white, 18, true),
               ),
               Container(
                   child: TextButton(
@@ -140,20 +220,30 @@ Dialog walletDialog(BuildContext context) {
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
+                //Comment this widget for Android
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    controller.connect().then((value) {
-                      walletController.getTokenMetrics();
-                      walletController.getTokenBalance();
+                    controller.connect().then((response) {
+                      if (response == -1) {
+                        // No MetaMask
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                connectMetamaskDialog(context));
+                      } else if (response == 0) {
+                        // Wrong network
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                wrongNetworkDialog(context));
+                      } else {
+                        Navigator.pop(context);
+                        walletController.getTokenMetrics();
+                        walletController.getTokenBalance();
+                      }
                     });
-
-                    // if (controller.networkID != Controller.TESTNET_CHAIN_ID) {
-                    //   showDialog(
-                    //       context: context,
-                    //       builder: (BuildContext context) =>
-                    //           wrongNetworkDialog(context));
-                    // }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -170,7 +260,7 @@ Dialog walletDialog(BuildContext context) {
                       ),
                       Text(
                         "Metamask",
-                        style: textStyle(Colors.white, 16, false, false),
+                        style: textStyle(Colors.white, 16, false),
                       ),
                       //empty container
                       Container(
@@ -189,8 +279,8 @@ Dialog walletDialog(BuildContext context) {
 }
 
 Dialog depositDialog(BuildContext context) {
-  Controller controller = Get.find();
-  double amount = 0;
+  TextEditingController stakeAxInput = TextEditingController();
+  WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 390;
@@ -218,7 +308,7 @@ Dialog depositDialog(BuildContext context) {
             children: <Widget>[
               Text(
                 "Stake AX",
-                style: textStyle(Colors.white, 20, false, false),
+                style: textStyle(Colors.white, 20, false),
               ),
               Container(
                   child: TextButton(
@@ -267,7 +357,7 @@ Dialog depositDialog(BuildContext context) {
                     Expanded(
                       child: Text(
                         "AX",
-                        style: textStyle(Colors.white, 15, false, false),
+                        style: textStyle(Colors.white, 15, false),
                       ),
                     ),
                     Container(
@@ -276,25 +366,30 @@ Dialog depositDialog(BuildContext context) {
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          walletController.getTokenBalance().then((value) {
+                            stakeAxInput.text =
+                                walletController.yourBalance.value;
+                            print(stakeAxInput);
+                          });
+                        },
                         child: Text(
                           "Max",
-                          style: textStyle(Colors.grey[400]!, 9, false, false),
+                          style: textStyle(Colors.grey[400]!, 9, false),
                         ),
                       ),
                     ),
                     SizedBox(
                       width: 70,
                       child: TextFormField(
+                        controller: stakeAxInput,
                         onChanged: (value) {
-                          amount = double.parse(value);
-                          print(amount);
+                          stakeAxInput.text = value;
                         },
-                        style: textStyle(Colors.grey[400]!, 22, false, false),
+                        style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
                           hintText: '0.00',
-                          hintStyle:
-                              textStyle(Colors.grey[400]!, 22, false, false),
+                          hintStyle: textStyle(Colors.grey[400]!, 22, false),
                           contentPadding: const EdgeInsets.all(9),
                           border: InputBorder.none,
                         ),
@@ -314,11 +409,11 @@ Dialog depositDialog(BuildContext context) {
             children: [
               Text(
                 "Current AX Staked",
-                style: textStyle(Colors.grey[400]!, 14, false, false),
+                style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Text(
                 "1,000 AX",
-                style: textStyle(Colors.grey[400]!, 14, false, false),
+                style: textStyle(Colors.grey[400]!, 14, false),
               ),
             ],
           ),
@@ -328,7 +423,7 @@ Dialog depositDialog(BuildContext context) {
                 padding: EdgeInsets.only(left: 55),
                 child: Text(
                   "+",
-                  style: textStyle(Colors.grey[400]!, 14, false, false),
+                  style: textStyle(Colors.grey[400]!, 14, false),
                 ),
               )
             ],
@@ -338,11 +433,11 @@ Dialog depositDialog(BuildContext context) {
             children: [
               Text(
                 "Funds Added",
-                style: textStyle(Colors.grey[400]!, 14, false, false),
+                style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Text(
                 "100 AX",
-                style: textStyle(Colors.grey[400]!, 14, false, false),
+                style: textStyle(Colors.grey[400]!, 14, false),
               ),
             ],
           ),
@@ -389,7 +484,9 @@ Dialog depositDialog(BuildContext context) {
               //   ),
               // ),
               //TO DO fix changing state of approve button
-              ApproveButton(175, 45, 'confirm', false, () => {}, () => {})
+              //ApproveButton(175, 45, 'confirm', false, () => {}, () => {})
+              //ApproveButton(175, 45, 'Approve', depositConfimed(context))
+              ApproveButton(175, 45, 'Approve', testFunction, depositConfimed)
             ],
           )
         ],
@@ -400,7 +497,8 @@ Dialog depositDialog(BuildContext context) {
 
 // dynamic
 Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
-  double amount = 0;
+  TextEditingController stakeAxInput = TextEditingController();
+  WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 390;
@@ -432,7 +530,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       Container(
                           child: Text(
                         "Deposit Liquidity",
-                        style: textStyle(Colors.white, 20, false, false),
+                        style: textStyle(Colors.white, 20, false),
                       )),
                       Container(
                           child: TextButton(
@@ -451,7 +549,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     "*Add liquidity to supply LP tokens to your wallet\nDeposit LP tokens to AX rewards",
-                    style: textStyle(Colors.grey[600]!, 11, false, false),
+                    style: textStyle(Colors.grey[600]!, 11, false),
                   )),
               //Amount Box
               Container(
@@ -479,7 +577,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                     Expanded(
                       child: Text(
                         "AX",
-                        style: textStyle(Colors.white, 15, false, false),
+                        style: textStyle(Colors.white, 15, false),
                       ),
                     ),
                     Container(
@@ -488,25 +586,30 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          walletController.getTokenBalance().then((value) {
+                            stakeAxInput.text =
+                                walletController.yourBalance.value;
+                            print(stakeAxInput);
+                          });
+                        },
                         child: Text(
                           "Max",
-                          style: textStyle(Colors.grey[400]!, 9, false, false),
+                          style: textStyle(Colors.grey[400]!, 9, false),
                         ),
                       ),
                     ),
                     SizedBox(
                       width: 70,
                       child: TextFormField(
+                        controller: stakeAxInput,
                         onChanged: (value) {
-                          amount = double.parse(value);
-                          print(amount);
+                          stakeAxInput.text = value;
                         },
-                        style: textStyle(Colors.grey[400]!, 22, false, false),
+                        style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
                           hintText: '0.00',
-                          hintStyle:
-                              textStyle(Colors.grey[400]!, 22, false, false),
+                          hintStyle: textStyle(Colors.grey[400]!, 22, false),
                           contentPadding: const EdgeInsets.all(9),
                           border: InputBorder.none,
                         ),
@@ -546,7 +649,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       Expanded(
                         child: Text(
                           athlete.name + " APT",
-                          style: textStyle(Colors.white, 15, false, false),
+                          style: textStyle(Colors.white, 15, false),
                         ),
                       ),
                       Container(
@@ -558,23 +661,18 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                           onPressed: () {},
                           child: Text(
                             "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
                       ),
                       SizedBox(
                         width: 70,
                         child: TextFormField(
-                          onChanged: (value) {
-                            amount = double.parse(value);
-                            print(amount);
-                          },
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
+                          onChanged: (value) {},
+                          style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -601,12 +699,11 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                                 depositConfimed(context));
                       },
                       child: Text("Add Liquidity",
-                          style:
-                              textStyle(Colors.amber[400]!, 20, true, false)))),
+                          style: textStyle(Colors.amber[400]!, 20, true)))),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
                 child: Text("LP Tokens: " + "0",
-                    style: textStyle(Colors.white, 18, true, false)),
+                    style: textStyle(Colors.white, 18, true)),
               ),
               Container(
                 width: 175,
@@ -621,8 +718,8 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                         builder: (BuildContext context) =>
                             depositConfimed(context));
                   },
-                  child: Text("Deposit",
-                      style: textStyle(Colors.black, 16, true, false)),
+                  child:
+                      Text("Deposit", style: textStyle(Colors.black, 16, true)),
                 ),
               )
             ],
@@ -662,7 +759,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text("Buy " + athlete.name + " APT",
-                      style: textStyle(Colors.white, 20, false, false)),
+                      style: textStyle(Colors.white, 20, false)),
                   IconButton(
                     icon: const Icon(
                       Icons.close,
@@ -752,7 +849,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                           Expanded(
                             child: Text(
                               "AX",
-                              style: textStyle(Colors.white, 15, false, false),
+                              style: textStyle(Colors.white, 15, false),
                             ),
                           ),
                           Container(
@@ -764,8 +861,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                               onPressed: () {},
                               child: Text(
                                 "Max",
-                                style: textStyle(
-                                    Colors.grey[400]!, 9, false, false),
+                                style: textStyle(Colors.grey[400]!, 9, false),
                               ),
                             ),
                           ),
@@ -773,12 +869,11 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                           SizedBox(
                             width: 70,
                             child: TextFormField(
-                              style: textStyle(
-                                  Colors.grey[400]!, 22, false, false),
+                              style: textStyle(Colors.grey[400]!, 22, false),
                               decoration: InputDecoration(
                                 hintText: '0.00',
-                                hintStyle: textStyle(
-                                    Colors.grey[400]!, 22, false, false),
+                                hintStyle:
+                                    textStyle(Colors.grey[400]!, 22, false),
                                 border: InputBorder.none,
                               ),
                               inputFormatters: [
@@ -878,7 +973,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          "Minimum Recieved",
+                          "Minimum Received",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
@@ -928,7 +1023,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
               children: <Widget>[
                 Container(
                   child: Text(
-                    "You recieve:",
+                    "You receive:",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,
@@ -964,8 +1059,6 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                     //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                     onPressed: () async {
                       Navigator.pop(context);
-                      EthereumAddress aptAddress = EthereumAddress.fromHex(
-                          "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22");
                       bool confirmed;
                       String txString =
                           "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
@@ -1026,7 +1119,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("Sell " + athlete.name + " APT",
-                        style: textStyle(Colors.white, 20, false, false)),
+                        style: textStyle(Colors.white, 20, false)),
                     IconButton(
                       icon: const Icon(
                         Icons.close,
@@ -1095,6 +1188,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
+                            scale: 0.5,
                             image: AssetImage("../assets/images/apt.png"),
                           ),
                         ),
@@ -1103,7 +1197,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                       Expanded(
                         child: Text(
                           athlete.name + " APT",
-                          style: textStyle(Colors.white, 15, false, false),
+                          style: textStyle(Colors.white, 15, false),
                         ),
                       ),
                       Container(
@@ -1115,19 +1209,17 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                           onPressed: () {},
                           child: Text(
                             "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
                       ),
                       SizedBox(
                         width: 70,
                         child: TextField(
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
+                          style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -1159,11 +1251,11 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                       children: <Widget>[
                         Container(
                           child: Text("Price",
-                              style: textStyle(Colors.white, 15, false, false)),
+                              style: textStyle(Colors.white, 15, false)),
                         ),
                         Container(
                           child: Text("0.8 " + athlete.name + " APT per AX",
-                              style: textStyle(Colors.white, 15, false, false)),
+                              style: textStyle(Colors.white, 15, false)),
                         ),
                       ],
                     ),
@@ -1218,7 +1310,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            "Minimum Recieved",
+                            "Minimum Received",
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.grey[600],
@@ -1269,7 +1361,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "You recieve:",
+                      "You receive:",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,
@@ -1342,6 +1434,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
   if (_width < 375) wid = _width;
   double hgt = 450;
   if (_height < 455) hgt = _height;
+  LSPController lspController = Get.find();
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -1362,7 +1455,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("Redeem " + athlete.name + " APT",
-                        style: textStyle(Colors.white, 20, false, false)),
+                        style: textStyle(Colors.white, 20, false)),
                     IconButton(
                       icon: const Icon(
                         Icons.close,
@@ -1380,16 +1473,16 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   children: <TextSpan>[
                     TextSpan(
                       text: "You can redeem APT's at their Book Value for AX.",
-                      style: textStyle(Colors.grey[600]!, 15, false, false),
+                      style: textStyle(Colors.grey[600]!, 15, false),
                     ),
                     TextSpan(
                       text:
                           " You can access other funds with AX on the Matic network through",
-                      style: textStyle(Colors.grey[600]!, 15, false, false),
+                      style: textStyle(Colors.grey[600]!, 15, false),
                     ),
                     TextSpan(
                       text: " SushiSwap",
-                      style: textStyle(Colors.amber[400]!, 15, false, false),
+                      style: textStyle(Colors.amber[400]!, 15, false),
                     ),
                   ],
                 ),
@@ -1403,7 +1496,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   width: wid - edge,
                   child: Text(
                     "Input APT:",
-                    style: textStyle(Colors.grey[600]!, 15, false, false),
+                    style: textStyle(Colors.grey[600]!, 15, false),
                   ),
                 ),
                 Container(
@@ -1428,6 +1521,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
+                            scale: 0.5,
                             image: AssetImage("../assets/images/apt.png"),
                           ),
                         ),
@@ -1436,7 +1530,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                       Expanded(
                         child: Text(
                           athlete.name + " APT",
-                          style: textStyle(Colors.white, 15, false, false),
+                          style: textStyle(Colors.white, 15, false),
                         ),
                       ),
                       Container(
@@ -1448,19 +1542,17 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           onPressed: () {},
                           child: Text(
                             "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
                       ),
                       SizedBox(
                         width: 70,
                         child: TextField(
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
+                          style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -1468,6 +1560,10 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                             FilteringTextInputFormatter.allow(
                                 (RegExp(r'^(\d+)?\.?\d{0,2}'))),
                           ],
+                          onChanged: (value) {
+                            double newAmount = double.parse(value);
+                            lspController.updateRedeemAmt(newAmount);
+                          },
                         ),
                       ),
                     ],
@@ -1489,15 +1585,15 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "You recieve:",
-                      style: textStyle(Colors.white, 15, false, false),
+                      "You receive:",
+                      style: textStyle(Colors.white, 15, false),
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
                       "120 AX",
-                      style: textStyle(Colors.white, 15, false, false),
+                      style: textStyle(Colors.white, 15, false),
                     ),
                   ),
                 ],
@@ -1518,6 +1614,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                     ),
                     child: TextButton(
                       onPressed: () {
+                        lspController.redeem();
                         Navigator.pop(context);
                         showDialog(
                             context: context,
@@ -1526,7 +1623,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                       },
                       child: Text(
                         "Confirm",
-                        style: textStyle(Colors.black, 16, false, false),
+                        style: textStyle(Colors.black, 16, false),
                       ),
                     ),
                   ),
@@ -1550,6 +1647,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   double hgt = 450;
   if (_height < 455) hgt = _height;
 
+  LSPController lspController = Get.find();
+
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
@@ -1569,7 +1668,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("Mint " + athlete.name + " APT",
-                        style: textStyle(Colors.white, 20, false, false)),
+                        style: textStyle(Colors.white, 20, false)),
                     IconButton(
                       icon: const Icon(
                         Icons.close,
@@ -1587,15 +1686,15 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   children: <TextSpan>[
                     TextSpan(
                       text: "You can mint APT's at their Book Value for AX.",
-                      style: textStyle(Colors.grey[600]!, 15, false, false),
+                      style: textStyle(Colors.grey[600]!, 15, false),
                     ),
                     TextSpan(
                       text: " You can buy AX on the Matic network through",
-                      style: textStyle(Colors.grey[600]!, 15, false, false),
+                      style: textStyle(Colors.grey[600]!, 15, false),
                     ),
                     TextSpan(
                       text: " SushiSwap",
-                      style: textStyle(Colors.amber[400]!, 15, false, false),
+                      style: textStyle(Colors.amber[400]!, 15, false),
                     ),
                   ],
                 ),
@@ -1609,7 +1708,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   width: wid - edge,
                   child: Text(
                     "Input AX:",
-                    style: textStyle(Colors.grey[600]!, 15, false, false),
+                    style: textStyle(Colors.grey[600]!, 15, false),
                   ),
                 ),
                 Container(
@@ -1642,7 +1741,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                       Expanded(
                         child: Text(
                           "AX",
-                          style: textStyle(Colors.white, 15, false, false),
+                          style: textStyle(Colors.white, 15, false),
                         ),
                       ),
                       Container(
@@ -1654,19 +1753,17 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                           onPressed: () {},
                           child: Text(
                             "Max",
-                            style:
-                                textStyle(Colors.grey[400]!, 9, false, false),
+                            style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
                       ),
                       SizedBox(
                         width: 70,
                         child: TextField(
-                          style: textStyle(Colors.grey[400]!, 22, false, false),
+                          style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, false, false),
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -1674,6 +1771,11 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                             FilteringTextInputFormatter.allow(
                                 (RegExp(r'^(\d+)?\.?\d{0,2}'))),
                           ],
+                          onChanged: (value) {
+                            double newAmount = double.parse(value);
+                            print("new create amt $newAmount");
+                            lspController.updateCreateAmt(newAmount);
+                          },
                         ),
                       ),
                     ],
@@ -1695,15 +1797,17 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "You recieve:",
-                      style: textStyle(Colors.white, 15, false, false),
+                      "You receive:",
+                      style: textStyle(Colors.white, 15, false),
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
-                    child: Text(
-                      "120 AX",
-                      style: textStyle(Colors.white, 15, false, false),
+                    child: Obx(
+                      () => Text(
+                        "${lspController.createAmt} APTS",
+                        style: textStyle(Colors.white, 15, false),
+                      ),
                     ),
                   ),
                 ],
@@ -1724,6 +1828,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                     ),
                     child: TextButton(
                       onPressed: () {
+                        // call mint functionality
+                        lspController.mint();
                         Navigator.pop(context);
                         showDialog(
                             context: context,
@@ -1732,7 +1838,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                       },
                       child: Text(
                         "Confirm",
-                        style: textStyle(Colors.black, 16, false, false),
+                        style: textStyle(Colors.black, 16, false),
                       ),
                     ),
                   ),
@@ -1781,7 +1887,7 @@ Dialog confirmTransaction(
                         Container(width: 5),
                         Container(
                           child: Text("Transaction Confirmed",
-                              style: textStyle(Colors.white, 20, false, false)),
+                              style: textStyle(Colors.white, 20, false)),
                         ),
                         Container(
                           width: 40,
@@ -1872,7 +1978,7 @@ Dialog rewardsClaimed(BuildContext context) {
                         Container(width: 5),
                         Container(
                           child: Text("Rewards Claimed",
-                              style: textStyle(Colors.white, 20, false, false)),
+                              style: textStyle(Colors.white, 20, false)),
                         ),
                         Container(
                           width: 40,
@@ -1927,7 +2033,7 @@ Dialog rewardsClaimed(BuildContext context) {
 }
 
 // dynamic
-Dialog removalConfimed(BuildContext context) {
+Dialog removalConfirmed(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -1960,7 +2066,7 @@ Dialog removalConfimed(BuildContext context) {
                         Container(width: 5),
                         Container(
                           child: Text("Removal Confirmed",
-                              style: textStyle(Colors.white, 20, false, false)),
+                              style: textStyle(Colors.white, 20, false)),
                         ),
                         Container(
                           width: 40,
@@ -2048,7 +2154,7 @@ Dialog depositConfimed(BuildContext context) {
                         Container(width: 5),
                         Container(
                           child: Text("Deposit Confirmed",
-                              style: textStyle(Colors.white, 20, false, false)),
+                              style: textStyle(Colors.white, 20, false)),
                         ),
                         Container(
                           width: 40,
@@ -2134,7 +2240,7 @@ Dialog yourAXDialog(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text("Your AX",
-                            style: textStyle(Colors.white, 20, false, false)),
+                            style: textStyle(Colors.white, 20, false)),
                         IconButton(
                           icon: const Icon(
                             Icons.close,
@@ -2165,7 +2271,7 @@ Dialog yourAXDialog(BuildContext context) {
                   height: 65,
                   alignment: Alignment.center,
                   child: Text("${walletController.yourBalance} AX",
-                      style: textStyle(Colors.white, 20, false, false)),
+                      style: textStyle(Colors.white, 20, false)),
                 ),
                 Container(
                     width: wid - edge,
@@ -2263,7 +2369,7 @@ Dialog yourAXDialog(BuildContext context) {
                           children: <Widget>[
                             Container(
                               child: Text(
-                                "AX in circulation",
+                                "AX in circulation:",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
@@ -2322,18 +2428,20 @@ Dialog yourAXDialog(BuildContext context) {
                                     walletController.buyAX();
                                   },
                                   child: Text("Buy AX",
-                                      style: textStyle(
-                                          Colors.black, 14, true, false)))),
-                          Container(
-                              width: 150,
-                              height: 30,
-                              decoration: boxDecoration(Colors.transparent, 100,
-                                  0, Colors.amber[600]!),
-                              child: TextButton(
-                                  onPressed: () {},
-                                  child: Text("+ Add to Wallet",
-                                      style: textStyle(Colors.amber[600]!, 14,
-                                          true, false)))),
+                                      style:
+                                          textStyle(Colors.black, 14, true)))),
+
+                          /**  Button currently doesn't work, so obfuscating for now */
+                          // Container(
+                          //     width: 150,
+                          //     height: 30,
+                          //     decoration: boxDecoration(Colors.transparent, 100,
+                          //         0, Colors.amber[600]!),
+                          //     child: TextButton(
+                          //         onPressed: () {},
+                          //         child: Text("+ Add to Wallet",
+                          //             style: textStyle(
+                          //                 Colors.amber[600]!, 14, true)))),
                         ])),
               ])))));
 }
@@ -2381,8 +2489,7 @@ Dialog accountDialog(BuildContext context) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("Account",
-                        style: textStyle(Colors.white, 20, false, false)),
+                    Text("Account", style: textStyle(Colors.white, 20, false)),
                     IconButton(
                       icon: const Icon(
                         Icons.close,
@@ -2418,7 +2525,7 @@ Dialog accountDialog(BuildContext context) {
                                 children: <Widget>[
                                   Text("Connected With Metamask",
                                       style: textStyle(
-                                          Colors.grey[600]!, 13, false, false)),
+                                          Colors.grey[600]!, 13, false)),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
@@ -2428,8 +2535,8 @@ Dialog accountDialog(BuildContext context) {
                                       ),
                                       Text(
                                         "$retStr",
-                                        style: textStyle(
-                                            Colors.white, 20, false, false),
+                                        style:
+                                            textStyle(Colors.white, 20, false),
                                       ),
                                     ],
                                   ),
@@ -2457,8 +2564,7 @@ Dialog accountDialog(BuildContext context) {
                                               style: textStyle(
                                                   Colors.blue[300]!,
                                                   10,
-                                                  true,
-                                                  false)))),
+                                                  true)))),
                                   Container(
                                       width: 75,
                                       height: 25,
@@ -2474,7 +2580,7 @@ Dialog accountDialog(BuildContext context) {
                                           },
                                           child: Text("Disconnect",
                                               style: textStyle(Colors.red[900]!,
-                                                  10, true, false)))),
+                                                  10, true)))),
                                 ],
                               ))
                         ],
@@ -2495,8 +2601,7 @@ Dialog accountDialog(BuildContext context) {
                               color: Colors.grey,
                             ),
                             Text("Copy Address",
-                                style: textStyle(
-                                    Colors.grey[400]!, 15, false, false)),
+                                style: textStyle(Colors.grey[400]!, 15, false)),
                           ],
                         ),
                       ),
@@ -2516,8 +2621,7 @@ Dialog accountDialog(BuildContext context) {
                               color: Colors.grey,
                             ),
                             Text("Show on Polygonscan",
-                                style: textStyle(
-                                    Colors.grey[400]!, 15, false, false)),
+                                style: textStyle(Colors.grey[400]!, 15, false)),
                           ],
                         ),
                       ),
@@ -2560,8 +2664,8 @@ Dialog removeDialog(BuildContext context) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Remove AX",
-                style: textStyle(Colors.white, 20, false, false),
+                "Unstake AX",
+                style: textStyle(Colors.white, 20, false),
               ),
               Container(
                   child: TextButton(
@@ -2595,10 +2699,22 @@ Dialog removeDialog(BuildContext context) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    Container(
+                      height: 35,
+                      width: 35,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          scale: 2.0,
+                          image: AssetImage('../assets/images/x.jpg'),
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    Container(width: 15),
                     Expanded(
                       child: Text(
                         "AX",
-                        style: textStyle(Colors.white, 15, false, false),
+                        style: textStyle(Colors.white, 15, false),
                       ),
                     ),
                     Container(
@@ -2610,7 +2726,7 @@ Dialog removeDialog(BuildContext context) {
                         onPressed: () {},
                         child: Text(
                           "Max",
-                          style: textStyle(Colors.grey[400]!, 9, false, false),
+                          style: textStyle(Colors.grey[400]!, 9, false),
                         ),
                       ),
                     ),
@@ -2621,11 +2737,10 @@ Dialog removeDialog(BuildContext context) {
                           amount = double.parse(value);
                           print(amount);
                         },
-                        style: textStyle(Colors.grey[400]!, 22, false, false),
+                        style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
                           hintText: '0.00',
-                          hintStyle:
-                              textStyle(Colors.grey[400]!, 22, false, false),
+                          hintStyle: textStyle(Colors.grey[400]!, 22, false),
                           contentPadding: const EdgeInsets.all(9),
                           border: InputBorder.none,
                         ),
@@ -2645,11 +2760,11 @@ Dialog removeDialog(BuildContext context) {
             children: [
               Text(
                 "Current AX Staked",
-                style: textStyle(Colors.grey[400]!, 14, false, false),
+                style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Text(
                 "1,000 AX",
-                style: textStyle(Colors.grey[400]!, 14, false, false),
+                style: textStyle(Colors.grey[400]!, 14, false),
               ),
             ],
           ),
@@ -2659,7 +2774,7 @@ Dialog removeDialog(BuildContext context) {
                 padding: EdgeInsets.only(left: 55),
                 child: Text(
                   "-",
-                  style: textStyle(Colors.grey[400]!, 14, false, false),
+                  style: textStyle(Colors.grey[400]!, 14, false),
                 ),
               )
             ],
@@ -2669,11 +2784,11 @@ Dialog removeDialog(BuildContext context) {
             children: [
               Text(
                 "Funds Removed",
-                style: textStyle(Colors.grey[400]!, 14, false, false),
+                style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Text(
                 "100 AX",
-                style: textStyle(Colors.grey[400]!, 14, false, false),
+                style: textStyle(Colors.grey[400]!, 14, false),
               ),
             ],
           ),
@@ -2694,7 +2809,7 @@ Dialog removeDialog(BuildContext context) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              /* Container(
                 margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
                 width: 175,
                 height: 45,
@@ -2718,7 +2833,9 @@ Dialog removeDialog(BuildContext context) {
                     ),
                   ),
                 ),
-              ),
+              ), */
+              //ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
+              ApproveButton(175, 45, 'Approve', testFunction, removalConfirmed),
             ],
           )
         ],
@@ -2727,8 +2844,16 @@ Dialog removeDialog(BuildContext context) {
   );
 }
 
+// dynamic
 Dialog swapDialog(BuildContext context) {
+  bool isWeb = true;
+  isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   SwapController swapController = Get.find();
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 450;
+  double edge = 90;
+  if (_width < 395) wid = _width;
 
   return Dialog(
       backgroundColor: Colors.transparent,
@@ -2736,8 +2861,8 @@ Dialog swapDialog(BuildContext context) {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Container(
-        height: 450,
-        width: MediaQuery.of(context).size.width * 0.25,
+        height: isWeb? _height * 0.55 : _height * 0.65,
+        width: wid,
         padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
         child: Column(
@@ -2745,16 +2870,14 @@ Dialog swapDialog(BuildContext context) {
           // Confirm Swap
           children: <Widget>[
             Container(
-              //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid- edge,
               height: 50,
-              //color: Colors.red,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
                     "Confirm Swap",
-                    style: textStyle(Colors.white, 20, false, false),
+                    style: textStyle(Colors.white, 20, false),
                   ),
                   IconButton(
                     icon: const Icon(
@@ -2768,11 +2891,9 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid - edge,
               height: 50,
-              //color: Colors.red,
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2824,7 +2945,7 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid - edge,
               alignment: Alignment.center,
               child: Icon(
                 Icons.arrow_downward,
@@ -2832,11 +2953,9 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid - edge,
               height: 50,
-              //color: Colors.red,
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2851,11 +2970,16 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                       Container(
-                        child: Text(
-                          "-\$1.580",
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[600],
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: "-\$1.580",
+                                  style: TextStyle(color: Colors.grey[600], fontSize: 10)),
+                              TextSpan(
+                                  text: " (0.079%)",
+                                  style: TextStyle(color: Colors.red[900], fontSize: 10)),
+                            ],
                           ),
                         ),
                       ),
@@ -2887,7 +3011,6 @@ Dialog swapDialog(BuildContext context) {
                 ],
               ),
             ),
-            // Horizontal Linebreak
             Container(
               child: Divider(
                 thickness: 0.35,
@@ -2896,9 +3019,8 @@ Dialog swapDialog(BuildContext context) {
             ),
             // Price Information and Confirm Swap Button
             Container(
-              //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              width: MediaQuery.of(context).size.width * .22,
-              height: 30,
+              width: wid-edge,
+              height: 100,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -2928,7 +3050,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                     ],
                   ),
-                  /*Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -2950,8 +3072,8 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),*/
-                  /*Row(
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -2973,13 +3095,13 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),*/
-                  /*Row(
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         child: Text(
-                          "Minimum Recieved",
+                          "Minimum Received",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
@@ -2996,8 +3118,8 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),*/
-                  /*Row(
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
@@ -3019,20 +3141,19 @@ Dialog swapDialog(BuildContext context) {
                         ),
                       ),
                     ],
-                  ),*/
+                  ),
                 ],
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid - edge,
               height: 30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "You recieve:",
+                      "You receive:",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,
@@ -3040,7 +3161,6 @@ Dialog swapDialog(BuildContext context) {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 15.0),
                     child: Text(
                       "7.98 " + swapController.activeTkn2.value.name,
                       style: TextStyle(
@@ -3053,20 +3173,16 @@ Dialog swapDialog(BuildContext context) {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * .22,
+              width: wid - edge,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
-                    width: 210,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: Colors.amber[400],
-                      borderRadius: BorderRadius.circular(100),
-                    ),
+                    margin: isWeb? EdgeInsets.only(top: 30.0, bottom: 10.0) : EdgeInsets.only(bottom: 5.0),
+                    width: wid - 180,
+                    height: isWeb ? _height * 0.05 : _height * 0.06,
+                    decoration: isWeb? boxDecoration(Colors.amber[400]!, 100, 1, Colors.transparent) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 100, 1, Colors.transparent),
                     child: TextButton(
-                      //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                       onPressed: () {
                         print('swapping!');
                         swapController.approve().then((value) {
@@ -3079,12 +3195,10 @@ Dialog swapDialog(BuildContext context) {
                                   confirmTransaction(context, true, ""));
                         });
                       },
-                      child: const Text(
+                      child: Text(
                         "Confirm Swap",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
+                        textAlign: TextAlign.center,
+                        style: isWeb ? textStyle(Colors.black, 20, true) : textStyle(Colors.amber[500]!, 15, true),
                       ),
                     ),
                   ),
@@ -3096,27 +3210,387 @@ Dialog swapDialog(BuildContext context) {
       ));
 }
 
-TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-  if (isBold) if (isUline)
-    return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-        decoration: TextDecoration.underline);
-  else
+Dialog poolAddLiquidity(BuildContext context, String name) {
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 390;
+  if (_width < 395) wid = _width;
+  double hgt = 450;
+  if (_height < 455) hgt = _height;
+
+  return Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Container(
+          height: hgt,
+          width: wid,
+          padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+          decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Add Liquidity",
+                        style: textStyle(Colors.white, 20, false),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ]),
+                // AX & Athlete deposited
+                Container(
+                    child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "AX deposited:",
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("1000", style: textStyle(Colors.white, 16, false))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          name + " deposited:",
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("500", style: textStyle(Colors.white, 16, false))
+                      ],
+                    )
+                  ],
+                )),
+                // ax per apt & share of pool
+                Container(
+                    child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "AX per " + name,
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("2.24", style: textStyle(Colors.white, 16, false))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          name + " per AX:",
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("1.48", style: textStyle(Colors.white, 16, false))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Share of pool:",
+                          style: textStyle(Colors.grey[600]!, 16, false),
+                        ),
+                        Text("0.12%", style: textStyle(Colors.white, 16, false))
+                      ],
+                    )
+                  ],
+                )),
+                Divider(thickness: 1, color: Colors.grey[600]),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "You will receive:",
+                      style: textStyle(Colors.grey[600]!, 16, false),
+                    )),
+                // bottom receive amount
+                Container(
+                    width: wid - 100,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                                child: Text(
+                              "20.24",
+                              style: textStyle(Colors.white, 38, false),
+                            )),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "AX/" + name,
+                                  style: textStyle(Colors.white, 16, false),
+                                ),
+                                Text(
+                                  "LP Tokens",
+                                  style: textStyle(Colors.white, 16, false),
+                                )
+                              ],
+                            )
+                          ],
+                        )),
+                        Container(
+                          child: Text(
+                              "*Output is estimated. If the price changes by more than 2%, your transaction will revert.",
+                              style: TextStyle(
+                                  color: Colors.grey[600], fontSize: 11)),
+                        ),
+                      ],
+                    )),
+                ApproveButton(
+                    175, 40, "Approve", testFunction, removalConfirmed)
+              ])));
+}
+
+Dialog poolRemoveLiquidity(BuildContext context, String name) {
+  double amount = 0;
+  double _height = MediaQuery.of(context).size.height;
+  double _width = MediaQuery.of(context).size.width;
+  double wid = 390;
+  if (_width < 395) wid = _width;
+  double hgt = 525;
+  if (_height < 530) hgt = _height;
+
+  return Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Container(
+          height: hgt,
+          width: wid,
+          padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+          decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Remove Liquidity",
+                        style: textStyle(Colors.white, 20, false),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ]),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Your position:",
+                      style: textStyle(Colors.grey[600]!, 16, false),
+                    )),
+                // ax per apt & share of pool
+                Container(
+                    height: 100,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "AX/" + name + " LP Tokens:",
+                              style: textStyle(Colors.white, 16, false),
+                            ),
+                            Text("20.24",
+                                style: textStyle(Colors.white, 16, false))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Share of pool:",
+                              style: textStyle(Colors.grey[600]!, 16, false),
+                            ),
+                            Text("0.12%",
+                                style: textStyle(Colors.white, 16, false))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "AX deposited:",
+                              style: textStyle(Colors.grey[600]!, 16, false),
+                            ),
+                            Text("1,000",
+                                style: textStyle(Colors.white, 16, false))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              name + " deposited:",
+                              style: textStyle(Colors.grey[600]!, 16, false),
+                            ),
+                            Text("500",
+                                style: textStyle(Colors.white, 16, false))
+                          ],
+                        )
+                      ],
+                    )),
+                Divider(thickness: 1, color: Colors.grey[600]),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Remove:",
+                      style: textStyle(Colors.grey[600]!, 16, false),
+                    )),
+                Container(
+                    width: wid,
+                    decoration: boxDecoration(
+                        Colors.transparent, 20, 0.5, Colors.grey[600]!),
+                    child: Container(
+                        width: wid - 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // LP Tokens
+                            Container(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Balance: 20.24",
+                                      style: textStyle(
+                                          Colors.grey[600]!, 9, false),
+                                    ),
+                                    Text(
+                                      "LP Tokens",
+                                      style: textStyle(Colors.white, 16, false),
+                                    )
+                                  ],
+                                )),
+                            // Max/amount
+                            Container(
+                              width: wid * .325,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                      height: 17.5,
+                                      width: 37.5,
+                                      decoration: boxDecoration(
+                                          Colors.transparent,
+                                          100,
+                                          0.5,
+                                          Colors.grey[600]!),
+                                      child: TextButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            "MAX",
+                                            style: textStyle(
+                                                Colors.grey[600]!, 9, false),
+                                          ))),
+                                  SizedBox(
+                                    width: 70,
+                                    child: TextFormField(
+                                      onChanged: (value) {
+                                        amount = double.parse(value);
+                                        print(amount);
+                                      },
+                                      style: textStyle(
+                                          Colors.grey[400]!, 22, false),
+                                      decoration: InputDecoration(
+                                        hintText: '0.00',
+                                        hintStyle: textStyle(
+                                            Colors.grey[400]!, 22, false),
+                                        contentPadding: const EdgeInsets.all(9),
+                                        border: InputBorder.none,
+                                      ),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ))),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "You will receive:",
+                    style: textStyle(Colors.grey[600]!, 16, false),
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "AX per " + name,
+                            style: textStyle(Colors.grey[600]!, 16, false),
+                          ),
+                          Text(
+                            "1,000",
+                            style: textStyle(Colors.white, 16, false),
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            name + " per AX",
+                            style: textStyle(Colors.grey[600]!, 16, false),
+                          ),
+                          Text(
+                            "500",
+                            style: textStyle(Colors.white, 16, false),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                ApproveButton(
+                    175, 40, "Approve", testFunction, removalConfirmed)
+              ])));
+}
+
+TextStyle textStyle(Color color, double size, bool isBold) {
+  if (isBold)
     return TextStyle(
       color: color,
       fontFamily: 'OpenSans',
       fontSize: size,
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w500,
     );
-  else if (isUline)
-    return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        decoration: TextDecoration.underline);
   else
     return TextStyle(
       color: color,
