@@ -29,15 +29,15 @@ class _DesktopPoolState extends State<DesktopPool> {
   bool isWeb = true;
   List<Token> tokenListFilter = [];
   List<Token> tokenList = [
-    AXT("AthleteX", "AX", AssetImage('assets/images/x.png')),
-    SXT("SportX", "SX", AssetImage('assets/images/sx.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/matic.png')),
+    AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
+    SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
+    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/Polygon_Small.png')),
   ];
 
   List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
-    SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
+    AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
+    SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
+    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/Polygon_Small.png')),
   ];
 
   @override
@@ -46,9 +46,9 @@ class _DesktopPoolState extends State<DesktopPool> {
 
     for (Athlete ath in AthleteList.list) {
       tokens.add(Token(ath.name + " Long", ath.name + " Long",
-          AssetImage('../assets/images/apt.png')));
+          AssetImage('assets/images/apt.png')));
       tokens.add(Token(ath.name + " Short", ath.name + " Short",
-          AssetImage('../assets/images/apt.png')));
+          AssetImage('assets/images/apt.png')));
     }
     tkn1 = tokens[1];
     tkn2 = tokens[3];
@@ -292,7 +292,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: AssetImage("assets/images/x.png"),
+                        image: AssetImage("assets/images/X_Logo_Black_BR.png"),
                       ),
                     ),
                   ),
