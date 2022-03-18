@@ -541,7 +541,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: AssetImage("assets/images/x.png"),
+                    image: AssetImage("assets/images/x.jpg"),
                   ),
                 ),
               ),
@@ -585,7 +585,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: AssetImage("assets/images/x.png"),
+                    image: AssetImage("assets/images/x.jpg"),
                   ),
                 ),
               ),

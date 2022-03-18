@@ -351,7 +351,7 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage("assets/images/x.png"),
+                          image: AssetImage("assets/images/x.jpg"),
                         ),
                       ),
                     ),
@@ -575,7 +575,7 @@ Dialog dualDepositDialog(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage("assets/images/x.png"),
+                          image: AssetImage("assets/images/x.jpg"),
                         ),
                       ),
                     ),
@@ -847,7 +847,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage("assets/images/x.png"),
+                                image: AssetImage("assets/images/x.jpg"),
                               ),
                             ),
                           ),
@@ -1739,7 +1739,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage("assets/images/x.png"),
+                            image: AssetImage("assets/images/x.jpg"),
                           ),
                         ),
                       ),
@@ -2268,7 +2268,7 @@ Dialog yourAXDialog(BuildContext context) {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       scale: 2.0,
-                      image: AssetImage('assets/images/x.png'),
+                      image: AssetImage('assets/images/x.jpg'),
                     ),
                     shape: BoxShape.circle,
                   ),
@@ -2710,7 +2710,7 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           scale: 2.0,
-                          image: AssetImage('assets/images/x.png'),
+                          image: AssetImage('assets/images/x.jpg'),
                         ),
                         shape: BoxShape.circle,
                       ),
