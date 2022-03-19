@@ -320,15 +320,29 @@ class _DesktopTradeState extends State<DesktopTrade> {
             onPressed: isTokenSelected(token, tknNum)
                 ? null
                 : () {
-                    setState(() {
-                      if (tknNum == 1) {
-                        tkn1 = token;
-                      } else {
-                        tkn2 = token;
-                      }
-                      Navigator.pop(context);
-                    });
-                  },
+                  Token tmpTkn1 = tkn1!;
+                  Token tmpTkn2 = tkn2!;
+                  setState(() {
+                    if (tknNum == 1) {
+                      tkn1 = token;
+                    } else {
+                      tkn2 = token;
+                    }
+
+                    // If the user changes the top token and it is the same as the bottom token, then swap the top and bottom
+                    if (tkn1!.name == tkn2!.name) {
+                      tkn1 = tkn2;
+                      tkn2 = tmpTkn1;
+                    }
+
+                    // If the user changes the bottom token and it is the same as the top token, then swap the bottom and the top
+                    if (tkn2!.name == tkn1!.name) {
+                      tkn2 = tkn1;
+                      tkn1 = tmpTkn2;
+                    }
+                    Navigator.pop(context);
+                  });
+                },
             child: Container(
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
