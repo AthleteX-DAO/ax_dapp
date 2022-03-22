@@ -5,11 +5,17 @@ import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:get/get.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:web3dart/web3dart.dart';
+import '../../../contracts/LongShortPair.g.dart';
+import 'package:http/http.dart';
 
 class SwapController extends GetxController {
   Controller controller = Get.find();
-  var activeTkn1 = Token("Empty Token", "ET").obs,
-      activeTkn2 = Token("Empty Token", "ET").obs;
+  var activeTkn1 = Token(
+              "Empty Token", "ET", "0x0000000000000000000000000000000000000000")
+          .obs,
+      activeTkn2 = Token(
+              "Empty Token", "ET", "0x0000000000000000000000000000000000000000")
+          .obs;
   var address1 = "".obs, address2 = "".obs;
   var amount1 = 0.0.obs, amount2 = 0.0.obs;
   var price = 0.0.obs;
@@ -39,21 +45,29 @@ class SwapController extends GetxController {
   }
 
   Future<void> approve() async {
+    print("Inside approve");
     String txString = "";
     EthereumAddress tokenAAddress = EthereumAddress.fromHex("$address1");
-    EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
+    //EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
     BigInt tokenAAmount = BigInt.from(amount1.value);
-    BigInt tokenBAmount = BigInt.from(amount2.value);
+    //BigInt tokenBAmount = BigInt.from(amount2.value);
     ERC20 tokenA =
         ERC20(address: tokenAAddress, client: controller.client.value);
-    ERC20 tokenB =
-        ERC20(address: tokenBAddress, client: controller.client.value);
-
+    //ERC20 tokenB =
+    //ERC20(address: tokenBAddress, client: controller.client.value);
+    final tokenClient =
+        Web3Client("https://matic-mumbai.chainstacklabs.com", new Client());
+    LongShortPair genericLSP =
+        LongShortPair(address: tokenAAddress, client: tokenClient);
+    BigInt rate = BigInt.parse("100000000000000000000000");
+    BigInt transferAmount = rate * tokenAAmount;
     try {
-      txString = await tokenA.approve(dexAddress, tokenAAmount,
+      print("Before approve");
+      txString = await tokenA.approve(dexAddress, transferAmount,
           credentials: controller.credentials);
-      txString = await tokenB.approve(dexAddress, tokenBAmount,
-          credentials: controller.credentials);
+      print("Approved");
+      //txString = await tokenB.approve(dexAddress, tokenBAmount,
+      //  credentials: controller.credentials);
     } catch (e) {
       print(e);
     }
@@ -68,8 +82,8 @@ class SwapController extends GetxController {
 
     EthereumAddress tokenAAddress = EthereumAddress.fromHex("$address1");
     EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
-    BigInt tokenAAmount = BigInt.from(amount1.value);
-
+    BigInt tokenAAmount =
+        BigInt.from(amount1.value) * BigInt.from(1000000000000000000);
 
     List<EthereumAddress> path = [tokenAAddress, tokenBAddress];
     EthereumAddress to = await controller.credentials.extractAddress();
@@ -136,11 +150,13 @@ class SwapController extends GetxController {
 
   void updateAddress1(String newAddress) {
     address1.value = newAddress;
+    print("[Console] From address: ${address1.value}");
     update();
   }
 
   void updateAddress2(String newAddress) {
     address2.value = newAddress;
+    print("[Console] To address: ${address2.value}");
     update();
   }
 
