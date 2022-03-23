@@ -710,10 +710,18 @@ class _DesktopScoutState extends State<DesktopScout> {
                             0,
                             Color.fromRGBO(254, 197, 0, 0.2)),
                         child: TextButton(
-                            onPressed: () => showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    buyDialog(context, athlete)),
+                            onPressed: (){
+                              if (kIsWeb){
+                                 showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) => buyDialog(context, athlete));
+                              }else {
+                                setState(() {
+                                  curAthlete = athlete;
+                                  athletePage = true;
+                                });
+                              }
+                            },
                             child: Center(
                               child: buyText(),
                             ))),
