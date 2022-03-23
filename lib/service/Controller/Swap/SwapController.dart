@@ -140,23 +140,25 @@ class SwapController extends GetxController {
 
   void updateAmount1(double newAmount) {
     amount1.value = newAmount;
+    print("[Console] Swap Controller -> from amount1: ${amount1.value}");
     update();
   }
 
   void updateAmount2(double newAmount) {
     amount2.value = newAmount;
+    print("[Console] Swap Controller -> to amount: ${amount2.value}");
     update();
   }
 
   void updateAddress1(String newAddress) {
     address1.value = newAddress;
-    print("[Console] From address: ${address1.value}");
+    print("[Console] Swap Controller -> from address: ${address1.value}");
     update();
   }
 
   void updateAddress2(String newAddress) {
     address2.value = newAddress;
-    print("[Console] To address: ${address2.value}");
+    print("[Console] Swap Controller -> to address: ${address2.value}");
     update();
   }
 

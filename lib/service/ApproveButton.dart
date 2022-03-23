@@ -1,4 +1,6 @@
+import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 // import 'package:ax_dapp/service/Dialog.dart';
 
 // DO NOT DELETE THE CODE
@@ -68,6 +70,7 @@ class _ApproveButtonState extends State<ApproveButton> {
   Color? textcolor;
   int currentState = 0;
   Widget? dialog;
+  PoolController poolController = Get.find();
 
   @override
   void initState() {
@@ -112,12 +115,16 @@ class _ApproveButtonState extends State<ApproveButton> {
         onPressed: () {
           // Testing to see how the popup will work when the state is changed
           if (isApproved) {
-            Navigator.pop(context);
-            showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog(context));
+            //Confirm button pressed
+            poolController.addLiquidity().then((value) {
+              Navigator.pop(context);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      widget.confirmDialog(context));
+            });
           } else {
+            //Approve button was pressed
             setState(() {
               changeData();
             });

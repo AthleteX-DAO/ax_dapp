@@ -23,7 +23,6 @@ class PoolController extends GetxController {
       EthereumAddress.fromHex("0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551");
 
   PoolController() {
-    
     // This is meant to switch as per the correct chain
     EthereumAddress routerAddress = routerTestnetAddress;
     EthereumAddress dexAddress = dexTestnetAddress;
@@ -32,6 +31,8 @@ class PoolController extends GetxController {
     _aptRouter =
         APTRouter(address: routerAddress, client: controller.client.value);
   }
+
+  Future<void> approve() async {}
 
   Future<void> addLiquidity() async {
     BigInt liquidity = BigInt.from(0);
@@ -74,6 +75,7 @@ class PoolController extends GetxController {
     String txString = await _aptRouter.removeLiquidity(tokenAAddress,
         tokenBAddress, liquidity, amountAMin, amountBMin, to, twoMinuteDeadline,
         credentials: credentials);
+    controller.updateTxString(txString);
   }
 
   Future<void> createPair() async {
@@ -88,11 +90,25 @@ class PoolController extends GetxController {
 
   void updateTknAddress1(String newAddress) {
     address1.value = newAddress;
+    print("[Console] Pool Controller -> Address1: ${address1.value}");
     update();
   }
 
   void updateTknAddress2(String newAddress) {
     address2.value = newAddress;
+    print("[Console] Pool Controller -> Address2: ${address2.value}");
+    update();
+  }
+
+  void updateAmount1(double newAmount) {
+    amount1.value = newAmount;
+    print("[Console] Pool Controller -> amount1: ${amount1.value}");
+    update();
+  }
+
+  void updateAmount2(double newAmount) {
+    amount2.value = newAmount;
+    print("[Console] Pool Controller -> amount2: ${amount2.value}");
     update();
   }
 }
