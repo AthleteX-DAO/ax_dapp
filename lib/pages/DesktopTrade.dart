@@ -314,80 +314,91 @@ class _DesktopTradeState extends State<DesktopTrade> {
     //Creates a token item for AthleteTokenList widget
     double _width = MediaQuery.of(context).size.width;
     return Container(
-        height: 50,
-        child: TextButton(
-            //disable button if it has already been selected
-            onPressed: isTokenSelected(token, tknNum)
-                ? null
-                : () {
-                  Token tmpTkn1 = tkn1!;
-                  Token tmpTkn2 = tkn2!;
-                  setState(() {
-                    if (tknNum == 1) {
-                      tkn1 = token;
-                    } else {
-                      tkn2 = token;
-                    }
+      height: 50,
+      child: ElevatedButton(
+        //disable button if it has already been selected
+        style: ElevatedButton.styleFrom(
+            primary: Colors.transparent,
+            //selected token marked yellow
+            onSurface: isTokenSelected(token, tknNum)
+                ? Colors.amber
+                : Colors.transparent),
+        onPressed: isTokenSelected(token, tknNum)
+            ? null
+            : () {
+                Token tmpTkn1 = tkn1!;
+                Token tmpTkn2 = tkn2!;
+                setState(() {
+                  if (tknNum == 1) {
+                    tkn1 = token;
+                  } else {
+                    tkn2 = token;
+                  }
 
-                    // If the user changes the top token and it is the same as the bottom token, then swap the top and bottom
-                    if (tkn1!.name == tkn2!.name) {
-                      tkn1 = tkn2;
-                      tkn2 = tmpTkn1;
-                    }
+                  // If the user changes the top token and it is the same as the bottom token, then swap the top and bottom
+                  if (tkn1!.name == tkn2!.name) {
+                    tkn1 = tkn2;
+                    tkn2 = tmpTkn1;
+                  }
 
-                    // If the user changes the bottom token and it is the same as the top token, then swap the bottom and the top
-                    if (tkn2!.name == tkn1!.name) {
-                      tkn2 = tkn1;
-                      tkn1 = tmpTkn2;
-                    }
-                    Navigator.pop(context);
-                  });
-                },
-            child: Container(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container(
+                  // If the user changes the bottom token and it is the same as the top token, then swap the bottom and the top
+                  if (tkn2!.name == tkn1!.name) {
+                    tkn2 = tkn1;
+                    tkn1 = tmpTkn2;
+                  }
+                  Navigator.pop(context);
+                });
+              },
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                height: 30,
+                width: 60,
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  width: 30,
                   height: 30,
-                  width: 60,
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        scale: 0.5,
-                        image: token.icon!,
-                        fit: BoxFit.fill,
-                      ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      scale: 0.5,
+                      image: token.icon!,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
-                Container(
-                    height: 45,
-                    // ticker/name column "AX/AthleteX"
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Container(
-                            width: (_width < 350.0) ? 110 : 125,
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              token.ticker,
-                              style: textStyle(Colors.white, 14, true),
-                            )),
-                        Container(
-                            width: (_width < 350.0) ? 110 : 125,
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              token.name,
-                              style: textStyle(Colors.grey[100]!, 9, false),
-                            )),
-                      ],
-                    ))
-              ],
-            ))));
+              ),
+              Container(
+                height: 45,
+                // ticker/name column "AX/AthleteX"
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                        width: (_width < 350.0) ? 110 : 125,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          token.ticker,
+                          style: textStyle(Colors.white, 14, true),
+                        )),
+                    Container(
+                      width: (_width < 350.0) ? 110 : 125,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        token.name,
+                        style: textStyle(Colors.grey[100]!, 9, false),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   bool isTokenSelected(Token currentToken, int tknNum) {
