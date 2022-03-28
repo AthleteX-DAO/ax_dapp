@@ -5,8 +5,6 @@ import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:get/get.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:web3dart/web3dart.dart';
-import '../../../contracts/LongShortPair.g.dart';
-import 'package:http/http.dart';
 
 class SwapController extends GetxController {
   Controller controller = Get.find();
@@ -55,10 +53,6 @@ class SwapController extends GetxController {
         ERC20(address: tokenAAddress, client: controller.client.value);
     //ERC20 tokenB =
     //ERC20(address: tokenBAddress, client: controller.client.value);
-    final tokenClient =
-        Web3Client("https://matic-mumbai.chainstacklabs.com", new Client());
-    LongShortPair genericLSP =
-        LongShortPair(address: tokenAAddress, client: tokenClient);
     BigInt rate = BigInt.parse("100000000000000000000000");
     BigInt transferAmount = rate * tokenAAmount;
     try {

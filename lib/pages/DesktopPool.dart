@@ -275,7 +275,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: AssetImage("assets/images/x.png"),
+                        image: AssetImage("assets/images/X_Logo_Black_BR.png"),
                       ),
                     ),
                   ),

@@ -13,5 +13,5 @@ class APT extends Token with APTBehavior, ERC20Behavior {
   var bookPrice, marketPrice;
 
   APT(String name, String ticker, AssetImage? icon, String aptAddress)
-      : super(name, ticker, aptAddress, icon) {}
+      : super(name, ticker, aptAddress, icon);
 }

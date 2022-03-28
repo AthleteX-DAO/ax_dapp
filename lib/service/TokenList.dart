@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Athlete.dart';
 import 'AthleteList.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/APT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
