@@ -32,7 +32,40 @@ class PoolController extends GetxController {
         APTRouter(address: routerAddress, client: controller.client.value);
   }
 
-  Future<void> approve() async {}
+  Future<void> approve() async {
+    print("Inside approve");
+    String txStringA = "";
+    String txStringB = "";
+    BigInt tokenAAmount = BigInt.from(amount1.value);
+    BigInt tokenBAmount = BigInt.from(amount2.value);
+
+    EthereumAddress tokenAAddress = EthereumAddress.fromHex("$address1");
+    EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
+
+    ERC20 tokenA =
+        ERC20(address: tokenAAddress, client: controller.client.value);
+    ERC20 tokenB =
+        ERC20(address: tokenBAddress, client: controller.client.value);
+
+    BigInt rate = BigInt.parse("100000000000000000000000");
+    BigInt transferAmountA = rate * tokenAAmount;
+    BigInt transferAmountB = rate * tokenBAmount;
+
+    try {
+      print("Before approve");
+      txStringA = await tokenA.approve(dexTestnetAddress, transferAmountA,
+          credentials: controller.credentials);
+      controller.updateTxString(txStringA);
+      txStringA = await tokenB.approve(dexTestnetAddress, transferAmountB,
+          credentials: controller.credentials);
+      controller.updateTxString(txStringB);
+      print("Approved");
+      //txString = await tokenB.approve(dexAddress, tokenBAmount,
+      //  credentials: controller.credentials);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<void> addLiquidity() async {
     BigInt liquidity = BigInt.from(0);

@@ -55,12 +55,6 @@ class _DesktopPoolState extends State<DesktopPool> {
       final tokenOne = double.tryParse(_tokenAmountOneController.text);
 
       if (tokenOne != null) {
-        //Autocomplete and update amount 2
-        final tokenTwo = tokenOne * _rate;
-        _tokenAmountTwoController.value =
-            TextEditingValue(text: tokenTwo.toStringAsFixed(2));
-        token2Amount = double.parse(_tokenAmountTwoController.text);
-        poolController.updateAmount2(token2Amount);
         //Update amount 1
         token1Amount = double.parse(_tokenAmountOneController.text);
         poolController.updateAmount1(token1Amount);
@@ -72,11 +66,6 @@ class _DesktopPoolState extends State<DesktopPool> {
 
       if (tokenTwo != null) {
         //Autocomplete and update amount 1
-        final tokenOne = tokenTwo / _rate;
-        _tokenAmountOneController.value =
-            TextEditingValue(text: tokenOne.toStringAsFixed(2));
-        token1Amount = double.parse(_tokenAmountOneController.text);
-        poolController.updateAmount1(token1Amount);
         //Update amount 2
         token2Amount = double.parse(_tokenAmountTwoController.text);
         poolController.updateAmount2(token2Amount);
