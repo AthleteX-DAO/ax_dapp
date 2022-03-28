@@ -35,8 +35,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
-    isWeb =
-        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return Dialog(
         backgroundColor: Colors.grey[900],
         shape: RoundedRectangleBorder(
@@ -137,10 +136,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 10),
                   hintText: "Search a name or paste an address",
-                  hintStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: searchBarHintTextSize,
-                      height: 1.5),
+                  hintStyle: TextStyle(color: Colors.white, fontSize: searchBarHintTextSize, height: 1.5),
                 ),
               ),
             ),
