@@ -318,11 +318,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
       child: ElevatedButton(
         //disable button if it has already been selected
         style: ElevatedButton.styleFrom(
-            primary: Colors.transparent,
+            primary: Colors.grey[900],
             //selected token marked yellow
-            onSurface: isTokenSelected(token, tknNum)
-                ? Colors.amber
-                : Colors.transparent),
+            onSurface:
+                isTokenSelected(token, tknNum) ? Colors.amber : Colors.grey),
         onPressed: isTokenSelected(token, tknNum)
             ? null
             : () {
