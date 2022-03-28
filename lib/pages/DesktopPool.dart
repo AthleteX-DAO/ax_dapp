@@ -1,12 +1,9 @@
 import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
-import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -28,32 +25,18 @@ class _DesktopPoolState extends State<DesktopPool> {
   Token? tkn2;
   bool isWeb = true;
   List<Token> tokenListFilter = [];
-  List<Token> tokenList = [
-    AXT("AthleteX", "AX", AssetImage('assets/images/x.png')),
-    SXT("SportX", "SX", AssetImage('assets/images/sx.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/matic.png')),
-  ];
-
-  List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('../assets/images/x.jpg')),
-    SXT("SportX", "SX", AssetImage('../assets/images/sx.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('../assets/images/matic.png')),
-  ];
 
   @override
   void initState() {
     super.initState();
-
-    for (Athlete ath in AthleteList.list) {
-      tokens.add(Token(ath.name + " Long", ath.name + " Long",
-          AssetImage('../assets/images/apt.png')));
-      tokens.add(Token(ath.name + " Short", ath.name + " Short",
-          AssetImage('../assets/images/apt.png')));
+    try {
+      tkn1 = TokenList.tokenList[1];
+      tkn2 = TokenList.tokenList[3];
+    } catch (e) {
+      print("[Console] TokenList is empty?: $e");
     }
-    tkn1 = tokens[1];
-    tkn2 = tokens[3];
 
-    tokenListFilter = tokenList;
+    tokenListFilter = TokenList.tokenList;
   }
 
   @override
@@ -226,7 +209,7 @@ class _DesktopPoolState extends State<DesktopPool> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    tokenListFilter = tokenList
+                    tokenListFilter = TokenList.tokenList
                         .where((token) => token.name
                             .toUpperCase()
                             .contains(value.toUpperCase()))
@@ -292,7 +275,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: AssetImage("assets/images/x.png"),
+                        image: AssetImage("assets/images/X_Logo_Black_BR.png"),
                       ),
                     ),
                   ),

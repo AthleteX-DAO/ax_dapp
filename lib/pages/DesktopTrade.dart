@@ -1,9 +1,4 @@
-import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
-import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +6,8 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+
+import '../service/TokenList.dart';
 
 class DesktopTrade extends StatefulWidget {
   const DesktopTrade({Key? key}) : super(key: key);
@@ -25,28 +22,43 @@ class _DesktopTradeState extends State<DesktopTrade> {
   double toAmount = 0.0;
   Token? tkn1;
   Token? tkn2;
-  List<Token> tokenListFilter = [];
   bool isWeb = true;
 
-  List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
-    SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/Polygon_Small.png')),
-  ];
+  // List<Token> tokens = [
+  //   AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
+  //   SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
+  //   MATIC("Matic/Polygon", "Matic",
+  //       AssetImage('assets/images/Polygon_Small.png')),
+  // ];
 
   @override
   void initState() {
     super.initState();
-    tkn1 = tokens[0];
-    tkn2 = tokens[1];
-
-    for (Athlete ath in AthleteList.list) {
-      tokens.add(Token(ath.name + " Long", ath.name + " Long",
-          AssetImage('../assets/images/apt.png')));
-      tokens.add(Token(ath.name + " Short", ath.name + " Short",
-          AssetImage('../assets/images/apt.png')));
+    try {
+      tkn1 = TokenList.tokenList[0];
+      tkn2 = TokenList.tokenList[1];
+    } catch (error) {
+      print("[Console] TokenList is empty?: $error");
     }
-    tokenListFilter = tokens;
+
+    // print("Inside initState");
+    // for (Athlete ath in AthleteList.list) {
+    //   print("Inside for loop");
+    //   print(AXT.idToAddress[ath.id]![1]);
+    //   tokens.add(APT(
+    //       ath.name + " Long",
+    //       ath.name + " Long",
+    //       AssetImage('../assets/images/apt.png'),
+    //       AXT.idToAddress[ath.id]![1])); // Long
+    //   print(AXT.idToAddress[ath.id]![2]);
+    //   tokens.add(APT(
+    //       ath.name + " Short",
+    //       ath.name + " Short",
+    //       AssetImage('../assets/images/apt.png'),
+    //       AXT.idToAddress[ath.id]![2])); // Short
+    // }
+    // tokenListFilter = tokens;
+    // print("Finished intState");
   }
 
   @override
@@ -81,7 +93,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 swapController.updateAddress1(tkn1!.address.value);
                 swapController.updateAddress2(tkn2!.address.value);
                 swapController.updateToken2(tkn2!);
-
+                swapController.approve().then((value) => null);
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => swapDialog(context));
@@ -225,7 +237,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                         width: 70,
                                         child: TextFormField(
                                           onChanged: (value) {
-                                            fromAmount = double.parse(value);
+                                                toAmount = double.parse(value);
                                           },
                                           style: textStyle(Colors.grey[400]!, 22, false),
                                           decoration: InputDecoration(
@@ -259,8 +271,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
               setState(() {
                 if (tknNum == 1) {
                   tkn1 = token;
+                  print("tkn1: ${token.address.value}");
+                  swapController.updateAddress1(token.address.value);
                 } else {
                   tkn2 = token;
+                  swapController.updateAddress2(token.address.value);
                 }
                 Navigator.pop(context);
               });

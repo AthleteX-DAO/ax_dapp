@@ -10,6 +10,7 @@ import 'package:web3dart/web3dart.dart';
 class Token extends GetxController {
   Controller controller = Get.find();
   late Erc20 erc20;
+  late EthereumAddress ethAddress;
   String name, ticker;
   AssetImage? icon;
   var address = "0x76d9a6e4cdefc840a47069b71824ad8ff4819e85".obs;
@@ -18,8 +19,9 @@ class Token extends GetxController {
   var totalSupply = BigInt.zero.obs;
 
   // All ' token ' classes inherit the SAME controller ( super important!!!)
-  Token(this.name, this.ticker, [this.icon]) {
-    EthereumAddress ethAddress = EthereumAddress.fromHex(address.value);
+  Token(this.name, this.ticker, tokenAddress, [this.icon]) {
+    updateAddress(tokenAddress);
+    ethAddress = EthereumAddress.fromHex(address.value);
     erc20 = Erc20(address: ethAddress, client: controller.client.value);
     update();
   }

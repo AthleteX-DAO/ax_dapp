@@ -220,7 +220,7 @@ Dialog walletDialog(BuildContext context) {
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
-                //Comment this widget for Android
+                //Comment this widget (TextButton) for Android
                 child: TextButton(
                   onPressed: () {
                     controller.connect().then((response) {
@@ -253,7 +253,7 @@ Dialog walletDialog(BuildContext context) {
                         width: 30,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage("../assets/images/fox.png"),
+                            image: AssetImage("assets/images/fox.png"),
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -278,18 +278,19 @@ Dialog walletDialog(BuildContext context) {
   );
 }
 
-Dialog depositDialog(BuildContext context) {
+Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
   TextEditingController stakeAxInput = TextEditingController();
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
-  double _width = MediaQuery.of(context).size.width;
   double wid = 390;
-  double edge = 60;
-  if (_width < 395) wid = _width;
+  wid = isWeb ? wid : layoutWdt;
   double hgt = 450;
   if (_height < 455) hgt = _height;
+  double dialogHorPadding = 30;
 
   return Dialog(
+    //remove inset padding to increase width of child widget
+    insetPadding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
@@ -297,7 +298,7 @@ Dialog depositDialog(BuildContext context) {
     child: Container(
       height: hgt,
       width: wid,
-      padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+      padding: EdgeInsets.symmetric(vertical: 22, horizontal: dialogHorPadding),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -328,8 +329,9 @@ Dialog depositDialog(BuildContext context) {
               //Amount Box
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 30),
-                padding: const EdgeInsets.all(10),
-                width: wid - edge,
+                // padding: const EdgeInsets.all(10),
+                // Amount box was overflowing by 30px after using dialogHorPadding
+                width: wid - dialogHorPadding - 30,
                 height: 55,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
@@ -339,20 +341,22 @@ Dialog depositDialog(BuildContext context) {
                     width: 0.5,
                   ),
                 ),
+                //Amount box content
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Container(width: 10),
+                    //Icon image
                     Container(
                       width: 35,
                       height: 35,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage("../assets/images/x.jpg"),
+                          image: AssetImage("assets/images/x.jpg"),
                         ),
                       ),
                     ),
+                    //Empty space between icon image and ticker
                     Container(width: 15),
                     Expanded(
                       child: Text(
@@ -360,9 +364,10 @@ Dialog depositDialog(BuildContext context) {
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ),
+                    //Max button
                     Container(
-                      height: 18,
-                      width: 35,
+                      height: 28,
+                      width: 48,
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
@@ -380,7 +385,7 @@ Dialog depositDialog(BuildContext context) {
                       ),
                     ),
                     SizedBox(
-                      width: 70,
+                      width: 80,
                       child: TextFormField(
                         controller: stakeAxInput,
                         onChanged: (value) {
@@ -496,18 +501,19 @@ Dialog depositDialog(BuildContext context) {
 }
 
 // dynamic
-Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
+Dialog dualDepositDialog(
+    BuildContext context, Athlete athlete, double layoutWdt, bool isWeb) {
   TextEditingController stakeAxInput = TextEditingController();
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
-  double _width = MediaQuery.of(context).size.width;
   double wid = 390;
-  double edge = 60;
-  if (_width < 395) wid = _width;
+  wid = isWeb ? wid : layoutWdt;
   double hgt = 450;
   if (_height < 455) hgt = _height;
+  double dialogHorPadding = 30;
 
   return Dialog(
+    insetPadding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
@@ -515,6 +521,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
     child: Container(
         height: hgt,
         width: wid,
+        padding: EdgeInsets.symmetric(horizontal: dialogHorPadding),
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
         child: SingleChildScrollView(
           child: Column(
@@ -522,7 +529,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                  width: wid - edge,
+                  width: wid,
                   margin: EdgeInsets.only(top: 25, bottom: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -545,7 +552,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                     ],
                   )),
               Container(
-                  width: wid - edge,
+                  width: wid,
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     "*Add liquidity to supply LP tokens to your wallet\nDeposit LP tokens to AX rewards",
@@ -553,7 +560,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                   )),
               //Amount Box
               Container(
-                width: wid - edge,
+                width: wid,
                 height: 55,
                 decoration: boxDecoration(
                     Colors.transparent, 14, 0.5, Colors.grey[400]!),
@@ -569,7 +576,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage("../assets/images/x.jpg"),
+                          image: AssetImage("assets/images/x.jpg"),
                         ),
                       ),
                     ),
@@ -581,8 +588,8 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                       ),
                     ),
                     Container(
-                      height: 18,
-                      width: 35,
+                      height: 28,
+                      width: 48,
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
@@ -624,7 +631,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
               ),
               //Amount Box
               Container(
-                  width: wid - edge,
+                  width: wid,
                   height: 55,
                   decoration: boxDecoration(
                       Colors.transparent, 14, 0.5, Colors.grey[400]!),
@@ -641,7 +648,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: AssetImage("../assets/images/apt.png"),
+                            image: AssetImage("assets/images/apt.png"),
                           ),
                         ),
                       ),
@@ -653,8 +660,8 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                         ),
                       ),
                       Container(
-                        height: 18,
-                        width: 35,
+                        height: 28,
+                        width: 48,
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
@@ -686,7 +693,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
                   )),
               Container(
                   width: 175,
-                  height: 35,
+                  height: 45,
                   decoration: boxDecoration(
                       Colors.transparent, 100, 1, Colors.amber[400]!),
                   margin: EdgeInsets.only(top: 20, bottom: 10),
@@ -707,7 +714,7 @@ Dialog dualDepositDialog(BuildContext context, Athlete athlete) {
               ),
               Container(
                 width: 175,
-                height: 35,
+                height: 40,
                 decoration: boxDecoration(Colors.grey, 100, 1, Colors.grey),
                 margin: EdgeInsets.symmetric(vertical: 10),
                 child: TextButton(
@@ -841,7 +848,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage("../assets/images/x.jpg"),
+                                image: AssetImage("assets/images/x.jpg"),
                               ),
                             ),
                           ),
@@ -853,8 +860,8 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                             ),
                           ),
                           Container(
-                            height: 18,
-                            width: 35,
+                            height: 28,
+                            width: 48,
                             decoration: boxDecoration(Colors.transparent, 100,
                                 0.5, Colors.grey[400]!),
                             child: TextButton(
@@ -1189,7 +1196,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: AssetImage("../assets/images/apt.png"),
+                            image: AssetImage("assets/images/apt.png"),
                           ),
                         ),
                       ),
@@ -1201,8 +1208,8 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                         ),
                       ),
                       Container(
-                        height: 18,
-                        width: 35,
+                        height: 28,
+                        width: 48,
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
@@ -1522,7 +1529,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: AssetImage("../assets/images/apt.png"),
+                            image: AssetImage("assets/images/apt.png"),
                           ),
                         ),
                       ),
@@ -1534,8 +1541,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                         ),
                       ),
                       Container(
-                        height: 18,
-                        width: 35,
+                        height: 28,
+                        width: 48,
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
@@ -1733,7 +1740,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage("../assets/images/x.jpg"),
+                            image: AssetImage("assets/images/x.jpg"),
                           ),
                         ),
                       ),
@@ -1745,8 +1752,8 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         ),
                       ),
                       Container(
-                        height: 18,
-                        width: 35,
+                        height: 28,
+                        width: 48,
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
@@ -2262,7 +2269,7 @@ Dialog yourAXDialog(BuildContext context) {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       scale: 2.0,
-                      image: AssetImage('../assets/images/x.jpg'),
+                      image: AssetImage('assets/images/x.jpg'),
                     ),
                     shape: BoxShape.circle,
                   ),
@@ -2636,17 +2643,17 @@ Dialog accountDialog(BuildContext context) {
 }
 
 // dynamic
-Dialog removeDialog(BuildContext context) {
+Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
-  double _width = MediaQuery.of(context).size.width;
   double wid = 390;
-  double edge = 60;
-  if (_width < 395) wid = _width;
+  wid = isWeb ? wid : layoutWdt;
   double hgt = 450;
   if (_height < 455) hgt = _height;
+  double dialogHorPadding = 30;
 
   return Dialog(
+    insetPadding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
@@ -2654,7 +2661,7 @@ Dialog removeDialog(BuildContext context) {
     child: Container(
       height: hgt,
       width: wid,
-      padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+      padding: EdgeInsets.symmetric(vertical: 22, horizontal: dialogHorPadding),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -2685,8 +2692,7 @@ Dialog removeDialog(BuildContext context) {
               //Amount Box
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 30),
-                padding: const EdgeInsets.all(10),
-                width: wid - edge,
+                width: wid - dialogHorPadding - 30,
                 height: 55,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
@@ -2705,7 +2711,7 @@ Dialog removeDialog(BuildContext context) {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           scale: 2.0,
-                          image: AssetImage('../assets/images/x.jpg'),
+                          image: AssetImage('assets/images/x.jpg'),
                         ),
                         shape: BoxShape.circle,
                       ),
@@ -2718,8 +2724,8 @@ Dialog removeDialog(BuildContext context) {
                       ),
                     ),
                     Container(
-                      height: 18,
-                      width: 35,
+                      height: 28,
+                      width: 48,
                       decoration: boxDecoration(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
@@ -3185,8 +3191,7 @@ Dialog swapDialog(BuildContext context) {
                     child: TextButton(
                       onPressed: () {
                         print('swapping!');
-                        swapController.approve().then((value) {
-                          swapController.swap();
+                        swapController.swap().then((value) {
                           Navigator.pop(context);
 
                           showDialog(
