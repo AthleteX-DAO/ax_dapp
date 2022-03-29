@@ -3372,8 +3372,7 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
                         ),
                       ],
                     )),
-                ApproveButton(175, 40, "Approve", poolController.approve,
-                    removalConfirmed)
+                ApproveButton(175, 40, "Approve", poolController.approve, depositConfimed)
               ])));
 }
 

@@ -33,7 +33,7 @@ class PoolController extends GetxController {
   }
 
   Future<void> approve() async {
-    print("Inside approve");
+    print("[Console] Pool Controller -> Inside approve");
     String txStringA = "";
     String txStringB = "";
     BigInt tokenAAmount = BigInt.from(amount1.value);
@@ -47,19 +47,19 @@ class PoolController extends GetxController {
     ERC20 tokenB =
         ERC20(address: tokenBAddress, client: controller.client.value);
 
-    BigInt rate = BigInt.parse("100000000000000000000000");
+    BigInt rate = BigInt.parse("10000000000000000000");
     BigInt transferAmountA = rate * tokenAAmount;
     BigInt transferAmountB = rate * tokenBAmount;
-
+    print("Before try");
     try {
-      print("Before approve");
-      txStringA = await tokenA.approve(dexTestnetAddress, transferAmountA,
+      print("[Console] Pool Controller -> Before approve");
+      txStringA = await tokenA.approve(routerTestnetAddress, transferAmountA,
           credentials: controller.credentials);
       controller.updateTxString(txStringA);
-      txStringA = await tokenB.approve(dexTestnetAddress, transferAmountB,
+      txStringB = await tokenB.approve(routerTestnetAddress, transferAmountB,
           credentials: controller.credentials);
       controller.updateTxString(txStringB);
-      print("Approved");
+      print("[Console] Pool Controller -> Approved");
       //txString = await tokenB.approve(dexAddress, tokenBAmount,
       //  credentials: controller.credentials);
     } catch (e) {
@@ -69,11 +69,12 @@ class PoolController extends GetxController {
 
   Future<void> addLiquidity() async {
     BigInt liquidity = BigInt.from(0);
-    BigInt amountADesired = BigInt.from(amount1.value);
-    BigInt amountBDesired = BigInt.from(amount2.value);
+    BigInt rate = BigInt.from(1000000000000000000);
+    BigInt amountADesired = BigInt.from(amount1.value) * rate;
+    BigInt amountBDesired = BigInt.from(amount2.value) * rate;
 
-    BigInt amountAMin = BigInt.from(amount1.value - 2.0);
-    BigInt amountBMin = BigInt.from(amount2.value - 2.0);
+    BigInt amountAMin = BigInt.from(0);
+    BigInt amountBMin = BigInt.from(0);
 
     EthereumAddress tokenAAddress = EthereumAddress.fromHex("$address1");
     EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
@@ -88,7 +89,7 @@ class PoolController extends GetxController {
         amountBDesired,
         amountAMin,
         amountBMin,
-        to,
+        dexTestnetAddress,
         twoMinuteDeadline,
         credentials: credentials);
 

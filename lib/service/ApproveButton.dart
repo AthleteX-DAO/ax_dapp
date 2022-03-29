@@ -85,16 +85,22 @@ class _ApproveButtonState extends State<ApproveButton> {
 
   void changeData() {
     // approved = false;
+
     widget.approveCallback().then((_) {
-      isApproved = true;
-      text = "Confirm";
-      fillcolor = Colors.amber;
-      textcolor = Colors.black;
+      setState(() {
+        isApproved = true;
+        print('ApproveButton widget: Transaction has been approved - $isApproved');
+        text = "Confirm";
+        fillcolor = Colors.amber;
+        textcolor = Colors.black;
+      });
     }).catchError((_) {
-      isApproved = false;
-      text = "Approve";
-      fillcolor = Colors.transparent;
-      textcolor = Colors.amber;
+      setState(() {
+        isApproved = false;
+        text = "Approve";
+        fillcolor = Colors.transparent;
+        textcolor = Colors.amber;
+      });
     });
     // Keep track of how many times the state has changed
     currentState += 1;
@@ -125,9 +131,7 @@ class _ApproveButtonState extends State<ApproveButton> {
             });
           } else {
             //Approve button was pressed
-            setState(() {
-              changeData();
-            });
+            changeData();
           }
           //print("Working");
         },
