@@ -41,9 +41,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
     tkn2 = tokens[1];
 
     for (Athlete ath in AthleteList.list) {
-      tokens.add(Token(ath.name + " APT", ath.name + " APT", AssetImage('assets/images/apt.png')));
-    }      
-
+      tokens.add(Token(ath.name + " Long", ath.name + " Long",
+          AssetImage('assets/images/apt.png')));
+      tokens.add(Token(ath.name + " Short", ath.name + " Short",
+          AssetImage('assets/images/apt.png')));
+    }
     tokenListFilter = tokens;
   }
 
@@ -73,13 +75,13 @@ class _DesktopTradeState extends State<DesktopTrade> {
           decoration: isWeb? boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
           child: TextButton(
               onPressed: () {
-                if (tkn1 != null && tkn2 != null)
-                  swapController.updateToken1(tkn1!);
+                swapController.updateToken1(tkn1!);
                 swapController.updateAmount1(fromAmount);
                 swapController.updateAmount2(toAmount);
                 swapController.updateAddress1(tkn1!.address.value);
                 swapController.updateAddress2(tkn2!.address.value);
                 swapController.updateToken2(tkn2!);
+
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => swapDialog(context));
@@ -123,6 +125,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
+                              // to-dropdown
+                              //tknNum = 1 (this is a comment)
                               createTokenButton(1),
                               // Amount box
                               Container(
@@ -198,6 +202,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
+                              // dropdown
+                              //tknNum = 2 (this is a comment)
                               createTokenButton(2),
                               // Amount box
                               Container(
@@ -244,16 +250,18 @@ class _DesktopTradeState extends State<DesktopTrade> {
   }
 
   Widget createTokenElement(Token token, int tknNum) {
+    //Creates a token item for AthleteTokenList widget
     double _width = MediaQuery.of(context).size.width;
     return Container(
         height: 50,
         child: TextButton(
             onPressed: () {
               setState(() {
-                if (tknNum == 1)
+                if (tknNum == 1) {
                   tkn1 = token;
-                else
+                } else {
                   tkn2 = token;
+                }
                 Navigator.pop(context);
               });
             },
