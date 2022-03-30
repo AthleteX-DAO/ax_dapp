@@ -1,7 +1,9 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
 //Comment this for Android
-import 'dart:html';
+import 'dart:html'
+if (dart.library.io) 'dart:io'
+if (dart.library.js) 'dart:html';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
