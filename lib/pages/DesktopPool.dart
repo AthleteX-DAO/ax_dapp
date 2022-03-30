@@ -26,7 +26,6 @@ class _DesktopPoolState extends State<DesktopPool> {
   bool isWeb = true;
   List<Token> tokenListFilter = [];
 
-  final double _rate = 1.12;
   final TextEditingController _tokenAmountOneController =
       TextEditingController();
   final TextEditingController _tokenAmountTwoController =
@@ -57,7 +56,7 @@ class _DesktopPoolState extends State<DesktopPool> {
       if (tokenOne != null) {
         //Update amount 1
         token1Amount = double.parse(_tokenAmountOneController.text);
-        poolController.updateAmount1(token1Amount);
+        poolController.updateTopAmount(token1Amount);
       }
     }
     //if to amount changed, autocomplete from amount
@@ -68,7 +67,7 @@ class _DesktopPoolState extends State<DesktopPool> {
         //Autocomplete and update amount 1
         //Update amount 2
         token2Amount = double.parse(_tokenAmountTwoController.text);
-        poolController.updateAmount2(token2Amount);
+        poolController.updateBottomAmount(token2Amount);
       }
     }
   }
@@ -591,10 +590,10 @@ class _DesktopPoolState extends State<DesktopPool> {
                   onChanged: (value) {
                     // if (tknNum == 1) {
                     //   token1Amount = double.parse(value);
-                    //   poolController.updateAmount1(token1Amount);
+                    //   poolController.updateTopAmount(token1Amount);
                     // } else if (tknNum == 2) {
                     //   token2Amount = double.parse(value);
-                    //   poolController.updateAmount2(token2Amount);
+                    //   poolController.updateBottomAmount(token2Amount);
                     // }
                   },
                   style: textStyle(Colors.grey[400]!, 22, false),

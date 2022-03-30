@@ -20,8 +20,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
   SwapController swapController = Get.find();
   double fromAmount = 0.0;
   double toAmount = 0.0;
-  Token? tkn1;
-  Token? tkn2;
+  Token? tknFrom;
+  Token? tknTo;
   bool isWeb = true;
 
   // List<Token> tokens = [
@@ -35,8 +35,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
   void initState() {
     super.initState();
     try {
-      tkn1 = TokenList.tokenList[0];
-      tkn2 = TokenList.tokenList[1];
+      tknFrom = TokenList.tokenList[0];
+      tknTo = TokenList.tokenList[1];
     } catch (error) {
       print("[Console] TokenList is empty?: $error");
     }
@@ -80,7 +80,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               style: textStyle(Colors.blue, 16, true),
             )));
 
-    if (tkn1 != null && tkn2 != null)
+    if (tknFrom != null && tknTo != null)
       swapButton = Container(
           margin:
               isWeb ? EdgeInsets.only(top: 30.0) : EdgeInsets.only(top: 20.0),
@@ -92,12 +92,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   Colors.transparent),
           child: TextButton(
               onPressed: () {
-                swapController.updateToken1(tkn1!);
-                swapController.updateAmount1(fromAmount);
-                swapController.updateAmount2(toAmount);
-                swapController.updateAddress1(tkn1!.address.value);
-                swapController.updateAddress2(tkn2!.address.value);
-                swapController.updateToken2(tkn2!);
+                swapController.updateFromToken(tknFrom!);
+                swapController.updateFromAddress(tknFrom!.address.value);
+                swapController.updateFromAmount(fromAmount);
+                swapController.updateToToken(tknTo!);
+                swapController.updateToAddress(tknTo!.address.value);
+                swapController.updateToAmount(toAmount);
                 swapController.approve().then((value) => null);
                 showDialog(
                     context: context,
@@ -172,8 +172,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                                   Colors.grey[400]!),
                                               child: TextButton(
                                                   onPressed: () {
-                                                    swapController
-                                                        .activeTkn1.value;
                                                     print(
                                                         swapController.amount1);
                                                   },
@@ -188,6 +186,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                               onChanged: (value) {
                                                 fromAmount =
                                                     double.parse(value);
+                                                swapController.updateFromAmount(
+                                                    fromAmount);
                                               },
                                               style: textStyle(
                                                   Colors.grey[400]!, 22, false),
@@ -216,11 +216,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     Container(
                       child: TextButton(
                           onPressed: () {
-                            if (tkn2 != null) {
-                              Token tmpTkn = tkn1!;
+                            if (tknTo != null) {
+                              Token tmpTkn = tknFrom!;
                               setState(() {
-                                tkn1 = tkn2;
-                                tkn2 = tmpTkn;
+                                tknFrom = tknTo;
+                                tknTo = tmpTkn;
                               });
                             }
                           },
@@ -271,8 +271,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                                   Colors.grey[400]!),
                                               child: TextButton(
                                                   onPressed: () {
-                                                    swapController
-                                                        .activeTkn2.value;
                                                     print(
                                                         swapController.amount2);
                                                   },
@@ -286,6 +284,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                             child: TextFormField(
                                               onChanged: (value) {
                                                 toAmount = double.parse(value);
+                                                swapController
+                                                    .updateToAmount(toAmount);
                                               },
                                               style: textStyle(
                                                   Colors.grey[400]!, 22, false),
@@ -325,12 +325,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
             onPressed: () {
               setState(() {
                 if (tknNum == 1) {
-                  tkn1 = token;
+                  tknFrom = token;
                   print("tkn1: ${token.address.value}");
-                  swapController.updateAddress1(token.address.value);
+                  swapController.updateFromAddress(token.address.value);
                 } else {
-                  tkn2 = token;
-                  swapController.updateAddress2(token.address.value);
+                  tknTo = token;
+                  swapController.updateToAddress(token.address.value);
                 }
                 Navigator.pop(context);
               });
@@ -393,18 +393,18 @@ class _DesktopTradeState extends State<DesktopTrade> {
     BoxDecoration decor =
         boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
-      if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+      if (tknFrom == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn1 != null) {
-        tkr = tkn1!.ticker;
-        tokenImage = tkn1!.icon;
+      if (tknFrom != null) {
+        tkr = tknFrom!.ticker;
+        tokenImage = tknFrom!.icon;
       }
     } else {
-      if (tkn2 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+      if (tknTo == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn2 != null) {
-        tkr = tkn2!.ticker;
-        tokenImage = tkn2!.icon;
+      if (tknTo != null) {
+        tkr = tknTo!.ticker;
+        tokenImage = tknTo!.icon;
       }
     }
 

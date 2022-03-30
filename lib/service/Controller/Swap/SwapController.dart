@@ -5,8 +5,6 @@ import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:get/get.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:web3dart/web3dart.dart';
-import '../../../contracts/LongShortPair.g.dart';
-import 'package:http/http.dart';
 
 class SwapController extends GetxController {
   Controller controller = Get.find();
@@ -55,10 +53,6 @@ class SwapController extends GetxController {
         ERC20(address: tokenAAddress, client: controller.client.value);
     //ERC20 tokenB =
     //ERC20(address: tokenBAddress, client: controller.client.value);
-    final tokenClient =
-        Web3Client("https://matic-mumbai.chainstacklabs.com", new Client());
-    LongShortPair genericLSP =
-        LongShortPair(address: tokenAAddress, client: tokenClient);
     BigInt rate = BigInt.parse("100000000000000000000000");
     BigInt transferAmount = rate * tokenAAmount;
     try {
@@ -138,25 +132,25 @@ class SwapController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  void updateAmount1(double newAmount) {
+  void updateFromAmount(double newAmount) {
     amount1.value = newAmount;
     print("[Console] Swap Controller -> from amount1: ${amount1.value}");
     update();
   }
 
-  void updateAmount2(double newAmount) {
+  void updateToAmount(double newAmount) {
     amount2.value = newAmount;
     print("[Console] Swap Controller -> to amount: ${amount2.value}");
     update();
   }
 
-  void updateAddress1(String newAddress) {
+  void updateFromAddress(String newAddress) {
     address1.value = newAddress;
     print("[Console] Swap Controller -> from address: ${address1.value}");
     update();
   }
 
-  void updateAddress2(String newAddress) {
+  void updateToAddress(String newAddress) {
     address2.value = newAddress;
     print("[Console] Swap Controller -> to address: ${address2.value}");
     update();
@@ -167,13 +161,13 @@ class SwapController extends GetxController {
     update();
   }
 
-  void updateToken1(Token tkn1) {
-    activeTkn1.value = tkn1;
+  void updateFromToken(Token tknFrom) {
+    activeTkn1.value = tknFrom;
     update();
   }
 
-  void updateToken2(Token tkn2) {
-    activeTkn2.value = tkn2;
+  void updateToToken(Token tknTo) {
+    activeTkn2.value = tknTo;
     update();
   }
 }

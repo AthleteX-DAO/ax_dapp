@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 class PoolController extends GetxController {
   Controller controller = Get.find();
-  late Dex _dex;
+  late Dex _factory;
   late APTRouter _aptRouter;
   var address1 = "".obs, address2 = "".obs;
   var amount1 = 0.0.obs, amount2 = 0.0.obs;
@@ -27,7 +27,7 @@ class PoolController extends GetxController {
     EthereumAddress routerAddress = routerTestnetAddress;
     EthereumAddress dexAddress = dexTestnetAddress;
 
-    _dex = Dex(address: dexAddress, client: controller.client.value);
+    _factory = Dex(address: dexAddress, client: controller.client.value);
     _aptRouter =
         APTRouter(address: routerAddress, client: controller.client.value);
   }
@@ -68,7 +68,6 @@ class PoolController extends GetxController {
   }
 
   Future<void> addLiquidity() async {
-    BigInt liquidity = BigInt.from(0);
     BigInt rate = BigInt.from(1000000000000000000);
     BigInt amountADesired = BigInt.from(amount1.value) * rate;
     BigInt amountBDesired = BigInt.from(amount2.value) * rate;
@@ -89,7 +88,7 @@ class PoolController extends GetxController {
         amountBDesired,
         amountAMin,
         amountBMin,
-        dexTestnetAddress,
+        to,
         twoMinuteDeadline,
         credentials: credentials);
 
@@ -118,7 +117,7 @@ class PoolController extends GetxController {
     EthereumAddress tknB = EthereumAddress.fromHex("$address2");
 
     String txString =
-        await _dex.createPair(tknA, tknB, credentials: credentials);
+        await _factory.createPair(tknA, tknB, credentials: credentials);
     controller.updateTxString(txString);
   }
 
@@ -134,13 +133,13 @@ class PoolController extends GetxController {
     update();
   }
 
-  void updateAmount1(double newAmount) {
+  void updateTopAmount(double newAmount) {
     amount1.value = newAmount;
     print("[Console] Pool Controller -> amount1: ${amount1.value}");
     update();
   }
 
-  void updateAmount2(double newAmount) {
+  void updateBottomAmount(double newAmount) {
     amount2.value = newAmount;
     print("[Console] Pool Controller -> amount2: ${amount2.value}");
     update();
