@@ -1,9 +1,4 @@
-import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
-import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +6,8 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+
+import '../service/TokenList.dart';
 
 class DesktopTrade extends StatefulWidget {
   const DesktopTrade({Key? key}) : super(key: key);
@@ -23,31 +20,45 @@ class _DesktopTradeState extends State<DesktopTrade> {
   SwapController swapController = Get.find();
   double fromAmount = 0.0;
   double toAmount = 0.0;
-  Token? tkn1;
-  Token? tkn2;
-  List<Token> tokenListFilter = [];
+  Token? tknFrom;
+  Token? tknTo;
   bool isWeb = true;
 
-  List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
-    SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
-    MATIC("Matic/Polygon", "Matic",
-        AssetImage('assets/images/Polygon_Small.png')),
-  ];
+  // List<Token> tokens = [
+  //   AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
+  //   SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
+  //   MATIC("Matic/Polygon", "Matic",
+  //       AssetImage('assets/images/Polygon_Small.png')),
+  // ];
 
   @override
   void initState() {
     super.initState();
-    tkn1 = tokens[0];
-    tkn2 = tokens[1];
-
-    for (Athlete ath in AthleteList.list) {
-      tokens.add(Token(ath.name + " Long", ath.name + " Long",
-          AssetImage('assets/images/apt.png')));
-      tokens.add(Token(ath.name + " Short", ath.name + " Short",
-          AssetImage('assets/images/apt.png')));
+    try {
+      tknFrom = TokenList.tokenList[0];
+      tknTo = TokenList.tokenList[1];
+    } catch (error) {
+      print("[Console] TokenList is empty?: $error");
     }
-    tokenListFilter = tokens;
+
+    // print("Inside initState");
+    // for (Athlete ath in AthleteList.list) {
+    //   print("Inside for loop");
+    //   print(AXT.idToAddress[ath.id]![1]);
+    //   tokens.add(APT(
+    //       ath.name + " Long",
+    //       ath.name + " Long",
+    //       AssetImage('../assets/images/apt.png'),
+    //       AXT.idToAddress[ath.id]![1])); // Long
+    //   print(AXT.idToAddress[ath.id]![2]);
+    //   tokens.add(APT(
+    //       ath.name + " Short",
+    //       ath.name + " Short",
+    //       AssetImage('../assets/images/apt.png'),
+    //       AXT.idToAddress[ath.id]![2])); // Short
+    // }
+    // tokenListFilter = tokens;
+    // print("Finished intState");
   }
 
   @override
@@ -69,8 +80,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
               "Select token to swap with",
               style: textStyle(Colors.blue, 16, true),
             )));
-    //Settings when both tokens are selected
-    if (tkn1 != null && tkn2 != null)
+
+    if (tknFrom != null && tknTo != null)
       swapButton = Container(
           margin:
               isWeb ? EdgeInsets.only(top: 30.0) : EdgeInsets.only(top: 20.0),
@@ -82,13 +93,13 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   Colors.transparent),
           child: TextButton(
               onPressed: () {
-                swapController.updateToken1(tkn1!);
-                swapController.updateAmount1(fromAmount);
-                swapController.updateAmount2(toAmount);
-                swapController.updateAddress1(tkn1!.address.value);
-                swapController.updateAddress2(tkn2!.address.value);
-                swapController.updateToken2(tkn2!);
-
+                swapController.updateFromToken(tknFrom!);
+                swapController.updateFromAddress(tknFrom!.address.value);
+                swapController.updateFromAmount(fromAmount);
+                swapController.updateToToken(tknTo!);
+                swapController.updateToAddress(tknTo!.address.value);
+                swapController.updateToAmount(toAmount);
+                swapController.approve().then((value) => null);
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => swapDialog(context));
@@ -154,33 +165,33 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
-                                            height: 24,
-                                            width: 40,
-                                            decoration: boxDecoration(
-                                                Colors.transparent,
-                                                100,
-                                                0.5,
-                                                Colors.grey[400]!),
-                                            child: TextButton(
-                                              onPressed: () {
-                                                swapController.activeTkn1.value;
-                                                print(swapController.amount1);
-                                              },
-                                              child: Text(
-                                                "MAX",
-                                                style: textStyle(
-                                                    Colors.grey[400]!,
-                                                    8,
-                                                    false),
-                                              ),
-                                            ),
-                                          ),
+                                              height: 24,
+                                              width: 40,
+                                              decoration: boxDecoration(
+                                                  Colors.transparent,
+                                                  100,
+                                                  0.5,
+                                                  Colors.grey[400]!),
+                                              child: TextButton(
+                                                  onPressed: () {
+                                                    swapController
+                                                        .activeTkn1.value;
+                                                    print(
+                                                        swapController.amount1);
+                                                  },
+                                                  child: Text("MAX",
+                                                      style: textStyle(
+                                                          Colors.grey[400]!,
+                                                          8,
+                                                          false)))),
                                           SizedBox(
                                             width: 70,
                                             child: TextFormField(
                                               onChanged: (value) {
                                                 fromAmount =
                                                     double.parse(value);
+                                                swapController.updateFromAmount(
+                                                    fromAmount);
                                               },
                                               style: textStyle(
                                                   Colors.grey[400]!, 22, false),
@@ -209,11 +220,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     Container(
                       child: TextButton(
                           onPressed: () {
-                            if (tkn2 != null) {
-                              Token tmpTkn = tkn1!;
+                            if (tknTo != null) {
+                              Token tmpTkn = tknFrom!;
                               setState(() {
-                                tkn1 = tkn2;
-                                tkn2 = tmpTkn;
+                                tknFrom = tknTo;
+                                tknTo = tmpTkn;
                               });
                             }
                           },
@@ -278,8 +289,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                             width: 70,
                                             child: TextFormField(
                                               onChanged: (value) {
-                                                fromAmount =
-                                                    double.parse(value);
+                                                toAmount = double.parse(value);
+                                                swapController
+                                                    .updateToAmount(toAmount);
                                               },
                                               style: textStyle(
                                                   Colors.grey[400]!, 22, false),
@@ -325,25 +337,31 @@ class _DesktopTradeState extends State<DesktopTrade> {
         onPressed: isTokenSelected(token, tknNum)
             ? null
             : () {
-                Token tmpTkn1 = tkn1!;
-                Token tmpTkn2 = tkn2!;
+                Token tmpTkn1 = tknFrom!;
+                Token tmpTkn2 = tknTo!;
                 setState(() {
                   if (tknNum == 1) {
-                    tkn1 = token;
+                    tknFrom = token;
+                    swapController.updateFromAddress(token.address.value);
                   } else {
-                    tkn2 = token;
+                    tknTo = token;
+                    swapController.updateToAddress(token.address.value);
                   }
 
                   // If the user changes the top token and it is the same as the bottom token, then swap the top and bottom
-                  if (tkn1!.name == tkn2!.name) {
-                    tkn1 = tkn2;
-                    tkn2 = tmpTkn1;
+                  if (tknFrom!.name == tknTo!.name) {
+                    tknFrom = tknTo;
+                    tknTo = tmpTkn1;
+                    swapController.updateFromAddress(tknFrom!.address.value);
+                    swapController.updateToAddress(tknTo!.address.value);
                   }
 
                   // If the user changes the bottom token and it is the same as the top token, then swap the bottom and the top
-                  if (tkn2!.name == tkn1!.name) {
-                    tkn2 = tkn1;
-                    tkn1 = tmpTkn2;
+                  if (tknTo!.name == tknFrom!.name) {
+                    tknTo = tknFrom;
+                    tknFrom = tmpTkn2;
+                    swapController.updateFromAddress(tknFrom!.address.value);
+                    swapController.updateToAddress(tknTo!.address.value);
                   }
                   Navigator.pop(context);
                 });
@@ -403,9 +421,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
   bool isTokenSelected(Token currentToken, int tknNum) {
     //returns true if token has been selected for tknNum position
     if (tknNum == 1) {
-      return currentToken.name == tkn1?.name;
+      return currentToken.name == tknFrom?.name;
     } else {
-      return currentToken.name == tkn2?.name;
+      return currentToken.name == tknTo?.name;
     }
   }
 
@@ -420,18 +438,20 @@ class _DesktopTradeState extends State<DesktopTrade> {
     BoxDecoration decor =
         boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
-      if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+      if (tknFrom == null)
+        decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn1 != null) {
-        tkr = tkn1!.ticker;
-        tokenImage = tkn1!.icon;
+      if (tknFrom != null) {
+        tkr = tknFrom!.ticker;
+        tokenImage = tknFrom!.icon;
       }
     } else {
-      if (tkn2 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+      if (tknTo == null)
+        decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn2 != null) {
-        tkr = tkn2!.ticker;
-        tokenImage = tkn2!.icon;
+      if (tknTo != null) {
+        tkr = tknTo!.ticker;
+        tokenImage = tknTo!.icon;
       }
     }
 
