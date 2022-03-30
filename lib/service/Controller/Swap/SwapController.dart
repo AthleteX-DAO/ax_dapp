@@ -132,25 +132,27 @@ class SwapController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  void updateAmount1(double newAmount) {
+  void updateFromAmount(double newAmount) {
     amount1.value = newAmount;
+    print("[Console] Swap Controller -> from amount1: ${amount1.value}");
     update();
   }
 
-  void updateAmount2(double newAmount) {
+  void updateToAmount(double newAmount) {
     amount2.value = newAmount;
+    print("[Console] Swap Controller -> to amount: ${amount2.value}");
     update();
   }
 
-  void updateAddress1(String newAddress) {
+  void updateFromAddress(String newAddress) {
     address1.value = newAddress;
-    print("[Console] From address: ${address1.value}");
+    print("[Console] Swap Controller -> from address: ${address1.value}");
     update();
   }
 
-  void updateAddress2(String newAddress) {
+  void updateToAddress(String newAddress) {
     address2.value = newAddress;
-    print("[Console] To address: ${address2.value}");
+    print("[Console] Swap Controller -> to address: ${address2.value}");
     update();
   }
 
@@ -159,13 +161,13 @@ class SwapController extends GetxController {
     update();
   }
 
-  void updateToken1(Token tkn1) {
-    activeTkn1.value = tkn1;
+  void updateFromToken(Token tknFrom) {
+    activeTkn1.value = tknFrom;
     update();
   }
 
-  void updateToken2(Token tkn2) {
-    activeTkn2.value = tkn2;
+  void updateToToken(Token tknTo) {
+    activeTkn2.value = tknTo;
     update();
   }
 }

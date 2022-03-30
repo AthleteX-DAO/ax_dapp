@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -3233,7 +3234,7 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
   if (_width < 395) wid = _width;
   double hgt = 450;
   if (_height < 455) hgt = _height;
-
+  PoolController poolController = Get.find();
   return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
@@ -3371,8 +3372,7 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
                         ),
                       ],
                     )),
-                ApproveButton(
-                    175, 40, "Approve", testFunction, removalConfirmed)
+                ApproveButton(175, 40, "Approve", poolController.approve, depositConfimed)
               ])));
 }
 

@@ -1,6 +1,6 @@
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
-import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
+import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
@@ -17,14 +17,21 @@ class DesktopPool extends StatefulWidget {
 }
 
 class _DesktopPoolState extends State<DesktopPool> {
-  SwapController swapController = Get.find();
+  PoolController poolController = Get.find();
   bool isAllLiquidity = true;
-  double fromAmount = 0.0;
-  double toAmount = 0.0;
+  double token1Amount = 0.0;
+  double token2Amount = 0.0;
   Token? tkn1;
   Token? tkn2;
   bool isWeb = true;
   List<Token> tokenListFilter = [];
+
+  final TextEditingController _tokenAmountOneController =
+      TextEditingController();
+  final TextEditingController _tokenAmountTwoController =
+      TextEditingController();
+  final FocusNode _tokenAmountOneFocusNode = FocusNode();
+  final FocusNode _tokenAmountTwoFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -37,6 +44,41 @@ class _DesktopPoolState extends State<DesktopPool> {
     }
 
     tokenListFilter = TokenList.tokenList;
+    _tokenAmountOneController.addListener(onTokenAmountChange);
+    _tokenAmountTwoController.addListener(onTokenAmountChange);
+  }
+
+  onTokenAmountChange() {
+    //if from amount changed, autocomplete to amount
+    if (_tokenAmountOneFocusNode.hasFocus) {
+      final tokenOne = double.tryParse(_tokenAmountOneController.text);
+
+      if (tokenOne != null) {
+        //Update amount 1
+        token1Amount = double.parse(_tokenAmountOneController.text);
+        poolController.updateTopAmount(token1Amount);
+      }
+    }
+    //if to amount changed, autocomplete from amount
+    if (_tokenAmountTwoFocusNode.hasFocus) {
+      final tokenTwo = double.tryParse(_tokenAmountTwoController.text);
+
+      if (tokenTwo != null) {
+        //Autocomplete and update amount 1
+        //Update amount 2
+        token2Amount = double.parse(_tokenAmountTwoController.text);
+        poolController.updateBottomAmount(token2Amount);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _tokenAmountOneController.dispose();
+    _tokenAmountOneFocusNode.dispose();
+    _tokenAmountTwoController.dispose();
+    _tokenAmountTwoFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -130,7 +172,8 @@ class _DesktopPoolState extends State<DesktopPool> {
                 child: Text("Balance: 0.00",
                     style: textStyle(Colors.grey[600]!, 13, false))),
             //Top Token container
-            tokenContainer(1, elementWdt),
+            tokenContainer(1, elementWdt, _tokenAmountOneController,
+                _tokenAmountOneFocusNode),
             Container(
                 child: Text(
               "+",
@@ -142,7 +185,8 @@ class _DesktopPoolState extends State<DesktopPool> {
                 child: Text("Balance: 0.00",
                     style: textStyle(Colors.grey[600]!, 13, false))),
             // Bottom Token container
-            tokenContainer(2, elementWdt),
+            tokenContainer(2, elementWdt, _tokenAmountTwoController,
+                _tokenAmountTwoFocusNode),
           ],
         ),
       ),
@@ -450,8 +494,14 @@ class _DesktopPoolState extends State<DesktopPool> {
     );
   }
 
-  Widget tokenContainer(int tknNum, double elementWdt) {
+  Widget tokenContainer(
+    int tknNum,
+    double elementWdt,
+    TextEditingController tokenAmountController,
+    FocusNode tokenAmountFocusNode,
+  ) {
     //Returns the tokenContainer containing dropdown menu button with token icon and ticker
+    //and amount input box
     //element width refers to the width of half the all liquidity card (for desktop only)
     double tokenContainerWdt = elementWdt * 0.9;
     String tkr = "Select a Token";
@@ -521,22 +571,31 @@ class _DesktopPoolState extends State<DesktopPool> {
           Container(
               child: Row(
             children: <Widget>[
+              //Max Button
               Container(
                   height: 24,
                   width: 40,
                   decoration: boxDecoration(
                       Colors.transparent, 100, 0.5, Colors.grey[400]!),
                   child: TextButton(
-                      onPressed: () {
-                        swapController.activeTkn1.value;
-                        print(swapController.amount1);
-                      },
+                      onPressed: () {},
                       child: Text("MAX",
                           style: textStyle(Colors.grey[400]!, 8, false)))),
+              //Amount input box
               SizedBox(
                 width: tokenContainerWdt * 0.15,
                 child: TextFormField(
-                  onChanged: (value) {},
+                  controller: tokenAmountController,
+                  focusNode: tokenAmountFocusNode,
+                  onChanged: (value) {
+                    // if (tknNum == 1) {
+                    //   token1Amount = double.parse(value);
+                    //   poolController.updateTopAmount(token1Amount);
+                    // } else if (tknNum == 2) {
+                    //   token2Amount = double.parse(value);
+                    //   poolController.updateBottomAmount(token2Amount);
+                    // }
+                  },
                   style: textStyle(Colors.grey[400]!, 22, false),
                   decoration: InputDecoration(
                     hintText: '0.00',
@@ -709,11 +768,13 @@ class _DesktopPoolState extends State<DesktopPool> {
                   decoration: boxDecoration(
                       Colors.transparent, 100, 1, Colors.amber[400]!),
                   child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Approve",
-                        style: textStyle(Colors.amber[400]!, 16, true),
-                      )))
+                    onPressed: () {},
+                    child: Text(
+                      "Approve",
+                      style: textStyle(Colors.amber[400]!, 16, true),
+                    ),
+                  ),
+                )
         ],
       ),
     );
@@ -726,10 +787,13 @@ class _DesktopPoolState extends State<DesktopPool> {
         child: TextButton(
             onPressed: () {
               setState(() {
-                if (tknNum == 1)
+                if (tknNum == 1) {
                   tkn1 = token;
-                else
+                  poolController.updateTknAddress1(token.address.value);
+                } else {
                   tkn2 = token;
+                  poolController.updateTknAddress2(token.address.value);
+                }
                 Navigator.pop(context);
               });
             },

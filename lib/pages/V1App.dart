@@ -8,6 +8,7 @@ import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
+import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
@@ -85,6 +86,7 @@ class _V1AppState extends State<V1App> {
     Get.put(LSPController());
     Get.put(SwapController());
     Get.put(WalletController());
+    Get.put(PoolController());
   }
 
   @override
