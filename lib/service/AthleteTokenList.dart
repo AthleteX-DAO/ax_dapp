@@ -1,10 +1,6 @@
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
-import 'package:ax_dapp/service/Controller/Swap/SXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -23,33 +19,16 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   SwapController swapController = Get.find();
   double fromAmount = 0.0;
   double toAmount = 0.0;
-  Token? tkn1;
-  Token? tkn2;
   List<Token> tokenListFilter = [];
   int tokenNumber = 0;
   bool isWeb = true;
 
-  List<Token> tokens = [
-    AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
-    SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/Polygon_Small.png')),
-  ];
-
   @override
   void initState() {
     super.initState();
-    tkn1 = tokens[0];
-    tkn2 = tokens[1];
 
     tokenNumber = widget.tknNum;
-
-    for (Athlete ath in AthleteList.list) {
-      tokens.add(Token(ath.name + " Long", ath.name + " Long",
-          AssetImage('assets/images/apt.png')));
-      tokens.add(Token(ath.name + " Short", ath.name + " Short",
-          AssetImage('assets/images/apt.png')));
-    }
-    tokenListFilter = tokens;
+    tokenListFilter = TokenList.tokenList;
   }
 
   @override
@@ -146,7 +125,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    tokenListFilter = tokens
+                    tokenListFilter = TokenList.tokenList
                         .where((token) => token.ticker
                             .toUpperCase()
                             .contains(value.toUpperCase()))

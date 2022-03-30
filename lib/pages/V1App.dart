@@ -3,6 +3,7 @@ import 'package:ax_dapp/pages/DesktopPool.dart';
 import 'package:ax_dapp/pages/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
+import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
@@ -59,7 +60,7 @@ class _V1AppState extends State<V1App> {
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
   AXT axt = AXT("AthleteX", "AX");
-  Token matic = Token("Polygon", "MATIC");
+  Token matic = MATIC("Polygon", "MATIC");
   late PageController _pageController;
   var _selectedIndex = 0;
 

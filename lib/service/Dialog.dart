@@ -3191,8 +3191,7 @@ Dialog swapDialog(BuildContext context) {
                     child: TextButton(
                       onPressed: () {
                         print('swapping!');
-                        swapController.approve().then((value) {
-                          swapController.swap();
+                        swapController.swap().then((value) {
                           Navigator.pop(context);
 
                           showDialog(

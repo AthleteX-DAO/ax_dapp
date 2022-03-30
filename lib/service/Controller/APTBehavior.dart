@@ -12,9 +12,9 @@ mixin APTBehavior on Token {
   Controller controller = Get.find();
   AXT _athleteX = AXT("AthleteX", "AX");
   final EthereumAddress placeholderAddress =
-      EthereumAddress.fromHex("0x00000000000000000000000000000000000000");
+      EthereumAddress.fromHex("0x0000000000000000000000000000000000000000");
   EthereumAddress empCAddress =
-      EthereumAddress.fromHex("0x00000000000000000000000000000000000000");
+      EthereumAddress.fromHex("0x0000000000000000000000000000000000000000");
 
   late ExpiringMultiParty _expiringMultiParty;
 
