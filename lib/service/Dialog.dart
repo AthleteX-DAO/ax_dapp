@@ -463,34 +463,6 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Container(
-              //   margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
-              //   width: 175,
-              //   height: 45,
-              //   decoration: BoxDecoration(
-              //     color: Colors.amber[400],
-              //     borderRadius: BorderRadius.circular(100),
-              //   ),
-              //   child: TextButton(
-              //     onPressed: () {
-              //       Navigator.pop(context);
-              //       showDialog(
-              //           context: context,
-              //           builder: (BuildContext context) =>
-              //               depositConfimed(context));
-              //     },
-              //     child: const Text(
-              //       "Approve",
-              //       style: TextStyle(
-              //         fontSize: 16,
-              //         color: Colors.black,
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              //TO DO fix changing state of approve button
-              //ApproveButton(175, 45, 'confirm', false, () => {}, () => {})
-              //ApproveButton(175, 45, 'Approve', depositConfimed(context))
               ApproveButton(175, 45, 'Approve', testFunction, depositConfimed)
             ],
           )
@@ -787,13 +759,13 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                 children: <TextSpan>[
                   TextSpan(
                       text: "You can purchase APTs at Market Price with AX.",
-                      style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                      style: TextStyle(color: Colors.grey[600], fontSize: isWeb ? 14 : 12)),
                   TextSpan(
                       text: " You can buy AX on the Matic network through",
-                      style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                      style: TextStyle(color: Colors.grey[600], fontSize: isWeb ? 14 : 12)),
                   TextSpan(
                       text: " SushiSwap",
-                      style: TextStyle(color: Colors.amber[400], fontSize: 15)),
+                      style: TextStyle(color: Colors.amber[400], fontSize: isWeb ? 14 : 12)),
                 ],
               ),
             ),
@@ -805,7 +777,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
             child: RichText(
               text: TextSpan(
                 text: "Learn How to buy AX",
-                style: TextStyle(color: Colors.amber[400], fontSize: 15),
+                style: TextStyle(color: Colors.amber[400], fontSize: 14),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     String urlString =
@@ -823,9 +795,9 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                   Container(
                     width: wid - edge,
                     child: Text(
-                      "Input AX:",
+                      isWeb ? "Input AX:" : "Input APT amount you want to buy:",
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 14,
                         color: Colors.grey[600],
                       ),
                     ),
@@ -844,14 +816,15 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage("assets/images/x.jpg"),
+                                scale: 0.5, 
+                                image: AssetImage("assets/images/apt.png"),
                               ),
                             ),
                           ),
                           Container(width: 15),
                           Expanded(
                             child: Text(
-                              "AX",
+                              athlete.name + " APT",
                               style: textStyle(Colors.white, 15, false),
                             ),
                           ),
@@ -863,7 +836,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                             child: TextButton(
                               onPressed: () {},
                               child: Text(
-                                "Max",
+                                "MAX",
                                 style: textStyle(Colors.grey[400]!, 9, false),
                               ),
                             ),
@@ -1108,13 +1081,13 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                   children: <TextSpan>[
                     TextSpan(
                         text: "You can sell APT's at Market Price for AX.",
-                        style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                        style: TextStyle(color: Colors.grey[600], fontSize: isWeb ? 14 : 12)),
                     TextSpan(
                         text:" You can access other funds with AX on the Matic network through",
-                        style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                        style: TextStyle(color: Colors.grey[600], fontSize: isWeb ? 14 : 12)),
                     TextSpan(
                         text: " SushiSwap",
-                        style: TextStyle(color: Colors.amber[400], fontSize: 15)),
+                        style: TextStyle(color: Colors.amber[400], fontSize: isWeb ? 14 : 12)),
                   ],
                 ),
               ),
@@ -1127,15 +1100,15 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                 Container(
                   width: wid - edge,
                   child: Text(
-                    "Input APT:",
+                    isWeb ? "Input APT:" : "Input APT amount you want to sell:",
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 14,
                       color: Colors.grey[600],
                     ),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
                   width: wid - edge,
                   height: 55,
                   decoration: boxDecoration(Colors.transparent, 14, 0.5, Colors.grey[400]!),
@@ -1169,7 +1142,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                         child: TextButton(
                           onPressed: () {},
                           child: Text(
-                            "Max",
+                            "MAX",
                             style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
@@ -1181,7 +1154,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                           decoration: InputDecoration(
                             hintText: '0.00',
                             hintStyle: textStyle(Colors.grey[400]!, 22, false),
-                            contentPadding: const EdgeInsets.all(9),
+                            contentPadding: isWeb ? EdgeInsets.all(9) : EdgeInsets.all(6),
                             border: InputBorder.none,
                           ),
                           inputFormatters: [
@@ -1201,7 +1174,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
               ),
             Container(
                 width: wid - edge,
-                height: 100,
+                height: 125,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -1357,8 +1330,8 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
   double _height = MediaQuery.of(context).size.height;
   double wid = isWeb ? 370 : 320;
   double edge = 40;
-  double hgt = 390;
-  if (_height < 395) hgt = _height;
+  double hgt = 430;
+  if (_height < 435) hgt = _height;
   LSPController lspController = Get.find();
 
   return Dialog(
@@ -1399,16 +1372,16 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                   children: <TextSpan>[
                     TextSpan(
                       text: "You can redeem APT's at their Book Value for AX.",
-                      style: textStyle(Colors.grey[600]!, 15, false),
+                      style: textStyle(Colors.grey[600]!, isWeb ? 14 : 12, false),
                     ),
                     TextSpan(
                       text:
                           " You can access other funds with AX on the Matic network through",
-                      style: textStyle(Colors.grey[600]!, 15, false),
+                      style: textStyle(Colors.grey[600]!, isWeb ? 14 : 12, false),
                     ),
                     TextSpan(
                       text: " SushiSwap",
-                      style: textStyle(Colors.amber[400]!, 15, false),
+                      style: textStyle(Colors.amber[400]!, isWeb ? 14 : 12, false),
                     ),
                   ],
                 ),
@@ -1421,12 +1394,12 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                 Container(
                   width: wid - edge,
                   child: Text(
-                    "Input APT pair:",
-                    style: textStyle(Colors.grey[600]!, 15, false),
+                    isWeb ? "Input APT pair:" : "Input APT pair and amount:",
+                    style: textStyle(Colors.grey[600]!, 14, false),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
                   width: wid - edge,
                   height: 55,
                   decoration: BoxDecoration(
@@ -1467,7 +1440,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                         child: TextButton(
                           onPressed: () {},
                           child: Text(
-                            "Max",
+                            "MAX",
                             style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
@@ -1479,7 +1452,78 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           decoration: InputDecoration(
                             hintText: '0.00',
                             hintStyle: textStyle(Colors.grey[400]!, 22, false),
-                            contentPadding: const EdgeInsets.all(9),
+                            contentPadding: isWeb ? EdgeInsets.all(9) : EdgeInsets.all(6),
+                            border: InputBorder.none,
+                          ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                          ],
+                          onChanged: (value) {
+                            double newAmount = double.parse(value);
+                            lspController.updateRedeemAmt(newAmount);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(height: 10),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  width: wid - edge,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(14.0),
+                    border: Border.all(
+                      color: Colors.grey[400]!,
+                      width: 0.5,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(width: 5),
+                      Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            scale: 0.5,
+                            image: AssetImage("assets/images/apt.png"),
+                          ),
+                        ),
+                      ),
+                      Container(width: 15),
+                      Expanded(
+                        child: Text(
+                          athlete.name + " APT",
+                          style: textStyle(Colors.white, 15, false),
+                        ),
+                      ),
+                      Container(
+                        height: 28,
+                        width: 48,
+                        decoration: boxDecoration(
+                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "MAX",
+                            style: textStyle(Colors.grey[400]!, 9, false),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 70,
+                        child: TextField(
+                          style: textStyle(Colors.grey[400]!, 22, false),
+                          decoration: InputDecoration(
+                            hintText: '0.00',
+                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
+                            contentPadding: isWeb ? EdgeInsets.all(9) : EdgeInsets.all(6),
                             border: InputBorder.none,
                           ),
                           inputFormatters: [
@@ -1603,15 +1647,15 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   children: <TextSpan>[
                     TextSpan(
                       text: "You can mint APTs at their Book Value with AX.",
-                      style: textStyle(Colors.grey[600]!, 15, false),
+                      style: textStyle(Colors.grey[600]!, isWeb ? 14 : 12, false),
                     ),
                     TextSpan(
                       text: " You can buy AX on the Matic network through",
-                      style: textStyle(Colors.grey[600]!, 15, false),
+                      style: textStyle(Colors.grey[600]!, isWeb ? 14 : 12, false),
                     ),
                     TextSpan(
                       text: " SushiSwap",
-                      style: textStyle(Colors.amber[400]!, 15, false),
+                      style: textStyle(Colors.amber[400]!, isWeb ? 14 : 12, false),
                     ),
                   ],
                 ),
@@ -1625,7 +1669,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                   width: wid - edge,
                   child: Text(
                     "Input AX:",
-                    style: textStyle(Colors.grey[600]!, 15, false),
+                    style: textStyle(Colors.grey[600]!, 14, false),
                   ),
                 ),
                 Container(
@@ -1669,7 +1713,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         child: TextButton(
                           onPressed: () {},
                           child: Text(
-                            "Max",
+                            "MAX",
                             style: textStyle(Colors.grey[400]!, 9, false),
                           ),
                         ),
@@ -1681,7 +1725,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                           decoration: InputDecoration(
                             hintText: '0.00',
                             hintStyle: textStyle(Colors.grey[400]!, 22, false),
-                            contentPadding: const EdgeInsets.all(9),
+                            contentPadding: isWeb ? EdgeInsets.all(9) : EdgeInsets.all(6),
                             border: InputBorder.none,
                           ),
                           inputFormatters: [
