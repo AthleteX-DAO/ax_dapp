@@ -35,8 +35,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
-    isWeb =
-        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return Dialog(
         backgroundColor: Colors.grey[900],
         shape: RoundedRectangleBorder(
@@ -53,56 +52,51 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                 children: <Widget>[
                   // column of elements
                   Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 25),
-                      height: _height * .625,
-                      width: _width * 0.45 + 120,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                    height: 30,
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Select a Token",
-                                        style: textStyle(
-                                            Colors.grey[400]!, 16, false))),
-                                Container(
-                                    alignment: Alignment.centerRight,
-                                    child: TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Icon(Icons.close,
-                                          color: Colors.grey[400], size: 30),
-                                    ))
-                              ]),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: createSearchBar(),
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                    height: _height * .625,
+                    width: _width * 0.45 + 120,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                                height: 30,
+                                alignment: Alignment.centerLeft,
+                                child: Text("Select a Token",style: textStyle(Colors.grey[400]!, 16, false))),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Icon(Icons.close,color: Colors.grey[400], size: 30),
+                            ))
+                          ]),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: createSearchBar(),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Token Name", style: textStyle(Colors.grey[400]!, 12, false),),
+                        ),   
+                        Container(
+                          child: Divider(thickness: 1, color: Colors.grey[400]),
+                        ),
+                        Container(
+                            height: _height * .625 - 125,
+                            child: ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                itemCount: tokenListFilter.length,
+                                itemBuilder: (context, index) {
+                                  return widget.createTokenElement(
+                                      tokenListFilter[index], tokenNumber);
+                                }
+                            )
                           ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Token Name",
-                              style: textStyle(Colors.grey[400]!, 12, false),
-                            ),
-                          ),
-                          Container(
-                            child:
-                                Divider(thickness: 1, color: Colors.grey[400]),
-                          ),
-                          Container(
-                              height: _height * .625 - 125,
-                              child: ListView.builder(
-                                  physics: BouncingScrollPhysics(),
-                                  itemCount: tokenListFilter.length,
-                                  itemBuilder: (context, index) {
-                                    return widget.createTokenElement(
-                                        tokenListFilter[index], tokenNumber);
-                                  })),
-                        ],
-                      ))
+                      ],
+                    )
+                  )
                 ],
               )),
         ));
@@ -142,10 +136,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 10),
                   hintText: "Search a name or paste an address",
-                  hintStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: searchBarHintTextSize,
-                      height: 1.5),
+                  hintStyle: TextStyle(color: Colors.white, fontSize: searchBarHintTextSize, height: 1.5),
                 ),
               ),
             ),

@@ -172,6 +172,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                                   Colors.grey[400]!),
                                               child: TextButton(
                                                   onPressed: () {
+                                                    swapController
+                                                        .activeTkn1.value;
                                                     print(
                                                         swapController.amount1);
                                                   },
@@ -271,6 +273,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                                   Colors.grey[400]!),
                                               child: TextButton(
                                                   onPressed: () {
+                                                    swapController
+                                                        .activeTkn2.value;
                                                     print(
                                                         swapController.amount2);
                                                   },
@@ -393,14 +397,16 @@ class _DesktopTradeState extends State<DesktopTrade> {
     BoxDecoration decor =
         boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
-      if (tknFrom == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+      if (tknFrom == null)
+        decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
       if (tknFrom != null) {
         tkr = tknFrom!.ticker;
         tokenImage = tknFrom!.icon;
       }
     } else {
-      if (tknTo == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+      if (tknTo == null)
+        decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
       if (tknTo != null) {
         tkr = tknTo!.ticker;
