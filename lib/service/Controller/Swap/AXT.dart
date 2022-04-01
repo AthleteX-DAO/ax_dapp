@@ -31,9 +31,8 @@ class AXT extends Token with ERC20Behavior {
     ] // Cooper Kupp
   };
 
-  AXT(String name, String ticker, [AssetImage? icon]) : super(name, ticker) {
-    updateAddress(mumbaiAddress);
-    updateERC20(mumbaiAddress);
+  AXT(String name, String ticker, [AssetImage? icon])
+      : super(name, ticker, mumbaiAddress) {
     if (icon != null) {
       super.icon = icon;
     }

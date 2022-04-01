@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -2853,7 +2854,8 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
 // dynamic
 Dialog swapDialog(BuildContext context) {
   bool isWeb = true;
-  isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+  isWeb =
+      kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   SwapController swapController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -2867,7 +2869,7 @@ Dialog swapDialog(BuildContext context) {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Container(
-        height: isWeb? _height * 0.55 : _height * 0.65,
+        height: isWeb ? _height * 0.55 : _height * 0.65,
         width: wid,
         padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
@@ -2876,7 +2878,7 @@ Dialog swapDialog(BuildContext context) {
           // Confirm Swap
           children: <Widget>[
             Container(
-              width: wid- edge,
+              width: wid - edge,
               height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2981,10 +2983,12 @@ Dialog swapDialog(BuildContext context) {
                             children: <TextSpan>[
                               TextSpan(
                                   text: "-\$1.580",
-                                  style: TextStyle(color: Colors.grey[600], fontSize: 10)),
+                                  style: TextStyle(
+                                      color: Colors.grey[600], fontSize: 10)),
                               TextSpan(
                                   text: " (0.079%)",
-                                  style: TextStyle(color: Colors.red[900], fontSize: 10)),
+                                  style: TextStyle(
+                                      color: Colors.red[900], fontSize: 10)),
                             ],
                           ),
                         ),
@@ -3025,7 +3029,7 @@ Dialog swapDialog(BuildContext context) {
             ),
             // Price Information and Confirm Swap Button
             Container(
-              width: wid-edge,
+              width: wid - edge,
               height: 100,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -3184,15 +3188,20 @@ Dialog swapDialog(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin: isWeb? EdgeInsets.only(top: 30.0, bottom: 10.0) : EdgeInsets.only(bottom: 5.0),
+                    margin: isWeb
+                        ? EdgeInsets.only(top: 30.0, bottom: 10.0)
+                        : EdgeInsets.only(bottom: 5.0),
                     width: wid - 180,
                     height: isWeb ? _height * 0.05 : _height * 0.06,
-                    decoration: isWeb? boxDecoration(Colors.amber[400]!, 100, 1, Colors.transparent) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 100, 1, Colors.transparent),
+                    decoration: isWeb
+                        ? boxDecoration(
+                            Colors.amber[400]!, 100, 1, Colors.transparent)
+                        : boxDecoration(Colors.amber[500]!.withOpacity(0.20),
+                            100, 1, Colors.transparent),
                     child: TextButton(
                       onPressed: () {
                         print('swapping!');
-                        swapController.approve().then((value) {
-                          swapController.swap();
+                        swapController.swap().then((value) {
                           Navigator.pop(context);
 
                           showDialog(
@@ -3204,7 +3213,9 @@ Dialog swapDialog(BuildContext context) {
                       child: Text(
                         "Confirm Swap",
                         textAlign: TextAlign.center,
-                        style: isWeb ? textStyle(Colors.black, 20, true) : textStyle(Colors.amber[500]!, 15, true),
+                        style: isWeb
+                            ? textStyle(Colors.black, 20, true)
+                            : textStyle(Colors.amber[500]!, 15, true),
                       ),
                     ),
                   ),
@@ -3223,7 +3234,7 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
   if (_width < 395) wid = _width;
   double hgt = 450;
   if (_height < 455) hgt = _height;
-
+  PoolController poolController = Get.find();
   return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
@@ -3361,8 +3372,7 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
                         ),
                       ],
                     )),
-                ApproveButton(
-                    175, 40, "Approve", testFunction, removalConfirmed)
+                ApproveButton(175, 40, "Approve", poolController.approve, depositConfimed)
               ])));
 }
 
