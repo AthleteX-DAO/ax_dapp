@@ -1804,8 +1804,6 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
 
 // dynamic
 Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txString) {
-  bool isWeb = true;
-  isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
