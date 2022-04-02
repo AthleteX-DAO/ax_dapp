@@ -13,30 +13,12 @@ class TokenList {
     MATIC("Matic/Polygon", "Matic",
         AssetImage('assets/images/Polygon_Small.png')),
     ...AthleteList.list.map((ath) {
-      return APT(ath.name + " Long", ath.name + " Long",
-          AssetImage('../assets/images/apt.png'), AXT.idToAddress[ath.id]![1]);
+      return APT("Long APT", ath.name,
+          AssetImage('assets/images/apt_noninverted.png'), AXT.idToAddress[ath.id]![1]);
     }),
     ...AthleteList.list.map((ath) {
-      return APT(ath.name + " Short", ath.name + " Short",
-          AssetImage('../assets/images/apt.png'), AXT.idToAddress[ath.id]![2]);
+      return APT("Short APT", ath.name,
+          AssetImage('assets/images/apt_inverted.png'), AXT.idToAddress[ath.id]![2]);
     }),
   ];
-
-  // TokenList() {
-  //   for (Athlete ath in AthleteList.list) {
-  //     print("Inside for loop");
-  //     print(AXT.idToAddress[ath.id]![1]);
-  //     tokenList.add(APT(
-  //         ath.name + " Long",
-  //         ath.name + " Long",
-  //         AssetImage('../assets/images/apt.png'),
-  //         AXT.idToAddress[ath.id]![1])); // Long
-  //     print(AXT.idToAddress[ath.id]![2]);
-  //     tokenList.add(APT(
-  //         ath.name + " Short",
-  //         ath.name + " Short",
-  //         AssetImage('../assets/images/apt.png'),
-  //         AXT.idToAddress[ath.id]![2])); // Short
-  //   }
-  // }
 }
