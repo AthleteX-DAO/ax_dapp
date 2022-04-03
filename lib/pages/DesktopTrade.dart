@@ -411,7 +411,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: tokenImage!,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
