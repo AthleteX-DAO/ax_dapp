@@ -712,7 +712,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
   bool isWeb = true;
   isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 400 : 320;
+  double wid = isWeb ? 400 : 355;
   double edge = 40;
   double hgt = 500;
   if (_height < 505) hgt = _height;
@@ -1036,7 +1036,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
   bool isWeb = true;
   isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 400 : 320;
+  double wid = isWeb ? 400 : 355;
   double edge = 40;
   double hgt = 500;
   if (_height < 505) hgt = _height;
@@ -1326,7 +1326,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
   bool isWeb = true;
   isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 370 : 320;
+  double wid = isWeb ? 370 : 355;
   double edge = 40;
   double hgt = 430;
   if (_height < 435) hgt = _height;
@@ -1600,7 +1600,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   bool isWeb = true;
   isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 370 : 320;
+  double wid = isWeb ? 370 : 355;
   double edge = 40;
   double hgt = 390;
   if (_height < 395) hgt = _height;
