@@ -24,13 +24,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Token? tknTo;
   bool isWeb = true;
 
-  // List<Token> tokens = [
-  //   AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
-  //   SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
-  //   MATIC("Matic/Polygon", "Matic",
-  //       AssetImage('assets/images/Polygon_Small.png')),
-  // ];
-
   @override
   void initState() {
     super.initState();
@@ -40,25 +33,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
     } catch (error) {
       print("[Console] TokenList is empty?: $error");
     }
-
-    // print("Inside initState");
-    // for (Athlete ath in AthleteList.list) {
-    //   print("Inside for loop");
-    //   print(AXT.idToAddress[ath.id]![1]);
-    //   tokens.add(APT(
-    //       ath.name + " Long",
-    //       ath.name + " Long",
-    //       AssetImage('../assets/images/apt.png'),
-    //       AXT.idToAddress[ath.id]![1])); // Long
-    //   print(AXT.idToAddress[ath.id]![2]);
-    //   tokens.add(APT(
-    //       ath.name + " Short",
-    //       ath.name + " Short",
-    //       AssetImage('../assets/images/apt.png'),
-    //       AXT.idToAddress[ath.id]![2])); // Short
-    // }
-    // tokenListFilter = tokens;
-    // print("Finished intState");
   }
 
   @override
@@ -437,7 +411,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: tokenImage!,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),

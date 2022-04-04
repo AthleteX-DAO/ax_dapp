@@ -8,7 +8,6 @@ import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -713,7 +712,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
   bool isWeb = true;
   isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 400 : 320;
+  double wid = isWeb ? 400 : 355;
   double edge = 40;
   double hgt = 500;
   if (_height < 505) hgt = _height;
@@ -742,7 +741,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                   Text("Buy " + athlete.name + " APT",
                       style: textStyle(Colors.white, 20, false)),
                   IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.close,
                       color: Colors.white,
                       size: 30,
@@ -775,16 +774,14 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
             alignment: Alignment.centerLeft,
             height: 50,
             width: wid - edge,
-            child: RichText(
-              text: TextSpan(
-                text: "Learn How to buy AX",
+            child: GestureDetector(
+              onTap: () {
+                String urlString = "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
+                launch(urlString);
+              },
+              child: Text(
+                'Learn How to buy AX',
                 style: TextStyle(color: Colors.amber[400], fontSize: 14),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    String urlString =
-                        "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
-                    launch(urlString);
-                  },
               ),
             ),
           ),
@@ -796,7 +793,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                   Container(
                     width: wid - edge,
                     child: Text(
-                      isWeb ? "Input AX:" : "Input APT amount you want to buy:",
+                      "Input APT amount you want to buy:",
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -818,7 +815,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 scale: 0.5, 
-                                image: AssetImage("assets/images/apt.png"),
+                                image: AssetImage("assets/images/apt_noninverted.png"),
                               ),
                             ),
                           ),
@@ -1001,7 +998,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                 Container(
                   width: 175,
                   height: 45,
-                  decoration: isWeb ? boxDecoration(Colors.amber[400]!, 500, 1, Colors.amber[400]!) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
+                  decoration: boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
                   child: TextButton(
                     //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                     onPressed: () async {
@@ -1021,7 +1018,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                     },
                     child: Text(
                       "Confirm",
-                      style: isWeb ? textStyle(Colors.black, 16, false) : textStyle(Colors.amber[500]!, 16, false),
+                      style: textStyle(Colors.amber[500]!, 16, false),
                     ),
                   ),
                 ),
@@ -1039,7 +1036,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
   bool isWeb = true;
   isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 400 : 320;
+  double wid = isWeb ? 400 : 355;
   double edge = 40;
   double hgt = 500;
   if (_height < 505) hgt = _height;
@@ -1124,7 +1121,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: AssetImage("assets/images/apt.png"),
+                            image: AssetImage("assets/images/apt_noninverted.png"),
                           ),
                         ),
                       ),
@@ -1292,10 +1289,10 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(bottom: 15.0),
+                    margin: EdgeInsets.only(bottom: 8.0),
                     width: 175,
                     height: 45,
-                    decoration: isWeb ? boxDecoration(Colors.amber[400]!, 500, 1, Colors.amber[400]!) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
+                    decoration: boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
                     child: TextButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -1310,7 +1307,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                       },
                       child: Text(
                         "Confirm",
-                        style: isWeb ? textStyle(Colors.black, 16, false) : textStyle(Colors.amber[500]!, 16, false),
+                        style: textStyle(Colors.amber[500]!, 16, false),
                       ),
                     ),
                   ),
@@ -1329,7 +1326,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
   bool isWeb = true;
   isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 370 : 320;
+  double wid = isWeb ? 370 : 355;
   double edge = 40;
   double hgt = 430;
   if (_height < 435) hgt = _height;
@@ -1354,10 +1351,10 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("Redeem " + athlete.name + " APT",
+                    Text("Redeem " + athlete.name + " APT Pair",
                         style: textStyle(Colors.white, 20, false)),
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.close,
                         color: Colors.white,
                         size: 30,
@@ -1422,14 +1419,14 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: AssetImage("assets/images/apt.png"),
+                            image: AssetImage("assets/images/apt_noninverted.png"),
                           ),
                         ),
                       ),
                       Container(width: 15),
                       Expanded(
                         child: Text(
-                          athlete.name + " APT",
+                          "Long APTs",
                           style: textStyle(Colors.white, 15, false),
                         ),
                       ),
@@ -1493,14 +1490,14 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: AssetImage("assets/images/apt.png"),
+                            image: AssetImage("assets/images/apt_inverted.png"),
                           ),
                         ),
                       ),
                       Container(width: 15),
                       Expanded(
                         child: Text(
-                          athlete.name + " APT",
+                          "Short APTs",
                           style: textStyle(Colors.white, 15, false),
                         ),
                       ),
@@ -1572,7 +1569,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                     margin: EdgeInsets.only(bottom: 30.0),
                     width: 175,
                     height: 45,
-                    decoration: isWeb ? boxDecoration(Colors.amber[400]!, 500, 1, Colors.amber[400]!) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
+                    decoration: boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
                     child: TextButton(
                       onPressed: () {
                         lspController.redeem();
@@ -1584,7 +1581,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                       },
                       child: Text(
                         "Confirm",
-                        style: isWeb ? textStyle(Colors.black, 16, false) : textStyle(Colors.amber[500]!, 16, false),
+                        style: textStyle(Colors.amber[500]!, 16, false),
                       ),
                     ),
                   ),
@@ -1603,7 +1600,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
   bool isWeb = true;
   isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 370 : 320;
+  double wid = isWeb ? 370 : 355;
   double edge = 40;
   double hgt = 390;
   if (_height < 395) hgt = _height;
@@ -1629,10 +1626,10 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("Mint " + athlete.name + " APT",
+                    Text("Mint " + athlete.name + " APT Pair",
                         style: textStyle(Colors.white, 20, false)),
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.close,
                         color: Colors.white,
                         size: 30,
@@ -1669,12 +1666,12 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                 Container(
                   width: wid - edge,
                   child: Text(
-                    "Input AX:",
+                    "Input APT:",
                     style: textStyle(Colors.grey[600]!, 14, false),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
                   width: wid - edge,
                   height: 55,
                   decoration: BoxDecoration(
@@ -1695,14 +1692,14 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage("assets/images/x.jpg"),
+                            image: AssetImage("assets/images/apt_noninverted.png"),
                           ),
                         ),
                       ),
                       Container(width: 15),
                       Expanded(
                         child: Text(
-                          "AX",
+                          athlete.name + " APT",
                           style: textStyle(Colors.white, 15, false),
                         ),
                       ),
@@ -1750,19 +1747,20 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                 color: Colors.grey[400],
               ),
             Container(
-              margin: EdgeInsets.only(top: 15.0),
+              //margin: EdgeInsets.only(top: 15.0),
               width: wid - edge,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     "You receive:",
                     style: textStyle(Colors.white, 15, false),
                   ),
-                  Obx(
-                    () => Text(
-                      "${lspController.createAmt} APTS",
-                      style: textStyle(Colors.white, 15, false),
+                  Center(
+                    child: Obx(() => 
+                      Text("${lspController.createAmt} Long APTs" " + " "${lspController.createAmt} Short APTs",
+                        style: textStyle(Colors.white, 15, false),
+                      ),
                     ),
                   ),
                 ],
@@ -1777,7 +1775,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                     margin: EdgeInsets.only(bottom: 30.0),
                     width: 175,
                     height: 45,
-                    decoration: isWeb ? boxDecoration(Colors.amber[400]!, 500, 1, Colors.amber[400]!) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
+                    decoration: boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
                     child: TextButton(
                       onPressed: () {
                         // call mint functionality
@@ -1790,7 +1788,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                       },
                       child: Text(
                         "Confirm",
-                        style: isWeb ? textStyle(Colors.black, 16, false) : textStyle(Colors.amber[500]!, 16, false),
+                        style: textStyle(Colors.amber[500]!, 16, false),
                       ),
                     ),
                   ),
@@ -1806,8 +1804,6 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
 
 // dynamic
 Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txString) {
-  bool isWeb = true;
-  isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -1872,7 +1868,7 @@ Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txStrin
                     Container(
                       width: 275,
                       height: 50,
-                      decoration: isWeb ? boxDecoration(Colors.amber[400]!, 500, 1, Colors.amber[400]!) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
+                      decoration: boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
                       child: TextButton(
                         onPressed: () {
                           Controller.viewTx();
@@ -1880,7 +1876,7 @@ Dialog confirmTransaction(BuildContext context, bool IsConfirmed, String txStrin
                         },
                         child: Text(
                           "View on Polygonscan",
-                          style: isWeb ? textStyle(Colors.black, 16, false) : textStyle(Colors.amber[500]!, 16, false),
+                          style: textStyle(Colors.amber[500]!, 16, false),
                         ),
                       ),
                     ),
@@ -2796,21 +2792,20 @@ Dialog swapDialog(BuildContext context) {
   isWeb =
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   SwapController swapController = Get.find();
-  double _height = MediaQuery.of(context).size.height;
-  double _width = MediaQuery.of(context).size.width;
-  double wid = 450;
+  double wid = isWeb ? 450 : 340;
+  double hgt = 500;
   double edge = 90;
-  if (_width < 395) wid = _width;
 
   return Dialog(
+    insetPadding: EdgeInsets.zero,
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Container(
-        height: isWeb ? _height * 0.55 : _height * 0.65,
+        height: hgt,
         width: wid,
-        padding: EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+        padding: EdgeInsets.symmetric(vertical: 22),
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -2845,22 +2840,18 @@ Dialog swapDialog(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          "From",
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "From",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[600],
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          "-\$1.600",
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "-\$1.600",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[600],
                         ),
                       ),
                     ],
@@ -2868,22 +2859,18 @@ Dialog swapDialog(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          swapController.activeTkn1.value.name,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
+                      Text(
+                        swapController.activeTkn1.value.name,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          "${swapController.amount1.value}",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
+                      Text(
+                        "${swapController.amount1.value}",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -2907,29 +2894,25 @@ Dialog swapDialog(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          "To",
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "To",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[600],
                         ),
                       ),
-                      Container(
-                        child: RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: "-\$1.580",
-                                  style: TextStyle(
-                                      color: Colors.grey[600], fontSize: 10)),
-                              TextSpan(
-                                  text: " (0.079%)",
-                                  style: TextStyle(
-                                      color: Colors.red[900], fontSize: 10)),
-                            ],
-                          ),
+                      RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: "-\$1.580",
+                                style: TextStyle(
+                                    color: Colors.grey[600], fontSize: 10)),
+                            TextSpan(
+                                text: " (0.079%)",
+                                style: TextStyle(
+                                    color: Colors.red[900], fontSize: 10)),
+                          ],
                         ),
                       ),
                     ],
@@ -2937,22 +2920,18 @@ Dialog swapDialog(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          swapController.activeTkn2.value.name,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
+                      Text(
+                        swapController.activeTkn2.value.name,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          "${swapController.amount2.value}",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
+                      Text(
+                        "${swapController.amount2.value}",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -2960,11 +2939,9 @@ Dialog swapDialog(BuildContext context) {
                 ],
               ),
             ),
-            Container(
-              child: Divider(
-                thickness: 0.35,
-                color: Colors.grey[400],
-              ),
+            Divider(
+              thickness: 0.35,
+              color: Colors.grey[400],
             ),
             // Price Information and Confirm Swap Button
             Container(
@@ -2976,25 +2953,21 @@ Dialog swapDialog(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          "Price",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
+                      Text(
+                        "Price",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          "${swapController.price} " +
-                              swapController.activeTkn1.value.ticker +
-                              " per " +
-                              swapController.activeTkn2.value.ticker,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
+                      Text(
+                        "${swapController.price} " +
+                            swapController.activeTkn1.value.ticker +
+                            " per " +
+                            swapController.activeTkn2.value.ticker,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -3002,22 +2975,18 @@ Dialog swapDialog(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          "LP Fee",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "LP Fee",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          "0.5 AX",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "0.5 AX",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
                         ),
                       ),
                     ],
@@ -3025,22 +2994,18 @@ Dialog swapDialog(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          "Market Price Impact",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "Market Price Impact",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          "-0.04%",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "-0.04%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
                         ),
                       ),
                     ],
@@ -3048,22 +3013,18 @@ Dialog swapDialog(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          "Minimum Received",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "Minimum Received",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          "8.2 " + swapController.activeTkn2.value.ticker,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "8.2 " + swapController.activeTkn2.value.ticker,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
                         ),
                       ),
                     ],
@@ -3071,22 +3032,18 @@ Dialog swapDialog(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          "Estimated Slippage",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "Estimated Slippage",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
                         ),
                       ),
-                      Container(
-                        child: Text(
-                          "~5%",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
+                      Text(
+                        "~5%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
                         ),
                       ),
                     ],
@@ -3100,22 +3057,18 @@ Dialog swapDialog(BuildContext context) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Container(
-                    child: Text(
-                      "You receive:",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
+                  Text(
+                    "You receive:",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
                     ),
                   ),
-                  Container(
-                    child: Text(
-                      "7.98 " + swapController.activeTkn2.value.name,
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
+                  Text(
+                    "7.98 " + swapController.activeTkn2.value.name,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -3130,12 +3083,9 @@ Dialog swapDialog(BuildContext context) {
                     margin: isWeb
                         ? EdgeInsets.only(top: 30.0, bottom: 10.0)
                         : EdgeInsets.only(bottom: 5.0),
-                    width: wid - 180,
-                    height: isWeb ? _height * 0.05 : _height * 0.06,
-                    decoration: isWeb
-                        ? boxDecoration(
-                            Colors.amber[400]!, 100, 1, Colors.transparent)
-                        : boxDecoration(Colors.amber[500]!.withOpacity(0.20),
+                    width: 250,
+                    height: isWeb ? 50 : 35,
+                    decoration: boxDecoration(Colors.amber[500]!.withOpacity(0.20),
                             100, 1, Colors.transparent),
                     child: TextButton(
                       onPressed: () {
@@ -3152,9 +3102,7 @@ Dialog swapDialog(BuildContext context) {
                       child: Text(
                         "Confirm Swap",
                         textAlign: TextAlign.center,
-                        style: isWeb
-                            ? textStyle(Colors.black, 20, true)
-                            : textStyle(Colors.amber[500]!, 15, true),
+                        style: textStyle(Colors.amber[500]!, isWeb ? 20 : 15, true),
                       ),
                     ),
                   ),
