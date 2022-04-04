@@ -33,6 +33,7 @@ class _AthletePageState extends State<AthletePage> {
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
   bool _isDisplayingChart = true;
 
+
   @override
   void initState() {
     super.initState();
@@ -123,6 +124,7 @@ class _AthletePageState extends State<AthletePage> {
       return "B";
     }
 
+    double _buttonHeight = MediaQuery.of(context).size.height * 0.045;
     return SafeArea(child: Container(
         width: _width,
         child: Column(
@@ -145,7 +147,7 @@ class _AthletePageState extends State<AthletePage> {
                             size: 24, color: Colors.white)),
                     // APT Icon
                     Container(
-                      margin: EdgeInsets.only(left: 0,top: 12),
+                      margin: EdgeInsets.only(left: 0,top: .5),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,7 +319,7 @@ class _AthletePageState extends State<AthletePage> {
                         margin: EdgeInsets.only(top: 20),
                         padding: EdgeInsets.all(1.5),
                         width: _width * .875,
-                        height: _height * .04,
+                        height: _height * .035,
                         decoration: boxDecoration(
                             Colors.transparent, 10, 1, secondaryGreyColor),
                         child: Row(
@@ -370,17 +372,17 @@ class _AthletePageState extends State<AthletePage> {
                       Container(
                         margin: EdgeInsets.only(top: 10),
                           width: _width * .875,
-                          height: _height * .45,
+                          height: _height * .49,
                           alignment: Alignment.center,
                           child: Column(
                               children: <Widget>[
                                 // Price Overview section
                                 Container(
-                                    height: 120,
+                                    height: 100,
                                     child: Column(
                                         children: <Widget>[
                                           Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                                               children: <Widget>[
                                                 Container(
                                                     width: _width * 0.4375,
@@ -413,34 +415,36 @@ class _AthletePageState extends State<AthletePage> {
                                                     ))
                                               ]),
                                           Divider(thickness: 1, color: greyTextColor),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                    child: Text("Market Price",
-                                                        style: textStyle(greyTextColor, 12,
-                                                            false, false))),
-                                                Container(
-                                                    width: 200,
-                                                    child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment.spaceBetween,
-                                                        children: <Widget>[
-                                                          Row(children: <Widget>[
-                                                            Text("4.18 AX ",
-                                                                style: textStyle(Colors.white, 12,
-                                                                    false, false)),
-                                                            Container(
-                                                              //alignment: Alignment.topLeft,
-                                                                child: Text("-2%",
-                                                                    style: textStyle(Colors.red,
-                                                                        12, false, false))),
-                                                          ]),
-                                                          Text("${athlete.war.toStringAsFixed(2)} AX",
-                                                              style: textStyle(greyTextColor,
-                                                                  12, false, false))
-                                                        ]))
-                                              ]),
+                                          Container(height: 15,
+                                            child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                      child: Text("Market Price",
+                                                          style: textStyle(greyTextColor, 12,
+                                                              false, false))),
+                                                  Container(
+                                                      width: 200,
+                                                      child: Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment.spaceBetween,
+                                                          children: <Widget>[
+                                                            Row(children: <Widget>[
+                                                              Text("4.18 AX ",
+                                                                  style: textStyle(Colors.white, 12,
+                                                                      false, false)),
+                                                              Container(
+                                                                //alignment: Alignment.topLeft,
+                                                                  child: Text("-2%",
+                                                                      style: textStyle(Colors.red,
+                                                                          12, false, false))),
+                                                            ]),
+                                                            Text("${athlete.war.toStringAsFixed(2)} AX",
+                                                                style: textStyle(greyTextColor,
+                                                                    12, false, false))
+                                                          ]))
+                                                ]),
+                                          ),
                                           Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: <Widget>[
@@ -562,7 +566,7 @@ class _AthletePageState extends State<AthletePage> {
                                 // Stats section
                                 Container(
                                     height: 100,
-                                    margin: EdgeInsets.only(top: 10),
+                                    margin: EdgeInsets.only(top: 2),
                                     child: Column(
                                         children: <Widget>[
                                           Container(
@@ -683,112 +687,116 @@ class _AthletePageState extends State<AthletePage> {
                   )
                     ],
               ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                  width: _width * .875,
-                  height: 100,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              Container(
-                                  width: 160,
-                                  height: 38,
-                                  decoration: boxDecoration(
-                                      secondaryOrangeColor,
-                                      100,
-                                      0,
-                                      secondaryOrangeColor),
-                                  child: TextButton(
-                                      style: TextButton.styleFrom(
-                                          padding: EdgeInsets.zero,
-                                          minimumSize: Size(50, 30)
-                                      ),
-                                      onPressed: () => showDialog(
-                                          context: context,
-                                          builder:
-                                              (BuildContext context) =>
-                                              buyDialog(context,
-                                                  athlete)),
-                                      child: Text("Buy",
-                                          style: textStyle(primaryOrangeColor,
-                                              20, false, false)))),
-                              Container(
-                                  width: 160,
-                                  height: 38,
-                                  decoration: boxDecoration(
-                                      secondaryOrangeColor,
-                                      100,
-                                      0,
-                                      secondaryOrangeColor),
-                                  child: TextButton(
-                                      style: TextButton.styleFrom(
-                                          padding: EdgeInsets.zero,
-                                          minimumSize: Size(50, 30)
-                                      ),
-                                      onPressed: () => showDialog(
-                                          context: context,
-                                          builder:
-                                              (BuildContext context) =>
-                                              sellDialog(context,
-                                                  athlete)),
-                                      child: Text("Sell",
-                                          style: textStyle(primaryOrangeColor,
-                                              20, false, false))))
-                            ]),
-                        Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              Container(
-                                  width: 160,
-                                  height: 38,
-                                  decoration: boxDecoration(
-                                      secondaryGreyColor,
-                                      100,
-                                      2,
-                                      secondaryGreyColor),
-                                  child: TextButton(
-                                      style: TextButton.styleFrom(
-                                          padding: EdgeInsets.zero,
-                                          minimumSize: Size(50, 30)
-                                      ),
-                                      onPressed: () => showDialog(
-                                          context: context,
-                                          builder:
-                                              (BuildContext context) =>
-                                              mintDialog(context,
-                                                  athlete)),
-                                      child: Text("Mint",
-                                          style: textStyle(primaryWhiteColor,
-                                              20, false, false)))),
-                              Container(
-                                  width: 160,
-                                  height: 38,
-                                  decoration: boxDecoration(
-                                      secondaryGreyColor,
-                                      100,
-                                      2,
-                                      secondaryGreyColor),
-                                  child: TextButton(
-                                      style: TextButton.styleFrom(
-                                          padding: EdgeInsets.zero,
-                                          minimumSize: Size(50, 30)
-                                      ),
-                                      onPressed: () => showDialog(
-                                          context: context,
-                                          builder:
-                                              (BuildContext context) =>
-                                              redeemDialog(context,
-                                                  athlete)),
-                                      child: Text("Redeem",
-                                          style: textStyle(primaryWhiteColor,
-                                              20, false, false))))
-                            ]),
-                      ]))
+              Spacer(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  margin: EdgeInsets.only(top: .1),
+                    width: _width * .875,
+                    height: _height * .13,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Container(
+                                    width: 160,
+                                    height: _buttonHeight,
+                                    decoration: boxDecoration(
+                                        secondaryOrangeColor,
+                                        100,
+                                        0,
+                                        secondaryOrangeColor),
+                                    child: TextButton(
+                                        style: TextButton.styleFrom(
+                                            padding: EdgeInsets.zero,
+                                            minimumSize: Size(50, 30)
+                                        ),
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder:
+                                                (BuildContext context) =>
+                                                buyDialog(context,
+                                                    athlete)),
+                                        child: Text("Buy",
+                                            style: textStyle(primaryOrangeColor,
+                                                20, false, false)))),
+                                Container(
+                                    width: 160,
+                                    height: _buttonHeight,
+                                    decoration: boxDecoration(
+                                        secondaryOrangeColor,
+                                        100,
+                                        0,
+                                        secondaryOrangeColor),
+                                    child: TextButton(
+                                        style: TextButton.styleFrom(
+                                            padding: EdgeInsets.zero,
+                                            minimumSize: Size(50, 30)
+                                        ),
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder:
+                                                (BuildContext context) =>
+                                                sellDialog(context,
+                                                    athlete)),
+                                        child: Text("Sell",
+                                            style: textStyle(primaryOrangeColor,
+                                                20, false, false))))
+                              ]),
+                          Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Container(
+                                    width: 160,
+                                    height: _buttonHeight,
+                                    decoration: boxDecoration(
+                                        secondaryGreyColor,
+                                        100,
+                                        2,
+                                        secondaryGreyColor),
+                                    child: TextButton(
+                                        style: TextButton.styleFrom(
+                                            padding: EdgeInsets.zero,
+                                            minimumSize: Size(50, 30)
+                                        ),
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder:
+                                                (BuildContext context) =>
+                                                mintDialog(context,
+                                                    athlete)),
+                                        child: Text("Mint",
+                                            style: textStyle(primaryWhiteColor,
+                                                20, false, false)))),
+                                Container(
+                                    width: 160,
+                                    height: _buttonHeight,
+                                    decoration: boxDecoration(
+                                        secondaryGreyColor,
+                                        100,
+                                        2,
+                                        secondaryGreyColor),
+                                    child: TextButton(
+                                        style: TextButton.styleFrom(
+                                            padding: EdgeInsets.zero,
+                                            minimumSize: Size(50, 30)
+                                        ),
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder:
+                                                (BuildContext context) =>
+                                                redeemDialog(context,
+                                                    athlete)),
+                                        child: Text("Redeem",
+                                            style: textStyle(primaryWhiteColor,
+                                                20, false, false))))
+                              ]),
+                        ])),
+              )
             ])),
     );
   }
