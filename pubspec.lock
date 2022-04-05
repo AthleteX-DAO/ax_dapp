@@ -880,12 +880,12 @@ packages:
     source: hosted
     version: "2.0.4"
   url_launcher_web:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: url_launcher_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.6"
   url_launcher_windows:
     dependency: transitive
     description:
