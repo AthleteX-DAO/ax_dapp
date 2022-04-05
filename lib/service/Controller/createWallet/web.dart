@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_web_libraries_in_flutter
+
 import 'dart:html';
 import 'package:web3dart/browser.dart';
 
@@ -14,7 +16,7 @@ import 'package:web3dart/web3dart.dart';
     @override
   Future<void> connect() async {
     final eth = window.ethereum;
-    var web3 = Web3Client.custom(eth!.asRpcService());
+    this.client = Web3Client.custom(eth!.asRpcService());
     credentials = await eth.requestAccount();
   }
     //Comment this for Android

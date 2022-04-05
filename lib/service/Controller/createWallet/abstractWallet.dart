@@ -1,5 +1,3 @@
-import 'package:web3dart/credentials.dart';
-
 import 'createWallet.dart';
 
 abstract class DappWallet {
