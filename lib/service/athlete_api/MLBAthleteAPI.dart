@@ -1,6 +1,9 @@
-import 'package:ax_dapp/service/athleteModels/MLBAthlete.dart';
+import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
+import 'package:ax_dapp/service/athleteModels/mlb/MLBPAthleteStats.dart';
+import 'package:ax_dapp/service/athlete_api/models/PlayerIds.dart';
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
+
 part 'MLBAthleteAPI.g.dart';
 
 @RestApi(baseUrl: "https://db.athletex.io/mlb")
@@ -11,6 +14,22 @@ abstract class MLBAthleteAPI {
   Future<List<MLBAthlete>> getAllPlayers();
 
   @POST("/players")
-  Future<List<MLBAthlete>> getPlayersById(
-      @Body() Map<String, List<int>> idsDict);
+  Future<List<MLBAthlete>> getPlayersById(@Body() PlayerIds playerIds);
+
+  @GET("/players/{id}")
+  Future<MLBAthlete> getPlayer(@Path() int id);
+
+  @GET("/players")
+  Future<List<MLBAthlete>> getPlayersByTeam(@Query("team") String team);
+
+  @GET("/players")
+  Future<List<MLBAthlete>> getPlayersByPosition(
+      @Query("position") String position);
+
+  @GET("/players")
+  Future<List<MLBAthlete>> getPlayersByTeamAtPosition(
+      @Query("team") String team, @Query("position") String position);
+
+  @GET("/players/{id}/history")
+  Future<MLBAthleteStats> getPlayerHistory(@Path() int id);
 }
