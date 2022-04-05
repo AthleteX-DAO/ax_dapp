@@ -25,7 +25,9 @@ Future<void> connect() async {
   }
 
   this.client = Web3Client(rpcUrl, Client());
-
+  if (seedHex == null) {
+    this.createNewMnemonic();
+  }
   credentials = EthPrivateKey.fromHex(seedHex);
 
   print("[Console] updated client: $client and credentials: $credentials");
