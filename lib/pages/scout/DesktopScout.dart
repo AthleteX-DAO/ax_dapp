@@ -1,9 +1,13 @@
 import 'package:ax_dapp/pages/AthletePage.dart';
+import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
+import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
+import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -41,13 +45,17 @@ class _DesktopScoutState extends State<DesktopScout> {
       time: "");
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
-
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
     // widget tree.
     myController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -59,41 +67,52 @@ class _DesktopScoutState extends State<DesktopScout> {
 
     if (athletePage) return AthletePage(athlete: curAthlete);
 
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      child: Container(
-          margin: EdgeInsets.only(top: 20),
-          // Do not delete any of the changes here yet
-          height: _height * 0.85 + 41,
-          //height: _height*0.85-41,
-          width: _width * 0.99,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: Divider(
-                    color: Colors.grey,
-                  ),
-                ),
-                //Container(height: 15),
-                // APT Title & Sport Filter
-                Container(
-                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                  width: _width * 1,
-                  height: 40,
-                  child: kIsWeb
-                      ? buildFilterMenuWeb(sportFilterTxSz, _width)
-                      : buildFilterMenu(sportFilterTxSz, sportFilterIconSz),
-                ),
-                //Container(height: _height*0.03),
-                // List Headers
-                buildListviewHeaders(),
-                // ListView of Athletes
-                buildListview()
-              ])),
-    );
+    return BlocBuilder<ScoutPageBloc, ScoutPageState>(
+      buildWhen: (previous, current) => current.status.name.isNotEmpty,
+      builder: (context, state) {
+        final bloc = context.read<ScoutPageBloc>();
+        if(state.status ==  Status.initial){
+          bloc.add(OnPageRefresh());
+
+        }
+        //TODO Remove once AX-408 is implemented
+        print("Status: ${state.status}, Example Athlete: ${(state.athletes.isNotEmpty) ? state.athletes.first.name : "None"}");
+          return SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: Container(
+              margin: EdgeInsets.only(top: 20),
+              // Do not delete any of the changes here yet
+              height: _height * 0.85 + 41,
+              //height: _height*0.85-41,
+              width: _width * 0.99,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Divider(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    //Container(height: 15),
+                    // APT Title & Sport Filter
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                      width: _width * 1,
+                      height: 40,
+                      child: kIsWeb
+                          ? buildFilterMenuWeb(sportFilterTxSz, _width)
+                          : buildFilterMenu(sportFilterTxSz, sportFilterIconSz),
+                    ),
+                    //Container(height: _height*0.03),
+                    // List Headers
+                    buildListviewHeaders(),
+                    // ListView of Athletes
+                    buildListview()
+                  ])),
+        );
+      });
   }
 
   Row buildFilterMenuWeb(double sportFilterTxSz, double _width) {

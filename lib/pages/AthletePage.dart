@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/DesktopScout.dart';
+import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
