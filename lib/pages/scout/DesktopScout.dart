@@ -1,13 +1,10 @@
-import 'package:ax_dapp/pages/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
-import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/AthleteList.dart';
-import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'models/AthleteScoutModel.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -22,29 +19,13 @@ class _DesktopScoutState extends State<DesktopScout> {
   final myController = TextEditingController();
   bool athletePage = false;
   int sportState = 0;
-  List<Athlete> nflList = [];
-  List<Athlete> nflListFilter = [];
   String allSportsTitle = "All Sports";
   String longTitle = "Long";
-
-  // This will hold all the athletes
-  List<Athlete> allList = [];
-  List<Athlete> allListFilter = [];
-  Athlete curAthlete = Athlete(
-      name: "",
-      id: 0,
-      team: "",
-      position: "",
-      passingYards: 0,
-      passingTouchDowns: 0,
-      reception: 0,
-      receiveYards: 0,
-      receiveTouch: 0,
-      rushingYards: 0,
-      war: 0,
-      time: "");
+  AthleteScoutModel curAthlete =
+      AthleteScoutModel(0, "name", "position", "team", 0.0, Sport.MLB);
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
+
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -64,132 +45,131 @@ class _DesktopScoutState extends State<DesktopScout> {
     double sportFilterIconSz = 14;
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-
-    if (athletePage) return AthletePage(athlete: curAthlete);
+    // breaks the code, will come back to it later(probably)
+    // if (athletePage) return AthletePage(athlete: curAthlete);
 
     return BlocBuilder<ScoutPageBloc, ScoutPageState>(
-      buildWhen: (previous, current) => current.status.name.isNotEmpty,
-      builder: (context, state) {
-        final bloc = context.read<ScoutPageBloc>();
-        if(state.status ==  Status.initial){
-          bloc.add(OnPageRefresh());
+        buildWhen: (previous, current) => current.status.name.isNotEmpty,
+        builder: (context, state) {
+          final bloc = context.read<ScoutPageBloc>();
+          if (state.status == Status.initial) {
+            bloc.add(OnPageRefresh());
+          }
 
-        }
-        //TODO Remove once AX-408 is implemented
-        print("Status: ${state.status}, Example Athlete: ${(state.athletes.isNotEmpty) ? state.athletes.first.name : "None"}");
+          //TODO Remove once AX-408 is implemented
+          print(
+              "Status: ${state.status}, Example Athlete: ${(state.athletes.isNotEmpty) ? state.athletes.first.name : "None"}");
           return SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
-          child: Container(
-              margin: EdgeInsets.only(top: 20),
-              // Do not delete any of the changes here yet
-              height: _height * 0.85 + 41,
-              //height: _height*0.85-41,
-              width: _width * 0.99,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      child: Divider(
-                        color: Colors.grey,
+            physics: ClampingScrollPhysics(),
+            child: Container(
+                margin: EdgeInsets.only(top: 20),
+                height: _height * 0.85 + 41,
+                width: _width * 0.99,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(top: 20),
+                        child: Divider(
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                    //Container(height: 15),
-                    // APT Title & Sport Filter
-                    Container(
-                      margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                      width: _width * 1,
-                      height: 40,
-                      child: kIsWeb
-                          ? buildFilterMenuWeb(sportFilterTxSz, _width)
-                          : buildFilterMenu(sportFilterTxSz, sportFilterIconSz),
-                    ),
-                    //Container(height: _height*0.03),
-                    // List Headers
-                    buildListviewHeaders(),
-                    // ListView of Athletes
-                    buildListview()
-                  ])),
-        );
-      });
+                      // APT Title & Sport Filter
+                      Container(
+                        margin:
+                            EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                        width: _width * 1,
+                        height: 40,
+                        child: kIsWeb
+                            ? buildFilterMenuWeb(sportFilterTxSz, _width)
+                            : buildFilterMenu(
+                                sportFilterTxSz, sportFilterIconSz),
+                      ),
+                      // List Headers
+                      buildListviewHeaders(),
+                      //if (state.status == Status.loading) scoutLoading(),
+                      if (state.status == Status.loading) ...[
+                        scoutLoading(),
+                      ] else if (state.status == Status.error) ...[
+                        scoutLoadingError(),
+                      ],
+                      state.selectedSport == SelectedSport.ALL
+                          ? buildListview(state)
+                          : buildFilterMenu(sportFilterTxSz, sportFilterIconSz)
+                      // ListView of Athletes
+                    ])),
+          );
+        });
   }
 
   Row buildFilterMenuWeb(double sportFilterTxSz, double _width) {
-    return Row(
-        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text("APT List", style: textStyle(Colors.white, 18, false, false)),
-          Text("|", style: textStyle(Colors.white, 18, false, false)),
-          Container(
-              child: TextButton(
-            onPressed: () {
-              myController.clear();
-              if (sportState != 0)
-                setState(() {
-                  allListFilter = allList;
-                  sportState = 0;
-                });
-            },
-            child: Text("ALL",
-                style: textSwapState(
-                    sportState == 0,
-                    textStyle(Colors.white, sportFilterTxSz, false, false),
-                    textStyle(
-                        Colors.amber[400]!, sportFilterTxSz, false, true))),
-          )),
-          Container(
-              child: TextButton(
-            onPressed: () {
-              myController.clear();
-              if (sportState != 1)
-                setState(() {
-                  nflListFilter = nflList;
-                  sportState = 1;
-                });
-            },
-            child: Text("NFL",
-                style: textSwapState(
-                    sportState == 1,
-                    textStyle(Colors.white, sportFilterTxSz, false, false),
-                    textStyle(
-                        Colors.amber[400]!, sportFilterTxSz, false, true))),
-          )),
-          Container(
-              child: TextButton(
-            onPressed: () {
-              if (sportState != 2)
-                setState(() {
-                  sportState = 2;
-                });
-            },
-            child: Text("NBA",
-                style: textSwapState(
-                    sportState == 2,
-                    textStyle(Colors.white, sportFilterTxSz, false, false),
-                    textStyle(
-                        Colors.amber[400]!, sportFilterTxSz, false, true))),
-          )),
-          Container(
-              child: TextButton(
-            onPressed: () {
-              if (sportState != 3)
-                setState(() {
-                  sportState = 3;
-                });
-            },
-            child: Text("MMA",
-                style: textSwapState(
-                    sportState == 3,
-                    textStyle(Colors.white, sportFilterTxSz, false, false),
-                    textStyle(
-                        Colors.amber[400]!, sportFilterTxSz, false, true))),
-          )),
-          Spacer(),
-          Container(
-            child: createSearchBar(),
-          ),
-        ]);
+    return Row(children: [
+      Text("APT List", style: textStyle(Colors.white, 18, false, false)),
+      Text("|", style: textStyle(Colors.white, 18, false, false)),
+      Container(
+          child: TextButton(
+        onPressed: () {
+          myController.clear();
+          if (sportState != 0)
+            setState(() {
+              sportState = 0;
+            });
+        },
+        child: Text("ALL",
+            style: textSwapState(
+                sportState == 0,
+                textStyle(Colors.white, sportFilterTxSz, false, false),
+                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
+      )),
+      Container(
+          child: TextButton(
+        onPressed: () {
+          myController.clear();
+          if (sportState != 1)
+            setState(() {
+              sportState = 1;
+            });
+        },
+        child: Text("MLB",
+            style: textSwapState(
+                sportState == 1,
+                textStyle(Colors.white, sportFilterTxSz, false, false),
+                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
+      )),
+      Container(
+          child: TextButton(
+        onPressed: () {
+          if (sportState != 2)
+            setState(() {
+              sportState = 2;
+            });
+        },
+        child: Text("NBA",
+            style: textSwapState(
+                sportState == 2,
+                textStyle(Colors.white, sportFilterTxSz, false, false),
+                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
+      )),
+      Container(
+          child: TextButton(
+        onPressed: () {
+          if (sportState != 3)
+            setState(() {
+              sportState = 3;
+            });
+        },
+        child: Text("MMA",
+            style: textSwapState(
+                sportState == 3,
+                textStyle(Colors.white, sportFilterTxSz, false, false),
+                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
+      )),
+      Spacer(),
+      Container(
+        child: createSearchBar(),
+      ),
+    ]);
   }
 
   IndexedStack buildFilterMenu(
@@ -199,252 +179,247 @@ class _DesktopScoutState extends State<DesktopScout> {
       children: [
         Container(
           height: 20,
-          child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text("APT List",
-                    style: textStyle(Colors.white, 18, false, false)),
-                Text("|", style: textStyle(Colors.white, 18, false, false)),
-                SizedBox(
-                  child: PopupMenuButton(
-                    child: Row(
+          child: Row(children: [
+            Text("APT List", style: textStyle(Colors.white, 18, false, false)),
+            Text("|", style: textStyle(Colors.white, 18, false, false)),
+            SizedBox(
+              child: PopupMenuButton(
+                child: Row(
+                  children: [
+                    Text(
+                      allSportsTitle,
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                    Icon(
+                      Icons.arrow_drop_down_sharp,
+                      color: Colors.grey,
+                    )
+                  ],
+                ),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("All Sports",
+                              style: textSwapState(
+                                  sportState == 0,
+                                  textStyle(Colors.white, sportFilterTxSz,
+                                      false, false),
+                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
+                                      false, true))),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      myController.clear();
+                      if (sportState != 0)
+                        setState(() {
+                          sportState = 0;
+                        });
+                      allSportsTitle = "All Sports";
+                    },
+                  ),
+                  PopupMenuItem(
+                    height: 5,
+                    value: 1,
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              margin: EdgeInsets.only(right: 8),
+                              child: Icon(
+                                Icons.sports_football,
+                                size: sportFilterIconSz,
+                              )),
+                          Text("MLB",
+                              style: textSwapState(
+                                  sportState == 1,
+                                  textStyle(Colors.white, sportFilterTxSz,
+                                      false, false),
+                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
+                                      false, true))),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      myController.clear();
+                      if (sportState != 1)
+                        setState(() {
+                          sportState = 1;
+                          allSportsTitle = "NFL";
+                        });
+                    },
+                  ),
+                  PopupMenuItem(
+                    value: 1,
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              margin: EdgeInsets.only(right: 8),
+                              child: Icon(
+                                Icons.sports_basketball,
+                                size: sportFilterIconSz,
+                              )),
+                          Text("NBA",
+                              style: textSwapState(
+                                  sportState == 2,
+                                  textStyle(Colors.white, sportFilterTxSz,
+                                      false, false),
+                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
+                                      false, true))),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      if (sportState != 2)
+                        setState(() {
+                          sportState = 2;
+                          allSportsTitle = "NBA";
+                        });
+                    },
+                  ),
+                  PopupMenuItem(
+                    value: 1,
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              margin: EdgeInsets.only(right: 8),
+                              child: Icon(
+                                Icons.sports_kabaddi,
+                                size: sportFilterIconSz,
+                              )),
+                          Text("MMA",
+                              style: textSwapState(
+                                  sportState == 3,
+                                  textStyle(Colors.white, sportFilterTxSz,
+                                      false, false),
+                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
+                                      false, true))),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      if (sportState != 3)
+                        setState(() {
+                          sportState = 3;
+                        });
+                      allSportsTitle = "MMA";
+                    },
+                  ),
+                  PopupMenuItem(
+                    value: 1,
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              margin: EdgeInsets.only(right: 8),
+                              child: Icon(
+                                Icons.sports_soccer,
+                                size: sportFilterIconSz,
+                              )),
+                          Text("Soccer",
+                              style: textSwapState(
+                                  sportState == 4,
+                                  textStyle(Colors.white, sportFilterTxSz,
+                                      false, false),
+                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
+                                      false, true))),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      if (sportState != 4)
+                        setState(() {
+                          sportState = 4;
+                        });
+                      allSportsTitle = "Soccer";
+                    },
+                  ),
+                ],
+                offset: Offset(0, 45),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+              ),
+            ),
+            PopupMenuButton(
+              child: Row(
+                children: [
+                  Text(
+                    longTitle,
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down_sharp,
+                    color: Colors.grey,
+                  )
+                ],
+              ),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 1,
+                  child: ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          allSportsTitle,
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        ),
-                        Icon(
-                          Icons.arrow_drop_down_sharp,
-                          color: Colors.grey,
-                        )
+                        Text("Long"),
                       ],
                     ),
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 1,
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("All Sports",
-                                  style: textSwapState(
-                                      sportState == 0,
-                                      textStyle(Colors.white, sportFilterTxSz,
-                                          false, false),
-                                      textStyle(Colors.amber[400]!,
-                                          sportFilterTxSz, false, true))),
-                            ],
-                          ),
-                        ),
-                        onTap: () {
-                          myController.clear();
-                          if (sportState != 0)
-                            setState(() {
-                              allListFilter = allList;
-                              sportState = 0;
-                            });
-                          allSportsTitle = "All Sports";
-                        },
-                      ),
-                      PopupMenuItem(
-                        height: 5,
-                        value: 1,
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(right: 8),
-                                  child: Icon(
-                                    Icons.sports_football,
-                                    size: sportFilterIconSz,
-                                  )),
-                              Text("NFL",
-                                  style: textSwapState(
-                                      sportState == 1,
-                                      textStyle(Colors.white, sportFilterTxSz,
-                                          false, false),
-                                      textStyle(Colors.amber[400]!,
-                                          sportFilterTxSz, false, true))),
-                            ],
-                          ),
-                        ),
-                        onTap: () {
-                          myController.clear();
-                          if (sportState != 1)
-                            setState(() {
-                              nflListFilter = nflList;
-                              sportState = 1;
-                              allSportsTitle = "NFL";
-                            });
-                        },
-                      ),
-                      PopupMenuItem(
-                        value: 1,
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(right: 8),
-                                  child: Icon(
-                                    Icons.sports_basketball,
-                                    size: sportFilterIconSz,
-                                  )),
-                              Text("NBA",
-                                  style: textSwapState(
-                                      sportState == 2,
-                                      textStyle(Colors.white, sportFilterTxSz,
-                                          false, false),
-                                      textStyle(Colors.amber[400]!,
-                                          sportFilterTxSz, false, true))),
-                            ],
-                          ),
-                        ),
-                        onTap: () {
-                          if (sportState != 2)
-                            setState(() {
-                              sportState = 2;
-                              allSportsTitle = "NBA";
-                            });
-                        },
-                      ),
-                      PopupMenuItem(
-                        value: 1,
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(right: 8),
-                                  child: Icon(
-                                    Icons.sports_kabaddi,
-                                    size: sportFilterIconSz,
-                                  )),
-                              Text("MMA",
-                                  style: textSwapState(
-                                      sportState == 3,
-                                      textStyle(Colors.white, sportFilterTxSz,
-                                          false, false),
-                                      textStyle(Colors.amber[400]!,
-                                          sportFilterTxSz, false, true))),
-                            ],
-                          ),
-                        ),
-                        onTap: () {
-                          if (sportState != 3)
-                            setState(() {
-                              sportState = 3;
-                            });
-                          allSportsTitle = "MMA";
-                        },
-                      ),
-                      PopupMenuItem(
-                        value: 1,
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(right: 8),
-                                  child: Icon(
-                                    Icons.sports_soccer,
-                                    size: sportFilterIconSz,
-                                  )),
-                              Text("Soccer",
-                                  style: textSwapState(
-                                      sportState == 4,
-                                      textStyle(Colors.white, sportFilterTxSz,
-                                          false, false),
-                                      textStyle(Colors.amber[400]!,
-                                          sportFilterTxSz, false, true))),
-                            ],
-                          ),
-                        ),
-                        onTap: () {
-                          if (sportState != 4)
-                            setState(() {
-                              sportState = 4;
-                            });
-                          allSportsTitle = "Soccer";
-                        },
-                      ),
-                    ],
-                    offset: Offset(0, 45),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
+                  onTap: () {
+                    setState(() {
+                      longTitle = "Long";
+                    });
+                  },
                 ),
-                PopupMenuButton(
-                  child: Row(
-                    children: [
-                      Text(
-                        longTitle,
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      Icon(
-                        Icons.arrow_drop_down_sharp,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 1,
-                      child: ListTile(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Long"),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          longTitle = "Long";
-                        });
-                      },
+                PopupMenuItem(
+                  height: 5,
+                  value: 1,
+                  child: ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Short"),
+                      ],
                     ),
-                    PopupMenuItem(
-                      height: 5,
-                      value: 1,
-                      child: ListTile(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Short"),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          longTitle = "Short";
-                        });
-                      },
-                    ),
-                  ],
-                  offset: Offset(0, 45),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
-                Spacer(),
-                Center(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _widgetIndex = 1;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.search,
-                          size: 20,
-                          color: Colors.grey,
-                        )),
                   ),
+                  onTap: () {
+                    setState(() {
+                      longTitle = "Short";
+                    });
+                  },
                 ),
-              ]),
+              ],
+              offset: Offset(0, 45),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+            ),
+            Spacer(),
+            Center(
+              child: Align(
+                alignment: Alignment.center,
+                child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _widgetIndex = 1;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.search,
+                      size: 20,
+                      color: Colors.grey,
+                    )),
+              ),
+            ),
+          ]),
         ),
         Container(
             height: 40,
@@ -475,6 +450,29 @@ class _DesktopScoutState extends State<DesktopScout> {
               ],
             ))
       ],
+    );
+  }
+
+  Widget scoutLoading() {
+    return Center(
+      child: SizedBox(
+          height: 50,
+          width: 50,
+          child: CircularProgressIndicator(
+            color: Colors.amber,
+          )),
+    );
+  }
+
+  // Show the error if the athletes did not load
+  Widget scoutLoadingError() {
+    return Center(
+      child: SizedBox(
+        height: 70,
+        width: 400,
+        child: Text("Athlete List Failed to Load",
+            style: TextStyle(color: Colors.red, fontSize: 30)),
+      ),
     );
   }
 
@@ -565,23 +563,12 @@ class _DesktopScoutState extends State<DesktopScout> {
         ]);
   }
 
-  Widget buildListview() {
+  Widget buildListview(ScoutPageState state) {
     double _height = MediaQuery.of(context).size.height;
     double hgt = _height * 0.8 - 120;
-
-    if (nflList.length == 0) {
-      nflList = AthleteList.list;
-      nflListFilter = nflList;
-    }
-
-    if (allList.length == 0) {
-      // Filter all the athletes. For now we only have NFL athletes
-      allList = nflList;
-      allListFilter = allList;
-    }
-
+    List<AthleteScoutModel> athletesList = state.athletes;
     // all athletes
-    if (sportState == 0)
+    if (state.selectedSport == SelectedSport.ALL)
       return Container(
           height: hgt,
           child: ListView.builder(
@@ -592,20 +579,20 @@ class _DesktopScoutState extends State<DesktopScout> {
                 return createListCards(AthleteList.list[index]);
               }));*/
               // Build with all the all the athletes
-              itemCount: allListFilter.length,
+              itemCount: athletesList.length,
               itemBuilder: (context, index) {
-                return createListCards(allListFilter[index]);
+                return createListCards(athletesList[index]);
               }));
     // NFL athletes only
-    else if (sportState == 1)
+    else if (state.selectedSport == SelectedSport.NFL)
       return Container(
           height: hgt,
           child: ListView.builder(
               padding: EdgeInsets.only(top: 10),
               physics: BouncingScrollPhysics(),
-              itemCount: nflListFilter.length,
+              itemCount: 0,
               itemBuilder: (context, index) {
-                return createListCards(nflListFilter[index]);
+                return createListCards(this.curAthlete);
               }));
     // other athletes
     else {
@@ -621,7 +608,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   // Athlete Cards
-  Widget createListCards(Athlete athlete) {
+  Widget createListCards(AthleteScoutModel athlete) {
     double _width = MediaQuery.of(context).size.width;
 
     bool view = true;
@@ -664,7 +651,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                     // Icon
                     Container(
                         width: 50,
-                        child: Icon(Icons.sports_football,
+                        child: Icon(Icons.sports_baseball,
                             color: Colors.grey[700])),
                     // Athlete Name
                     Container(
@@ -701,7 +688,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       children: [
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.war.toStringAsFixed(4) + ' AX',
+                          Text(athlete.marketPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("+4%",
@@ -709,7 +696,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         ])),
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.war.toStringAsFixed(4) + ' AX',
+                          Text(athlete.marketPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("-2%",
@@ -729,17 +716,18 @@ class _DesktopScoutState extends State<DesktopScout> {
                             0,
                             Color.fromRGBO(254, 197, 0, 0.2)),
                         child: TextButton(
-                            onPressed: (){
-                              if (kIsWeb){
-                                 showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) => buyDialog(context, athlete));
-                              }else {
-                                setState(() {
-                                  curAthlete = athlete;
-                                  athletePage = true;
-                                });
-                              }
+                            onPressed: () {
+                              // if (kIsWeb) {
+                              //   showDialog(
+                              //       context: context,
+                              //       builder: (BuildContext context) =>
+                              //           buyDialog(context, athlete));
+                              // } else {
+                              //   setState(() {
+                              //     curAthlete = athlete;
+                              //     athletePage = true;
+                              //   });
+                              // }
                             },
                             child: Center(
                               child: buyText(),
@@ -817,19 +805,19 @@ class _DesktopScoutState extends State<DesktopScout> {
                   setState(() {
                     // Filter all athletes
                     if (sportState == 0) {
-                      allListFilter = allList
-                          .where((athlete) => athlete.name
-                              .toUpperCase()
-                              .contains(value.toUpperCase()))
-                          .toList();
+                      // allListFilter = allList
+                      //     .where((athlete) => athlete.name
+                      //         .toUpperCase()
+                      //         .contains(value.toUpperCase()))
+                      //     .toList();
                     }
                     // Filter NFL athletes
                     else {
-                      nflListFilter = nflList
-                          .where((athlete) => athlete.name
-                              .toUpperCase()
-                              .contains(value.toUpperCase()))
-                          .toList();
+                      // nflListFilter = nflList
+                      //     .where((athlete) => athlete.name
+                      //         .toUpperCase()
+                      //         .contains(value.toUpperCase()))
+                      //     .toList();
                     }
                   });
                 },
