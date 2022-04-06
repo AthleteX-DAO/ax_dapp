@@ -55,10 +55,6 @@ class _DesktopScoutState extends State<DesktopScout> {
           if (state.status == Status.initial) {
             bloc.add(OnPageRefresh());
           }
-
-          //TODO Remove once AX-408 is implemented
-          print(
-              "Status: ${state.status}, Example Athlete: ${(state.athletes.isNotEmpty) ? state.athletes.first.name : "None"}");
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),
             child: Container(
@@ -574,11 +570,6 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: ListView.builder(
               padding: EdgeInsets.only(top: 10),
               physics: BouncingScrollPhysics(),
-              /*itemCount: AthleteList.list.length,
-              itemBuilder: (context, index) {
-                return createListCards(AthleteList.list[index]);
-              }));*/
-              // Build with all the all the athletes
               itemCount: athletesList.length,
               itemBuilder: (context, index) {
                 return createListCards(athletesList[index]);
@@ -716,19 +707,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             0,
                             Color.fromRGBO(254, 197, 0, 0.2)),
                         child: TextButton(
-                            onPressed: () {
-                              // if (kIsWeb) {
-                              //   showDialog(
-                              //       context: context,
-                              //       builder: (BuildContext context) =>
-                              //           buyDialog(context, athlete));
-                              // } else {
-                              //   setState(() {
-                              //     curAthlete = athlete;
-                              //     athletePage = true;
-                              //   });
-                              // }
-                            },
+                            onPressed: () {},
                             child: Center(
                               child: buyText(),
                             ))),
@@ -801,26 +780,7 @@ class _DesktopScoutState extends State<DesktopScout> {
             child: Container(
               child: TextFormField(
                 controller: myController,
-                onChanged: (value) {
-                  setState(() {
-                    // Filter all athletes
-                    if (sportState == 0) {
-                      // allListFilter = allList
-                      //     .where((athlete) => athlete.name
-                      //         .toUpperCase()
-                      //         .contains(value.toUpperCase()))
-                      //     .toList();
-                    }
-                    // Filter NFL athletes
-                    else {
-                      // nflListFilter = nflList
-                      //     .where((athlete) => athlete.name
-                      //         .toUpperCase()
-                      //         .contains(value.toUpperCase()))
-                      //     .toList();
-                    }
-                  });
-                },
+                onChanged: (value) {},
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 8.5),
