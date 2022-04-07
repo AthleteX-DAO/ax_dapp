@@ -5,6 +5,7 @@ import 'package:web3dart/web3dart.dart';
 import '../../../contracts/LongShortPair.g.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:http/http.dart';
+import '../../TokenList.dart';
 import '../Controller.dart';
 
 // --> Joe burrow
@@ -63,8 +64,8 @@ class LSPController extends GetxController {
   }
 
   void updateAptAddress(int athleteId) {
-    if (AXT.idToAddress.containsKey(athleteId)) {
-      aptAddress.value = AXT.idToAddress[athleteId]![0];
+    if (TokenList.idToAddress.containsKey(athleteId)) {
+      aptAddress.value = TokenList.idToAddress[athleteId]![0];
       print("[Console] Updated the aptAddress to $aptAddress");
     } else {
       aptAddress.value = '';
