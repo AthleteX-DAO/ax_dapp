@@ -27,6 +27,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: 'cd /home/staging &&
+          sudo chown -R $USER:debian /home/staging/ &&
+          sudo chown -R $USER:root /home/staging/ &&
           sudo git fetch &&
           sudo git checkout develop &&
           sudo git pull &&
