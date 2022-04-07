@@ -19,8 +19,10 @@ class LSPController extends GetxController {
   var createAmt = 0.0.obs;
   var redeemAmt = 0.0.obs;
   var aptAddress = ''.obs;
+  String mainRPCUrl = "https://polygon-rpc.com";
+  String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
   final tokenClient =
-      Web3Client("https://matic-mumbai.chainstacklabs.com", new Client());
+      Web3Client("https://polygon-rpc.com", new Client());
   // Hard address listing of all Athletes
 
   LSPController();
