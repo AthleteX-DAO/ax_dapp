@@ -53,7 +53,7 @@ dependencies:
   flutter_launcher_icons: "^0.9.2"
   flutter_bloc: ^7.1.0
   equatable: ^2.0.3
-  
+  mockito: ^5.0.17
 
 dependency_overrides:
   charts_flutter:
@@ -61,6 +61,9 @@ dependency_overrides:
       url: https://github.com/google/charts
       path: charts_flutter
   url_launcher_web: 2.0.6
+  flutter_test:
+    sdk: flutter
+
 
 
 dev_dependencies: 

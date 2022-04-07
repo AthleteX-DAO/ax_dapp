@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
+import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:equatable/equatable.dart';
 
 class ScoutPageEvent extends Equatable {
@@ -7,7 +7,7 @@ class ScoutPageEvent extends Equatable {
 }
 
 class SelectSport extends ScoutPageEvent {
-  final SelectedSport selectedSport;
+  final SupportedSport selectedSport;
 
   SelectSport({
     required this.selectedSport,

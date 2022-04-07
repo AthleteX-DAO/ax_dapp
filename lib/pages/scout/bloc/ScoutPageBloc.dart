@@ -1,16 +1,15 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
-import 'package:ax_dapp/repositories/MlbRepo.dart';
-import 'package:ax_dapp/service/SupportedAthletes/SupportedMLBAthletes.dart';
+import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/ScoutPageEvent.dart';
 
 class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
-  final MLBRepo mlbRepo;
+  final GetScoutAthletesDataUseCase repo;
   final List<AthleteScoutModel> mlbAthletes = [];
 
-  ScoutPageBloc({required this.mlbRepo}) : super(const ScoutPageState()) {
+  ScoutPageBloc({required this.repo}) : super(const ScoutPageState()) {
     on<OnPageRefresh>(_mapRefreshEventToState);
     on<SelectSport>(_mapSelectSportToState);
     on<OnAthleteSearch>(_mapSearchAthleteEventToState);
@@ -20,18 +19,14 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
       OnPageRefresh event, Emitter<ScoutPageState> emit) async {
     try {
       emit(state.copy(status: Status.loading));
-      final response = await mlbRepo
-          .getPlayersById(SupportedMLBAthletes().getSupportedAthletesList());
 
-      mlbAthletes.addAll(response
-          .map((athlete) => AthleteScoutModel(athlete.id, athlete.name,
-              athlete.position, athlete.team, athlete.price, Sport.MLB))
-          .toList());
+      final response = await repo.fetchSupportedAthletes(state.selectedSport);
 
       emit(state.copy(
-          athletes: mlbAthletes,
-          selectedSport: SelectedSport.ALL,
+          athletes: response,
+          selectedSport: state.selectedSport,
           status: Status.success));
+
     } catch (e) {
       print("[Console] Scout Page -> Failed to load athlete list: $e");
       emit(state.copy(status: Status.error));
