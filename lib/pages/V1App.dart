@@ -500,7 +500,7 @@ class _V1AppState extends State<V1App> {
             if (network)
               TextButton(
                 onPressed: () {
-                  String urlString = "https://mumbai.polygonscan.com/";
+                  String urlString = "https://polygonscan.com/";
                   launch(urlString);
                 },
                 child: Row(

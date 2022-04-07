@@ -54,6 +54,7 @@ class Controller extends GetxController {
     //Connect and setup credentials
     await web3.connect().then((value) {
       print("Connecting Wallet... ${web3.publicAddress}");
+      this.publicAddress.value = web3.publicAddress;
     });
 
     try {
@@ -73,6 +74,10 @@ class Controller extends GetxController {
       credentials = web3.credentials;
     } catch (e) {
       throw ("credentials are breaking $e");
+    }
+
+    if (web3.networkID != null) {
+      this.walletConnected = true;
     }
 
     return 1;
