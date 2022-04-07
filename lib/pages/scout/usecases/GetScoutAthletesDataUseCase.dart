@@ -1,6 +1,8 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
+import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
+import 'package:ax_dapp/service/athleteModels/mlb/MLBStats.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 
 class GetScoutAthletesDataUseCase {
@@ -35,15 +37,24 @@ class GetScoutAthletesDataUseCase {
 
   List<AthleteScoutModel> _mapAthleteToScoutModel(
       List<SportAthlete> athletes, SportsRepo<SportAthlete> repo) {
-    return athletes
-        .map((athlete) => AthleteScoutModel(
-              athlete.id,
-              athlete.name,
-              athlete.position,
-              athlete.team,
-              athlete.price,
-              repo.sport,
-            ))
-        .toList();
+    List<AthleteScoutModel> mappedAthletes = [];
+    athletes.forEach((athlete) {
+      //TODO DANGEROUS CHANGE THIS TO NOT BE COUPLED TO MLB
+      final mlbAthlete = (athlete as MLBAthlete);
+      mappedAthletes.add(AthleteScoutModel(
+          mlbAthlete.id,
+          mlbAthlete.name,
+          mlbAthlete.position,
+          mlbAthlete.team,
+          mlbAthlete.price,
+          repo.sport,
+          mlbAthlete.timeStamp,
+          mlbAthlete.homeRuns,
+          mlbAthlete.strikeOuts,
+          mlbAthlete.saves,
+          mlbAthlete.stolenBases
+      ));
+    });
+    return mappedAthletes;
   }
 }
