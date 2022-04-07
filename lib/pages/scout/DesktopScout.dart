@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
+import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   String allSportsTitle = "All Sports";
   String longTitle = "Long";
   AthleteScoutModel curAthlete =
-      AthleteScoutModel(0, "name", "position", "team", 0.0, Sport.MLB);
+      AthleteScoutModel(0, "name", "position", "team", 0.0, SupportedSport.MLB);
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
 
@@ -90,7 +91,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ] else if (state.status == Status.error) ...[
                         scoutLoadingError(),
                       ],
-                      state.selectedSport == SelectedSport.ALL
+                      state.selectedSport == SupportedSport.ALL
                           ? buildListview(state)
                           : buildFilterMenu(sportFilterTxSz, sportFilterIconSz)
                       // ListView of Athletes
@@ -564,7 +565,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     double hgt = _height * 0.8 - 120;
     List<AthleteScoutModel> athletesList = state.athletes;
     // all athletes
-    if (state.selectedSport == SelectedSport.ALL)
+    if (state.selectedSport == SupportedSport.ALL)
       return Container(
           height: hgt,
           child: ListView.builder(
@@ -575,7 +576,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 return createListCards(athletesList[index]);
               }));
     // NFL athletes only
-    else if (state.selectedSport == SelectedSport.NFL)
+    else if (state.selectedSport == SupportedSport.NFL)
       return Container(
           height: hgt,
           child: ListView.builder(

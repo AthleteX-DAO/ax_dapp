@@ -1,17 +1,10 @@
+import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'MLBAthlete.g.dart';
 
 @JsonSerializable()
-class MLBAthlete {
-  @JsonKey(name: "id")
-  final int id;
-  @JsonKey(name: "name")
-  final String name;
-  @JsonKey(name: "team")
-  final String team;
-  @JsonKey(name: "position")
-  final String position;
+class MLBAthlete extends SportAthlete {
   @JsonKey(name: "started")
   final double started;
   @JsonKey(name: "games")
@@ -46,16 +39,12 @@ class MLBAthlete {
   final double plateAppearances;
   @JsonKey(name: "weightedOnBasePercentage")
   final double weightedOnBasePercentage;
-  @JsonKey(name: "price")
-  final double price;
-  @JsonKey(name: "timeStamp")
-  final String timeStamp;
 
   const MLBAthlete({
-    required this.id,
-    required this.name,
-    required this.team,
-    required this.position,
+    required int id,
+    required String name,
+    required String team,
+    required String position,
     required this.started,
     required this.games,
     required this.atBats,
@@ -73,9 +62,9 @@ class MLBAthlete {
     required this.stolenBases,
     required this.plateAppearances,
     required this.weightedOnBasePercentage,
-    required this.price,
-    required this.timeStamp,
-  });
+    required double price,
+    required String timeStamp,
+  }) : super(id, name, team, position, price, timeStamp);
 
   factory MLBAthlete.fromJson(Map<String, dynamic> json) =>
       _$MLBAthleteFromJson(json);
