@@ -473,7 +473,7 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
 
 // dynamic
 Dialog dualDepositDialog(
-    BuildContext context, Athlete athlete, double layoutWdt, bool isWeb) {
+    BuildContext context, String athlete, double layoutWdt, bool isWeb) {
   TextEditingController stakeAxInput = TextEditingController();
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
@@ -626,7 +626,7 @@ Dialog dualDepositDialog(
                       Container(width: 15),
                       Expanded(
                         child: Text(
-                          athlete.name + " APT",
+                          athlete + " APT",
                           style: textStyle(Colors.white, 15, false),
                         ),
                       ),
