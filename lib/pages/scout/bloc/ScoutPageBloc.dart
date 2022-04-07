@@ -19,6 +19,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   void _mapRefreshEventToState(
       OnPageRefresh event, Emitter<ScoutPageState> emit) async {
     try {
+      emit(state.copy(status: Status.loading));
       final response = await mlbRepo
           .getPlayersById(SupportedMLBAthletes().getSupportedAthletesList());
 
@@ -32,6 +33,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
           selectedSport: SelectedSport.ALL,
           status: Status.success));
     } catch (e) {
+      print("[Console] Scout Page -> Failed to load athlete list: $e");
       emit(state.copy(status: Status.error));
     }
   }
