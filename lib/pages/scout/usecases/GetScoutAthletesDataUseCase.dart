@@ -23,10 +23,11 @@ class GetScoutAthletesDataUseCase {
       /// if ALL sports is selected fetch for each sport and add athletes to a
       /// combined list
       final athletes = <AthleteScoutModel>[];
-      await Future.forEach(_repos.values, (repo) async {
-        final List<SportAthlete> response =
-            await (repo as SportsRepo<SportAthlete>).getSupportedPlayers();
-        athletes.addAll(_mapAthleteToScoutModel(response, repo));
+      final response = await Future.wait(_repos
+          .map((key, repo) => MapEntry(key, repo.getSupportedPlayers()))
+          .values);
+      response.asMap().forEach((key, response) {
+        athletes.addAll(_mapAthleteToScoutModel(response, _repos.values.elementAt(key)));
       });
       return athletes;
     }
