@@ -1,5 +1,7 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
+import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';
+
 import './createWallet/createWallet.dart'
     if (dart.library.io) './createWallet/mobile.dart'
     if (dart.library.js) './createWallet/web.dart';
@@ -47,15 +49,32 @@ class Controller extends GetxController {
 
   Future<int> connect() async {
     //Setting up Client & Credentials for connecting to dApp from a client
-    var web3 = newWallet();
+    DappWallet web3 = newWallet();
 
     //Connect and setup credentials
-    await web3.connect();
-    
-    publicAddress.value = web3.publicAddress;
-    credentials.value = web3.credentials;
-    networkID.value = web3.networkID;
-    client.value = web3.client;
+    await web3.connect().then((value) {
+      print("Connecting Wallet... ${web3.publicAddress}");
+    });
+
+    try {
+      networkID.value = web3.networkID;
+      print(networkID.value);
+    } catch (e) {
+      throw ("NetworkId value is breaking $e");
+    }
+
+    try {
+      client.value = web3.client;
+    } catch (e) {
+      throw ("Client value is breaking: $e");
+    }
+
+    try {
+      credentials = web3.credentials;
+    } catch (e) {
+      throw ("credentials are breaking $e");
+    }
+
     return 1;
   }
   //Comment this for Android
