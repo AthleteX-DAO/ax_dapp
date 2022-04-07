@@ -3,9 +3,9 @@ import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:test/test.dart';
 
 import 'scout_athlete_data_use_case_test.mocks.dart';
 
