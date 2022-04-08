@@ -1,9 +1,9 @@
-import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+
+import '../service/TokenList.dart';
 
 class DesktopFarm extends StatefulWidget {
   const DesktopFarm({Key? key}) : super(key: key);
@@ -26,9 +26,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
     allFarmsList.add(Farm("AX Farm"));
     myFarmsList.add(Farm("AX Farm"));
 
-    for (Athlete ath in AthleteList.list) {
-      allFarmsList.add(Farm("AX - " + ath.name + " APT", ath));
-      myFarmsList.add(Farm("AX - " + ath.name + " APT", ath));
+    for (dynamic ath in TokenList.namesList) {
+      allFarmsList.add(Farm("AX - " + ath[0] + " APT"));
+      myFarmsList.add(Farm("AX - " + ath[0] + " APT"));
     }
 
     allFarmsListSearchFilter = allFarmsList;
@@ -623,7 +623,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
 class Farm {
   final String name;
-  Athlete? athlete;
+  String? athlete;
 
   Farm(this.name, [this.athlete]);
 }

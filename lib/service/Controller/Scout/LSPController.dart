@@ -5,6 +5,7 @@ import 'package:web3dart/web3dart.dart';
 import '../../../contracts/LongShortPair.g.dart';
 import 'package:web3dart/contracts/erc20.dart';
 import 'package:http/http.dart';
+import '../../TokenList.dart';
 import '../Controller.dart';
 
 // --> Joe burrow
@@ -18,8 +19,10 @@ class LSPController extends GetxController {
   var createAmt = 0.0.obs;
   var redeemAmt = 0.0.obs;
   var aptAddress = ''.obs;
+  String mainRPCUrl = "https://polygon-rpc.com";
+  String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
   final tokenClient =
-      Web3Client("https://matic-mumbai.chainstacklabs.com", new Client());
+      Web3Client("https://polygon-rpc.com", new Client());
   // Hard address listing of all Athletes
 
   LSPController();
@@ -44,7 +47,7 @@ class LSPController extends GetxController {
     BigInt transferAmount = await genericLSP.collateralPerPair();
     BigInt amount = BigInt.from(createAmt.value) * transferAmount;
     print("[Console] Inside approve()");
-    EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.mumbaiAddress);
+    EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.polygonAddress);
     Erc20 axt = Erc20(address: axtaddress, client: tokenClient);
     try {
       await axt.approve(address, amount, credentials: controller.credentials);
@@ -63,8 +66,8 @@ class LSPController extends GetxController {
   }
 
   void updateAptAddress(int athleteId) {
-    if (AXT.idToAddress.containsKey(athleteId)) {
-      aptAddress.value = AXT.idToAddress[athleteId]![0];
+    if (TokenList.idToAddress.containsKey(athleteId)) {
+      aptAddress.value = TokenList.idToAddress[athleteId]![0];
       print("[Console] Updated the aptAddress to $aptAddress");
     } else {
       aptAddress.value = '';

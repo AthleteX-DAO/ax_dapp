@@ -1,7 +1,10 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopPool.dart';
-import 'package:ax_dapp/pages/DesktopScout.dart';
+import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
+import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
+import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
@@ -14,6 +17,7 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Athlete.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -130,7 +134,14 @@ class _V1AppState extends State<V1App> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           if (pageNumber == 0)
-            DesktopScout()
+            BlocProvider(
+                create: (BuildContext context) => ScoutPageBloc(
+                    repo: GetScoutAthletesDataUseCase([
+                      RepositoryProvider.of<MLBRepo>(context),
+                      //NFLRepo
+                      //MLBRepo
+                    ])),
+                child: DesktopScout())
           else if (pageNumber == 1)
             DesktopTrade()
           else if (pageNumber == 2)
@@ -144,7 +155,14 @@ class _V1AppState extends State<V1App> {
         controller: _pageController,
         onPageChanged: _onItemTapped,
         children: <Widget>[
-          DesktopScout(),
+          BlocProvider(
+              create: (BuildContext context) => ScoutPageBloc(
+                  repo: GetScoutAthletesDataUseCase([
+                    RepositoryProvider.of<MLBRepo>(context),
+                    //NFLRepo
+                    //MLBRepo
+                  ])),
+              child: DesktopScout()),
           DesktopTrade(),
           DesktopPool(),
           DesktopFarm(),
@@ -482,7 +500,7 @@ class _V1AppState extends State<V1App> {
             if (network)
               TextButton(
                 onPressed: () {
-                  String urlString = "https://mumbai.polygonscan.com/";
+                  String urlString = "https://polygonscan.com/";
                   launch(urlString);
                 },
                 child: Row(

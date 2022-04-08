@@ -24,13 +24,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Token? tknTo;
   bool isWeb = true;
 
-  // List<Token> tokens = [
-  //   AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
-  //   SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
-  //   MATIC("Matic/Polygon", "Matic",
-  //       AssetImage('assets/images/Polygon_Small.png')),
-  // ];
-
   @override
   void initState() {
     super.initState();
@@ -40,25 +33,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
     } catch (error) {
       print("[Console] TokenList is empty?: $error");
     }
-
-    // print("Inside initState");
-    // for (Athlete ath in AthleteList.list) {
-    //   print("Inside for loop");
-    //   print(AXT.idToAddress[ath.id]![1]);
-    //   tokens.add(APT(
-    //       ath.name + " Long",
-    //       ath.name + " Long",
-    //       AssetImage('../assets/images/apt.png'),
-    //       AXT.idToAddress[ath.id]![1])); // Long
-    //   print(AXT.idToAddress[ath.id]![2]);
-    //   tokens.add(APT(
-    //       ath.name + " Short",
-    //       ath.name + " Short",
-    //       AssetImage('../assets/images/apt.png'),
-    //       AXT.idToAddress[ath.id]![2])); // Short
-    // }
-    // tokenListFilter = tokens;
-    // print("Finished intState");
   }
 
   @override
@@ -70,7 +44,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
     double wid = 550;
 
     Widget swapButton = Container(
-        //Settings when no token has been selected
         height: _height * 0.05,
         width: wid - 50,
         decoration: boxDecoration(Colors.transparent, 100, 4, Colors.blue),
@@ -109,7 +82,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       ? textStyle(Colors.amber[500]!, 16, true)
                       : textStyle(Colors.amber[500]!, 16, true))));
 
-    //layout container
     return SafeArea(
       bottom: false,
       child: Container(
@@ -326,105 +298,66 @@ class _DesktopTradeState extends State<DesktopTrade> {
     //Creates a token item for AthleteTokenList widget
     double _width = MediaQuery.of(context).size.width;
     return Container(
-      height: 50,
-      child: ElevatedButton(
-        //disable button if it has already been selected
-        style: ElevatedButton.styleFrom(
-            primary: Colors.grey[900],
-            //selected token marked yellow
-            onSurface:
-                isTokenSelected(token, tknNum) ? Colors.amber : Colors.grey),
-        onPressed: isTokenSelected(token, tknNum)
-            ? null
-            : () {
-                Token tmpTkn1 = tknFrom!;
-                Token tmpTkn2 = tknTo!;
-                setState(() {
-                  if (tknNum == 1) {
-                    tknFrom = token;
-                    swapController.updateFromAddress(token.address.value);
-                  } else {
-                    tknTo = token;
-                    swapController.updateToAddress(token.address.value);
-                  }
-
-                  // If the user changes the top token and it is the same as the bottom token, then swap the top and bottom
-                  if (tknFrom!.name == tknTo!.name) {
-                    tknFrom = tknTo;
-                    tknTo = tmpTkn1;
-                    swapController.updateFromAddress(tknFrom!.address.value);
-                    swapController.updateToAddress(tknTo!.address.value);
-                  }
-
-                  // If the user changes the bottom token and it is the same as the top token, then swap the bottom and the top
-                  if (tknTo!.name == tknFrom!.name) {
-                    tknTo = tknFrom;
-                    tknFrom = tmpTkn2;
-                    swapController.updateFromAddress(tknFrom!.address.value);
-                    swapController.updateToAddress(tknTo!.address.value);
-                  }
-                  Navigator.pop(context);
-                });
-              },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                height: 30,
-                width: 60,
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  width: 30,
+        height: 50,
+        child: TextButton(
+            onPressed: () {
+              setState(() {
+                if (tknNum == 1) {
+                  tknFrom = token;
+                  print("tkn1: ${token.address.value}");
+                  swapController.updateFromAddress(token.address.value);
+                } else {
+                  tknTo = token;
+                  swapController.updateToAddress(token.address.value);
+                }
+                Navigator.pop(context);
+              });
+            },
+            child: Container(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
                   height: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      scale: 0.5,
-                      image: token.icon!,
-                      fit: BoxFit.fill,
+                  width: 60,
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        scale: 0.5,
+                        image: token.icon!,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                height: 45,
-                // ticker/name column "AX/AthleteX"
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Container(
-                        width: (_width < 350.0) ? 110 : 125,
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          token.ticker,
-                          style: textStyle(Colors.white, 14, true),
-                        )),
-                    Container(
-                      width: (_width < 350.0) ? 110 : 125,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        token.name,
-                        style: textStyle(Colors.grey[100]!, 9, false),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  bool isTokenSelected(Token currentToken, int tknNum) {
-    //returns true if token has been selected for tknNum position
-    if (tknNum == 1) {
-      return currentToken.name == tknFrom?.name;
-    } else {
-      return currentToken.name == tknTo?.name;
-    }
+                Container(
+                    height: 45,
+                    // ticker/name column "AX/AthleteX"
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                            width: (_width < 350.0) ? 110 : 125,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              token.ticker,
+                              style: textStyle(Colors.white, 14, true),
+                            )),
+                        Container(
+                            width: (_width < 350.0) ? 110 : 125,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              token.name,
+                              style: textStyle(Colors.grey[100]!, 9, false),
+                            )),
+                      ],
+                    ))
+              ],
+            ))));
   }
 
   Widget createTokenButton(int tknNum) {
@@ -478,7 +411,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: tokenImage!,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),

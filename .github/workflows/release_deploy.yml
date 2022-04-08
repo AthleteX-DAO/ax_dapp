@@ -28,6 +28,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: 'cd /home/app &&
+          sudo chown -R $USER:debian /home/app/ &&
+          sudo chown -R $USER:root /home/app/ &&
           sudo git fetch &&
           sudo git checkout ${{ steps.extract_branch.outputs.branch }} &&
           sudo git pull &&
