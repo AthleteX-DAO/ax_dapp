@@ -3,6 +3,7 @@ import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -612,23 +613,6 @@ class _DesktopScoutState extends State<DesktopScout> {
     double athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
 
-    String fn(String a) {
-      if (a == "QB") {
-        return "Quarterback";
-      } else if (a == "WR") {
-        return "Widereciever";
-      } else if (a == "DT") {
-        return "Defencetackle";
-      } else if (a == "RB") {
-        return "Runningback";
-      } else if (a == "TE") {
-        return "Tightend";
-      } else if (a == "CB") {
-        return "Cornerback";
-      }
-      return "B";
-    }
-
     return Container(
         height: 70,
         child: OutlinedButton(
@@ -657,7 +641,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               Text(athlete.name,
                                   style: textStyle(
                                       Colors.white, 18, false, false)),
-                              Text(fn(athlete.position),
+                              Text(retrieveFullMLBAthletePosition(athlete.position),
                                   style: textStyle(
                                       Colors.grey[700]!, 10, false, false))
                             ])),

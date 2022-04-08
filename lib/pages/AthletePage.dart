@@ -3,6 +3,7 @@ import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
+import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
@@ -238,23 +239,6 @@ class _AthletePageState extends State<AthletePage> {
         .of(context)
         .size
         .height;
-    String fn(String a) {
-      if (a == "QB") {
-        return "Quarterback";
-      } else if (a == "WR") {
-        return "Widereciever";
-      } else if (a == "DT") {
-        return "Defencetackle";
-      } else if (a == "RB") {
-        return "Runningback";
-      } else if (a == "TE") {
-        return "Tightend";
-      } else if (a == "CB") {
-        return "Cornerback";
-      }
-      return "B";
-    }
-
     double _buttonHeight = MediaQuery
         .of(context)
         .size
@@ -267,7 +251,6 @@ class _AthletePageState extends State<AthletePage> {
               _width,
               _height,
               context,
-              fn,
               _buttonHeight,
               longMarketPrice,
               longMarketPricePercent,
@@ -277,7 +260,6 @@ class _AthletePageState extends State<AthletePage> {
               _width,
               _height,
               context,
-              fn,
               _buttonHeight,
               shortMarketPrice,
               shortMarketPricePercent,
@@ -288,7 +270,7 @@ class _AthletePageState extends State<AthletePage> {
   }
 
   Container buildPage(double _width, double _height,
-      BuildContext context, String fn(String a), double _buttonHeight,
+      BuildContext context, double _buttonHeight,
        String marketPrice, String marketPricePercent, String bookValue,
       String bookValuePercent) {
     return Container(
@@ -855,7 +837,7 @@ class _AthletePageState extends State<AthletePage> {
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false)),
-                                                Text(fn(athlete.position),
+                                                Text(retrieveFullMLBAthletePosition(athlete.position),
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false))
@@ -1530,23 +1512,6 @@ class _AthletePageState extends State<AthletePage> {
         .size
         .width;
     double wid = _width * 0.4;
-    String fn(String a) {
-      if (a == "QB") {
-        return "Quarterback";
-      } else if (a == "WR") {
-        return "Widereciever";
-      } else if (a == "DT") {
-        return "Defencetackle";
-      } else if (a == "RB") {
-        return "Runningback";
-      } else if (a == "TE") {
-        return "Tightend";
-      } else if (a == "CB") {
-        return "Cornerback";
-      }
-      return "B";
-    }
-
     if (_width < 1160) wid = _width * 0.95;
 
     // Stats-Side
@@ -1719,7 +1684,7 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Position",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text(fn(athlete.position),
+                              Text(retrieveFullMLBAthletePosition(athlete.position),
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
