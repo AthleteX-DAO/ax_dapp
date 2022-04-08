@@ -1385,7 +1385,7 @@ class _AthletePageState extends State<AthletePage> {
                                                           " AX",
                                                       style: textStyle(
                                                           Colors.white,
-                                                          20,
+                                                          14,
                                                           true,
                                                           false)),
                                                   Container(
@@ -1641,7 +1641,7 @@ class _AthletePageState extends State<AthletePage> {
                                       children: <Widget>[
                                         Row(children: <Widget>[
                                           Text((_longAptIndex==0)? longBookValue : shortBookValue,
-                                              style: textStyle(Colors.white, 20,
+                                              style: textStyle(Colors.white, 14,
                                                   false, false)),
                                           Container(
                                               child: Text((_longAptIndex==0)? longBookValuePercent : shortBookValuePercent,
@@ -1650,7 +1650,7 @@ class _AthletePageState extends State<AthletePage> {
                                         ]),
                                         Text(shortBookValue,
                                             style: textStyle(greyTextColor,
-                                                20, false, false))
+                                                14, false, false))
                                       ]))
                             ]),
                         Row(
@@ -1671,13 +1671,13 @@ class _AthletePageState extends State<AthletePage> {
                                           Text("80%",
                                               style: textStyle(
                                                   greyTextColor,
-                                                  20,
+                                                  16,
                                                   false,
                                                   false)),
                                         ]),
                                         Text("120%",
                                             style: textStyle(greyTextColor,
-                                                20, false, false))
+                                                16, false, false))
                                       ]))
                             ]),
                       ])),
