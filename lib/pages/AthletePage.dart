@@ -721,9 +721,7 @@ class _AthletePageState extends State<AthletePage> {
                                                                           false,
                                                                           false))),
                                                             ]),
-                                                            Text("${athlete.bookPrice
-                                                                .toStringAsFixed(
-                                                                2)} AX",
+                                                            Text("4.24 AX",
                                                                 style: textStyle(
                                                                     greyTextColor,
                                                                     12, false,
@@ -767,7 +765,7 @@ class _AthletePageState extends State<AthletePage> {
                                                                         false,
                                                                         false))),
                                                           ]),
-                                                          Text("4.24 AX",
+                                                          Text(bookValue,
                                                               style: textStyle(
                                                                   greyTextColor,
                                                                   12, false,
@@ -952,7 +950,7 @@ class _AthletePageState extends State<AthletePage> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                    "STB",
+                                                                    "SB",
                                                                     style: textStyle(
                                                                         greyTextColor,
                                                                         10,
@@ -1029,7 +1027,7 @@ class _AthletePageState extends State<AthletePage> {
                                                             alignment: Alignment
                                                                 .bottomLeft,
                                                             child: Text(
-                                                                athlete.weightedOnBasePercentage.toString(),
+                                                                athlete.weightedOnBasePercentage.toStringAsFixed(3),
                                                                 style: textStyle(
                                                                     greyTextColor,
                                                                     10,
@@ -1622,8 +1620,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   style: textStyle(Colors.red,
                                                       12, false, false))),
                                         ]),
-                                        Text("${athlete.bookPrice.toStringAsFixed(
-                                            2)} AX",
+                                        Text("4.24 AX",
                                             style: textStyle(greyTextColor,
                                                 20, false, false))
                                       ]))
@@ -1651,7 +1648,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   style: textStyle(Colors.green,
                                                       12, false, false))),
                                         ]),
-                                        Text("4.24 AX",
+                                        Text(shortBookValue,
                                             style: textStyle(greyTextColor,
                                                 20, false, false))
                                       ]))
@@ -1807,7 +1804,7 @@ class _AthletePageState extends State<AthletePage> {
                                               alignment: Alignment
                                                   .bottomLeft,
                                               child: Text(
-                                                  "STB",
+                                                  "SB",
                                                   style: textStyle(
                                                       greyTextColor,
                                                       10,
@@ -1880,7 +1877,7 @@ class _AthletePageState extends State<AthletePage> {
                                           alignment: Alignment
                                               .bottomLeft,
                                           child: Text(
-                                              athlete.weightedOnBasePercentage.toString(),
+                                              athlete.weightedOnBasePercentage.toStringAsFixed(3),
                                               style: textStyle(
                                                   greyTextColor,
                                                   10,
