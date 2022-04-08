@@ -53,7 +53,7 @@ class SwapController extends GetxController {
         ERC20(address: tokenAAddress, client: controller.client.value);
     //ERC20 tokenB =
     //ERC20(address: tokenBAddress, client: controller.client.value);
-    BigInt rate = BigInt.one;
+    BigInt rate = BigInt.parse("100000000000000000000000");
     BigInt transferAmount = rate * tokenAAmount;
     try {
       print("Before approve");
@@ -77,7 +77,7 @@ class SwapController extends GetxController {
     EthereumAddress tokenAAddress = EthereumAddress.fromHex("$address1");
     EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
     BigInt tokenAAmount =
-        BigInt.from(amount1.value) * BigInt.one;
+        BigInt.from(amount1.value) * BigInt.from(1000000000000000000);
 
     List<EthereumAddress> path = [tokenAAddress, tokenBAddress];
     EthereumAddress to = await controller.credentials.extractAddress();

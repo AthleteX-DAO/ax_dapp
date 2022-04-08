@@ -47,7 +47,7 @@ class PoolController extends GetxController {
     ERC20 tokenB =
         ERC20(address: tokenBAddress, client: controller.client.value);
 
-    BigInt rate = BigInt.one;
+    BigInt rate = BigInt.parse("10000000000000000000");
     BigInt transferAmountA = rate * tokenAAmount;
     BigInt transferAmountB = rate * tokenBAmount;
     print("Before try");
@@ -68,7 +68,7 @@ class PoolController extends GetxController {
   }
 
   Future<void> addLiquidity() async {
-    BigInt rate = BigInt.one;
+    BigInt rate = BigInt.from(1000000000000000000);
     BigInt amountADesired = BigInt.from(amount1.value) * rate;
     BigInt amountBDesired = BigInt.from(amount2.value) * rate;
 

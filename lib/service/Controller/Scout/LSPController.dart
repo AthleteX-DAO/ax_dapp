@@ -33,7 +33,7 @@ class LSPController extends GetxController {
     print("Attempting to MINT LSP");
     final theCredentials = controller.credentials;
     BigInt tokensToCreate =
-        BigInt.from(createAmt.value) * BigInt.one;
+        BigInt.from(createAmt.value) * BigInt.from(1000000000000000000);
     approve(genericLSP, address).then((value) async {
       String txString =
           await genericLSP.create(tokensToCreate, credentials: theCredentials);
@@ -61,7 +61,7 @@ class LSPController extends GetxController {
     genericLSP = LongShortPair(address: address, client: tokenClient);
     final theCredentials = controller.credentials;
     BigInt tokensToRedeem =
-        BigInt.from(redeemAmt.value) * BigInt.one;
+        BigInt.from(redeemAmt.value) * BigInt.from(1000000000000000000);
     genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
   }
 
