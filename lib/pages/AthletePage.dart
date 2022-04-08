@@ -321,7 +321,7 @@ class _AthletePageState extends State<AthletePage> {
                           Container(
                               child: Text(athlete.name,
                                 style:
-                                textStyle(Colors.white, 22, false, false),
+                                textStyle(Colors.white, 20, false, false),
                               )
                           ),
                           Container(
@@ -336,7 +336,7 @@ class _AthletePageState extends State<AthletePage> {
                       ),
                     ),
                     Container(
-                      child: Icon(Icons.sports_football, size: 20,),
+                      child: Icon(Icons.sports_baseball, size: 16,),
                     ),
                     Spacer(),
                     Container(
@@ -540,7 +540,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   Text(bookValue,
                                                       style: textStyle(
                                                           Colors.white,
-                                                          20,
+                                                          16,
                                                           true,
                                                           false)),
                                                   Container(
