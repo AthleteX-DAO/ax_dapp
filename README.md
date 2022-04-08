@@ -1,6 +1,6 @@
 # AthleteX dApp UI
 
-[![Deploy](https://github.com/SportsToken/ax_dapp/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/SportsToken/ax_dapp/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/SportsToken/ax_dapp/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/SportsToken/ax_dapp/actions/workflows/release_deploy.yml)
 [![Linter](https://github.com/SportsToken/ax_dapp/actions/workflows/linter.yml/badge.svg?branch=main)](https://github.com/SportsToken/ax_dapp/actions/workflows/linter.yml)
 
 
