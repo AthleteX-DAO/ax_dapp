@@ -47,7 +47,7 @@ class LSPController extends GetxController {
     BigInt transferAmount = await genericLSP.collateralPerPair();
     BigInt amount = BigInt.from(createAmt.value) * transferAmount;
     print("[Console] Inside approve()");
-    EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.mumbaiAddress);
+    EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.polygonAddress);
     Erc20 axt = Erc20(address: axtaddress, client: tokenClient);
     try {
       await axt.approve(address, amount, credentials: controller.credentials);

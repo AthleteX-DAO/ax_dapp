@@ -18,13 +18,13 @@ class SwapController extends GetxController {
   var amount1 = 0.0.obs, amount2 = 0.0.obs;
   var price = 0.0.obs;
   final EthereumAddress dexAddress =
-      EthereumAddress.fromHex("0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551");
+      EthereumAddress.fromHex("0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B");
   final EthereumAddress dexPolygonAddress =
       EthereumAddress.fromHex("0xe06DC83e310807BAcF2e1776925bC19Fa3659D78");
   final EthereumAddress routerAddress =
-      EthereumAddress.fromHex("0x7EFc361e568d0038cfB200dF9d9Be27943e19017");
+      EthereumAddress.fromHex("0xe78Bb28079B7a72C8d0e9f67c695E54B74556105");
   final EthereumAddress axtAddress =
-      EthereumAddress.fromHex("0x76d9a6e4cdefc840a47069b71824ad8ff4819e85");
+      EthereumAddress.fromHex("0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df");
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
       DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch);
@@ -53,7 +53,7 @@ class SwapController extends GetxController {
         ERC20(address: tokenAAddress, client: controller.client.value);
     //ERC20 tokenB =
     //ERC20(address: tokenBAddress, client: controller.client.value);
-    BigInt rate = BigInt.parse("100000000000000000000000");
+    BigInt rate = BigInt.parse("1000000000000000000000000");
     BigInt transferAmount = rate * tokenAAmount;
     try {
       print("Before approve");
