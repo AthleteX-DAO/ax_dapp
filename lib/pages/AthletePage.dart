@@ -58,15 +58,15 @@ class _AthletePageState extends State<AthletePage> {
 
   IndexedStack buildWebViewContainer(BuildContext context) {
 
-    var longMarketPrice = "4.18 AX";
-    var longMarketPricePercent = "-2%";
-    var longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
-    var longBookValuePercent = "+4%";
+    final longMarketPrice = "4.18 AX";
+    final longMarketPricePercent = "-2%";
+    final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    final longBookValuePercent = "+4%";
 
-    var shortMarketPrice = "2.18 AX";
-    var shortMarketPricePercent = "-1%";
-    var shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AXShort ";
-    var shortBookValuePercent = "+2%";
+    final shortMarketPrice = "2.18 AX";
+    final shortMarketPricePercent = "-1%";
+    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    final shortBookValuePercent = "+2%";
 
 
     return IndexedStack(
@@ -220,15 +220,15 @@ class _AthletePageState extends State<AthletePage> {
 
 
   SafeArea buildMobileView(BuildContext context) {
-    var longMarketPrice = "4.18 AX";
-    var longMarketPricePercent = "-2%";
-    var longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
-    var longBookValuePercent = "+4%";
+    final longMarketPrice = "4.18 AX";
+    final longMarketPricePercent = "-2%";
+    final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    final longBookValuePercent = "+4%";
 
-    var shortMarketPrice = "2.18 AX";
-    var shortMarketPricePercent = "-1%";
-    var shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AXShort ";
-    var shortBookValuePercent = "+2%";
+    final shortMarketPrice = "2.18 AX";
+    final shortMarketPricePercent = "-1%";
+    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AXShort ";
+    final shortBookValuePercent = "+2%";
 
     double _width = MediaQuery
         .of(context)
@@ -829,7 +829,7 @@ class _AthletePageState extends State<AthletePage> {
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false)),
-                                                Text("MLB",
+                                                Text("${athlete.sport.name}",
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false))
@@ -1515,15 +1515,15 @@ class _AthletePageState extends State<AthletePage> {
       String longBookValuePercent,
       String shortBookValuePercent,) {
 
-    var longMarketPrice = "4.18 AX";
-    var longMarketPricePercent = "-2%";
-    var longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
-    var longBookValuePercent = "+4%";
+    final longMarketPrice = "4.18 AX";
+    final longMarketPricePercent = "-2%";
+    final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    final longBookValuePercent = "+4%";
 
-    var shortMarketPrice = "2.18 AX";
-    var shortMarketPricePercent = "-1%";
-    var shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
-    var shortBookValuePercent = "+2%";
+    final shortMarketPrice = "2.18 AX";
+    final shortMarketPricePercent = "-1%";
+    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    final shortBookValuePercent = "+2%";
 
     double _width = MediaQuery
         .of(context)
@@ -1699,7 +1699,7 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Sport / League",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text("BaseBall / MLB",
+                              Text("${athlete.sport.name}",
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
