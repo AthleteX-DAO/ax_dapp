@@ -12,7 +12,12 @@ class AthleteScoutModel {
   final double strikeOuts;
   final double saves;
   final double stolenBase;
+  final double atBats;
+  final double weightedOnBasePercentage;
+  final double errors;
+  final double inningsPlayed;
 
-  AthleteScoutModel(this.id, this.name, this.position, this.team, this.bookPrice, this.sport, this.time, this.homeRuns, this.strikeOuts, this.saves, this.stolenBase);
+  AthleteScoutModel(
+  this.id, this.name, this.position,this.team,this.bookPrice, this.sport,this.time, this.homeRuns, this.strikeOuts,this.saves, this.stolenBase, this.atBats,this.weightedOnBasePercentage,this.errors, this.inningsPlayed);
 }
 

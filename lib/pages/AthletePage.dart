@@ -38,6 +38,9 @@ class _AthletePageState extends State<AthletePage> {
   bool _isDisplayingChart = true;
 
 
+
+
+
   @override
   void initState() {
     super.initState();
@@ -50,10 +53,61 @@ class _AthletePageState extends State<AthletePage> {
   Widget build(BuildContext context) {
     if (listView == 1) return DesktopScout();
 
-    return kIsWeb.kIsWeb ? buildWebView(context) : buildMobileView(context);
+    return kIsWeb.kIsWeb ? buildWebViewContainer(context) : buildMobileView(context);
   }
 
-  Container buildWebView(BuildContext context) {
+  IndexedStack buildWebViewContainer(BuildContext context) {
+
+    var longMarketPrice = "4.18 AX";
+    var longMarketPricePercent = "-2%";
+    var longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    var longBookValuePercent = "+4%";
+
+    var shortMarketPrice = "2.18 AX";
+    var shortMarketPricePercent = "-1%";
+    var shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AXShort ";
+    var shortBookValuePercent = "+2%";
+
+
+    return IndexedStack(
+        index: _longAptIndex,
+        children: [
+      buildWebView(
+          context,
+          longMarketPrice,
+          shortMarketPrice,
+          longMarketPricePercent,
+          shortMarketPricePercent,
+          longBookValue,
+          shortBookValue,
+          longBookValuePercent,
+          shortBookValuePercent
+      ),
+      buildWebView(
+          context,
+          longMarketPrice,
+          shortMarketPrice,
+          longMarketPricePercent,
+          shortMarketPricePercent,
+          longBookValue,
+          shortBookValue,
+          longBookValuePercent,
+          shortBookValuePercent
+      )
+    ]);
+  }
+
+  Container buildWebView(
+      BuildContext context,
+      String longMarketPrice,
+      String shortMarketPrice,
+      String longMarketPricePercent,
+      String shortMarketPricePercent,
+      String longBookValue,
+      String shortBookValue,
+      String longBookValuePercent,
+      String shortBookValuePercent,
+      ) {
     double _width = MediaQuery
         .of(context)
         .size
@@ -74,7 +128,24 @@ class _AthletePageState extends State<AthletePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[graphSide(context), statsSide(context)],
+                    children: <Widget>[graphSide(
+                        context,longMarketPrice,
+                      shortMarketPrice,
+                      longMarketPricePercent,
+                      shortMarketPricePercent,
+                      longBookValue,
+                      shortBookValue,
+                      longBookValuePercent,
+                      shortBookValuePercent,), statsSide(
+                        context,
+                      longMarketPrice,
+                      shortMarketPrice,
+                      longMarketPricePercent,
+                      shortMarketPricePercent,
+                      longBookValue,
+                      shortBookValue,
+                      longBookValuePercent,
+                      shortBookValuePercent,)],
                   ))));
 
     // dual scroll mode
@@ -91,8 +162,24 @@ class _AthletePageState extends State<AthletePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              graphSide(context),
-                              statsSide(context)
+                              graphSide(context,
+                                longMarketPrice,
+                                shortMarketPrice,
+                                longMarketPricePercent,
+                                shortMarketPricePercent,
+                                longBookValue,
+                                shortBookValue,
+                                longBookValuePercent,
+                                shortBookValuePercent,),
+                              statsSide(context,
+                                longMarketPrice,
+                                shortMarketPrice,
+                                longMarketPricePercent,
+                                shortMarketPricePercent,
+                                longBookValue,
+                                shortBookValue,
+                                longBookValuePercent,
+                                shortBookValuePercent,)
                             ],
                           )))
                 ],
@@ -106,15 +193,43 @@ class _AthletePageState extends State<AthletePage> {
               children: <Widget>[
                 Container(
                   height: 625,
-                  child: graphSide(context),
+                  child: graphSide(
+                      context,
+                    longMarketPrice,
+                    shortMarketPrice,
+                    longMarketPricePercent,
+                    shortMarketPricePercent,
+                    longBookValue,
+                    shortBookValue,
+                    longBookValuePercent,
+                    shortBookValuePercent,),
                 ),
-                Container(height: 650, child: statsSide(context))
+                Container(height: 650, child: statsSide(
+                    context,
+                  longMarketPrice,
+                  shortMarketPrice,
+                  longMarketPricePercent,
+                  shortMarketPricePercent,
+                  longBookValue,
+                  shortBookValue,
+                  longBookValuePercent,
+                  shortBookValuePercent,))
               ],
             )));
   }
 
 
   SafeArea buildMobileView(BuildContext context) {
+    var longMarketPrice = "4.18 AX";
+    var longMarketPricePercent = "-2%";
+    var longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    var longBookValuePercent = "+4%";
+
+    var shortMarketPrice = "2.18 AX";
+    var shortMarketPricePercent = "-1%";
+    var shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AXShort ";
+    var shortBookValuePercent = "+2%";
+
     double _width = MediaQuery
         .of(context)
         .size
@@ -139,16 +254,6 @@ class _AthletePageState extends State<AthletePage> {
       }
       return "B";
     }
-
-    var longMarketPrice = "4.18 AX";
-    var longMarketPricePercent = "-2%";
-    var longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
-    var longBookValuePercent = "+4%";
-
-    var shortMarketPrice = "2.18 AX";
-    var shortMarketPricePercent = "-1%";
-    var shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AXShort ";
-    var shortBookValuePercent = "+2%";
 
     double _buttonHeight = MediaQuery
         .of(context)
@@ -184,7 +289,7 @@ class _AthletePageState extends State<AthletePage> {
 
   Container buildPage(double _width, double _height,
       BuildContext context, String fn(String a), double _buttonHeight,
-      String marketPrice, String marketPricePercent, String bookValue,
+       String marketPrice, String marketPricePercent, String bookValue,
       String bookValuePercent) {
     return Container(
         width: _width,
@@ -432,11 +537,7 @@ class _AthletePageState extends State<AthletePage> {
                                                 MainAxisAlignment
                                                     .spaceBetween,
                                                 children: <Widget>[
-                                                  Text(
-                                                      athlete.bookPrice
-                                                          .toStringAsFixed(
-                                                          4) +
-                                                          " AX",
+                                                  Text(bookValue,
                                                       style: textStyle(
                                                           Colors.white,
                                                           20,
@@ -730,7 +831,7 @@ class _AthletePageState extends State<AthletePage> {
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false)),
-                                                Text("American Football / NFL",
+                                                Text("MLB",
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false))
@@ -818,7 +919,7 @@ class _AthletePageState extends State<AthletePage> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                    "TD",
+                                                                    "AtBat",
                                                                     style: textStyle(
                                                                         greyTextColor,
                                                                         10,
@@ -829,7 +930,7 @@ class _AthletePageState extends State<AthletePage> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                    "Cmp",
+                                                                    "HR",
                                                                     style: textStyle(
                                                                         greyTextColor,
                                                                         10,
@@ -840,7 +941,7 @@ class _AthletePageState extends State<AthletePage> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                    "Cmp %",
+                                                                    "wOBA",
                                                                     style: textStyle(
                                                                         greyTextColor,
                                                                         10,
@@ -851,7 +952,29 @@ class _AthletePageState extends State<AthletePage> {
                                                                 alignment: Alignment
                                                                     .bottomLeft,
                                                                 child: Text(
-                                                                    "YDS",
+                                                                    "STB",
+                                                                    style: textStyle(
+                                                                        greyTextColor,
+                                                                        10,
+                                                                        false,
+                                                                        false)),
+                                                              ),
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                    "Err",
+                                                                    style: textStyle(
+                                                                        greyTextColor,
+                                                                        10,
+                                                                        false,
+                                                                        false)),
+                                                              ),
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .bottomLeft,
+                                                                child: Text(
+                                                                    "InPl",
                                                                     style: textStyle(
                                                                         greyTextColor,
                                                                         10,
@@ -883,40 +1006,66 @@ class _AthletePageState extends State<AthletePage> {
                                                           Container(
                                                             alignment: Alignment
                                                                 .bottomLeft,
-                                                            child: Text("12",
+                                                            child: Text(
+                                                                athlete.atBats.toString(),
                                                                 style: textStyle(
                                                                     greyTextColor,
-                                                                    12,
+                                                                    10,
                                                                     false,
                                                                     false)),
                                                           ),
                                                           Container(
                                                             alignment: Alignment
                                                                 .bottomLeft,
-                                                            child: Text("24",
+                                                            child: Text(
+                                                                athlete.homeRuns.toString(),
                                                                 style: textStyle(
                                                                     greyTextColor,
-                                                                    12,
+                                                                    10,
                                                                     false,
                                                                     false)),
                                                           ),
                                                           Container(
                                                             alignment: Alignment
                                                                 .bottomLeft,
-                                                            child: Text("80%",
+                                                            child: Text(
+                                                                athlete.weightedOnBasePercentage.toString(),
                                                                 style: textStyle(
                                                                     greyTextColor,
-                                                                    12,
+                                                                    10,
                                                                     false,
                                                                     false)),
                                                           ),
                                                           Container(
                                                             alignment: Alignment
                                                                 .bottomLeft,
-                                                            child: Text("2,000",
+                                                            child: Text(
+                                                                athlete.stolenBase.toString(),
                                                                 style: textStyle(
                                                                     greyTextColor,
-                                                                    12,
+                                                                    10,
+                                                                    false,
+                                                                    false)),
+                                                          ),
+                                                          Container(
+                                                            alignment: Alignment
+                                                                .bottomLeft,
+                                                            child: Text(
+                                                                athlete.errors.toString(),
+                                                                style: textStyle(
+                                                                    greyTextColor,
+                                                                    10,
+                                                                    false,
+                                                                    false)),
+                                                          ),
+                                                          Container(
+                                                            alignment: Alignment
+                                                                .bottomLeft,
+                                                            child: Text(
+                                                                athlete.inningsPlayed.toString(),
+                                                                style: textStyle(
+                                                                    greyTextColor,
+                                                                    10,
                                                                     false,
                                                                     false)),
                                                           ),
@@ -1052,7 +1201,16 @@ class _AthletePageState extends State<AthletePage> {
   }
 
 
-  Widget graphSide(BuildContext context) {
+  Widget graphSide(
+      BuildContext context,
+      String longMarketPrice,
+      String shortMarketPrice,
+      String longMarketPricePercent,
+      String shortMarketPricePercent,
+      String longBookValue,
+      String shortBookValue,
+      String longBookValuePercent,
+      String shortBookValuePercent,) {
     double _width = MediaQuery
         .of(context)
         .size
@@ -1063,7 +1221,6 @@ class _AthletePageState extends State<AthletePage> {
         .height;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
-
     return Container(
         height: 650,
         child: Column(
@@ -1103,11 +1260,87 @@ class _AthletePageState extends State<AthletePage> {
                               style: textStyle(
                                   Color.fromRGBO(100, 100, 100, 1), 24, false,
                                   false))),
-                      Container(
-                          child: Text("Seasonal APT",
-                              style: textStyle(
-                                  Color.fromRGBO(154, 154, 154, 1), 24, false,
-                                  false))),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              child: Text("Seasonal APT",
+                                  style: textStyle(
+                                      Color.fromRGBO(154, 154, 154, 1), 24, false,
+                                      false))),
+                          Container(
+                            padding: EdgeInsets.all(1.5),
+                            width: _width * .10,
+                            height: _height * .02,
+                            decoration: boxDecoration(
+                                Colors.transparent, 10, 1, secondaryGreyColor),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    decoration: boxDecoration(_isLongApt
+                                        ? secondaryGreyColor
+                                        : indexUnselectedStackBackgroundColor, 8, 0,
+                                        Colors.transparent),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        minimumSize: Size(15, 8),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _longAptIndex = 0;
+                                          if (_longAptIndex == 0) {
+                                            _isLongApt = true;
+                                          }
+                                          print(
+                                              " The current index is $_longAptIndex  of 0 and it should show the Short");
+                                        });
+                                      },
+                                      child: Text("Long",
+                                        style: TextStyle(color: _isLongApt
+                                            ? primaryWhiteColor
+                                            : Color.fromRGBO(154, 154, 154, 1),
+                                            fontSize: 10),),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    decoration: boxDecoration(
+                                        _isLongApt
+                                            ? indexUnselectedStackBackgroundColor
+                                            : secondaryGreyColor,
+                                        8,
+                                        0,
+                                        Colors.transparent),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          minimumSize: Size(50, 30)
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _longAptIndex = 1;
+                                          if (_longAptIndex == 1) {
+                                            _isLongApt = false;
+                                          }
+                                          print(
+                                              " The current index is $_longAptIndex  of 1 and it should show the short");
+                                        });
+                                      },
+                                      child: Text("Short", style: TextStyle(
+                                          color: _isLongApt ? Color.fromRGBO(
+                                              154, 154, 154, 1) : primaryWhiteColor,
+                                          fontSize: 10),),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ])),
             // graph
             Container(
@@ -1160,7 +1393,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   Container(
                                                       alignment:
                                                       Alignment.topLeft,
-                                                      child: Text("+4%",
+                                                      child: Text((_longAptIndex==0)? longBookValuePercent : shortBookValuePercent,
                                                           style: textStyle(
                                                               Colors.green,
                                                               12,
@@ -1274,7 +1507,26 @@ class _AthletePageState extends State<AthletePage> {
         ));
   }
 
-  Widget statsSide(BuildContext context) {
+  Widget statsSide(BuildContext context,
+      String longMarketPrice,
+      String shortMarketPrice,
+      String longMarketPricePercent,
+      String shortMarketPricePercent,
+      String longBookValue,
+      String shortBookValue,
+      String longBookValuePercent,
+      String shortBookValuePercent,) {
+
+    var longMarketPrice = "4.18 AX";
+    var longMarketPricePercent = "-2%";
+    var longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    var longBookValuePercent = "+4%";
+
+    var shortMarketPrice = "2.18 AX";
+    var shortMarketPricePercent = "-1%";
+    var shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    var shortBookValuePercent = "+2%";
+
     double _width = MediaQuery
         .of(context)
         .size
@@ -1361,12 +1613,12 @@ class _AthletePageState extends State<AthletePage> {
                                       MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
-                                          Text("4.18 AX ",
+                                          Text((_longAptIndex==0)? longMarketPrice: shortMarketPrice,
                                               style: textStyle(Colors.white, 20,
                                                   false, false)),
                                           Container(
                                             //alignment: Alignment.topLeft,
-                                              child: Text("-2%",
+                                              child: Text((_longAptIndex==0)? longMarketPricePercent : shortMarketPricePercent,
                                                   style: textStyle(Colors.red,
                                                       12, false, false))),
                                         ]),
@@ -1391,12 +1643,11 @@ class _AthletePageState extends State<AthletePage> {
                                       MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
-                                          Text("${athlete.bookPrice.toStringAsFixed(
-                                              2)} AX ",
+                                          Text((_longAptIndex==0)? longBookValue : shortBookValue,
                                               style: textStyle(Colors.white, 20,
                                                   false, false)),
                                           Container(
-                                              child: Text("+4%",
+                                              child: Text((_longAptIndex==0)? longBookValuePercent : shortBookValuePercent,
                                                   style: textStyle(Colors.green,
                                                       12, false, false))),
                                         ]),
@@ -1451,7 +1702,7 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Sport / League",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text("American Football / NFL",
+                              Text("BaseBall / MLB",
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
@@ -1481,7 +1732,7 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Season Start",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text("Sep 1, 2021",
+                              Text("Mar 31, 2022",
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
@@ -1491,7 +1742,7 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Season End",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text("Jan 10, 2022",
+                              Text("Nov 2, 2022",
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
@@ -1516,41 +1767,72 @@ class _AthletePageState extends State<AthletePage> {
                                       width: 260,
                                       child: Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment
+                                              .spaceBetween,
                                           children: <Widget>[
                                             Container(
-                                              alignment: Alignment.bottomLeft,
-                                              child: Text("TD",
+                                              alignment: Alignment
+                                                  .bottomLeft,
+                                              child: Text(
+                                                  "AtBat",
                                                   style: textStyle(
                                                       greyTextColor,
-                                                      14,
+                                                      10,
                                                       false,
                                                       false)),
                                             ),
                                             Container(
-                                              alignment: Alignment.bottomLeft,
-                                              child: Text("Cmp",
+                                              alignment: Alignment
+                                                  .bottomLeft,
+                                              child: Text(
+                                                  "HR",
                                                   style: textStyle(
                                                       greyTextColor,
-                                                      14,
+                                                      10,
                                                       false,
                                                       false)),
                                             ),
                                             Container(
-                                              alignment: Alignment.bottomLeft,
-                                              child: Text("Cmp %",
+                                              alignment: Alignment
+                                                  .bottomLeft,
+                                              child: Text(
+                                                  "wOBA",
                                                   style: textStyle(
                                                       greyTextColor,
-                                                      14,
+                                                      10,
                                                       false,
                                                       false)),
                                             ),
                                             Container(
-                                              alignment: Alignment.bottomLeft,
-                                              child: Text("YDS",
+                                              alignment: Alignment
+                                                  .bottomLeft,
+                                              child: Text(
+                                                  "STB",
                                                   style: textStyle(
                                                       greyTextColor,
-                                                      14,
+                                                      10,
+                                                      false,
+                                                      false)),
+                                            ),
+                                            Container(
+                                              alignment: Alignment
+                                                  .bottomLeft,
+                                              child: Text(
+                                                  "Err",
+                                                  style: textStyle(
+                                                      greyTextColor,
+                                                      10,
+                                                      false,
+                                                      false)),
+                                            ),
+                                            Container(
+                                              alignment: Alignment
+                                                  .bottomLeft,
+                                              child: Text(
+                                                  "InPl",
+                                                  style: textStyle(
+                                                      greyTextColor,
+                                                      10,
                                                       false,
                                                       false)),
                                             ),
@@ -1569,41 +1851,72 @@ class _AthletePageState extends State<AthletePage> {
                                   width: 260,
                                   child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment
+                                          .spaceBetween,
                                       children: <Widget>[
                                         Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("12",
+                                          alignment: Alignment
+                                              .bottomLeft,
+                                          child: Text(
+                                              athlete.atBats.toString(),
                                               style: textStyle(
                                                   greyTextColor,
-                                                  16,
+                                                  10,
                                                   false,
                                                   false)),
                                         ),
                                         Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("24",
+                                          alignment: Alignment
+                                              .bottomLeft,
+                                          child: Text(
+                                              athlete.homeRuns.toString(),
                                               style: textStyle(
                                                   greyTextColor,
-                                                  16,
+                                                  10,
                                                   false,
                                                   false)),
                                         ),
                                         Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("80%",
+                                          alignment: Alignment
+                                              .bottomLeft,
+                                          child: Text(
+                                              athlete.weightedOnBasePercentage.toString(),
                                               style: textStyle(
                                                   greyTextColor,
-                                                  16,
+                                                  10,
                                                   false,
                                                   false)),
                                         ),
                                         Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("2,000",
+                                          alignment: Alignment
+                                              .bottomLeft,
+                                          child: Text(
+                                              athlete.stolenBase.toString(),
                                               style: textStyle(
                                                   greyTextColor,
-                                                  16,
+                                                  10,
+                                                  false,
+                                                  false)),
+                                        ),
+                                        Container(
+                                          alignment: Alignment
+                                              .bottomLeft,
+                                          child: Text(
+                                              athlete.errors.toString(),
+                                              style: textStyle(
+                                                  greyTextColor,
+                                                  10,
+                                                  false,
+                                                  false)),
+                                        ),
+                                        Container(
+                                          alignment: Alignment
+                                              .bottomLeft,
+                                          child: Text(
+                                              athlete.inningsPlayed.toString(),
+                                              style: textStyle(
+                                                  greyTextColor,
+                                                  10,
                                                   false,
                                                   false)),
                                         ),
