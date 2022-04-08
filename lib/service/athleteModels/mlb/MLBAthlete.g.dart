@@ -39,6 +39,8 @@ Map<String, dynamic> _$MLBAthleteToJson(MLBAthlete instance) =>
       'name': instance.name,
       'team': instance.team,
       'position': instance.position,
+      'price': instance.price,
+      'timeStamp': instance.timeStamp,
       'started': instance.started,
       'games': instance.games,
       'atBats': instance.atBats,
@@ -56,6 +58,4 @@ Map<String, dynamic> _$MLBAthleteToJson(MLBAthlete instance) =>
       'stolenBases': instance.stolenBases,
       'plateAppearances': instance.plateAppearances,
       'weightedOnBasePercentage': instance.weightedOnBasePercentage,
-      'price': instance.price,
-      'timeStamp': instance.timeStamp,
     };
