@@ -1,8 +1,10 @@
-Map<String, String> position = {'RF' : 'Right Fielder', 'SS' : 'Short Stop', '1B' : 'First Baseman', '3B' : 'Third Baseman', 'CF' : 'Center Fielder', 'LF' : 'Left Fielder'};
+// ignore_for_file: non_constant_identifier_names
 
-String getFullAthletePosition(String currentAthletePositon) {
-  if(position.containsKey(currentAthletePositon)) {
-    return position[currentAthletePositon]!;
+Map<String, String> _MLBAthleteMappingPosition = {'RF' : 'Right Fielder', 'SS' : 'Short Stop', '1B' : 'First Baseman', '3B' : 'Third Baseman', 'CF' : 'Center Fielder', 'LF' : 'Left Fielder'};
+
+String retrieveFullMLBAthletePosition(String currentMLBAthletePositon) {
+  if(_MLBAthleteMappingPosition.containsKey(currentMLBAthletePositon)) {
+    return _MLBAthleteMappingPosition[currentMLBAthletePositon]!;
   }
   return "No Position Found";
 }

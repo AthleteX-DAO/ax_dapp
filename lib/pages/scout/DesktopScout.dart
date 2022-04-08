@@ -641,7 +641,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               Text(athlete.name,
                                   style: textStyle(
                                       Colors.white, 18, false, false)),
-                              Text(getFullAthletePosition(athlete.position),
+                              Text(retrieveFullMLBAthletePosition(athlete.position),
                                   style: textStyle(
                                       Colors.grey[700]!, 10, false, false))
                             ])),

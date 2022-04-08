@@ -837,7 +837,7 @@ class _AthletePageState extends State<AthletePage> {
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false)),
-                                                Text(getFullAthletePosition(athlete.position),
+                                                Text(retrieveFullMLBAthletePosition(athlete.position),
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false))
@@ -1684,7 +1684,7 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Position",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text(getFullAthletePosition(athlete.position),
+                              Text(retrieveFullMLBAthletePosition(athlete.position),
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
