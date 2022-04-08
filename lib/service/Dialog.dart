@@ -1,16 +1,16 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Athlete.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<void> testFunction() async {
   return;
@@ -707,7 +707,7 @@ Dialog dualDepositDialog(
 }
 
 // dynamic
-Dialog buyDialog(BuildContext context, Athlete athlete) {
+Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
   bool isWeb = true;
   isWeb =
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
@@ -1043,7 +1043,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog sellDialog(BuildContext context, Athlete athlete) {
+Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
   bool isWeb = true;
   isWeb =
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
@@ -1355,7 +1355,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog redeemDialog(BuildContext context, Athlete athlete) {
+Dialog redeemDialog(BuildContext context, AthleteScoutModel athlete) {
   bool isWeb = true;
   isWeb =
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
@@ -1640,7 +1640,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog mintDialog(BuildContext context, Athlete athlete) {
+Dialog mintDialog(BuildContext context, AthleteScoutModel athlete) {
   bool isWeb = true;
   isWeb =
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);

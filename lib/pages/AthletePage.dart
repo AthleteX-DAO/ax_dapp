@@ -1,5 +1,5 @@
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AthletePage extends StatefulWidget {
-  final Athlete athlete;
+  final AthleteScoutModel athlete;
   const AthletePage({
     Key? key,
     required this.athlete,
@@ -21,7 +21,7 @@ class AthletePage extends StatefulWidget {
 }
 
 class _AthletePageState extends State<AthletePage> {
-  Athlete athlete;
+  AthleteScoutModel athlete;
   int listView = 0;
   _AthletePageState(this.athlete);
   int _widgetIndex = 0;
@@ -285,7 +285,7 @@ class _AthletePageState extends State<AthletePage> {
                             child: Stack(
                               children: <Widget>[
                                 buildGraph(
-                                    [athlete.war], [athlete.time], context),
+                                    [athlete.bookPrice], [athlete.time], context),
                                 // Price
                                 Align(
                                     alignment: Alignment(-.85, -.8),
@@ -309,7 +309,7 @@ class _AthletePageState extends State<AthletePage> {
                                                           .spaceBetween,
                                                   children: <Widget>[
                                                     Text(
-                                                        athlete.war
+                                                        athlete.bookPrice
                                                                 .toStringAsFixed(
                                                                     4) +
                                                             " AX",
@@ -497,7 +497,7 @@ class _AthletePageState extends State<AthletePage> {
                                                                     false))),
                                                       ]),
                                                       Text(
-                                                          "${athlete.war.toStringAsFixed(2)} AX",
+                                                          "${athlete.bookPrice.toStringAsFixed(2)} AX",
                                                           style: textStyle(
                                                               greyTextColor,
                                                               12,
@@ -527,7 +527,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   children: <Widget>[
                                                     Row(children: <Widget>[
                                                       Text(
-                                                          "${athlete.war.toStringAsFixed(2)} AX ",
+                                                          "${athlete.bookPrice.toStringAsFixed(2)} AX ",
                                                           style: textStyle(
                                                               Colors.white,
                                                               12,
@@ -604,7 +604,7 @@ class _AthletePageState extends State<AthletePage> {
                                           Text("Sport / League",
                                               style: textStyle(greyTextColor,
                                                   12, false, false)),
-                                          Text("American Football / NFL",
+                                          Text("${athlete.sport.name}",
                                               style: textStyle(greyTextColor,
                                                   12, false, false))
                                         ]),
@@ -966,7 +966,7 @@ class _AthletePageState extends State<AthletePage> {
                             children: <Widget>[
                               // Graph
                               buildGraph(
-                                  [athlete.war], [athlete.time], context),
+                                  [athlete.bookPrice], [athlete.time], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -990,7 +990,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         .spaceBetween,
                                                 children: <Widget>[
                                                   Text(
-                                                      athlete.war
+                                                      athlete.bookPrice
                                                               .toStringAsFixed(
                                                                   4) +
                                                           " AX",
@@ -1037,8 +1037,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) =>
-                                                          buyDialog(context,
-                                                              athlete)),
+                                                          buyDialog(context, athlete)),
                                               child: Text("Buy",
                                                   style: textStyle(Colors.black,
                                                       20, false, false)))),
@@ -1196,7 +1195,7 @@ class _AthletePageState extends State<AthletePage> {
                                                       12, false, false))),
                                         ]),
                                         Text(
-                                            "${athlete.war.toStringAsFixed(2)} AX",
+                                            "${athlete.bookPrice.toStringAsFixed(2)} AX",
                                             style: textStyle(greyTextColor, 20,
                                                 false, false))
                                       ]))
@@ -1217,7 +1216,7 @@ class _AthletePageState extends State<AthletePage> {
                                       children: <Widget>[
                                         Row(children: <Widget>[
                                           Text(
-                                              "${athlete.war.toStringAsFixed(2)} AX ",
+                                              "${athlete.bookPrice.toStringAsFixed(2)} AX ",
                                               style: textStyle(Colors.white, 20,
                                                   false, false)),
                                           Container(

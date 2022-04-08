@@ -1,6 +1,8 @@
+import 'package:ax_dapp/pages/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
+import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +24,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   int sportState = 0;
   String allSportsTitle = "All Sports";
   String longTitle = "Long";
-  AthleteScoutModel curAthlete =
-      AthleteScoutModel(0, "name", "position", "team", 0.0, SupportedSport.MLB);
+  AthleteScoutModel? curAthlete;
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
 
@@ -47,7 +48,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     // breaks the code, will come back to it later(probably)
-    // if (athletePage) return AthletePage(athlete: curAthlete);
+
 
     return BlocBuilder<ScoutPageBloc, ScoutPageState>(
         buildWhen: (previous, current) => current.status.name.isNotEmpty,
@@ -56,6 +57,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           if (state.status == Status.initial) {
             bloc.add(OnPageRefresh());
           }
+          if (athletePage && curAthlete!= null) return AthletePage(athlete: curAthlete!);
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),
             child: Container(
@@ -584,7 +586,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               physics: BouncingScrollPhysics(),
               itemCount: 0,
               itemBuilder: (context, index) {
-                return createListCards(this.curAthlete);
+                return createListCards(this.curAthlete!);
               }));
     // other athletes
     else {
@@ -680,7 +682,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       children: [
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.marketPrice.toStringAsFixed(4) + ' AX',
+                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("+4%",
@@ -688,7 +690,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         ])),
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.marketPrice.toStringAsFixed(4) + ' AX',
+                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("-2%",
@@ -708,7 +710,19 @@ class _DesktopScoutState extends State<DesktopScout> {
                             0,
                             Color.fromRGBO(254, 197, 0, 0.2)),
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (kIsWeb) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        buyDialog(context, athlete));
+                              }else{
+                                setState(() {
+                                  curAthlete = athlete;
+                                  athletePage = true;
+                                });
+                              }
+                            },
                             child: Center(
                               child: buyText(),
                             ))),
