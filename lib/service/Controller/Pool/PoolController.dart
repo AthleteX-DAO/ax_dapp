@@ -17,10 +17,10 @@ class PoolController extends GetxController {
       DateTime.now().add(const Duration(minutes: 2)).millisecondsSinceEpoch);
 
   final EthereumAddress routerTestnetAddress =
-      EthereumAddress.fromHex("0x7EFc361e568d0038cfB200dF9d9Be27943e19017");
+      EthereumAddress.fromHex("0xe78Bb28079B7a72C8d0e9f67c695E54B74556105");
 
   final EthereumAddress dexTestnetAddress =
-      EthereumAddress.fromHex("0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551");
+      EthereumAddress.fromHex("0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B");
 
   PoolController() {
     // This is meant to switch as per the correct chain
@@ -47,7 +47,7 @@ class PoolController extends GetxController {
     ERC20 tokenB =
         ERC20(address: tokenBAddress, client: controller.client.value);
 
-    BigInt rate = BigInt.parse("10000000000000000000");
+    BigInt rate = BigInt.one;
     BigInt transferAmountA = rate * tokenAAmount;
     BigInt transferAmountB = rate * tokenBAmount;
     print("Before try");
@@ -68,7 +68,7 @@ class PoolController extends GetxController {
   }
 
   Future<void> addLiquidity() async {
-    BigInt rate = BigInt.from(1000000000000000000);
+    BigInt rate = BigInt.one;
     BigInt amountADesired = BigInt.from(amount1.value) * rate;
     BigInt amountBDesired = BigInt.from(amount2.value) * rate;
 

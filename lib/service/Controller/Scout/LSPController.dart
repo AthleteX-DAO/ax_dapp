@@ -33,7 +33,7 @@ class LSPController extends GetxController {
     print("Attempting to MINT LSP");
     final theCredentials = controller.credentials;
     BigInt tokensToCreate =
-        BigInt.from(createAmt.value) * BigInt.from(1000000000000000000);
+        BigInt.from(createAmt.value) * BigInt.one;
     approve(genericLSP, address).then((value) async {
       String txString =
           await genericLSP.create(tokensToCreate, credentials: theCredentials);
@@ -47,7 +47,7 @@ class LSPController extends GetxController {
     BigInt transferAmount = await genericLSP.collateralPerPair();
     BigInt amount = BigInt.from(createAmt.value) * transferAmount;
     print("[Console] Inside approve()");
-    EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.mumbaiAddress);
+    EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.polygonAddress);
     Erc20 axt = Erc20(address: axtaddress, client: tokenClient);
     try {
       await axt.approve(address, amount, credentials: controller.credentials);
@@ -61,7 +61,7 @@ class LSPController extends GetxController {
     genericLSP = LongShortPair(address: address, client: tokenClient);
     final theCredentials = controller.credentials;
     BigInt tokensToRedeem =
-        BigInt.from(redeemAmt.value) * BigInt.from(1000000000000000000);
+        BigInt.from(redeemAmt.value) * BigInt.one;
     genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
   }
 
