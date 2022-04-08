@@ -2,7 +2,6 @@ import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
-import 'package:ax_dapp/service/athleteModels/mlb/MLBStats.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 
 class GetScoutAthletesDataUseCase {
