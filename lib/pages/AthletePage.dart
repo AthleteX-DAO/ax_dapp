@@ -227,7 +227,7 @@ class _AthletePageState extends State<AthletePage> {
 
     final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
-    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AXShort ";
+    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
     final shortBookValuePercent = "+2%";
 
     double _width = MediaQuery
