@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - 'release/**'
+      - 'main'
 
 jobs:
   build:
@@ -30,6 +31,7 @@ jobs:
           script: 'cd /home/app &&
           sudo chown -R $USER:debian /home/app/ &&
           sudo chown -R $USER:root /home/app/ &&
+          sudo git reset --hard &&
           sudo git fetch &&
           sudo git checkout ${{ steps.extract_branch.outputs.branch }} &&
           sudo git pull &&

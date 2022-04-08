@@ -29,6 +29,7 @@ jobs:
           script: 'cd /home/staging &&
           sudo chown -R $USER:debian /home/staging/ &&
           sudo chown -R $USER:root /home/staging/ &&
+          sudo git reset --hard &&
           sudo git fetch &&
           sudo git checkout develop &&
           sudo git pull &&
