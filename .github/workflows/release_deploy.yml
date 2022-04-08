@@ -29,7 +29,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: 'cd /home/app &&
-          sudo chown -R $USER:debian /home/app/ &&
           sudo chown -R $USER:root /home/app/ &&
           sudo git reset --hard &&
           sudo git fetch &&
@@ -37,6 +36,7 @@ jobs:
           sudo git pull &&
           export PATH=/home/development/flutter/bin:$PATH &&
           echo $PATH &&
+          sudo chown -R $USER:root /home/app/ &&
           flutter pub get &&
           flutter build web --web-renderer auto &&
           echo App Deployed to Release'
