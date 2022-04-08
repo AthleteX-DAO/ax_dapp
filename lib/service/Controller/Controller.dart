@@ -1,15 +1,15 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
-//Comment this for Android
-import 'dart:html';
+import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';
+
+import './createWallet/createWallet.dart'
+    if (dart.library.io) './createWallet/mobile.dart'
+    if (dart.library.js) './createWallet/web.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:get/get.dart';
 //Comment this for Android
-import 'package:web3dart/browser.dart';
-import 'package:bip39/bip39.dart'
-    as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
 class Controller extends GetxController {
   /// VARIABLES
@@ -47,77 +47,45 @@ class Controller extends GetxController {
     //getCurrentGas();
   }
 
-  // This will create mnemonics & convert to seed hexes
-  void createNewMnemonic() {
-    mnemonic = bip39.generateMnemonic();
-    seedHex = bip39.mnemonicToSeedHex(mnemonic);
-    update();
-  }
-
-  // This will import mnemonics & convert to seed hexes
-  Future<bool> importMnemonic(String _mnemonic) async {
-    // validate if mnemonic
-    bool isValidMnemonic = bip39.validateMnemonic(_mnemonic);
-    if (isValidMnemonic) {
-      seedHex = bip39.mnemonicToSeedHex(_mnemonic);
-      mnemonic = _mnemonic;
-    }
-    return isValidMnemonic;
-  }
-
-  //Comment this for Android
-  // Connect the dapp to metamask and update relevant values
   Future<int> connect() async {
-    final eth = window.ethereum;
-    if (eth == null) {
-      print('[Console] MetaMask is not available');
-      return -1;
+    //Setting up Client & Credentials for connecting to dApp from a client
+    DappWallet web3 = newWallet();
+
+    //Connect and setup credentials
+    await web3.connect().then((value) {
+      print("Connecting Wallet... ${web3.publicAddress}");
+      this.publicAddress.value = web3.publicAddress;
+    });
+
+    try {
+      networkID.value = web3.networkID;
+      print(networkID.value);
+    } catch (e) {
+      throw ("NetworkId value is breaking $e");
     }
-    walletConnected = true;
-    client.value = Web3Client.custom(eth.asRpcService());
-    credentials = await eth.requestAccount();
-    print('[Console] Connecting the wallet...');
-    networkID.value = await client.value.getNetworkId();
-    print('[Console] networkID: $networkID');
-    if (!supportedChains.containsKey(networkID.value)) {
-      print(
-          "[Console] Wrong network ID: $networkID. Connect to a supported chain and try again");
-      return 0;
+
+    try {
+      client.value = web3.client;
+    } catch (e) {
+      throw ("Client value is breaking: $e");
     }
-    print('[Console] Trying to get the address');
-    publicAddress.value = await credentials.extractAddress();
-    print('[Console] Trying to get the rawGasPrice');
-    var rawGasPrice = await client.value.getGasPrice();
-    print('[Console] Trying to get the gasPriceinGwei');
-    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
-    print('[Console] Trying to get the gasString');
-    gasString.value = "${gasPriceinGwei.toStringAsFixed(2)}";
-    print("[Console] Updated client and credentials");
-    update();
+
+    try {
+      credentials = web3.credentials;
+    } catch (e) {
+      throw ("credentials are breaking $e");
+    }
+
+    if (web3.networkID != null) {
+      this.walletConnected = true;
+    }
+
     return 1;
   }
+  //Comment this for Android
+  // Connect the dapp to metamask and update relevant values
 
   // Connect the client + set credentials
-  void connectNative() async {
-    String rpcUrl = "";
-    switch (activeChainId) {
-      case 137:
-        rpcUrl = mainRPCUrl;
-        break;
-      default:
-        rpcUrl = testRPCUrl;
-    }
-
-    client.value = Web3Client(rpcUrl, Client());
-
-    credentials = EthPrivateKey.fromHex(seedHex);
-    print("[Console] connecting to the decentralized web!");
-    networkID.value = await client.value.getNetworkId();
-    publicAddress.value = await credentials.extractAddress();
-    gas.value = await client.value.getGasPrice();
-    print("[Console] updated client: $client and credentials: $credentials");
-    update();
-  }
 
   void getCurrentGas() async {
     var rawGasPrice = await client.value.getGasPrice();
@@ -140,53 +108,6 @@ class Controller extends GetxController {
 
     // client.value.getChainId();
     update();
-  }
-
-  //Comment this for Android
-  void addTokenToWallet() async {
-    final eth = window.ethereum;
-    Object tokenParam = {
-      "type": "ERC20",
-      "options": {
-        "address": "0xb60e8dd61c5d32be8058bb8...",
-        "symbol": "FOO",
-        "decimals": 18,
-        "image": "https: //foo.io/token-ima..."
-      }
-    };
-
-    eth!.rawRequest('wallet_watchAsset', params: tokenParam);
-  }
-
-  Future<bool> switchNetwork() async {
-    print("Inside switchNetwork()");
-    final eth = window.ethereum;
-    Object switchParams = [
-      {'chainId': '0x89'}
-    ];
-    try {
-      print("[Console] Trying to switch the network");
-      await eth!.rawRequest('wallet_switchEthereumChain', params: switchParams);
-      print("[Console] Switched the network to mainnet(137, 0x89?)");
-      return true;
-    } catch (error) {
-      print("[Console] Main network not installed on MetaMask");
-      try {
-        Object addParams = [
-          {
-            'chainId': '0x89',
-            'chainName': 'Matic(Mainnet)',
-            'rpcUrls': mainRPCUrl,
-          }
-        ];
-        await eth!.rawRequest('wallet_addEthereumChain', params: addParams);
-        print("[Console] Added a mainnet to the MetaMask");
-        return true;
-      } catch (addError) {
-        print("[Console] Could not add a mainnet to the MetaMask");
-        return false;
-      }
-    }
   }
 
   static void viewTx() async {

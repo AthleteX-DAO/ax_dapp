@@ -36,9 +36,7 @@ dependencies:
   syncfusion_flutter_charts: ^18.4.49
   coingecko_api: ^1.0.0
   font_awesome_flutter: ^9.2.0
-
-  
-
+  retrofit: ^3.0.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -53,19 +51,24 @@ dependencies:
   postgres: ^2.4.3
   intl: ^0.17.0
   flutter_launcher_icons: "^0.9.2"
-  
+  flutter_bloc: ^7.1.0
+  equatable: ^2.0.3
+  mockito: ^5.0.17
 
 dependency_overrides:
   charts_flutter:
     git:
       url: https://github.com/google/charts
       path: charts_flutter
+  url_launcher_web: 2.0.6
 
 
 
 dev_dependencies: 
   test: ^1.16.5
-  build_runner: ^2.1.0  
+  build_runner: ^2.1.0
+  retrofit_generator: ^4.0.0
+  json_serializable: ^6.1.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -114,6 +117,8 @@ flutter:
     - assets/images/SX_Small.png
     - assets/images/Polygon_Small.png
     - assets/images/X_Logo_Black_BR.png
+    - assets/images/apt_noninverted.png
+    - assets/images/apt_inverted.png
 
 flutter_icons:
   android: "launcher_icon"
