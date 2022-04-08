@@ -829,7 +829,7 @@ class _AthletePageState extends State<AthletePage> {
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false)),
-                                                Text("${athlete.sport.name}",
+                                                Text("${athlete.sport.name}",//toDo add map for the different league
                                                     style: textStyle(
                                                         greyTextColor, 12,
                                                         false, false))
@@ -1699,7 +1699,7 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Sport / League",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text("${athlete.sport.name}",
+                              Text("${athlete.sport.name}",//toDo add map for the different league
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
