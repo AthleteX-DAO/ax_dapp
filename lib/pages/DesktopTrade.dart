@@ -31,7 +31,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
     super.initState();
     try {
       tknFrom = TokenList.tokenList[0];
+      swapController.updateFromAddress(tknFrom!.address.value);
       tknTo = TokenList.tokenList[1];
+      swapController.updateFromAddress(tknTo!.address.value);
     } catch (error) {
       print("[Console] TokenList is empty?: $error");
     }
@@ -41,9 +43,14 @@ class _DesktopTradeState extends State<DesktopTrade> {
   Widget build(BuildContext context) {
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-    double _height = MediaQuery.of(context).size.height;
+    MediaQueryData mediaquery = MediaQuery.of(context);
+    double _height = mediaquery.size.height;
+    double _width = mediaquery.size.width;
     double fromAmount = 0, toAmount = 0;
-    double wid = 550;
+    double wid = isWeb ? 550 : _width;
+    //Token container refers to box with border that contains tokenButton and input box
+    double tokenContainerWid = wid * 0.95;
+    double amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
 
     Widget swapButton = Container(
         //Approve button on desktop / Confirm button on mobile (might need to change later)
@@ -62,7 +69,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
           margin:
               isWeb ? EdgeInsets.only(top: 30.0) : EdgeInsets.only(top: 20.0),
           height: isWeb ? _height * 0.05 : _height * 0.06,
-          width: wid - 50,
+          width: wid,
           decoration: isWeb
               ? boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!)
               : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1,
@@ -115,109 +122,91 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   child: Text("From",
                       style: textStyle(Colors.grey[400]!, 12, false)),
                 ),
+                //First Token container with border
                 Container(
-                  width: wid - 50,
+                  width: tokenContainerWid,
                   height: _height * 0.1,
                   alignment: Alignment.center,
                   decoration: boxDecoration(
                       Colors.transparent, 20, 0.5, Colors.grey[400]!),
                   padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: Container(
-                    width: wid - 100,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            // to-dropdown
-                            //tknNum = 1 (this is a comment)
-                            createTokenButton(1),
-                            // Amount box
-                            Container(
-                              width: 110,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                      height: 24,
-                                      width: 40,
-                                      decoration: boxDecoration(
-                                          Colors.transparent,
-                                          100,
-                                          0.5,
-                                          Colors.grey[400]!),
-                                      child: TextButton(
-                                          onPressed: () {
-                                            swapController.activeTkn1.value;
-                                            print(swapController.amount1);
-                                          },
-                                          child: Text("MAX",
-                                              style: textStyle(
-                                                  Colors.grey[400]!,
-                                                  8,
-                                                  false)))),
-                                  SizedBox(
-                                    width: 70,
-                                    child: TextFormField(
-                                      onChanged: (value) {
-                                        fromAmount = double.parse(value);
-                                        swapController
-                                            .updateFromAmount(fromAmount);
-                                      },
-                                      style: textStyle(
+                  //This columns contains token info and balance below
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          createTokenButton(1),
+                          //Max button and amount box 1
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              //Max Button
+                              maxButton(),
+                              //Amount box
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                    maxWidth: amountBoxAndMaxButtonWid),
+                                child: IntrinsicWidth(
+                                  // width: amountBoxAndMaxButtonWid * 0.8,
+                                  child: TextFormField(
+                                    onChanged: (value) {
+                                      fromAmount = double.parse(value);
+                                      swapController
+                                          .updateFromAmount(fromAmount);
+                                    },
+                                    style:
+                                        textStyle(Colors.grey[400]!, 22, false),
+                                    decoration: InputDecoration(
+                                      hintText: '0.00',
+                                      hintStyle: textStyle(
                                           Colors.grey[400]!, 22, false),
-                                      decoration: InputDecoration(
-                                        hintText: '0.00',
-                                        hintStyle: textStyle(
-                                            Colors.grey[400]!, 22, false),
-                                        contentPadding: const EdgeInsets.all(9),
-                                        border: InputBorder.none,
-                                      ),
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                                      ],
+                                      contentPadding: const EdgeInsets.all(9),
+                                      border: InputBorder.none,
                                     ),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          (RegExp(r'^(\d+)?\.?\d{0,5}'))),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            FutureBuilder<String>(
-                              future: walletController.getTokenBalance(
-                                  swapController.address1.value),
-                              builder: (context, snapshot) {
-                                //Check API response data
-                                if (snapshot.hasError) {
-                                  // can't get balance
-                                  return showBalance('---');
-                                } else if (snapshot.hasData) {
-                                  // got the balance
-                                  return showBalance(snapshot.data!);
-                                } else {
-                                  // loading
-                                  return Center(
-                                    child: SizedBox(
-                                      child: CircularProgressIndicator(
-                                          color: Colors.amber),
-                                      height: 10.0,
-                                      width: 10.0,
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                            //showBalance(await walletController.getTokenBalance(swapController.address1)),
-                          ],
-                        )
-                      ],
-                    ),
+                            ],
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          FutureBuilder<String>(
+                            future: walletController
+                                .getTokenBalance(swapController.address1.value),
+                            builder: (context, snapshot) {
+                              //Check API response data
+                              if (snapshot.hasError) {
+                                // can't get balance
+                                return showBalance('---');
+                              } else if (snapshot.hasData) {
+                                // got the balance
+                                return showBalance(snapshot.data!);
+                              } else {
+                                // loading
+                                return Center(
+                                  child: SizedBox(
+                                    child: CircularProgressIndicator(
+                                        color: Colors.amber),
+                                    height: 10.0,
+                                    width: 10.0,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                          //showBalance(await walletController.getTokenBalance(swapController.address1)),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ]),
@@ -249,110 +238,88 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       style: textStyle(Colors.grey[400]!, 12, false),
                     ),
                   ),
+                  //Second Token container with border
                   Container(
-                    width: wid - 50,
+                    width: tokenContainerWid,
                     height: _height * 0.1,
                     alignment: Alignment.center,
                     decoration: boxDecoration(
                         Colors.transparent, 20, 0.5, Colors.grey[400]!),
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Container(
-                      width: wid - 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          //TO DO: make this and the input box above a single function
-                          // dropdown
-                          //tknNum = 2 (this is a comment)
-                          createTokenButton(2),
-                          // Amount box
-                          Container(
-                            width: 110,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                        height: 24,
-                                        width: 40,
-                                        decoration: boxDecoration(
-                                            Colors.transparent,
-                                            100,
-                                            0.5,
-                                            Colors.grey[400]!),
-                                        child: TextButton(
-                                            onPressed: () {
-                                              swapController.activeTkn2.value;
-                                              print(swapController.amount2);
-                                            },
-                                            child: Text("MAX",
-                                                style: textStyle(
-                                                    Colors.grey[400]!,
-                                                    8,
-                                                    false)))),
-                                    SizedBox(
-                                      width: 70,
-                                      child: TextFormField(
-                                        onChanged: (value) {
-                                          toAmount = double.parse(value);
-                                          swapController
-                                              .updateToAmount(toAmount);
-                                        },
-                                        style: textStyle(
-                                            Colors.grey[400]!, 22, false),
-                                        decoration: InputDecoration(
-                                          hintText: '0.00',
-                                          hintStyle: textStyle(
-                                              Colors.grey[400]!, 22, false),
-                                          contentPadding:
-                                              const EdgeInsets.all(9),
-                                          border: InputBorder.none,
-                                        ),
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    FutureBuilder<String>(
-                                      future: walletController.getTokenBalance(
-                                          swapController.address2.value),
-                                      builder: (context, snapshot) {
-                                        //Check API response data
-                                        if (snapshot.hasError) {
-                                          // can't get balance
-                                          return showBalance('---');
-                                        } else if (snapshot.hasData) {
-                                          // got the balance
-                                          return showBalance(snapshot.data!);
-                                        } else {
-                                          // loading
-                                          return Center(
-                                            child: SizedBox(
-                                              child: CircularProgressIndicator(
-                                                  color: Colors.amber),
-                                              height: 10.0,
-                                              width: 10.0,
-                                            ),
-                                          );
-                                        }
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            //TO DO: make this and the input box above a single function
+                            // dropdown
+                            //tknNum = 2 (this is a comment)
+                            createTokenButton(2),
+                            //Max button and amount box 2
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                maxButton(),
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                      maxWidth: amountBoxAndMaxButtonWid),
+                                  child: IntrinsicWidth(
+                                    child: TextFormField(
+                                      onChanged: (value) {
+                                        toAmount = double.parse(value);
+                                        swapController.updateToAmount(toAmount);
                                       },
+                                      style: textStyle(
+                                          Colors.grey[400]!, 22, false),
+                                      decoration: InputDecoration(
+                                        hintText: '0.00',
+                                        hintStyle: textStyle(
+                                            Colors.grey[400]!, 22, false),
+                                        contentPadding: const EdgeInsets.all(9),
+                                        border: InputBorder.none,
+                                      ),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            (RegExp(r'^(\d+)?\.?\d{0,5}'))),
+                                      ],
                                     ),
-                                  ],
-                                )
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            FutureBuilder<String>(
+                              future: walletController.getTokenBalance(
+                                  swapController.address2.value),
+                              builder: (context, snapshot) {
+                                //Check API response data
+                                if (snapshot.hasError) {
+                                  // can't get balance
+                                  return showBalance('---');
+                                } else if (snapshot.hasData) {
+                                  // got the balance
+                                  return showBalance(snapshot.data!);
+                                } else {
+                                  // loading
+                                  return Center(
+                                    child: SizedBox(
+                                      child: CircularProgressIndicator(
+                                          color: Colors.amber),
+                                      height: 10.0,
+                                      width: 10.0,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -360,6 +327,25 @@ class _DesktopTradeState extends State<DesktopTrade> {
               swapButton
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Container maxButton() {
+    return Container(
+      height: 24,
+      width: 40,
+      decoration:
+          boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
+      child: TextButton(
+        onPressed: () {
+          swapController.activeTkn1.value;
+          print(swapController.amount1);
+        },
+        child: Text(
+          "MAX",
+          style: textStyle(Colors.grey[400]!, 8, false),
         ),
       ),
     );
