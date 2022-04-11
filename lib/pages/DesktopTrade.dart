@@ -40,7 +40,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _height = MediaQuery.of(context).size.height;
-    double fromAmount = 0, toAmount = 0;
+    double fromAmount = 0.0, toAmount = 0.0;
     double wid = 550;
 
     Widget swapButton = Container(
@@ -180,7 +180,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                               inputFormatters: [
                                                 FilteringTextInputFormatter
                                                     .allow((RegExp(
-                                                        r'^(\d+)?\.?\d{0,2}'))),
+                                                        r'^(\d+)?\.?\d{0,6}'))),
                                               ],
                                             ),
                                           ),
@@ -261,7 +261,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                             width: 70,
                                             child: TextFormField(
                                               onChanged: (value) {
-                                                toAmount = double.parse(value);
+                                                toAmount =
+                                                    double.parse(value);
                                                 swapController
                                                     .updateToAmount(toAmount);
                                               },
@@ -280,7 +281,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                               inputFormatters: [
                                                 FilteringTextInputFormatter
                                                     .allow((RegExp(
-                                                        r'^(\d+)?\.?\d{0,2}'))),
+                                                        r'^(\d+)?\.?\d{0,6}'))),
                                               ],
                                             ),
                                           ),

@@ -54,6 +54,7 @@ dependencies:
   flutter_bloc: ^7.1.0
   equatable: ^2.0.3
   mockito: ^5.0.17
+  decimal: ^2.1.0
 
 dependency_overrides:
   charts_flutter:
