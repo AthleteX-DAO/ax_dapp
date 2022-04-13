@@ -2,6 +2,7 @@ import 'package:ax_dapp/pages/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
+import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
@@ -49,7 +50,6 @@ class _DesktopScoutState extends State<DesktopScout> {
     double _height = MediaQuery.of(context).size.height;
     // breaks the code, will come back to it later(probably)
 
-
     return BlocBuilder<ScoutPageBloc, ScoutPageState>(
         buildWhen: (previous, current) => current.status.name.isNotEmpty,
         builder: (context, state) {
@@ -57,7 +57,8 @@ class _DesktopScoutState extends State<DesktopScout> {
           if (state.status == Status.initial) {
             bloc.add(OnPageRefresh());
           }
-          if (athletePage && curAthlete!= null) return AthletePage(athlete: curAthlete!);
+          if (athletePage && curAthlete != null)
+            return AthletePage(athlete: curAthlete!);
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),
             child: Container(
@@ -604,7 +605,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   // Athlete Cards
   Widget createListCards(AthleteScoutModel athlete) {
     double _width = MediaQuery.of(context).size.width;
-
+    double bookPrice = athlete.bookPrice;
     bool view = true;
     bool team = true;
     if (_width < 910) view = false;
@@ -682,7 +683,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       children: [
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                          Text(bookPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("+4%",
@@ -690,7 +691,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         ])),
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                          Text(bookPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("-2%",
@@ -716,7 +717,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                     context: context,
                                     builder: (BuildContext context) =>
                                         buyDialog(context, athlete));
-                              }else{
+                              } else {
                                 setState(() {
                                   curAthlete = athlete;
                                   athletePage = true;

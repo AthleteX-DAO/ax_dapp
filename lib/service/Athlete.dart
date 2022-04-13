@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const COLLATERALIZATION_MULTIPLIER = 1000;
+
 class Athlete {
   final String name;
   final int id;
@@ -12,6 +14,7 @@ class Athlete {
   final double receiveTouch;
   final double rushingYards;
   final double war;
+  final double scaledPrice;
   final String time;
 
   const Athlete({
@@ -26,6 +29,7 @@ class Athlete {
     required this.receiveTouch,
     required this.rushingYards,
     required this.war,
+    required this.scaledPrice,
     required this.time,
   });
 
@@ -41,7 +45,8 @@ class Athlete {
       receiveTouch: json['receiveTouch'],
       rushingYards: json['rushingYards'],
       time: json['timestamp'],
-      war: json['price']);
+      war: json['price'],
+      scaledPrice: json['price'] * COLLATERALIZATION_MULTIPLIER);
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     if (isBold) if (isUline)

@@ -41,7 +41,7 @@ class _V1AppState extends State<V1App> {
   //     receiveYards: [3, 5, 7],
   //     receiveTouch: [9, 8, 7],
   //     rushingYards: [6, 5, 4],
-  //     war: [3.543, 1.094, 9.478, 10.231],
+  //     scaledPrice: [3.543, 1.094, 9.478, 10.231],
   //     time: [0, 1, 2, 3]);
   // Athlete nullAthlete = new Athlete(
   //     name: "",
@@ -53,7 +53,7 @@ class _V1AppState extends State<V1App> {
   //     receiveYards: [],
   //     receiveTouch: [],
   //     rushingYards: [],
-  //     war: [],
+  //     scaledPrice: [],
   //     time: []);
 
   // state change variables

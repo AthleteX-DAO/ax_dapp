@@ -284,8 +284,8 @@ class _AthletePageState extends State<AthletePage> {
                                 Colors.transparent, 10, 1, secondaryGreyColor),
                             child: Stack(
                               children: <Widget>[
-                                buildGraph(
-                                    [athlete.bookPrice], [athlete.time], context),
+                                buildGraph([athlete.bookPrice], [athlete.time],
+                                    context),
                                 // Price
                                 Align(
                                     alignment: Alignment(-.85, -.8),
@@ -1037,7 +1037,8 @@ class _AthletePageState extends State<AthletePage> {
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) =>
-                                                          buyDialog(context, athlete)),
+                                                          buyDialog(context,
+                                                              athlete)),
                                               child: Text("Buy",
                                                   style: textStyle(Colors.black,
                                                       20, false, false)))),
@@ -1415,7 +1416,7 @@ class _AthletePageState extends State<AthletePage> {
             ]));
   }
 
-  Widget buildGraph(List war, List time, BuildContext context) {
+  Widget buildGraph(List scaledPrice, List time, BuildContext context) {
     // local variables
     List<series.Series<dynamic, DateTime>> athleteData;
     DateTime curTime = DateTime(-1);
@@ -1423,7 +1424,8 @@ class _AthletePageState extends State<AthletePage> {
     DateTime maxTime = DateTime(-1);
     List<WarTimeSeries> data = [];
 
-    for (int i = 0; i < war.length; i++) {
+    for (int i = 0; i < scaledPrice.length; i++) {
+      print(scaledPrice);
       curTime = DateTime.parse(time[i]);
       // only new points
       if (lastHour.year == -1 ||
@@ -1433,7 +1435,7 @@ class _AthletePageState extends State<AthletePage> {
         if (maxTime == DateTime(-1) || maxTime.isBefore(curTime))
           maxTime = curTime;
 
-        data.add(WarTimeSeries(curTime, war[i]));
+        data.add(WarTimeSeries(curTime, scaledPrice[i]));
       }
     }
 
@@ -1442,7 +1444,7 @@ class _AthletePageState extends State<AthletePage> {
         id: 'War',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         domainFn: (WarTimeSeries wts, _) => wts.time,
-        measureFn: (WarTimeSeries wts, _) => wts.war,
+        measureFn: (WarTimeSeries wts, _) => wts.scaledPrice,
         data: data,
       )
     ];
