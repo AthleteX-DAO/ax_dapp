@@ -821,7 +821,8 @@ Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 scale: 0.5,
-                                image: AssetImage("assets/images/apt.png"),
+                                image: AssetImage(
+                                    "assets/images/apt_noninverted.png"),
                               ),
                             ),
                           ),
@@ -1145,7 +1146,8 @@ Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 scale: 0.5,
-                                image: AssetImage("assets/images/apt.png"),
+                                image: AssetImage(
+                                    "assets/images/apt_noninverted.png"),
                               ),
                             ),
                           ),
