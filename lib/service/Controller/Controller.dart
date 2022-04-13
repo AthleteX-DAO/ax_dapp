@@ -31,7 +31,7 @@ class Controller extends GetxController {
   };
   String mainRPCUrl = "https://polygon-rpc.com";
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
-  var client = Web3Client("url", Client()).obs;
+  var client = Web3Client("https://polygon-rpc.com", Client()).obs;
   var publicAddress =
       EthereumAddress.fromHex("0x0000000000000000000000000000000000000000").obs;
 

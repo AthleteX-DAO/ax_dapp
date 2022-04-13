@@ -399,7 +399,7 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
                         ),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                              (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                              (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                         ],
                       ),
                     ),
@@ -593,7 +593,7 @@ Dialog dualDepositDialog(
                         ),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                              (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                              (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                         ],
                       ),
                     ),
@@ -656,7 +656,7 @@ Dialog dualDepositDialog(
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                           ],
                         ),
                       ),
@@ -859,7 +859,7 @@ Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
                               ),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                    (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                               ],
                             ),
                           ),
@@ -1184,7 +1184,7 @@ Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
                               ),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                    (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                               ],
                             ),
                           ),
@@ -1494,7 +1494,7 @@ Dialog redeemDialog(BuildContext context, AthleteScoutModel athlete) {
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                           ],
                           onChanged: (value) {
                             double newAmount = double.parse(value);
@@ -1566,7 +1566,7 @@ Dialog redeemDialog(BuildContext context, AthleteScoutModel athlete) {
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                           ],
                           onChanged: (value) {
                             double newAmount = double.parse(value);
@@ -1778,7 +1778,7 @@ Dialog mintDialog(BuildContext context, AthleteScoutModel athlete) {
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                           ],
                           onChanged: (value) {
                             double newAmount = double.parse(value);
@@ -2750,7 +2750,7 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
                         ),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                              (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                              (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                         ],
                       ),
                     ),
@@ -3500,7 +3500,7 @@ Dialog poolRemoveLiquidity(BuildContext context, String name) {
                                       ),
                                       inputFormatters: [
                                         FilteringTextInputFormatter.allow(
-                                            (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                            (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                                       ],
                                     ),
                                   ),
