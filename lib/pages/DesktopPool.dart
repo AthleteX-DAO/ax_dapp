@@ -800,7 +800,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 ? null
                 : () {
                     Token tmpTknFrom = tknFrom!;
-                    Token tmpTkn2 = tknTo!;
+                    Token tmpTknTo = tknTo!;
                     setState(() {
                       if (tknNum == 1) {
                         tknFrom = token;
@@ -817,10 +817,10 @@ class _DesktopPoolState extends State<DesktopPool> {
                       }
 
                       // If the user changes the bottom token and it is the same as the top token, then swap the bottom and the top
-                      // if (tknTo!.address == tknFrom!.address) {
-                      //   tknTo = tknFrom;
-                      //   tknFrom = tmpTkn2;
-                      // }
+                      if (tknTo!.address == tknFrom!.address) {
+                        tknTo = tknFrom;
+                        tknFrom = tmpTknTo;
+                      }
                       Navigator.pop(context);
                     });
                   },
