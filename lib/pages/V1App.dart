@@ -393,6 +393,7 @@ class _V1AppState extends State<V1App> {
   bottomNavBarAndroid(BuildContext context) {
     return BottomNavigationBar(
       showUnselectedLabels: true,
+      type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.transparent,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
