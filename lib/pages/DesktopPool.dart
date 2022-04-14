@@ -21,8 +21,8 @@ class _DesktopPoolState extends State<DesktopPool> {
   bool isAllLiquidity = true;
   double token1Amount = 0.0;
   double token2Amount = 0.0;
-  Token? tkn1;
-  Token? tkn2;
+  Token? tknFrom;
+  Token? tknTo;
   bool isWeb = true;
   List<Token> tokenListFilter = [];
 
@@ -37,8 +37,8 @@ class _DesktopPoolState extends State<DesktopPool> {
   void initState() {
     super.initState();
     try {
-      tkn1 = TokenList.tokenList[1];
-      tkn2 = TokenList.tokenList[3];
+      tknFrom = TokenList.tokenList[1];
+      tknTo = TokenList.tokenList[3];
     } catch (e) {
       print("[Console] TokenList is empty?: $e");
     }
@@ -254,7 +254,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 onChanged: (value) {
                   setState(() {
                     tokenListFilter = TokenList.tokenList
-                        .where((token) => (token.ticker + " " + token.name )
+                        .where((token) => (token.ticker + " " + token.name)
                             .toUpperCase()
                             .contains(value.toUpperCase()))
                         .toList();
@@ -401,7 +401,9 @@ class _DesktopPoolState extends State<DesktopPool> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          "Pooled " + (athleteToken.ticker + " " + athleteToken.name) + " APT:",
+                          "Pooled " +
+                              (athleteToken.ticker + " " + athleteToken.name) +
+                              " APT:",
                           style: TextStyle(
                               color: Colors.grey[600],
                               fontWeight: FontWeight.bold),
@@ -465,7 +467,8 @@ class _DesktopPoolState extends State<DesktopPool> {
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) =>
-                                  poolAddLiquidity(context, (tkn2!.ticker + " " + tkn2!.name))),
+                                  poolAddLiquidity(context,
+                                      (tknTo!.ticker + " " + tknTo!.name))),
                           child: Text(
                             "Add",
                             style: textStyle(Colors.black, 20, true),
@@ -480,7 +483,8 @@ class _DesktopPoolState extends State<DesktopPool> {
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) =>
-                                  poolRemoveLiquidity(context, (tkn2!.ticker + " " + tkn2!.name))),
+                                  poolRemoveLiquidity(context,
+                                      (tknTo!.ticker + " " + tknTo!.name))),
                           child: Text(
                             "Remove",
                             style: textStyle(Colors.amber[400]!, 18, true),
@@ -509,18 +513,20 @@ class _DesktopPoolState extends State<DesktopPool> {
     BoxDecoration decor =
         boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
     if (tknNum == 1) {
-      if (tkn1 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+      if (tknFrom == null)
+        decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn1 != null) {
-        tkr = tkn1!.ticker;
-        tokenImage = tkn1!.icon;
+      if (tknFrom != null) {
+        tkr = tknFrom!.ticker;
+        tokenImage = tknFrom!.icon;
       }
     } else {
-      if (tkn2 == null) decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
+      if (tknTo == null)
+        decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
 
-      if (tkn2 != null) {
-        tkr = tkn2!.ticker;
-        tokenImage = tkn2!.icon;
+      if (tknTo != null) {
+        tkr = tknTo!.ticker;
+        tokenImage = tknTo!.icon;
       }
     }
 
@@ -754,8 +760,8 @@ class _DesktopPoolState extends State<DesktopPool> {
                   child: TextButton(
                     onPressed: () => showDialog(
                         context: context,
-                        builder: (BuildContext context) =>
-                            poolAddLiquidity(context, (tkn2!.ticker + " " + tkn2!.name))),
+                        builder: (BuildContext context) => poolAddLiquidity(
+                            context, (tknTo!.ticker + " " + tknTo!.name))),
                     child: Text(
                       "Add Liquidity",
                       style: textStyle(Colors.black, 16, true),
@@ -781,22 +787,43 @@ class _DesktopPoolState extends State<DesktopPool> {
   }
 
   Widget createTokenElement(Token token, int tknNum) {
-    //Callback function that is called when token is chosen from AthleteTokenList widget
+    //Each element of listview is a tokenElement
     return Container(
         height: 50,
-        child: TextButton(
-            onPressed: () {
-              setState(() {
-                if (tknNum == 1) {
-                  tkn1 = token;
-                  poolController.updateTknAddress1(token.address.value);
-                } else {
-                  tkn2 = token;
-                  poolController.updateTknAddress2(token.address.value);
-                }
-                Navigator.pop(context);
-              });
-            },
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.grey[900],
+              onSurface:
+                  isTokenSelected(token, tknNum) ? Colors.amber : Colors.grey,
+            ),
+            onPressed: isTokenSelected(token, tknNum)
+                ? null
+                : () {
+                    Token tmpTknFrom = tknFrom!;
+                    Token tmpTkn2 = tknTo!;
+                    setState(() {
+                      if (tknNum == 1) {
+                        tknFrom = token;
+                        poolController.updateTknAddress1(token.address.value);
+                      } else {
+                        tknTo = token;
+                        poolController.updateTknAddress2(token.address.value);
+                      }
+                      // If the user changes the top token and it is the same as the bottom token, then swap the top and bottom
+                      if (tknFrom!.ticker == tknTo!.ticker &&
+                          tknFrom!.address == tknTo!.address) {
+                        tknFrom = tknTo;
+                        tknTo = tmpTknFrom;
+                      }
+
+                      // If the user changes the bottom token and it is the same as the top token, then swap the bottom and the top
+                      // if (tknTo!.address == tknFrom!.address) {
+                      //   tknTo = tknFrom;
+                      //   tknFrom = tmpTkn2;
+                      // }
+                      Navigator.pop(context);
+                    });
+                  },
             child: Container(
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -866,6 +893,17 @@ class _DesktopPoolState extends State<DesktopPool> {
         color: col,
         borderRadius: BorderRadius.circular(rad),
         border: Border.all(color: borCol, width: borWid));
+  }
+
+  isTokenSelected(Token currentToken, int tknNum) {
+    if (tknNum == 1) {
+      return currentToken.ticker == tknFrom?.ticker &&
+          currentToken.address == tknFrom?.address;
+    } else {
+      //tknNum == 2
+      return currentToken.ticker == tknTo?.ticker &&
+          currentToken.address == tknTo?.address;
+    }
   }
 }
 
