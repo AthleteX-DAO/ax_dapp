@@ -30,7 +30,11 @@ class AthleteScoutModel {
       this.homeRuns,
       this.strikeOuts,
       this.saves,
-      this.stolenBase) {
+      this.stolenBase,
+      this.atBats,
+      this.weightedOnBasePercentage,
+      this.errors,
+      this.inningsPlayed) {
     this.bookPrice = this.warPrice * collateralizationMultiplier;
   }
 }
