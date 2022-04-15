@@ -51,7 +51,11 @@ class GetScoutAthletesDataUseCase {
           mlbAthlete.homeRuns,
           mlbAthlete.strikeOuts,
           mlbAthlete.saves,
-          mlbAthlete.stolenBases
+          mlbAthlete.stolenBases,
+          mlbAthlete.atBats,
+          mlbAthlete.weightedOnBasePercentage,
+          mlbAthlete.errors,
+          mlbAthlete.inningsPlayed,
       ));
     });
     return mappedAthletes;

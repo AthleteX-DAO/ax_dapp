@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../../contracts/LongShortPair.g.dart';
@@ -21,8 +22,7 @@ class LSPController extends GetxController {
   var aptAddress = ''.obs;
   String mainRPCUrl = "https://polygon-rpc.com";
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
-  final tokenClient =
-      Web3Client("https://polygon-rpc.com", new Client());
+  final tokenClient = Web3Client("https://polygon-rpc.com", new Client());
   // Hard address listing of all Athletes
 
   LSPController();
@@ -32,8 +32,7 @@ class LSPController extends GetxController {
     genericLSP = LongShortPair(address: address, client: tokenClient);
     print("Attempting to MINT LSP");
     final theCredentials = controller.credentials;
-    BigInt tokensToCreate =
-        BigInt.from(createAmt.value) * BigInt.from(1000000000000000000);
+    BigInt tokensToCreate = normalizeInput(createAmt.value);
     approve(genericLSP, address).then((value) async {
       String txString =
           await genericLSP.create(tokensToCreate, credentials: theCredentials);
@@ -43,11 +42,12 @@ class LSPController extends GetxController {
 
   Future<void> approve(
       LongShortPair genericLSP, EthereumAddress address) async {
-    print("[Console] Collateral amount: ${await genericLSP.collateralPerPair()}");
+    print(
+        "[Console] Collateral amount: ${await genericLSP.collateralPerPair()}");
     BigInt transferAmount = await genericLSP.collateralPerPair();
-    BigInt amount = BigInt.from(createAmt.value) * transferAmount;
+    BigInt amount = normalizeInput(createAmt.value) * transferAmount ~/ BigInt.from(10).pow(18); // removes 18 zeros from collateralPerPair
     print("[Console] Inside approve()");
-    EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.mumbaiAddress);
+    EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.polygonAddress);
     Erc20 axt = Erc20(address: axtaddress, client: tokenClient);
     try {
       await axt.approve(address, amount, credentials: controller.credentials);
@@ -60,8 +60,7 @@ class LSPController extends GetxController {
     EthereumAddress address = EthereumAddress.fromHex(aptAddress.value);
     genericLSP = LongShortPair(address: address, client: tokenClient);
     final theCredentials = controller.credentials;
-    BigInt tokensToRedeem =
-        BigInt.from(redeemAmt.value) * BigInt.from(1000000000000000000);
+    BigInt tokensToRedeem = normalizeInput(redeemAmt.value);
     genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
   }
 
