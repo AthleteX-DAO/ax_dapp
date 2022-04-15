@@ -40,7 +40,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _height = MediaQuery.of(context).size.height;
-    double fromAmount = 0, toAmount = 0;
+    double fromAmount = 0.0, toAmount = 0.0;
     double wid = 550;
 
     Widget swapButton = Container(
@@ -180,7 +180,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                               inputFormatters: [
                                                 FilteringTextInputFormatter
                                                     .allow((RegExp(
-                                                        r'^(\d+)?\.?\d{0,2}'))),
+                                                        r'^(\d+)?\.?\d{0,6}'))),
                                               ],
                                             ),
                                           ),
@@ -280,7 +280,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                               inputFormatters: [
                                                 FilteringTextInputFormatter
                                                     .allow((RegExp(
-                                                        r'^(\d+)?\.?\d{0,2}'))),
+                                                        r'^(\d+)?\.?\d{0,6}'))),
                                               ],
                                             ),
                                           ),
@@ -299,20 +299,41 @@ class _DesktopTradeState extends State<DesktopTrade> {
     double _width = MediaQuery.of(context).size.width;
     return Container(
         height: 50,
-        child: TextButton(
-            onPressed: () {
-              setState(() {
-                if (tknNum == 1) {
-                  tknFrom = token;
-                  print("tkn1: ${token.address.value}");
-                  swapController.updateFromAddress(token.address.value);
-                } else {
-                  tknTo = token;
-                  swapController.updateToAddress(token.address.value);
-                }
-                Navigator.pop(context);
-              });
-            },
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.grey[900],
+              onSurface:
+                  isTokenSelected(token, tknNum) ? Colors.amber : Colors.grey,
+            ),
+            onPressed: isTokenSelected(token, tknNum)
+                ? null
+                : () {
+                    Token tmpTknFrom = tknFrom!;
+                    Token tmpTknTo = tknTo!;
+                    setState(() {
+                      if (tknNum == 1) {
+                        tknFrom = token;
+                        print("tkn1: ${token.address.value}");
+                        swapController.updateFromAddress(token.address.value);
+                      } else {
+                        tknTo = token;
+                        swapController.updateToAddress(token.address.value);
+                      }
+                      // If the user changes the top token and it is the same as the bottom token, then swap the top and bottom
+                      if (tknFrom!.ticker == tknTo!.ticker &&
+                          tknFrom!.address == tknTo!.address) {
+                        tknFrom = tknTo;
+                        tknTo = tmpTknFrom;
+                      }
+
+                      // If the user changes the bottom token and it is the same as the top token, then swap the bottom and the top
+                      if (tknTo!.address == tknFrom!.address) {
+                        tknTo = tknFrom;
+                        tknFrom = tmpTknTo;
+                      }
+                      Navigator.pop(context);
+                    });
+                  },
             child: Container(
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -465,5 +486,16 @@ class _DesktopTradeState extends State<DesktopTrade> {
         color: col,
         borderRadius: BorderRadius.circular(rad),
         border: Border.all(color: borCol, width: borWid));
+  }
+
+  isTokenSelected(Token currentToken, int tknNum) {
+    if (tknNum == 1) {
+      return currentToken.ticker == tknFrom?.ticker &&
+          currentToken.address == tknFrom?.address;
+    } else {
+      //tknNum == 2
+      return currentToken.ticker == tknTo?.ticker &&
+          currentToken.address == tknTo?.address;
+    }
   }
 }

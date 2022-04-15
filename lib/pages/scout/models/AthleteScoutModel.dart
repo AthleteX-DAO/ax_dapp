@@ -14,6 +14,10 @@ class AthleteScoutModel {
   final double strikeOuts;
   final double saves;
   final double stolenBase;
+  final double atBats;
+  final double weightedOnBasePercentage;
+  final double errors;
+  final double inningsPlayed;
 
   AthleteScoutModel(
       this.id,

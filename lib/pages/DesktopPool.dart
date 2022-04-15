@@ -19,8 +19,8 @@ class DesktopPool extends StatefulWidget {
 class _DesktopPoolState extends State<DesktopPool> {
   PoolController poolController = Get.find();
   bool isAllLiquidity = true;
-  double token1Amount = 0.0;
-  double token2Amount = 0.0;
+  late double token1Amount;
+  late double token2Amount;
   Token? tkn1;
   Token? tkn2;
   bool isWeb = true;
@@ -605,7 +605,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
-                        (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                        (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                   ],
                 ),
               ),

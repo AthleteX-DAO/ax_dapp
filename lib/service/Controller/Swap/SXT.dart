@@ -7,7 +7,7 @@ class SXT extends Token with ERC20Behavior {
   static String mumbaiAddress = "0x76d9a6e4cdefc840a47069b71824ad8ff4819e85";
 
   SXT(String name, String ticker, [AssetImage? icon])
-      : super(name, ticker, mumbaiAddress) {
+      : super(name, ticker, polygonAddress) {
     if (icon != null) {
       super.icon = icon;
     }
