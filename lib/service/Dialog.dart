@@ -240,7 +240,7 @@ Dialog walletDialog(BuildContext context) {
                       } else {
                         Navigator.pop(context);
                         walletController.getTokenMetrics();
-                        walletController.getTokenBalance();
+                        walletController.getYourAxBalance();
                       }
                     });
                   },
@@ -371,7 +371,7 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
                         onPressed: () {
-                          walletController.getTokenBalance().then((value) {
+                          walletController.getYourAxBalance().then((value) {
                             stakeAxInput.text =
                                 walletController.yourBalance.value;
                             print(stakeAxInput);
@@ -565,7 +565,7 @@ Dialog dualDepositDialog(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
                         onPressed: () {
-                          walletController.getTokenBalance().then((value) {
+                          walletController.getYourAxBalance().then((value) {
                             stakeAxInput.text =
                                 walletController.yourBalance.value;
                             print(stakeAxInput);
@@ -1005,11 +1005,11 @@ Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
                 Container(
                   width: 175,
                   height: 45,
-                  decoration: boxDecoration(
-                      Colors.amber[500]!.withOpacity(0.20),
-                      500,
-                      1,
-                      Colors.transparent),
+                  decoration: isWeb
+                      ? boxDecoration(
+                          Colors.amber[400]!, 500, 1, Colors.amber[400]!)
+                      : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500,
+                          1, Colors.transparent),
                   child: TextButton(
                     //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                     onPressed: () async {
@@ -1029,7 +1029,9 @@ Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
                     },
                     child: Text(
                       "Confirm",
-                      style: textStyle(Colors.amber[500]!, 16, false),
+                      style: isWeb
+                          ? textStyle(Colors.black, 16, false)
+                          : textStyle(Colors.amber[500]!, 16, false),
                     ),
                   ),
                 ),
@@ -1321,11 +1323,11 @@ Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
                     margin: EdgeInsets.only(bottom: 8.0),
                     width: 175,
                     height: 45,
-                    decoration: boxDecoration(
-                        Colors.amber[500]!.withOpacity(0.20),
-                        500,
-                        1,
-                        Colors.transparent),
+                    decoration: isWeb
+                        ? boxDecoration(
+                            Colors.amber[400]!, 500, 1, Colors.amber[400]!)
+                        : boxDecoration(Colors.amber[500]!.withOpacity(0.20),
+                            500, 1, Colors.transparent),
                     child: TextButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -1340,7 +1342,9 @@ Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
                       },
                       child: Text(
                         "Confirm",
-                        style: textStyle(Colors.amber[500]!, 16, false),
+                        style: isWeb
+                            ? textStyle(Colors.black, 16, false)
+                            : textStyle(Colors.amber[500]!, 16, false),
                       ),
                     ),
                   ),
@@ -1828,11 +1832,11 @@ Dialog mintDialog(BuildContext context, AthleteScoutModel athlete) {
                     margin: EdgeInsets.only(bottom: 30.0),
                     width: 175,
                     height: 45,
-                    decoration: boxDecoration(
-                        Colors.amber[500]!.withOpacity(0.20),
-                        500,
-                        1,
-                        Colors.transparent),
+                    decoration: isWeb
+                        ? boxDecoration(
+                            Colors.amber[400]!, 500, 1, Colors.amber[400]!)
+                        : boxDecoration(Colors.amber[500]!.withOpacity(0.20),
+                            500, 1, Colors.transparent),
                     child: TextButton(
                       onPressed: () {
                         // call mint functionality
@@ -1845,7 +1849,9 @@ Dialog mintDialog(BuildContext context, AthleteScoutModel athlete) {
                       },
                       child: Text(
                         "Confirm",
-                        style: textStyle(Colors.amber[500]!, 16, false),
+                        style: isWeb
+                            ? textStyle(Colors.black, 16, false)
+                            : textStyle(Colors.amber[500]!, 16, false),
                       ),
                     ),
                   ),
@@ -1862,6 +1868,9 @@ Dialog mintDialog(BuildContext context, AthleteScoutModel athlete) {
 // dynamic
 Dialog confirmTransaction(
     BuildContext context, bool IsConfirmed, String txString) {
+  bool isWeb = true;
+  isWeb =
+      kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -1926,11 +1935,11 @@ Dialog confirmTransaction(
                     Container(
                       width: 275,
                       height: 50,
-                      decoration: boxDecoration(
-                          Colors.amber[500]!.withOpacity(0.20),
-                          500,
-                          1,
-                          Colors.transparent),
+                      decoration: isWeb
+                          ? boxDecoration(
+                              Colors.amber[400]!, 500, 1, Colors.amber[400]!)
+                          : boxDecoration(Colors.amber[500]!.withOpacity(0.20),
+                              500, 1, Colors.transparent),
                       child: TextButton(
                         onPressed: () {
                           Controller.viewTx();
@@ -1938,7 +1947,9 @@ Dialog confirmTransaction(
                         },
                         child: Text(
                           "View on Polygonscan",
-                          style: textStyle(Colors.amber[500]!, 16, false),
+                          style: isWeb
+                              ? textStyle(Colors.black, 16, false)
+                              : textStyle(Colors.amber[500]!, 16, false),
                         ),
                       ),
                     ),
@@ -2254,7 +2265,7 @@ Dialog yourAXDialog(BuildContext context) {
                           ),
                           onPressed: () {
                             walletController.getTokenMetrics();
-                            walletController.getTokenBalance();
+                            walletController.getYourAxBalance();
                             Navigator.pop(context);
                           },
                         ),

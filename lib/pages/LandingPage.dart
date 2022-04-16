@@ -66,7 +66,7 @@ class _LandingPageState extends State<LandingPage> {
                     return startTradingButton(tradingTextSize);
                   } else {
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(color: Colors.amber),
                     );
                   }
                 },
