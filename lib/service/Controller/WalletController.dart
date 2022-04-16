@@ -42,9 +42,9 @@ class WalletController extends GetxController {
     try {
       BigInt rawBalance = await ax.balanceOf(walletAddress);
       print("Raw Balance: $rawBalance");
-      var balanceInWei = EtherAmount.inWei(rawBalance);
-      var balanceInEther = balanceInWei.getInEther;
-      tokenBalance = "$balanceInEther";
+      EtherAmount balanceInWei = EtherAmount.inWei(rawBalance);
+      double balanceInEther = balanceInWei.getValueInUnit(EtherUnit.ether);
+      tokenBalance = balanceInEther.toStringAsFixed(6);
     } catch (error) {
       print("[Console] Failed to retrieve the balance: $error");
     }
