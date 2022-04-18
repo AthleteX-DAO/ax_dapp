@@ -1053,7 +1053,64 @@ Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
   double wid = isWeb ? 400 : 355;
   double edge = 40;
   double hgt = 500;
+  bool _isLongApt = true;
   if (_height < 505) hgt = _height;
+
+  Widget toggleLongShortToken = Container(
+    padding: EdgeInsets.all(1.5),
+    width: wid * 0.25,
+    height: hgt * 0.05,
+    decoration: boxDecoration(Colors.transparent, 20, 1, Colors.grey[800]!),
+    child: Container(
+      child: Row(
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                padding: EdgeInsets.zero,
+                minimumSize: Size(50, 30),
+                primary: _isLongApt ? Colors.amber : Colors.grey[800],
+              ),
+              onPressed: () {
+                _isLongApt = !_isLongApt;
+              },
+              child: Text(
+                "Long",
+                style: TextStyle(
+                    color: _isLongApt
+                        ? Colors.white
+                        : Color.fromRGBO(154, 154, 154, 1),
+                    fontSize: 11),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size(50, 30),
+                  primary: _isLongApt ? Colors.transparent : Colors.grey[500]),
+              onPressed: () {
+                _isLongApt = !_isLongApt;
+              },
+              child: Text(
+                "Short",
+                style: TextStyle(
+                    color: _isLongApt
+                        ? Color.fromRGBO(154, 154, 154, 1)
+                        : Colors.white,
+                    fontSize: 11),
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
 
   return Dialog(
     insetPadding:
@@ -1112,25 +1169,30 @@ Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
                 ),
               ),
             ),
+            //Input apt text with toggle, and apt input box
             Container(
-                height: 75,
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                height: 85,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Container(
-                      width: wid - edge,
-                      child: Text(
-                        isWeb
-                            ? "Input APT:"
-                            : "Input APT amount you want to sell:",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
+                    //Input apt and toggle button
+                    Row(
+                      children: [
+                        Text(
+                          isWeb
+                              ? "Input APT:"
+                              : "Input APT amount you want to sell:",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
                         ),
-                      ),
+                        toggleLongShortToken,
+                      ],
                     ),
+                    //APT input box
                     Container(
-                      padding: EdgeInsets.all(10),
                       width: wid - edge,
                       height: 55,
                       decoration: boxDecoration(
