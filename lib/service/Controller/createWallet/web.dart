@@ -2,9 +2,10 @@
 
 import 'dart:html';
 import 'package:web3dart/browser.dart';
+import 'package:web3dart/web3dart.dart' as Web3Dart;
 
 import 'abstractWallet.dart';
-import 'package:web3dart/web3dart.dart';
+import 'package:flutter_web3/flutter_web3.dart' as FlutterWeb3;
 
 DappWallet newWallet() => WebWallet();
 
@@ -14,60 +15,49 @@ class WebWallet extends DappWallet {
 
   @override
   Future<void> connect() async {
-    final eth = window.ethereum;
-    this.client = Web3Client.custom(eth!.asRpcService());
-    this.credentials = await eth.requestAccount();
-    this.publicAddress = credentials.address;
-    this.networkID = await Web3Client.custom(eth.asRpcService()).getNetworkId();
-    print("[Console] This is the public address: ${this.publicAddress}, and network: ${this.networkID}");
-    print(
-        "[Console] This is the credentials type: ${this.credentials.toString()}");
+    if (FlutterWeb3.Ethereum.isSupported) {
+      await this.switchNetwork();
+
+      this.client = Web3Dart.Web3Client.custom(window.ethereum!.asRpcService());
+      this.credentials = await window.ethereum!.requestAccount();
+      this.publicAddress = credentials.address;
+      this.networkID = await Web3Dart.Web3Client.custom(window.ethereum!.asRpcService()).getNetworkId();
+      print("[Console] This is the public address: ${this.publicAddress}, and network: ${this.networkID}");
+      print("[Console] This is the credentials type: ${this.credentials.toString()}");
+    } else {
+      print("[Console] Ethereum is not supproted. Please install MetaMask.");
+    }
   }
 
   //Comment this for Android
-  void addTokenToWallet() async {
-    final eth = window.ethereum;
-    Object tokenParam = {
-      "type": "ERC20",
-      "options": {
-        "address": "0xb60e8dd61c5d32be8058bb8...",
-        "symbol": "FOO",
-        "decimals": 18,
-        "image": "https: //foo.io/token-ima..."
-      }
-    };
-
-    eth!.rawRequest('wallet_watchAsset', params: tokenParam);
+  Future<bool> addTokenToWallet() async {
+    print("[Console] Adding AX token to MetaMask wallet");
+    bool result = await FlutterWeb3.ethereum!.walletWatchAssets(
+        address: "0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df",
+        symbol: "AX",
+        decimals: 18);
+    print("[Console] Result of adding AX token to MetaMask. {$result}");
+    return result;
   }
 
-  Future<bool> switchNetwork() async {
+  Future<void> switchNetwork() async {
     print("Inside switchNetwork()");
-    final eth = window.ethereum;
-    Object switchParams = [
-      {'chainId': '0x89'}
-    ];
+
     try {
-      print("[Console] Trying to switch the network");
-      await eth!.rawRequest('wallet_switchEthereumChain', params: switchParams);
-      print("[Console] Switched the network to mainnet(137, 0x89?)");
-      return true;
-    } catch (error) {
-      print("[Console] Main network not installed on MetaMask");
-      try {
-        Object addParams = [
-          {
-            'chainId': '0x89',
-            'chainName': 'Matic(Mainnet)',
-            'rpcUrls': mainRPCUrl,
-          }
-        ];
-        await eth!.rawRequest('wallet_addEthereumChain', params: addParams);
-        print("[Console] Added a mainnet to the MetaMask");
-        return true;
-      } catch (addError) {
-        print("[Console] Could not add a mainnet to the MetaMask");
-        return false;
-      }
+      // switching the chain
+      await FlutterWeb3.ethereum!.walletSwitchChain(137);
+      print("[Console] MetaMask swtiched the chain to Polygon mainnet");
+    } catch (err) {
+      // adding chain to the metamask
+      print("[Console] The Polygon mainnet is not added on the MetaMask");
+      await FlutterWeb3.ethereum!.walletAddChain(
+          chainId: 137,
+          chainName: 'Polygon Mainnet',
+          nativeCurrency: FlutterWeb3.CurrencyParams(
+              name: 'MATIC Token', symbol: 'MATIC', decimals: 18),
+          rpcUrls: ['https://rpc-mainnet.matic.quiknode.pro'],
+          blockExplorerUrls: ['https://polygonscan.com/']);
+      print("[Console] The Polygon mainnet is added and also switched");
     }
   }
 }
