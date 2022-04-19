@@ -1051,9 +1051,10 @@ Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
   double wid = isWeb ? 400 : 355;
-  double edge = 40;
+  double paddingHorizontal = 20;
   double hgt = 500;
   bool _isLongApt = true;
+  double balance = 0.0;
   if (_height < 505) hgt = _height;
 
   Widget toggleLongShortToken = Container(
@@ -1112,6 +1113,13 @@ Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
     ),
   );
 
+  Widget showBalance = Flexible(
+    child: Text(
+      "Balance: $balance",
+      style: textStyle(Colors.grey[400]!, 14, false),
+    ),
+  );
+
   return Dialog(
     insetPadding:
         isWeb ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 15.0),
@@ -1120,301 +1128,282 @@ Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
+      padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
       height: hgt,
       width: wid,
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-                width: wid - edge,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Sell " + athlete.name + " APT",
-                        style: textStyle(Colors.white, 20, false)),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                )),
-            Container(
-              width: wid - edge,
-              child: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: "You can sell APT's at Market Price for AX.",
-                        style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: isWeb ? 14 : 12)),
-                    TextSpan(
-                        text:
-                            " You can access other funds with AX on the Matic network through",
-                        style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: isWeb ? 14 : 12)),
-                    TextSpan(
-                        text: " SushiSwap",
-                        style: TextStyle(
-                            color: Colors.amber[400],
-                            fontSize: isWeb ? 14 : 12)),
-                  ],
-                ),
-              ),
-            ),
-            //Input apt text with toggle, and apt input box
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                height: 85,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    //Input apt and toggle button
-                    Row(
-                      children: [
-                        Text(
-                          isWeb
-                              ? "Input APT:"
-                              : "Input APT amount you want to sell:",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        toggleLongShortToken,
-                      ],
-                    ),
-                    //APT input box
-                    Container(
-                      width: wid - edge,
-                      height: 55,
-                      decoration: boxDecoration(
-                          Colors.transparent, 14, 0.5, Colors.grey[400]!),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(width: 5),
-                          Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                scale: 0.5,
-                                image: AssetImage(
-                                    "assets/images/apt_noninverted.png"),
-                              ),
-                            ),
-                          ),
-                          Container(width: 15),
-                          Expanded(
-                            child: Text(
-                              athlete.name + " APT",
-                              style: textStyle(Colors.white, 15, false),
-                            ),
-                          ),
-                          Container(
-                            height: 28,
-                            width: 48,
-                            decoration: boxDecoration(Colors.transparent, 100,
-                                0.5, Colors.grey[400]!),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "MAX",
-                                style: textStyle(Colors.grey[400]!, 9, false),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 70,
-                            child: TextField(
-                              style: textStyle(Colors.grey[400]!, 22, false),
-                              decoration: InputDecoration(
-                                hintText: '0.00',
-                                hintStyle:
-                                    textStyle(Colors.grey[400]!, 22, false),
-                                contentPadding: isWeb
-                                    ? EdgeInsets.all(9)
-                                    : EdgeInsets.all(6),
-                                border: InputBorder.none,
-                              ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    (RegExp(r'^(\d+)?\.?\d{0,6}'))),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )),
-            Divider(
-              thickness: 0.35,
-              color: Colors.grey[400],
-            ),
-            Container(
-                width: wid - edge,
-                height: 125,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text("Price",
-                            style: textStyle(Colors.white, 15, false)),
-                        Text("0.8 " + athlete.name + " APT per AX",
-                            style: textStyle(Colors.white, 15, false)),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "LP Fee",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          "0.5 AX",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Market Price Impact",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          "-0.04%",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Minimum Received",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          "L.J.APT",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Estimated Slippage",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          "~5%",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-            Container(
-              width: wid - edge,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+              width: wid,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    "You receive:",
-                    style: TextStyle(
-                      fontSize: 15,
+                  Text("Sell " + athlete.name + " APT",
+                      style: textStyle(Colors.white, 20, false)),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.close,
                       color: Colors.white,
+                      size: 30,
                     ),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  Text(
-                    "120 AX",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
+                ],
+              )),
+          Container(
+            width: wid,
+            child: RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                      text: "You can sell APT's at Market Price for AX.",
+                      style: TextStyle(
+                          color: Colors.grey[600], fontSize: isWeb ? 14 : 12)),
+                  TextSpan(
+                      text:
+                          " You can access other funds with AX on the Matic network through",
+                      style: TextStyle(
+                          color: Colors.grey[600], fontSize: isWeb ? 14 : 12)),
+                  TextSpan(
+                      text: " SushiSwap",
+                      style: TextStyle(
+                          color: Colors.amber[400], fontSize: isWeb ? 14 : 12)),
                 ],
               ),
             ),
-            Container(
-              width: wid - edge,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 8.0),
-                    width: 175,
-                    height: 45,
-                    decoration: isWeb
-                        ? boxDecoration(
-                            Colors.amber[400]!, 500, 1, Colors.amber[400]!)
-                        : boxDecoration(Colors.amber[500]!.withOpacity(0.20),
-                            500, 1, Colors.transparent),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        bool confirmed = true;
-                        String txString =
-                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                confirmTransaction(
-                                    context, confirmed, txString));
-                      },
-                      child: Text(
-                        "Confirm",
-                        style: isWeb
-                            ? textStyle(Colors.black, 16, false)
-                            : textStyle(Colors.amber[500]!, 16, false),
-                      ),
+          ),
+          //Input apt text with toggle, and apt input box
+          Row(
+            children: [
+              Text(
+                isWeb ? "Input APT:" : "Input APT amount you want to sell:",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              ),
+              toggleLongShortToken,
+            ],
+          ),
+          //APT input box
+          Container(
+            width: wid,
+            height: 55,
+            decoration:
+                boxDecoration(Colors.transparent, 14, 0.5, Colors.grey[400]!),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(width: 5),
+                Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      scale: 0.5,
+                      image: AssetImage("assets/images/apt_noninverted.png"),
                     ),
                   ),
+                ),
+                Container(width: 15),
+                Expanded(
+                  child: Text(
+                    athlete.name + " APT",
+                    style: textStyle(Colors.white, 15, false),
+                  ),
+                ),
+                Container(
+                  height: 28,
+                  width: 48,
+                  decoration: boxDecoration(
+                      Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "MAX",
+                      style: textStyle(Colors.grey[400]!, 9, false),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 70,
+                  child: TextField(
+                    style: textStyle(Colors.grey[400]!, 22, false),
+                    decoration: InputDecoration(
+                      hintText: '0.00',
+                      hintStyle: textStyle(Colors.grey[400]!, 22, false),
+                      contentPadding:
+                          isWeb ? EdgeInsets.all(9) : EdgeInsets.all(6),
+                      border: InputBorder.none,
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          (RegExp(r'^(\d+)?\.?\d{0,6}'))),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          showBalance,
+          Divider(
+            thickness: 0.35,
+            color: Colors.grey[400],
+          ),
+          Container(
+              width: wid,
+              height: 125,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Price", style: textStyle(Colors.white, 15, false)),
+                      Text("0.8 " + athlete.name + " APT per AX",
+                          style: textStyle(Colors.white, 15, false)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "LP Fee",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      Text(
+                        "0.5 AX",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Market Price Impact",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      Text(
+                        "-0.04%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Minimum Received",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      Text(
+                        "L.J.APT",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Estimated Slippage",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      Text(
+                        "~5%",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
-              ),
-            )
-          ],
-        ),
+              )),
+          Container(
+            width: wid,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "You receive:",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  "120 AX",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: wid,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(bottom: 8.0),
+                  width: 175,
+                  height: 45,
+                  decoration: isWeb
+                      ? boxDecoration(
+                          Colors.amber[400]!, 500, 1, Colors.amber[400]!)
+                      : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500,
+                          1, Colors.transparent),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      bool confirmed = true;
+                      String txString =
+                          "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              confirmTransaction(context, confirmed, txString));
+                    },
+                    child: Text(
+                      "Confirm",
+                      style: isWeb
+                          ? textStyle(Colors.black, 16, false)
+                          : textStyle(Colors.amber[500]!, 16, false),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     ),
   );
