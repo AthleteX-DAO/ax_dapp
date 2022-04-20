@@ -1,10 +1,13 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
+import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
+import '../../../service/TokenList.dart';
 
 class SellDialog extends StatefulWidget {
   final AthleteScoutModel athlete;
@@ -26,6 +29,7 @@ class _SellDialogState extends State<SellDialog> {
   String aptAddress = "";
 
   WalletController walletController = Get.find();
+  SwapController swapController = Get.find();
 
   Widget toggleLongShortToken(double wid, double hgt) {
     return Container(
@@ -46,6 +50,9 @@ class _SellDialogState extends State<SellDialog> {
                   primary: _isLongApt ? Colors.amber : Colors.transparent,
                 ),
                 onPressed: () {
+                  aptAddress = getLongAptAddress(widget.athlete.id);
+                  swapController
+                      .updateFromAddress(aptAddress);
                   setState(() {
                     _isLongApt = !_isLongApt;
                   });
@@ -70,6 +77,9 @@ class _SellDialogState extends State<SellDialog> {
                     primary:
                         _isLongApt ? Colors.transparent : Colors.grey[500]),
                 onPressed: () {
+                  aptAddress = getShortAptAddress(widget.athlete.id);
+                  swapController
+                      .updateFromAddress(aptAddress);
                   setState(() {
                     _isLongApt = !_isLongApt;
                   });

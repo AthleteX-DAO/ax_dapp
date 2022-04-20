@@ -102,25 +102,25 @@ class TokenList {
           idToAddress[ath[1]]![2]);
     }),
   ];
+}
 
-  String getLongAptAddress(int id) {
-    if (idToAddress.containsKey(id)) {
-      return idToAddress[id]![1];
-    }
-    return '';
+String getLongAptAddress(int id) {
+  if (TokenList.idToAddress.containsKey(id)) {
+    return TokenList.idToAddress[id]![1];
   }
+  return '';
+}
 
-  String getShortAptAddress(int id) {
-    if (idToAddress.containsKey(id)) {
-      return idToAddress[id]![2];
-    }
-    return '';
+String getShortAptAddress(int id) {
+  if (TokenList.idToAddress.containsKey(id)) {
+    return TokenList.idToAddress[id]![2];
   }
+  return '';
+}
 
-  String getPairAptAddress(int id) {
-    if (idToAddress.containsKey(id)) {
-      return idToAddress[id]![0];
-    }
-    return '';
+String getPairAptAddress(int id) {
+  if (TokenList.idToAddress.containsKey(id)) {
+    return TokenList.idToAddress[id]![0];
   }
+  return '';
 }
