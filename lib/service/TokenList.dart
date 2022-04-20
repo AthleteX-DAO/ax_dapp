@@ -72,14 +72,14 @@ class TokenList {
   static const List<List<dynamic>> namesList = [
     ["Aaron Judge", 10002087],
     ["Bryce Harper", 10001365],
-    ["Carlos Correa", 10001918], 
-    ["Fernando Tatis Jr.", 10007217], 
-    ["Jose Ramirez", 10000352], 
-    ["Juan Soto", 10006794], 
-    ["Marcus Semien", 10000908], 
-    ["Starling Marte", 10001009],  
-    ["Trea Turner", 10002094], 
-    ["Vladimir Guerrero Jr.", 10007501], 
+    ["Carlos Correa", 10001918],
+    ["Fernando Tatis Jr.", 10007217],
+    ["Jose Ramirez", 10000352],
+    ["Juan Soto", 10006794],
+    ["Marcus Semien", 10000908],
+    ["Starling Marte", 10001009],
+    ["Trea Turner", 10002094],
+    ["Vladimir Guerrero Jr.", 10007501],
   ];
 
   static final List<Token> tokenList = [
@@ -102,4 +102,25 @@ class TokenList {
           idToAddress[ath[1]]![2]);
     }),
   ];
+
+  String getLongAptAddress(int id) {
+    if (idToAddress.containsKey(id)) {
+      return idToAddress[id]![1];
+    }
+    return '';
+  }
+
+  String getShortAptAddress(int id) {
+    if (idToAddress.containsKey(id)) {
+      return idToAddress[id]![2];
+    }
+    return '';
+  }
+
+  String getPairAptAddress(int id) {
+    if (idToAddress.containsKey(id)) {
+      return idToAddress[id]![0];
+    }
+    return '';
+  }
 }
