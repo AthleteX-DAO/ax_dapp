@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
@@ -24,6 +25,7 @@ class _SellDialogState extends State<SellDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
   // bool _isLongApt = true;
+  double input = 0.0;
   String balance = "---";
   double price = 0.0;
   double lpFee = 0.0;
@@ -32,6 +34,7 @@ class _SellDialogState extends State<SellDialog> {
   double estimatedSlippage = 0.0;
   double youReceive = 0.0;
   String aptAddress = "";
+  TextEditingController _aptAmountController = TextEditingController();
 
   final WalletController walletController = Get.find();
   final SwapController swapController = Get.find();
@@ -364,7 +367,12 @@ class _SellDialogState extends State<SellDialog> {
                         decoration: boxDecoration(
                             Colors.transparent, 100, 0.5, Colors.grey[400]!),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            swapController
+                                .updateFromAmount(double.parse(balance));
+                            //update controller text to max balance
+                            _aptAmountController.text = balance;
+                          },
                           child: Text(
                             "MAX",
                             style: textStyle(Colors.grey[400]!, 9, false),
@@ -375,6 +383,7 @@ class _SellDialogState extends State<SellDialog> {
                         constraints: BoxConstraints(maxWidth: wid * 0.4),
                         child: IntrinsicWidth(
                           child: TextField(
+                            controller: _aptAmountController,
                             style: textStyle(Colors.grey[400]!, 22, false),
                             decoration: InputDecoration(
                               hintText: '0.00',
@@ -383,6 +392,10 @@ class _SellDialogState extends State<SellDialog> {
                               contentPadding: EdgeInsets.only(left: 3),
                               border: InputBorder.none,
                             ),
+                            onChanged: (value) {
+                              input = double.parse(value);
+                              swapController.updateFromAmount(input);
+                            },
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(
                                   (RegExp(r'^(\d+)?\.?\d{0,6}'))),
@@ -468,13 +481,12 @@ class _SellDialogState extends State<SellDialog> {
                       onPressed: () {
                         Navigator.pop(context);
                         bool confirmed = true;
-                        String txString =
-                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
+                        swapController.swapforAX();
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
                                 confirmTransaction(
-                                    context, confirmed, txString));
+                                    context, confirmed, Controller.latestTx));
                       },
                       child: Text(
                         "Confirm",
@@ -491,5 +503,13 @@ class _SellDialogState extends State<SellDialog> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    _aptAmountController.dispose();
+    super.dispose();
   }
 }
