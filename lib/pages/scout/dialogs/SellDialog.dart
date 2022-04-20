@@ -11,7 +11,10 @@ import '../../../service/TokenList.dart';
 
 class SellDialog extends StatefulWidget {
   final AthleteScoutModel athlete;
-  SellDialog(this.athlete, {Key? key}) : super(key: key);
+  bool _isLongApt;
+  SellDialog(this.athlete, bool? _isLongApt, {Key? key})
+      : this._isLongApt = _isLongApt ?? true,
+        super(key: key);
 
   @override
   State<SellDialog> createState() => _SellDialogState();
@@ -20,16 +23,48 @@ class SellDialog extends StatefulWidget {
 class _SellDialogState extends State<SellDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
-  bool _isLongApt = true;
-  double balance = 0.0;
+  // bool _isLongApt = true;
+  String balance = "---";
+  double price = 0.0;
+  double lpFee = 0.0;
   double marketPriceImpact = 0.0;
   double minimumReceived = 0.0;
   double estimatedSlippage = 0.0;
   double youReceive = 0.0;
   String aptAddress = "";
 
-  WalletController walletController = Get.find();
-  SwapController swapController = Get.find();
+  final WalletController walletController = Get.find();
+  final SwapController swapController = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    updateStats();
+  }
+
+  Future<void> updateStats() async {
+    if (widget._isLongApt) {
+      aptAddress = getLongAptAddress(widget.athlete.id);
+    } else {
+      aptAddress = getShortAptAddress(widget.athlete.id);
+    }
+    swapController.updateFromAddress(aptAddress);
+    print("Before balance: $aptAddress");
+    try {
+      balance = await walletController.getTokenBalance(aptAddress);
+    } catch (error) {
+      print("Wallet is not connected: $error");
+    }
+
+    // TODO: Implement calls for marketPriceImpact, minimumReceived, estimatedSlippage, youReceive, price, and lpFee
+    marketPriceImpact = 0.0;
+    minimumReceived = 0.0;
+    estimatedSlippage = 0.0;
+    youReceive = 0.0;
+    price = 0.0;
+    lpFee = 0.0;
+    setState(() {});
+  }
 
   Widget toggleLongShortToken(double wid, double hgt) {
     return Container(
@@ -41,33 +76,34 @@ class _SellDialogState extends State<SellDialog> {
         child: Row(
           children: [
             Expanded(
+              //Long apt toggle button
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsets.zero,
                   minimumSize: Size(50, 30),
-                  primary: _isLongApt ? Colors.amber : Colors.transparent,
+                  primary:
+                      widget._isLongApt ? Colors.amber : Colors.transparent,
                 ),
                 onPressed: () {
-                  aptAddress = getLongAptAddress(widget.athlete.id);
-                  swapController
-                      .updateFromAddress(aptAddress);
                   setState(() {
-                    _isLongApt = !_isLongApt;
+                    widget._isLongApt = !widget._isLongApt;
                   });
+                  updateStats();
                 },
                 child: Text(
                   "Long",
                   style: TextStyle(
-                      color: _isLongApt
-                          ? Colors.white
+                      color: widget._isLongApt
+                          ? Colors.black
                           : Color.fromRGBO(154, 154, 154, 1),
                       fontSize: 11),
                 ),
               ),
             ),
             Expanded(
+              //short apt toggle button
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -75,21 +111,19 @@ class _SellDialogState extends State<SellDialog> {
                     padding: EdgeInsets.zero,
                     minimumSize: Size(50, 30),
                     primary:
-                        _isLongApt ? Colors.transparent : Colors.grey[500]),
+                        widget._isLongApt ? Colors.transparent : Colors.black),
                 onPressed: () {
-                  aptAddress = getShortAptAddress(widget.athlete.id);
-                  swapController
-                      .updateFromAddress(aptAddress);
                   setState(() {
-                    _isLongApt = !_isLongApt;
+                    widget._isLongApt = !widget._isLongApt;
                   });
+                  updateStats();
                 },
                 child: Text(
                   "Short",
                   style: TextStyle(
-                      color: _isLongApt
+                      color: widget._isLongApt
                           ? Color.fromRGBO(154, 154, 154, 1)
-                          : Colors.white,
+                          : Colors.amber,
                       fontSize: 11),
                 ),
               ),
@@ -100,47 +134,117 @@ class _SellDialogState extends State<SellDialog> {
     );
   }
 
+  Widget showPrice() {
+    String tokenType = widget._isLongApt ? "Long" : "Short";
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Price", style: textStyle(Colors.white, 15, false)),
+          Text(
+            "$price AX per " + widget.athlete.name + " " + tokenType + " APT",
+            style: textStyle(Colors.white, 15, false),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget showLpFee() {
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("LP Fee:", style: textStyle(Colors.grey[600]!, 15, false)),
+          Text(
+            "LP Fee: $lpFee APT(5%)",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget showBalance() {
     return Flexible(
-      child: Text(
-        "Balance: $balance",
-        style: textStyle(Colors.grey[400]!, 14, false),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            "Balance: $balance",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
       ),
     );
   }
 
   Widget showMarketPriceImpact() {
     return Flexible(
-      child: Text(
-        "Market Price Impact: $marketPriceImpact",
-        style: textStyle(Colors.grey[400]!, 14, false),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Market Price Impact",
+              style: textStyle(Colors.grey[600]!, 15, false)),
+          Text(
+            "$marketPriceImpact",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
       ),
     );
   }
 
   Widget showMinimumReceived() {
     return Flexible(
-      child: Text(
-        "Minimum Received: $minimumReceived",
-        style: textStyle(Colors.grey[400]!, 14, false),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Minimum Received:",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+          Text(
+            "$minimumReceived AX",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
       ),
     );
   }
 
   Widget showSlippage() {
     return Flexible(
-      child: Text(
-        "Slippage: $estimatedSlippage",
-        style: textStyle(Colors.grey[400]!, 14, false),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Slippage:",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+          Text(
+            "$estimatedSlippage APT",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
       ),
     );
   }
 
   Widget showYouReceived() {
     return Flexible(
-      child: Text(
-        "You Receive: $youReceive",
-        style: textStyle(Colors.grey[400]!, 14, false),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "You Receive:",
+            style: textStyle(Colors.white, 15, false),
+          ),
+          Text(
+            "You Receive: $youReceive AX",
+            style: textStyle(Colors.white, 15, false),
+          ),
+        ],
       ),
     );
   }
@@ -154,6 +258,7 @@ class _SellDialogState extends State<SellDialog> {
     if (_height < 505) hgt = _height;
 
     return Dialog(
+      backgroundColor: Colors.transparent,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
         height: hgt,
@@ -204,8 +309,9 @@ class _SellDialogState extends State<SellDialog> {
                 ),
               ),
             ),
-            //Input apt text with toggle, and apt input box
+            //Input apt text with toggle
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   isWeb ? "Input APT:" : "Input APT amount you want to sell:",
@@ -219,66 +325,82 @@ class _SellDialogState extends State<SellDialog> {
             ),
             //APT input box
             Container(
+              padding: EdgeInsets.symmetric(horizontal: 6),
               width: wid,
-              height: 55,
+              height: 70,
               decoration:
                   boxDecoration(Colors.transparent, 14, 0.5, Colors.grey[400]!),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(width: 5),
-                  Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        scale: 0.5,
-                        image: AssetImage("assets/images/apt_noninverted.png"),
+              child: Column(
+                children: [
+                  //APT icon - athlete name - max button - input field
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(width: 5),
+                      Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            scale: 0.5,
+                            image: widget._isLongApt
+                                ? AssetImage(
+                                    "assets/images/apt_noninverted.png")
+                                : AssetImage("assets/images/apt_inverted.png"),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(width: 15),
-                  Expanded(
-                    child: Text(
-                      widget.athlete.name + " APT",
-                      style: textStyle(Colors.white, 15, false),
-                    ),
-                  ),
-                  Container(
-                    height: 28,
-                    width: 48,
-                    decoration: boxDecoration(
-                        Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "MAX",
-                        style: textStyle(Colors.grey[400]!, 9, false),
+                      Container(width: 15),
+                      Expanded(
+                        child: Text(
+                          widget.athlete.name + " APT",
+                          style: textStyle(Colors.white, 15, false),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 70,
-                    child: TextField(
-                      style: textStyle(Colors.grey[400]!, 22, false),
-                      decoration: InputDecoration(
-                        hintText: '0.00',
-                        hintStyle: textStyle(Colors.grey[400]!, 22, false),
-                        contentPadding:
-                            isWeb ? EdgeInsets.all(9) : EdgeInsets.all(6),
-                        border: InputBorder.none,
+                      Container(
+                        height: 28,
+                        width: 48,
+                        decoration: boxDecoration(
+                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "MAX",
+                            style: textStyle(Colors.grey[400]!, 9, false),
+                          ),
+                        ),
                       ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                            (RegExp(r'^(\d+)?\.?\d{0,6}'))),
-                      ],
-                    ),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: wid * 0.4),
+                        child: IntrinsicWidth(
+                          child: TextField(
+                            style: textStyle(Colors.grey[400]!, 22, false),
+                            decoration: InputDecoration(
+                              hintText: '0.00',
+                              hintStyle:
+                                  textStyle(Colors.grey[400]!, 22, false),
+                              contentPadding: EdgeInsets.only(left: 3),
+                              border: InputBorder.none,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  (RegExp(r'^(\d+)?\.?\d{0,6}'))),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      showBalance(),
+                    ],
                   ),
                 ],
               ),
             ),
-            showBalance(),
             Divider(
               thickness: 0.35,
               color: Colors.grey[400],
@@ -292,29 +414,13 @@ class _SellDialogState extends State<SellDialog> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text("Price",
-                            style: textStyle(Colors.white, 15, false)),
-                        Text("0.8 " + widget.athlete.name + " APT per AX",
-                            style: textStyle(Colors.white, 15, false)),
+                        showPrice(),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "LP Fee",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          "0.5 AX",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
+                        showLpFee(),
                       ],
                     ),
                     Row(

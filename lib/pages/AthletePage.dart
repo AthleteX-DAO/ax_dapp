@@ -1086,15 +1086,14 @@ class _AthletePageState extends State<AthletePage> {
                                             padding: EdgeInsets.zero,
                                             minimumSize: Size(50, 30)),
                                         onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return StatefulBuilder(
-                                                        builder: (context,
-                                                            setState) {
-                                                      return SellDialog(
-                                                          athlete);
-                                                    });
-                                                  }),
+                                            context: context,
+                                            builder: (context) {
+                                              return StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                return SellDialog(
+                                                    athlete, _isLongApt);
+                                              });
+                                            }),
                                         child: Text("Sell",
                                             style: textStyle(primaryOrangeColor,
                                                 20, false, false))))
@@ -1398,7 +1397,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         builder: (context,
                                                             setState) {
                                                       return SellDialog(
-                                                          athlete);
+                                                          athlete, _isLongApt);
                                                     });
                                                   }),
                                               child: Text("Sell",
