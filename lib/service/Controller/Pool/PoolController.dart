@@ -45,10 +45,8 @@ class PoolController extends GetxController {
     BigInt tokenAAmount = normalizeInput(amount1.value);
     BigInt tokenBAmount = normalizeInput(amount2.value);
 
-    EthereumAddress tokenAAddress =
-        EthereumAddress.fromHex(address1.value);
-    EthereumAddress tokenBAddress =
-        EthereumAddress.fromHex(address2.value);
+    EthereumAddress tokenAAddress = EthereumAddress.fromHex(address1.value);
+    EthereumAddress tokenBAddress = EthereumAddress.fromHex(address2.value);
 
     ERC20 tokenA =
         ERC20(address: tokenAAddress, client: controller.client.value);
@@ -60,17 +58,16 @@ class PoolController extends GetxController {
     print("Before try");
     try {
       print("[Console] Pool Controller -> Before approve");
-      txStringA = await tokenA
-          .approve(routerMainnetAddress, transferAmountA,
-              credentials: controller.credentials)
-          .then((value) async => (txStringB = await tokenB.approve(
-              routerMainnetAddress, transferAmountB,
-              credentials: controller.credentials)));
+      txStringA = await tokenA.approve(routerMainnetAddress, transferAmountA,
+          credentials: controller.credentials);
       controller.updateTxString(txStringA);
+      txStringB = await tokenB.approve(routerMainnetAddress, transferAmountB,
+          credentials: controller.credentials);
       controller.updateTxString(txStringB);
       print("[Console] Pool Controller -> Approved");
     } catch (e) {
-      print(e);
+      print("[Console] Error happens");
+      throw Exception(e.toString());
     }
   }
 
@@ -81,10 +78,8 @@ class PoolController extends GetxController {
     BigInt amountAMin = amountADesired * BigInt.from(0.5);
     BigInt amountBMin = amountADesired * BigInt.from(0.5);
 
-    EthereumAddress tokenAAddress =
-        EthereumAddress.fromHex(address1.value);
-    EthereumAddress tokenBAddress =
-        EthereumAddress.fromHex(address2.value);
+    EthereumAddress tokenAAddress = EthereumAddress.fromHex(address1.value);
+    EthereumAddress tokenBAddress = EthereumAddress.fromHex(address2.value);
 
     EthereumAddress to = await controller.credentials.extractAddress();
     Credentials credentials = controller.credentials;
@@ -152,6 +147,6 @@ class PoolController extends GetxController {
   void updateBottomAmount(double newAmount) {
     amount2.value = newAmount;
     print("[Console] Pool Controller -> amount2: ${amount2.value}");
-    update(); 
+    update();
   }
 }
