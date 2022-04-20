@@ -481,7 +481,7 @@ class _SellDialogState extends State<SellDialog> {
                       onPressed: () {
                         Navigator.pop(context);
                         bool confirmed = true;
-                        swapController.swapforAX();
+                        swapController.approve().then((value) => swapController.swapforAX());
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>

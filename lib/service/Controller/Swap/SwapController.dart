@@ -119,7 +119,7 @@ class SwapController extends GetxController {
     EthereumAddress to = await controller.credentials.extractAddress();
     List<EthereumAddress> path = [tknA, axtAddress];
     String txString = await _aptRouter.swapExactTokensForAVAX(
-        amountIn, BigInt.one, path, to, deadline.value,
+        amountIn, BigInt.zero, path, to, deadline.value,
         credentials: controller.credentials);
     controller.updateTxString(txString);
   }
