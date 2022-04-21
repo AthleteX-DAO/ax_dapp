@@ -3,7 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import '../service/TokenList.dart';
+import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
+import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 
 class DesktopFarm extends StatefulWidget {
   const DesktopFarm({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class DesktopFarm extends StatefulWidget {
 }
 
 class _DesktopFarmState extends State<DesktopFarm> {
+  final farmController = FarmController();
   final myController = TextEditingController();
   bool isWeb = true;
   bool isAllFarms = true;
@@ -21,24 +23,25 @@ class _DesktopFarmState extends State<DesktopFarm> {
   List<Farm> myFarmsList = [];
   List<Farm> myFarmsListSearchFilter = [];
 
+  /// initialize farms list from the farm controller
+  /// will update it as async function
+  void initAsyncState() {
+    allFarmsList = farmController.getFarms();
+    myFarmsList = farmController.getFarms();
+    allFarmsListSearchFilter = farmController.getFarms();
+    myFarmsListSearchFilter = farmController.getFarms();
+  }
+
   // ignore: must_call_super
   void initState() {
-    allFarmsList.add(Farm("AX Farm"));
-    myFarmsList.add(Farm("AX Farm"));
-
-    for (dynamic ath in TokenList.namesList) {
-      allFarmsList.add(Farm("AX - " + ath[0] + " APT"));
-      myFarmsList.add(Farm("AX - " + ath[0] + " APT"));
-    }
-
-    allFarmsListSearchFilter = allFarmsList;
-    myFarmsListSearchFilter = myFarmsList;
+    initAsyncState();
   }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
     // widget tree.
+    farmController.dispose();
     myController.dispose();
     super.dispose();
   }
@@ -619,11 +622,4 @@ class _DesktopFarmState extends State<DesktopFarm> {
                           style: textStyle(Colors.black, 14, true, false)))),
             ]));
   }
-}
-
-class Farm {
-  final String name;
-  String? athlete;
-
-  Farm(this.name, [this.athlete]);
 }
