@@ -45,18 +45,16 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   }
 
   TransactionInfo calculateTransactionInfo(AptBuyInfo? buyInfo, double inputAmount, double slippageTolerance) {
-    final aptLiquidity = normalizeInput(buyInfo!.aptLiquidity);
-    final axLiquidity = normalizeInput(buyInfo.axLiquidity);
-    final aptInputAmount = normalizeInput(inputAmount);
-    final receiveAmount = aptInputAmount * (aptLiquidity ~/ (axLiquidity + aptInputAmount));
+    final aptLiquidity = buyInfo!.aptLiquidity;
+    final axLiquidity = buyInfo.axLiquidity;
+    final axInputAmount = inputAmount;
+    final receiveAmount = axInputAmount * (aptLiquidity / (axLiquidity + axInputAmount));
 
-    final priceImpact = 100 -
-        ((axLiquidity * (aptLiquidity - receiveAmount)) /
-            (aptLiquidity * (axLiquidity + aptInputAmount)));
+    final priceImpact = 100 * (1 - ((axLiquidity * (aptLiquidity - receiveAmount)) / (aptLiquidity * (axLiquidity + axInputAmount))));
 
-    final minimumReceiveAmt = receiveAmount * (normalizeInput(1 - slippageTolerance));
+    final minimumReceiveAmt = receiveAmount * (1 - slippageTolerance);
     return TransactionInfo(
-        minimumReceiveAmt.toDouble(), BigInt.from(priceImpact).toDouble(), receiveAmount.toDouble());
+        minimumReceiveAmt, priceImpact, receiveAmount);
   }
 
   void _mapMaxBuyTapEventToState(
