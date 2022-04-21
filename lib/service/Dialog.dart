@@ -462,7 +462,8 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ApproveButton(175, 45, 'Approve', testFunction, depositConfimed)
+              ApproveButton(175, 45, 'Approve', testFunction, testFunction,
+                  transactionConfirmed)
             ],
           )
         ],
@@ -674,7 +675,7 @@ Dialog dualDepositDialog(
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                depositConfimed(context));
+                                transactionConfirmed(context));
                       },
                       child: Text("Add Liquidity",
                           style: textStyle(Colors.amber[400]!, 20, true)))),
@@ -694,7 +695,7 @@ Dialog dualDepositDialog(
                     showDialog(
                         context: context,
                         builder: (BuildContext context) =>
-                            depositConfimed(context));
+                            transactionConfirmed(context));
                   },
                   child:
                       Text("Deposit", style: textStyle(Colors.black, 16, true)),
@@ -1825,7 +1826,7 @@ Dialog removalConfirmed(BuildContext context) {
 }
 
 // dynamic
-Dialog depositConfimed(BuildContext context) {
+Dialog transactionConfirmed(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -2538,7 +2539,8 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
                 ),
               ), */
               //ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
-              ApproveButton(175, 45, 'Approve', testFunction, removalConfirmed),
+              ApproveButton(175, 45, 'Approve', testFunction, testFunction,
+                  removalConfirmed),
             ],
           )
         ],
@@ -3024,12 +3026,13 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
                         ),
                       ],
                     )),
-                ApproveButton(
-                    175, 40, "Approve", poolController.approve, depositConfimed)
+                ApproveButton(175, 40, "Approve", poolController.approve,
+                    poolController.addLiquidity, transactionConfirmed)
               ])));
 }
 
 Dialog poolRemoveLiquidity(BuildContext context, String name) {
+  PoolController poolController = Get.find();
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -3247,8 +3250,8 @@ Dialog poolRemoveLiquidity(BuildContext context, String name) {
                     ],
                   ),
                 ),
-                ApproveButton(
-                    175, 40, "Approve", testFunction, removalConfirmed)
+                ApproveButton(175, 40, "Approve", poolController.approve,
+                    poolController.removeLiquidity, removalConfirmed)
               ])));
 }
 

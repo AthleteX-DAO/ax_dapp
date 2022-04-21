@@ -1,5 +1,5 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
-import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
@@ -12,7 +12,7 @@ import '../../../service/TokenList.dart';
 
 class SellDialog extends StatefulWidget {
   final AthleteScoutModel athlete;
-  bool _isLongApt;
+  final bool _isLongApt;
   SellDialog(this.athlete, bool? _isLongApt, {Key? key})
       : this._isLongApt = _isLongApt ?? true,
         super(key: key);
@@ -35,6 +35,7 @@ class _SellDialogState extends State<SellDialog> {
   double youReceive = 0.0;
   String aptAddress = "";
   TextEditingController _aptAmountController = TextEditingController();
+  bool isLongApt = true;
 
   final WalletController walletController = Get.find();
   final SwapController swapController = Get.find();
@@ -43,10 +44,11 @@ class _SellDialogState extends State<SellDialog> {
   void initState() {
     super.initState();
     updateStats();
+    this.isLongApt = widget._isLongApt;
   }
 
   Future<void> updateStats() async {
-    if (widget._isLongApt) {
+    if (isLongApt) {
       aptAddress = getLongAptAddress(widget.athlete.id);
     } else {
       aptAddress = getShortAptAddress(widget.athlete.id);
@@ -86,19 +88,18 @@ class _SellDialogState extends State<SellDialog> {
                       borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsets.zero,
                   minimumSize: Size(50, 30),
-                  primary:
-                      widget._isLongApt ? Colors.amber : Colors.transparent,
+                  primary: isLongApt ? Colors.amber : Colors.transparent,
                 ),
                 onPressed: () {
                   setState(() {
-                    widget._isLongApt = !widget._isLongApt;
+                    isLongApt = !isLongApt;
                   });
                   updateStats();
                 },
                 child: Text(
                   "Long",
                   style: TextStyle(
-                      color: widget._isLongApt
+                      color: isLongApt
                           ? Colors.black
                           : Color.fromRGBO(154, 154, 154, 1),
                       fontSize: 11),
@@ -113,18 +114,17 @@ class _SellDialogState extends State<SellDialog> {
                         borderRadius: BorderRadius.circular(20)),
                     padding: EdgeInsets.zero,
                     minimumSize: Size(50, 30),
-                    primary:
-                        widget._isLongApt ? Colors.transparent : Colors.black),
+                    primary: isLongApt ? Colors.transparent : Colors.black),
                 onPressed: () {
                   setState(() {
-                    widget._isLongApt = !widget._isLongApt;
+                    isLongApt = !isLongApt;
                   });
                   updateStats();
                 },
                 child: Text(
                   "Short",
                   style: TextStyle(
-                      color: widget._isLongApt
+                      color: isLongApt
                           ? Color.fromRGBO(154, 154, 154, 1)
                           : Colors.amber,
                       fontSize: 11),
@@ -138,7 +138,7 @@ class _SellDialogState extends State<SellDialog> {
   }
 
   Widget showPrice() {
-    String tokenType = widget._isLongApt ? "Long" : "Short";
+    String tokenType = isLongApt ? "Long" : "Short";
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -347,7 +347,7 @@ class _SellDialogState extends State<SellDialog> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: widget._isLongApt
+                            image: isLongApt
                                 ? AssetImage(
                                     "assets/images/apt_noninverted.png")
                                 : AssetImage("assets/images/apt_inverted.png"),
@@ -468,34 +468,8 @@ class _SellDialogState extends State<SellDialog> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 8.0),
-                    width: 175,
-                    height: 45,
-                    decoration: isWeb
-                        ? boxDecoration(
-                            Colors.amber[400]!, 500, 1, Colors.amber[400]!)
-                        : boxDecoration(Colors.amber[500]!.withOpacity(0.20),
-                            500, 1, Colors.transparent),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        bool confirmed = true;
-                        swapController.approve().then((value) => swapController.swapforAX());
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                confirmTransaction(
-                                    context, confirmed, Controller.latestTx));
-                      },
-                      child: Text(
-                        "Confirm",
-                        style: isWeb
-                            ? textStyle(Colors.black, 16, false)
-                            : textStyle(Colors.amber[500]!, 16, false),
-                      ),
-                    ),
-                  ),
+                  ApproveButton(175, 40, "Approve", swapController.approve,
+                      swapController.swapforAX, transactionConfirmed),
                 ],
               ),
             )
