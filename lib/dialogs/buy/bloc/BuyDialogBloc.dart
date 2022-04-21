@@ -3,7 +3,6 @@ import 'package:ax_dapp/dialogs/buy/models/BuyDialogState.dart';
 import 'package:ax_dapp/dialogs/buy/models/TransactionInfo.dart';
 import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptBuyInfo.dart';
-import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
