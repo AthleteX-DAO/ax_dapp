@@ -3,7 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQLClientHelper {
   final HttpLink _httpLink = HttpLink(
-      'https://api.thegraph.com/subgraphs/name/zikyfranky/athelete-x-dex');
+      'https://thegraph.com/hosted-service/subgraph/nyamwaya/athletex-dex-subgraph-mainnet?selected=playground');
 
   //TODO determine if we need auth token for access
   //final AuthLink _authLink = AuthLink(getToken: () async => "auth");
