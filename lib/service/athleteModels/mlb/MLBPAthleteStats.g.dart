@@ -23,5 +23,5 @@ Map<String, dynamic> _$MLBAthleteStatsToJson(MLBAthleteStats instance) =>
       'name': instance.name,
       'team': instance.team,
       'position': instance.position,
-      'stat_history': instance.statHistory,
+      'stat_history': instance.statHistory.map((e) => e.toJson()).toList(),
     };

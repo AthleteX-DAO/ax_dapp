@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class ScoutPageEvent extends Equatable {
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 class SelectSport extends ScoutPageEvent {
