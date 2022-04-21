@@ -92,20 +92,23 @@ class _DesktopPoolState extends State<DesktopPool> {
     double layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
 
     print(_width);
-    return Container(
-        width: _width,
-        height: _height - AppBar().preferredSize.height,
-        //Top margin of Pool section is equal to height + 1 of AppBar on mobile only
-        margin: isWeb
-            ? EdgeInsets.zero
-            : EdgeInsets.only(top: AppBar().preferredSize.height + 10),
-        alignment: Alignment.center,
-        child: Container(
-            width: layoutWdt,
-            height: layoutHgt,
-            child: (isAllLiquidity)
-                ? allLiquidityLayout(layoutHgt, layoutWdt)
-                : myLiquidityLayout(layoutHgt, layoutWdt)));
+    return SingleChildScrollView(
+      physics: ClampingScrollPhysics(),
+      child: Container(
+          width: _width,
+          height: _height - AppBar().preferredSize.height,
+          //Top margin of Pool section is equal to height + 1 of AppBar on mobile only
+          margin: isWeb
+              ? EdgeInsets.zero
+              : EdgeInsets.only(top: AppBar().preferredSize.height + 10),
+          alignment: Alignment.center,
+          child: Container(
+              width: layoutWdt,
+              height: layoutHgt,
+              child: (isAllLiquidity)
+                  ? allLiquidityLayout(layoutHgt, layoutWdt)
+                  : myLiquidityLayout(layoutHgt, layoutWdt))),
+    );
   }
 
   Widget allLiquidityLayout(double layoutHgt, double layoutWdt) {
