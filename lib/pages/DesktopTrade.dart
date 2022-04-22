@@ -53,8 +53,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
     double amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
 
     Widget swapButton = Container(
-        //Approve button on desktop / Confirm button on mobile (might need to change later)
-        height: _height * 0.05,
+        height: _height * 0.07,
         width: wid - 50,
         decoration: boxDecoration(Colors.transparent, 100, 4, Colors.blue),
         child: TextButton(
@@ -68,10 +67,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
       swapButton = Container(
           margin:
               isWeb ? EdgeInsets.only(top: 30.0) : EdgeInsets.only(top: 20.0),
-          height: isWeb ? _height * 0.05 : _height * 0.06,
-          width: wid,
+          height: isWeb ? _height * 0.07 : _height * 0.06,
+          width: wid - 30,
           decoration: isWeb
-              ? boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!)
+              ? boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent)
               : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1,
                   Colors.transparent),
           child: TextButton(
@@ -91,7 +90,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   style: isWeb
                       ? textStyle(Colors.amber[500]!, 16, true)
                       : textStyle(Colors.amber[500]!, 16, true))));
-
     return SafeArea(
       bottom: false,
       child: Container(
