@@ -125,6 +125,7 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
           width: _width,

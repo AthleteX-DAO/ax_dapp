@@ -24,6 +24,7 @@ class _MobileCreateWalletConfirmPageState
     double _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         width: _width,
         height: _height,

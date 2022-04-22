@@ -179,7 +179,7 @@ Dialog walletDialog(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: _height*0.35,
+      height: _height*0.43,
       width: _width*0.8,
       padding: EdgeInsets.all(20),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
