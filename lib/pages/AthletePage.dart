@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
+import 'package:ax_dapp/pages/scout/dialogs/BuyDialog.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
@@ -9,7 +10,7 @@ import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ax_dapp/pages/scout/dialogs/Dialogs.dart';
+import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
@@ -1376,8 +1377,8 @@ class _AthletePageState extends State<AthletePage> {
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) =>
-                                                          buyDialog(context,
-                                                              athlete)),
+                                                          BuyDialog(athlete,
+                                                              _isLongApt)),
                                               child: Text("Buy",
                                                   style: textStyle(Colors.black,
                                                       20, false, false)))),
