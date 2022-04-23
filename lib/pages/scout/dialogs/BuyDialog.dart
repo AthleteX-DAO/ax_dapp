@@ -4,25 +4,25 @@ import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../../../service/TokenList.dart';
-
-class SellDialog extends StatefulWidget {
+class BuyDialog extends StatefulWidget {
   final AthleteScoutModel athlete;
   final bool _isLongApt;
-  SellDialog(this.athlete, bool? _isLongApt, {Key? key})
+  BuyDialog(this.athlete, bool? _isLongApt, {Key? key})
       : this._isLongApt = _isLongApt ?? true,
         super(key: key);
 
   @override
-  State<SellDialog> createState() => _SellDialogState();
+  State<BuyDialog> createState() => _BuyDialogState();
 }
 
-class _SellDialogState extends State<SellDialog> {
+class _BuyDialogState extends State<BuyDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
   // bool _isLongApt = true;
@@ -44,8 +44,8 @@ class _SellDialogState extends State<SellDialog> {
   @override
   void initState() {
     super.initState();
-    swapController.updateToAddress(AXT.polygonAddress);
     updateStats();
+    swapController.updateFromAddress(AXT.polygonAddress);
     this.isLongApt = widget._isLongApt;
   }
 
@@ -55,10 +55,10 @@ class _SellDialogState extends State<SellDialog> {
     } else {
       aptAddress = getShortAptAddress(widget.athlete.id);
     }
-    swapController.updateFromAddress(aptAddress);
+    swapController.updateToAddress(aptAddress);
     print("Before balance: $aptAddress");
     try {
-      balance = await walletController.getTokenBalance(aptAddress);
+      balance = await walletController.getTokenBalance(AXT.polygonAddress);
     } catch (error) {
       print("Wallet is not connected: $error");
     }
@@ -147,7 +147,12 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text("Price", style: textStyle(Colors.white, 15, false)),
           Text(
-            "$price AX per " + widget.athlete.name + " " + tokenType + " APT",
+            "$price " +
+                widget.athlete.name +
+                " " +
+                tokenType +
+                " APT" +
+                " per AX",
             style: textStyle(Colors.white, 15, false),
           ),
         ],
@@ -192,7 +197,7 @@ class _SellDialogState extends State<SellDialog> {
           Text("Market Price Impact",
               style: textStyle(Colors.grey[600]!, 15, false)),
           Text(
-            "$marketPriceImpact",
+            "$marketPriceImpact %",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -210,7 +215,7 @@ class _SellDialogState extends State<SellDialog> {
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
           Text(
-            "$minimumReceived AX",
+            "$minimumReceived APT",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -228,7 +233,7 @@ class _SellDialogState extends State<SellDialog> {
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
           Text(
-            "$estimatedSlippage APT",
+            "$estimatedSlippage AX",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -237,6 +242,7 @@ class _SellDialogState extends State<SellDialog> {
   }
 
   Widget showYouReceived() {
+    String tokenType = isLongApt ? "Long" : "Short";
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -246,7 +252,7 @@ class _SellDialogState extends State<SellDialog> {
             style: textStyle(Colors.white, 15, false),
           ),
           Text(
-            "$youReceive AX",
+            "$youReceive " + widget.athlete.name + " " + tokenType + " APT",
             style: textStyle(Colors.white, 15, false),
           ),
         ],
@@ -277,7 +283,7 @@ class _SellDialogState extends State<SellDialog> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("Sell " + widget.athlete.name + " APT",
+                    Text("Buy " + widget.athlete.name + " APT",
                         style: textStyle(Colors.white, 20, false)),
                     IconButton(
                       icon: const Icon(
@@ -295,13 +301,12 @@ class _SellDialogState extends State<SellDialog> {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                        text: "You can sell APT's at Market Price for AX.",
+                        text: "You can purchase APTs at Market Price with AX.",
                         style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12)),
                     TextSpan(
-                        text:
-                            " You can access other funds with AX on the Matic network through",
+                        text: " You can buy AX on the Matic network through",
                         style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12)),
@@ -314,12 +319,28 @@ class _SellDialogState extends State<SellDialog> {
                 ),
               ),
             ),
+            Container(
+              alignment: Alignment.centerLeft,
+              height: 50,
+              width: wid,
+              child: GestureDetector(
+                onTap: () {
+                  String urlString =
+                      "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
+                  launch(urlString);
+                },
+                child: Text(
+                  'Learn How to buy AX',
+                  style: TextStyle(color: Colors.amber[400], fontSize: 14),
+                ),
+              ),
+            ),
             //Input apt text with toggle
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  isWeb ? "Input APT:" : "Input APT amount you want to sell:",
+                  isWeb ? "Input AX:" : "Input AX amount you want to spend:",
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[600],
@@ -349,17 +370,14 @@ class _SellDialogState extends State<SellDialog> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             scale: 0.5,
-                            image: isLongApt
-                                ? AssetImage(
-                                    "assets/images/apt_noninverted.png")
-                                : AssetImage("assets/images/apt_inverted.png"),
+                            image: AssetImage("assets/images/x.png"),
                           ),
                         ),
                       ),
                       Container(width: 15),
                       Expanded(
                         child: Text(
-                          widget.athlete.name + " APT",
+                          "AX",
                           style: textStyle(Colors.white, 15, false),
                         ),
                       ),
