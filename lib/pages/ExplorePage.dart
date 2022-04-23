@@ -15,7 +15,7 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   // name variable to store future list item name on tap
   late String name;
-  late List war;
+  late List scaledPrice;
   late List time;
   late List<Athlete> athleteList;
   Widget filler = Text("Filler Text");
@@ -25,18 +25,18 @@ class _ExplorePageState extends State<ExplorePage> {
   void initState() {
     super.initState();
     name = 'Select Athlete';
-    war = [0, 0, 0];
+    scaledPrice = [0, 0, 0];
     time = [0, 0, 0];
   }
 
   double lgTxSize = 52;
   double headerTx = 30;
 
-  Widget buildGraph(List war, List time) {
+  Widget buildGraph(List scaledPrice, List time) {
     List<FlSpot> athleteData = [];
 
-    for (int i = 0; i < war.length - 1; i++) {
-      athleteData.add(FlSpot(time[i].toDouble(), war[i].toDouble()));
+    for (int i = 0; i < scaledPrice.length - 1; i++) {
+      athleteData.add(FlSpot(time[i].toDouble(), scaledPrice[i].toDouble()));
     }
 
     return LineChart(
@@ -177,7 +177,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                             child: ListTile(
                                                 onTap: () => setState(() => {
                                                       name = athlete.name,
-                                                      war = [athlete.war, athlete.war, athlete.war],
+                                                      scaledPrice = [athlete.scaledPrice, athlete.scaledPrice, athlete.scaledPrice],
                                                       time = [athlete.time, athlete.time, athlete.time]
                                                     }),
                                                 title: Text(athlete.name)));
@@ -237,7 +237,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                             children: [
                                               Text(
                                                   "  \$" +
-                                                      (war[0])
+                                                      (scaledPrice[0])
                                                           .toStringAsFixed(4),
                                                   style: athleteWAR)
                                             ],
@@ -273,7 +273,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                     width: 600,
                                     child: StreamBuilder(
                                       builder: (context, snapshot) =>
-                                          buildGraph(war, time),
+                                          buildGraph(scaledPrice, time),
                                       stream:
                                           Stream.periodic(Duration(seconds: 7)),
                                     )),

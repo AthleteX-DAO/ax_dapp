@@ -647,7 +647,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   // Athlete Cards
   Widget createListCardsForMobile(AthleteScoutModel athlete) {
     double _width = MediaQuery.of(context).size.width;
-
+    double bookPrice = athlete.bookPrice;
     bool view = true;
     bool team = true;
     if (_width < 910) view = false;
@@ -710,7 +710,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       children: [
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                          Text(bookPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("+4%",
@@ -718,7 +718,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         ])),
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                          Text(bookPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("-2%",
