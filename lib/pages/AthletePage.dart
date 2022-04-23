@@ -1135,7 +1135,7 @@ class _AthletePageState extends State<AthletePage> {
                                         onPressed: () => showDialog(
                                             context: context,
                                             builder: (BuildContext context) =>
-                                                redeemDialog(context, athlete)),
+                                                RedeemDialog(athlete)),
                                         child: Text("Redeem",
                                             style: textStyle(primaryWhiteColor,
                                                 20, false, false))))
@@ -1436,10 +1436,9 @@ class _AthletePageState extends State<AthletePage> {
                                           child: TextButton(
                                               onPressed: () => showDialog(
                                                   context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          redeemDialog(context,
-                                                              athlete)),
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      RedeemDialog(athlete)),
                                               child: Text("Redeem",
                                                   style: textStyle(Colors.white,
                                                       20, false, false))))
