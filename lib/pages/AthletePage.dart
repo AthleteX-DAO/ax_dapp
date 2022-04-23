@@ -1,5 +1,4 @@
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
-import 'package:ax_dapp/pages/scout/dialogs/BuyDialog.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
@@ -1117,7 +1116,7 @@ class _AthletePageState extends State<AthletePage> {
                                         onPressed: () => showDialog(
                                             context: context,
                                             builder: (BuildContext context) =>
-                                                mintDialog(context, athlete)),
+                                                MintDialog(athlete)),
                                         child: Text("Mint",
                                             style: textStyle(primaryWhiteColor,
                                                 20, false, false)))),
@@ -1422,8 +1421,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) =>
-                                                          mintDialog(context,
-                                                              athlete)),
+                                                          MintDialog(athlete)),
                                               child: Text("Mint",
                                                   style: textStyle(Colors.white,
                                                       20, false, false)))),
