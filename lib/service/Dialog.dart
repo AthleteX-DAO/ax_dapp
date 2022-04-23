@@ -1,4 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:ax_dapp/pages/connectWallet/MobileLoginPage.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
@@ -171,12 +172,6 @@ Dialog walletDialog(BuildContext context) {
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
-  double wid = 450;
-  double hgt = 200;
-  double edge = 75;
-  double wid_child = wid - edge;
-  if (_width < 405) wid = _width;
-  if (_height < 505) hgt = _height * 0.45;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -184,8 +179,8 @@ Dialog walletDialog(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: hgt,
-      width: wid,
+      height: _height*0.43,
+      width: _width*0.8,
       padding: EdgeInsets.all(20),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
@@ -215,7 +210,7 @@ Dialog walletDialog(BuildContext context) {
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 40),
-                width: wid_child,
+                width: _width*0.6,
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
@@ -244,33 +239,54 @@ Dialog walletDialog(BuildContext context) {
                       }
                     });
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/fox.png"),
-                            fit: BoxFit.fill,
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/fox.png"),
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        "Metamask",
-                        style: textStyle(Colors.white, 16, false),
-                      ),
-                      //empty container
-                      Container(
-                        margin: EdgeInsets.only(left: 20),
-                      ),
-                    ],
+                        Text(
+                          "Metamask",
+                          style: textStyle(Colors.white, 16, false),
+                        ),
+                        //empty container
+                        Container(
+                          margin: EdgeInsets.only(left: 20),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ],
           ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            width: _width*0.6,
+            height: 45,
+            decoration: boxDecoration(
+                Colors.transparent, 100, 2, Colors.grey[400]!),
+            child: Center(
+                child: TextButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MobileLoginPage()));
+
+              },
+              child: Text(
+                "Add/Create wallet",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+            )),
+          )
         ],
       ),
     ),

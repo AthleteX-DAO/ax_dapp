@@ -1,8 +1,8 @@
+import 'package:ax_dapp/pages/V1App.dart';
 import 'package:ax_dapp/service/AthleteApi.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
-import 'package:ax_dapp/pages/V1App.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -14,6 +14,7 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   bool next = false;
   bool isWeb = true;
+
   @override
   Widget build(BuildContext context) {
     if (next) return V1App();
@@ -36,43 +37,65 @@ class _LandingPageState extends State<LandingPage> {
           fit: BoxFit.fill,
         ),
       ),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            //AX Markets Image
-            Container(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                height: _height * 0.2,
-                child: Image(
-                  image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
-                )),
-            isWeb
-                ? desktopLandingPage(context, textSize)
-                : andoridLandingPage(context, textSize),
-            //Button load athletes
-            Container(
-              width: isWeb ? _width * 0.20 : _width * 0.55,
-              height: _height * 0.1,
-              margin: EdgeInsets.only(bottom: 130.0),
-              child: FutureBuilder<dynamic>(
-                // future: AthleteApi.getAthletesLocally(context),
-                future: AthleteApi.getAthletesFromIdsDict(context),
-                builder: (context, snapshot) {
-                  //Check API response data
-                  if (snapshot.hasError) {
-                    return reloadPageButton(tradingTextSize);
-                  } else if (snapshot.hasData) {
-                    AthleteList.list = snapshot.data;
-                    return startTradingButton(tradingTextSize);
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(color: Colors.amber),
-                    );
-                  }
-                },
+      child: isWeb
+          ? Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
+              Widget>[
+              //AX Markets Image
+              Container(
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  height: _height * 0.2,
+                  child: Image(
+                    image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
+                  )),
+              desktopLandingPage(context, textSize),
+              //Button load athletes
+              Container(
+                width: isWeb ? _width * 0.20 : _width * 0.55,
+                height: _height * 0.1,
+                margin: EdgeInsets.only(bottom: 130.0),
+                child: getAtheleteData(context, tradingTextSize),
               ),
-            ),
-          ]),
+            ])
+          :
+          //Mobile landing page
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: <
+              Widget>[
+              //AX Markets Image
+              Container(
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  height: _height * 0.2,
+                  child: Image(
+                    image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
+                  )),
+              andoridLandingPage(context, textSize),
+              //Button load athletes
+              Container(
+                width: _width * 0.6,
+                height: _height * 0.07,
+                child: getAtheleteData(context, tradingTextSize),
+              ),
+            ]),
+    );
+  }
+
+  FutureBuilder<dynamic> getAtheleteData(
+      BuildContext context, double tradingTextSize) {
+    return FutureBuilder<dynamic>(
+      // future: AthleteApi.getAthletesLocally(context),
+      future: AthleteApi.getAthletesFromIdsDict(context),
+      builder: (context, snapshot) {
+        //Check API response data
+        if (snapshot.hasError) {
+          return reloadPageButton(tradingTextSize);
+        } else if (snapshot.hasData) {
+          AthleteList.list = snapshot.data;
+          return startTradingButton(tradingTextSize);
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 
@@ -148,40 +171,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Widget andoridLandingPage(BuildContext context, textSize) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
-
-    return Container(
-      height: _height * 0.25,
-      width: _width * 0.65,
-      color: Colors.grey[200],
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "Login Info",
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'OpenSans',
-              fontSize: textSize,
-              decoration: TextDecoration.none,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          Container(height: _height * 0.02),
-          Text(
-            "Will Go Here",
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'OpenSans',
-              fontSize: textSize,
-              decoration: TextDecoration.none,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ],
-      ),
-    );
+    return Container();
   }
 
   Widget reloadPageButton(double tradingTextSize) {
@@ -218,24 +208,43 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Widget startTradingButton(double tradingTextSize) {
-    return Container(
-      padding: EdgeInsets.only(left: 15, right: 15),
-      decoration: isWeb
-          ? boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!)
-          : boxDecoration(
-              Colors.amber[300]!.withOpacity(0.15), 100, 1, Colors.transparent),
-      child: TextButton(
-        onPressed: () {
-          setState(() {
-            next = true;
-          });
-        },
-        child: Text(
-          "Start Trading",
-          style: textStyle(Colors.amber[400]!, tradingTextSize, true, false),
-        ),
-      ),
-    );
+    final double _width = MediaQuery.of(context).size.width;
+    return isWeb
+        ? Container(
+            padding: EdgeInsets.only(left: 15, right: 15),
+            decoration: isWeb
+                ? boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!)
+                : boxDecoration(Colors.amber[300]!.withOpacity(0.15), 100, 1,
+                    Colors.transparent),
+            child: TextButton(
+              onPressed: () {
+                setState(() {
+                  next = true;
+                });
+              },
+              child: Text(
+                "Start Trading",
+                style:
+                    textStyle(Colors.amber[400]!, tradingTextSize, true, false),
+              ),
+            ),
+          )
+        : Container(
+            width: _width * 0.5,
+            decoration: boxDecoration(Colors.amber[300]!.withOpacity(0.15), 20,
+                1, Colors.transparent),
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => V1App()));
+              },
+              child: Text(
+                "Start",
+                style:
+                    textStyle(Colors.amber[400]!, tradingTextSize, true, false),
+              ),
+            ),
+          );
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
