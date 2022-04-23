@@ -622,6 +622,16 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.11"
+<<<<<<< HEAD
+=======
+  material_color_utilities:
+    dependency: transitive
+    description:
+      name: material_color_utilities
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.3"
+>>>>>>> fcd6342 (refactor: refactored mint dialog to make it functional)
   meta:
     dependency: transitive
     description:
