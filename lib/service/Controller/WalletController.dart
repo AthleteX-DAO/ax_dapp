@@ -13,7 +13,8 @@ class WalletController extends GetxController {
   var axPrice = "-".obs;
   var axCirculation = "-".obs;
   var axTotalSupply = "-".obs;
-  var yourBalance = "0.0".obs;
+  var yourBalance = "-".obs;
+  var tokenPrice = 0.0.obs;
   Controller controller = Get.find();
 
   Future<void> getYourAxBalance() async {
@@ -58,6 +59,34 @@ class WalletController extends GetxController {
     return tokenBalance;
   }
 
+  // Update token balance
+  Future<String> getWalletBalance(
+      String strWalletAddress, String strTokenAddress) async {
+    EthereumAddress ethWalletAddress =
+        EthereumAddress.fromHex(strWalletAddress);
+    late EthereumAddress tokenEthAddress;
+    late String tokenBalance;
+    var rpcUrl;
+    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
+      rpcUrl = Controller.supportedChains[controller.networkID.value];
+    }
+    print("[Console] rpcUrl: $rpcUrl");
+    Web3Client rpcClient = Web3Client(rpcUrl, Client());
+    tokenEthAddress = EthereumAddress.fromHex(strTokenAddress);
+    var ax = Erc20(address: tokenEthAddress, client: rpcClient);
+    try {
+      BigInt rawBalance = await ax.balanceOf(ethWalletAddress);
+      print("Raw Balance: $rawBalance");
+      EtherAmount balanceInWei = EtherAmount.inWei(rawBalance);
+      double balanceInEther = balanceInWei.getValueInUnit(EtherUnit.ether);
+      tokenBalance = balanceInEther.toStringAsFixed(6);
+    } catch (error) {
+      print("[Console] Failed to retrieve the balance: $error");
+    }
+    update();
+    return tokenBalance;
+  }
+
   // Update circulating Supply, price, total supply in one call
   void getTokenMetrics() async {
     var coinGeckoUrl =
@@ -69,6 +98,7 @@ class WalletController extends GetxController {
       var ap = jsonTokenMetrics['market_data']['current_price']['usd'];
       if (ap != null) {
         axPrice.value = "$ap";
+        tokenPrice.value = ap;
       }
       var ts = jsonTokenMetrics['market_data']['total_supply'];
       if (ts != null) {

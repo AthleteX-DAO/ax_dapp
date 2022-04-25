@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
+import 'package:get/get.dart';
 
 class DesktopFarm extends StatefulWidget {
   const DesktopFarm({Key? key}) : super(key: key);
@@ -18,18 +19,14 @@ class _DesktopFarmState extends State<DesktopFarm> {
   final myController = TextEditingController();
   bool isWeb = true;
   bool isAllFarms = true;
-  List<Farm> allFarmsList = [];
-  List<Farm> allFarmsListSearchFilter = [];
-  List<Farm> myFarmsList = [];
-  List<Farm> myFarmsListSearchFilter = [];
 
   /// initialize farms list from the farm controller
   /// will update it as async function
   void initAsyncState() {
-    allFarmsList = farmController.getFarms();
-    myFarmsList = farmController.getFarms();
-    allFarmsListSearchFilter = farmController.getFarms();
-    myFarmsListSearchFilter = farmController.getFarms();
+    // allFarmsList = farmController.allFarms;
+    // myFarmsList = farmController.stakedFarms;
+    // allFarmsListSearchFilter = farmController.allFarms;
+    // myFarmsListSearchFilter = farmController.stakedFarms;
   }
 
   // ignore: must_call_super
@@ -123,21 +120,17 @@ class _DesktopFarmState extends State<DesktopFarm> {
               PointerDeviceKind.touch,
             },
           ),
-          child: ListView.builder(
+          child: Obx(() => ListView.builder(
             padding: EdgeInsets.zero,
             scrollDirection: isWeb ? Axis.horizontal : Axis.vertical,
             physics: BouncingScrollPhysics(),
-            itemCount: isAllFarms
-                ? allFarmsListSearchFilter.length
-                : myFarmsListSearchFilter.length,
+            itemCount: isAllFarms ? farmController.filteredAllFarms.length : farmController.filteredStakedFarms.length,
             itemBuilder: (context, index) {
               return isAllFarms
-                  ? createAllFarmItem(
-                      allFarmsListSearchFilter[index], listHeight, layoutWdt)
-                  : createMyFarmItem(
-                      myFarmsListSearchFilter[index], listHeight, layoutWdt);
+                  ? createAllFarmItem(farmController.filteredAllFarms[index], listHeight, layoutWdt)
+                  : createMyFarmItem(farmController.filteredStakedFarms[index], listHeight, layoutWdt);
             },
-          ),
+          )),
         ),
       ),
     ]);
@@ -162,7 +155,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     if (!isAllFarms) {
                       myController.clear();
                       setState(() {
-                        allFarmsListSearchFilter = allFarmsList;
+                        // allFarmsListSearchFilter = allFarmsList;
                         isAllFarms = true;
                       });
                     }
@@ -181,7 +174,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     if (isAllFarms) {
                       myController.clear();
                       setState(() {
-                        myFarmsListSearchFilter = myFarmsList;
+                        // myFarmsListSearchFilter = myFarmsList;
                         isAllFarms = false;
                       });
                     }
@@ -198,6 +191,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     //TO DO pass list width so that this method knows width of parent - Mauricio
     //Cannot stablish a height for list items for cross axis alignment, in this case for rows
     //So for rows height is stablished in outer container
+    FarmController farmController = new FarmController();
     double minCardHeight = 450;
     double maxCardHeight = 500;
     double cardWidth = isWeb ? 500 : layoutWidth;
@@ -233,24 +227,19 @@ class _DesktopFarmState extends State<DesktopFarm> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Total APY",
+                "Current APR",
                 style: txStyle,
               ),
-              Text("12%", style: txStyle)
+              // Obx(() => Text("${farm.strAPR}%", style: txStyle))
+              Text("${farm.dAPR.toStringAsFixed(2)}%", style: txStyle)
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text("TVL", style: txStyle),
-              Text("\$1,000,000", style: txStyle)
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("LP APY", style: txStyle),
-              Text("5%", style: txStyle)
+              // Obx(() => Text("\$ ${farm.strTVL}", style: txStyle))
+              Text("\$${farm.dTVL.toStringAsFixed(2)}", style: txStyle)
             ],
           ),
           //Divider line
@@ -273,10 +262,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    "AX provided",
+                    "Currently Staked",
                     style: txStyle,
                   ),
-                  Text("1,000 AX", style: txStyle)
+                  Obx(() => Text("${farm.dStaked.toStringAsFixed(2)} ${farm.strStakedSymbol}",
+                      style: txStyle))
                 ],
               ),
             ),
@@ -289,7 +279,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     "Rewards Earned",
                     style: txStyle,
                   ),
-                  Text("100 AX", style: txStyle)
+                  Obx(() => Text("${farm.dRewards.toStringAsFixed(2)} ${farm.strRewardSymbol}",
+                      style: txStyle))
                 ],
               ),
             ),
@@ -299,7 +290,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text("Total AX available (Staked + Earned)", style: txStyle),
-                  Text("1,100 AX", style: txStyle)
+                  Obx(() => Text("${(farm.dStaked.value + farm.dRewards.value).toStringAsFixed(2)} ${farm.strRewardSymbol}",
+                      style: txStyle))
                 ],
               ),
             ),
@@ -323,7 +315,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text("Rewards Earned", style: txStyle),
-                  Text("100 AX", style: txStyle)
+                  Obx(() => Text("{farmController.rewardsEarned} ${farm.strRewardSymbol}",
+                      style: txStyle))
                 ],
               ),
             ),
@@ -341,10 +334,12 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     decoration: boxDecoration(
                         Colors.amber[600]!, 100, 0, Colors.amber[600]!),
                     child: TextButton(
-                        onPressed: () => showDialog(
+                        onPressed: () async => {
+                          await farm.claim(),
+                          showDialog(
                             context: context,
-                            builder: (BuildContext context) =>
-                                rewardsClaimed(context)),
+                            builder: (BuildContext context) => rewardsClaimed(context))
+                        },
                         child: Text("Claim Rewards",
                             style: textStyle(Colors.black, 14, true, false)))),
                 Container(
@@ -406,31 +401,37 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 "TVL",
                 style: txStyle,
               ),
-              Text("\$1,000,000", style: txStyle)
+              // Obx(() => Text("\$${farm.strTVL}", style: txStyle))
+              Text("\$${farm.dTVL.toStringAsFixed(2)}", style: txStyle)
             ],
           ),
           // Fee
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("Swap Fee APY", style: txStyle),
-              Text("20%", style: txStyle)
-            ],
-          ),
-          // Rewards
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("AX Rewards APY", style: txStyle),
-              Text("10%", style: txStyle)
-            ],
-          ),
+
+          // This is intended to be added in later down the line.
+
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     Text("Swap Fee APR", style: txStyle),
+          //     Text("20%", style: txStyle)
+          //   ],
+          // ),
+          // // Rewards
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     Text("AX Rewards APR", style: txStyle),
+          //     Text("10%", style: txStyle)
+          //   ],
+          // ),
+
           // Total APY
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Total APY", style: txStyle),
-              Text("30%", style: txStyle)
+              Text("Total APR", style: txStyle),
+              // Obx(() => Text("${farm.strAPR}%", style: txStyle))
+              Text("${farm.dAPR.toStringAsFixed(2)}%", style: txStyle)
             ],
           ),
         ],
@@ -459,18 +460,19 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 onChanged: (value) {
                   setState(() {
                     if (!isAllFarms) {
-                      myFarmsListSearchFilter = myFarmsList
-                          .where((farm) => farm.name
-                              .toUpperCase()
-                              .contains(value.toUpperCase()))
-                          .toList();
+                      // myFarmsListSearchFilter = myFarmsList
+                      //     .where((farm) => farm.strName
+                      //         .toUpperCase()
+                      //         .contains(value.toUpperCase()))
+                      //     .toList();
                     } else {
-                      allFarmsListSearchFilter = allFarmsList
-                          .where((farm) => farm.name
-                              .toUpperCase()
-                              .contains(value.toUpperCase()))
-                          .toList();
+                      // allFarmsListSearchFilter = allFarmsList
+                      //     .where((farm) => farm.strName
+                      //         .toUpperCase()
+                      //         .contains(value.toUpperCase()))
+                      //     .toList();
                     }
+                    farmController.filterFarms(value);
                   });
                 },
                 decoration: InputDecoration(
@@ -528,10 +530,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
     //Dialog that appears when stake button is pressed
     Dialog participatingDialog;
     if (farm.athlete == null) {
-      participatingDialog = depositDialog(context, cardWidth, isWeb);
+      participatingDialog = depositDialog(context, farm, cardWidth, isWeb);
     } else {
       participatingDialog =
-          dualDepositDialog(context, farm.athlete!, cardWidth, isWeb);
+          dualDepositDialog(context, farm, farm.athlete!, cardWidth, isWeb);
     }
     return Container(
         width: cardWidth,
@@ -550,7 +552,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
               ),
               Container(width: 15),
               Expanded(
-                child: Text(farm.name,
+                child: Text(farm.strName,
                     style: textStyle(Colors.white, 20, false, false)),
               ),
               Container(
@@ -572,10 +574,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
     Dialog participatingDialog;
     cardWidth = isWeb ? 500 : cardWidth;
     if (farm.athlete == null) {
-      participatingDialog = depositDialog(context, cardWidth, isWeb);
+      participatingDialog = depositDialog(context, farm, cardWidth, isWeb);
     } else {
       participatingDialog =
-          dualDepositDialog(context, farm.athlete!, cardWidth, isWeb);
+          dualDepositDialog(context, farm, farm.athlete!, cardWidth, isWeb);
     }
     return Container(
         width: cardWidth,
@@ -605,7 +607,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
               ),
               Container(width: 5),
               Expanded(
-                child: Text(farm.name,
+                child: Text(farm.strName,
                     style: textStyle(Colors.white, 20, false, false)),
               ),
               Container(

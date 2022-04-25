@@ -38,17 +38,16 @@ class _ApproveButtonState extends State<ApproveButton> {
 
   void changeButton() {
     //Changes from approve button to confirm
-
     widget.approveCallback().then((_) {
-      setState(() {
+     setState(() {
         isApproved = true;
-        print(
-            'ApproveButton widget: Transaction has been approved - $isApproved');
+        print('ApproveButton widget: Transaction has been approved - $isApproved');
         text = "Confirm";
         fillcolor = Colors.amber;
         textcolor = Colors.black;
       });
-    }).catchError((_) {
+    }).catchError((e) {
+      print("[Console - Error] $e");
       setState(() {
         isApproved = false;
         text = "Approve";

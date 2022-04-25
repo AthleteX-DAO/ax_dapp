@@ -1,106 +1,179 @@
 import 'dart:typed_data';
+import 'package:ax_dapp/util/UserInputNorm.dart';
+import 'package:http/http.dart';
 import 'package:get/get.dart';
-import 'package:ax_dapp/util/helper.dart';
+import 'package:web3dart/web3dart.dart';
 import 'package:flutter_web3/ethers.dart';
-import 'package:web3dart/credentials.dart';
 import 'package:ax_dapp/contracts/Pool.g.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/contracts/ERC20.g.dart';
+
+String strRouterAddress = "0x31b1f3b9ebb950d0256607972760da0b6f0680d5";
 
 class Farm {
-  late Pool _pool;
-  late String farmAddressString;
-  String? athlete;
-  String name = "";
-  String tvl = "";
-  String swapFeeAPY = "";
-  String axRewardsAPY = "";
-  String totalAPY = "";
-  String stakingAddress = "";
-  String rewardAddress = "";
-  double currentStaked = 0.0;
+  // decalaration of member varibles
+  late Pool contract;
+
   Controller controller = Get.find();
-  String tvlInUSD = "";
+  String? athlete;
+  String strName = "";
+  String strAddress = "";
+  String strStakeTokenAddress = "";
+  String strRewardTokenAddress = "";
+  double dAPR = 0.0;
+  double dTVL = 0.0;
+  double dStakeTokenPrice = 0.0;
+  double dRewardTokenPrice = 0.0;
 
-  // Formula for calculating TVL //
-  // TVL = (TKNPriceInUSD * TKNAmount) + (TKNPriceInUSD * TKNAmount locked) ,
+  RxDouble dStaked = 0.0.obs;
+  RxDouble dRewards = 0.0.obs;
+  RxString strStakedSymbol = "".obs;
+  RxString strRewardSymbol = "".obs;
+  RxString strStakedAlias = "".obs;
+ 
+  RxDouble dUnStakeBalance = 0.0.obs;
+  RxDouble dStakeBalance = 0.0.obs;
 
-  // Farm(String name, String stakingAddress, String rewardAddress,
-  //     [String? athelete]) {}
-  //   this.name = name;
-  //   this.stakingAddress = stakingAddress;
-  //   this.rewardAddress = rewardAddress;
-  //   this.athlete = athelete;
-  // }
+  late Web3Client rpcClient;
 
-  Farm(
-    String name,
-    String stakingAddress,
-  ) {
-    this.name = name;
-    String hex = stakingAddress;
-    var farmAddress = EthereumAddress.fromHex(hex);
-    this._pool = Pool(address: farmAddress, client: controller.client.value);
+  // contructor with poolInfo from api
+  Farm(dynamic poolInfo) {
+    this.strAddress = poolInfo['id'].toString();
+    this.strName = "${poolInfo['stakingToken']['alias']} Long-Short APT";
+    this.dAPR = double.parse(poolInfo['apr']);
+    this.dTVL = double.parse(poolInfo['tvl']);
+    this.dStaked = RxDouble(double.parse(poolInfo['staked']));
+    this.dRewards = RxDouble(double.parse(poolInfo['rewards']));
+    this.dStakeTokenPrice = double.parse(poolInfo['stakingToken']['price']);
+    this.dRewardTokenPrice = double.parse(poolInfo['rewardToken']['price']);
+    this.strStakeTokenAddress = poolInfo['stakingToken']['id'].toString();
+    this.strRewardTokenAddress = poolInfo['rewardToken']['id'].toString();
+
+    this.strStakedSymbol = RxString(poolInfo['stakingToken']['symbol']);
+    this.strRewardSymbol = RxString(poolInfo['rewardToken']['symbol']);
+    this.strStakedAlias = RxString(poolInfo['stakingToken']['alias']);
+
+    EthereumAddress address = EthereumAddress.fromHex(this.strAddress);
+    String rpcUrl = controller.mainRPCUrl;
+    if (Controller.supportedChains.containsKey(controller.networkID.value))
+      rpcUrl = Controller.supportedChains[controller.networkID.value]!;
+    rpcClient = Web3Client(rpcUrl, Client());
+    this.contract = new Pool(address: address, client: rpcClient);
+  }
+
+  // constructor from another farm
+  Farm.fromFarm(Farm farm) {
+    this.strAddress = farm.strAddress;
+    this.strName = farm.strName;
+    this.dAPR = farm.dAPR;
+    this.dTVL = farm.dTVL;
+    this.dStaked = farm.dStaked;
+    this.dRewards = farm.dRewards;
+    this.dStakeTokenPrice = farm.dStakeTokenPrice;
+    this.dRewardTokenPrice = farm.dRewardTokenPrice;
+    this.strStakeTokenAddress = farm.strStakeTokenAddress;
+    this.strRewardTokenAddress = farm.strRewardTokenAddress;
+    this.strStakedSymbol = farm.strStakedSymbol;
+    this.strRewardSymbol = farm.strRewardSymbol;
+    this.strStakedAlias = farm.strStakedAlias;
+    this.rpcClient = farm.rpcClient;
+    this.contract = farm.contract;
+
+    String account = controller.publicAddress.value.hex;
+    // account = "0x22b3e4b38fb2f260302787b18b1401747eacf8d4";
+    this.getStakedBalance(account);
   }
 
   /// This function is used to stake tokens on a specific farm
+  /// and also update the txHash string on conroller
   ///
-  /// @param {BigInt} this is the amount of the staking
-  /// @param {Farm} this is the information of the farm
-  ///
-  /// @return {String} the hash value of the transaction
-  Future<String> stake(double stake) async {
-    String stakingString = abiCoder.encode(['address'], [farmAddressString]);
-    Uint8List stakingData = Uint8List.fromList(stakingString.codeUnits);
+  /// @return {void}
+  Future<void> stake() async {
+    // String stakingString = abiCoder.encode(['address'], [strAddress]);
+    // Uint8List stakingData = Uint8List.fromList(stakingString.codeUnits);
 
-    // This is interesting + relevant
-    String rewardString = abiCoder.encode(
-        ['address', 'uint256', 'uint256', 'uint256'],
-        [farmAddressString, 0.5, 0.5, days(90)]);
+    // String rewardString = abiCoder.encode(
+    //     ['address', 'uint256', 'uint256', 'uint256'],
+    //     [strAddress, 0.5, 0.5, days(90)]);
+    // Uint8List rewardData = Uint8List.fromList(rewardString.codeUnits);
+    String stakingString = abiCoder.encode([], []);
+    String rewardString = abiCoder.encode([], []);
+    Uint8List stakingData = Uint8List.fromList(stakingString.codeUnits);
     Uint8List rewardData = Uint8List.fromList(rewardString.codeUnits);
 
-    BigInt amount = BigInt.from(stake);
-    String hash = await _pool.stake(amount, stakingData, rewardData,
+    // EtherAmount amount = EtherAmount.fromUnitAndValue(EtherUnit.ether, this.dStakeBalance.value.toString());
+    BigInt stakeAmount = normalizeInput(this.dStakeBalance.value);
+
+    String txHash = await this.contract.stake(stakeAmount, stakingData, rewardData,
         credentials: controller.credentials);
-    return hash;
+    print(txHash);
+
+    controller.updateTxString(txHash);
   }
 
   /// This function is used to unstake tokens on a specific farm
+  /// and also update the txHash string on conroller
   ///
   /// @param {double} this is the decimal amount to unstake
   ///
-  /// @return {String} the hash value of the transaction
-  Future<String> unstake(double unstake) async {
+  /// @return {void}
+  Future<void> unstake() async {
     Uint8List rewardData =
         Uint8List.fromList(abiCoder.encode([], []).codeUnits);
     Uint8List stakingData =
         Uint8List.fromList(abiCoder.encode([], []).codeUnits);
 
-    BigInt amount = BigInt.from(unstake);
-    String hash = await _pool.unstake(amount, stakingData, rewardData,
+    BigInt unstakeAmount = normalizeInput(this.dUnStakeBalance.value);
+    String txHash = await this.contract.unstake(unstakeAmount, stakingData, rewardData,
         credentials: controller.credentials);
-    return hash;
+    controller.updateTxString(txHash);
   }
 
-  /// @title claim function
+  /// This function is used to stake tokens on a specific farm
+  /// and also update the txHash string on conroller
   ///
-  /// @return {String}
-  Future<String> claim() async {
-    String stakingString = abiCoder.encode(['address'], [farmAddressString]);
+  /// @return {void}
+  Future<void> claim() async {
+    String stakingString = abiCoder.encode([], []);
     Uint8List stakingData = Uint8List.fromList(stakingString.codeUnits);
 
-    String rewardString = abiCoder.encode(
-        ['address', 'uint256', 'uint256', 'uint256'],
-        [farmAddressString, 0.5, 0.5, 90]);
+    // String rewardString = abiCoder.encode(
+    //     ['address', 'uint256', 'uint256', 'uint256'],
+    //     [controller.publicAddress.value.hex, 1, 1, 90]);
+
+    String rewardString = abiCoder.encode([], []);
     Uint8List rewardData = Uint8List.fromList(rewardString.codeUnits);
 
-    String hash = await _pool.claim(BigInt.from(100), stakingData, rewardData,
+    print("[Console-staking data] $stakingData");
+    print("[Console-reward data $rewardData");
+
+    String txHash = await this.contract.claim(BigInt.from(100), stakingData, rewardData,
         credentials: controller.credentials);
-    return hash;
+    print("[Console-Claim] $txHash");
+    controller.updateTxString(txHash);
   }
 
-  void calculateTVL() async {
-    var totalRewards = await _pool.rewardBalances();
-    var totalStaked = await _pool.stakingTotals();
-    tvlInUSD = totalRewards + totalStaked;
+  /// This function is used to get balance of staked farm
+  /// 
+  /// @param {String} the address of the account
+  /// @return {void}
+  Future<void> getStakedBalance(String strAccount) async {
+    EthereumAddress ethAccount = EthereumAddress.fromHex(strAccount);
+    List<BigInt> balances = await this.contract.stakingBalances(ethAccount);
+    EtherAmount stakedWeiBalance = EtherAmount.inWei(balances[0]);
+    double stakedEtherBalance = stakedWeiBalance.getValueInUnit(EtherUnit.ether);
+    this.dStaked.value = stakedEtherBalance;
+  }
+
+  /// This function is used to approve the reward token
+  /// 
+  /// @return {void}
+  Future<void> approve() async {
+    EthereumAddress routerAddress = EthereumAddress.fromHex(strRouterAddress);
+    EthereumAddress tokenAddress = EthereumAddress.fromHex(this.strStakeTokenAddress);
+    ERC20 rewardToken = ERC20(address: tokenAddress, client: rpcClient);
+    BigInt approveAmount = normalizeInput(this.dStakeBalance.value);
+    String txHash = await rewardToken.approve(routerAddress, approveAmount, credentials: controller.credentials);
+    controller.updateTxString(txHash);
   }
 }

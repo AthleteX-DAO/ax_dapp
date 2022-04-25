@@ -3,6 +3,7 @@ import 'package:ax_dapp/pages/connectWallet/MobileLoginPage.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
@@ -180,8 +181,8 @@ Dialog walletDialog(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: _height*0.43,
-      width: _width*0.8,
+      height: _height * 0.43,
+      width: _width * 0.8,
       padding: EdgeInsets.all(20),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
@@ -211,7 +212,7 @@ Dialog walletDialog(BuildContext context) {
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 40),
-                width: _width*0.6,
+                width: _width * 0.6,
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
@@ -271,15 +272,15 @@ Dialog walletDialog(BuildContext context) {
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 4),
-            width: _width*0.6,
+            width: _width * 0.6,
             height: 45,
-            decoration: boxDecoration(
-                Colors.transparent, 100, 2, Colors.grey[400]!),
+            decoration:
+                boxDecoration(Colors.transparent, 100, 2, Colors.grey[400]!),
             child: Center(
                 child: TextButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MobileLoginPage()));
-
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MobileLoginPage()));
               },
               child: Text(
                 "Add/Create wallet",
@@ -294,17 +295,16 @@ Dialog walletDialog(BuildContext context) {
   );
 }
 
-Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
+Dialog depositDialog(BuildContext context, Farm farm, double layoutWdt, bool isWeb) {
+  double _height = MediaQuery.of(context).size.height;
+  double wid = isWeb ? 390 : layoutWdt;
+  double hgt = _height < 455 ? _height: 450;
+  double dialogHorPadding = 30;
+
+  Farm selectedFarm = Farm.fromFarm(farm);
   TextEditingController stakeAxInput = TextEditingController();
   WalletController walletController = Get.find();
-  FarmController farmController = FarmController();
-  var newStakedBalance = 0.0.obs;
-  double _height = MediaQuery.of(context).size.height;
-  double wid = 390;
-  wid = isWeb ? wid : layoutWdt;
-  double hgt = 450;
-  if (_height < 455) hgt = _height;
-  double dialogHorPadding = 30;
+  RxDouble totalStakedBalance = 0.0.obs;
 
   return Dialog(
     //remove inset padding to increase width of child widget
@@ -378,7 +378,7 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
                     Container(width: 15),
                     Expanded(
                       child: Text(
-                        "AX",
+                        "${selectedFarm.strStakedAlias}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ),
@@ -390,9 +390,10 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
                         onPressed: () {
-                          walletController.getYourAxBalance().then((value) {
-                            stakeAxInput.text =
-                                walletController.yourBalance.value;
+                          walletController.getTokenBalance(farm.strStakeTokenAddress).then((tokenBalance) {
+                            stakeAxInput.text = tokenBalance;
+                            selectedFarm.dStakeBalance.value = double.parse(tokenBalance);
+                            totalStakedBalance.value = selectedFarm.dStaked.value + selectedFarm.dStakeBalance.value;
                             print(stakeAxInput);
                           });
                         },
@@ -407,11 +408,8 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
                       child: TextFormField(
                         controller: stakeAxInput,
                         onChanged: (value) {
-                          farmController.fundsToAddorRemove.value =
-                              double.parse(value);
-                          newStakedBalance.value =
-                              farmController.currentlyStaked.value +
-                                  double.parse(value);
+                          selectedFarm.dStakeBalance.value = double.parse(value);
+                          totalStakedBalance.value = selectedFarm.dStaked.value + selectedFarm.dStakeBalance.value;
                         },
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
@@ -435,13 +433,13 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Current AXL Staked",
+                "Current ${selectedFarm.strStakedSymbol} Staked",
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Obx(() => Text(
-                    "${farmController.currentlyStaked} AX",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
+                "${selectedFarm.dStaked.toStringAsFixed(2)} ${selectedFarm.strStakedSymbol}",
+                style: textStyle(Colors.grey[400]!, 14, false),
+              )),
             ],
           ),
           Row(
@@ -463,9 +461,9 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Obx(() => Text(
-                    "${farmController.fundsToAddorRemove} AX",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
+                "${selectedFarm.dStakeBalance.value.toStringAsFixed(2)} ${selectedFarm.strStakedSymbol}",
+                style: textStyle(Colors.grey[400]!, 14, false),
+              )),
             ],
           ),
           Container(
@@ -479,14 +477,14 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("New Staked Balance"),
-              Obx(() => Text("$newStakedBalance AX")),
+              Obx(() => Text("${totalStakedBalance.value.toStringAsFixed(2)} ${selectedFarm.strStakedSymbol}")),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ApproveButton(175, 45, 'Approve', testFunction,
-                  farmController.stake, transactionConfirmed)
+              ApproveButton(175, 45, 'Approve', selectedFarm.approve,
+                  selectedFarm.stake, transactionConfirmed)
             ],
           )
         ],
@@ -496,16 +494,14 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
 }
 
 // dynamic
-Dialog dualDepositDialog(
-    BuildContext context, String athlete, double layoutWdt, bool isWeb) {
+Dialog dualDepositDialog(BuildContext context, Farm selectedFarm, String athlete, double layoutWdt, bool isWeb) {
+  double _height = MediaQuery.of(context).size.height;
+  double wid = isWeb ? 390 : layoutWdt;
+  double hgt = _height < 455 ? _height : 450;
+  double dialogHorPadding = 30;
+
   TextEditingController stakeAxInput = TextEditingController();
   WalletController walletController = Get.find();
-  double _height = MediaQuery.of(context).size.height;
-  double wid = 390;
-  wid = isWeb ? wid : layoutWdt;
-  double hgt = 450;
-  if (_height < 455) hgt = _height;
-  double dialogHorPadding = 30;
 
   return Dialog(
     insetPadding: EdgeInsets.zero,
@@ -1336,11 +1332,9 @@ Dialog confirmTransaction(
 Dialog rewardsClaimed(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
-  double wid = 500;
+  double wid = _width < 505 ? _width : 500;
+  double hgt = _height < 340 ? _height : 335;
   double edge = 40;
-  if (_width < 505) wid = _width;
-  double hgt = 335;
-  if (_height < 340) hgt = _height;
 
   return Dialog(
       backgroundColor: Colors.transparent,
@@ -1375,7 +1369,9 @@ Dialog rewardsClaimed(BuildContext context) {
                               Icons.close,
                               color: Colors.white,
                             ),
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                           ),
                         )
                       ],
@@ -2027,14 +2023,13 @@ Dialog accountDialog(BuildContext context) {
 Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
-  FarmController farmController = FarmController();
+  var newStakedBalance = 0.0.obs;
   double wid = 390;
   wid = isWeb ? wid : layoutWdt;
   double hgt = 450;
   if (_height < 455) hgt = _height;
   double dialogHorPadding = 30;
 
-  var farmController = Get.find();
   return Dialog(
     insetPadding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
@@ -2125,6 +2120,8 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
                         onChanged: (value) {
                           amount = double.parse(value);
                           farmController.fundsToAddorRemove.value = amount;
+                          newStakedBalance.value =
+                              farmController.currentlyStaked.value + amount;
                         },
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
@@ -2151,10 +2148,14 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
                 "Current AXL Staked",
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
-              Obx(() => Text(
-                    "${farmController.currentlyStaked} AX",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
+              // Obx(() => Text(
+              //       "${farmController.currentlyStaked} AX",
+              //       style: textStyle(Colors.grey[400]!, 14, false),
+              //     )),
+              Text(
+                "{farmController.currentlyStaked} AX",
+                style: textStyle(Colors.grey[400]!, 14, false),
+              )
             ],
           ),
           Row(
@@ -2175,10 +2176,14 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
                 "Funds Removed",
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
-              Obx(() => Text(
-                    "${farmController.fundsToAddorRemove}",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
+              // Obx(() => Text(
+              //       "${farmController.fundsToAddorRemove}",
+              //       style: textStyle(Colors.grey[400]!, 14, false),
+              //     )),
+              Text(
+                "{farmController.fundsToAddorRemove}",
+                style: textStyle(Colors.grey[400]!, 14, false),
+              )
             ],
           ),
           Container(
@@ -2192,7 +2197,7 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("New Staked Balance"),
-              Text("1,000 AX"),
+              Obx(() => Text("${newStakedBalance} AX")),
             ],
           ),
           Row(

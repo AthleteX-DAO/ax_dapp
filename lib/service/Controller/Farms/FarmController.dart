@@ -1,55 +1,74 @@
+import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
-import 'package:ax_dapp/contracts/Pool.g.dart';
-import 'package:get/get.dart';
-import '../../TokenList.dart';
+import 'package:ax_dapp/service/GraphQL/GysrApi.dart';
 
 class FarmController extends GetxController {
-  late Farm farm;
-  var fundsToAddorRemove = 0.0.obs;
-  var currentlyStaked = 0.0.obs;
-  Controller controller = Get.find();
-  var amount1 = 0.0.obs;
-  var farmAddressString = "0x018a15dcd9ddb42718309611b0605aae06c51594";
+  // declaration of member variables
+  final String owner = "0xe1bf752fd7480992345629bf3866f6618d57a7da"; // this is the address of pool contract owner
 
-  late Pool _pool;
+  Controller controller = Get.find();
+  RxList<Farm> allFarms = RxList.empty();
+  RxList<Farm> stakedFarms = RxList.empty();
+  RxList<Farm> filteredAllFarms = RxList.empty();
+  RxList<Farm> filteredStakedFarms = RxList.empty();
 
   FarmController() {
-    farm = new Farm("AX Farm", farmAddressString);
+    // initialize async variables
+    initialize();
   }
 
-  /// Used to get farm list from the api
-  List<Farm> getFarms() {
-    List<Farm> farms = [];
-    for (dynamic ath in TokenList.namesList) {
-      String stakingAddress = TokenList.idToAddress[ath[1]]![2];
-      farms.add(Farm("${ath[0]} Long-Short APTs", stakingAddress));
+  /// This function is used to initialize async variables
+  ///
+  /// @return {void}
+  Future<void> initialize() async {
+    GysrApi gApi = GysrApi();
+    final QueryResult allFarmsResult = await gApi.getAllFarms(owner);
+
+    if (allFarmsResult.hasException) {
+      print(allFarmsResult.exception.toString());
+      return;
     }
-    return farms;
+
+    if (allFarmsResult.data!['pools'] == null) {
+      print("[Console] No farms");
+      return;
+    }
+
+    for (dynamic pool in allFarmsResult.data!['pools']!) {
+      allFarms.add(Farm(pool));
+      filteredAllFarms.add(Farm(pool));
+    }
+
+    String account = controller.publicAddress.value.hex.toLowerCase();
+    // account = "0x571f8e570efe1fb0ba8ff75f4749b629a471f458"; // staked account for test
+    // account = "0x22b3e4b38fb2f260302787b18b1401747eacf8d4"; // staked account for test
+    final QueryResult stakedFarmsResult = await gApi.getStakedFarms(account);
+    
+    if (stakedFarmsResult.hasException) {
+      print(stakedFarmsResult.exception.toString());
+      return;
+    }
+
+    if (stakedFarmsResult.data!['user'] == null) {
+      print('[Console] No staked farms');
+      return;
+    }
+
+    for(dynamic position in stakedFarmsResult.data!['user']!['positions']) {
+      stakedFarms.add(Farm(position['pool']));
+      filteredStakedFarms.add(Farm(position['pool']));
+    }
+}
+
+  /// This function is used to filter farms using keyword
+  /// 
+  /// @param {String} keyword for filtering farms
+  /// @return {void} 
+  void filterFarms(String keyword) {
+    print("filterFarms");
+    filteredAllFarms = RxList(allFarms.where((farm) => farm.strName.toUpperCase().contains(keyword.toUpperCase())).toList());
+    filteredStakedFarms = RxList(stakedFarms.where((farm) => farm.strName.toUpperCase().contains(keyword.toUpperCase())).toList());
   }
-
-  Future<void> stake() async {
-    var stakeAmount = fundsToAddorRemove.value;
-    String txString = await farm.stake(stakeAmount);
-    controller.updateTxString(txString);
-  }
-
-  Future<void> unstake() async {
-    var unstakeAmount = fundsToAddorRemove.value;
-    String txString = await farm.unstake(unstakeAmount);
-    controller.updateTxString(txString);
-  }
-
-  Future<void> claimRewards() async {
-    String txString = await farm.claim();
-    controller.updateTxString(txString);
-  }
-
-  /// This function is used to claim the rewards from the farm
-  ///
-  /// @param {BigInt} this is the amount of the staking
-  /// @param {Farm} this is the information of the farm
-  ///
-  /// @return {String} the hash value of the transaction
-
 }
