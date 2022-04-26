@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class SubGraphRepo {
@@ -19,7 +20,10 @@ class SubGraphRepo {
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairs() async {
     final result = await _client.query(
-        QueryOptions(document: gql(_getAllPairs())));
+      QueryOptions(
+          document: parseString(_getAllPairs()),
+          pollInterval: const Duration(seconds: 10)),
+    );
     if (result.hasException)
       return Either.right(result.exception!);
     else

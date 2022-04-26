@@ -6,9 +6,10 @@ class BuyDialogState extends Equatable {
   final double price;
   final double aptInputAmount;
   final double minimumReceived;
-  final double estimatedSlippage;
+  final double priceImpact;
   final double receiveAmount;
   final Status status;
+  final String? tokenAddress;
 
   const BuyDialogState({
     this.status = Status.initial,
@@ -17,19 +18,22 @@ class BuyDialogState extends Equatable {
     double? minimumReceived,
     double? estimatedSlippage,
     double? receiveAmount,
+    String? tokenAddress,
   })  : aptInputAmount = axInputValue ?? 0.0,
         price = price ?? 0.0,
         minimumReceived = minimumReceived ?? 0.0,
-        estimatedSlippage = estimatedSlippage ?? 0.0,
-        receiveAmount = receiveAmount ?? 0.0;
+        priceImpact = estimatedSlippage ?? 0.0,
+        receiveAmount = receiveAmount ?? 0.0,
+        tokenAddress = tokenAddress;
 
   @override
   List<Object?> get props => [
         aptInputAmount,
         price,
         minimumReceived,
-        estimatedSlippage,
+        priceImpact,
         receiveAmount,
+        tokenAddress
       ];
 
   BuyDialogState copy({
@@ -37,16 +41,18 @@ class BuyDialogState extends Equatable {
     double? axInputValue,
     double? price,
     double? minimumReceived,
-    double? estimatedSlippage,
+    double? priceImpact,
     double? receiveAmount,
+    String? tokenAddress,
   }) {
     return BuyDialogState(
       status: status ?? Status.initial,
       axInputValue: axInputValue ?? this.aptInputAmount,
       price: price ?? this.price,
       minimumReceived: minimumReceived ?? this.minimumReceived,
-      estimatedSlippage: estimatedSlippage ?? this.estimatedSlippage,
+      estimatedSlippage: priceImpact ?? this.priceImpact,
       receiveAmount: receiveAmount ?? this.receiveAmount,
+      tokenAddress: tokenAddress ?? this.tokenAddress,
     );
   }
 }

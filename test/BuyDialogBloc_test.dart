@@ -13,10 +13,9 @@ void main() {
     final buyDialog = BuyDialogBloc(repo: mockUseCase);
     final aptBuyInfo = AptBuyInfo(0.0234, 5);
     final inputAmount = 2.5;
-    final slippageTolerance = 0.01;
 
     final result = buyDialog.calculateTransactionInfo(
-        aptBuyInfo, inputAmount, slippageTolerance);
+        aptBuyInfo, inputAmount);
     print(result.receiveAmount!.toStringAsFixed(8));
     print(result.priceImpact!.toStringAsFixed(2));    
     print(result.minimumReceived!.toStringAsFixed(8));

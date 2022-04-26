@@ -1,6 +1,8 @@
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/dialogs/buy/models/BuyDialogEvent.dart';
 import 'package:ax_dapp/dialogs/buy/models/BuyDialogState.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,8 +12,9 @@ import 'package:url_launcher/url_launcher.dart';
 class BuyDialog extends StatefulWidget {
   final String athleteName;
   final double aptPrice;
+  final int athleteId;
 
-  BuyDialog(this.athleteName, this.aptPrice);
+  BuyDialog(this.athleteName, this.aptPrice, this.athleteId);
 
   @override
   State<StatefulWidget> createState() => _BuyDialogState();
@@ -30,8 +33,24 @@ class _BuyDialogState extends State<BuyDialog> {
     if (_height < 505) hgt = _height;
 
     return BlocBuilder<BuyDialogBloc, BuyDialogState>(
-        buildWhen: (previous, current) => current.status.name.isNotEmpty,
+        buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
+          final bloc = context.read<BuyDialogBloc>();
+          final price = state.price.toStringAsFixed(4);
+          var aptInputAmount = state.aptInputAmount.toStringAsFixed(4);
+          final minReceived = state.minimumReceived.toStringAsFixed(4);
+          final priceImpact = state.priceImpact.toStringAsFixed(4);
+          final receiveAmount = state.receiveAmount.toStringAsFixed(4);
+          final status = state.status;
+          print("BuyDialog TokenAddress: ${state.tokenAddress}");
+          print("BuyDialog price: $price");
+          print("BuyDialog minReceived: ${state.minimumReceived}");
+          print("BuyDialog PriceImpact: ${state.priceImpact}");
+          print("BuyDialog ReceiveAmount: ${state.receiveAmount}");
+          if (state.tokenAddress == null) {
+            bloc.add(OnLoadDialog(
+                initialTokenAddress: getLongAptAddress(widget.athleteId)));
+          }
           return Dialog(
             insetPadding: isWeb
                 ? EdgeInsets.zero
@@ -176,6 +195,7 @@ class _BuyDialogState extends State<BuyDialog> {
                                   SizedBox(
                                     width: 70,
                                     child: TextFormField(
+                                      initialValue: aptInputAmount.toString(),
                                       style: textStyle(
                                           Colors.grey[400]!, 22, false),
                                       decoration: InputDecoration(
@@ -188,6 +208,10 @@ class _BuyDialogState extends State<BuyDialog> {
                                         FilteringTextInputFormatter.allow(
                                             (RegExp(r'^(\d+)?\.?\d{0,2}'))),
                                       ],
+                                      onChanged: (text) {
+                                        final newAptInput = double.parse(text);
+                                        bloc.add(OnNewAptInput(aptInputAmount: newAptInput));
+                                      },
                                     ),
                                   ),
                                 ],
@@ -215,7 +239,7 @@ class _BuyDialogState extends State<BuyDialog> {
                                 ),
                               ),
                               Text(
-                                "${widget.aptPrice} AX per " +
+                                "${widget.aptPrice.toStringAsFixed(4)} AX per " +
                                     widget.athleteName +
                                     " APT",
                                 style: TextStyle(
@@ -255,7 +279,7 @@ class _BuyDialogState extends State<BuyDialog> {
                                 ),
                               ),
                               Text(
-                                "-0.04%",
+                                "$priceImpact%",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
@@ -274,7 +298,7 @@ class _BuyDialogState extends State<BuyDialog> {
                                 ),
                               ),
                               Text(
-                                "L.J.APT",
+                                "$minReceived",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
@@ -316,7 +340,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           ),
                         ),
                         Text(
-                          "100 " + widget.athleteName + " APT",
+                          "$receiveAmount " + widget.athleteName + " APT",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.white,

@@ -11,14 +11,19 @@ class GetAPTBuyInfoUseCase {
 
   GetAPTBuyInfoUseCase(this._graphRepo);
 
-  Future<Either<Success, Error>> fetchAptBuyInfo(String tokenAddress) async {
+  Future<Either<Success, Error>> fetchAptBuyInfo(String targetAddress) async {
+    final tokenAddress = targetAddress.toLowerCase();
     try {
+      print("target token address: $tokenAddress");
+      print("fetching apt buy info");
       final tokenPairData = await _graphRepo.queryAllPairs();
 
       if (tokenPairData.isLeft()) {
         final data = tokenPairData.getLeft().toNullable();
         if (data != null) {
-          List pairs = data["data"]["pairs"];
+          print("data retrieved: ${data.toString()}");
+          List pairs = data["pairs"];
+          print("pairs =  ${pairs.toString()}");
           List<AptPair> aptPairs =
               pairs.map((pair) => AptPair.fromJson(pair)).toList();
           AptPair aptPair = aptPairs.firstWhere((aptPair) =>
@@ -35,7 +40,8 @@ class GetAPTBuyInfoUseCase {
             axLiquidity = aptPair.reserve1;
             aptLiquidity = aptPair.reserve0;
           }
-
+          print("Ax Liquidity = $axLiquidity");
+          print("Apt Liquidity = $aptLiquidity");
           final aptBuyInfo =
               AptBuyInfo(double.parse(aptLiquidity), double.parse(axLiquidity));
           return Either.left(Success(aptBuyInfo));
@@ -43,6 +49,7 @@ class GetAPTBuyInfoUseCase {
           return Either.right(Error(_no_buy_info_error_msg));
         }
       } else {
+        print("fetching apt buy info failed: ${tokenPairData.getRight().toNullable().toString()}");
         final errorMsg = tokenPairData.getRight().toNullable().toString();
         return Either.right(
             Error("Error occurred fetching buy data: $errorMsg"));

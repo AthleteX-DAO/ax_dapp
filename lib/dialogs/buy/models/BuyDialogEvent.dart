@@ -12,6 +12,13 @@ class OnLoadDialog extends BuyDialogEvent {
   OnLoadDialog({required this.initialTokenAddress});
 }
 
+class OnNewAptInput extends BuyDialogEvent {
+  final double aptInputAmount;
+  @override
+  List<Object?> get props => [];
+  OnNewAptInput({required this.aptInputAmount});
+}
+
 class OnMaxBuyTap extends BuyDialogEvent {
   @override
   List<Object?> get props => [];
