@@ -195,7 +195,6 @@ class _BuyDialogState extends State<BuyDialog> {
                                   SizedBox(
                                     width: 70,
                                     child: TextFormField(
-                                      initialValue: aptInputAmount.toString(),
                                       style: textStyle(
                                           Colors.grey[400]!, 22, false),
                                       decoration: InputDecoration(
