@@ -1841,7 +1841,7 @@ class _AthletePageState extends State<AthletePage> {
   Widget showSymbol(String symbol) {
      return Flexible(
       child: Text(
-        "Symbol: $symbol",
+        "Symbol: \$$symbol",
         style: textStyle(greyTextColor, 10, false, false),
       ),
       // padding: EdgeInsets.only(right: 14),
