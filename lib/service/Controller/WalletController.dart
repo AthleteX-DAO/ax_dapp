@@ -85,8 +85,7 @@ class WalletController extends GetxController {
   void buyAX() {
     String axEth =
         "https://app.sushi.com/swap?inputCurrency=0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df&outputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
-    String urlString = axEth;
-    launch(urlString);
+    launchUrl(Uri.parse(axEth));
   }
 
   void addTokenToWallet() async {}

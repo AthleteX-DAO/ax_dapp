@@ -29,7 +29,7 @@ dependencies:
   web_socket_channel: ^2.1.0
   flutter_sparkline: ^0.1.0
   velocity_x: ^3.2.0
-  url_launcher: ^6.0.3
+  url_launcher: ^6.1.0
   fl_chart: ^0.36.2
   toggle_switch: ^1.2.0
   charts_flutter: ^0.11.0
@@ -65,7 +65,7 @@ dependency_overrides:
     git:
       url: https://github.com/google/charts
       path: charts_flutter
-  url_launcher_web: 2.0.6
+  url_launcher_web: 2.0.9
 
 
 

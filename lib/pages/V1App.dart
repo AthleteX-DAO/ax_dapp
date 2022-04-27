@@ -197,8 +197,8 @@ class _V1AppState extends State<V1App> {
                         icon: Image.asset("assets/images/x.png"),
                         iconSize: 40,
                         onPressed: () {
-                          String urlString = "https://www.athletex.io/";
-                          launch(urlString);
+                          Uri urlString = Uri.parse('https://www.athletex.io/');
+                          launchUrl(urlString);
                         },
                       ),
                     ),
@@ -295,7 +295,7 @@ class _V1AppState extends State<V1App> {
             iconSize: 40,
             onPressed: () {
               String urlString = "https://www.athletex.io/";
-              launch(urlString);
+              launchUrl(Uri.parse(urlString));
             },
           ),
           Row(
@@ -332,7 +332,7 @@ class _V1AppState extends State<V1App> {
                 // margin: ,
                 child: InkWell(
                   child: Text('athletex.io'),
-                  onTap: () => launch('https://www.athletex.io/'),
+                  onTap: () => launchUrl(Uri.parse('https://www.athletex.io/')),
                 ),
                 width: 72,
                 height: 20,
@@ -348,7 +348,7 @@ class _V1AppState extends State<V1App> {
                     IconButton(
                         onPressed: () =>
                             //Discord button
-                            launch('https://discord.com/invite/WFsyAuzp9V'),
+                            launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
                         icon: FaIcon(
                           FontAwesomeIcons.discord,
                           size: 25,
@@ -356,7 +356,7 @@ class _V1AppState extends State<V1App> {
                         )),
                     IconButton(
                         onPressed: () =>
-                            launch('https://twitter.com/athletex_dao?s=20'),
+                            launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
                         icon: FaIcon(
                           FontAwesomeIcons.twitter,
                           size: 25,
@@ -364,7 +364,7 @@ class _V1AppState extends State<V1App> {
                         )),
                     IconButton(
                         onPressed: () =>
-                            launch('https://github.com/SportsToken'),
+                            launchUrl(Uri.parse('https://github.com/SportsToken')),
                         icon: FaIcon(
                           FontAwesomeIcons.github,
                           size: 25,
@@ -502,7 +502,7 @@ class _V1AppState extends State<V1App> {
               TextButton(
                 onPressed: () {
                   String urlString = "https://polygonscan.com/";
-                  launch(urlString);
+                  launchUrl(Uri.parse(urlString));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
