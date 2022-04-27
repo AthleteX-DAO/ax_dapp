@@ -1505,6 +1505,7 @@ class _AthletePageState extends State<AthletePage> {
                                           Colors.white, 24, false, false))),
                               Spacer(),
                               Container(
+                                width: 100,
                                   child:
                                     FutureBuilder<String>(
                                       future: _isLongApt ? walletController.getTokenSymbol(getLongAptAddress(athlete.id)) : walletController.getTokenSymbol(getShortAptAddress(athlete.id)),
@@ -1841,7 +1842,7 @@ class _AthletePageState extends State<AthletePage> {
      return Flexible(
       child: Text(
         "Symbol: $symbol",
-        style: textStyle(greyTextColor, 14, false, false),
+        style: textStyle(greyTextColor, 10, false, false),
       ),
       // padding: EdgeInsets.only(right: 14),
     );
