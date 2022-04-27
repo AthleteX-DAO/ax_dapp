@@ -27,7 +27,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
           value: 2,
           child: ListTile(
             leading: FaIcon(
-              FontAwesomeIcons.globeAmericas,
+              FontAwesomeIcons.earthAmericas,
             ),
             title: Text('Website'),
           ),
