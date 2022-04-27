@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
+import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
@@ -9,10 +10,10 @@ import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
+
   const AthletePage({
     Key? key,
     required this.athlete,
@@ -802,8 +803,8 @@ class _AthletePageState extends State<AthletePage> {
                                         Text("Sport / League",
                                             style: textStyle(greyTextColor, 12,
                                                 false, false)),
-                                        Text(
-                                            "${athlete.sport.name}", //toDo add map for the different league
+                                        Text("${athlete.sport.name}",
+                                            //toDo add map for the different league
                                             style: textStyle(greyTextColor, 12,
                                                 false, false))
                                       ]),
@@ -1474,28 +1475,40 @@ class _AthletePageState extends State<AthletePage> {
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
 
+    var longAptToken = "\$AJLT1010";
+    var shortAptToken = "\$AJST1010";
+
     // Stats-Side
     return Container(
         width: wid,
-        height: 550,
+        height: 580,
         alignment: Alignment.center,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               // Price Overview section
               Container(
-                  height: 150,
+                  height: 180,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                  width: wid * 0.4375,
+                                  width: wid * 0.3375,
                                   child: Text("Price Overview",
                                       style: textStyle(
                                           Colors.white, 24, false, false))),
+                              Spacer(),
+                              Container(
+                                  child: Text(
+                                      (_longAptIndex == 0)
+                                          ? "Symbol: $longAptToken"
+                                          : "Symbol: $shortAptToken",
+                                      style: textStyle(
+                                          greyTextColor, 14, false, false))),
+                              Spacer(),
                               Container(
                                   width: 200,
                                   child: Row(
@@ -1627,8 +1640,8 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Sport / League",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text(
-                                  "${athlete.sport.name}", //toDo add map for the different league
+                              Text("${athlete.sport.name}",
+                                  //toDo add map for the different league
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
