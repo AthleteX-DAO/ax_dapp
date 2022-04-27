@@ -33,19 +33,20 @@ class LSPController extends GetxController {
     print("Attempting to MINT LSP");
     final theCredentials = controller.credentials;
     BigInt tokensToCreate = normalizeInput(createAmt.value);
-    approve(genericLSP, address).then((value) async {
-      String txString =
-          await genericLSP.create(tokensToCreate, credentials: theCredentials);
-      controller.updateTxString(txString); //Sends tx to controller
-    });
+    String txString =
+        await genericLSP.create(tokensToCreate, credentials: theCredentials);
+    controller.updateTxString(txString); //Sends tx to controller
   }
 
-  Future<void> approve(
-      LongShortPair genericLSP, EthereumAddress address) async {
+  Future<void> approve() async {
+    EthereumAddress address = EthereumAddress.fromHex(aptAddress.value);
+    genericLSP = LongShortPair(address: address, client: tokenClient);
     print(
         "[Console] Collateral amount: ${await genericLSP.collateralPerPair()}");
     BigInt transferAmount = await genericLSP.collateralPerPair();
-    BigInt amount = normalizeInput(createAmt.value) * transferAmount ~/ BigInt.from(10).pow(18); // removes 18 zeros from collateralPerPair
+    BigInt amount = normalizeInput(createAmt.value) *
+        transferAmount ~/
+        BigInt.from(10).pow(18); // removes 18 zeros from collateralPerPair
     print("[Console] Inside approve()");
     EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.polygonAddress);
     Erc20 axt = Erc20(address: axtaddress, client: tokenClient);

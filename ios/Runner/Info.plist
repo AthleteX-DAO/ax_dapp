@@ -10,6 +10,8 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSFaceIDUsageDescription</key>
+    <string>Why is my app authenticating using face id?</string>
 	<key>CFBundleName</key>
 	<string>AthleteX dApp</string>
 	<key>CFBundlePackageType</key>

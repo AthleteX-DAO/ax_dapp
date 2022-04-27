@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        enabled: true
+        generate_for:
+          include:
+            - lib/service/Api/models/**.dart
+            - lib/service/athleteModels/**.dart
+            - lib/service/BlockchainModels/**.dart
+            - test/**.dart
+        options:
+          explicit_to_json: true
+          include_if_null: false

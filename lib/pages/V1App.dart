@@ -1,27 +1,27 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopPool.dart';
-import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
-import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
-import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
-import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
+import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
+import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
+import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Athlete.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 class V1App extends StatefulWidget {
   @override
@@ -41,7 +41,7 @@ class _V1AppState extends State<V1App> {
   //     receiveYards: [3, 5, 7],
   //     receiveTouch: [9, 8, 7],
   //     rushingYards: [6, 5, 4],
-  //     war: [3.543, 1.094, 9.478, 10.231],
+  //     scaledPrice: [3.543, 1.094, 9.478, 10.231],
   //     time: [0, 1, 2, 3]);
   // Athlete nullAthlete = new Athlete(
   //     name: "",
@@ -53,7 +53,7 @@ class _V1AppState extends State<V1App> {
   //     receiveYards: [],
   //     receiveTouch: [],
   //     rushingYards: [],
-  //     war: [],
+  //     scaledPrice: [],
   //     time: []);
 
   // state change variables
@@ -160,7 +160,7 @@ class _V1AppState extends State<V1App> {
                   repo: GetScoutAthletesDataUseCase([
                     RepositoryProvider.of<MLBRepo>(context),
                     //NFLRepo
-                    //MLBRepo
+                    //NBARepo
                   ])),
               child: DesktopScout()),
           DesktopTrade(),
@@ -393,6 +393,7 @@ class _V1AppState extends State<V1App> {
   bottomNavBarAndroid(BuildContext context) {
     return BottomNavigationBar(
       showUnselectedLabels: true,
+      type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.transparent,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(

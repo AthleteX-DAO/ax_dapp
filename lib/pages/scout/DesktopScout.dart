@@ -8,6 +8,7 @@ import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'models/AthleteScoutModel.dart';
 
 class DesktopScout extends StatefulWidget {
@@ -50,7 +51,6 @@ class _DesktopScoutState extends State<DesktopScout> {
     double _height = MediaQuery.of(context).size.height;
     // breaks the code, will come back to it later(probably)
 
-
     return BlocBuilder<ScoutPageBloc, ScoutPageState>(
         buildWhen: (previous, current) => current.status.name.isNotEmpty,
         builder: (context, state) {
@@ -58,7 +58,8 @@ class _DesktopScoutState extends State<DesktopScout> {
           if (state.status == Status.initial) {
             bloc.add(OnPageRefresh());
           }
-          if (athletePage && curAthlete!= null) return AthletePage(athlete: curAthlete!);
+          if (athletePage && curAthlete != null)
+            return AthletePage(athlete: curAthlete!);
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),
             child: Container(
@@ -485,82 +486,119 @@ class _DesktopScoutState extends State<DesktopScout> {
     double athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
 
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(width: 66),
-          Container(
-              width: athNameBx,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Athlete",
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
-              )),
-          if (team)
-            Container(
-                width: _width * 0.15,
-                child: Text("Team",
-                    style: textStyle(Colors.grey[400]!, 12, false, false))),
-          IndexedStack(
-            index: _marketVsBookPriceIndex,
-            children: [
-              MaterialButton(
-                onPressed: () {
-                  setState(() {
-                    _marketVsBookPriceIndex = 1;
-                  });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Market Price",
-                          style: TextStyle(color: Colors.grey, fontSize: 10),
-                          textAlign: TextAlign.justify,
-                        )),
+    return Container(
+      child: kIsWeb
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                  Container(width: 66),
+                  Container(
+                      width: athNameBx,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Athlete",
+                            style: TextStyle(color: Colors.grey, fontSize: 12)),
+                      )),
+                  if (team)
                     Container(
-                        margin: EdgeInsets.only(left: 2),
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.autorenew,
-                              size: 10,
-                              color: Colors.grey,
-                            )))
-                  ],
-                ),
-              ),
-              MaterialButton(
-                onPressed: () {
-                  setState(() {
-                    _marketVsBookPriceIndex = 0;
-                  });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Book Value",
+                        width: _width * 0.12,
+                        child: Text("Team",
+                            style: textStyle(
+                                Colors.grey[400]!, 12, false, false))),
+                  Container(
+                    width: _width * 0.12,
+                    child: Text(
+                      "Market Price",
+                      style: textStyle(Colors.grey[400]!, 10, false, false),
+                    ),
+                  ),
+                  Container(
+                    width: _width * 0.12,
+                    child: Text("Book Value",
                         style: textStyle(Colors.grey[400]!, 10, false, false)),
+                  ),
+                ])
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                  Container(width: 66),
+                  Container(
+                      width: athNameBx,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Athlete",
+                            style: TextStyle(color: Colors.grey, fontSize: 12)),
+                      )),
+                  if (team)
                     Container(
-                        margin: EdgeInsets.only(left: 2),
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.autorenew,
-                              size: 10,
-                              color: Colors.grey,
-                            )))
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ]);
+                        width: _width * 0.15,
+                        child: Text("Team",
+                            style: textStyle(
+                                Colors.grey[400]!, 12, false, false))),
+                  IndexedStack(
+                    index: _marketVsBookPriceIndex,
+                    children: [
+                      MaterialButton(
+                        onPressed: () {
+                          setState(() {
+                            _marketVsBookPriceIndex = 1;
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Market Price",
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 10),
+                                  textAlign: TextAlign.justify,
+                                )),
+                            Container(
+                                margin: EdgeInsets.only(left: 2),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Icon(
+                                      Icons.autorenew,
+                                      size: 10,
+                                      color: Colors.grey,
+                                    )))
+                          ],
+                        ),
+                      ),
+                      MaterialButton(
+                        onPressed: () {
+                          setState(() {
+                            _marketVsBookPriceIndex = 0;
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("Book Value",
+                                style: textStyle(
+                                    Colors.grey[400]!, 10, false, false)),
+                            Container(
+                                margin: EdgeInsets.only(left: 2),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Icon(
+                                      Icons.autorenew,
+                                      size: 10,
+                                      color: Colors.grey,
+                                    )))
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+    );
   }
 
   Widget buildListview(ScoutPageState state) {
@@ -576,7 +614,9 @@ class _DesktopScoutState extends State<DesktopScout> {
               physics: BouncingScrollPhysics(),
               itemCount: athletesList.length,
               itemBuilder: (context, index) {
-                return createListCards(athletesList[index]);
+                return kIsWeb
+                    ? createListCardsForWeb(athletesList[index])
+                    : createListCardsForMobile(athletesList[index]);
               }));
     // NFL athletes only
     else if (state.selectedSport == SupportedSport.NFL)
@@ -587,7 +627,9 @@ class _DesktopScoutState extends State<DesktopScout> {
               physics: BouncingScrollPhysics(),
               itemCount: 0,
               itemBuilder: (context, index) {
-                return createListCards(this.curAthlete!);
+                return kIsWeb
+                    ? createListCardsForWeb(this.curAthlete!)
+                    : createListCardsForMobile(this.curAthlete!);
               }));
     // other athletes
     else {
@@ -603,7 +645,149 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   // Athlete Cards
-  Widget createListCards(AthleteScoutModel athlete) {
+  Widget createListCardsForMobile(AthleteScoutModel athlete) {
+    double _width = MediaQuery.of(context).size.width;
+    double bookPrice = athlete.bookPrice;
+    bool view = true;
+    bool team = true;
+    if (_width < 910) view = false;
+    if (_width < 689) team = false;
+    double athNameBx = _width * 0.15;
+    if (_width < 685) athNameBx = 107;
+
+    return Container(
+        height: 70,
+        child: OutlinedButton(
+            onPressed: () {
+              setState(() {
+                curAthlete = athlete;
+                athletePage = true;
+              });
+            },
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(children: <Widget>[
+                    // Icon
+                    Container(
+                        width: 50,
+                        child: Icon(Icons.sports_baseball,
+                            color: Colors.grey[700])),
+                    // Athlete Name
+                    Container(
+                        width: athNameBx,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(athlete.name,
+                                  style: textStyle(
+                                      Colors.white, 18, false, false)),
+                              Text(
+                                  retrieveFullMLBAthletePosition(
+                                      athlete.position),
+                                  style: textStyle(
+                                      Colors.grey[700]!, 10, false, false))
+                            ])),
+                    // Team
+                    if (team)
+                      Container(
+                          width: _width * 0.15,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(athlete.team,
+                                    style: textStyle(
+                                        Colors.white, 18, false, false)),
+                                Text(athlete.team,
+                                    style: textStyle(
+                                        Colors.grey[700]!, 10, false, false))
+                              ])),
+                    // Market Price / Change
+                    IndexedStack(
+                      index: _marketVsBookPriceIndex,
+                      children: [
+                        Container(
+                            child: Row(children: <Widget>[
+                          Text(bookPrice.toStringAsFixed(4) + ' AX',
+                              style: textStyle(Colors.white, 16, false, false)),
+                          Container(width: 10),
+                          Text("+4%",
+                              style: textStyle(Colors.green, 12, false, false))
+                        ])),
+                        Container(
+                            child: Row(children: <Widget>[
+                          Text(bookPrice.toStringAsFixed(4) + ' AX',
+                              style: textStyle(Colors.white, 16, false, false)),
+                          Container(width: 10),
+                          Text("-2%",
+                              style: textStyle(Colors.red, 12, false, false))
+                        ])),
+                      ],
+                    ),
+                  ]),
+                  Row(children: <Widget>[
+                    // Buy
+                    Container(
+                        width: _width * 0.20,
+                        height: 36,
+                        decoration: boxDecoration(
+                            Color.fromRGBO(254, 197, 0, 0.2),
+                            100,
+                            0,
+                            Color.fromRGBO(254, 197, 0, 0.2)),
+                        child: TextButton(
+                            onPressed: () {
+                              if (kIsWeb) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        buyDialog(context, athlete));
+                              } else {
+                                setState(() {
+                                  curAthlete = athlete;
+                                  athletePage = true;
+                                });
+                              }
+                            },
+                            child: Center(
+                              child: buyText(),
+                            ))),
+                    if (view) ...[
+                      Container(width: 25),
+                      // Mint
+                      Container(
+                          width: 100,
+                          height: 30,
+                          decoration: boxDecoration(
+                              Colors.transparent, 100, 2, Colors.white),
+                          child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  curAthlete = athlete;
+                                  athletePage = true;
+                                });
+                              },
+                              child: Container(
+                                  width: 60,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Text("View",
+                                          style: textStyle(
+                                              Colors.white, 16, false, false)),
+                                      Icon(Icons.arrow_right,
+                                          size: 25, color: Colors.white)
+                                    ],
+                                  ))))
+                    ]
+                  ])
+                ])));
+  }
+
+  Widget createListCardsForWeb(AthleteScoutModel athlete) {
     double _width = MediaQuery.of(context).size.width;
 
     bool view = true;
@@ -641,14 +825,16 @@ class _DesktopScoutState extends State<DesktopScout> {
                               Text(athlete.name,
                                   style: textStyle(
                                       Colors.white, 18, false, false)),
-                              Text(retrieveFullMLBAthletePosition(athlete.position),
+                              Text(
+                                  retrieveFullMLBAthletePosition(
+                                      athlete.position),
                                   style: textStyle(
                                       Colors.grey[700]!, 10, false, false))
                             ])),
                     // Team
                     if (team)
                       Container(
-                          width: _width * 0.15,
+                          width: _width * 0.12,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -661,27 +847,23 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         Colors.grey[700]!, 10, false, false))
                               ])),
                     // Market Price / Change
-                    IndexedStack(
-                      index: _marketVsBookPriceIndex,
-                      children: [
-                        Container(
-                            child: Row(children: <Widget>[
+                    Container(
+                        width: _width * 0.12,
+                        child: Row(children: <Widget>[
                           Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("+4%",
                               style: textStyle(Colors.green, 12, false, false))
                         ])),
-                        Container(
-                            child: Row(children: <Widget>[
-                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
-                              style: textStyle(Colors.white, 16, false, false)),
-                          Container(width: 10),
-                          Text("-2%",
-                              style: textStyle(Colors.red, 12, false, false))
-                        ])),
-                      ],
-                    ),
+                    Container(
+                        child: Row(children: <Widget>[
+                      Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                          style: textStyle(Colors.white, 16, false, false)),
+                      Container(width: 10),
+                      Text("-2%",
+                          style: textStyle(Colors.red, 12, false, false))
+                    ])),
                   ]),
                   Row(children: <Widget>[
                     // Buy
@@ -700,7 +882,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                     context: context,
                                     builder: (BuildContext context) =>
                                         buyDialog(context, athlete));
-                              }else{
+                              } else {
                                 setState(() {
                                   curAthlete = athlete;
                                   athletePage = true;

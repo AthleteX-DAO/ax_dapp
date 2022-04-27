@@ -1,7 +1,4 @@
-import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-// import 'package:ax_dapp/service/Dialog.dart';
 
 // DO NOT DELETE THE CODE
 /*class ApproveButton extends StatelessWidget {
@@ -52,9 +49,10 @@ class ApproveButton extends StatefulWidget {
   final double width;
   final double height;
   final Future<void> Function() approveCallback;
+  final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
   const ApproveButton(this.width, this.height, this.text, this.approveCallback,
-      this.confirmDialog);
+      this.confirmCallback, this.confirmDialog);
   //const ApproveButton(double width, double height, String text, {Key? key}) : super(key: key);
 
   @override
@@ -70,8 +68,6 @@ class _ApproveButtonState extends State<ApproveButton> {
   Color? textcolor;
   int currentState = 0;
   Widget? dialog;
-  PoolController poolController = Get.find();
-
   @override
   void initState() {
     super.initState();
@@ -83,13 +79,14 @@ class _ApproveButtonState extends State<ApproveButton> {
     currentState = 0;
   }
 
-  void changeData() {
-    // approved = false;
+  void changeButton() {
+    //Changes from approve button to confirm
 
     widget.approveCallback().then((_) {
       setState(() {
         isApproved = true;
-        print('ApproveButton widget: Transaction has been approved - $isApproved');
+        print(
+            'ApproveButton widget: Transaction has been approved - $isApproved');
         text = "Confirm";
         fillcolor = Colors.amber;
         textcolor = Colors.black;
@@ -122,7 +119,7 @@ class _ApproveButtonState extends State<ApproveButton> {
           // Testing to see how the popup will work when the state is changed
           if (isApproved) {
             //Confirm button pressed
-            poolController.addLiquidity().then((value) {
+            widget.confirmCallback().then((value) {
               Navigator.pop(context);
               showDialog(
                   context: context,
@@ -131,7 +128,7 @@ class _ApproveButtonState extends State<ApproveButton> {
             });
           } else {
             //Approve button was pressed
-            changeData();
+            changeButton();
           }
           //print("Working");
         },

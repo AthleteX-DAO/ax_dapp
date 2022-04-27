@@ -9,6 +9,7 @@ import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
@@ -38,10 +39,6 @@ class _AthletePageState extends State<AthletePage> {
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
 
-
-
-
-
   @override
   void initState() {
     super.initState();
@@ -54,11 +51,12 @@ class _AthletePageState extends State<AthletePage> {
   Widget build(BuildContext context) {
     if (listView == 1) return DesktopScout();
 
-    return kIsWeb.kIsWeb ? buildWebViewContainer(context) : buildMobileView(context);
+    return kIsWeb.kIsWeb
+        ? buildWebViewContainer(context)
+        : buildMobileView(context);
   }
 
   IndexedStack buildWebViewContainer(BuildContext context) {
-
     final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
     final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
@@ -69,10 +67,7 @@ class _AthletePageState extends State<AthletePage> {
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
-
-    return IndexedStack(
-        index: _longAptIndex,
-        children: [
+    return IndexedStack(index: _longAptIndex, children: [
       buildWebView(
           context,
           longMarketPrice,
@@ -82,8 +77,7 @@ class _AthletePageState extends State<AthletePage> {
           longBookValue,
           shortBookValue,
           longBookValuePercent,
-          shortBookValuePercent
-      ),
+          shortBookValuePercent),
       buildWebView(
           context,
           longMarketPrice,
@@ -93,30 +87,23 @@ class _AthletePageState extends State<AthletePage> {
           longBookValue,
           shortBookValue,
           longBookValuePercent,
-          shortBookValuePercent
-      )
+          shortBookValuePercent)
     ]);
   }
 
   Container buildWebView(
-      BuildContext context,
-      String longMarketPrice,
-      String shortMarketPrice,
-      String longMarketPricePercent,
-      String shortMarketPricePercent,
-      String longBookValue,
-      String shortBookValue,
-      String longBookValuePercent,
-      String shortBookValuePercent,
-      ) {
-    double _width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    double _height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    BuildContext context,
+    String longMarketPrice,
+    String shortMarketPrice,
+    String longMarketPricePercent,
+    String shortMarketPricePercent,
+    String longBookValue,
+    String shortBookValue,
+    String longBookValuePercent,
+    String shortBookValuePercent,
+  ) {
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
 
     // normal mode (dual)
     if (_width > 1160 && _height > 660)
@@ -129,24 +116,30 @@ class _AthletePageState extends State<AthletePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[graphSide(
-                        context,longMarketPrice,
-                      shortMarketPrice,
-                      longMarketPricePercent,
-                      shortMarketPricePercent,
-                      longBookValue,
-                      shortBookValue,
-                      longBookValuePercent,
-                      shortBookValuePercent,), statsSide(
+                    children: <Widget>[
+                      graphSide(
                         context,
-                      longMarketPrice,
-                      shortMarketPrice,
-                      longMarketPricePercent,
-                      shortMarketPricePercent,
-                      longBookValue,
-                      shortBookValue,
-                      longBookValuePercent,
-                      shortBookValuePercent,)],
+                        longMarketPrice,
+                        shortMarketPrice,
+                        longMarketPricePercent,
+                        shortMarketPricePercent,
+                        longBookValue,
+                        shortBookValue,
+                        longBookValuePercent,
+                        shortBookValuePercent,
+                      ),
+                      statsSide(
+                        context,
+                        longMarketPrice,
+                        shortMarketPrice,
+                        longMarketPricePercent,
+                        shortMarketPricePercent,
+                        longBookValue,
+                        shortBookValue,
+                        longBookValuePercent,
+                        shortBookValuePercent,
+                      )
+                    ],
                   ))));
 
     // dual scroll mode
@@ -155,58 +148,65 @@ class _AthletePageState extends State<AthletePage> {
           height: _height * 0.95 - 57,
           child: SingleChildScrollView(
               child: Column(
-                children: <Widget>[
-                  Center(
-                      child: Container(
-                          width: _width * 0.9,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              graphSide(context,
-                                longMarketPrice,
-                                shortMarketPrice,
-                                longMarketPricePercent,
-                                shortMarketPricePercent,
-                                longBookValue,
-                                shortBookValue,
-                                longBookValuePercent,
-                                shortBookValuePercent,),
-                              statsSide(context,
-                                longMarketPrice,
-                                shortMarketPrice,
-                                longMarketPricePercent,
-                                shortMarketPricePercent,
-                                longBookValue,
-                                shortBookValue,
-                                longBookValuePercent,
-                                shortBookValuePercent,)
-                            ],
-                          )))
-                ],
-              )));
+            children: <Widget>[
+              Center(
+                  child: Container(
+                      width: _width * 0.9,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          graphSide(
+                            context,
+                            longMarketPrice,
+                            shortMarketPrice,
+                            longMarketPricePercent,
+                            shortMarketPricePercent,
+                            longBookValue,
+                            shortBookValue,
+                            longBookValuePercent,
+                            shortBookValuePercent,
+                          ),
+                          statsSide(
+                            context,
+                            longMarketPrice,
+                            shortMarketPrice,
+                            longMarketPricePercent,
+                            shortMarketPricePercent,
+                            longBookValue,
+                            shortBookValue,
+                            longBookValuePercent,
+                            shortBookValuePercent,
+                          )
+                        ],
+                      )))
+            ],
+          )));
 
     // stacked scroll
     return Container(
         height: _height * 0.95 - 57,
         child: SingleChildScrollView(
             child: Column(
-              children: <Widget>[
-                Container(
-                  height: 625,
-                  child: graphSide(
-                      context,
-                    longMarketPrice,
-                    shortMarketPrice,
-                    longMarketPricePercent,
-                    shortMarketPricePercent,
-                    longBookValue,
-                    shortBookValue,
-                    longBookValuePercent,
-                    shortBookValuePercent,),
-                ),
-                Container(height: 650, child: statsSide(
-                    context,
+          children: <Widget>[
+            Container(
+              height: 625,
+              child: graphSide(
+                context,
+                longMarketPrice,
+                shortMarketPrice,
+                longMarketPricePercent,
+                shortMarketPricePercent,
+                longBookValue,
+                shortBookValue,
+                longBookValuePercent,
+                shortBookValuePercent,
+              ),
+            ),
+            Container(
+                height: 650,
+                child: statsSide(
+                  context,
                   longMarketPrice,
                   shortMarketPrice,
                   longMarketPricePercent,
@@ -214,11 +214,11 @@ class _AthletePageState extends State<AthletePage> {
                   longBookValue,
                   shortBookValue,
                   longBookValuePercent,
-                  shortBookValuePercent,))
-              ],
-            )));
+                  shortBookValuePercent,
+                ))
+          ],
+        )));
   }
-
 
   SafeArea buildMobileView(BuildContext context) {
     final longMarketPrice = "4.18 AX";
@@ -231,47 +231,30 @@ class _AthletePageState extends State<AthletePage> {
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
     final shortBookValuePercent = "+2%";
 
-    double _width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    double _height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    double _buttonHeight = MediaQuery
-        .of(context)
-        .size
-        .height * 0.045;
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    double _buttonHeight = MediaQuery.of(context).size.height * 0.045;
     return SafeArea(
       child: IndexedStack(
         index: _longAptIndex,
         children: [
-          buildPage(
-              _width,
-              _height,
-              context,
-              _buttonHeight,
-              longMarketPrice,
-              longMarketPricePercent,
-              longBookValue,
-              longBookValuePercent),
-          buildPage(
-              _width,
-              _height,
-              context,
-              _buttonHeight,
-              shortMarketPrice,
-              shortMarketPricePercent,
-              shortBookValue,
-              shortBookValuePercent),
-        ],),
+          buildPage(_width, _height, context, _buttonHeight, longMarketPrice,
+              longMarketPricePercent, longBookValue, longBookValuePercent),
+          buildPage(_width, _height, context, _buttonHeight, shortMarketPrice,
+              shortMarketPricePercent, shortBookValue, shortBookValuePercent),
+        ],
+      ),
     );
   }
 
-  Container buildPage(double _width, double _height,
-      BuildContext context, double _buttonHeight,
-       String marketPrice, String marketPricePercent, String bookValue,
+  Container buildPage(
+      double _width,
+      double _height,
+      BuildContext context,
+      double _buttonHeight,
+      String marketPrice,
+      String marketPricePercent,
+      String bookValue,
       String bookValuePercent) {
     return Container(
         width: _width,
@@ -283,138 +266,146 @@ class _AthletePageState extends State<AthletePage> {
                 color: secondaryGreyColor,
                 thickness: 0.5,
               ),
-              Row(
-                  children: <Widget>[
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            listView = 1;
-                          });
-                        },
-                        child: Icon(Icons.arrow_back,
-                            size: 24, color: Colors.white)),
-                    // APT Icon
-                    Container(
-                      margin: EdgeInsets.only(left: 0, top: .5),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              child: Text(athlete.name,
-                                style:
-                                textStyle(Colors.white, 20, false, false),
-                              )
-                          ),
-                          Container(
-                              child: Text("Seasonal APT",
-                                style: textStyle(
-                                    Color.fromRGBO(154, 154, 154, 1), 12, false,
-                                    false),
-                                textAlign: TextAlign.end,
-                              )
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Icon(Icons.sports_baseball, size: 16,),
-                    ),
-                    Spacer(),
-                    Container(
-                      padding: EdgeInsets.all(1.5),
-                      width: _width * .18,
-                      height: _height * .04,
-                      decoration: boxDecoration(
-                          Colors.transparent, 10, 1, secondaryGreyColor),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: boxDecoration(_isLongApt
+              Row(children: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        listView = 1;
+                      });
+                    },
+                    child:
+                        Icon(Icons.arrow_back, size: 24, color: Colors.white)),
+                // APT Icon
+                Container(
+                  margin: EdgeInsets.only(left: 0, top: .5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          child: Text(
+                        athlete.name,
+                        style: textStyle(Colors.white, 20, false, false),
+                      )),
+                      Container(
+                          child: Text(
+                        "Seasonal APT",
+                        style: textStyle(
+                            Color.fromRGBO(154, 154, 154, 1), 12, false, false),
+                        textAlign: TextAlign.end,
+                      )),
+                    ],
+                  ),
+                ),
+                Container(
+                  child: Icon(
+                    Icons.sports_baseball,
+                    size: 16,
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  padding: EdgeInsets.all(1.5),
+                  width: _width * .18,
+                  height: _height * .04,
+                  decoration: boxDecoration(
+                      Colors.transparent, 10, 1, secondaryGreyColor),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: boxDecoration(
+                              _isLongApt
                                   ? secondaryGreyColor
-                                  : indexUnselectedStackBackgroundColor, 8, 0,
-                                  Colors.transparent),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  minimumSize: Size(15, 8),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _longAptIndex = 0;
-                                    if (_longAptIndex == 0) {
-                                      _isLongApt = true;
-                                    }
-                                    print(
-                                        " The current index is $_longAptIndex  of 0 and it should show the Short");
-                                  });
-                                },
-                                child: Text("Long",
-                                  style: TextStyle(color: _isLongApt
+                                  : indexUnselectedStackBackgroundColor,
+                              8,
+                              0,
+                              Colors.transparent),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              minimumSize: Size(15, 8),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _longAptIndex = 0;
+                                if (_longAptIndex == 0) {
+                                  _isLongApt = true;
+                                }
+                                print(
+                                    " The current index is $_longAptIndex  of 0 and it should show the Short");
+                              });
+                            },
+                            child: Text(
+                              "Long",
+                              style: TextStyle(
+                                  color: _isLongApt
                                       ? primaryWhiteColor
                                       : Color.fromRGBO(154, 154, 154, 1),
-                                      fontSize: 10),),
-                              ),
+                                  fontSize: 10),
                             ),
                           ),
-                          Expanded(
-                            child: Container(
-                              decoration: boxDecoration(
-                                  _isLongApt
-                                      ? indexUnselectedStackBackgroundColor
-                                      : secondaryGreyColor,
-                                  8,
-                                  0,
-                                  Colors.transparent),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size(50, 30)
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _longAptIndex = 1;
-                                    if (_longAptIndex == 1) {
-                                      _isLongApt = false;
-                                    }
-                                    print(
-                                        " The current index is $_longAptIndex  of 1 and it should show the short");
-                                  });
-                                },
-                                child: Text("Short", style: TextStyle(
-                                    color: _isLongApt ? Color.fromRGBO(
-                                        154, 154, 154, 1) : primaryWhiteColor,
-                                    fontSize: 10),),
-                              ),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                    Spacer(),
-                    Container(
-                        margin: EdgeInsets.only(right: 30),
-                        width: _width * 0.22,
-                        height: 20,
-                        decoration: boxDecoration(
-                            Color.fromRGBO(254, 197, 0, 0.2),
-                            100,
-                            0,
-                            Color.fromRGBO(254, 197, 0, 0.2)),
-                        child: TextButton(
+                      Expanded(
+                        child: Container(
+                          decoration: boxDecoration(
+                              _isLongApt
+                                  ? indexUnselectedStackBackgroundColor
+                                  : secondaryGreyColor,
+                              8,
+                              0,
+                              Colors.transparent),
+                          child: TextButton(
                             style: TextButton.styleFrom(
                                 padding: EdgeInsets.zero,
-                                minimumSize: Size(50, 30)
+                                minimumSize: Size(50, 30)),
+                            onPressed: () {
+                              setState(() {
+                                _longAptIndex = 1;
+                                if (_longAptIndex == 1) {
+                                  _isLongApt = false;
+                                }
+                                print(
+                                    " The current index is $_longAptIndex  of 1 and it should show the short");
+                              });
+                            },
+                            child: Text(
+                              "Short",
+                              style: TextStyle(
+                                  color: _isLongApt
+                                      ? Color.fromRGBO(154, 154, 154, 1)
+                                      : primaryWhiteColor,
+                                  fontSize: 10),
                             ),
-                            onPressed: () {},
-                            child: Center(
-                              child: Text("+ Add to Wallet", style: TextStyle(
-                                color: Color.fromRGBO(254, 197, 0, 1.0),
-                                fontSize: 10,),),
-                            ))),
-                  ]
-              ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Spacer(),
+                Container(
+                    margin: EdgeInsets.only(right: 30),
+                    width: _width * 0.22,
+                    height: 20,
+                    decoration: boxDecoration(Color.fromRGBO(254, 197, 0, 0.2),
+                        100, 0, Color.fromRGBO(254, 197, 0, 0.2)),
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size(50, 30)),
+                        onPressed: () {},
+                        child: Center(
+                          child: Text(
+                            "+ Add to Wallet",
+                            style: TextStyle(
+                              color: Color.fromRGBO(254, 197, 0, 1.0),
+                              fontSize: 10,
+                            ),
+                          ),
+                        ))),
+              ]),
               // Graph
               IndexedStack(
                 index: _widgetIndex,
@@ -432,9 +423,12 @@ class _AthletePageState extends State<AthletePage> {
                           children: [
                             Expanded(
                               child: Container(
-                                decoration: boxDecoration(_isDisplayingChart
-                                    ? secondaryGreyColor
-                                    : indexUnselectedStackBackgroundColor, 8, 0,
+                                decoration: boxDecoration(
+                                    _isDisplayingChart
+                                        ? secondaryGreyColor
+                                        : indexUnselectedStackBackgroundColor,
+                                    8,
+                                    0,
                                     Colors.transparent),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
@@ -445,10 +439,13 @@ class _AthletePageState extends State<AthletePage> {
                                     print(
                                         " The current index is $_widgetIndex of 0 and it should show the chart");
                                   },
-                                  child: Text("Chart",
-                                    style: TextStyle(color: _isDisplayingChart
-                                        ? primaryWhiteColor
-                                        : Color.fromRGBO(154, 154, 154, 1)),),
+                                  child: Text(
+                                    "Chart",
+                                    style: TextStyle(
+                                        color: _isDisplayingChart
+                                            ? primaryWhiteColor
+                                            : Color.fromRGBO(154, 154, 154, 1)),
+                                  ),
                                 ),
                               ),
                             ),
@@ -464,8 +461,7 @@ class _AthletePageState extends State<AthletePage> {
                                 child: TextButton(
                                   style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      minimumSize: Size(50, 30)
-                                  ),
+                                      minimumSize: Size(50, 30)),
                                   onPressed: () {
                                     setState(() {
                                       _widgetIndex = 1;
@@ -476,10 +472,13 @@ class _AthletePageState extends State<AthletePage> {
                                           " The current index is $_widgetIndex  of 1 and it should show the stats");
                                     });
                                   },
-                                  child: Text("Stats", style: TextStyle(
-                                      color: _isDisplayingChart
-                                          ? Color.fromRGBO(154, 154, 154, 1)
-                                          : primaryWhiteColor),),
+                                  child: Text(
+                                    "Stats",
+                                    style: TextStyle(
+                                        color: _isDisplayingChart
+                                            ? Color.fromRGBO(154, 154, 154, 1)
+                                            : primaryWhiteColor),
+                                  ),
                                 ),
                               ),
                             )
@@ -494,7 +493,6 @@ class _AthletePageState extends State<AthletePage> {
                               Colors.transparent, 10, 1, secondaryGreyColor),
                           child: Stack(
                             children: <Widget>[
-
                               buildGraph(
                                   [athlete.bookPrice], [athlete.time], context),
                               // Price
@@ -504,9 +502,9 @@ class _AthletePageState extends State<AthletePage> {
                                       height: 45,
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceAround,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text("Book Value Chart",
                                               style: textStyle(Colors.white, 9,
@@ -516,8 +514,8 @@ class _AthletePageState extends State<AthletePage> {
                                               height: 25,
                                               child: Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: <Widget>[
                                                   Text(bookValue,
                                                       style: textStyle(
@@ -527,7 +525,7 @@ class _AthletePageState extends State<AthletePage> {
                                                           false)),
                                                   Container(
                                                       alignment:
-                                                      Alignment.topLeft,
+                                                          Alignment.topLeft,
                                                       child: Text(
                                                           bookValuePercent,
                                                           style: textStyle(
@@ -556,9 +554,12 @@ class _AthletePageState extends State<AthletePage> {
                           children: [
                             Expanded(
                               child: Container(
-                                decoration: boxDecoration(_isDisplayingChart
-                                    ? secondaryGreyColor
-                                    : indexUnselectedStackBackgroundColor, 8, 0,
+                                decoration: boxDecoration(
+                                    _isDisplayingChart
+                                        ? secondaryGreyColor
+                                        : indexUnselectedStackBackgroundColor,
+                                    8,
+                                    0,
                                     Colors.transparent),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
@@ -575,10 +576,13 @@ class _AthletePageState extends State<AthletePage> {
                                           " The current index is $_widgetIndex of 0 and it should show the chart");
                                     });
                                   },
-                                  child: Text("Chart",
-                                    style: TextStyle(color: _isDisplayingChart
-                                        ? primaryWhiteColor
-                                        : Color.fromRGBO(154, 154, 154, 1)),),
+                                  child: Text(
+                                    "Chart",
+                                    style: TextStyle(
+                                        color: _isDisplayingChart
+                                            ? primaryWhiteColor
+                                            : Color.fromRGBO(154, 154, 154, 1)),
+                                  ),
                                 ),
                               ),
                             ),
@@ -594,16 +598,18 @@ class _AthletePageState extends State<AthletePage> {
                                 child: TextButton(
                                   style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      minimumSize: Size(50, 30)
-                                  ),
+                                      minimumSize: Size(50, 30)),
                                   onPressed: () {
                                     print(
                                         " The current index is $_widgetIndex  of 1 and it should show the stats");
                                   },
-                                  child: Text("Stats", style: TextStyle(
-                                      color: _isDisplayingChart
-                                          ? Color.fromRGBO(154, 154, 154, 1)
-                                          : primaryWhiteColor),),
+                                  child: Text(
+                                    "Stats",
+                                    style: TextStyle(
+                                        color: _isDisplayingChart
+                                            ? Color.fromRGBO(154, 154, 154, 1)
+                                            : primaryWhiteColor),
+                                  ),
                                 ),
                               ),
                             )
@@ -615,450 +621,422 @@ class _AthletePageState extends State<AthletePage> {
                           width: _width * .875,
                           height: _height * .49,
                           alignment: Alignment.center,
-                          child: Column(
-                              children: <Widget>[
-                                // Price Overview section
-                                Container(
-                                    height: 100,
-                                    child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceAround,
-                                              children: <Widget>[
-                                                Container(
-                                                    width: _width * 0.4375,
-                                                    child: Text(
-                                                        "Price Overview",
-                                                        style: textStyle(
-                                                            Colors.white, 15,
-                                                            false, false))),
-                                                Container(
-                                                    width: _width * 0.4375,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                      children: <Widget>[
-                                                        Container(
-                                                            alignment: Alignment
-                                                                .bottomLeft,
-                                                            child: Text(
-                                                                "Current",
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    10,
-                                                                    false,
-                                                                    false))),
-                                                        Container(
-                                                            alignment: Alignment
-                                                                .bottomRight,
-                                                            child: Text(
-                                                                "All-Time High",
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    10,
-                                                                    false,
-                                                                    false)))
-                                                      ],
-                                                    ))
-                                              ]),
-                                          Divider(thickness: 1,
-                                              color: greyTextColor),
-                                          Container(height: 15,
+                          child: Column(children: <Widget>[
+                            // Price Overview section
+                            Container(
+                                height: 100,
+                                child: Column(children: <Widget>[
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Container(
+                                            width: _width * 0.4375,
+                                            child: Text("Price Overview",
+                                                style: textStyle(Colors.white,
+                                                    15, false, false))),
+                                        Container(
+                                            width: _width * 0.4375,
                                             child: Row(
-                                                mainAxisAlignment: MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: <Widget>[
-                                                  Container(
-                                                      child: Text(
-                                                          "Market Price",
-                                                          style: textStyle(
-                                                              greyTextColor, 12,
-                                                              false, false))),
-                                                  Container(
-                                                      width: 200,
-                                                      child: Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                          children: <Widget>[
-                                                            Row(children: <
-                                                                Widget>[
-                                                              Text(marketPrice,
-                                                                  style: textStyle(
-                                                                      Colors
-                                                                          .white,
-                                                                      12,
-                                                                      false,
-                                                                      false)),
-                                                              Container(
-                                                                //alignment: Alignment.topLeft,
-                                                                  child: Text(
-                                                                      marketPricePercent,
-                                                                      style: textStyle(
-                                                                          Colors
-                                                                              .red,
-                                                                          12,
-                                                                          false,
-                                                                          false))),
-                                                            ]),
-                                                            Text("4.24 AX",
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    12, false,
-                                                                    false))
-                                                          ]))
-                                                ]),
-                                          ),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                    width: _width * 0.175,
-                                                    child: Text("Book Value",
-                                                        style: textStyle(
-                                                            greyTextColor, 12,
-                                                            false, false))),
-                                                Container(
-                                                    width: 200,
-                                                    child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                        children: <Widget>[
-                                                          Row(children: <
-                                                              Widget>[
-                                                            Text(bookValue,
-                                                                style: textStyle(
-                                                                    Colors
-                                                                        .white,
-                                                                    12,
-                                                                    false,
-                                                                    false)),
-                                                            Container(
-                                                                child: Text(
-                                                                    bookValuePercent,
-                                                                    style: textStyle(
-                                                                        Colors
-                                                                            .green,
-                                                                        12,
-                                                                        false,
-                                                                        false))),
-                                                          ]),
-                                                          Text(bookValue,
-                                                              style: textStyle(
-                                                                  greyTextColor,
-                                                                  12, false,
-                                                                  false))
-                                                        ]))
-                                              ]),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                    width: _width * 0.175,
-                                                    child: Text("MP/BV Ratio",
-                                                        style: textStyle(
-                                                            greyTextColor, 12,
-                                                            false, false))),
-                                                Container(
-                                                    width: 200,
-                                                    child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                        children: <Widget>[
-                                                          Row(children: <
-                                                              Widget>[
-                                                            Text("80%",
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    12,
-                                                                    false,
-                                                                    false)),
-                                                          ]),
-                                                          Text("120%",
-                                                              style: textStyle(
-                                                                  greyTextColor,
-                                                                  12, false,
-                                                                  false))
-                                                        ]))
-                                              ]),
-                                        ])),
-                                // Detail Section
-                                Container(
-                                    child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: <Widget>[
-                                          Container(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text("Details",
-                                                  style:
-                                                  textStyle(
-                                                      Colors.white, 15, false,
-                                                      false))),
-                                          Divider(thickness: 1,
-                                              color: greyTextColor),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: <Widget>[
-                                                Text("Sport / League",
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false)),
-                                                Text("${athlete.sport.name}",//toDo add map for the different league
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false))
-                                              ]),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: <Widget>[
-                                                Text("Team",
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false)),
-                                                Text("${athlete.team}",
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false))
-                                              ]),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: <Widget>[
-                                                Text("Position",
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false)),
-                                                Text(retrieveFullMLBAthletePosition(athlete.position),
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false))
-                                              ]),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: <Widget>[
-                                                Text("Season Start",
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false)),
-                                                Text("Sep 1, 2021",
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false))
-                                              ]),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: <Widget>[
-                                                Text("Season End",
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false)),
-                                                Text("Jan 10, 2022",
-                                                    style: textStyle(
-                                                        greyTextColor, 12,
-                                                        false, false))
-                                              ]),
-                                        ])),
-                                // Stats section
-                                Container(
-                                    height: 100,
-                                    margin: EdgeInsets.only(top: 2),
-                                    child: Column(
-                                        children: <Widget>[
-                                          Container(
-                                              child: Row(
-                                                  mainAxisAlignment:
+                                              mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
-                                                  children: <Widget>[
-                                                    Container(
-                                                      child: Text(
-                                                          "Key Statistics",
-                                                          style: textStyle(
-                                                              Colors.white, 15,
-                                                              false, false)),
-                                                    ),
-                                                    Container(
-                                                        width: _width * 0.4375,
-                                                        child: Row(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                            children: <Widget>[
-                                                              Container(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: Text(
-                                                                    "AtBat",
-                                                                    style: textStyle(
-                                                                        greyTextColor,
-                                                                        10,
-                                                                        false,
-                                                                        false)),
-                                                              ),
-                                                              Container(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: Text(
-                                                                    "HR",
-                                                                    style: textStyle(
-                                                                        greyTextColor,
-                                                                        10,
-                                                                        false,
-                                                                        false)),
-                                                              ),
-                                                              Container(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: Text(
-                                                                    "wOBA",
-                                                                    style: textStyle(
-                                                                        greyTextColor,
-                                                                        10,
-                                                                        false,
-                                                                        false)),
-                                                              ),
-                                                              Container(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: Text(
-                                                                    "SB",
-                                                                    style: textStyle(
-                                                                        greyTextColor,
-                                                                        10,
-                                                                        false,
-                                                                        false)),
-                                                              ),
-                                                              Container(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: Text(
-                                                                    "Err",
-                                                                    style: textStyle(
-                                                                        greyTextColor,
-                                                                        10,
-                                                                        false,
-                                                                        false)),
-                                                              ),
-                                                              Container(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child: Text(
-                                                                    "InPl",
-                                                                    style: textStyle(
-                                                                        greyTextColor,
-                                                                        10,
-                                                                        false,
-                                                                        false)),
-                                                              ),
-                                                            ])),
-                                                  ])),
-                                          Divider(thickness: 1,
-                                              color: greyTextColor),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
                                               children: <Widget>[
                                                 Container(
-                                                  child: Text(
-                                                      "Current season Stats",
-                                                      style: textStyle(
-                                                          greyTextColor, 12,
-                                                          false, false)),
-                                                ),
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text("Current",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false))),
                                                 Container(
-                                                    width: _width * 0.4375,
-                                                    child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .bottomLeft,
-                                                            child: Text(
-                                                                athlete.atBats.toString(),
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    10,
-                                                                    false,
-                                                                    false)),
-                                                          ),
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .bottomLeft,
-                                                            child: Text(
-                                                                athlete.homeRuns.toString(),
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    10,
-                                                                    false,
-                                                                    false)),
-                                                          ),
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .bottomLeft,
-                                                            child: Text(
-                                                                athlete.weightedOnBasePercentage.toStringAsFixed(3),
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    10,
-                                                                    false,
-                                                                    false)),
-                                                          ),
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .bottomLeft,
-                                                            child: Text(
-                                                                athlete.stolenBase.toString(),
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    10,
-                                                                    false,
-                                                                    false)),
-                                                          ),
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .bottomLeft,
-                                                            child: Text(
-                                                                athlete.errors.toString(),
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    10,
-                                                                    false,
-                                                                    false)),
-                                                          ),
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .bottomLeft,
-                                                            child: Text(
-                                                                athlete.inningsPlayed.toString(),
-                                                                style: textStyle(
-                                                                    greyTextColor,
-                                                                    10,
-                                                                    false,
-                                                                    false)),
-                                                          ),
-                                                        ]))
-                                              ]),
+                                                    alignment:
+                                                        Alignment.bottomRight,
+                                                    child: Text("All-Time High",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)))
+                                              ],
+                                            ))
+                                      ]),
+                                  Divider(thickness: 1, color: greyTextColor),
+                                  Container(
+                                    height: 15,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
                                           Container(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text("View All Stats",
+                                              child: Text("Market Price",
                                                   style: textStyle(
-                                                      primaryOrangeColor, 12,
-                                                      false, true))),
-                                        ])),
-                              ])),
+                                                      greyTextColor,
+                                                      12,
+                                                      false,
+                                                      false))),
+                                          Container(
+                                              width: 200,
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Row(children: <Widget>[
+                                                      Text(marketPrice,
+                                                          style: textStyle(
+                                                              Colors.white,
+                                                              12,
+                                                              false,
+                                                              false)),
+                                                      Container(
+                                                          //alignment: Alignment.topLeft,
+                                                          child: Text(
+                                                              marketPricePercent,
+                                                              style: textStyle(
+                                                                  Colors.red,
+                                                                  12,
+                                                                  false,
+                                                                  false))),
+                                                    ]),
+                                                    Text("4.24 AX",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            12,
+                                                            false,
+                                                            false))
+                                                  ]))
+                                        ]),
+                                  ),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                            width: _width * 0.175,
+                                            child: Text("Book Value",
+                                                style: textStyle(greyTextColor,
+                                                    12, false, false))),
+                                        Container(
+                                            width: 200,
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Row(children: <Widget>[
+                                                    Text(bookValue,
+                                                        style: textStyle(
+                                                            Colors.white,
+                                                            12,
+                                                            false,
+                                                            false)),
+                                                    Container(
+                                                        child: Text(
+                                                            bookValuePercent,
+                                                            style: textStyle(
+                                                                Colors.green,
+                                                                12,
+                                                                false,
+                                                                false))),
+                                                  ]),
+                                                  Text(bookValue,
+                                                      style: textStyle(
+                                                          greyTextColor,
+                                                          12,
+                                                          false,
+                                                          false))
+                                                ]))
+                                      ]),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                            width: _width * 0.175,
+                                            child: Text("MP/BV Ratio",
+                                                style: textStyle(greyTextColor,
+                                                    12, false, false))),
+                                        Container(
+                                            width: 200,
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Row(children: <Widget>[
+                                                    Text("80%",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            12,
+                                                            false,
+                                                            false)),
+                                                  ]),
+                                                  Text("120%",
+                                                      style: textStyle(
+                                                          greyTextColor,
+                                                          12,
+                                                          false,
+                                                          false))
+                                                ]))
+                                      ]),
+                                ])),
+                            // Detail Section
+                            Container(
+                                child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                  Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text("Details",
+                                          style: textStyle(
+                                              Colors.white, 15, false, false))),
+                                  Divider(thickness: 1, color: greyTextColor),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("Sport / League",
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false)),
+                                        Text(
+                                            "${athlete.sport.name}", //toDo add map for the different league
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false))
+                                      ]),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("Team",
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false)),
+                                        Text("${athlete.team}",
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false))
+                                      ]),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("Position",
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false)),
+                                        Text(
+                                            retrieveFullMLBAthletePosition(
+                                                athlete.position),
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false))
+                                      ]),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("Season Start",
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false)),
+                                        Text("Sep 1, 2021",
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false))
+                                      ]),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text("Season End",
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false)),
+                                        Text("Jan 10, 2022",
+                                            style: textStyle(greyTextColor, 12,
+                                                false, false))
+                                      ]),
+                                ])),
+                            // Stats section
+                            Container(
+                                height: 100,
+                                margin: EdgeInsets.only(top: 2),
+                                child: Column(children: <Widget>[
+                                  Container(
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                        Container(
+                                          child: Text("Key Statistics",
+                                              style: textStyle(Colors.white, 15,
+                                                  false, false)),
+                                        ),
+                                        Container(
+                                            width: _width * 0.4375,
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text("AtBat",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text("HR",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text("wOBA",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text("SB",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text("Err",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text("InPl",
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                ])),
+                                      ])),
+                                  Divider(thickness: 1, color: greyTextColor),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text("Current season Stats",
+                                              style: textStyle(greyTextColor,
+                                                  12, false, false)),
+                                        ),
+                                        Container(
+                                            width: _width * 0.4375,
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text(
+                                                        athlete.atBats
+                                                            .toString(),
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text(
+                                                        athlete.homeRuns
+                                                            .toString(),
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text(
+                                                        athlete
+                                                            .weightedOnBasePercentage
+                                                            .toStringAsFixed(3),
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text(
+                                                        athlete.stolenBase
+                                                            .toString(),
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text(
+                                                        athlete.errors
+                                                            .toString(),
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text(
+                                                        athlete.inningsPlayed
+                                                            .toString(),
+                                                        style: textStyle(
+                                                            greyTextColor,
+                                                            10,
+                                                            false,
+                                                            false)),
+                                                  ),
+                                                ]))
+                                      ]),
+                                  Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text("View All Stats",
+                                          style: textStyle(primaryOrangeColor,
+                                              12, false, true))),
+                                ])),
+                          ])),
                     ],
                   )
                 ],
@@ -1074,8 +1052,7 @@ class _AthletePageState extends State<AthletePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 Container(
                                     width: 160,
@@ -1088,15 +1065,11 @@ class _AthletePageState extends State<AthletePage> {
                                     child: TextButton(
                                         style: TextButton.styleFrom(
                                             padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)
-                                        ),
-                                        onPressed: () =>
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) =>
-                                                    buyDialog(context,
-                                                        athlete)),
+                                            minimumSize: Size(50, 30)),
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                buyDialog(context, athlete)),
                                         child: Text("Buy",
                                             style: textStyle(primaryOrangeColor,
                                                 20, false, false)))),
@@ -1111,22 +1084,22 @@ class _AthletePageState extends State<AthletePage> {
                                     child: TextButton(
                                         style: TextButton.styleFrom(
                                             padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)
-                                        ),
-                                        onPressed: () =>
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) =>
-                                                    sellDialog(context,
-                                                        athlete)),
+                                            minimumSize: Size(50, 30)),
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                return SellDialog(
+                                                    athlete, _isLongApt);
+                                              });
+                                            }),
                                         child: Text("Sell",
                                             style: textStyle(primaryOrangeColor,
                                                 20, false, false))))
                               ]),
                           Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 Container(
                                     width: 160,
@@ -1139,15 +1112,11 @@ class _AthletePageState extends State<AthletePage> {
                                     child: TextButton(
                                         style: TextButton.styleFrom(
                                             padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)
-                                        ),
-                                        onPressed: () =>
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) =>
-                                                    mintDialog(context,
-                                                        athlete)),
+                                            minimumSize: Size(50, 30)),
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                MintDialog(athlete)),
                                         child: Text("Mint",
                                             style: textStyle(primaryWhiteColor,
                                                 20, false, false)))),
@@ -1162,15 +1131,11 @@ class _AthletePageState extends State<AthletePage> {
                                     child: TextButton(
                                         style: TextButton.styleFrom(
                                             padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)
-                                        ),
-                                        onPressed: () =>
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) =>
-                                                    redeemDialog(context,
-                                                        athlete)),
+                                            minimumSize: Size(50, 30)),
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                RedeemDialog(athlete)),
                                         child: Text("Redeem",
                                             style: textStyle(primaryWhiteColor,
                                                 20, false, false))))
@@ -1180,25 +1145,19 @@ class _AthletePageState extends State<AthletePage> {
             ]));
   }
 
-
   Widget graphSide(
-      BuildContext context,
-      String longMarketPrice,
-      String shortMarketPrice,
-      String longMarketPricePercent,
-      String shortMarketPricePercent,
-      String longBookValue,
-      String shortBookValue,
-      String longBookValuePercent,
-      String shortBookValuePercent,) {
-    double _width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    double _height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    BuildContext context,
+    String longMarketPrice,
+    String shortMarketPrice,
+    String longMarketPricePercent,
+    String shortMarketPricePercent,
+    String longBookValue,
+    String shortBookValue,
+    String longBookValuePercent,
+    String shortBookValuePercent,
+  ) {
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
     return Container(
@@ -1209,119 +1168,125 @@ class _AthletePageState extends State<AthletePage> {
             Container(
                 width: wid,
                 height: 100,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      // Back button
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: <
+                        Widget>[
+                  // Back button
+                  Container(
+                      width: 70,
+                      child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              listView = 1;
+                            });
+                          },
+                          child: Icon(Icons.arrow_back,
+                              size: 50, color: Colors.white))),
+                  // APT Icon
+                  Container(
+                    width: 30,
+                  ),
+                  // Player Name
+                  Container(
+                      child: Text(athlete.name,
+                          style: textStyle(Colors.white, 28, false, false))),
+                  // '|' Symbol
+                  Container(
+                      width: 50,
+                      alignment: Alignment.center,
+                      child: Text("|",
+                          style: textStyle(Color.fromRGBO(100, 100, 100, 1), 24,
+                              false, false))),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       Container(
-                          width: 70,
-                          child: TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  listView = 1;
-                                });
-                              },
-                              child: Icon(Icons.arrow_back,
-                                  size: 50, color: Colors.white))),
-                      // APT Icon
+                          child: Text("Seasonal APT",
+                              style: textStyle(Color.fromRGBO(154, 154, 154, 1),
+                                  24, false, false))),
                       Container(
-                        width: 30,
-                      ),
-                      // Player Name
-                      Container(
-                          child: Text(athlete.name,
-                              style:
-                              textStyle(Colors.white, 28, false, false))),
-                      // '|' Symbol
-                      Container(
-                          width: 50,
-                          alignment: Alignment.center,
-                          child: Text("|",
-                              style: textStyle(
-                                  Color.fromRGBO(100, 100, 100, 1), 24, false,
-                                  false))),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              child: Text("Seasonal APT",
-                                  style: textStyle(
-                                      Color.fromRGBO(154, 154, 154, 1), 24, false,
-                                      false))),
-                          Container(
-                            padding: EdgeInsets.all(1.5),
-                            width: _width * .10,
-                            height: _height * .02,
-                            decoration: boxDecoration(
-                                Colors.transparent, 10, 1, secondaryGreyColor),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: boxDecoration(_isLongApt
+                        padding: EdgeInsets.all(1.5),
+                        width: _width * .10,
+                        height: _height * .02,
+                        decoration: boxDecoration(
+                            Colors.transparent, 10, 1, secondaryGreyColor),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                decoration: boxDecoration(
+                                    _isLongApt
                                         ? secondaryGreyColor
-                                        : indexUnselectedStackBackgroundColor, 8, 0,
-                                        Colors.transparent),
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        minimumSize: Size(15, 8),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _longAptIndex = 0;
-                                          if (_longAptIndex == 0) {
-                                            _isLongApt = true;
-                                          }
-                                          print(
-                                              " The current index is $_longAptIndex  of 0 and it should show the Short");
-                                        });
-                                      },
-                                      child: Text("Long",
-                                        style: TextStyle(color: _isLongApt
+                                        : indexUnselectedStackBackgroundColor,
+                                    8,
+                                    0,
+                                    Colors.transparent),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    minimumSize: Size(15, 8),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _longAptIndex = 0;
+                                      if (_longAptIndex == 0) {
+                                        _isLongApt = true;
+                                      }
+                                      print(
+                                          " The current index is $_longAptIndex  of 0 and it should show the Short");
+                                    });
+                                  },
+                                  child: Text(
+                                    "Long",
+                                    style: TextStyle(
+                                        color: _isLongApt
                                             ? primaryWhiteColor
                                             : Color.fromRGBO(154, 154, 154, 1),
-                                            fontSize: 10),),
-                                    ),
+                                        fontSize: 10),
                                   ),
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    decoration: boxDecoration(
-                                        _isLongApt
-                                            ? indexUnselectedStackBackgroundColor
-                                            : secondaryGreyColor,
-                                        8,
-                                        0,
-                                        Colors.transparent),
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                          padding: EdgeInsets.zero,
-                                          minimumSize: Size(50, 30)
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _longAptIndex = 1;
-                                          if (_longAptIndex == 1) {
-                                            _isLongApt = false;
-                                          }
-                                          print(
-                                              " The current index is $_longAptIndex  of 1 and it should show the short");
-                                        });
-                                      },
-                                      child: Text("Short", style: TextStyle(
-                                          color: _isLongApt ? Color.fromRGBO(
-                                              154, 154, 154, 1) : primaryWhiteColor,
-                                          fontSize: 10),),
-                                    ),
-                                  ),
-                                )
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: Container(
+                                decoration: boxDecoration(
+                                    _isLongApt
+                                        ? indexUnselectedStackBackgroundColor
+                                        : secondaryGreyColor,
+                                    8,
+                                    0,
+                                    Colors.transparent),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      minimumSize: Size(50, 30)),
+                                  onPressed: () {
+                                    setState(() {
+                                      _longAptIndex = 1;
+                                      if (_longAptIndex == 1) {
+                                        _isLongApt = false;
+                                      }
+                                      print(
+                                          " The current index is $_longAptIndex  of 1 and it should show the short");
+                                    });
+                                  },
+                                  child: Text(
+                                    "Short",
+                                    style: TextStyle(
+                                        color: _isLongApt
+                                            ? Color.fromRGBO(154, 154, 154, 1)
+                                            : primaryWhiteColor,
+                                        fontSize: 10),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ])),
+                    ],
+                  ),
+                ])),
             // graph
             Container(
                 width: wid,
@@ -1345,9 +1310,9 @@ class _AthletePageState extends State<AthletePage> {
                                       height: 45,
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceAround,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text("Book Value Chart",
                                               style: textStyle(Colors.white, 9,
@@ -1357,13 +1322,13 @@ class _AthletePageState extends State<AthletePage> {
                                               height: 25,
                                               child: Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: <Widget>[
                                                   Text(
                                                       athlete.bookPrice
-                                                          .toStringAsFixed(
-                                                          4) +
+                                                              .toStringAsFixed(
+                                                                  4) +
                                                           " AX",
                                                       style: textStyle(
                                                           Colors.white,
@@ -1372,8 +1337,11 @@ class _AthletePageState extends State<AthletePage> {
                                                           false)),
                                                   Container(
                                                       alignment:
-                                                      Alignment.topLeft,
-                                                      child: Text((_longAptIndex==0)? longBookValuePercent : shortBookValuePercent,
+                                                          Alignment.topLeft,
+                                                      child: Text(
+                                                          (_longAptIndex == 0)
+                                                              ? longBookValuePercent
+                                                              : shortBookValuePercent,
                                                           style: textStyle(
                                                               Colors.green,
                                                               12,
@@ -1393,7 +1361,7 @@ class _AthletePageState extends State<AthletePage> {
                               children: <Widget>[
                                 Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                        MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       Container(
                                           width: 175,
@@ -1404,14 +1372,12 @@ class _AthletePageState extends State<AthletePage> {
                                               0,
                                               primaryOrangeColor),
                                           child: TextButton(
-                                              onPressed: () =>
-                                                  showDialog(
-                                                      context: context,
-                                                      builder:
-                                                          (
-                                                          BuildContext context) =>
-                                                          buyDialog(context,
-                                                              athlete)),
+                                              onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          BuyDialog(athlete,
+                                                              _isLongApt)),
                                               child: Text("Buy",
                                                   style: textStyle(Colors.black,
                                                       20, false, false)))),
@@ -1424,21 +1390,23 @@ class _AthletePageState extends State<AthletePage> {
                                               0,
                                               Colors.white),
                                           child: TextButton(
-                                              onPressed: () =>
-                                                  showDialog(
-                                                      context: context,
-                                                      builder:
-                                                          (
-                                                          BuildContext context) =>
-                                                          sellDialog(context,
-                                                              athlete)),
+                                              onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return StatefulBuilder(
+                                                        builder: (context,
+                                                            setState) {
+                                                      return SellDialog(
+                                                          athlete, _isLongApt);
+                                                    });
+                                                  }),
                                               child: Text("Sell",
                                                   style: textStyle(Colors.black,
                                                       20, false, false))))
                                     ]),
                                 Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                        MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       Container(
                                           width: 175,
@@ -1449,14 +1417,11 @@ class _AthletePageState extends State<AthletePage> {
                                               2,
                                               Colors.white),
                                           child: TextButton(
-                                              onPressed: () =>
-                                                  showDialog(
-                                                      context: context,
-                                                      builder:
-                                                          (
-                                                          BuildContext context) =>
-                                                          mintDialog(context,
-                                                              athlete)),
+                                              onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          MintDialog(athlete)),
                                               child: Text("Mint",
                                                   style: textStyle(Colors.white,
                                                       20, false, false)))),
@@ -1469,14 +1434,11 @@ class _AthletePageState extends State<AthletePage> {
                                               2,
                                               Colors.white),
                                           child: TextButton(
-                                              onPressed: () =>
-                                                  showDialog(
-                                                      context: context,
-                                                      builder:
-                                                          (
-                                                          BuildContext context) =>
-                                                          redeemDialog(context,
-                                                              athlete)),
+                                              onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      RedeemDialog(athlete)),
                                               child: Text("Redeem",
                                                   style: textStyle(Colors.white,
                                                       20, false, false))))
@@ -1487,16 +1449,17 @@ class _AthletePageState extends State<AthletePage> {
         ));
   }
 
-  Widget statsSide(BuildContext context,
-      String longMarketPrice,
-      String shortMarketPrice,
-      String longMarketPricePercent,
-      String shortMarketPricePercent,
-      String longBookValue,
-      String shortBookValue,
-      String longBookValuePercent,
-      String shortBookValuePercent,) {
-
+  Widget statsSide(
+    BuildContext context,
+    String longMarketPrice,
+    String shortMarketPrice,
+    String longMarketPricePercent,
+    String shortMarketPricePercent,
+    String longBookValue,
+    String shortBookValue,
+    String longBookValuePercent,
+    String shortBookValuePercent,
+  ) {
     final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
     final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
@@ -1507,10 +1470,7 @@ class _AthletePageState extends State<AthletePage> {
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
-    double _width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double _width = MediaQuery.of(context).size.width;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
 
@@ -1540,24 +1500,18 @@ class _AthletePageState extends State<AthletePage> {
                                   width: 200,
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Container(
                                           alignment: Alignment.bottomLeft,
                                           child: Text("Current",
-                                              style: textStyle(
-                                                  greyTextColor,
-                                                  14,
-                                                  false,
-                                                  false))),
+                                              style: textStyle(greyTextColor,
+                                                  14, false, false))),
                                       Container(
                                           alignment: Alignment.bottomRight,
                                           child: Text("All-Time High",
-                                              style: textStyle(
-                                                  greyTextColor,
-                                                  14,
-                                                  false,
-                                                  false)))
+                                              style: textStyle(greyTextColor,
+                                                  14, false, false)))
                                     ],
                                   ))
                             ]),
@@ -1567,27 +1521,33 @@ class _AthletePageState extends State<AthletePage> {
                             children: <Widget>[
                               Container(
                                   child: Text("Market Price",
-                                      style: textStyle(greyTextColor, 20,
-                                          false, false))),
+                                      style: textStyle(
+                                          greyTextColor, 20, false, false))),
                               Container(
                                   width: 200,
                                   child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
-                                          Text((_longAptIndex==0)? longMarketPrice: shortMarketPrice,
+                                          Text(
+                                              (_longAptIndex == 0)
+                                                  ? longMarketPrice
+                                                  : shortMarketPrice,
                                               style: textStyle(Colors.white, 20,
                                                   false, false)),
                                           Container(
-                                            //alignment: Alignment.topLeft,
-                                              child: Text((_longAptIndex==0)? longMarketPricePercent : shortMarketPricePercent,
+                                              //alignment: Alignment.topLeft,
+                                              child: Text(
+                                                  (_longAptIndex == 0)
+                                                      ? longMarketPricePercent
+                                                      : shortMarketPricePercent,
                                                   style: textStyle(Colors.red,
                                                       12, false, false))),
                                         ]),
                                         Text("4.24 AX",
-                                            style: textStyle(greyTextColor,
-                                                20, false, false))
+                                            style: textStyle(greyTextColor, 20,
+                                                false, false))
                                       ]))
                             ]),
                         Row(
@@ -1596,26 +1556,32 @@ class _AthletePageState extends State<AthletePage> {
                               Container(
                                   width: _width * 0.175,
                                   child: Text("Book Value",
-                                      style: textStyle(greyTextColor, 20,
-                                          false, false))),
+                                      style: textStyle(
+                                          greyTextColor, 20, false, false))),
                               Container(
                                   width: 200,
                                   child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
-                                          Text((_longAptIndex==0)? longBookValue : shortBookValue,
+                                          Text(
+                                              (_longAptIndex == 0)
+                                                  ? longBookValue
+                                                  : shortBookValue,
                                               style: textStyle(Colors.white, 14,
                                                   false, false)),
                                           Container(
-                                              child: Text((_longAptIndex==0)? longBookValuePercent : shortBookValuePercent,
+                                              child: Text(
+                                                  (_longAptIndex == 0)
+                                                      ? longBookValuePercent
+                                                      : shortBookValuePercent,
                                                   style: textStyle(Colors.green,
                                                       12, false, false))),
                                         ]),
                                         Text(shortBookValue,
-                                            style: textStyle(greyTextColor,
-                                                14, false, false))
+                                            style: textStyle(greyTextColor, 14,
+                                                false, false))
                                       ]))
                             ]),
                         Row(
@@ -1624,25 +1590,22 @@ class _AthletePageState extends State<AthletePage> {
                               Container(
                                   width: _width * 0.175,
                                   child: Text("MP/BV Ratio",
-                                      style: textStyle(greyTextColor, 20,
-                                          false, false))),
+                                      style: textStyle(
+                                          greyTextColor, 20, false, false))),
                               Container(
                                   width: 200,
                                   child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
                                           Text("80%",
-                                              style: textStyle(
-                                                  greyTextColor,
-                                                  16,
-                                                  false,
-                                                  false)),
+                                              style: textStyle(greyTextColor,
+                                                  16, false, false)),
                                         ]),
                                         Text("120%",
-                                            style: textStyle(greyTextColor,
-                                                16, false, false))
+                                            style: textStyle(greyTextColor, 16,
+                                                false, false))
                                       ]))
                             ]),
                       ])),
@@ -1656,7 +1619,7 @@ class _AthletePageState extends State<AthletePage> {
                             alignment: Alignment.centerLeft,
                             child: Text("Details",
                                 style:
-                                textStyle(Colors.white, 24, false, false))),
+                                    textStyle(Colors.white, 24, false, false))),
                         Divider(thickness: 1, color: greyTextColor),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1664,7 +1627,8 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Sport / League",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text("${athlete.sport.name}",//toDo add map for the different league
+                              Text(
+                                  "${athlete.sport.name}", //toDo add map for the different league
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
@@ -1684,7 +1648,9 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Position",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text(retrieveFullMLBAthletePosition(athlete.position),
+                              Text(
+                                  retrieveFullMLBAthletePosition(
+                                      athlete.position),
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
@@ -1718,88 +1684,57 @@ class _AthletePageState extends State<AthletePage> {
                         Container(
                             child: Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Container(
-                                    child: Text("Key Statistics",
-                                        style: textStyle(
-                                            Colors.white, 24, false, false)),
-                                  ),
-                                  Container(
-                                      width: 260,
-                                      child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .spaceBetween,
-                                          children: <Widget>[
-                                            Container(
-                                              alignment: Alignment
-                                                  .bottomLeft,
-                                              child: Text(
-                                                  "AtBat",
-                                                  style: textStyle(
-                                                      greyTextColor,
-                                                      10,
-                                                      false,
-                                                      false)),
-                                            ),
-                                            Container(
-                                              alignment: Alignment
-                                                  .bottomLeft,
-                                              child: Text(
-                                                  "HR",
-                                                  style: textStyle(
-                                                      greyTextColor,
-                                                      10,
-                                                      false,
-                                                      false)),
-                                            ),
-                                            Container(
-                                              alignment: Alignment
-                                                  .bottomLeft,
-                                              child: Text(
-                                                  "wOBA",
-                                                  style: textStyle(
-                                                      greyTextColor,
-                                                      10,
-                                                      false,
-                                                      false)),
-                                            ),
-                                            Container(
-                                              alignment: Alignment
-                                                  .bottomLeft,
-                                              child: Text(
-                                                  "SB",
-                                                  style: textStyle(
-                                                      greyTextColor,
-                                                      10,
-                                                      false,
-                                                      false)),
-                                            ),
-                                            Container(
-                                              alignment: Alignment
-                                                  .bottomLeft,
-                                              child: Text(
-                                                  "Err",
-                                                  style: textStyle(
-                                                      greyTextColor,
-                                                      10,
-                                                      false,
-                                                      false)),
-                                            ),
-                                            Container(
-                                              alignment: Alignment
-                                                  .bottomLeft,
-                                              child: Text(
-                                                  "InPl",
-                                                  style: textStyle(
-                                                      greyTextColor,
-                                                      10,
-                                                      false,
-                                                      false)),
-                                            ),
-                                          ])),
-                                ])),
+                              Container(
+                                child: Text("Key Statistics",
+                                    style: textStyle(
+                                        Colors.white, 24, false, false)),
+                              ),
+                              Container(
+                                  width: 260,
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text("AtBat",
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text("HR",
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text("wOBA",
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text("SB",
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text("Err",
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text("InPl",
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
+                                        ),
+                                      ])),
+                            ])),
                         Divider(thickness: 1, color: greyTextColor),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1813,74 +1748,48 @@ class _AthletePageState extends State<AthletePage> {
                                   width: 260,
                                   child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Container(
-                                          alignment: Alignment
-                                              .bottomLeft,
-                                          child: Text(
-                                              athlete.atBats.toString(),
-                                              style: textStyle(
-                                                  greyTextColor,
-                                                  10,
-                                                  false,
-                                                  false)),
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(athlete.atBats.toString(),
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
                                         ),
                                         Container(
-                                          alignment: Alignment
-                                              .bottomLeft,
+                                          alignment: Alignment.bottomLeft,
                                           child: Text(
                                               athlete.homeRuns.toString(),
-                                              style: textStyle(
-                                                  greyTextColor,
-                                                  10,
-                                                  false,
-                                                  false)),
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
                                         ),
                                         Container(
-                                          alignment: Alignment
-                                              .bottomLeft,
+                                          alignment: Alignment.bottomLeft,
                                           child: Text(
-                                              athlete.weightedOnBasePercentage.toStringAsFixed(3),
-                                              style: textStyle(
-                                                  greyTextColor,
-                                                  10,
-                                                  false,
-                                                  false)),
+                                              athlete.weightedOnBasePercentage
+                                                  .toStringAsFixed(3),
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
                                         ),
                                         Container(
-                                          alignment: Alignment
-                                              .bottomLeft,
+                                          alignment: Alignment.bottomLeft,
                                           child: Text(
                                               athlete.stolenBase.toString(),
-                                              style: textStyle(
-                                                  greyTextColor,
-                                                  10,
-                                                  false,
-                                                  false)),
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
                                         ),
                                         Container(
-                                          alignment: Alignment
-                                              .bottomLeft,
-                                          child: Text(
-                                              athlete.errors.toString(),
-                                              style: textStyle(
-                                                  greyTextColor,
-                                                  10,
-                                                  false,
-                                                  false)),
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(athlete.errors.toString(),
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
                                         ),
                                         Container(
-                                          alignment: Alignment
-                                              .bottomLeft,
+                                          alignment: Alignment.bottomLeft,
                                           child: Text(
                                               athlete.inningsPlayed.toString(),
-                                              style: textStyle(
-                                                  greyTextColor,
-                                                  10,
-                                                  false,
-                                                  false)),
+                                              style: textStyle(greyTextColor,
+                                                  10, false, false)),
                                         ),
                                       ]))
                             ]),
@@ -1893,7 +1802,7 @@ class _AthletePageState extends State<AthletePage> {
             ]));
   }
 
-  Widget buildGraph(List war, List time, BuildContext context) {
+  Widget buildGraph(List scaledPrice, List time, BuildContext context) {
     // local variables
     List<series.Series<dynamic, DateTime>> athleteData;
     DateTime curTime = DateTime(-1);
@@ -1901,7 +1810,8 @@ class _AthletePageState extends State<AthletePage> {
     DateTime maxTime = DateTime(-1);
     List<WarTimeSeries> data = [];
 
-    for (int i = 0; i < war.length; i++) {
+    for (int i = 0; i < scaledPrice.length; i++) {
+      print(scaledPrice);
       curTime = DateTime.parse(time[i]);
       // only new points
       if (lastHour.year == -1 ||
@@ -1911,7 +1821,7 @@ class _AthletePageState extends State<AthletePage> {
         if (maxTime == DateTime(-1) || maxTime.isBefore(curTime))
           maxTime = curTime;
 
-        data.add(WarTimeSeries(curTime, war[i]));
+        data.add(WarTimeSeries(curTime, scaledPrice[i]));
       }
     }
 
@@ -1920,7 +1830,7 @@ class _AthletePageState extends State<AthletePage> {
         id: 'War',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         domainFn: (WarTimeSeries wts, _) => wts.time,
-        measureFn: (WarTimeSeries wts, _) => wts.war,
+        measureFn: (WarTimeSeries wts, _) => wts.scaledPrice,
         data: data,
       )
     ];
@@ -1933,21 +1843,20 @@ class _AthletePageState extends State<AthletePage> {
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    if (isBold)
-      if (isUline)
-        return TextStyle(
-            color: color,
-            fontFamily: 'OpenSans',
-            fontSize: size,
-            fontWeight: FontWeight.w400,
-            decoration: TextDecoration.underline);
-      else
-        return TextStyle(
+    if (isBold) if (isUline)
+      return TextStyle(
           color: color,
           fontFamily: 'OpenSans',
           fontSize: size,
           fontWeight: FontWeight.w400,
-        );
+          decoration: TextDecoration.underline);
+    else
+      return TextStyle(
+        color: color,
+        fontFamily: 'OpenSans',
+        fontSize: size,
+        fontWeight: FontWeight.w400,
+      );
     else if (isUline)
       return TextStyle(
           color: color,
@@ -1962,8 +1871,8 @@ class _AthletePageState extends State<AthletePage> {
       );
   }
 
-  BoxDecoration boxDecoration(Color col, double rad, double borWid,
-      Color borCol) {
+  BoxDecoration boxDecoration(
+      Color col, double rad, double borWid, Color borCol) {
     return BoxDecoration(
         color: col,
         borderRadius: BorderRadius.circular(rad),

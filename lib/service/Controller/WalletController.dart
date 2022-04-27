@@ -13,9 +13,43 @@ class WalletController extends GetxController {
   var axCirculation = "-".obs;
   var axTotalSupply = "-".obs;
   var yourBalance = "-".obs;
+  Controller controller = Get.find();
 
-  void getYourAXBalance() async {
+  Future<void> getYourAxBalance() async {
+    late String axAddress;
+    if (controller.networkID.value == Controller.MAINNET_CHAIN_ID) {
+      axAddress = AXT.polygonAddress;
+    } else {
+      axAddress = AXT.mumbaiAddress;
+    }
+    yourBalance.value = await getTokenBalance(axAddress);
+    print("[Console] AX Balance: $yourBalance");
     update();
+  }
+
+  // Update token balance
+  Future<String> getTokenBalance(String tokenAddress) async {
+    var walletAddress = controller.publicAddress.value;
+    late EthereumAddress tokenEthAddress;
+    late String tokenBalance;
+    var rpcUrl;
+    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
+      rpcUrl = Controller.supportedChains[controller.networkID.value];
+    }
+    Web3Client rpcClient = Web3Client(rpcUrl, Client());
+    tokenEthAddress = EthereumAddress.fromHex(tokenAddress);
+    var ax = Erc20(address: tokenEthAddress, client: rpcClient);
+    try {
+      BigInt rawBalance = await ax.balanceOf(walletAddress);
+      print("Raw Balance: $rawBalance");
+      EtherAmount balanceInWei = EtherAmount.inWei(rawBalance);
+      double balanceInEther = balanceInWei.getValueInUnit(EtherUnit.ether);
+      tokenBalance = balanceInEther.toStringAsFixed(6);
+    } catch (error) {
+      print("[Console] Failed to retrieve the balance: $error");
+    }
+    update();
+    return tokenBalance;
   }
 
   // Update circulating Supply, price, total supply in one call
@@ -40,42 +74,11 @@ class WalletController extends GetxController {
       }
     } else {
       // if bad request -> throw Exception
-      throw Exception('Failed to fetch the data from congecko api');
+      throw Exception('Failed to fetch the data from coingecko api');
     }
 
     print(
         "[Console] AX Price: $axPrice, AX TotalSupply: $axTotalSupply, AX Circulation: $axCirculation");
-    update();
-  }
-
-  // Update token balance
-  Future<void> getTokenBalance() async {
-
-    Controller controller = Get.find();
-    var walletAddress = controller.publicAddress.value;
-    var tokenAddress;
-    if (controller.networkID.value == Controller.MAINNET_CHAIN_ID) {
-      tokenAddress = EthereumAddress.fromHex(AXT.polygonAddress);
-    } else {
-      tokenAddress = EthereumAddress.fromHex(AXT.mumbaiAddress);
-    }
-    var rpcUrl;
-    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
-      rpcUrl = Controller.supportedChains[controller.networkID.value];
-    }
-    Web3Client polygonClient = Web3Client(rpcUrl, Client());
-    var ax = Erc20(address: tokenAddress, client: polygonClient);
-    try {
-      BigInt rawBalance = await ax.balanceOf(walletAddress);
-      print("Raw Balance: $rawBalance");
-      var balanceInWei = EtherAmount.inWei(rawBalance);
-      var balanceInEther = balanceInWei.getInEther;
-      yourBalance.value = "$balanceInEther";
-    } catch (error) {
-      print("[Console] Failed to retrive the balance: $error");
-    }
-
-    print("[Console] AX Balance: $yourBalance");
     update();
   }
 

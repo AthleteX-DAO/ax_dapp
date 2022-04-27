@@ -26,7 +26,7 @@ class SwapController extends GetxController {
       EthereumAddress.fromHex("0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551");
 
   final EthereumAddress routerMainnetAddress =
-      EthereumAddress.fromHex("0x15e4eb77713CD274472D95bDfcc7797F6a8C2D95");  
+      EthereumAddress.fromHex("0x15e4eb77713CD274472D95bDfcc7797F6a8C2D95");
   final EthereumAddress dexMainnetAddress =
       EthereumAddress.fromHex("0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B");
 
@@ -114,12 +114,12 @@ class SwapController extends GetxController {
   }
 
   Future<void> swapforAX() async {
-    EthereumAddress tknA = EthereumAddress.fromHex("$address1.value");
+    EthereumAddress tknA = EthereumAddress.fromHex("${address1.value}");
     BigInt amountIn = normalizeInput(amount1.value);
     EthereumAddress to = await controller.credentials.extractAddress();
     List<EthereumAddress> path = [tknA, axtAddress];
     String txString = await _aptRouter.swapExactTokensForAVAX(
-        amountIn, BigInt.one, path, to, deadline.value,
+        amountIn, BigInt.zero, path, to, deadline.value,
         credentials: controller.credentials);
     controller.updateTxString(txString);
   }

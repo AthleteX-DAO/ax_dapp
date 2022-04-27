@@ -1,4 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:ax_dapp/pages/connectWallet/MobileLoginPage.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
@@ -171,12 +172,6 @@ Dialog walletDialog(BuildContext context) {
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
-  double wid = 450;
-  double hgt = 200;
-  double edge = 75;
-  double wid_child = wid - edge;
-  if (_width < 405) wid = _width;
-  if (_height < 505) hgt = _height * 0.45;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -184,8 +179,8 @@ Dialog walletDialog(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: hgt,
-      width: wid,
+      height: _height*0.43,
+      width: _width*0.8,
       padding: EdgeInsets.all(20),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
@@ -215,7 +210,7 @@ Dialog walletDialog(BuildContext context) {
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 40),
-                width: wid_child,
+                width: _width*0.6,
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
@@ -240,37 +235,58 @@ Dialog walletDialog(BuildContext context) {
                       } else {
                         Navigator.pop(context);
                         walletController.getTokenMetrics();
-                        walletController.getTokenBalance();
+                        walletController.getYourAxBalance();
                       }
                     });
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/fox.png"),
-                            fit: BoxFit.fill,
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/fox.png"),
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        "Metamask",
-                        style: textStyle(Colors.white, 16, false),
-                      ),
-                      //empty container
-                      Container(
-                        margin: EdgeInsets.only(left: 20),
-                      ),
-                    ],
+                        Text(
+                          "Metamask",
+                          style: textStyle(Colors.white, 16, false),
+                        ),
+                        //empty container
+                        Container(
+                          margin: EdgeInsets.only(left: 20),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ],
           ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            width: _width*0.6,
+            height: 45,
+            decoration: boxDecoration(
+                Colors.transparent, 100, 2, Colors.grey[400]!),
+            child: Center(
+                child: TextButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MobileLoginPage()));
+
+              },
+              child: Text(
+                "Add/Create wallet",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+            )),
+          )
         ],
       ),
     ),
@@ -371,7 +387,7 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
                         onPressed: () {
-                          walletController.getTokenBalance().then((value) {
+                          walletController.getYourAxBalance().then((value) {
                             stakeAxInput.text =
                                 walletController.yourBalance.value;
                             print(stakeAxInput);
@@ -462,7 +478,8 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ApproveButton(175, 45, 'Approve', testFunction, depositConfimed)
+              ApproveButton(175, 45, 'Approve', testFunction, testFunction,
+                  transactionConfirmed)
             ],
           )
         ],
@@ -565,7 +582,7 @@ Dialog dualDepositDialog(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
                         onPressed: () {
-                          walletController.getTokenBalance().then((value) {
+                          walletController.getYourAxBalance().then((value) {
                             stakeAxInput.text =
                                 walletController.yourBalance.value;
                             print(stakeAxInput);
@@ -674,7 +691,7 @@ Dialog dualDepositDialog(
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                depositConfimed(context));
+                                transactionConfirmed(context));
                       },
                       child: Text("Add Liquidity",
                           style: textStyle(Colors.amber[400]!, 20, true)))),
@@ -694,7 +711,7 @@ Dialog dualDepositDialog(
                     showDialog(
                         context: context,
                         builder: (BuildContext context) =>
-                            depositConfimed(context));
+                            transactionConfirmed(context));
                   },
                   child:
                       Text("Deposit", style: textStyle(Colors.black, 16, true)),
@@ -1005,11 +1022,11 @@ Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
                 Container(
                   width: 175,
                   height: 45,
-                  decoration: boxDecoration(
-                      Colors.amber[500]!.withOpacity(0.20),
-                      500,
-                      1,
-                      Colors.transparent),
+                  decoration: isWeb
+                      ? boxDecoration(
+                          Colors.amber[400]!, 500, 1, Colors.amber[400]!)
+                      : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500,
+                          1, Colors.transparent),
                   child: TextButton(
                     //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
                     onPressed: () async {
@@ -1029,7 +1046,9 @@ Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
                     },
                     child: Text(
                       "Confirm",
-                      style: textStyle(Colors.amber[500]!, 16, false),
+                      style: isWeb
+                          ? textStyle(Colors.black, 16, false)
+                          : textStyle(Colors.amber[500]!, 16, false),
                     ),
                   ),
                 ),
@@ -1043,316 +1062,6 @@ Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
 }
 
 // dynamic
-Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
-  bool isWeb = true;
-  isWeb =
-      kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-  double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 400 : 355;
-  double edge = 40;
-  double hgt = 500;
-  if (_height < 505) hgt = _height;
-
-  return Dialog(
-    insetPadding:
-        isWeb ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 15.0),
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.0),
-    ),
-    child: Container(
-      height: hgt,
-      width: wid,
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-                width: wid - edge,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Sell " + athlete.name + " APT",
-                        style: textStyle(Colors.white, 20, false)),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                )),
-            Container(
-              width: wid - edge,
-              child: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: "You can sell APT's at Market Price for AX.",
-                        style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: isWeb ? 14 : 12)),
-                    TextSpan(
-                        text:
-                            " You can access other funds with AX on the Matic network through",
-                        style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: isWeb ? 14 : 12)),
-                    TextSpan(
-                        text: " SushiSwap",
-                        style: TextStyle(
-                            color: Colors.amber[400],
-                            fontSize: isWeb ? 14 : 12)),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-                height: 75,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Container(
-                      width: wid - edge,
-                      child: Text(
-                        isWeb
-                            ? "Input APT:"
-                            : "Input APT amount you want to sell:",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      width: wid - edge,
-                      height: 55,
-                      decoration: boxDecoration(
-                          Colors.transparent, 14, 0.5, Colors.grey[400]!),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(width: 5),
-                          Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                scale: 0.5,
-                                image: AssetImage(
-                                    "assets/images/apt_noninverted.png"),
-                              ),
-                            ),
-                          ),
-                          Container(width: 15),
-                          Expanded(
-                            child: Text(
-                              athlete.name + " APT",
-                              style: textStyle(Colors.white, 15, false),
-                            ),
-                          ),
-                          Container(
-                            height: 28,
-                            width: 48,
-                            decoration: boxDecoration(Colors.transparent, 100,
-                                0.5, Colors.grey[400]!),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "MAX",
-                                style: textStyle(Colors.grey[400]!, 9, false),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 70,
-                            child: TextField(
-                              style: textStyle(Colors.grey[400]!, 22, false),
-                              decoration: InputDecoration(
-                                hintText: '0.00',
-                                hintStyle:
-                                    textStyle(Colors.grey[400]!, 22, false),
-                                contentPadding: isWeb
-                                    ? EdgeInsets.all(9)
-                                    : EdgeInsets.all(6),
-                                border: InputBorder.none,
-                              ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    (RegExp(r'^(\d+)?\.?\d{0,6}'))),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )),
-            Divider(
-              thickness: 0.35,
-              color: Colors.grey[400],
-            ),
-            Container(
-                width: wid - edge,
-                height: 125,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text("Price",
-                            style: textStyle(Colors.white, 15, false)),
-                        Text("0.8 " + athlete.name + " APT per AX",
-                            style: textStyle(Colors.white, 15, false)),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "LP Fee",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          "0.5 AX",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Market Price Impact",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          "-0.04%",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Minimum Received",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          "L.J.APT",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Estimated Slippage",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          "~5%",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-            Container(
-              width: wid - edge,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "You receive:",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    "120 AX",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: wid - edge,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 8.0),
-                    width: 175,
-                    height: 45,
-                    decoration: boxDecoration(
-                        Colors.amber[500]!.withOpacity(0.20),
-                        500,
-                        1,
-                        Colors.transparent),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        bool confirmed = true;
-                        String txString =
-                            "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                confirmTransaction(
-                                    context, confirmed, txString));
-                      },
-                      child: Text(
-                        "Confirm",
-                        style: textStyle(Colors.amber[500]!, 16, false),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
 
 // dynamic
 Dialog redeemDialog(BuildContext context, AthleteScoutModel athlete) {
@@ -1828,11 +1537,11 @@ Dialog mintDialog(BuildContext context, AthleteScoutModel athlete) {
                     margin: EdgeInsets.only(bottom: 30.0),
                     width: 175,
                     height: 45,
-                    decoration: boxDecoration(
-                        Colors.amber[500]!.withOpacity(0.20),
-                        500,
-                        1,
-                        Colors.transparent),
+                    decoration: isWeb
+                        ? boxDecoration(
+                            Colors.amber[400]!, 500, 1, Colors.amber[400]!)
+                        : boxDecoration(Colors.amber[500]!.withOpacity(0.20),
+                            500, 1, Colors.transparent),
                     child: TextButton(
                       onPressed: () {
                         // call mint functionality
@@ -1845,7 +1554,9 @@ Dialog mintDialog(BuildContext context, AthleteScoutModel athlete) {
                       },
                       child: Text(
                         "Confirm",
-                        style: textStyle(Colors.amber[500]!, 16, false),
+                        style: isWeb
+                            ? textStyle(Colors.black, 16, false)
+                            : textStyle(Colors.amber[500]!, 16, false),
                       ),
                     ),
                   ),
@@ -1862,6 +1573,9 @@ Dialog mintDialog(BuildContext context, AthleteScoutModel athlete) {
 // dynamic
 Dialog confirmTransaction(
     BuildContext context, bool IsConfirmed, String txString) {
+  bool isWeb = true;
+  isWeb =
+      kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -1926,11 +1640,11 @@ Dialog confirmTransaction(
                     Container(
                       width: 275,
                       height: 50,
-                      decoration: boxDecoration(
-                          Colors.amber[500]!.withOpacity(0.20),
-                          500,
-                          1,
-                          Colors.transparent),
+                      decoration: isWeb
+                          ? boxDecoration(
+                              Colors.amber[400]!, 500, 1, Colors.amber[400]!)
+                          : boxDecoration(Colors.amber[500]!.withOpacity(0.20),
+                              500, 1, Colors.transparent),
                       child: TextButton(
                         onPressed: () {
                           Controller.viewTx();
@@ -1938,7 +1652,9 @@ Dialog confirmTransaction(
                         },
                         child: Text(
                           "View on Polygonscan",
-                          style: textStyle(Colors.amber[500]!, 16, false),
+                          style: isWeb
+                              ? textStyle(Colors.black, 16, false)
+                              : textStyle(Colors.amber[500]!, 16, false),
                         ),
                       ),
                     ),
@@ -2126,7 +1842,7 @@ Dialog removalConfirmed(BuildContext context) {
 }
 
 // dynamic
-Dialog depositConfimed(BuildContext context) {
+Dialog transactionConfirmed(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;
@@ -2254,7 +1970,7 @@ Dialog yourAXDialog(BuildContext context) {
                           ),
                           onPressed: () {
                             walletController.getTokenMetrics();
-                            walletController.getTokenBalance();
+                            walletController.getYourAxBalance();
                             Navigator.pop(context);
                           },
                         ),
@@ -2839,7 +2555,8 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
                 ),
               ), */
               //ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
-              ApproveButton(175, 45, 'Approve', testFunction, removalConfirmed),
+              ApproveButton(175, 45, 'Approve', testFunction, testFunction,
+                  removalConfirmed),
             ],
           )
         ],
@@ -3325,12 +3042,13 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
                         ),
                       ],
                     )),
-                ApproveButton(
-                    175, 40, "Approve", poolController.approve, depositConfimed)
+                ApproveButton(175, 40, "Approve", poolController.approve,
+                    poolController.addLiquidity, transactionConfirmed)
               ])));
 }
 
 Dialog poolRemoveLiquidity(BuildContext context, String name) {
+  PoolController poolController = Get.find();
   double amount = 0;
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
@@ -3548,8 +3266,8 @@ Dialog poolRemoveLiquidity(BuildContext context, String name) {
                     ],
                   ),
                 ),
-                ApproveButton(
-                    175, 40, "Approve", testFunction, removalConfirmed)
+                ApproveButton(175, 40, "Approve", poolController.approve,
+                    poolController.removeLiquidity, removalConfirmed)
               ])));
 }
 

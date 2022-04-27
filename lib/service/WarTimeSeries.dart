@@ -1,6 +1,6 @@
 class WarTimeSeries {
   final DateTime time;
-  final double war;
+  final double scaledPrice;
 
-  WarTimeSeries(this.time, this.war);
+  WarTimeSeries(this.time, this.scaledPrice);
 }
