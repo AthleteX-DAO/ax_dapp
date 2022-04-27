@@ -2,7 +2,9 @@ import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -39,6 +41,7 @@ class _AthletePageState extends State<AthletePage> {
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
+  
 
   @override
   void initState() {
@@ -257,6 +260,7 @@ class _AthletePageState extends State<AthletePage> {
       String marketPricePercent,
       String bookValue,
       String bookValuePercent) {
+    
     return Container(
         width: _width,
         child: Column(
@@ -1471,12 +1475,11 @@ class _AthletePageState extends State<AthletePage> {
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
+    final WalletController walletController = Get.find(); 
+
     double _width = MediaQuery.of(context).size.width;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
-
-    var longAptToken = "\$AJLT1010";
-    var shortAptToken = "\$AJST1010";
 
     // Stats-Side
     return Container(
@@ -1502,12 +1505,31 @@ class _AthletePageState extends State<AthletePage> {
                                           Colors.white, 24, false, false))),
                               Spacer(),
                               Container(
-                                  child: Text(
-                                      (_longAptIndex == 0)
-                                          ? "Symbol: $longAptToken"
-                                          : "Symbol: $shortAptToken",
-                                      style: textStyle(
-                                          greyTextColor, 14, false, false))),
+                                  child:
+                                    FutureBuilder<String>(
+                                      future: _isLongApt ? walletController.getTokenSymbol(getLongAptAddress(athlete.id)) : walletController.getTokenSymbol(getShortAptAddress(athlete.id)),
+                                      builder: (context, snapshot) {
+                                        //Check API response data
+                                        if (snapshot.hasError) {
+                                          // can't get symbol
+                                          return showSymbol('---');
+                                        } else if (snapshot.hasData) {
+                                          // got the balance
+                                          return showSymbol(snapshot.data!);
+                                        } else {
+                                          // loading
+                                          return Center(
+                                            child: SizedBox(
+                                              child: CircularProgressIndicator(
+                                                  color: Colors.amber),
+                                              height: 10.0,
+                                              width: 10.0,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
                               Spacer(),
                               Container(
                                   width: 200,
@@ -1814,6 +1836,16 @@ class _AthletePageState extends State<AthletePage> {
                       ])),
             ]));
   }
+
+  Widget showSymbol(String symbol) {
+     return Flexible(
+      child: Text(
+        "Symbol: $symbol",
+        style: textStyle(greyTextColor, 14, false, false),
+      ),
+      // padding: EdgeInsets.only(right: 14),
+    );
+  } 
 
   Widget buildGraph(List scaledPrice, List time, BuildContext context) {
     // local variables
