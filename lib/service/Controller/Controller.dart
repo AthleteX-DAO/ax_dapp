@@ -111,10 +111,10 @@ class Controller extends GetxController {
   }
 
   static void viewTx() async {
-    String urlString = "";
+    Uri urlString = Uri.parse('');
     latestTx == ""
-        ? urlString = "https://polygonscan.com"
-        : urlString = 'https://polygonscan.com/tx/$latestTx';
-    await launch(urlString);
+        ? urlString = Uri.parse('https://polygonscan.com')
+        : urlString = Uri.parse('https://polygonscan.com/tx/$latestTx');
+    await launchUrl(urlString);
   }
 }

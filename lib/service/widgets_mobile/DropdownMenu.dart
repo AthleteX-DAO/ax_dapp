@@ -27,11 +27,11 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
           value: 2,
           child: ListTile(
             leading: FaIcon(
-              FontAwesomeIcons.globeAmericas,
+              FontAwesomeIcons.earthAmericas,
             ),
             title: Text('Website'),
           ),
-          onTap: () => launch('https://www.athletex.io/'),
+          onTap: () => launchUrl(Uri.parse('https://www.athletex.io/')),
         ),
         PopupMenuItem(
           value: 3,
@@ -39,8 +39,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             leading: Icon(Icons.description_outlined),
             title: Text('Litepaper'),
           ),
-          onTap: () => launch(
-              'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper'),
+          onTap: () => launchUrl(Uri.parse('https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper')),
         ),
         PopupMenuItem(
           value: 4,
@@ -50,7 +49,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             ),
             title: Text('GitHub'),
           ),
-          onTap: () => launch('https://github.com/SportsToken'),
+          onTap: () => launchUrl(Uri.parse('https://github.com/SportsToken')),
         ),
         PopupMenuItem(
           value: 5,
@@ -60,7 +59,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             ),
             title: Text('Discord'),
           ),
-          onTap: () => launch('https://discord.com/invite/WFsyAuzp9V'),
+          onTap: () => launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
         ),
         PopupMenuItem(
           value: 6,
@@ -71,7 +70,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             ),
             title: Text('Twitter'),
           ),
-          onTap: () => launch('https://twitter.com/athletex_dao?s=20'),
+          onTap: () => launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
         ),
         PopupMenuItem(
           value: 7,

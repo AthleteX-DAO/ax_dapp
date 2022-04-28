@@ -57,7 +57,7 @@ class _ExplorePageState extends State<ExplorePage> {
         ),
         lineBarsData: [
           LineChartBarData(
-            colors: [(Colors.amber[600])!],
+            color: Colors.amber[600],
             spots: athleteData,
             isCurved: false,
             barWidth: 2,
