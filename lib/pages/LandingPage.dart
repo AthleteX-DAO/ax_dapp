@@ -86,14 +86,12 @@ class _LandingPageState extends State<LandingPage> {
       builder: (context, snapshot) {
         //Check API response data
         if (snapshot.hasError) {
-          return reloadPageButton(tradingTextSize);
+          return startTradingButton(tradingTextSize);
         } else if (snapshot.hasData) {
           AthleteList.list = snapshot.data;
           return startTradingButton(tradingTextSize);
         } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return startTradingButton(tradingTextSize);
         }
       },
     );
