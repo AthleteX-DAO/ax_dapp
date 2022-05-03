@@ -3,7 +3,7 @@ import 'package:ax_dapp/service/BlockchainModels/SwapInfo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
 import 'package:fpdart/fpdart.dart';
 
-const String _no_swap_info_error_msg = "No buy info found";
+const String _no_swap_info_error_msg = "No swap info found";
 
 class GetSwapInfoUseCase {
   final SubGraphRepo _graphRepo;
@@ -17,7 +17,7 @@ class GetSwapInfoUseCase {
     try {
       print("token0 address: $tokenFromAddress");
       print("token1 address: $tokenToAddress");
-      print("fetching apt buy info");
+      print("fetching swap info");
       final tokenPairData = await _graphRepo.queryPairDataForTokenAddress(
           tokenFromAddress, tokenToAddress);
 
@@ -61,10 +61,10 @@ class GetSwapInfoUseCase {
         }
       } else {
         print(
-            "fetching apt buy info failed: ${tokenPairData.getRight().toNullable().toString()}");
+            "fetching swap info failed: ${tokenPairData.getRight().toNullable().toString()}");
         final errorMsg = tokenPairData.getRight().toNullable().toString();
         return Either.right(
-            Error("Error occurred fetching buy data: $errorMsg"));
+            Error("Error occurred fetching swap data: $errorMsg"));
       }
     } catch (e) {
       return Either.right(Error("Error occurred: ${e.toString()}"));
