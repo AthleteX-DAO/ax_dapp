@@ -226,11 +226,11 @@ class _BuyDialogState extends State<BuyDialog> {
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           final bloc = context.read<BuyDialogBloc>();
-          final price = state.price.toStringAsFixed(4);
+          final price = state.price.toStringAsFixed(6);
           final balance = state.balance;
-          final minReceived = state.minimumReceived.toStringAsFixed(4);
-          final priceImpact = state.priceImpact.toStringAsFixed(4);
-          final receiveAmount = state.receiveAmount.toStringAsFixed(4);
+          final minReceived = state.minimumReceived.toStringAsFixed(6);
+          final priceImpact = state.priceImpact.toStringAsFixed(6);
+          final receiveAmount = state.receiveAmount.toStringAsFixed(6);
           final lpFee = 0.3;
           final estimatedSlippage = 0.00;
           print("BuyDialog TokenAddress: ${state.tokenAddress}");
