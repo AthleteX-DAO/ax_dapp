@@ -31,24 +31,30 @@ class SubGraphRepo {
   }
 }
 
-
-
 ///token0/token1 can be either the APT token address or the
 ///blockchain address respectively
 ///This is set by the first add liquidity transaction
 ///and therefore important to fetch the pair data for the APT first
 String _getPairInfoForTokenId(String token0, String token1) => """
-query pairs(where: {token0: "$token0", 
-    token1: "$token1"}) {
+query {
+  pairs(where: {token0_in:["$token0", "$token1"], token1_in:["$token0", "$token1"]}) {
     id
     name
-    token0 {id, name}
-    token1 {id, name}
-    reserve0 
-    reserve1 
-  }
+    token0{
+      id
+      name
+    }
+    token1{
+      id
+      name
+    }
+    reserve0
+    reserve1
+		token0Price
+    token1Price
+  } 
+} 
 """;
-
 
 ///This returns all available pairs in the AthleteX Subgraph
 String _getAllPairs() => """
