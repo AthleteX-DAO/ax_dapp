@@ -9,6 +9,7 @@ class BuyDialogState extends Equatable {
   final double minimumReceived;
   final double priceImpact;
   final double receiveAmount;
+  final double totalFee;
   final Status status;
   final String? tokenAddress;
 
@@ -20,6 +21,7 @@ class BuyDialogState extends Equatable {
     double? minimumReceived,
     double? estimatedSlippage,
     double? receiveAmount,
+    double? totalFee,
     String? tokenAddress,
   })  : aptInputAmount = axInputValue ?? 0.0,
         price = price ?? 0.0,
@@ -27,6 +29,7 @@ class BuyDialogState extends Equatable {
         minimumReceived = minimumReceived ?? 0.0,
         priceImpact = estimatedSlippage ?? 0.0,
         receiveAmount = receiveAmount ?? 0.0,
+        totalFee = totalFee ?? 0.0,
         tokenAddress = tokenAddress;
 
   @override
@@ -37,6 +40,7 @@ class BuyDialogState extends Equatable {
         minimumReceived,
         priceImpact,
         receiveAmount,
+        totalFee,
         tokenAddress
       ];
 
@@ -48,6 +52,7 @@ class BuyDialogState extends Equatable {
     double? minimumReceived,
     double? priceImpact,
     double? receiveAmount,
+    double? totalFee,
     String? tokenAddress,
   }) {
     return BuyDialogState(
@@ -58,6 +63,7 @@ class BuyDialogState extends Equatable {
       minimumReceived: minimumReceived ?? this.minimumReceived,
       estimatedSlippage: priceImpact ?? this.priceImpact,
       receiveAmount: receiveAmount ?? this.receiveAmount,
+      totalFee: totalFee ?? this.totalFee,
       tokenAddress: tokenAddress ?? this.tokenAddress,
     );
   }

@@ -12,11 +12,11 @@ class OnLoadDialog extends BuyDialogEvent {
   OnLoadDialog({required this.currentTokenAddress});
 }
 
-class OnNewAptInput extends BuyDialogEvent {
-  final double aptInputAmount;
+class OnNewAxInput extends BuyDialogEvent {
+  final double axInputAmount;
   @override
   List<Object?> get props => [];
-  OnNewAptInput({required this.aptInputAmount});
+  OnNewAxInput({required this.axInputAmount});
 }
 
 class OnMaxBuyTap extends BuyDialogEvent {
