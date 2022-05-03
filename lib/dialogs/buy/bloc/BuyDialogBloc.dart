@@ -40,7 +40,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         swapController.updateToAddress(event.currentTokenAddress);
         final buyInfo = response.getLeft().toNullable()!.aptBuyInfo;
         final transactionInfo =
-            calculateTransactionInfo(buyInfo, state.aptInputAmount);
+            calculateTransactionInfo(buyInfo, state.axInputAmount);
         await walletController.getYourAxBalance();
         //do some math
         emit(state.copy(

@@ -5,7 +5,7 @@ enum Status { initial, success, error, loading }
 class BuyDialogState extends Equatable {
   final double price;
   final double balance;
-  final double aptInputAmount;
+  final double axInputAmount;
   final double minimumReceived;
   final double priceImpact;
   final double receiveAmount;
@@ -23,7 +23,7 @@ class BuyDialogState extends Equatable {
     double? receiveAmount,
     double? totalFee,
     String? tokenAddress,
-  })  : aptInputAmount = axInputValue ?? 0.0,
+  })  : axInputAmount = axInputValue ?? 0.0,
         price = price ?? 0.0,
         balance = balance ?? 0.0,
         minimumReceived = minimumReceived ?? 0.0,
@@ -34,7 +34,7 @@ class BuyDialogState extends Equatable {
 
   @override
   List<Object?> get props => [
-        aptInputAmount,
+        axInputAmount,
         price,
         balance,
         minimumReceived,
@@ -57,7 +57,7 @@ class BuyDialogState extends Equatable {
   }) {
     return BuyDialogState(
       status: status ?? Status.initial,
-      axInputValue: axInputValue ?? this.aptInputAmount,
+      axInputValue: axInputValue ?? this.axInputAmount,
       price: price ?? this.price,
       balance: balance ?? this.balance,
       minimumReceived: minimumReceived ?? this.minimumReceived,
