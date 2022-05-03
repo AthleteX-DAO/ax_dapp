@@ -1499,13 +1499,13 @@ class _AthletePageState extends State<AthletePage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                  width: wid * 0.3375,
                                   child: Text("Price Overview",
                                       style: textStyle(
                                           Colors.white, 24, false, false))),
                               Spacer(),
                               Container(
                                 width: 100,
+                                  height: 20,
                                   child:
                                     FutureBuilder<String>(
                                       future: _isLongApt ? walletController.getTokenSymbol(getLongAptAddress(athlete.id)) : walletController.getTokenSymbol(getShortAptAddress(athlete.id)),
@@ -1839,13 +1839,13 @@ class _AthletePageState extends State<AthletePage> {
   }
 
   Widget showSymbol(String symbol) {
-     return Flexible(
-      child: Text(
-        "Symbol: \$$symbol",
-        style: textStyle(greyTextColor, 10, false, false),
-      ),
-      // padding: EdgeInsets.only(right: 14),
-    );
+     return Center(
+       child: Text(
+         "Symbol: \$$symbol",
+         style: textStyle(greyTextColor, 10, false, false),
+           textAlign: TextAlign.center
+       ),
+     );
   } 
 
   Widget buildGraph(List scaledPrice, List time, BuildContext context) {
