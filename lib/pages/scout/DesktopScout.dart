@@ -1,13 +1,18 @@
+import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
+import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
 import 'package:ax_dapp/pages/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
-import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
 
 import 'models/AthleteScoutModel.dart';
 
@@ -743,7 +748,23 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) =>
-                                        buyDialog(context, athlete));
+                                    BlocProvider(
+                                        create: (BuildContext context) =>
+                                            BuyDialogBloc(
+                                                repo: GetAPTBuyInfoUseCase(
+                                                  RepositoryProvider.of<
+                                                      SubGraphRepo>(
+                                                      context),
+                                                ),
+                                                walletController:
+                                                Get.find(),
+                                                swapController: Get.find()),
+                                        child: BuyDialog(
+                                            athlete.name,
+                                            athlete.warPrice,
+                                            athlete.id)
+                                    )
+                                );
                               } else {
                                 setState(() {
                                   curAthlete = athlete;
@@ -881,7 +902,23 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) =>
-                                        buyDialog(context, athlete));
+                                        BlocProvider(
+                                            create: (BuildContext context) =>
+                                                BuyDialogBloc(
+                                                    repo: GetAPTBuyInfoUseCase(
+                                                      RepositoryProvider.of<
+                                                              SubGraphRepo>(
+                                                          context),
+                                                    ),
+                                                    walletController:
+                                                        Get.find(),
+                                                    swapController: Get.find()),
+                                            child: BuyDialog(
+                                                athlete.name,
+                                                athlete.warPrice,
+                                                athlete.id)
+                                        )
+                                );
                               } else {
                                 setState(() {
                                   curAthlete = athlete;

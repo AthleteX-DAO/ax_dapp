@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:get/get.dart';
 //Comment this for Android
+const EMPTY_WALLET_ID = "0x0000000000000000000000000000000000000000";
 
 class Controller extends GetxController {
   /// VARIABLES
@@ -33,7 +34,7 @@ class Controller extends GetxController {
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
   var client = Web3Client("https://polygon-rpc.com", Client()).obs;
   var publicAddress =
-      EthereumAddress.fromHex("0x0000000000000000000000000000000000000000").obs;
+      EthereumAddress.fromHex(EMPTY_WALLET_ID).obs;
 
   set axTokenAddress(EthereumAddress tokenAddress) {
     axTokenAddress = EthereumAddress.fromHex("${tokenAddress.hex}");

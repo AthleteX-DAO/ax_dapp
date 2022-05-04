@@ -1,23 +1,223 @@
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/dialogs/buy/models/BuyDialogEvent.dart';
 import 'package:ax_dapp/dialogs/buy/models/BuyDialogState.dart';
+import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+enum TokenType {
+  Short,
+  Long,
+}
+
 class BuyDialog extends StatefulWidget {
   final String athleteName;
   final double aptPrice;
+  final int athleteId;
 
-  BuyDialog(this.athleteName, this.aptPrice);
+  BuyDialog(this.athleteName, this.aptPrice, this.athleteId);
 
   @override
   State<StatefulWidget> createState() => _BuyDialogState();
 }
 
 class _BuyDialogState extends State<BuyDialog> {
+  double paddingHorizontal = 20;
+  double hgt = 500;
+  TextEditingController _aptAmountController = TextEditingController();
+
+  TokenType _currentTokenTypeSelection = TokenType.Long;
+  double slippageTolerance = 1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
+
+  Widget toggleLongShortToken(double wid, double hgt) {
+    return Container(
+      padding: EdgeInsets.all(1.5),
+      width: wid * 0.25,
+      height: hgt * 0.05,
+      decoration: boxDecoration(Colors.transparent, 20, 1, Colors.grey[800]!),
+      child: Container(
+        child: Row(
+          children: [
+            Expanded(
+              //Long apt toggle button
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size(50, 30),
+                  primary: (_currentTokenTypeSelection == TokenType.Long) ? Colors.amber : Colors.transparent,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _currentTokenTypeSelection = TokenType.Long;
+                  });
+                },
+                child: Text(
+                  "Long",
+                  style: TextStyle(
+                      color: (_currentTokenTypeSelection == TokenType.Long)
+                          ? Colors.black
+                          : Color.fromRGBO(154, 154, 154, 1),
+                      fontSize: 11),
+                ),
+              ),
+            ),
+            Expanded(
+              //short apt toggle button
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(50, 30),
+                    primary: (_currentTokenTypeSelection == TokenType.Long) ? Colors.transparent : Colors.black),
+                onPressed: () {
+                  setState(() {
+                    _currentTokenTypeSelection = TokenType.Short;
+                  });
+                },
+                child: Text(
+                  "Short",
+                  style: TextStyle(
+                      color: (_currentTokenTypeSelection == TokenType.Long)
+                          ? Color.fromRGBO(154, 154, 154, 1)
+                          : Colors.amber,
+                      fontSize: 11),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget showPrice(price) {
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Price:", style: textStyle(Colors.white, 15, false)),
+          Text(
+            "$price " +
+                widget.athleteName +
+                " " +
+                _currentTokenTypeSelection.name +
+                " APT" +
+                " per AX",
+            style: textStyle(Colors.white, 15, false),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget showTotalFee(totalFee) {
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Total Fees:", style: textStyle(Colors.grey[600]!, 15, false)),
+          Text(
+            "$totalFee AX(0.3%)",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget showBalance(balance) {
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            "Balance: $balance",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget showMarketPriceImpact(marketPriceImpact) {
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Market Price Impact:",
+              style: textStyle(Colors.grey[600]!, 15, false)),
+          Text(
+            "$marketPriceImpact %",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget showMinimumReceived(minimumReceived) {
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Minimum Received:",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+          Text(
+            "$minimumReceived APT",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget showSlippage(slipageTolerance) {
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Slippage Tolerance:",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+          Text(
+            "$slipageTolerance %",
+            style: textStyle(Colors.grey[600]!, 15, false),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget showYouReceived(amountToReceive) {
+    return Flexible(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "You Receive:",
+            style: textStyle(Colors.white, 15, false),
+          ),
+          Text(
+            "$amountToReceive " + widget.athleteName + " " + _currentTokenTypeSelection.name + " APT",
+            style: textStyle(Colors.white, 15, false),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isWeb = true;
@@ -25,40 +225,48 @@ class _BuyDialogState extends State<BuyDialog> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _height = MediaQuery.of(context).size.height;
     double wid = isWeb ? 400 : 355;
-    double edge = 40;
     double hgt = 500;
     if (_height < 505) hgt = _height;
 
     return BlocBuilder<BuyDialogBloc, BuyDialogState>(
-        buildWhen: (previous, current) => current.status.name.isNotEmpty,
+        buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
+          final bloc = context.read<BuyDialogBloc>();
+          final price = state.price.toStringAsFixed(6);
+          final balance = state.balance;
+          final minReceived = state.minimumReceived.toStringAsFixed(6);
+          final priceImpact = state.priceImpact.toStringAsFixed(6);
+          final receiveAmount = state.receiveAmount.toStringAsFixed(6);
+          final totalFee = state.totalFee;
+          print("BuyDialog TokenAddress: ${state.tokenAddress}");
+          print("BuyDialog price: $price");
+          print("BuyDialog minReceived: ${state.minimumReceived}");
+          print("BuyDialog PriceImpact: ${state.priceImpact}");
+          print("BuyDialog ReceiveAmount: ${state.receiveAmount}");
+          if (state.tokenAddress == null ||
+              state.tokenAddress != _getCurrentTokenAddress()) {
+            reloadBuyDialog(bloc);
+          }
+
           return Dialog(
-            insetPadding: isWeb
-                ? EdgeInsets.zero
-                : EdgeInsets.symmetric(horizontal: 15.0),
             backgroundColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
               height: hgt,
               width: wid,
               decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-              child: Container(
-                  child: SingleChildScrollView(
-                      child: Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Container(
-                      height: 80,
-                      width: wid - edge,
+                      width: wid,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text("Buy " + widget.athleteName + " APT",
                               style: textStyle(Colors.white, 20, false)),
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.close,
                               color: Colors.white,
                               size: 30,
@@ -68,9 +276,7 @@ class _BuyDialogState extends State<BuyDialog> {
                         ],
                       )),
                   Container(
-                    height: isWeb ? 45 : 55,
-                    width: wid - edge,
-                    alignment: Alignment.center,
+                    width: wid,
                     child: RichText(
                       text: TextSpan(
                         children: <TextSpan>[
@@ -98,11 +304,12 @@ class _BuyDialogState extends State<BuyDialog> {
                   Container(
                     alignment: Alignment.centerLeft,
                     height: 50,
-                    width: wid - edge,
+                    width: wid,
                     child: GestureDetector(
                       onTap: () {
-                        Uri urlString = Uri.parse('"https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin"');
-                        launchUrl(urlString);
+                        String urlString =
+                            "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
+                        launchUrl(Uri.parse(urlString));
                       },
                       child: Text(
                         'Learn How to buy AX',
@@ -111,95 +318,111 @@ class _BuyDialogState extends State<BuyDialog> {
                       ),
                     ),
                   ),
+                  //Input apt text with toggle
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        isWeb
+                            ? "Input AX:"
+                            : "Input AX amount you want to spend:",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      toggleLongShortToken(wid, hgt),
+                    ],
+                  ),
+                  //APT input box
                   Container(
-                      height: 75,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Container(
-                            width: wid - edge,
-                            child: Text(
-                              "Input APT amount you want to buy:",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
+                    padding: EdgeInsets.symmetric(horizontal: 6),
+                    width: wid,
+                    height: 70,
+                    decoration: boxDecoration(
+                        Colors.transparent, 14, 0.5, Colors.grey[400]!),
+                    child: Column(
+                      children: [
+                        //APT icon - athlete name - max button - input field
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(width: 5),
+                            Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  scale: 0.5,
+                                  image: AssetImage("assets/images/x.png"),
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                              width: wid - edge,
-                              height: 55,
-                              decoration: boxDecoration(Colors.transparent, 14,
+                            Container(width: 15),
+                            Expanded(
+                              child: Text(
+                                "AX",
+                                style: textStyle(Colors.white, 15, false),
+                              ),
+                            ),
+                            Container(
+                              height: 28,
+                              width: 48,
+                              decoration: boxDecoration(Colors.transparent, 100,
                                   0.5, Colors.grey[400]!),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(width: 15),
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        scale: 0.5,
-                                        image: AssetImage(
-                                            "assets/images/apt_noninverted.png"),
-                                      ),
-                                    ),
+                              child: TextButton(
+                                onPressed: () {
+                                  bloc.add(OnMaxBuyTap());
+                                },
+                                child: Text(
+                                  "MAX",
+                                  style: textStyle(Colors.grey[400]!, 9, false),
+                                ),
+                              ),
+                            ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: wid * 0.4),
+                              child: IntrinsicWidth(
+                                child: TextField(
+                                  controller: _aptAmountController,
+                                  style:
+                                      textStyle(Colors.grey[400]!, 22, false),
+                                  decoration: InputDecoration(
+                                    hintText: '0.00',
+                                    hintStyle:
+                                        textStyle(Colors.grey[400]!, 22, false),
+                                    contentPadding: EdgeInsets.only(left: 3),
+                                    border: InputBorder.none,
                                   ),
-                                  Container(width: 15),
-                                  Expanded(
-                                    child: Text(
-                                      widget.athleteName + " APT",
-                                      style: textStyle(Colors.white, 15, false),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 28,
-                                    width: 48,
-                                    decoration: boxDecoration(
-                                        Colors.transparent,
-                                        100,
-                                        0.5,
-                                        Colors.grey[400]!),
-                                    child: TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        "MAX",
-                                        style: textStyle(
-                                            Colors.grey[400]!, 9, false),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(width: 25),
-                                  SizedBox(
-                                    width: 70,
-                                    child: TextFormField(
-                                      style: textStyle(
-                                          Colors.grey[400]!, 22, false),
-                                      decoration: InputDecoration(
-                                        hintText: '0.00',
-                                        hintStyle: textStyle(
-                                            Colors.grey[400]!, 22, false),
-                                        border: InputBorder.none,
-                                      ),
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            (RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
-                        ],
-                      )),
+                                  onChanged: (value) {
+                                    bloc.add(OnNewAxInput(
+                                        axInputAmount: double.parse(value)));
+                                  },
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        (RegExp(r'^(\d+)?\.?\d{0,6}'))),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            showBalance(balance),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                   Divider(
                     thickness: 0.35,
                     color: Colors.grey[400],
                   ),
                   Container(
-                      width: wid - edge,
+                      width: wid,
                       height: 125,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -207,169 +430,72 @@ class _BuyDialogState extends State<BuyDialog> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                "Price",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                "${widget.aptPrice} AX per " +
-                                    widget.athleteName +
-                                    " APT",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              showPrice(price),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                "LP Fee",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              Text(
-                                "0.5 AX",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
+                              showTotalFee(totalFee.toStringAsFixed(6)),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [showMarketPriceImpact(priceImpact)],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              showMinimumReceived(minReceived),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                "Market Price Impact",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              Text(
-                                "-0.04%",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Minimum Received",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              Text(
-                                "L.J.APT",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Estimated Slippage",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              Text(
-                                "~5%",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
+                              showSlippage(slippageTolerance),
                             ],
                           ),
                         ],
                       )),
                   Container(
-                    width: wid - edge,
+                    width: wid,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "You receive:",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          "100 " + widget.athleteName + " APT",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
-                        ),
+                        showYouReceived(receiveAmount),
                       ],
                     ),
                   ),
                   Container(
-                    height: 75,
-                    width: wid - edge,
+                    width: wid,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Container(
-                          width: 175,
-                          height: 45,
-                          decoration: boxDecoration(
-                              Colors.amber[500]!.withOpacity(0.20),
-                              500,
-                              1,
-                              Colors.transparent),
-                          child: TextButton(
-                            //onPressed: () => showDialog(context: context, builder: (BuildContext context) => confirmTransaction(context)),
-                            onPressed: () async {
-                              Navigator.pop(context);
-                              bool confirmed;
-                              String txString =
-                                  "0x192AB27a6d1d3885e1022D2b18Dd7597272ebD22";
-                              try {
-                                confirmed = true;
-                              } catch (e) {
-                                confirmed = false;
-                              }
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      confirmTransaction(
-                                          context, confirmed, txString));
-                            },
-                            child: Text(
-                              "Confirm",
-                              style: textStyle(Colors.amber[500]!, 16, false),
-                            ),
-                          ),
-                        ),
+                        ApproveButton(
+                            175,
+                            40,
+                            "Approve",
+                            bloc.swapController.approve,
+                            bloc.swapController.swap,
+                            transactionConfirmed),
                       ],
                     ),
                   )
                 ],
-              ))),
+              ),
             ),
           );
         });
+  }
+
+  void reloadBuyDialog(BuyDialogBloc bloc) {
+    bloc.add(OnLoadDialog(
+        currentTokenAddress: _getCurrentTokenAddress()));
+  }
+
+  String _getCurrentTokenAddress() {
+    return (_currentTokenTypeSelection == TokenType.Long)
+        ? getLongAptAddress(widget.athleteId)
+        : getShortAptAddress(widget.athleteId);
   }
 }

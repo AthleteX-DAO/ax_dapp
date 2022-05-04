@@ -1,62 +1,60 @@
 {
-  "data": {
-    "pairs": [
-      {
-        "id": "0x3f6d3b85ad9d950d8bff406ca54bcdfb0c932db4",
-        "name": "AJLT1010-AX",
-        "token0": {
-          "name": "Aaron Judge Linear Long Token",
-          "id": "0x481bf3dbde952ce684dc500fd9edef88f6607a8c"
-        },
-        "token1": {
-          "name": "AthleteX",
-          "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df"
-        },
-        "reserve0": "0.000936894635175985",
-        "reserve1": "17"
+  "pairs": [
+    {
+      "id": "0x3f6d3b85ad9d950d8bff406ca54bcdfb0c932db4",
+      "name": "AJLT1010-AX",
+      "token0": {
+        "name": "Aaron Judge Linear Long Token",
+        "id": "0x481bf3dbde952ce684dc500fd9edef88f6607a8c"
       },
-      {
-        "id": "0x646f0e3e517f31e9ff4d80b632170ef4dcefc5ef",
-        "name": "JRST1010-JRLT1010",
-        "token0": {
-          "name": "Jose Ramirez Linear Short Token",
-          "id": "0x037fc21641b60e747b46e72f55e1b1337aeb2776"
-        },
-        "token1": {
-          "name": "Jose Ramirez Linear Long Token",
-          "id": "0xc524e925bdad2419ad31d180300582f7025873df"
-        },
-        "reserve0": "1",
-        "reserve1": "1"
+      "token1": {
+        "name": "AthleteX",
+        "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df"
       },
-      {
-        "id": "0x814fa61c20ca2e801b9f671f9b4cc71f361dd795",
-        "name": "AX-AJST1010",
-        "token0": {
-          "name": "AthleteX",
-          "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df"
-        },
-        "token1": {
-          "name": "Aaron Judge Linear Short Token",
-          "id": "0xa16dd54c674ae300d6df436e536584eb3ab2f081"
-        },
-        "reserve0": "0.021531264061694354",
-        "reserve1": "0.0007"
+      "reserve0": "0.000936894635175985",
+      "reserve1": "17"
+    },
+    {
+      "id": "0x646f0e3e517f31e9ff4d80b632170ef4dcefc5ef",
+      "name": "JRST1010-JRLT1010",
+      "token0": {
+        "name": "Jose Ramirez Linear Short Token",
+        "id": "0x037fc21641b60e747b46e72f55e1b1337aeb2776"
       },
-      {
-        "id": "0xe802266d4ed92cc5beb5c065c7b247d572f16ab5",
-        "name": "VGJST1010-AX",
-        "token0": {
-          "name": "Vladimir Guerrero Jr Linear Short Token",
-          "id": "0x37d388321c2ce1e130e36443e8dae91836a786c0"
-        },
-        "token1": {
-          "name": "AthleteX",
-          "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df"
-        },
-        "reserve0": "0.499996676688755609",
-        "reserve1": "1500.01"
-      }
-    ]
-  }
+      "token1": {
+        "name": "Jose Ramirez Linear Long Token",
+        "id": "0xc524e925bdad2419ad31d180300582f7025873df"
+      },
+      "reserve0": "1",
+      "reserve1": "1"
+    },
+    {
+      "id": "0x814fa61c20ca2e801b9f671f9b4cc71f361dd795",
+      "name": "AX-AJST1010",
+      "token0": {
+        "name": "AthleteX",
+        "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df"
+      },
+      "token1": {
+        "name": "Aaron Judge Linear Short Token",
+        "id": "0xa16dd54c674ae300d6df436e536584eb3ab2f081"
+      },
+      "reserve0": "0.021531264061694354",
+      "reserve1": "0.0007"
+    },
+    {
+      "id": "0xe802266d4ed92cc5beb5c065c7b247d572f16ab5",
+      "name": "VGJST1010-AX",
+      "token0": {
+        "name": "Vladimir Guerrero Jr Linear Short Token",
+        "id": "0x37d388321c2ce1e130e36443e8dae91836a786c0"
+      },
+      "token1": {
+        "name": "AthleteX",
+        "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df"
+      },
+      "reserve0": "0.499996676688755609",
+      "reserve1": "1500.01"
+    }
+  ]
 }

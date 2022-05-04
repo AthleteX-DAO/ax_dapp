@@ -9,14 +9,15 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class WalletController extends GetxController {
+  late String axAddress;
   var axPrice = "-".obs;
   var axCirculation = "-".obs;
   var axTotalSupply = "-".obs;
-  var yourBalance = "-".obs;
+  var yourBalance = "0.0".obs;
   Controller controller = Get.find();
 
   Future<void> getYourAxBalance() async {
-    late String axAddress;
+    if(!_isWalletConnected()) return;
     if (controller.networkID.value == Controller.MAINNET_CHAIN_ID) {
       axAddress = AXT.polygonAddress;
     } else {
@@ -25,6 +26,10 @@ class WalletController extends GetxController {
     yourBalance.value = await getTokenBalance(axAddress);
     print("[Console] AX Balance: $yourBalance");
     update();
+  }
+
+  bool _isWalletConnected() {
+    return controller.publicAddress.value.hex != EMPTY_WALLET_ID;
   }
 
   // Update token balance

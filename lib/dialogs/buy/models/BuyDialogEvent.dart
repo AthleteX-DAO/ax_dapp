@@ -6,10 +6,17 @@ class BuyDialogEvent extends Equatable {
 }
 
 class OnLoadDialog extends BuyDialogEvent {
-  final String initialTokenAddress;
+  final String currentTokenAddress;
   @override
   List<Object?> get props => [];
-  OnLoadDialog({required this.initialTokenAddress});
+  OnLoadDialog({required this.currentTokenAddress});
+}
+
+class OnNewAxInput extends BuyDialogEvent {
+  final double axInputAmount;
+  @override
+  List<Object?> get props => [];
+  OnNewAxInput({required this.axInputAmount});
 }
 
 class OnMaxBuyTap extends BuyDialogEvent {
