@@ -6,9 +6,15 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+enum TokenType {
+  Short,
+  Long,
+}
 
 class BuyDialog extends StatefulWidget {
   final String athleteName;
@@ -25,7 +31,8 @@ class _BuyDialogState extends State<BuyDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
   TextEditingController _aptAmountController = TextEditingController();
-  bool _isLongApt = true;
+
+  TokenType _currentTokenTypeSelection = TokenType.Long;
   double slippageTolerance = 1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
 
   Widget toggleLongShortToken(double wid, double hgt) {
@@ -45,17 +52,17 @@ class _BuyDialogState extends State<BuyDialog> {
                       borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsets.zero,
                   minimumSize: Size(50, 30),
-                  primary: _isLongApt ? Colors.amber : Colors.transparent,
+                  primary: (_currentTokenTypeSelection == TokenType.Long) ? Colors.amber : Colors.transparent,
                 ),
                 onPressed: () {
                   setState(() {
-                    _isLongApt = !_isLongApt;
+                    _currentTokenTypeSelection = TokenType.Long;
                   });
                 },
                 child: Text(
                   "Long",
                   style: TextStyle(
-                      color: _isLongApt
+                      color: (_currentTokenTypeSelection == TokenType.Long)
                           ? Colors.black
                           : Color.fromRGBO(154, 154, 154, 1),
                       fontSize: 11),
@@ -70,16 +77,16 @@ class _BuyDialogState extends State<BuyDialog> {
                         borderRadius: BorderRadius.circular(20)),
                     padding: EdgeInsets.zero,
                     minimumSize: Size(50, 30),
-                    primary: _isLongApt ? Colors.transparent : Colors.black),
+                    primary: (_currentTokenTypeSelection == TokenType.Long) ? Colors.transparent : Colors.black),
                 onPressed: () {
                   setState(() {
-                    _isLongApt = !_isLongApt;
+                    _currentTokenTypeSelection = TokenType.Short;
                   });
                 },
                 child: Text(
                   "Short",
                   style: TextStyle(
-                      color: _isLongApt
+                      color: (_currentTokenTypeSelection == TokenType.Long)
                           ? Color.fromRGBO(154, 154, 154, 1)
                           : Colors.amber,
                       fontSize: 11),
@@ -93,7 +100,6 @@ class _BuyDialogState extends State<BuyDialog> {
   }
 
   Widget showPrice(price) {
-    String tokenType = _isLongApt ? "Long" : "Short";
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,7 +109,7 @@ class _BuyDialogState extends State<BuyDialog> {
             "$price " +
                 widget.athleteName +
                 " " +
-                tokenType +
+                _currentTokenTypeSelection.name +
                 " APT" +
                 " per AX",
             style: textStyle(Colors.white, 15, false),
@@ -195,7 +201,6 @@ class _BuyDialogState extends State<BuyDialog> {
   }
 
   Widget showYouReceived(amountToReceive) {
-    String tokenType = _isLongApt ? "Long" : "Short";
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -205,7 +210,7 @@ class _BuyDialogState extends State<BuyDialog> {
             style: textStyle(Colors.white, 15, false),
           ),
           Text(
-            "$amountToReceive " + widget.athleteName + " " + tokenType + " APT",
+            "$amountToReceive " + widget.athleteName + " " + _currentTokenTypeSelection.name + " APT",
             style: textStyle(Colors.white, 15, false),
           ),
         ],
@@ -238,11 +243,9 @@ class _BuyDialogState extends State<BuyDialog> {
           print("BuyDialog minReceived: ${state.minimumReceived}");
           print("BuyDialog PriceImpact: ${state.priceImpact}");
           print("BuyDialog ReceiveAmount: ${state.receiveAmount}");
-          if (state.tokenAddress == null) {
-            bloc.add(OnLoadDialog(
-                currentTokenAddress: _isLongApt
-                    ? getLongAptAddress(widget.athleteId)
-                    : getShortAptAddress(widget.athleteId)));
+          if (state.tokenAddress == null ||
+              state.tokenAddress != _getCurrentTokenAddress()) {
+            reloadBuyDialog(bloc);
           }
 
           return Dialog(
@@ -483,5 +486,16 @@ class _BuyDialogState extends State<BuyDialog> {
             ),
           );
         });
+  }
+
+  void reloadBuyDialog(BuyDialogBloc bloc) {
+    bloc.add(OnLoadDialog(
+        currentTokenAddress: _getCurrentTokenAddress()));
+  }
+
+  String _getCurrentTokenAddress() {
+    return (_currentTokenTypeSelection == TokenType.Long)
+        ? getLongAptAddress(widget.athleteId)
+        : getShortAptAddress(widget.athleteId);
   }
 }
