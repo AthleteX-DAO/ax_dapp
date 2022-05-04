@@ -26,6 +26,7 @@ class _BuyDialogState extends State<BuyDialog> {
   double hgt = 500;
   TextEditingController _aptAmountController = TextEditingController();
   bool _isLongApt = true;
+  double slippageTolerance = 1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
 
   Widget toggleLongShortToken(double wid, double hgt) {
     return Container(
@@ -175,7 +176,7 @@ class _BuyDialogState extends State<BuyDialog> {
     );
   }
 
-  Widget showSlippage(estimatedSlippage) {
+  Widget showSlippage(slipageTolerance) {
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,7 +186,7 @@ class _BuyDialogState extends State<BuyDialog> {
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
           Text(
-            "$estimatedSlippage %",
+            "$slipageTolerance %",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -448,7 +449,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              showSlippage(1),
+                              showSlippage(slippageTolerance),
                             ],
                           ),
                         ],
