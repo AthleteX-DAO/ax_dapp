@@ -1,9 +1,12 @@
+import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
+import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
+import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
@@ -11,6 +14,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class AthletePage extends StatefulWidget {
@@ -1074,7 +1078,26 @@ class _AthletePageState extends State<AthletePage> {
                                         onPressed: () => showDialog(
                                             context: context,
                                             builder: (BuildContext context) =>
-                                                buyDialog(context, athlete)),
+                                                BlocProvider(
+                                                    create: (
+                                                        BuildContext context) =>
+                                                        BuyDialogBloc(
+                                                            repo: GetAPTBuyInfoUseCase(
+                                                              RepositoryProvider
+                                                                  .of<
+                                                                  SubGraphRepo>(
+                                                                  context),
+                                                            ),
+                                                            walletController:
+                                                            Get.find(),
+                                                            swapController: Get
+                                                                .find()),
+                                                    child: BuyDialog(
+                                                        athlete.name,
+                                                        athlete.warPrice,
+                                                        athlete.id)
+                                                )
+                                        ),
                                         child: Text("Buy",
                                             style: textStyle(primaryOrangeColor,
                                                 20, false, false)))),
@@ -1381,8 +1404,28 @@ class _AthletePageState extends State<AthletePage> {
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) =>
-                                                          BuyDialog(athlete,
-                                                              _isLongApt)),
+                                                          BlocProvider(
+                                                              create: (
+                                                                  BuildContext context) =>
+                                                                  BuyDialogBloc(
+                                                                      repo: GetAPTBuyInfoUseCase(
+                                                                        RepositoryProvider
+                                                                            .of<
+                                                                            SubGraphRepo>(
+                                                                            context),
+                                                                      ),
+                                                                      walletController:
+                                                                      Get
+                                                                          .find(),
+                                                                      swapController: Get
+                                                                          .find()),
+                                                              child: BuyDialog(
+                                                                  athlete.name,
+                                                                  athlete
+                                                                      .warPrice,
+                                                                  athlete.id)
+                                                          )
+                                              ),
                                               child: Text("Buy",
                                                   style: textStyle(Colors.black,
                                                       20, false, false)))),
