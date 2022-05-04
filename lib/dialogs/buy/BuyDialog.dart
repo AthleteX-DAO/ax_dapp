@@ -26,6 +26,7 @@ class _BuyDialogState extends State<BuyDialog> {
   double hgt = 500;
   TextEditingController _aptAmountController = TextEditingController();
   bool _isLongApt = true;
+  double slippageTolerance = 1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
 
   Widget toggleLongShortToken(double wid, double hgt) {
     return Container(
@@ -97,7 +98,7 @@ class _BuyDialogState extends State<BuyDialog> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Price", style: textStyle(Colors.white, 15, false)),
+          Text("Price:", style: textStyle(Colors.white, 15, false)),
           Text(
             "$price " +
                 widget.athleteName +
@@ -112,14 +113,14 @@ class _BuyDialogState extends State<BuyDialog> {
     );
   }
 
-  Widget showLpFee(lpFee) {
+  Widget showTotalFee(totalFee) {
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("LP Fee:", style: textStyle(Colors.grey[600]!, 15, false)),
+          Text("Total Fees:", style: textStyle(Colors.grey[600]!, 15, false)),
           Text(
-            "LP Fee: $lpFee APT(5%)",
+            "$totalFee AX(0.3%)",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -146,7 +147,7 @@ class _BuyDialogState extends State<BuyDialog> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Market Price Impact",
+          Text("Market Price Impact:",
               style: textStyle(Colors.grey[600]!, 15, false)),
           Text(
             "$marketPriceImpact %",
@@ -175,17 +176,17 @@ class _BuyDialogState extends State<BuyDialog> {
     );
   }
 
-  Widget showSlippage(estimatedSlippage) {
+  Widget showSlippage(slipageTolerance) {
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Slippage:",
+            "Slippage Tolerance:",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
           Text(
-            "$estimatedSlippage AX",
+            "$slipageTolerance %",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -231,8 +232,7 @@ class _BuyDialogState extends State<BuyDialog> {
           final minReceived = state.minimumReceived.toStringAsFixed(6);
           final priceImpact = state.priceImpact.toStringAsFixed(6);
           final receiveAmount = state.receiveAmount.toStringAsFixed(6);
-          final lpFee = 0.3;
-          final estimatedSlippage = 0.00;
+          final totalFee = state.totalFee;
           print("BuyDialog TokenAddress: ${state.tokenAddress}");
           print("BuyDialog price: $price");
           print("BuyDialog minReceived: ${state.minimumReceived}");
@@ -393,8 +393,8 @@ class _BuyDialogState extends State<BuyDialog> {
                                     border: InputBorder.none,
                                   ),
                                   onChanged: (value) {
-                                    bloc.add(OnNewAptInput(
-                                        aptInputAmount: double.parse(value)));
+                                    bloc.add(OnNewAxInput(
+                                        axInputAmount: double.parse(value)));
                                   },
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(
@@ -433,7 +433,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              showLpFee(lpFee.toString()),
+                              showTotalFee(totalFee.toStringAsFixed(6)),
                             ],
                           ),
                           Row(
@@ -449,7 +449,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              showSlippage(estimatedSlippage),
+                              showSlippage(slippageTolerance),
                             ],
                           ),
                         ],

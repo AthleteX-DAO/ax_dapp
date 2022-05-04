@@ -26,8 +26,12 @@ void main() {
     print(result.receiveAmount!.toStringAsFixed(8));
     print(result.priceImpact!.toStringAsFixed(2));    
     print(result.minimumReceived!.toStringAsFixed(8));
-    assert(result.receiveAmount!.toStringAsFixed(8) == "0.00780000");
-    assert(result.priceImpact!.toStringAsFixed(2) == "55.56");
-    assert(result.minimumReceived!.toStringAsFixed(8) == "0.00772200");
+    print(result.price!.toStringAsFixed(6));
+    print(result.totalFee!.toStringAsFixed(6));
+    assert(result.receiveAmount!.toStringAsFixed(8) == "0.00777660");
+    assert(result.priceImpact!.toStringAsFixed(2) == "55.44");
+    assert(result.minimumReceived!.toStringAsFixed(8) == "0.00769883");
+    assert(result.price!.toStringAsFixed(8) == "0.00468000");
+    assert(result.totalFee!.toStringAsFixed(8) == "0.00750000");
   });
 }
