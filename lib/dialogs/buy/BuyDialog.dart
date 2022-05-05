@@ -396,6 +396,7 @@ class _BuyDialogState extends State<BuyDialog> {
                                     border: InputBorder.none,
                                   ),
                                   onChanged: (value) {
+                                    if(value.isEmpty) value = "0";
                                     bloc.add(OnNewAxInput(
                                         axInputAmount: double.parse(value)));
                                   },
