@@ -1,0 +1,20 @@
+{
+    "pairs": [
+      {
+        "id": "0x3f6d3b85ad9d950d8bff406ca54bcdfb0c932db4",
+        "name": "AJLT1010-AX",
+        "token0": {
+          "id": "0x481bf3dbde952ce684dc500fd9edef88f6607a8c",
+          "name": "Aaron Judge Linear Long Token"
+        },
+        "token1": {
+          "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df",
+          "name": "AthleteX"
+        },
+        "reserve0": "0.001045161352545184",
+        "reserve1": "15.513558001418126905",
+        "token0Price": "0.00006737083475303625426381299875812279",
+        "token1Price": "14843.21819175518254175374690008297"
+      }
+    ]
+}
