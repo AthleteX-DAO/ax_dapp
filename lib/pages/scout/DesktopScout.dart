@@ -7,6 +7,7 @@ import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _DesktopScoutState extends State<DesktopScout> {
         buildWhen: (previous, current) => current.status.name.isNotEmpty,
         builder: (context, state) {
           final bloc = context.read<ScoutPageBloc>();
-          if (state.status == Status.initial) {
+          if (state.status == BlocStatus.initial) {
             bloc.add(OnPageRefresh());
           }
           if (athletePage && curAthlete != null)
@@ -95,9 +96,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                       // List Headers
                       buildListviewHeaders(),
                       //if (state.status == Status.loading) scoutLoading(),
-                      if (state.status == Status.loading) ...[
+                      if (state.status == BlocStatus.loading) ...[
                         scoutLoading(),
-                      ] else if (state.status == Status.error) ...[
+                      ] else if (state.status == BlocStatus.error) ...[
                         scoutLoadingError(),
                       ],
                       state.selectedSport == SupportedSport.ALL

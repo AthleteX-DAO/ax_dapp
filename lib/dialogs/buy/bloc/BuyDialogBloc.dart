@@ -6,6 +6,7 @@ import 'package:ax_dapp/service/BlockchainModels/AptBuyInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 const double _slippage_tolerance = 0.01;
@@ -30,7 +31,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
 
   void _mapLoadDialogEventToState(
       OnLoadDialog event, Emitter<BuyDialogState> emit) async {
-    emit(state.copy(status: Status.loading));
+    emit(state.copy(status: BlocStatus.loading));
     try {
       final response = await repo.fetchAptBuyInfo(event.currentTokenAddress);
       final isSuccess = response.isLeft();
@@ -45,7 +46,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         //do some math
         emit(state.copy(
             balance: double.parse(walletController.yourBalance.value),
-            status: Status.success,
+            status: BlocStatus.success,
             minimumReceived: transactionInfo.minimumReceived!.toDouble(),
             priceImpact: transactionInfo.priceImpact!.toDouble(),
             receiveAmount: transactionInfo.receiveAmount!.toDouble(),
@@ -57,10 +58,10 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copy(status: Status.error));
+        emit(state.copy(status: BlocStatus.error));
       }
     } catch (e) {
-      emit(state.copy(status: Status.error));
+      emit(state.copy(status: BlocStatus.error));
     }
   }
 
@@ -86,7 +87,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
 
   void _mapMaxBuyTapEventToState(
       OnMaxBuyTap event, Emitter<BuyDialogState> emit) async {
-    emit(state.copy(status: Status.loading));
+    emit(state.copy(status: BlocStatus.loading));
     try {
       await walletController.getYourAxBalance();
       final maxInput = double.parse(walletController.yourBalance.value);
@@ -94,7 +95,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     } catch (e) {
       //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
       print(e);
-      emit(state.copy(status: Status.error));
+      emit(state.copy(status: BlocStatus.error));
     }
   }
 
@@ -123,7 +124,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         print("totaFees: ${transactionInfo.totalFee!.toDouble()}");
         //do some math
         emit(state.copy(
-            status: Status.success,
+            status: BlocStatus.success,
             minimumReceived: transactionInfo.minimumReceived!.toDouble(),
             priceImpact: transactionInfo.priceImpact!.toDouble(),
             receiveAmount: transactionInfo.receiveAmount!.toDouble(),
@@ -135,10 +136,10 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copy(status: Status.error));
+        emit(state.copy(status: BlocStatus.error));
       }
     } catch (e) {
-      emit(state.copy(status: Status.error));
+      emit(state.copy(status: BlocStatus.error));
     }
   }
 }

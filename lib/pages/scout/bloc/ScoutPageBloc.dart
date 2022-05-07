@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/ScoutPageEvent.dart';
@@ -18,18 +19,18 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   void _mapRefreshEventToState(
       OnPageRefresh event, Emitter<ScoutPageState> emit) async {
     try {
-      emit(state.copy(status: Status.loading));
+      emit(state.copy(status: BlocStatus.loading));
 
       final response = await repo.fetchSupportedAthletes(state.selectedSport);
 
       emit(state.copy(
           athletes: response,
           selectedSport: state.selectedSport,
-          status: Status.success));
+          status: BlocStatus.success));
 
     } catch (e) {
       print("[Console] Scout Page -> Failed to load athlete list: $e");
-      emit(state.copy(status: Status.error));
+      emit(state.copy(status: BlocStatus.error));
     }
   }
 

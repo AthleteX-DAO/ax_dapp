@@ -1,6 +1,5 @@
+import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
-
-enum Status { initial, success, error, loading }
 
 class BuyDialogState extends Equatable {
   final double price;
@@ -10,11 +9,11 @@ class BuyDialogState extends Equatable {
   final double priceImpact;
   final double receiveAmount;
   final double totalFee;
-  final Status status;
+  final BlocStatus status;
   final String? tokenAddress;
 
   const BuyDialogState({
-    this.status = Status.initial,
+    this.status = BlocStatus.initial,
     double? axInputValue,
     double? price,
     double? balance,
@@ -45,7 +44,7 @@ class BuyDialogState extends Equatable {
       ];
 
   BuyDialogState copy({
-    Status? status,
+    BlocStatus? status,
     double? axInputValue,
     double? price,
     double? balance,
@@ -56,7 +55,7 @@ class BuyDialogState extends Equatable {
     String? tokenAddress,
   }) {
     return BuyDialogState(
-      status: status ?? Status.initial,
+      status: status ?? BlocStatus.initial,
       axInputValue: axInputValue ?? this.axInputAmount,
       price: price ?? this.price,
       balance: balance ?? this.balance,

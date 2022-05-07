@@ -1,5 +1,5 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
-import 'package:ax_dapp/pages/DesktopPool.dart';
+import 'package:ax_dapp/pages/pool/DesktopPool.dart';
 import 'package:ax_dapp/pages/DesktopTrade.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
