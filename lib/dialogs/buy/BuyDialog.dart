@@ -101,9 +101,8 @@ class _BuyDialogState extends State<BuyDialog> {
                     width: wid - edge,
                     child: GestureDetector(
                       onTap: () {
-                        String urlString =
-                            "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
-                        launch(urlString);
+                        Uri urlString = Uri.parse('"https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin"');
+                        launchUrl(urlString);
                       },
                       child: Text(
                         'Learn How to buy AX',

@@ -1,7 +1,10 @@
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
+import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -9,10 +12,10 @@ import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
+
   const AthletePage({
     Key? key,
     required this.athlete,
@@ -38,6 +41,7 @@ class _AthletePageState extends State<AthletePage> {
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
+  
 
   @override
   void initState() {
@@ -256,6 +260,7 @@ class _AthletePageState extends State<AthletePage> {
       String marketPricePercent,
       String bookValue,
       String bookValuePercent) {
+    
     return Container(
         width: _width,
         child: Column(
@@ -802,8 +807,8 @@ class _AthletePageState extends State<AthletePage> {
                                         Text("Sport / League",
                                             style: textStyle(greyTextColor, 12,
                                                 false, false)),
-                                        Text(
-                                            "${athlete.sport.name}", //toDo add map for the different league
+                                        Text("${athlete.sport.name}",
+                                            //toDo add map for the different league
                                             style: textStyle(greyTextColor, 12,
                                                 false, false))
                                       ]),
@@ -1470,6 +1475,8 @@ class _AthletePageState extends State<AthletePage> {
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
+    final WalletController walletController = Get.find(); 
+
     double _width = MediaQuery.of(context).size.width;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
@@ -1477,25 +1484,54 @@ class _AthletePageState extends State<AthletePage> {
     // Stats-Side
     return Container(
         width: wid,
-        height: 550,
+        height: 580,
         alignment: Alignment.center,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               // Price Overview section
               Container(
-                  height: 150,
+                  height: 180,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                  width: wid * 0.4375,
                                   child: Text("Price Overview",
                                       style: textStyle(
                                           Colors.white, 24, false, false))),
+                              Spacer(),
+                              Container(
+                                width: 100,
+                                  height: 20,
+                                  child:
+                                    FutureBuilder<String>(
+                                      future: _isLongApt ? walletController.getTokenSymbol(getLongAptAddress(athlete.id)) : walletController.getTokenSymbol(getShortAptAddress(athlete.id)),
+                                      builder: (context, snapshot) {
+                                        //Check API response data
+                                        if (snapshot.hasError) {
+                                          // can't get symbol
+                                          return showSymbol('---');
+                                        } else if (snapshot.hasData) {
+                                          // got the balance
+                                          return showSymbol(snapshot.data!);
+                                        } else {
+                                          // loading
+                                          return Center(
+                                            child: SizedBox(
+                                              child: CircularProgressIndicator(
+                                                  color: Colors.amber),
+                                              height: 10.0,
+                                              width: 10.0,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                              Spacer(),
                               Container(
                                   width: 200,
                                   child: Row(
@@ -1627,8 +1663,8 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Sport / League",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text(
-                                  "${athlete.sport.name}", //toDo add map for the different league
+                              Text("${athlete.sport.name}",
+                                  //toDo add map for the different league
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
@@ -1801,6 +1837,16 @@ class _AthletePageState extends State<AthletePage> {
                       ])),
             ]));
   }
+
+  Widget showSymbol(String symbol) {
+     return Center(
+       child: Text(
+         "Symbol: \$$symbol",
+         style: textStyle(greyTextColor, 10, false, false),
+           textAlign: TextAlign.center
+       ),
+     );
+  } 
 
   Widget buildGraph(List scaledPrice, List time, BuildContext context) {
     // local variables

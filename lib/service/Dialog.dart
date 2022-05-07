@@ -77,7 +77,8 @@ Dialog connectMetamaskDialog(BuildContext context) {
                     Colors.transparent, 100, 2, Colors.purple[900]!),
                 child: TextButton(
                   onPressed: () {
-                    launch('https://metamask.io/download/');
+                    Uri _url = Uri.parse('https://metamask.io/download/');
+                    launchUrl(_url);
                     Navigator.pop(context);
                   },
                   child: Text(
@@ -799,7 +800,7 @@ Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
               onTap: () {
                 String urlString =
                     "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
-                launch(urlString);
+                launchUrl(Uri.parse(urlString));
               },
               child: Text(
                 'Learn How to buy AX',
@@ -2332,7 +2333,7 @@ Dialog accountDialog(BuildContext context) {
                               controller.publicAddress.value.toString();
                           String urlString =
                               "https://polygonscan.com/address/$address";
-                          launch(urlString);
+                          launchUrl(Uri.parse(urlString));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
