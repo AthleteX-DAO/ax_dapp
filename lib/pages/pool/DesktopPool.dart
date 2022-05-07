@@ -1,3 +1,7 @@
+import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
+import 'package:ax_dapp/pages/pool/models/PoolEvent.dart';
+import 'package:ax_dapp/pages/pool/models/PoolState.dart';
+import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
@@ -6,6 +10,7 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -92,26 +97,32 @@ class _DesktopPoolState extends State<DesktopPool> {
     double layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
 
     print(_width);
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      child: Container(
-          width: _width,
-          height: _height - AppBar().preferredSize.height,
-          //Top margin of Pool section is equal to height + 1 of AppBar on mobile only
-          margin: isWeb
-              ? EdgeInsets.zero
-              : EdgeInsets.only(top: AppBar().preferredSize.height + 10),
-          alignment: Alignment.center,
+    return BlocBuilder<PoolBloc, PoolState>(
+      buildWhen: (previous, current) => current != previous,
+      builder: (context, state) {
+        final bloc = context.read<PoolBloc>();
+        return SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
           child: Container(
-              width: layoutWdt,
-              height: layoutHgt,
-              child: (isAllLiquidity)
-                  ? allLiquidityLayout(layoutHgt, layoutWdt)
-                  : myLiquidityLayout(layoutHgt, layoutWdt))),
+              width: _width,
+              height: _height - AppBar().preferredSize.height,
+              //Top margin of Pool section is equal to height + 1 of AppBar on mobile only
+              margin: isWeb
+                  ? EdgeInsets.zero
+                  : EdgeInsets.only(top: AppBar().preferredSize.height + 10),
+              alignment: Alignment.center,
+              child: Container(
+                  width: layoutWdt,
+                  height: layoutHgt,
+                  child: (isAllLiquidity)
+                      ? allLiquidityLayout(layoutHgt, layoutWdt, bloc)
+                      : myLiquidityLayout(layoutHgt, layoutWdt))),
+        );
+      },
     );
   }
 
-  Widget allLiquidityLayout(double layoutHgt, double layoutWdt) {
+  Widget allLiquidityLayout(double layoutHgt, double layoutWdt, PoolBloc poolBloc) {
     //Boolean to show advanced details
     //Using 87% of layoutHgt at the moment (76) Pool Card + (5) Title + (6) Toggle Button
     bool isAdvDetails = true;
@@ -142,11 +153,11 @@ class _DesktopPoolState extends State<DesktopPool> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: allLiquidityCardContents(
-                      layoutHgt, layoutWdt, allLiquidityCardHgt, isAdvDetails),
+                      layoutHgt, layoutWdt, allLiquidityCardHgt, isAdvDetails, poolBloc),
                 )
               : Column(
                   children: allLiquidityCardContents(
-                      layoutHgt, layoutWdt, allLiquidityCardHgt, isAdvDetails),
+                      layoutHgt, layoutWdt, allLiquidityCardHgt, isAdvDetails, poolBloc),
                 ),
         ),
         //Empty filler space for web
@@ -156,7 +167,7 @@ class _DesktopPoolState extends State<DesktopPool> {
   }
 
   List<Widget> allLiquidityCardContents(double layoutHgt, double layoutWdt,
-      double allLiquidityCardHgt, bool isAdvDetails) {
+      double allLiquidityCardHgt, bool isAdvDetails, PoolBloc bloc) {
     double elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
     double tokensSectionHgt = isWeb ? 275 : allLiquidityCardHgt * 0.55;
     //Returns the contents of all liquidity pool card
@@ -176,7 +187,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     style: textStyle(Colors.grey[600]!, 13, false))),
             //Top Token container
             tokenContainer(1, elementWdt, _tokenAmountOneController,
-                _tokenAmountOneFocusNode),
+                _tokenAmountOneFocusNode, bloc),
             Container(
                 child: Text(
               "+",
@@ -189,7 +200,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     style: textStyle(Colors.grey[600]!, 13, false))),
             // Bottom Token container
             tokenContainer(2, elementWdt, _tokenAmountTwoController,
-                _tokenAmountTwoFocusNode),
+                _tokenAmountTwoFocusNode, bloc),
           ],
         ),
       ),
@@ -501,11 +512,11 @@ class _DesktopPoolState extends State<DesktopPool> {
     );
   }
 
-  Widget tokenContainer(
-    int tknNum,
-    double elementWdt,
-    TextEditingController tokenAmountController,
-    FocusNode tokenAmountFocusNode,
+  Widget tokenContainer(int tknNum,
+      double elementWdt,
+      TextEditingController tokenAmountController,
+      FocusNode tokenAmountFocusNode,
+      PoolBloc poolBloc,
   ) {
     //Returns the tokenContainer containing dropdown menu button with token icon and ticker
     //and amount input box
@@ -596,14 +607,8 @@ class _DesktopPoolState extends State<DesktopPool> {
                 child: TextFormField(
                   controller: tokenAmountController,
                   focusNode: tokenAmountFocusNode,
-                  onChanged: (value) {
-                    // if (tknNum == 1) {
-                    //   token1Amount = double.parse(value);
-                    //   poolController.updateTopAmount(token1Amount);
-                    // } else if (tknNum == 2) {
-                    //   token2Amount = double.parse(value);
-                    //   poolController.updateBottomAmount(token2Amount);
-                    // }
+                  onChanged: (token0Input) {
+                    poolBloc.add(Token0InputChanged(double.parse(token0Input)));
                   },
                   style: textStyle(Colors.grey[400]!, 22, false),
                   decoration: InputDecoration(

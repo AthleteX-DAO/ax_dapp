@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/LandingPage.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
+import 'package:ax_dapp/repositories/usecases/GetPairInfoUseCase.dart';
 import 'package:ax_dapp/service/Api/MLBAthleteAPI.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLClientHelper.dart';
 import 'package:dio/dio.dart';
@@ -13,15 +14,18 @@ final _dio = Dio();
 final _mlbApi = MLBAthleteAPI(_dio);
 final _graphQLClientHelper = GraphQLClientHelper();
 void main() async {
-  final gQLClient =  await _graphQLClientHelper.initializeClient();
+  final _gQLClient =  await _graphQLClientHelper.initializeClient();
+  final _subGraphRepo = SubGraphRepo(_gQLClient.value);
+
   print("Graph QL CLient initialized}");
   runApp(
       GraphQLProvider(
-        client: gQLClient,
+        client: _gQLClient,
         child: MultiRepositoryProvider(
           providers: [
             RepositoryProvider(create: (context) => MLBRepo(_mlbApi),),
-            RepositoryProvider(create: (context) => SubGraphRepo(gQLClient.value))
+            RepositoryProvider(create: (context) => _subGraphRepo),
+            RepositoryProvider(create: (context) => GetPairInfoUseCase(_subGraphRepo))
           ],
           child: MyApp(),
         ),

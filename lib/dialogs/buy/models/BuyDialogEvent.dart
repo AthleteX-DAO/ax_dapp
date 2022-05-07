@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class BuyDialogEvent extends Equatable {
+abstract class BuyDialogEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }

@@ -1,18 +1,17 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:equatable/equatable.dart';
-
-enum Status { initial, success, error, loading }
 
 
 class ScoutPageState extends Equatable {
 
   final List<AthleteScoutModel> athletes;
   final SupportedSport selectedSport;
-  final Status status;
+  final BlocStatus status;
 
   const ScoutPageState({
-    this.status = Status.initial,
+    this.status = BlocStatus.initial,
     List<AthleteScoutModel>? athletes,
     this.selectedSport = SupportedSport.ALL}) : athletes = athletes ?? const [];
 
@@ -22,12 +21,12 @@ class ScoutPageState extends Equatable {
   ScoutPageState copy({
     List<AthleteScoutModel>? athletes,
     SupportedSport? selectedSport,
-    Status? status
+    BlocStatus? status
   }) {
     return ScoutPageState(
         athletes: athletes ?? this.athletes,
         selectedSport: selectedSport ?? this.selectedSport,
-        status: status ?? Status.initial
+        status: status ?? BlocStatus.initial
     );
   }
 }
