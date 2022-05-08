@@ -77,8 +77,7 @@ Dialog connectMetamaskDialog(BuildContext context) {
                     Colors.transparent, 100, 2, Colors.purple[900]!),
                 child: TextButton(
                   onPressed: () {
-                    Uri _url = Uri.parse('https://metamask.io/download/');
-                    launchUrl(_url);
+                    launch('https://metamask.io/download/');
                     Navigator.pop(context);
                   },
                   child: Text(
@@ -1993,7 +1992,7 @@ Dialog accountDialog(BuildContext context) {
                               controller.publicAddress.value.toString();
                           String urlString =
                               "https://polygonscan.com/address/$address";
-                          launchUrl(Uri.parse(urlString));
+                          launch(urlString);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
