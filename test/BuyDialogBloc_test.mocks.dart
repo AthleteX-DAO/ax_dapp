@@ -2,19 +2,21 @@
 // in ax_dapp/test/BuyDialogBloc_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i7;
-import 'dart:ui' as _i10;
+import 'dart:async' as _i8;
+import 'dart:ui' as _i13;
 
-import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart' as _i6;
+import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart' as _i7;
 import 'package:ax_dapp/service/Controller/Controller.dart' as _i4;
-import 'package:ax_dapp/service/Controller/Swap/SwapController.dart' as _i11;
-import 'package:ax_dapp/service/Controller/Token.dart' as _i12;
-import 'package:ax_dapp/service/Controller/WalletController.dart' as _i8;
+import 'package:ax_dapp/service/Controller/Swap/SwapController.dart' as _i10;
+import 'package:ax_dapp/service/Controller/Token.dart' as _i11;
+import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart'
+    as _i9;
+import 'package:ax_dapp/service/Controller/WalletController.dart' as _i3;
 import 'package:fpdart/fpdart.dart' as _i2;
-import 'package:get/get.dart' as _i3;
-import 'package:get/get_state_manager/src/simple/list_notifier.dart' as _i9;
+import 'package:get/get.dart' as _i5;
+import 'package:get/get_state_manager/src/simple/list_notifier.dart' as _i12;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:web3dart/web3dart.dart' as _i5;
+import 'package:web3dart/web3dart.dart' as _i6;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -28,201 +30,69 @@ import 'package:web3dart/web3dart.dart' as _i5;
 
 class _FakeEither_0<L, R> extends _i1.Fake implements _i2.Either<L, R> {}
 
-class _FakeRxString_1 extends _i1.Fake implements _i3.RxString {}
+class _FakeWalletController_1 extends _i1.Fake implements _i3.WalletController {
+}
 
 class _FakeController_2 extends _i1.Fake implements _i4.Controller {}
 
-class _FakeInternalFinalCallback_3<T> extends _i1.Fake
-    implements _i3.InternalFinalCallback<T> {}
+class _FakeRx_3<T> extends _i1.Fake implements _i5.Rx<T> {}
 
-class _FakeRx_4<T> extends _i1.Fake implements _i3.Rx<T> {}
+class _FakeRxString_4 extends _i1.Fake implements _i5.RxString {}
 
-class _FakeRxDouble_5 extends _i1.Fake implements _i3.RxDouble {}
+class _FakeRxDouble_5 extends _i1.Fake implements _i5.RxDouble {}
 
-class _FakeEthereumAddress_6 extends _i1.Fake implements _i5.EthereumAddress {}
+class _FakeEthereumAddress_6 extends _i1.Fake implements _i6.EthereumAddress {}
 
 class _FakeBigInt_7 extends _i1.Fake implements BigInt {}
+
+class _FakeInternalFinalCallback_8<T> extends _i1.Fake
+    implements _i5.InternalFinalCallback<T> {}
 
 /// A class which mocks [GetAPTBuyInfoUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetAPTBuyInfoUseCase extends _i1.Mock
-    implements _i6.GetAPTBuyInfoUseCase {
+    implements _i7.GetAPTBuyInfoUseCase {
   MockGetAPTBuyInfoUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i7.Future<_i2.Either<_i6.Success, _i6.Error>> fetchAptBuyInfo(
+  _i8.Future<_i2.Either<_i7.Success, _i7.Error>> fetchAptBuyInfo(
           String? targetAddress) =>
       (super.noSuchMethod(Invocation.method(#fetchAptBuyInfo, [targetAddress]),
-              returnValue: Future<_i2.Either<_i6.Success, _i6.Error>>.value(
-                  _FakeEither_0<_i6.Success, _i6.Error>()))
-          as _i7.Future<_i2.Either<_i6.Success, _i6.Error>>);
+              returnValue: Future<_i2.Either<_i7.Success, _i7.Error>>.value(
+                  _FakeEither_0<_i7.Success, _i7.Error>()))
+          as _i8.Future<_i2.Either<_i7.Success, _i7.Error>>);
 }
 
-/// A class which mocks [WalletController].
+/// A class which mocks [GetTotalTokenBalanceUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockWalletController extends _i1.Mock implements _i8.WalletController {
-  MockWalletController() {
+class MockGetTotalTokenBalanceUseCase extends _i1.Mock
+    implements _i9.GetTotalTokenBalanceUseCase {
+  MockGetTotalTokenBalanceUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  String get axAddress =>
-      (super.noSuchMethod(Invocation.getter(#axAddress), returnValue: '')
-          as String);
+  _i3.WalletController get walletController =>
+      (super.noSuchMethod(Invocation.getter(#walletController),
+          returnValue: _FakeWalletController_1()) as _i3.WalletController);
   @override
-  set axAddress(String? _axAddress) =>
-      super.noSuchMethod(Invocation.setter(#axAddress, _axAddress),
-          returnValueForMissingStub: null);
+  _i8.Future<double> getTotalAxBalance() =>
+      (super.noSuchMethod(Invocation.method(#getTotalAxBalance, []),
+          returnValue: Future<double>.value(0.0)) as _i8.Future<double>);
   @override
-  _i3.RxString get axPrice => (super.noSuchMethod(Invocation.getter(#axPrice),
-      returnValue: _FakeRxString_1()) as _i3.RxString);
-  @override
-  set axPrice(_i3.RxString? _axPrice) =>
-      super.noSuchMethod(Invocation.setter(#axPrice, _axPrice),
-          returnValueForMissingStub: null);
-  @override
-  _i3.RxString get axCirculation =>
-      (super.noSuchMethod(Invocation.getter(#axCirculation),
-          returnValue: _FakeRxString_1()) as _i3.RxString);
-  @override
-  set axCirculation(_i3.RxString? _axCirculation) =>
-      super.noSuchMethod(Invocation.setter(#axCirculation, _axCirculation),
-          returnValueForMissingStub: null);
-  @override
-  _i3.RxString get axTotalSupply =>
-      (super.noSuchMethod(Invocation.getter(#axTotalSupply),
-          returnValue: _FakeRxString_1()) as _i3.RxString);
-  @override
-  set axTotalSupply(_i3.RxString? _axTotalSupply) =>
-      super.noSuchMethod(Invocation.setter(#axTotalSupply, _axTotalSupply),
-          returnValueForMissingStub: null);
-  @override
-  _i3.RxString get yourBalance =>
-      (super.noSuchMethod(Invocation.getter(#yourBalance),
-          returnValue: _FakeRxString_1()) as _i3.RxString);
-  @override
-  set yourBalance(_i3.RxString? _yourBalance) =>
-      super.noSuchMethod(Invocation.setter(#yourBalance, _yourBalance),
-          returnValueForMissingStub: null);
-  @override
-  _i4.Controller get controller =>
-      (super.noSuchMethod(Invocation.getter(#controller),
-          returnValue: _FakeController_2()) as _i4.Controller);
-  @override
-  set controller(_i4.Controller? _controller) =>
-      super.noSuchMethod(Invocation.setter(#controller, _controller),
-          returnValueForMissingStub: null);
-  @override
-  _i3.InternalFinalCallback<void> get onStart =>
-      (super.noSuchMethod(Invocation.getter(#onStart),
-              returnValue: _FakeInternalFinalCallback_3<void>())
-          as _i3.InternalFinalCallback<void>);
-  @override
-  _i3.InternalFinalCallback<void> get onDelete =>
-      (super.noSuchMethod(Invocation.getter(#onDelete),
-              returnValue: _FakeInternalFinalCallback_3<void>())
-          as _i3.InternalFinalCallback<void>);
-  @override
-  bool get initialized =>
-      (super.noSuchMethod(Invocation.getter(#initialized), returnValue: false)
-          as bool);
-  @override
-  bool get isClosed =>
-      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
-          as bool);
-  @override
-  bool get hasListeners =>
-      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
-          as bool);
-  @override
-  int get listeners =>
-      (super.noSuchMethod(Invocation.getter(#listeners), returnValue: 0)
-          as int);
-  @override
-  _i7.Future<void> getYourAxBalance() =>
-      (super.noSuchMethod(Invocation.method(#getYourAxBalance, []),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
-  @override
-  _i7.Future<String> getTokenBalance(String? tokenAddress) =>
-      (super.noSuchMethod(Invocation.method(#getTokenBalance, [tokenAddress]),
-          returnValue: Future<String>.value('')) as _i7.Future<String>);
-  @override
-  void getTokenMetrics() =>
-      super.noSuchMethod(Invocation.method(#getTokenMetrics, []),
-          returnValueForMissingStub: null);
-  @override
-  void buyAX() => super.noSuchMethod(Invocation.method(#buyAX, []),
-      returnValueForMissingStub: null);
-  @override
-  _i7.Future<String> getTokenSymbol(String? tokenAddress) =>
-      (super.noSuchMethod(Invocation.method(#getTokenSymbol, [tokenAddress]),
-          returnValue: Future<String>.value('')) as _i7.Future<String>);
-  @override
-  void addTokenToWallet() =>
-      super.noSuchMethod(Invocation.method(#addTokenToWallet, []),
-          returnValueForMissingStub: null);
-  @override
-  void update([List<Object>? ids, bool? condition = true]) =>
-      super.noSuchMethod(Invocation.method(#update, [ids, condition]),
-          returnValueForMissingStub: null);
-  @override
-  void onInit() => super.noSuchMethod(Invocation.method(#onInit, []),
-      returnValueForMissingStub: null);
-  @override
-  void onReady() => super.noSuchMethod(Invocation.method(#onReady, []),
-      returnValueForMissingStub: null);
-  @override
-  void onClose() => super.noSuchMethod(Invocation.method(#onClose, []),
-      returnValueForMissingStub: null);
-  @override
-  void $configureLifeCycle() =>
-      super.noSuchMethod(Invocation.method(#$configureLifeCycle, []),
-          returnValueForMissingStub: null);
-  @override
-  _i9.Disposer addListener(_i9.GetStateUpdate? listener) =>
-      (super.noSuchMethod(Invocation.method(#addListener, [listener]),
-          returnValue: () {}) as _i9.Disposer);
-  @override
-  void removeListener(_i10.VoidCallback? listener) =>
-      super.noSuchMethod(Invocation.method(#removeListener, [listener]),
-          returnValueForMissingStub: null);
-  @override
-  void refresh() => super.noSuchMethod(Invocation.method(#refresh, []),
-      returnValueForMissingStub: null);
-  @override
-  void refreshGroup(Object? id) =>
-      super.noSuchMethod(Invocation.method(#refreshGroup, [id]),
-          returnValueForMissingStub: null);
-  @override
-  void notifyChildrens() =>
-      super.noSuchMethod(Invocation.method(#notifyChildrens, []),
-          returnValueForMissingStub: null);
-  @override
-  void removeListenerId(Object? id, _i10.VoidCallback? listener) =>
-      super.noSuchMethod(Invocation.method(#removeListenerId, [id, listener]),
-          returnValueForMissingStub: null);
-  @override
-  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
-      returnValueForMissingStub: null);
-  @override
-  _i9.Disposer addListenerId(Object? key, _i9.GetStateUpdate? listener) =>
-      (super.noSuchMethod(Invocation.method(#addListenerId, [key, listener]),
-          returnValue: () {}) as _i9.Disposer);
-  @override
-  void disposeId(Object? id) =>
-      super.noSuchMethod(Invocation.method(#disposeId, [id]),
-          returnValueForMissingStub: null);
+  _i8.Future<double> getTotalBalanceForToken(dynamic tokenAddress) => (super
+      .noSuchMethod(Invocation.method(#getTotalBalanceForToken, [tokenAddress]),
+          returnValue: Future<double>.value(0.0)) as _i8.Future<double>);
 }
 
 /// A class which mocks [SwapController].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSwapController extends _i1.Mock implements _i11.SwapController {
+class MockSwapController extends _i1.Mock implements _i10.SwapController {
   MockSwapController() {
     _i1.throwOnMissingStub(this);
   }
@@ -236,86 +106,86 @@ class MockSwapController extends _i1.Mock implements _i11.SwapController {
       super.noSuchMethod(Invocation.setter(#controller, _controller),
           returnValueForMissingStub: null);
   @override
-  _i3.Rx<_i12.Token> get activeTkn1 =>
+  _i5.Rx<_i11.Token> get activeTkn1 =>
       (super.noSuchMethod(Invocation.getter(#activeTkn1),
-          returnValue: _FakeRx_4<_i12.Token>()) as _i3.Rx<_i12.Token>);
+          returnValue: _FakeRx_3<_i11.Token>()) as _i5.Rx<_i11.Token>);
   @override
-  set activeTkn1(_i3.Rx<_i12.Token>? _activeTkn1) =>
+  set activeTkn1(_i5.Rx<_i11.Token>? _activeTkn1) =>
       super.noSuchMethod(Invocation.setter(#activeTkn1, _activeTkn1),
           returnValueForMissingStub: null);
   @override
-  _i3.Rx<_i12.Token> get activeTkn2 =>
+  _i5.Rx<_i11.Token> get activeTkn2 =>
       (super.noSuchMethod(Invocation.getter(#activeTkn2),
-          returnValue: _FakeRx_4<_i12.Token>()) as _i3.Rx<_i12.Token>);
+          returnValue: _FakeRx_3<_i11.Token>()) as _i5.Rx<_i11.Token>);
   @override
-  set activeTkn2(_i3.Rx<_i12.Token>? _activeTkn2) =>
+  set activeTkn2(_i5.Rx<_i11.Token>? _activeTkn2) =>
       super.noSuchMethod(Invocation.setter(#activeTkn2, _activeTkn2),
           returnValueForMissingStub: null);
   @override
-  _i3.RxString get address1 => (super.noSuchMethod(Invocation.getter(#address1),
-      returnValue: _FakeRxString_1()) as _i3.RxString);
+  _i5.RxString get address1 => (super.noSuchMethod(Invocation.getter(#address1),
+      returnValue: _FakeRxString_4()) as _i5.RxString);
   @override
-  set address1(_i3.RxString? _address1) =>
+  set address1(_i5.RxString? _address1) =>
       super.noSuchMethod(Invocation.setter(#address1, _address1),
           returnValueForMissingStub: null);
   @override
-  _i3.RxString get address2 => (super.noSuchMethod(Invocation.getter(#address2),
-      returnValue: _FakeRxString_1()) as _i3.RxString);
+  _i5.RxString get address2 => (super.noSuchMethod(Invocation.getter(#address2),
+      returnValue: _FakeRxString_4()) as _i5.RxString);
   @override
-  set address2(_i3.RxString? _address2) =>
+  set address2(_i5.RxString? _address2) =>
       super.noSuchMethod(Invocation.setter(#address2, _address2),
           returnValueForMissingStub: null);
   @override
-  _i3.RxDouble get amount1 => (super.noSuchMethod(Invocation.getter(#amount1),
-      returnValue: _FakeRxDouble_5()) as _i3.RxDouble);
+  _i5.RxDouble get amount1 => (super.noSuchMethod(Invocation.getter(#amount1),
+      returnValue: _FakeRxDouble_5()) as _i5.RxDouble);
   @override
-  set amount1(_i3.RxDouble? _amount1) =>
+  set amount1(_i5.RxDouble? _amount1) =>
       super.noSuchMethod(Invocation.setter(#amount1, _amount1),
           returnValueForMissingStub: null);
   @override
-  _i3.RxDouble get amount2 => (super.noSuchMethod(Invocation.getter(#amount2),
-      returnValue: _FakeRxDouble_5()) as _i3.RxDouble);
+  _i5.RxDouble get amount2 => (super.noSuchMethod(Invocation.getter(#amount2),
+      returnValue: _FakeRxDouble_5()) as _i5.RxDouble);
   @override
-  set amount2(_i3.RxDouble? _amount2) =>
+  set amount2(_i5.RxDouble? _amount2) =>
       super.noSuchMethod(Invocation.setter(#amount2, _amount2),
           returnValueForMissingStub: null);
   @override
-  _i3.RxDouble get price => (super.noSuchMethod(Invocation.getter(#price),
-      returnValue: _FakeRxDouble_5()) as _i3.RxDouble);
+  _i5.RxDouble get price => (super.noSuchMethod(Invocation.getter(#price),
+      returnValue: _FakeRxDouble_5()) as _i5.RxDouble);
   @override
-  set price(_i3.RxDouble? _price) =>
+  set price(_i5.RxDouble? _price) =>
       super.noSuchMethod(Invocation.setter(#price, _price),
           returnValueForMissingStub: null);
   @override
-  _i5.EthereumAddress get routerTestnetAddress =>
+  _i6.EthereumAddress get routerTestnetAddress =>
       (super.noSuchMethod(Invocation.getter(#routerTestnetAddress),
-          returnValue: _FakeEthereumAddress_6()) as _i5.EthereumAddress);
+          returnValue: _FakeEthereumAddress_6()) as _i6.EthereumAddress);
   @override
-  _i5.EthereumAddress get dexTestnetAddress =>
+  _i6.EthereumAddress get dexTestnetAddress =>
       (super.noSuchMethod(Invocation.getter(#dexTestnetAddress),
-          returnValue: _FakeEthereumAddress_6()) as _i5.EthereumAddress);
+          returnValue: _FakeEthereumAddress_6()) as _i6.EthereumAddress);
   @override
-  _i5.EthereumAddress get routerMainnetAddress =>
+  _i6.EthereumAddress get routerMainnetAddress =>
       (super.noSuchMethod(Invocation.getter(#routerMainnetAddress),
-          returnValue: _FakeEthereumAddress_6()) as _i5.EthereumAddress);
+          returnValue: _FakeEthereumAddress_6()) as _i6.EthereumAddress);
   @override
-  _i5.EthereumAddress get dexMainnetAddress =>
+  _i6.EthereumAddress get dexMainnetAddress =>
       (super.noSuchMethod(Invocation.getter(#dexMainnetAddress),
-          returnValue: _FakeEthereumAddress_6()) as _i5.EthereumAddress);
+          returnValue: _FakeEthereumAddress_6()) as _i6.EthereumAddress);
   @override
-  _i5.EthereumAddress get axtAddress =>
+  _i6.EthereumAddress get axtAddress =>
       (super.noSuchMethod(Invocation.getter(#axtAddress),
-          returnValue: _FakeEthereumAddress_6()) as _i5.EthereumAddress);
+          returnValue: _FakeEthereumAddress_6()) as _i6.EthereumAddress);
   @override
   BigInt get twoMinuteDeadline =>
       (super.noSuchMethod(Invocation.getter(#twoMinuteDeadline),
           returnValue: _FakeBigInt_7()) as BigInt);
   @override
-  _i3.Rx<BigInt> get deadline =>
+  _i5.Rx<BigInt> get deadline =>
       (super.noSuchMethod(Invocation.getter(#deadline),
-          returnValue: _FakeRx_4<BigInt>()) as _i3.Rx<BigInt>);
+          returnValue: _FakeRx_3<BigInt>()) as _i5.Rx<BigInt>);
   @override
-  set deadline(_i3.Rx<BigInt>? _deadline) =>
+  set deadline(_i5.Rx<BigInt>? _deadline) =>
       super.noSuchMethod(Invocation.setter(#deadline, _deadline),
           returnValueForMissingStub: null);
   @override
@@ -345,15 +215,15 @@ class MockSwapController extends _i1.Mock implements _i11.SwapController {
   set k(double? _k) => super
       .noSuchMethod(Invocation.setter(#k, _k), returnValueForMissingStub: null);
   @override
-  _i3.InternalFinalCallback<void> get onStart =>
+  _i5.InternalFinalCallback<void> get onStart =>
       (super.noSuchMethod(Invocation.getter(#onStart),
-              returnValue: _FakeInternalFinalCallback_3<void>())
-          as _i3.InternalFinalCallback<void>);
+              returnValue: _FakeInternalFinalCallback_8<void>())
+          as _i5.InternalFinalCallback<void>);
   @override
-  _i3.InternalFinalCallback<void> get onDelete =>
+  _i5.InternalFinalCallback<void> get onDelete =>
       (super.noSuchMethod(Invocation.getter(#onDelete),
-              returnValue: _FakeInternalFinalCallback_3<void>())
-          as _i3.InternalFinalCallback<void>);
+              returnValue: _FakeInternalFinalCallback_8<void>())
+          as _i5.InternalFinalCallback<void>);
   @override
   bool get initialized =>
       (super.noSuchMethod(Invocation.getter(#initialized), returnValue: false)
@@ -371,29 +241,29 @@ class MockSwapController extends _i1.Mock implements _i11.SwapController {
       (super.noSuchMethod(Invocation.getter(#listeners), returnValue: 0)
           as int);
   @override
-  _i7.Future<void> approve() =>
+  _i8.Future<void> approve() =>
       (super.noSuchMethod(Invocation.method(#approve, []),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
   @override
-  _i7.Future<void> swap() => (super.noSuchMethod(Invocation.method(#swap, []),
+  _i8.Future<void> swap() => (super.noSuchMethod(Invocation.method(#swap, []),
       returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
+      returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
   @override
-  _i7.Future<void> createPair() =>
+  _i8.Future<void> createPair() =>
       (super.noSuchMethod(Invocation.method(#createPair, []),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
   @override
-  _i7.Future<void> swapforAX() =>
+  _i8.Future<void> swapforAX() =>
       (super.noSuchMethod(Invocation.method(#swapforAX, []),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
   @override
-  _i7.Future<void> swapFromAX() =>
+  _i8.Future<void> swapFromAX() =>
       (super.noSuchMethod(Invocation.method(#swapFromAX, []),
           returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
+          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
   @override
   void updateFromAmount(double? newAmount) =>
       super.noSuchMethod(Invocation.method(#updateFromAmount, [newAmount]),
@@ -414,11 +284,11 @@ class MockSwapController extends _i1.Mock implements _i11.SwapController {
   void updatePrice() => super.noSuchMethod(Invocation.method(#updatePrice, []),
       returnValueForMissingStub: null);
   @override
-  void updateFromToken(_i12.Token? tknFrom) =>
+  void updateFromToken(_i11.Token? tknFrom) =>
       super.noSuchMethod(Invocation.method(#updateFromToken, [tknFrom]),
           returnValueForMissingStub: null);
   @override
-  void updateToToken(_i12.Token? tknTo) =>
+  void updateToToken(_i11.Token? tknTo) =>
       super.noSuchMethod(Invocation.method(#updateToToken, [tknTo]),
           returnValueForMissingStub: null);
   @override
@@ -439,11 +309,11 @@ class MockSwapController extends _i1.Mock implements _i11.SwapController {
       super.noSuchMethod(Invocation.method(#$configureLifeCycle, []),
           returnValueForMissingStub: null);
   @override
-  _i9.Disposer addListener(_i9.GetStateUpdate? listener) =>
+  _i12.Disposer addListener(_i12.GetStateUpdate? listener) =>
       (super.noSuchMethod(Invocation.method(#addListener, [listener]),
-          returnValue: () {}) as _i9.Disposer);
+          returnValue: () {}) as _i12.Disposer);
   @override
-  void removeListener(_i10.VoidCallback? listener) =>
+  void removeListener(_i13.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
@@ -458,16 +328,16 @@ class MockSwapController extends _i1.Mock implements _i11.SwapController {
       super.noSuchMethod(Invocation.method(#notifyChildrens, []),
           returnValueForMissingStub: null);
   @override
-  void removeListenerId(Object? id, _i10.VoidCallback? listener) =>
+  void removeListenerId(Object? id, _i13.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListenerId, [id, listener]),
           returnValueForMissingStub: null);
   @override
   void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
       returnValueForMissingStub: null);
   @override
-  _i9.Disposer addListenerId(Object? key, _i9.GetStateUpdate? listener) =>
+  _i12.Disposer addListenerId(Object? key, _i12.GetStateUpdate? listener) =>
       (super.noSuchMethod(Invocation.method(#addListenerId, [key, listener]),
-          returnValue: () {}) as _i9.Disposer);
+          returnValue: () {}) as _i12.Disposer);
   @override
   void disposeId(Object? id) =>
       super.noSuchMethod(Invocation.method(#disposeId, [id]),

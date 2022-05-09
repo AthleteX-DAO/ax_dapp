@@ -6,6 +6,7 @@ import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
+import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
@@ -756,8 +757,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                                       SubGraphRepo>(
                                                       context),
                                                 ),
-                                                walletController:
-                                                Get.find(),
+                                                wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                 swapController: Get.find()),
                                         child: BuyDialog(
                                             athlete.name,
@@ -910,8 +910,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                                               SubGraphRepo>(
                                                           context),
                                                     ),
-                                                    walletController:
-                                                        Get.find(),
+                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
                                             child: BuyDialog(
                                                 athlete.name,

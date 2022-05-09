@@ -7,6 +7,7 @@ import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
@@ -1089,8 +1090,8 @@ class _AthletePageState extends State<AthletePage> {
                                                                   SubGraphRepo>(
                                                                   context),
                                                             ),
-                                                            walletController:
-                                                            Get.find(),
+                                                            wallet:
+                                                            GetTotalTokenBalanceUseCase(Get.find()),
                                                             swapController: Get
                                                                 .find()),
                                                     child: BuyDialog(
@@ -1415,9 +1416,8 @@ class _AthletePageState extends State<AthletePage> {
                                                                             SubGraphRepo>(
                                                                             context),
                                                                       ),
-                                                                      walletController:
-                                                                      Get
-                                                                          .find(),
+                                                                      wallet:
+                                                                      GetTotalTokenBalanceUseCase(Get.find()),
                                                                       swapController: Get
                                                                           .find()),
                                                               child: BuyDialog(
