@@ -51,6 +51,7 @@ class WalletController extends GetxController {
       double balanceInEther = balanceInWei.getValueInUnit(EtherUnit.ether);
       tokenBalance = balanceInEther.toStringAsFixed(6);
     } catch (error) {
+      tokenBalance = "0.0";
       print("[Console] Failed to retrieve the balance: $error");
     }
     update();

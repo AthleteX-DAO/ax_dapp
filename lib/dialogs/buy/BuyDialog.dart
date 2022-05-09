@@ -135,6 +135,7 @@ class _BuyDialogState extends State<BuyDialog> {
   }
 
   Widget showBalance(balance) {
+    print("Show Balance: $balance");
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -243,11 +244,15 @@ class _BuyDialogState extends State<BuyDialog> {
           print("BuyDialog minReceived: ${state.minimumReceived}");
           print("BuyDialog PriceImpact: ${state.priceImpact}");
           print("BuyDialog ReceiveAmount: ${state.receiveAmount}");
+          print("BuyDialog Balance: ${state.balance}");
+          print("BuyDialog AxInput: ${state.axInputAmount}");
           if (state.tokenAddress == null ||
               state.tokenAddress != _getCurrentTokenAddress()) {
             reloadBuyDialog(bloc);
           }
-
+          if(state.axInputAmount != 0.0) {
+            _aptAmountController.text = state.axInputAmount.toStringAsFixed(6);
+          }
           return Dialog(
             backgroundColor: Colors.transparent,
             child: Container(
