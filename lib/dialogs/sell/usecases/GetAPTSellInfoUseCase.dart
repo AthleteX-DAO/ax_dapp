@@ -1,8 +1,8 @@
-import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptSellInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:fpdart/fpdart.dart';
 
 const String _no_sell_info_error_msg = "No sell info found";
 
@@ -25,7 +25,7 @@ class GetAPTSellInfoUseCase {
             aptLiquidity: swapInfo.fromReserve,
             axLiquidity: swapInfo.toReserve,
             axPrice: swapInfo.toPrice);
-         return Either.left(Success(aptSellInfo));
+        return Either.left(Success(aptSellInfo));
       } else {
         return Either.right(Error(_no_sell_info_error_msg));
       }
