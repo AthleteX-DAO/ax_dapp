@@ -13,7 +13,7 @@ class TradePageState extends Equatable {
   final double minimumReceived;
   final double estimatedSlippage;
   final double receiveAmount;
-  final double lpFee;
+  final double totalFees;
   final Status status;
   final Token? tokenFrom;
   final Token? tokenTo;
@@ -29,7 +29,7 @@ class TradePageState extends Equatable {
     double? minimumReceived,
     double? estimatedSlippage,
     double? receiveAmount,
-    double? lpFee,
+    double? totalFees,
     Token? tokenFrom,
     Token? tokenTo,
   })  : tokenInputFromAmount = tokenInputFromAmount ?? 0.0,
@@ -39,7 +39,7 @@ class TradePageState extends Equatable {
         tokenFromBalance = tokenFromBalance ?? 0.0,
         priceImpact = priceImpact ?? 0.0,
         minimumReceived = minimumReceived ?? 0.0,
-        lpFee = lpFee ?? 0.0,
+        totalFees = totalFees ?? 0.0,
         estimatedSlippage = estimatedSlippage ?? 0.0,
         receiveAmount = receiveAmount ?? 0.0,
         tokenFrom = tokenFrom ?? tokenFrom,
@@ -57,7 +57,7 @@ class TradePageState extends Equatable {
       minimumReceived,
       estimatedSlippage,
       receiveAmount,
-      lpFee,
+      totalFees,
       status,
       tokenFrom,
       tokenTo,
@@ -74,7 +74,7 @@ class TradePageState extends Equatable {
     double? minimumReceived,
     double? estimatedSlippage,
     double? receiveAmount,
-    double? lpFee,
+    double? totalFees,
     Status? status,
     Token? tokenFrom,
     Token? tokenTo,
@@ -89,7 +89,7 @@ class TradePageState extends Equatable {
       minimumReceived: minimumReceived ?? this.minimumReceived,
       estimatedSlippage: estimatedSlippage ?? this.estimatedSlippage,
       receiveAmount: receiveAmount ?? this.receiveAmount,
-      lpFee: lpFee ?? this.lpFee,
+      totalFees: totalFees ?? this.totalFees,
       status: status ?? this.status,
       tokenFrom: tokenFrom ?? this.tokenFrom,
       tokenTo: tokenTo ?? this.tokenTo,

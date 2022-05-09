@@ -1,5 +1,5 @@
+import 'package:ax_dapp/dialogs/buy/models/TransactionInfo.dart';
 import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
-import 'package:ax_dapp/pages/trade/models/SwapTransactionInfo.dart';
 import 'package:ax_dapp/pages/trade/models/TradePageEvent.dart';
 import 'package:ax_dapp/pages/trade/models/TradePageState.dart';
 import 'package:ax_dapp/service/BlockchainModels/SwapInfo.dart';
@@ -61,7 +61,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           priceImpact: transactionInfo.priceImpact!.toDouble(),
           receiveAmount: transactionInfo.receiveAmount!.toDouble(),
           price: transactionInfo.price!.toDouble(),
-          lpFee: transactionInfo.lpFee!.toDouble(),
+          totalFees: transactionInfo.totalFee!.toDouble(),
         ));
       } else {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
@@ -73,7 +73,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           priceImpact: 0,
           receiveAmount: 0,
           price: 0,
-          lpFee: 0,
+          totalFees: 0,
         ));
       }
     } catch (e) {
@@ -81,23 +81,24 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     }
   }
 
-  SwapTransactionInfo calculateTransactionInfo(
+  TransactionInfo calculateTransactionInfo(
       SwapInfo? swapInfo, double inputAmount) {
     final toReserve = swapInfo!.toReserve;
     final fromReserve = swapInfo.fromReserve;
     final fromInputAmount = inputAmount;
-    final receiveAmount =
-        fromInputAmount * (toReserve / (fromReserve + fromInputAmount));
     final price = swapInfo.toPrice;
-    final lpFee = fromInputAmount * 0.003;
+    final lpFee = fromInputAmount * 0.0025;
+    final protocolFee = fromInputAmount * 0.0005;
+    final totalFees = lpFee + protocolFee;
+    final receiveAmount = (fromInputAmount - totalFees) * (toReserve / (fromReserve + fromInputAmount - totalFees));
     final priceImpact = 100 *
         (1 -
             ((fromReserve * (toReserve - receiveAmount)) /
-                (toReserve * (fromReserve + fromInputAmount))));
+                (toReserve * (fromReserve + fromInputAmount - totalFees))));
 
     final minimumReceiveAmt = receiveAmount * (1 - _slippage_tolerance);
-    return SwapTransactionInfo(
-        minimumReceiveAmt, priceImpact, receiveAmount, price, lpFee);
+    return TransactionInfo(
+        minimumReceiveAmt, priceImpact, receiveAmount, totalFees, price);
   }
 
   void _mapNewTokenFromInputEventToState(
@@ -129,7 +130,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
             priceImpact: transactionInfo.priceImpact!.toDouble(),
             receiveAmount: transactionInfo.receiveAmount!.toDouble(),
             price: transactionInfo.price!.toDouble(),
-            lpFee: transactionInfo.lpFee!.toDouble()));
+            totalFees: transactionInfo.totalFee!.toDouble()));
       } else {
         print("On New Apt Input: Failure");
         final errorMsg = response.getRight().toNullable()!.errorMsg;

@@ -1,7 +1,7 @@
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:equatable/equatable.dart';
 
-class TradePageEvent extends Equatable {
+abstract class TradePageEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
@@ -16,7 +16,7 @@ class NewTokenFromInputEvent extends TradePageEvent {
   final double tokenInputFromAmount;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [tokenInputFromAmount];
   NewTokenFromInputEvent({required this.tokenInputFromAmount});
 }
 
@@ -24,7 +24,7 @@ class NewTokenToInputEvent extends TradePageEvent {
   final double tokenInputToAmount;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [tokenInputToAmount];
   NewTokenToInputEvent({required this.tokenInputToAmount});
 }
 
@@ -47,7 +47,7 @@ class SetTokenFrom extends TradePageEvent {
   final Token tokenFrom;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [tokenFrom];
   SetTokenFrom({required this.tokenFrom});
 }
 
@@ -55,7 +55,7 @@ class SetTokenTo extends TradePageEvent {
   final Token tokenTo;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [tokenTo];
   SetTokenTo({required this.tokenTo});
 }
 
