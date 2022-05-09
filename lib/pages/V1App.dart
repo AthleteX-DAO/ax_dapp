@@ -1,10 +1,13 @@
+import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/DesktopPool.dart';
-import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/pages/trade/DesktopTrade.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
+import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
+import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
@@ -136,14 +139,22 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == 0)
             BlocProvider(
                 create: (BuildContext context) => ScoutPageBloc(
-                    repo: GetScoutAthletesDataUseCase([
+                        repo: GetScoutAthletesDataUseCase([
                       RepositoryProvider.of<MLBRepo>(context),
                       //NFLRepo
                       //MLBRepo
                     ])),
                 child: DesktopScout())
           else if (pageNumber == 1)
-            DesktopTrade()
+            BlocProvider(
+                create: (BuildContext context) => TradePageBloc(
+                      repo: GetSwapInfoUseCase(
+                        RepositoryProvider.of<SubGraphRepo>(context),
+                      ),
+                      swapController: Get.find(),
+                      walletController: Get.find(),
+                    ),
+                child: DesktopTrade())
           else if (pageNumber == 2)
             DesktopPool()
           else if (pageNumber == 3)
@@ -157,13 +168,22 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
-                  repo: GetScoutAthletesDataUseCase([
+                      repo: GetScoutAthletesDataUseCase([
                     RepositoryProvider.of<MLBRepo>(context),
                     //NFLRepo
                     //NBARepo
                   ])),
               child: DesktopScout()),
-          DesktopTrade(),
+          BlocProvider(
+            create: (BuildContext context) => TradePageBloc(
+              repo: GetSwapInfoUseCase(
+                RepositoryProvider.of<SubGraphRepo>(context),
+              ),
+              swapController: Get.find(),
+              walletController: Get.find(),
+            ),
+            child: DesktopTrade(),
+          ),
           DesktopPool(),
           DesktopFarm(),
         ],
@@ -348,23 +368,24 @@ class _V1AppState extends State<V1App> {
                     IconButton(
                         onPressed: () =>
                             //Discord button
-                            launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
+                            launchUrl(Uri.parse(
+                                'https://discord.com/invite/WFsyAuzp9V')),
                         icon: FaIcon(
                           FontAwesomeIcons.discord,
                           size: 25,
                           color: Colors.grey[400],
                         )),
                     IconButton(
-                        onPressed: () =>
-                            launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
+                        onPressed: () => launchUrl(
+                            Uri.parse('https://twitter.com/athletex_dao?s=20')),
                         icon: FaIcon(
                           FontAwesomeIcons.twitter,
                           size: 25,
                           color: Colors.grey[400],
                         )),
                     IconButton(
-                        onPressed: () =>
-                            launchUrl(Uri.parse('https://github.com/SportsToken')),
+                        onPressed: () => launchUrl(
+                            Uri.parse('https://github.com/SportsToken')),
                         icon: FaIcon(
                           FontAwesomeIcons.github,
                           size: 25,

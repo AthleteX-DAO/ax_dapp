@@ -6,7 +6,6 @@ import 'package:ax_dapp/service/BlockchainModels/SwapInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
@@ -90,7 +89,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     final lpFee = fromInputAmount * 0.0025;
     final protocolFee = fromInputAmount * 0.0005;
     final totalFees = lpFee + protocolFee;
-    final receiveAmount = (fromInputAmount - totalFees) * (toReserve / (fromReserve + fromInputAmount - totalFees));
+    final receiveAmount = (fromInputAmount - totalFees) *
+        (toReserve / (fromReserve + fromInputAmount - totalFees));
     final priceImpact = 100 *
         (1 -
             ((fromReserve * (toReserve - receiveAmount)) /
