@@ -66,14 +66,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
         // print("TradePage tokenFrom: ${state.tokenFrom!.address.value}");
         final Token? tokenFrom = state.tokenFrom ?? TokenList.tokenList[0];
         final Token? tokenTo = state.tokenTo ?? TokenList.tokenList[3];
-        final tokenInputFromAmount = state.tokenInputFromAmount;
-        final tokenInputToAmount = state.tokenInputToAmount;
-        // print("Trade TokenFromAddress: ${state.tokenFrom!.address.value}");
-        // print("Trade TokenToAddress: ${state.tokenTo!.address.value}");
-        // print("Trade price: $price");
-        // print("Trade minReceived: ${state.minimumReceived}");
-        // print("Trade PriceImpact: ${state.priceImpact}");
-        // print("Trade ReceiveAmount: ${state.receiveAmount}");
+        // TODO: add autofill feature
+        // final tokenInputFromAmount = state.tokenInputFromAmount;
+        // final tokenInputToAmount = state.tokenInputToAmount;
 
         if (state.status == Status.initial) {
           bloc.add(SetTokenFrom(tokenFrom: TokenList.tokenList[0]));
@@ -614,14 +609,13 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     width: wid,
                     height: 110,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         showPrice(price),
                         showLPFee(totalFee),
                         showMarketPriceImpact(priceImpact),
                         showMinimumReceived(minReceived),
                         showSlippageTolerance(slippageTolerance),
-                        Spacer(),
                         showYouReceived(receiveAmount)
                       ],
                     ),
