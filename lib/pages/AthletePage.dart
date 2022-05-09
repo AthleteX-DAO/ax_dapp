@@ -1,8 +1,11 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
-import 'package:ax_dapp/pages/scout/DesktopScout.dart';
+import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
+import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
+import 'package:ax_dapp/dialogs/sell/usecases/GetAPTSellInfoUseCase.dart';
 import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
+import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
@@ -1116,13 +1119,27 @@ class _AthletePageState extends State<AthletePage> {
                                             minimumSize: Size(50, 30)),
                                         onPressed: () => showDialog(
                                             context: context,
-                                            builder: (context) {
-                                              return StatefulBuilder(
-                                                  builder: (context, setState) {
-                                                return SellDialog(
-                                                    athlete, _isLongApt);
-                                              });
-                                            }),
+                                            builder: (BuildContext context) =>
+                                                BlocProvider(
+                                                    create: (
+                                                        BuildContext context) =>
+                                                        SellDialogBloc(
+                                                            repo: GetAPTSellInfoUseCase(
+                                                              RepositoryProvider
+                                                                  .of<
+                                                                  SubGraphRepo>(
+                                                                  context),
+                                                            ),
+                                                            wallet:
+                                                            GetTotalTokenBalanceUseCase(Get.find()),
+                                                            swapController: Get
+                                                                .find()),
+                                                    child: SellDialog(
+                                                        athlete.name,
+                                                        athlete.warPrice,
+                                                        athlete.id)
+                                                )
+                                            ),
                                         child: Text("Sell",
                                             style: textStyle(primaryOrangeColor,
                                                 20, false, false))))
@@ -1440,14 +1457,29 @@ class _AthletePageState extends State<AthletePage> {
                                           child: TextButton(
                                               onPressed: () => showDialog(
                                                   context: context,
-                                                  builder: (context) {
-                                                    return StatefulBuilder(
-                                                        builder: (context,
-                                                            setState) {
-                                                      return SellDialog(
-                                                          athlete, _isLongApt);
-                                                    });
-                                                  }),
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          BlocProvider(
+                                                              create: (
+                                                                  BuildContext context) =>
+                                                                  SellDialogBloc(
+                                                                      repo: GetAPTSellInfoUseCase(
+                                                                        RepositoryProvider
+                                                                            .of<
+                                                                            SubGraphRepo>(
+                                                                            context),
+                                                                      ),
+                                                                      wallet:
+                                                                      GetTotalTokenBalanceUseCase(Get.find()),
+                                                                      swapController: Get
+                                                                          .find()),
+                                                              child: SellDialog(
+                                                                  athlete.name,
+                                                                  athlete
+                                                                      .warPrice,
+                                                                  athlete.id)
+                                                          )
+                                                  ),
                                               child: Text("Sell",
                                                   style: textStyle(Colors.black,
                                                       20, false, false))))

@@ -131,7 +131,8 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
             priceImpact: transactionInfo.priceImpact!.toDouble(),
             receiveAmount: transactionInfo.receiveAmount!.toDouble(),
             totalFee: transactionInfo.totalFee!.toDouble(),
-            price: transactionInfo.price!.toDouble()));
+            price: transactionInfo.price!.toDouble(),
+            ));
       } else {
         print(" New Apt Input: Failure");
         final errorMsg = response.getRight().toNullable()!.errorMsg;
