@@ -189,7 +189,16 @@ class _V1AppState extends State<V1App> {
                     //NBARepo
                   ])),
               child: DesktopScout()),
-          DesktopTrade(),
+          BlocProvider(
+            create: (BuildContext context) => TradePageBloc(
+              repo: GetSwapInfoUseCase(
+                RepositoryProvider.of<SubGraphRepo>(context),
+              ),
+              swapController: Get.find(),
+              walletController: Get.find(),
+            ),
+            child: DesktopTrade(),
+          ),
           BlocProvider(
               create: (BuildContext context) =>
                   PoolBloc(
