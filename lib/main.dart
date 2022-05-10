@@ -14,26 +14,26 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 final _dio = Dio();
 final _mlbApi = MLBAthleteAPI(_dio);
 final _graphQLClientHelper =
-    GraphQLClientHelper(GraphQLConfiguration.AthleteDexApiLink);
-
+    GraphQLClientHelper(GraphQLConfiguration.athleteDexApiLink);
 void main() async {
-  final _gQLClient =  await _graphQLClientHelper.initializeClient();
+  final _gQLClient = await _graphQLClientHelper.initializeClient();
   final _subGraphRepo = SubGraphRepo(_gQLClient.value);
 
   print("Graph QL CLient initialized}");
-  runApp(
-      GraphQLProvider(
-        client: _gQLClient,
-        child: MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider(create: (context) => MLBRepo(_mlbApi),),
-            RepositoryProvider(create: (context) => _subGraphRepo),
-            RepositoryProvider(create: (context) => GetPairInfoUseCase(_subGraphRepo))
-          ],
-          child: MyApp(),
+  runApp(GraphQLProvider(
+    client: _gQLClient,
+    child: MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => MLBRepo(_mlbApi),
         ),
-      )
-  );
+        RepositoryProvider(create: (context) => _subGraphRepo),
+        RepositoryProvider(
+            create: (context) => GetPairInfoUseCase(_subGraphRepo))
+      ],
+      child: MyApp(),
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {

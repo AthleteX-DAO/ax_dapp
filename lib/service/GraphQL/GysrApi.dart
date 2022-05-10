@@ -77,7 +77,7 @@ class GysrApi {
   // constructor for singleton pattern
   GysrApi._internal() {
     _gysrApiClientHelper =
-        GraphQLClientHelper(GraphQLConfiguration.GysrApiLink);
+        GraphQLClientHelper(GraphQLConfiguration.gysrApiLink);
     _gysrApiClient = _gysrApiClientHelper.initializeClientWithoutCache();
   }
 

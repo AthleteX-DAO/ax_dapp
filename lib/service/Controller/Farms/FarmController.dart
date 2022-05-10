@@ -41,6 +41,8 @@ class FarmController extends GetxController {
       filteredAllFarms.add(Farm(pool));
     }
 
+    print("[Contract-Count] ${allFarms.length}");
+
     String account = controller.publicAddress.value.hex.toLowerCase();
     // account = "0x571f8e570efe1fb0ba8ff75f4749b629a471f458"; // staked account for test
     // account = "0x22b3e4b38fb2f260302787b18b1401747eacf8d4"; // staked account for test
@@ -60,6 +62,8 @@ class FarmController extends GetxController {
       stakedFarms.add(Farm(position['pool']));
       filteredStakedFarms.add(Farm(position['pool']));
     }
+
+
 }
 
   /// This function is used to filter farms using keyword

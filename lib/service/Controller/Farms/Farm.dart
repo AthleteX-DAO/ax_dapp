@@ -2,8 +2,7 @@ import 'dart:typed_data';
 import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
-import 'package:web3dart/web3dart.dart';
-import 'package:flutter_web3/ethers.dart';
+import 'package:web3dart/web3dart.dart' as Web3Dart;
 import 'package:ax_dapp/contracts/Pool.g.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
@@ -30,16 +29,16 @@ class Farm {
   RxString strStakedSymbol = "".obs;
   RxString strRewardSymbol = "".obs;
   RxString strStakedAlias = "".obs;
- 
+
   RxDouble dUnStakeBalance = 0.0.obs;
   RxDouble dStakeBalance = 0.0.obs;
 
-  late Web3Client rpcClient;
+  late Web3Dart.Web3Client rpcClient;
 
   // contructor with poolInfo from api
   Farm(dynamic poolInfo) {
     this.strAddress = poolInfo['id'].toString();
-    this.strName = "${poolInfo['stakingToken']['alias']} Long-Short APT";
+    this.strName = "${poolInfo['stakingToken']['alias']} APT";
     this.dAPR = double.parse(poolInfo['apr']);
     this.dTVL = double.parse(poolInfo['tvl']);
     this.dStaked = RxDouble(double.parse(poolInfo['staked']));
@@ -53,11 +52,12 @@ class Farm {
     this.strRewardSymbol = RxString(poolInfo['rewardToken']['symbol']);
     this.strStakedAlias = RxString(poolInfo['stakingToken']['alias']);
 
-    EthereumAddress address = EthereumAddress.fromHex(this.strAddress);
+    Web3Dart.EthereumAddress address =
+        Web3Dart.EthereumAddress.fromHex(this.strAddress);
     String rpcUrl = controller.mainRPCUrl;
     if (Controller.supportedChains.containsKey(controller.networkID.value))
       rpcUrl = Controller.supportedChains[controller.networkID.value]!;
-    rpcClient = Web3Client(rpcUrl, Client());
+    rpcClient = Web3Dart.Web3Client(rpcUrl, Client());
     this.contract = new Pool(address: address, client: rpcClient);
   }
 
@@ -89,25 +89,13 @@ class Farm {
   ///
   /// @return {void}
   Future<void> stake() async {
-    // String stakingString = abiCoder.encode(['address'], [strAddress]);
-    // Uint8List stakingData = Uint8List.fromList(stakingString.codeUnits);
+    Uint8List stakingData = Uint8List.fromList([]);
+    Uint8List rewardData = Uint8List.fromList([]);
 
-    // String rewardString = abiCoder.encode(
-    //     ['address', 'uint256', 'uint256', 'uint256'],
-    //     [strAddress, 0.5, 0.5, days(90)]);
-    // Uint8List rewardData = Uint8List.fromList(rewardString.codeUnits);
-    String stakingString = abiCoder.encode([], []);
-    String rewardString = abiCoder.encode([], []);
-    Uint8List stakingData = Uint8List.fromList(stakingString.codeUnits);
-    Uint8List rewardData = Uint8List.fromList(rewardString.codeUnits);
-
-    // EtherAmount amount = EtherAmount.fromUnitAndValue(EtherUnit.ether, this.dStakeBalance.value.toString());
     BigInt stakeAmount = normalizeInput(this.dStakeBalance.value);
-
-    String txHash = await this.contract.stake(stakeAmount, stakingData, rewardData,
+    String txHash = await this.contract.stake(
+        stakeAmount, stakingData, rewardData,
         credentials: controller.credentials);
-    print(txHash);
-
     controller.updateTxString(txHash);
   }
 
@@ -118,13 +106,12 @@ class Farm {
   ///
   /// @return {void}
   Future<void> unstake() async {
-    Uint8List rewardData =
-        Uint8List.fromList(abiCoder.encode([], []).codeUnits);
-    Uint8List stakingData =
-        Uint8List.fromList(abiCoder.encode([], []).codeUnits);
+    Uint8List stakingData = Uint8List.fromList([]);
+    Uint8List rewardData = Uint8List.fromList([]);
 
     BigInt unstakeAmount = normalizeInput(this.dUnStakeBalance.value);
-    String txHash = await this.contract.unstake(unstakeAmount, stakingData, rewardData,
+    String txHash = await this.contract.unstake(
+        unstakeAmount, stakingData, rewardData,
         credentials: controller.credentials);
     controller.updateTxString(txHash);
   }
@@ -134,46 +121,42 @@ class Farm {
   ///
   /// @return {void}
   Future<void> claim() async {
-    String stakingString = abiCoder.encode([], []);
-    Uint8List stakingData = Uint8List.fromList(stakingString.codeUnits);
+    Uint8List stakingData = Uint8List.fromList([]);
+    Uint8List rewardData = Uint8List.fromList([]);
 
-    // String rewardString = abiCoder.encode(
-    //     ['address', 'uint256', 'uint256', 'uint256'],
-    //     [controller.publicAddress.value.hex, 1, 1, 90]);
-
-    String rewardString = abiCoder.encode([], []);
-    Uint8List rewardData = Uint8List.fromList(rewardString.codeUnits);
-
-    print("[Console-staking data] $stakingData");
-    print("[Console-reward data $rewardData");
-
-    String txHash = await this.contract.claim(BigInt.from(100), stakingData, rewardData,
+    String txHash = await this.contract.claim(
+        BigInt.from(100), stakingData, rewardData,
         credentials: controller.credentials);
-    print("[Console-Claim] $txHash");
     controller.updateTxString(txHash);
   }
 
   /// This function is used to get balance of staked farm
-  /// 
+  ///
   /// @param {String} the address of the account
   /// @return {void}
   Future<void> getStakedBalance(String strAccount) async {
-    EthereumAddress ethAccount = EthereumAddress.fromHex(strAccount);
+    Web3Dart.EthereumAddress ethAccount =
+        Web3Dart.EthereumAddress.fromHex(strAccount);
     List<BigInt> balances = await this.contract.stakingBalances(ethAccount);
-    EtherAmount stakedWeiBalance = EtherAmount.inWei(balances[0]);
-    double stakedEtherBalance = stakedWeiBalance.getValueInUnit(EtherUnit.ether);
+    Web3Dart.EtherAmount stakedWeiBalance =
+        Web3Dart.EtherAmount.inWei(balances[0]);
+    double stakedEtherBalance =
+        stakedWeiBalance.getValueInUnit(Web3Dart.EtherUnit.ether);
     this.dStaked.value = stakedEtherBalance;
   }
 
   /// This function is used to approve the reward token
-  /// 
+  ///
   /// @return {void}
   Future<void> approve() async {
-    EthereumAddress routerAddress = EthereumAddress.fromHex(strRouterAddress);
-    EthereumAddress tokenAddress = EthereumAddress.fromHex(this.strStakeTokenAddress);
+    Web3Dart.EthereumAddress routerAddress =
+        Web3Dart.EthereumAddress.fromHex(strRouterAddress);
+    Web3Dart.EthereumAddress tokenAddress =
+        Web3Dart.EthereumAddress.fromHex(this.strStakeTokenAddress);
     ERC20 rewardToken = ERC20(address: tokenAddress, client: rpcClient);
     BigInt approveAmount = normalizeInput(this.dStakeBalance.value);
-    String txHash = await rewardToken.approve(routerAddress, approveAmount, credentials: controller.credentials);
+    String txHash = await rewardToken.approve(routerAddress, approveAmount,
+        credentials: controller.credentials);
     controller.updateTxString(txHash);
   }
 }

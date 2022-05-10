@@ -23,10 +23,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
   /// initialize farms list from the farm controller
   /// will update it as async function
   void initAsyncState() {
-    // allFarmsList = farmController.allFarms;
-    // myFarmsList = farmController.stakedFarms;
-    // allFarmsListSearchFilter = farmController.allFarms;
-    // myFarmsListSearchFilter = farmController.stakedFarms;
+    
   }
 
   // ignore: must_call_super
@@ -155,7 +152,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     if (!isAllFarms) {
                       myController.clear();
                       setState(() {
-                        // allFarmsListSearchFilter = allFarmsList;
                         isAllFarms = true;
                       });
                     }
@@ -191,7 +187,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
     //TO DO pass list width so that this method knows width of parent - Mauricio
     //Cannot stablish a height for list items for cross axis alignment, in this case for rows
     //So for rows height is stablished in outer container
-    FarmController farmController = new FarmController();
     double minCardHeight = 450;
     double maxCardHeight = 500;
     double cardWidth = isWeb ? 500 : layoutWidth;
@@ -230,7 +225,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 "Current APR",
                 style: txStyle,
               ),
-              // Obx(() => Text("${farm.strAPR}%", style: txStyle))
               Text("${farm.dAPR.toStringAsFixed(2)}%", style: txStyle)
             ],
           ),
@@ -238,7 +232,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text("TVL", style: txStyle),
-              // Obx(() => Text("\$ ${farm.strTVL}", style: txStyle))
               Text("\$${farm.dTVL.toStringAsFixed(2)}", style: txStyle)
             ],
           ),
@@ -352,7 +345,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                         onPressed: () => showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                removeDialog(context, cardWidth, isWeb)),
+                                removeDialog(context, farm, cardWidth, isWeb)),
                         child: Text("Unstake Liquidity",
                             style: textStyle(
                                 Colors.amber[600]!, 14, true, false)))),
@@ -405,25 +398,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
               Text("\$${farm.dTVL.toStringAsFixed(2)}", style: txStyle)
             ],
           ),
-          // Fee
-
-          // This is intended to be added in later down the line.
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: <Widget>[
-          //     Text("Swap Fee APR", style: txStyle),
-          //     Text("20%", style: txStyle)
-          //   ],
-          // ),
-          // // Rewards
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: <Widget>[
-          //     Text("AX Rewards APR", style: txStyle),
-          //     Text("10%", style: txStyle)
-          //   ],
-          // ),
 
           // Total APY
           Row(
@@ -459,19 +433,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 controller: myController,
                 onChanged: (value) {
                   setState(() {
-                    if (!isAllFarms) {
-                      // myFarmsListSearchFilter = myFarmsList
-                      //     .where((farm) => farm.strName
-                      //         .toUpperCase()
-                      //         .contains(value.toUpperCase()))
-                      //     .toList();
-                    } else {
-                      // allFarmsListSearchFilter = allFarmsList
-                      //     .where((farm) => farm.strName
-                      //         .toUpperCase()
-                      //         .contains(value.toUpperCase()))
-                      //     .toList();
-                    }
                     farmController.filterFarms(value);
                   });
                 },
