@@ -1,7 +1,6 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
-import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
 import 'package:ax_dapp/dialogs/sell/usecases/GetAPTSellInfoUseCase.dart';
@@ -12,7 +11,6 @@ import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
-import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
@@ -1132,8 +1130,8 @@ class _AthletePageState extends State<AthletePage> {
                                                                   SubGraphRepo>(
                                                                   context),
                                                             ),
-                                                            walletController:
-                                                            Get.find(),
+                                                            wallet:
+                                                            GetTotalTokenBalanceUseCase(Get.find()),
                                                             swapController: Get
                                                                 .find()),
                                                     child: SellDialog(
@@ -1471,9 +1469,8 @@ class _AthletePageState extends State<AthletePage> {
                                                                             SubGraphRepo>(
                                                                             context),
                                                                       ),
-                                                                      walletController:
-                                                                      Get
-                                                                          .find(),
+                                                                      wallet:
+                                                                      GetTotalTokenBalanceUseCase(Get.find()),
                                                                       swapController: Get
                                                                           .find()),
                                                               child: SellDialog(

@@ -252,6 +252,9 @@ class _SellDialogState extends State<SellDialog> {
               state.tokenAddress != _getCurrentTokenAddress()) {
             reloadSellDialog(bloc);
           }
+          if(state.aptInputAmount != 0.0) {
+            _aptAmountController.text = state.aptInputAmount.toString();
+          }
 
           return Dialog(
             backgroundColor: Colors.transparent,
