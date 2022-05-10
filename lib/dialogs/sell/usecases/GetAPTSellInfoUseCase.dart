@@ -1,4 +1,5 @@
 import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
+import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptSellInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:fpdart/fpdart.dart';
@@ -6,12 +7,13 @@ import 'package:fpdart/fpdart.dart';
 const String _no_sell_info_error_msg = "No sell info found";
 
 class GetAPTSellInfoUseCase {
-  final GetSwapInfoUseCase _repo;
+  final SubGraphRepo _graphRepo;
 
-  GetAPTSellInfoUseCase(this._repo);
+  GetAPTSellInfoUseCase(this._graphRepo);
 
   Future<Either<Success, Error>> fetchAptSellInfo(
       {required String aptAddress}) async {
+    final _repo = GetSwapInfoUseCase(_graphRepo);
     try {
       final response = await _repo.fetchSwapInfo(
           tokenFrom: aptAddress, tokenTo: AXT.polygonAddress);

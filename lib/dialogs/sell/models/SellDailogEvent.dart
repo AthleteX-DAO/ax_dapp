@@ -1,3 +1,5 @@
+
+
 import 'package:equatable/equatable.dart';
 
 abstract class SellDialogEvent extends Equatable {
@@ -24,10 +26,10 @@ class MaxSellTap extends SellDialogEvent {
   List<Object?> get props => [];
 }
 
-class ConfirmBuy extends SellDialogEvent {
+class ConfirmSell extends SellDialogEvent {
   final double sellPrice;
 
-  ConfirmBuy({required this.sellPrice});
+  ConfirmSell({required this.sellPrice});
 
   @override
   List<Object?> get props => [sellPrice];
