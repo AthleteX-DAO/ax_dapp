@@ -22,7 +22,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       : super(const SellDialogState()) {
     on<LoadDialog>(_mapLoadDialogEventToState);
     on<MaxSellTap>(_mapMaxSellTapEventToState);
-    on<ConfirmSell>(_mapConfirmBuyEventToState);
+    on<ConfirmSell>(_mapConfirmSellEventToState);
     on<NewAptInput>(_mapNewAptInputEventToState);
   }
 
@@ -100,7 +100,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
     }
   }
 
-  void _mapConfirmBuyEventToState(
+  void _mapConfirmSellEventToState(
       ConfirmSell event, Emitter<SellDialogState> emit) {}
 
   void _mapNewAptInputEventToState(
