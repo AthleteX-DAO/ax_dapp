@@ -5,24 +5,24 @@ import 'package:ax_dapp/dialogs/sell/usecases/GetAPTSellInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptSellInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 const double _slippage_tolerance = 0.01;
 
 class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   GetAPTSellInfoUseCase repo;
-  WalletController walletController;
+  GetTotalTokenBalanceUseCase wallet;
   SwapController swapController;
 
   SellDialogBloc(
       {required this.repo,
-      required this.walletController,
+      required this.wallet,
       required this.swapController})
       : super(const SellDialogState()) {
     on<LoadDialog>(_mapLoadDialogEventToState);
     on<MaxSellTap>(_mapMaxSellTapEventToState);
-    on<ConfirmBuy>(_mapConfirmBuyEventToState);
+    on<ConfirmSell>(_mapConfirmBuyEventToState);
     on<NewAptInput>(_mapNewAptInputEventToState);
   }
 
@@ -42,10 +42,10 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         final sellInfo = response.getLeft().toNullable()!.aptSellInfo;
         final transactionInfo =
             calculateTransactionInfo(sellInfo, state.aptInputAmount);
-        final balance = await walletController.getTokenBalance(event.currentTokenAddress);
+        final balance = await wallet.getTotalBalanceForToken(event.currentTokenAddress);
         //do some math
         emit(state.copy(
-            balance: double.parse(balance),
+            balance: balance,
             status: Status.success,
             minimumReceived: transactionInfo.minimumReceived!.toDouble(),
             priceImpact: transactionInfo.priceImpact!.toDouble(),
@@ -87,10 +87,21 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
 
   void _mapMaxSellTapEventToState(
       MaxSellTap event, Emitter<SellDialogState> emit) async {
+    emit(state.copy(status: Status.loading));
+    try {
+      final maxInput = await wallet.getTotalAxBalance();
+      emit(state.copy(
+          aptInputValue: maxInput, status: Status.success));
+      add(NewAptInput(aptInputAmount: maxInput));
+    } catch (e) {
+      //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
+      print(e);
+      emit(state.copy(status: Status.error));
+    }
   }
 
   void _mapConfirmBuyEventToState(
-      ConfirmBuy event, Emitter<SellDialogState> emit) {}
+      ConfirmSell event, Emitter<SellDialogState> emit) {}
 
   void _mapNewAptInputEventToState(
       NewAptInput event, Emitter<SellDialogState> emit) async {
@@ -106,9 +117,9 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         if (swapController.amount1.value != aptInputAmount) {
           swapController.updateFromAmount(aptInputAmount);
         }
-        final buyInfo = response.getLeft().toNullable()!.aptSellInfo;
+        final sellInfo = response.getLeft().toNullable()!.aptSellInfo;
         final transactionInfo =
-            calculateTransactionInfo(buyInfo, aptInputAmount);
+            calculateTransactionInfo(sellInfo, aptInputAmount);
         print("minReceived: ${transactionInfo.minimumReceived!.toDouble()}");
         print("priceImpact: ${transactionInfo.priceImpact!.toDouble()}");
         print("receiveAmount: ${transactionInfo.receiveAmount!.toDouble()}");
