@@ -1,3 +1,5 @@
+/*NEEDS TO BE UPDATED
+import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
 import 'package:ax_dapp/repositories/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/SwapInfo.dart';
@@ -34,4 +36,4 @@ void main() {
     assert(result.totalFee!.toStringAsFixed(6) == "0.003000");
     assert(result.price!.toStringAsFixed(6) == "0.000133");
   });
-}
+}*/
