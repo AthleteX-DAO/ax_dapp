@@ -1,8 +1,13 @@
+import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../service/BlockchainModels/Token.dart';
-
 abstract class PoolEvent extends Equatable {}
+
+class PageRefreshEvent extends PoolEvent {
+  @override
+  List<Object?> get props => [];
+  PageRefreshEvent();
+}
 
 class Token0SelectionChanged extends PoolEvent {
   final Token token0;
@@ -51,6 +56,12 @@ class Token1InputChanged extends PoolEvent {
 }
 
 class AddLiquidityButtonClicked extends PoolEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class SwapTokens extends PoolEvent {
+  SwapTokens();
   @override
   List<Object?> get props => [];
 }

@@ -1,49 +1,68 @@
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
-import 'package:ax_dapp/repositories/usecases/GetPairInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/SwapInfo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
 import 'package:fpdart/fpdart.dart';
-class GetSwapInfoUseCase {
-  final GetPairInfoUseCase _pairInfoFetcher;
 
-  GetSwapInfoUseCase(this._pairInfoFetcher);
+const String _no_swap_info_error_msg = "No swap info found";
+
+class GetSwapInfoUseCase {
+  final SubGraphRepo _graphRepo;
+
+  GetSwapInfoUseCase(this._graphRepo);
 
   Future<Either<Success, Error>> fetchSwapInfo(
       {required String tokenFrom, required String tokenTo}) async {
     final tokenFromAddress = tokenFrom.toLowerCase();
     final tokenToAddress = tokenTo.toLowerCase();
     try {
-      final result = await _pairInfoFetcher.fetchPairInfo(
-          tokenFrom: tokenFrom, tokenTo: tokenTo);
-      final isSuccess = result.isLeft();
-      if (isSuccess) {
-        final tokenPair = result.getLeft().toNullable()!.tokenPair;
-        final String fromReserve;
-        final String toReserve;
-        final String toPrice;
-        //If token0 id is the AX Polygon address then assign reserve0
-        // and reserve1 to the liquidity variables respectively and vice versa
-        if (tokenPair.token0.id == tokenFromAddress) {
-          fromReserve = tokenPair.reserve0;
-          toReserve = tokenPair.reserve1;
-          toPrice = tokenPair.token1Price;
+      print("token0 address: $tokenFromAddress");
+      print("token1 address: $tokenToAddress");
+      print("fetching swap info");
+      final tokenPairData = await _graphRepo.queryPairDataForTokenAddress(
+          tokenFromAddress, tokenToAddress);
+
+      if (tokenPairData.isLeft()) {
+        final data = tokenPairData.getLeft().toNullable();
+        if (data != null) {
+          print("data retrieved: ${data.toString()}");
+          List pairs = data["pairs"];
+          print("pairs =  ${pairs.toString()}");
+          List<TokenPair> tokenPairs =
+              pairs.map((pair) => TokenPair.fromJson(pair)).toList();
+          TokenPair tokenPair = tokenPairs.firstWhere((tokenPair) =>
+              ((tokenPair.token0.id == tokenFromAddress ||
+                      tokenPair.token0.id == tokenToAddress) &&
+                  (tokenPair.token1.id == tokenFromAddress ||
+                      tokenPair.token1.id == tokenToAddress)));
+          final String fromReserve;
+          final String toReserve;
+          final String toPrice;
+          //If token0 id is the AX Polygon address then assign reserve0
+          // and reserve1 to the liquidity variables respectively and vice versa
+          if (tokenPair.token0.id == tokenFromAddress) {
+            fromReserve = tokenPair.reserve0;
+            toReserve = tokenPair.reserve1;
+            toPrice = tokenPair.token1Price;
+          } else {
+            fromReserve = tokenPair.reserve1;
+            toReserve = tokenPair.reserve0;
+            toPrice = tokenPair.token0Price;
+          }
+          print("From Reserve = $fromReserve");
+          print("To Reserve = $toReserve");
+          print("To Price = $toPrice");
+          final swapInfo = SwapInfo(
+              fromReserve: double.parse(fromReserve),
+              toReserve: double.parse(toReserve),
+              toPrice: double.parse(toPrice));
+          return Either.left(Success(swapInfo));
         } else {
-          fromReserve = tokenPair.reserve1;
-          toReserve = tokenPair.reserve0;
-          toPrice = tokenPair.token0Price;
+          return Either.right(Error(_no_swap_info_error_msg));
         }
-        print("From Reserve = $fromReserve");
-        print("To Reserve = $toReserve");
-        print("To Price = $toPrice");
-        final swapInfo = SwapInfo(
-            fromReserve: double.parse(fromReserve),
-            toReserve: double.parse(toReserve),
-            toPrice: double.parse(toPrice));
-        return Either.left(Success(swapInfo));
       } else {
         print(
-            "fetching swap info failed: ${result.getRight().toNullable().toString()}");
-        final errorMsg = result.getRight().toNullable().toString();
+            "fetching swap info failed: ${tokenPairData.getRight().toNullable().toString()}");
+        final errorMsg = tokenPairData.getRight().toNullable().toString();
         return Either.right(
             Error("Error occurred fetching swap data: $errorMsg"));
       }
