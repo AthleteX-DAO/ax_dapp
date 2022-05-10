@@ -313,7 +313,7 @@ class _BuyDialogState extends State<BuyDialog> {
                       onTap: () {
                         String urlString =
                             "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
-                        launch(urlString);
+                        launchUrl(Uri.parse(urlString));
                       },
                       child: Text(
                         'Learn How to buy AX',
