@@ -89,7 +89,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       MaxSellTap event, Emitter<SellDialogState> emit) async {
     emit(state.copy(status: Status.loading));
     try {
-      final maxInput = await wallet.getTotalAxBalance();
+      final maxInput = await wallet.getTotalBalanceForToken(state.tokenAddress);
       emit(state.copy(
           aptInputValue: maxInput, status: Status.success));
       add(NewAptInput(aptInputAmount: maxInput));
