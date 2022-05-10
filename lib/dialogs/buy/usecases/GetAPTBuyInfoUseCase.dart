@@ -1,30 +1,33 @@
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
-import 'package:ax_dapp/repositories/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptBuyInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/Controller/usecases/GetPairInfoUseCase.dart';
 import 'package:fpdart/fpdart.dart';
 
 const String _no_buy_info_error_msg = "No buy info found";
 
 class GetAPTBuyInfoUseCase {
-  final SubGraphRepo _graphRepo;
+  final SubGraphRepo _repo;
 
-  GetAPTBuyInfoUseCase(this._graphRepo);
+  GetAPTBuyInfoUseCase(this._repo);
 
   Future<Either<Success, Error>> fetchAptBuyInfo(
-       String aptAddress) async {
-    final _repo = GetSwapInfoUseCase(_graphRepo);
+      {required String aptAddress, double? axInput}) async {
     try {
-      final response = await _repo.fetchSwapInfo(
-          tokenFrom: AXT.polygonAddress, tokenTo: aptAddress);
+      final _pairRepo = GetTokenPairInfoUseCase(_repo);
+      final newAxInput = axInput ?? 0.0;
+      final response = await _pairRepo.fetchPairInfo(
+          tokenFrom: AXT.polygonAddress, tokenTo: aptAddress, fromTokenInput: newAxInput);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
-        final swapInfo = response.getLeft().toNullable()!.swapInfo;
+        final pairInfo = response.getLeft().toNullable()!.pairInfo;
         final aptSellInfo = AptBuyInfo(
-          swapInfo.toReserve,
-          swapInfo.fromReserve,          
-        );
+            aptPrice: pairInfo.toPrice,
+            minimumReceived: pairInfo.minimumReceived,
+            priceImpact: pairInfo.priceImpact,
+            receiveAmount: pairInfo.receiveAmount,
+            totalFee: pairInfo.totalFee);
         return Either.left(Success(aptSellInfo));
       } else {
         return Either.right(Error(_no_buy_info_error_msg));

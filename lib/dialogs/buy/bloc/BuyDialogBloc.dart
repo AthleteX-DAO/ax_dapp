@@ -1,14 +1,14 @@
-import 'package:ax_dapp/dialogs/buy/models/BuyDialogEvent.dart';
-import 'package:ax_dapp/dialogs/buy/models/BuyDialogState.dart';
-import 'package:ax_dapp/dialogs/buy/models/TransactionInfo.dart';
 import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptBuyInfo.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
+import 'package:equatable/equatable.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const double _slippage_tolerance = 0.01;
+part 'package:ax_dapp/dialogs/buy/models/BuyDialogEvent.dart';
+part 'package:ax_dapp/dialogs/buy/models/BuyDialogState.dart';
 
 class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   GetAPTBuyInfoUseCase repo;
@@ -16,86 +16,55 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   SwapController swapController;
 
   BuyDialogBloc(
-      {required this.repo,
-      required this.wallet,
-      required this.swapController})
-      : super(const BuyDialogState()) {
+      {required this.repo, required this.wallet, required this.swapController})
+      : super(BuyDialogState.initial()) {
     on<OnLoadDialog>(_mapLoadDialogEventToState);
     on<OnMaxBuyTap>(_mapMaxBuyTapEventToState);
     on<OnConfirmBuy>(_mapConfirmBuyEventToState);
     on<OnNewAxInput>(_mapNewAxInputEventToState);
   }
 
-  get initialState => BuyDialogState();
-
   void _mapLoadDialogEventToState(
       OnLoadDialog event, Emitter<BuyDialogState> emit) async {
-    emit(state.copy(status: Status.loading));
+    emit(state.copyWith(status: BlocStatus.loading));
     try {
-      final response = await repo.fetchAptBuyInfo(event.currentTokenAddress);
+      final response =
+          await repo.fetchAptBuyInfo(aptAddress: event.currentTokenAddress);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
         swapController.updateFromAddress(AXT.polygonAddress);
         swapController.updateToAddress(event.currentTokenAddress);
         final buyInfo = response.getLeft().toNullable()!.aptBuyInfo;
-        final transactionInfo =
-            calculateTransactionInfo(buyInfo, state.axInputAmount);
         final balance = await wallet.getTotalAxBalance();
         //do some math
-        emit(state.copy(
+        emit(state.copyWith(
             balance: balance,
-            status: Status.success,
-            minimumReceived: transactionInfo.minimumReceived!.toDouble(),
-            priceImpact: transactionInfo.priceImpact!.toDouble(),
-            receiveAmount: transactionInfo.receiveAmount!.toDouble(),
+            status: BlocStatus.success,
             tokenAddress: event.currentTokenAddress,
-            totalFee: transactionInfo.totalFee!.toDouble(),
-            price: transactionInfo.price!.toDouble()
-            ));
+            aptBuyInfo: buyInfo));
       } else {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copy(status: Status.error));
+        emit(state.copyWith(status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
       }
     } catch (e) {
-      emit(state.copy(status: Status.error));
+      emit(state.copyWith(status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
     }
-  }
-
-  TransactionInfo calculateTransactionInfo(
-      AptBuyInfo? buyInfo, double inputAmount) {
-    final aptLiquidity = buyInfo!.aptLiquidity;
-    final axLiquidity = buyInfo.axLiquidity;
-    final axInputAmount = inputAmount;
-    final lpFee = axInputAmount * 0.0025;
-    final protocolFee = axInputAmount * 0.0005;
-    final totalFees = lpFee + protocolFee;
-    final price = aptLiquidity / axLiquidity;
-    final receiveAmount = (axInputAmount - totalFees) *
-        (aptLiquidity / (axLiquidity + axInputAmount));
-    final priceImpact = 100 *
-        (1 -
-            ((axLiquidity * (aptLiquidity - receiveAmount)) /
-                (aptLiquidity * (axLiquidity + axInputAmount - totalFees))));
-    final minimumReceiveAmt = receiveAmount * (1 - _slippage_tolerance);
-    return TransactionInfo(
-        minimumReceiveAmt, priceImpact, receiveAmount, totalFees, price);
   }
 
   void _mapMaxBuyTapEventToState(
       OnMaxBuyTap event, Emitter<BuyDialogState> emit) async {
-    emit(state.copy(status: Status.loading));
+    emit(state.copyWith(status: BlocStatus.loading));
     try {
       final maxInput = await wallet.getTotalAxBalance();
-      emit(state.copy(
-          axInputValue: maxInput, status: Status.success));
+      emit(state.copyWith(axInputAmount: maxInput, status: BlocStatus.success));
       add(OnNewAxInput(axInputAmount: maxInput));
     } catch (e) {
       //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
       print(e);
-      emit(state.copy(status: Status.error));
+      emit(state.copyWith(status: BlocStatus.error));
     }
   }
 
@@ -108,7 +77,8 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     final balance = await wallet.getTotalAxBalance();
     print("On New Apt Input: $axInputAmount");
     try {
-      final response = await repo.fetchAptBuyInfo(state.tokenAddress!);
+      final response =
+          await repo.fetchAptBuyInfo(aptAddress: state.tokenAddress, axInput: axInputAmount);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
@@ -117,32 +87,19 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
           swapController.updateFromAmount(axInputAmount);
         }
         final buyInfo = response.getLeft().toNullable()!.aptBuyInfo;
-        final transactionInfo =
-            calculateTransactionInfo(buyInfo, axInputAmount);
-        print("minReceived: ${transactionInfo.minimumReceived!.toDouble()}");
-        print("priceImpact: ${transactionInfo.priceImpact!.toDouble()}");
-        print("receiveAmount: ${transactionInfo.receiveAmount!.toDouble()}");
-        print("totalFees: ${transactionInfo.totalFee!.toDouble()}");
         //do some math
-        emit(state.copy(
-            axInputValue: axInputAmount,
-            balance: balance,
-            status: Status.success,
-            minimumReceived: transactionInfo.minimumReceived!.toDouble(),
-            priceImpact: transactionInfo.priceImpact!.toDouble(),
-            receiveAmount: transactionInfo.receiveAmount!.toDouble(),
-            totalFee: transactionInfo.totalFee!.toDouble(),
-            price: transactionInfo.price!.toDouble()
-            ));
+        emit(state.copyWith(
+            status: BlocStatus.success,
+            aptBuyInfo: buyInfo));
       } else {
         print("On New Apt Input: Failure");
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copy(status: Status.error));
+        emit(state.copyWith(status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
       }
     } catch (e) {
-      emit(state.copy(status: Status.error));
+      emit(state.copyWith(status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
     }
   }
 }

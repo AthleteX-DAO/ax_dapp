@@ -1,19 +1,13 @@
 import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
-import 'package:ax_dapp/dialogs/sell/models/SellDailogEvent.dart';
-import 'package:ax_dapp/dialogs/sell/models/SellDialogState.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/util/TokenType.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-enum TokenType {
-  Short,
-  Long,
-}
 
 class SellDialog extends StatefulWidget {
   final String athleteName;
@@ -234,21 +228,14 @@ class _SellDialogState extends State<SellDialog> {
     return BlocBuilder<SellDialogBloc, SellDialogState>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
-          print("Reading bloc");
           final bloc = context.read<SellDialogBloc>();
-          print("Success");
-          final price = state.price.toStringAsFixed(6);
+          final price = state.aptSellInfo.axPrice.toStringAsFixed(6);
           final balance = state.balance;
-          final minReceived = state.minimumReceived.toStringAsFixed(6);
-          final priceImpact = state.priceImpact.toStringAsFixed(6);
-          final receiveAmount = state.receiveAmount.toStringAsFixed(6);
-          final totalFee = state.totalFee;
-          print("SellDialog TokenAddress: ${state.tokenAddress}");
-          print("SellDialog price: $price");
-          print("SellDialog minReceived: ${state.minimumReceived}");
-          print("SellDialog PriceImpact: ${state.priceImpact}");
-          print("SellDialog ReceiveAmount: ${state.receiveAmount}");
-          if (state.tokenAddress == null ||
+          final minReceived = state.aptSellInfo.minimumReceived.toStringAsFixed(6);
+          final priceImpact = state.aptSellInfo.priceImpact.toStringAsFixed(6);
+          final receiveAmount = state.aptSellInfo.receiveAmount.toStringAsFixed(6);
+          final totalFee = state.aptSellInfo.totalFee;
+          if (state.tokenAddress.isEmpty ||
               state.tokenAddress != _getCurrentTokenAddress()) {
             reloadSellDialog(bloc);
           }

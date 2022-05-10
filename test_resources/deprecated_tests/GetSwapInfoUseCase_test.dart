@@ -1,3 +1,4 @@
+/*NEEDS TO BE UPDATED
 import 'dart:convert';
 import 'dart:io';
 
@@ -35,4 +36,4 @@ void main() {
     assert(swapInfo.fromReserve == double.parse("15.513558001418126905"));
     assert(swapInfo.toPrice == double.parse("0.00006737083475303625426381299875812279"));
   });
-}
+}*/

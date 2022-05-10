@@ -1,98 +1,72 @@
-import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:equatable/equatable.dart';
+part of 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
 
-enum Status { initial, success, error, loading }
 
 class TradePageState extends Equatable {
-  final double price;
   final double tokenToBalance;
   final double tokenFromBalance;
-  final double priceImpact;
   final double tokenInputFromAmount;
   final double tokenInputToAmount;
-  final double minimumReceived;
-  final double estimatedSlippage;
-  final double receiveAmount;
-  final double totalFees;
-  final Status status;
-  final Token? tokenFrom;
-  final Token? tokenTo;
+  final BlocStatus status;
+  final Token tokenFrom;
+  final Token tokenTo;
+  final SwapInfo swapInfo;
 
-  const TradePageState({
-    this.status = Status.initial,
-    double? tokenInputFromAmount,
-    double? tokenInputToAmount,
-    double? price,
-    double? tokenToBalance,
-    double? tokenFromBalance,
-    double? priceImpact,
-    double? minimumReceived,
-    double? estimatedSlippage,
-    double? receiveAmount,
-    double? totalFees,
-    Token? tokenFrom,
-    Token? tokenTo,
-  })  : tokenInputFromAmount = tokenInputFromAmount ?? 0.0,
-        tokenInputToAmount = tokenInputToAmount ?? 0.0,
-        price = price ?? 0.0,
-        tokenToBalance = tokenToBalance ?? 0.0,
-        tokenFromBalance = tokenFromBalance ?? 0.0,
-        priceImpact = priceImpact ?? 0.0,
-        minimumReceived = minimumReceived ?? 0.0,
-        totalFees = totalFees ?? 0.0,
-        estimatedSlippage = estimatedSlippage ?? 0.0,
-        receiveAmount = receiveAmount ?? 0.0,
-        tokenFrom = tokenFrom ?? tokenFrom,
-        tokenTo = tokenTo ?? tokenTo;
+  TradePageState({
+    required this.tokenToBalance,
+    required this.tokenFromBalance,
+    required this.tokenInputFromAmount,
+    required this.tokenInputToAmount,
+    required this.status,
+    required this.tokenFrom,
+    required this.tokenTo,
+    required this.swapInfo,
+  });
+
+  factory TradePageState.initial() {
+    return TradePageState(
+        tokenToBalance: 0,
+        tokenFromBalance: 0,
+        tokenInputFromAmount: 0,
+        tokenInputToAmount: 0,
+        status: BlocStatus.initial,
+        tokenFrom: TokenList.tokenList[0],
+        tokenTo: TokenList.tokenList[3],
+        swapInfo: SwapInfo.empty());
+  }
 
   @override
-  List<Object?> get props {
+  List<Object> get props {
     return [
-      price,
       tokenToBalance,
       tokenFromBalance,
-      priceImpact,
       tokenInputFromAmount,
       tokenInputToAmount,
-      minimumReceived,
-      estimatedSlippage,
-      receiveAmount,
-      totalFees,
       status,
       tokenFrom,
       tokenTo,
+      swapInfo,
     ];
   }
 
   TradePageState copyWith({
-    double? price,
     double? tokenToBalance,
     double? tokenFromBalance,
-    double? priceImpact,
     double? tokenInputFromAmount,
     double? tokenInputToAmount,
-    double? minimumReceived,
-    double? estimatedSlippage,
-    double? receiveAmount,
-    double? totalFees,
-    Status? status,
+    BlocStatus? status,
     Token? tokenFrom,
     Token? tokenTo,
+    SwapInfo? swapInfo,
   }) {
     return TradePageState(
-      price: price ?? this.price,
       tokenToBalance: tokenToBalance ?? this.tokenToBalance,
       tokenFromBalance: tokenFromBalance ?? this.tokenFromBalance,
-      priceImpact: priceImpact ?? this.priceImpact,
       tokenInputFromAmount: tokenInputFromAmount ?? this.tokenInputFromAmount,
       tokenInputToAmount: tokenInputToAmount ?? this.tokenInputToAmount,
-      minimumReceived: minimumReceived ?? this.minimumReceived,
-      estimatedSlippage: estimatedSlippage ?? this.estimatedSlippage,
-      receiveAmount: receiveAmount ?? this.receiveAmount,
-      totalFees: totalFees ?? this.totalFees,
       status: status ?? this.status,
       tokenFrom: tokenFrom ?? this.tokenFrom,
       tokenTo: tokenTo ?? this.tokenTo,
+      swapInfo: swapInfo ?? this.swapInfo,
     );
   }
 }

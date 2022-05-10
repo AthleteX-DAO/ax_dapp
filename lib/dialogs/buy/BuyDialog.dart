@@ -1,19 +1,15 @@
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-import 'package:ax_dapp/dialogs/buy/models/BuyDialogEvent.dart';
-import 'package:ax_dapp/dialogs/buy/models/BuyDialogState.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/util/TokenType.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum TokenType {
-  Short,
-  Long,
-}
+
 
 class BuyDialog extends StatefulWidget {
   final String athleteName;
@@ -232,20 +228,13 @@ class _BuyDialogState extends State<BuyDialog> {
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           final bloc = context.read<BuyDialogBloc>();
-          final price = state.price.toStringAsFixed(6);
+          final price = state.aptBuyInfo.aptPrice.toStringAsFixed(6);
           final balance = state.balance;
-          final minReceived = state.minimumReceived.toStringAsFixed(6);
-          final priceImpact = state.priceImpact.toStringAsFixed(6);
-          final receiveAmount = state.receiveAmount.toStringAsFixed(6);
-          final totalFee = state.totalFee;
-          print("BuyDialog TokenAddress: ${state.tokenAddress}");
-          print("BuyDialog price: $price");
-          print("BuyDialog minReceived: ${state.minimumReceived}");
-          print("BuyDialog PriceImpact: ${state.priceImpact}");
-          print("BuyDialog ReceiveAmount: ${state.receiveAmount}");
-          print("BuyDialog Balance: ${state.balance}");
-          print("BuyDialog AxInput: ${state.axInputAmount}");
-          if (state.tokenAddress == null ||
+          final minReceived = state.aptBuyInfo.minimumReceived.toStringAsFixed(6);
+          final priceImpact = state.aptBuyInfo.priceImpact.toStringAsFixed(6);
+          final receiveAmount = state.aptBuyInfo.receiveAmount.toStringAsFixed(6);
+          final totalFee = state.aptBuyInfo.totalFee;
+          if (state.tokenAddress.isEmpty ||
               state.tokenAddress != _getCurrentTokenAddress()) {
             reloadBuyDialog(bloc);
           }
