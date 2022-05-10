@@ -1,5 +1,5 @@
-import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
+import 'package:ax_dapp/repositories/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/SwapInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';

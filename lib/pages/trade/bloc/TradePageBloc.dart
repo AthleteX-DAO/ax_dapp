@@ -1,7 +1,7 @@
 import 'package:ax_dapp/dialogs/buy/models/TransactionInfo.dart';
-import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/pages/trade/models/TradePageEvent.dart';
 import 'package:ax_dapp/pages/trade/models/TradePageState.dart';
+import 'package:ax_dapp/repositories/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/SwapInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
