@@ -1,3 +1,4 @@
+import 'package:ax_dapp/pages/pool/models/PoolPairInfo.dart';
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
 import 'package:fpdart/fpdart.dart';
@@ -33,8 +34,18 @@ class GetPairInfoUseCase {
                       tokenPair.token0.id == tokenToAddress) &&
                   (tokenPair.token1.id == tokenFromAddress ||
                       tokenPair.token1.id == tokenToAddress)));
+          final token0Price;
+          final token1Price;
+          if (tokenPair.token0.id == tokenFromAddress) {
+             token0Price = tokenPair.token0Price;
+             token1Price = tokenPair.token1Price;
 
-          return Either.left(Success(tokenPair));
+          } else {
+             token0Price = tokenPair.token1Price;
+             token1Price = tokenPair.token0Price;
+          }
+          final pairInfo = PoolPairInfo(token0Price: double.parse(token0Price), token1Price: double.parse(token1Price));
+          return Either.left(Success(pairInfo));
         } else {
           return Either.right(SubgraphError("Token Pair data was null"));
         }
@@ -51,6 +62,6 @@ class GetPairInfoUseCase {
 }
 
 class Success {
-  final TokenPair tokenPair;
-  Success(this.tokenPair);
+  final PoolPairInfo pairInfo;
+  Success(this.pairInfo);
 }

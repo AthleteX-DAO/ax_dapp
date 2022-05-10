@@ -1,5 +1,6 @@
-import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
+
+enum Status { initial, success, error, loading }
 
 class BuyDialogState extends Equatable {
   final double price;
@@ -9,30 +10,31 @@ class BuyDialogState extends Equatable {
   final double priceImpact;
   final double receiveAmount;
   final double totalFee;
-  final BlocStatus status;
+  final Status status;
   final String? tokenAddress;
 
   const BuyDialogState({
-    this.status = BlocStatus.initial,
-    double? axInputValue,
+    this.status = Status.initial,
+    double? axInputAmount,
     double? price,
     double? balance,
     double? minimumReceived,
-    double? estimatedSlippage,
+    double? priceImpact,
     double? receiveAmount,
     double? totalFee,
     String? tokenAddress,
-  })  : axInputAmount = axInputValue ?? 0.0,
+  })  : axInputAmount = axInputAmount ?? 0.0,
         price = price ?? 0.0,
         balance = balance ?? 0.0,
         minimumReceived = minimumReceived ?? 0.0,
-        priceImpact = estimatedSlippage ?? 0.0,
+        priceImpact = priceImpact ?? 0.0,
         receiveAmount = receiveAmount ?? 0.0,
         totalFee = totalFee ?? 0.0,
         tokenAddress = tokenAddress;
 
   @override
   List<Object?> get props => [
+        status,
         axInputAmount,
         price,
         balance,
@@ -44,7 +46,7 @@ class BuyDialogState extends Equatable {
       ];
 
   BuyDialogState copy({
-    BlocStatus? status,
+    Status? status,
     double? axInputValue,
     double? price,
     double? balance,
@@ -55,12 +57,12 @@ class BuyDialogState extends Equatable {
     String? tokenAddress,
   }) {
     return BuyDialogState(
-      status: status ?? BlocStatus.initial,
-      axInputValue: axInputValue ?? this.axInputAmount,
+      status: status ?? Status.initial,
+      axInputAmount: axInputValue ?? this.axInputAmount,
       price: price ?? this.price,
       balance: balance ?? this.balance,
       minimumReceived: minimumReceived ?? this.minimumReceived,
-      estimatedSlippage: priceImpact ?? this.priceImpact,
+      priceImpact: priceImpact ?? this.priceImpact,
       receiveAmount: receiveAmount ?? this.receiveAmount,
       totalFee: totalFee ?? this.totalFee,
       tokenAddress: tokenAddress ?? this.tokenAddress,

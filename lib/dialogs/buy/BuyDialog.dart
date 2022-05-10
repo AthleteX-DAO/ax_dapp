@@ -6,7 +6,6 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -135,6 +134,7 @@ class _BuyDialogState extends State<BuyDialog> {
   }
 
   Widget showBalance(balance) {
+    print("Show Balance: $balance");
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -243,11 +243,15 @@ class _BuyDialogState extends State<BuyDialog> {
           print("BuyDialog minReceived: ${state.minimumReceived}");
           print("BuyDialog PriceImpact: ${state.priceImpact}");
           print("BuyDialog ReceiveAmount: ${state.receiveAmount}");
+          print("BuyDialog Balance: ${state.balance}");
+          print("BuyDialog AxInput: ${state.axInputAmount}");
           if (state.tokenAddress == null ||
               state.tokenAddress != _getCurrentTokenAddress()) {
             reloadBuyDialog(bloc);
           }
-
+          if(state.axInputAmount != 0.0) {
+            _aptAmountController.text = state.axInputAmount.toStringAsFixed(6);
+          }
           return Dialog(
             backgroundColor: Colors.transparent,
             child: Container(
@@ -309,7 +313,7 @@ class _BuyDialogState extends State<BuyDialog> {
                       onTap: () {
                         String urlString =
                             "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
-                        launchUrl(Uri.parse(urlString));
+                        launch(urlString);
                       },
                       child: Text(
                         'Learn How to buy AX',

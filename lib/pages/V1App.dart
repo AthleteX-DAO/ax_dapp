@@ -1,10 +1,15 @@
 import 'package:ax_dapp/pages/DesktopFarm.dart';
 import 'package:ax_dapp/pages/pool/DesktopPool.dart';
-import 'package:ax_dapp/pages/DesktopTrade.dart';
+import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
+import 'package:ax_dapp/pages/trade/DesktopTrade.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
+import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
+import 'package:ax_dapp/repositories/SubGraphRepo.dart';
+import 'package:ax_dapp/repositories/usecases/GetPairInfoUseCase.dart';
+import 'package:ax_dapp/repositories/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
@@ -136,16 +141,37 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == 0)
             BlocProvider(
                 create: (BuildContext context) => ScoutPageBloc(
-                    repo: GetScoutAthletesDataUseCase([
+                        repo: GetScoutAthletesDataUseCase([
                       RepositoryProvider.of<MLBRepo>(context),
                       //NFLRepo
                       //MLBRepo
                     ])),
                 child: DesktopScout())
           else if (pageNumber == 1)
-            DesktopTrade()
+            BlocProvider(
+                create: (BuildContext context) => TradePageBloc(
+                      repo: GetSwapInfoUseCase(
+                        RepositoryProvider.of<SubGraphRepo>(context),
+                      ),
+                      swapController: Get.find(),
+                      walletController: Get.find(),
+                    ),
+                child: DesktopTrade())
           else if (pageNumber == 2)
-            DesktopPool()
+      BlocProvider(
+          create: (BuildContext context) =>
+              PoolBloc(
+                  repo: GetPairInfoUseCase(
+                    RepositoryProvider.of<
+                        SubGraphRepo>(
+                        context),
+                  ),
+                  walletController:
+                  Get.find(),
+                  poolController: Get.find()),
+          child: DesktopPool()
+      )
+
           else if (pageNumber == 3)
             DesktopFarm()
         ],
@@ -157,14 +183,26 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
-                  repo: GetScoutAthletesDataUseCase([
+                      repo: GetScoutAthletesDataUseCase([
                     RepositoryProvider.of<MLBRepo>(context),
                     //NFLRepo
                     //NBARepo
                   ])),
               child: DesktopScout()),
           DesktopTrade(),
-          DesktopPool(),
+          BlocProvider(
+              create: (BuildContext context) =>
+                  PoolBloc(
+                      repo: GetPairInfoUseCase(
+                        RepositoryProvider.of<
+                            SubGraphRepo>(
+                            context),
+                      ),
+                      walletController:
+                      Get.find(),
+                      poolController: Get.find()),
+              child: DesktopPool()
+          ),
           DesktopFarm(),
         ],
       );
