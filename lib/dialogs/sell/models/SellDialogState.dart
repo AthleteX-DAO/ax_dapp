@@ -1,70 +1,53 @@
-import 'package:equatable/equatable.dart';
+part of 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
 
-enum Status { initial, success, error, loading }
 
 class SellDialogState extends Equatable {
-  final double price;
   final double balance;
   final double aptInputAmount;
-  final double minimumReceived;
-  final double priceImpact;
-  final double receiveAmount;
-  final double totalFee;
-  final Status status;
-  final String? tokenAddress;
+  final BlocStatus status;
+  final String tokenAddress;
+  final AptSellInfo aptSellInfo;
+  SellDialogState({
+    required this.balance,
+    required this.aptInputAmount,
+    required this.status,
+    required this.tokenAddress,
+    required this.aptSellInfo,
+  });
 
-  const SellDialogState({
-    this.status = Status.initial,
-    double? aptInputValue,
-    double? price,
-    double? balance,
-    double? minimumReceived,
-    double? estimatedSlippage,
-    double? receiveAmount,
-    double? totalFee,
-    String? tokenAddress,
-  })  : aptInputAmount = aptInputValue ?? 0.0,
-        price = price ?? 0.0,
-        balance = balance ?? 0.0,
-        minimumReceived = minimumReceived ?? 0.0,
-        priceImpact = estimatedSlippage ?? 0.0,
-        receiveAmount = receiveAmount ?? 0.0,
-        totalFee = totalFee ?? 0.0,
-        tokenAddress = tokenAddress;
+  factory SellDialogState.initial() {
+    return SellDialogState(
+        balance: 0,
+        aptInputAmount: 0,
+        status: BlocStatus.initial,
+        tokenAddress: '',
+        aptSellInfo: AptSellInfo.empty());
+  }
 
   @override
-  List<Object?> get props => [
-        aptInputAmount,
-        price,
-        balance,
-        minimumReceived,
-        priceImpact,
-        receiveAmount,
-        totalFee,
-        tokenAddress
-      ];
+  List<Object> get props {
+    return [
+      balance,
+      aptInputAmount,
+      status,
+      tokenAddress,
+      aptSellInfo,
+    ];
+  }
 
-  SellDialogState copy({
-    Status? status,
-    double? aptInputValue,
-    double? price,
+  SellDialogState copyWith({
     double? balance,
-    double? minimumReceived,
-    double? priceImpact,
-    double? receiveAmount,
-    double? totalFee,
+    double? aptInputAmount,
+    BlocStatus? status,
     String? tokenAddress,
+    AptSellInfo? aptSellInfo,
   }) {
     return SellDialogState(
-      status: status ?? Status.initial,
-      aptInputValue: aptInputValue ?? this.aptInputAmount,
-      price: price ?? this.price,
       balance: balance ?? this.balance,
-      minimumReceived: minimumReceived ?? this.minimumReceived,
-      estimatedSlippage: priceImpact ?? this.priceImpact,
-      receiveAmount: receiveAmount ?? this.receiveAmount,
-      totalFee: totalFee ?? this.totalFee,
+      aptInputAmount: aptInputAmount ?? this.aptInputAmount,
+      status: status ?? this.status,
       tokenAddress: tokenAddress ?? this.tokenAddress,
+      aptSellInfo: aptSellInfo ?? this.aptSellInfo,
     );
   }
 }

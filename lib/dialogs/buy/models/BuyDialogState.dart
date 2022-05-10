@@ -1,71 +1,53 @@
-import 'package:equatable/equatable.dart';
+part of 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 
-enum Status { initial, success, error, loading }
 
 class BuyDialogState extends Equatable {
-  final double price;
   final double balance;
   final double axInputAmount;
-  final double minimumReceived;
-  final double priceImpact;
-  final double receiveAmount;
-  final double totalFee;
-  final Status status;
-  final String? tokenAddress;
+  final BlocStatus status;
+  final String tokenAddress;
+  final AptBuyInfo aptBuyInfo;
+  BuyDialogState({
+    required this.balance,
+    required this.axInputAmount,
+    required this.status,
+    required this.tokenAddress,
+    required this.aptBuyInfo,
+  });
 
-  const BuyDialogState({
-    this.status = Status.initial,
-    double? axInputAmount,
-    double? price,
-    double? balance,
-    double? minimumReceived,
-    double? priceImpact,
-    double? receiveAmount,
-    double? totalFee,
-    String? tokenAddress,
-  })  : axInputAmount = axInputAmount ?? 0.0,
-        price = price ?? 0.0,
-        balance = balance ?? 0.0,
-        minimumReceived = minimumReceived ?? 0.0,
-        priceImpact = priceImpact ?? 0.0,
-        receiveAmount = receiveAmount ?? 0.0,
-        totalFee = totalFee ?? 0.0,
-        tokenAddress = tokenAddress;
+  factory BuyDialogState.initial() {
+    return BuyDialogState(
+        balance: 0,
+        axInputAmount: 0,
+        status: BlocStatus.initial,
+        tokenAddress: '',
+        aptBuyInfo: AptBuyInfo.empty());
+  }
 
   @override
-  List<Object?> get props => [
-        status,
-        axInputAmount,
-        price,
-        balance,
-        minimumReceived,
-        priceImpact,
-        receiveAmount,
-        totalFee,
-        tokenAddress
-      ];
+  List<Object> get props {
+    return [
+      balance,
+      axInputAmount,
+      status,
+      tokenAddress,
+      aptBuyInfo,
+    ];
+  }
 
-  BuyDialogState copy({
-    Status? status,
-    double? axInputValue,
-    double? price,
+  BuyDialogState copyWith({
     double? balance,
-    double? minimumReceived,
-    double? priceImpact,
-    double? receiveAmount,
-    double? totalFee,
+    double? axInputAmount,
+    BlocStatus? status,
     String? tokenAddress,
+    AptBuyInfo? aptBuyInfo,
   }) {
     return BuyDialogState(
-      status: status ?? Status.initial,
-      axInputAmount: axInputValue ?? this.axInputAmount,
-      price: price ?? this.price,
       balance: balance ?? this.balance,
-      minimumReceived: minimumReceived ?? this.minimumReceived,
-      priceImpact: priceImpact ?? this.priceImpact,
-      receiveAmount: receiveAmount ?? this.receiveAmount,
-      totalFee: totalFee ?? this.totalFee,
+      axInputAmount: axInputAmount ?? this.axInputAmount,
+      status: status ?? this.status,
       tokenAddress: tokenAddress ?? this.tokenAddress,
+      aptBuyInfo: aptBuyInfo ?? this.aptBuyInfo,
     );
   }
 }

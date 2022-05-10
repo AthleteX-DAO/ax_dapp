@@ -1,6 +1,6 @@
 
 
-import 'package:equatable/equatable.dart';
+part of 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
 
 abstract class SellDialogEvent extends Equatable {
   @override

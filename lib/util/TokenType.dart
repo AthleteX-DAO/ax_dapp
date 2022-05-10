@@ -1,0 +1,4 @@
+enum TokenType {
+  Short,
+  Long,
+}
