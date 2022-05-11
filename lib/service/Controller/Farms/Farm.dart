@@ -81,7 +81,7 @@ class Farm {
 
     String account = controller.publicAddress.value.hex;
     // account = "0x22b3e4b38fb2f260302787b18b1401747eacf8d4";
-    this.getStakedBalance(account);
+    this.updateStakedBalance(account);
   }
 
   /// This function is used to stake tokens on a specific farm
@@ -134,7 +134,7 @@ class Farm {
   ///
   /// @param {String} the address of the account
   /// @return {void}
-  Future<void> getStakedBalance(String strAccount) async {
+  Future<void> updateStakedBalance(String strAccount) async {
     Web3Dart.EthereumAddress ethAccount =
         Web3Dart.EthereumAddress.fromHex(strAccount);
     List<BigInt> balances = await this.contract.stakingBalances(ethAccount);

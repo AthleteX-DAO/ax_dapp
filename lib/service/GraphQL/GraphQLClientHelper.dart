@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQLClientHelper {
-  // final HttpLink _httpLink = HttpLink(
-  //     'https://thegraph.com/hosted-service/subgraph/nyamwaya/athletex-dex-subgraph-mainnet?selected=playground');
-
   final HttpLink _httpLink;
   GraphQLClientHelper(this._httpLink);
   //TODO determine if we need auth token for access
