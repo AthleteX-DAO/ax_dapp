@@ -21,6 +21,6 @@ jobs:
       - run: flutter upgrade
       - run: flutter pub upgrade
       - run: flutter pub get
-      - run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - run: flutter analyze
       - run: flutter test
       - run: flutter build web --web-renderer auto
