@@ -4,33 +4,35 @@ import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/repositories/usecases/GetPairInfoUseCase.dart';
 import 'package:ax_dapp/service/Api/MLBAthleteAPI.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLClientHelper.dart';
+import 'package:ax_dapp/service/GraphQL/GraphQLConfiguration.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-
 final _dio = Dio();
 final _mlbApi = MLBAthleteAPI(_dio);
-final _graphQLClientHelper = GraphQLClientHelper();
+final _graphQLClientHelper =
+    GraphQLClientHelper(GraphQLConfiguration.athleteDexApiLink);
 void main() async {
-  final _gQLClient =  await _graphQLClientHelper.initializeClient();
+  final _gQLClient = await _graphQLClientHelper.initializeClient();
   final _subGraphRepo = SubGraphRepo(_gQLClient.value);
 
   print("Graph QL CLient initialized}");
-  runApp(
-      GraphQLProvider(
-        client: _gQLClient,
-        child: MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider(create: (context) => MLBRepo(_mlbApi),),
-            RepositoryProvider(create: (context) => _subGraphRepo),
-            RepositoryProvider(create: (context) => GetPairInfoUseCase(_subGraphRepo))
-          ],
-          child: MyApp(),
+  runApp(GraphQLProvider(
+    client: _gQLClient,
+    child: MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => MLBRepo(_mlbApi),
         ),
-      )
-  );
+        RepositoryProvider(create: (context) => _subGraphRepo),
+        RepositoryProvider(
+            create: (context) => GetPairInfoUseCase(_subGraphRepo))
+      ],
+      child: MyApp(),
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {

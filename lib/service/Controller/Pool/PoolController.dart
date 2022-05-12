@@ -45,6 +45,9 @@ class PoolController extends GetxController {
     BigInt tokenAAmount = normalizeInput(amount1.value);
     BigInt tokenBAmount = normalizeInput(amount2.value);
 
+    print("[Console-Debug] Address1: ${address1.value}");
+    print("[Console-Debug] Address2: ${address2.value}");
+
     EthereumAddress tokenAAddress = EthereumAddress.fromHex(address1.value);
     EthereumAddress tokenBAddress = EthereumAddress.fromHex(address2.value);
 

@@ -90,7 +90,8 @@ class Controller extends GetxController {
 
   void getCurrentGas() async {
     var rawGasPrice = await client.value.getGasPrice();
-    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei).toStringAsFixed(2);
+    
     gasString.value = "$gasPriceinGwei";
     print('Getting latest gas... $gasString');
     update();

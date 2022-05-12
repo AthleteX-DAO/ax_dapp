@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQLClientHelper {
-  final HttpLink _httpLink = HttpLink(
-      "https://api.thegraph.com/subgraphs/name/nyamwaya/athletex-dex-subgraph-mainnet");
-
+  final HttpLink _httpLink;
+  GraphQLClientHelper(this._httpLink);
   //TODO determine if we need auth token for access
   // final AuthLink _authLink = AuthLink(getToken: () async => "QmSUtWsFg4rY3UAz9NNiiUPdBazd5RG6SHMBymBTpxj9zp");
 
@@ -13,6 +12,10 @@ class GraphQLClientHelper {
     return ValueNotifier(GraphQLClient(
         link: _httpLink,
         cache: GraphQLCache(store: HiveStore())));
+  }
+
+  GraphQLClient initializeClientWithoutCache() {
+    return GraphQLClient(link: _httpLink, cache: GraphQLCache());
   }
 
   Future<QueryResult> performQuery(GraphQLClient client, String query,

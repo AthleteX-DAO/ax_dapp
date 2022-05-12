@@ -13,7 +13,8 @@ class WalletController extends GetxController {
   var axPrice = "-".obs;
   var axCirculation = "-".obs;
   var axTotalSupply = "-".obs;
-  var yourBalance = "0.0".obs;
+  var yourBalance = "-".obs;
+  var tokenPrice = 0.0.obs;
   Controller controller = Get.find();
 
   Future<void> getYourAxBalance() async {
@@ -69,6 +70,7 @@ class WalletController extends GetxController {
       var ap = jsonTokenMetrics['market_data']['current_price']['usd'];
       if (ap != null) {
         axPrice.value = "$ap";
+        tokenPrice.value = ap;
       }
       var ts = jsonTokenMetrics['market_data']['total_supply'];
       if (ts != null) {
