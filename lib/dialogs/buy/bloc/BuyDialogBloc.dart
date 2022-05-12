@@ -105,6 +105,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   void _mapNewAxInputEventToState(
       OnNewAxInput event, Emitter<BuyDialogState> emit) async {
     final axInputAmount = event.axInputAmount;
+    final balance = await wallet.getTotalAxBalance();
     print("On New Apt Input: $axInputAmount");
     try {
       final response = await repo.fetchAptBuyInfo(state.tokenAddress!);
@@ -124,6 +125,8 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         print("totalFees: ${transactionInfo.totalFee!.toDouble()}");
         //do some math
         emit(state.copy(
+            axInputValue: axInputAmount,
+            balance: balance,
             status: Status.success,
             minimumReceived: transactionInfo.minimumReceived!.toDouble(),
             priceImpact: transactionInfo.priceImpact!.toDouble(),

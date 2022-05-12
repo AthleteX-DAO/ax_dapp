@@ -249,9 +249,6 @@ class _BuyDialogState extends State<BuyDialog> {
               state.tokenAddress != _getCurrentTokenAddress()) {
             reloadBuyDialog(bloc);
           }
-          if(state.axInputAmount != 0.0) {
-            _aptAmountController.text = state.axInputAmount.toStringAsFixed(6);
-          }
           return Dialog(
             backgroundColor: Colors.transparent,
             child: Container(
@@ -378,6 +375,8 @@ class _BuyDialogState extends State<BuyDialog> {
                               child: TextButton(
                                 onPressed: () {
                                   bloc.add(OnMaxBuyTap());
+                                  _aptAmountController.text =
+                                      state.balance.toStringAsFixed(6);
                                 },
                                 child: Text(
                                   "MAX",
