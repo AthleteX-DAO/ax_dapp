@@ -108,6 +108,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
     final aptInputAmount = event.aptInputAmount;
     print(" New Apt Input: $aptInputAmount");
     try {
+      final balance = await wallet.getTotalBalanceForToken(state.tokenAddress);
       final response =
           await repo.fetchAptSellInfo(aptAddress: state.tokenAddress!);
       final isSuccess = response.isLeft();
@@ -126,6 +127,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         print("totaFees: ${transactionInfo.totalFee!.toDouble()}");
         //do some math
         emit(state.copy(
+            balance: balance,
             status: Status.success,
             minimumReceived: transactionInfo.minimumReceived!.toDouble(),
             priceImpact: transactionInfo.priceImpact!.toDouble(),
