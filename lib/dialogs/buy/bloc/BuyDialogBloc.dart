@@ -95,12 +95,14 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
         emit(state.copyWith(
             status: BlocStatus.success,
+            balance: balance,
             aptBuyInfo: AptBuyInfo(
                 aptPrice: pairInfo.toPrice,
                 minimumReceived: pairInfo.minimumReceived,
                 priceImpact: pairInfo.priceImpact,
                 receiveAmount: pairInfo.receiveAmount,
-                totalFee: pairInfo.totalFee)));
+                totalFee: pairInfo.totalFee
+                )));
       } else {
         print("On New Apt Input: Failure");
         final errorMsg = response.getRight().toNullable()!.errorMsg;
