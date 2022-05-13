@@ -6,10 +6,9 @@ import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
-import 'package:ax_dapp/pages/trade/usecases/GetSwapInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
-import 'package:ax_dapp/repositories/SubGraphRepo.dart';
-import 'package:ax_dapp/repositories/usecases/GetPairInfoUseCase.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
@@ -35,31 +34,6 @@ class V1App extends StatefulWidget {
 
 class _V1AppState extends State<V1App> {
   bool isWeb = true;
-  // Feeling cute... may delete later
-  // Athlete tomBradey = Athlete(
-  //     name: "Tom Bradey",
-  //     team: "Tampa Bay Buckaneers",
-  //     position: "Quarterback",
-  //     passingYards: [2, 3, 5],
-  //     passingTouchDowns: [1, 10, 3],
-  //     reception: [4, 6, 8],
-  //     receiveYards: [3, 5, 7],
-  //     receiveTouch: [9, 8, 7],
-  //     rushingYards: [6, 5, 4],
-  //     scaledPrice: [3.543, 1.094, 9.478, 10.231],
-  //     time: [0, 1, 2, 3]);
-  // Athlete nullAthlete = new Athlete(
-  //     name: "",
-  //     team: "",
-  //     position: "",
-  //     passingYards: [],
-  //     passingTouchDowns: [],
-  //     reception: [],
-  //     receiveYards: [],
-  //     receiveTouch: [],
-  //     rushingYards: [],
-  //     scaledPrice: [],
-  //     time: []);
 
   // state change variables
   int pageNumber = 0;
@@ -150,15 +124,18 @@ class _V1AppState extends State<V1App> {
           else if (pageNumber == 1)
             BlocProvider(
                 create: (BuildContext context) => TradePageBloc(
-                      repo: GetSwapInfoUseCase(
-                        RepositoryProvider.of<SubGraphRepo>(context),
-                      ),
+                      repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
                       swapController: Get.find(),
                       walletController: Get.find(),
                     ),
                 child: DesktopTrade())
           else if (pageNumber == 2)
-            DesktopPool()
+            BlocProvider(
+                create: (BuildContext context) => PoolBloc(
+                    repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
+                    walletController: Get.find(),
+                    poolController: Get.find()),
+                child: DesktopPool())
           else if (pageNumber == 3)
             DesktopFarm()
         ],
@@ -178,9 +155,7 @@ class _V1AppState extends State<V1App> {
               child: DesktopScout()),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
-              repo: GetSwapInfoUseCase(
-                RepositoryProvider.of<SubGraphRepo>(context),
-              ),
+              repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
               swapController: Get.find(),
               walletController: Get.find(),
             ),
@@ -188,9 +163,7 @@ class _V1AppState extends State<V1App> {
           ),
           BlocProvider(
               create: (BuildContext context) => PoolBloc(
-                  repo: GetPairInfoUseCase(
-                    RepositoryProvider.of<SubGraphRepo>(context),
-                  ),
+                  repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
                   walletController: Get.find(),
                   poolController: Get.find()),
               child: DesktopPool()),

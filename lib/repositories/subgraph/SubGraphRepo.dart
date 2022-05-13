@@ -2,6 +2,10 @@ import 'package:fpdart/fpdart.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+/// This is a repository that makes queries with the GraphQlClient
+/// primarily it should be employed by using or adding a usecase to subgraph/usecases
+/// to define the specific functionality needed
+
 class SubGraphRepo {
   final GraphQLClient _client;
 

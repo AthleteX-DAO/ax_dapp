@@ -1,11 +1,10 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/pages/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
-import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
@@ -753,11 +752,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                                     BlocProvider(
                                         create: (BuildContext context) =>
                                             BuyDialogBloc(
-                                                repo: GetAPTBuyInfoUseCase(
-                                                  RepositoryProvider.of<
-                                                      SubGraphRepo>(
+                                                repo: RepositoryProvider.of<
+                                                      GetBuyInfoUseCase>(
                                                       context),
-                                                ),
                                                 wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                 swapController: Get.find()),
                                         child: BuyDialog(
@@ -906,11 +903,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         BlocProvider(
                                             create: (BuildContext context) =>
                                                 BuyDialogBloc(
-                                                    repo: GetAPTBuyInfoUseCase(
-                                                      RepositoryProvider.of<
-                                                              SubGraphRepo>(
+                                                    repo: RepositoryProvider.of<
+                                                          GetBuyInfoUseCase>(
                                                           context),
-                                                    ),
                                                     wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
                                             child: BuyDialog(
