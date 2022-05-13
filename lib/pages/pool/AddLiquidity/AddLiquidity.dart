@@ -1,11 +1,9 @@
 import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
 import 'package:ax_dapp/pages/pool/models/PoolEvent.dart';
 import 'package:ax_dapp/pages/pool/models/PoolState.dart';
-import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
-import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -60,6 +58,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
   @override
   void dispose() {
     _tokenAmountOneController.dispose();
+    _tokenAmountTwoController.dispose();
     super.dispose();
   }
 

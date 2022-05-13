@@ -1,18 +1,11 @@
 import 'package:ax_dapp/pages/pool/AddLiquidity/AddLiquidity.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/MyLiquidity.dart';
 import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
-import 'package:ax_dapp/pages/pool/models/PoolEvent.dart';
-import 'package:ax_dapp/pages/pool/models/PoolState.dart';
 import 'package:ax_dapp/repositories/usecases/GetPairInfoUseCase.dart';
 import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/AthleteTokenList.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
-import 'package:ax_dapp/service/TokenList.dart';
-import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -28,13 +21,6 @@ class DesktopPool extends StatefulWidget {
 class _DesktopPoolState extends State<DesktopPool> {
   bool isAllLiquidity = true;
   bool isWeb = true;
-  late double token1Amount;
-  late double token2Amount;
-
-  final TextEditingController _tokenAmountOneController =
-      TextEditingController();
-  final TextEditingController _tokenAmountTwoController =
-      TextEditingController();
 
   @override
   void initState() {
@@ -67,7 +53,6 @@ class _DesktopPoolState extends State<DesktopPool> {
 
   @override
   void dispose() {
-    _tokenAmountOneController.dispose();
     super.dispose();
   }
 

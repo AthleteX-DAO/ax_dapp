@@ -1,16 +1,8 @@
-import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
-import 'package:ax_dapp/pages/pool/models/PoolEvent.dart';
-import 'package:ax_dapp/pages/pool/models/PoolState.dart';
-import 'package:ax_dapp/service/Athlete.dart';
-import 'package:ax_dapp/service/AthleteTokenList.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
-import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyLiquidity extends StatefulWidget {
   MyLiquidity({Key? key}) : super(key: key);
@@ -277,7 +269,6 @@ class _MyLiquidityState extends State<MyLiquidity> {
 
   //Delete this
   Widget myLiquidityLayout(double layoutHgt, double layoutWdt) {
-    double titleHgt = layoutHgt * 0.05;
     double gridHgt = layoutHgt * 0.75;
 
     return Column(
