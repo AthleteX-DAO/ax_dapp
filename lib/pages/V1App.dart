@@ -158,20 +158,7 @@ class _V1AppState extends State<V1App> {
                     ),
                 child: DesktopTrade())
           else if (pageNumber == 2)
-      BlocProvider(
-          create: (BuildContext context) =>
-              PoolBloc(
-                  repo: GetPairInfoUseCase(
-                    RepositoryProvider.of<
-                        SubGraphRepo>(
-                        context),
-                  ),
-                  walletController:
-                  Get.find(),
-                  poolController: Get.find()),
-          child: DesktopPool()
-      )
-
+            DesktopPool()
           else if (pageNumber == 3)
             DesktopFarm()
         ],
@@ -200,18 +187,13 @@ class _V1AppState extends State<V1App> {
             child: DesktopTrade(),
           ),
           BlocProvider(
-              create: (BuildContext context) =>
-                  PoolBloc(
-                      repo: GetPairInfoUseCase(
-                        RepositoryProvider.of<
-                            SubGraphRepo>(
-                            context),
-                      ),
-                      walletController:
-                      Get.find(),
-                      poolController: Get.find()),
-              child: DesktopPool()
-          ),
+              create: (BuildContext context) => PoolBloc(
+                  repo: GetPairInfoUseCase(
+                    RepositoryProvider.of<SubGraphRepo>(context),
+                  ),
+                  walletController: Get.find(),
+                  poolController: Get.find()),
+              child: DesktopPool()),
           DesktopFarm(),
         ],
       );
@@ -395,23 +377,24 @@ class _V1AppState extends State<V1App> {
                     IconButton(
                         onPressed: () =>
                             //Discord button
-                            launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
+                            launchUrl(Uri.parse(
+                                'https://discord.com/invite/WFsyAuzp9V')),
                         icon: FaIcon(
                           FontAwesomeIcons.discord,
                           size: 25,
                           color: Colors.grey[400],
                         )),
                     IconButton(
-                        onPressed: () =>
-                            launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
+                        onPressed: () => launchUrl(
+                            Uri.parse('https://twitter.com/athletex_dao?s=20')),
                         icon: FaIcon(
                           FontAwesomeIcons.twitter,
                           size: 25,
                           color: Colors.grey[400],
                         )),
                     IconButton(
-                        onPressed: () =>
-                            launchUrl(Uri.parse('https://github.com/SportsToken')),
+                        onPressed: () => launchUrl(
+                            Uri.parse('https://github.com/SportsToken')),
                         icon: FaIcon(
                           FontAwesomeIcons.github,
                           size: 25,
