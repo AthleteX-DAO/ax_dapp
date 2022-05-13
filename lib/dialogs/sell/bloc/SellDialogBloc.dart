@@ -1,4 +1,4 @@
-import 'package:ax_dapp/dialogs/sell/usecases/GetAPTSellInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptSellInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -11,7 +11,7 @@ part 'package:ax_dapp/dialogs/sell/models/SellDailogEvent.dart';
 part 'package:ax_dapp/dialogs/sell/models/SellDialogState.dart';
 
 class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
-  GetAPTSellInfoUseCase repo;
+  GetSellInfoUseCase repo;
   GetTotalTokenBalanceUseCase wallet;
   SwapController swapController;
 
@@ -37,14 +37,19 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       if (isSuccess) {
         swapController.updateFromAddress(event.currentTokenAddress);
         swapController.updateToAddress(AXT.polygonAddress);
-        final sellInfo = response.getLeft().toNullable()!.aptSellInfo;
+        final swapInfo = response.getLeft().toNullable()!.swapInfo;
         final balance = await wallet.getTotalBalanceForToken(event.currentTokenAddress);
         //do some math
         emit(state.copyWith(
             balance: balance,
             status: BlocStatus.success,
             tokenAddress: event.currentTokenAddress,
-            aptSellInfo: sellInfo));
+            aptSellInfo: AptSellInfo(
+                axPrice: swapInfo.toPrice,
+                minimumReceived: swapInfo.minimumReceived,
+                priceImpact: swapInfo.priceImpact,
+                receiveAmount: swapInfo.receiveAmount,
+                totalFee: swapInfo.totalFee)));
       } else {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
@@ -88,11 +93,16 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         if (swapController.amount1.value != aptInputAmount) {
           swapController.updateFromAmount(aptInputAmount);
         }
-        final sellInfo = response.getLeft().toNullable()!.aptSellInfo;
+        final swapInfo = response.getLeft().toNullable()!.swapInfo;
         //do some math
         emit(state.copyWith(
             status: BlocStatus.success,
-            aptSellInfo: sellInfo));
+            aptSellInfo: AptSellInfo(
+                axPrice: swapInfo.toPrice,
+                minimumReceived: swapInfo.minimumReceived,
+                priceImpact: swapInfo.priceImpact,
+                receiveAmount: swapInfo.receiveAmount,
+                totalFee: swapInfo.totalFee)));
       } else {
         print(" New Apt Input: Failure");
         final errorMsg = response.getRight().toNullable()!.errorMsg;

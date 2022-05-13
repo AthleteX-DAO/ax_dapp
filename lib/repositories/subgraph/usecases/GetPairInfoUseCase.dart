@@ -1,19 +1,24 @@
-import 'package:ax_dapp/pages/pool/models/PoolPairInfo.dart';
-import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
 import 'package:fpdart/fpdart.dart';
 
-import 'SubgraphError.dart';
+import '../SubGraphRepo.dart';
 
+/// This is an abstraction on the SubgraphRepo that defines
+/// the general usecase of requesting information for any given token pair
+/// this can be used to fetch data to complete functions like swap, pool liquidity
+const String _no_swap_info_error_msg = "No pair info found";
 class GetPairInfoUseCase {
   final SubGraphRepo _graphRepo;
 
   GetPairInfoUseCase(this._graphRepo);
 
-  Future<Either<Success, SubgraphError>> fetchPairInfo(
-      {required String tokenFrom, required String tokenTo}) async {
+  Future<Either<Success, Error>> fetchPairInfo(
+      {required String tokenFrom,
+      required String tokenTo,
+      double? fromTokenInput}) async {
     final tokenFromAddress = tokenFrom.toLowerCase();
     final tokenToAddress = tokenTo.toLowerCase();
+
     try {
       print("token0 address: $tokenFromAddress");
       print("token1 address: $tokenToAddress");
@@ -34,34 +39,31 @@ class GetPairInfoUseCase {
                       tokenPair.token0.id == tokenToAddress) &&
                   (tokenPair.token1.id == tokenFromAddress ||
                       tokenPair.token1.id == tokenToAddress)));
-          final token0Price;
-          final token1Price;
-          if (tokenPair.token0.id == tokenFromAddress) {
-             token0Price = tokenPair.token0Price;
-             token1Price = tokenPair.token1Price;
-
-          } else {
-             token0Price = tokenPair.token1Price;
-             token1Price = tokenPair.token0Price;
-          }
-          final pairInfo = PoolPairInfo(token0Price: double.parse(token0Price), token1Price: double.parse(token1Price));
-          return Either.left(Success(pairInfo));
+          return Either.left(Success(tokenPair));
         } else {
-          return Either.right(SubgraphError("Token Pair data was null"));
+          return Either.right(Error(_no_swap_info_error_msg));
         }
       } else {
+        print(
+            "fetching pair info failed: ${tokenPairData.getRight().toNullable().toString()}");
+        final errorMsg = tokenPairData.getRight().toNullable().toString();
         return Either.right(
-            SubgraphError("Failed to fetch PairInfo from Subgraph"));
+            Error("Error occurred fetching pair data: $errorMsg"));
       }
     } catch (e) {
-      var errorMsg = "Error occurred fetching PairInfo: $e";
-      print(errorMsg);
-      return Either.right(SubgraphError(errorMsg));
+      return Either.right(Error("Error occurred: ${e.toString()}"));
     }
   }
 }
 
 class Success {
-  final PoolPairInfo pairInfo;
+  final TokenPair pairInfo;
+
   Success(this.pairInfo);
+}
+
+class Error {
+  final String errorMsg;
+
+  Error(this.errorMsg);
 }
