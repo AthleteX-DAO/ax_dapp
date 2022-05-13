@@ -2,7 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
+import 'package:ax_dapp/dialogs/buy/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:fpdart/fpdart.dart';

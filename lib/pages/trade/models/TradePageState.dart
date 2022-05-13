@@ -9,7 +9,7 @@ class TradePageState extends Equatable {
   final BlocStatus status;
   final Token tokenFrom;
   final Token tokenTo;
-  final SwapInfo swapInfo;
+  final TokenSwapInfo swapInfo;
 
   TradePageState({
     required this.tokenToBalance,
@@ -31,7 +31,7 @@ class TradePageState extends Equatable {
         status: BlocStatus.initial,
         tokenFrom: TokenList.tokenList[0],
         tokenTo: TokenList.tokenList[3],
-        swapInfo: SwapInfo.empty());
+        swapInfo: TokenSwapInfo.empty());
   }
 
   @override
@@ -56,7 +56,7 @@ class TradePageState extends Equatable {
     BlocStatus? status,
     Token? tokenFrom,
     Token? tokenTo,
-    SwapInfo? swapInfo,
+    TokenSwapInfo? swapInfo,
   }) {
     return TradePageState(
       tokenToBalance: tokenToBalance ?? this.tokenToBalance,

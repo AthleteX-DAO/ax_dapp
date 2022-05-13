@@ -1,7 +1,11 @@
 import 'package:ax_dapp/pages/LandingPage.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
-import 'package:ax_dapp/repositories/SubGraphRepo.dart';
-import 'package:ax_dapp/repositories/usecases/GetPairInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/service/Api/MLBAthleteAPI.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLClientHelper.dart';
 import 'package:dio/dio.dart';
@@ -16,6 +20,8 @@ final _graphQLClientHelper = GraphQLClientHelper();
 void main() async {
   final _gQLClient =  await _graphQLClientHelper.initializeClient();
   final _subGraphRepo = SubGraphRepo(_gQLClient.value);
+  final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
+  final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
 
   print("Graph QL CLient initialized}");
   runApp(
@@ -24,8 +30,11 @@ void main() async {
         child: MultiRepositoryProvider(
           providers: [
             RepositoryProvider(create: (context) => MLBRepo(_mlbApi),),
-            RepositoryProvider(create: (context) => _subGraphRepo),
-            RepositoryProvider(create: (context) => GetPairInfoUseCase(_subGraphRepo))
+            RepositoryProvider(create: (context) => _getPairInfoUseCase),
+            RepositoryProvider(create: (context) => _getSwapInfoUseCase),
+            RepositoryProvider(create: (context) => GetBuyInfoUseCase(_getSwapInfoUseCase)),
+            RepositoryProvider(create: (context) => GetSellInfoUseCase(_getSwapInfoUseCase)),
+            RepositoryProvider(create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase)),
           ],
           child: MyApp(),
         ),

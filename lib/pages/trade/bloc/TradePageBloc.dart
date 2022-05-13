@@ -1,12 +1,12 @@
-import 'package:ax_dapp/pages/trade/usecases/GetSwapInfoUseCase.dart';
-import 'package:ax_dapp/service/BlockchainModels/SwapInfo.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
+import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'package:ax_dapp/pages/trade/models/TradePageEvent.dart';
 part 'package:ax_dapp/pages/trade/models/TradePageState.dart';
@@ -60,12 +60,10 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
         emit(state.copyWith(
-          status: BlocStatus.error,
-          swapInfo: SwapInfo.empty(), 
-        ));
+          status: BlocStatus.error));
       }
     } catch (e) {
-      emit(state.copyWith(status: BlocStatus.error, swapInfo: SwapInfo.empty()));
+      emit(state.copyWith(status: BlocStatus.error));
     }
   }
 
@@ -94,10 +92,10 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copyWith(status: BlocStatus.error, swapInfo: SwapInfo.empty()));
+        emit(state.copyWith(status: BlocStatus.error));
       }
     } catch (e) {
-      emit(state.copyWith(status: BlocStatus.error, swapInfo: SwapInfo.empty()));
+      emit(state.copyWith(status: BlocStatus.error));
     }
   }
 

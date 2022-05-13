@@ -1,4 +1,7 @@
-class AptBuyInfo {
+import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+
+class AptBuyInfo extends Equatable{
   final double aptPrice;
   final double minimumReceived;
   final double priceImpact;
@@ -19,5 +22,10 @@ class AptBuyInfo {
       required this.priceImpact,
       required this.receiveAmount,
       required this.totalFee});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props =>
+      [aptPrice, minimumReceived, priceImpact, receiveAmount, totalFee];
 }
 

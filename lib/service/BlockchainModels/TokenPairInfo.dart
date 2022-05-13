@@ -1,4 +1,4 @@
-class TokenPairInfo {
+class TokenSwapInfo {
   final double toPrice;
   final double fromPrice;
   final double minimumReceived;
@@ -6,6 +6,15 @@ class TokenPairInfo {
   final double receiveAmount;
   final double totalFee;
 
-  TokenPairInfo({required this.toPrice, required this.fromPrice, required this.minimumReceived, required this.priceImpact, required this.receiveAmount, required this.totalFee});
+  TokenSwapInfo({required this.toPrice, required this.fromPrice, required this.minimumReceived, required this.priceImpact, required this.receiveAmount, required this.totalFee});
 
+  factory TokenSwapInfo.empty() {
+    return TokenSwapInfo(
+        toPrice: 0.0,
+        fromPrice: 0.0,
+        minimumReceived: 0.0,
+        priceImpact: 0.0,
+        receiveAmount: 0.0,
+        totalFee: 0.0);
+  }
 }

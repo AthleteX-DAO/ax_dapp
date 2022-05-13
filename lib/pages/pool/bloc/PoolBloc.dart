@@ -1,6 +1,6 @@
 import 'package:ax_dapp/pages/pool/models/PoolEvent.dart';
 import 'package:ax_dapp/pages/pool/models/PoolState.dart';
-import 'package:ax_dapp/repositories/usecases/GetPairInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
@@ -8,7 +8,7 @@ import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PoolBloc extends Bloc<PoolEvent, PoolState> {
-  final GetPairInfoUseCase repo;
+  final GetPoolInfoUseCase repo;
   final WalletController walletController;
   final PoolController poolController;
 
