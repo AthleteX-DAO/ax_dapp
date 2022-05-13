@@ -96,6 +96,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         final swapInfo = response.getLeft().toNullable()!.swapInfo;
         //do some math
         emit(state.copyWith(
+            balance: balance, 
             status: BlocStatus.success,
             aptSellInfo: AptSellInfo(
                 axPrice: swapInfo.toPrice,

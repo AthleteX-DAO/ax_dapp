@@ -35,6 +35,7 @@ void main() {
 
   test("Should successfully update Bloc State up on New AX input Event", () async {
     final double testAxInput = 30.00;
+    final double testWalletBalance = 100.00;
     final testSwapInfo = TokenSwapInfo(
         toPrice: 1.09,
         fromPrice: 3.90,
@@ -43,7 +44,8 @@ void main() {
         totalFee: 0.54,
         receiveAmount: 0.54,
     );
-
+    when(mockWalletController.getTotalAxBalance())
+        .thenAnswer((_) => Future.value(testWalletBalance));
     when(mockRepoUseCase.fetchAptBuyInfo(
             aptAddress: captureThat(isEmpty, named: 'aptAddress'),
             axInput: captureThat(same(testAxInput), named: 'axInput')))
