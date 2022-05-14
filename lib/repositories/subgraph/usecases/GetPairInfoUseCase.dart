@@ -13,18 +13,18 @@ class GetPairInfoUseCase {
   GetPairInfoUseCase(this._graphRepo);
 
   Future<Either<Success, Error>> fetchPairInfo(
-      {required String tokenFrom,
-      required String tokenTo,
+      {required String tokenA,
+      required String tokenB,
       double? fromTokenInput}) async {
-    final tokenFromAddress = tokenFrom.toLowerCase();
-    final tokenToAddress = tokenTo.toLowerCase();
+    final tokenAddressA = tokenA.toLowerCase();
+    final tokenAddressB = tokenB.toLowerCase();
 
     try {
-      print("token0 address: $tokenFromAddress");
-      print("token1 address: $tokenToAddress");
+      print("token0 address: $tokenAddressA");
+      print("token1 address: $tokenAddressB");
       print("fetching swap info");
       final tokenPairData = await _graphRepo.queryPairDataForTokenAddress(
-          tokenFromAddress, tokenToAddress);
+          tokenAddressA, tokenAddressB);
 
       if (tokenPairData.isLeft()) {
         final data = tokenPairData.getLeft().toNullable();
@@ -35,10 +35,10 @@ class GetPairInfoUseCase {
           List<TokenPair> tokenPairs =
               pairs.map((pair) => TokenPair.fromJson(pair)).toList();
           TokenPair tokenPair = tokenPairs.firstWhere((tokenPair) =>
-              ((tokenPair.token0.id == tokenFromAddress ||
-                      tokenPair.token0.id == tokenToAddress) &&
-                  (tokenPair.token1.id == tokenFromAddress ||
-                      tokenPair.token1.id == tokenToAddress)));
+              ((tokenPair.token0.id == tokenAddressA ||
+                      tokenPair.token0.id == tokenAddressB) &&
+                  (tokenPair.token1.id == tokenAddressA ||
+                      tokenPair.token1.id == tokenAddressB)));
           return Either.left(Success(tokenPair));
         } else {
           return Either.right(Error(_no_swap_info_error_msg));

@@ -20,7 +20,7 @@ class GetSellInfoUseCase {
       {required String aptAddress, double? aptInput}) async {
     try {
       final newAptInput = aptInput ?? 0.0;
-      final response = await _repo.fetchSwaplInfo(
+      final response = await _repo.fetchSwapInfo(
           tokenFrom: aptAddress, tokenTo: AXT.polygonAddress, fromInput: newAptInput);
       final isSuccess = response.isLeft();
 
@@ -37,8 +37,8 @@ class GetSellInfoUseCase {
 }
 
 class Success {
-  final TokenSwapInfo swapInfo;
-  Success(this.swapInfo);
+  final TokenSwapInfo sellInfo;
+  Success(this.sellInfo);
 }
 
 class Error {

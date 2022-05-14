@@ -1202,7 +1202,7 @@ packages:
     source: hosted
     version: "1.0.1"
   web3dart:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: web3dart
       url: "https://pub.dartlang.org"

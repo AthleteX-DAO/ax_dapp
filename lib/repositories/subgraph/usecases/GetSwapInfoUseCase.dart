@@ -12,8 +12,8 @@ class GetSwapInfoUseCase {
 
   GetSwapInfoUseCase(this._repo);
 
-  Future<Either<Success, Error>> fetchSwaplInfo(
-      {required String tokenFrom, required String tokenTo, fromInput, double? slippage}) async {
+  Future<Either<Success, Error>> fetchSwapInfo(
+      {required String tokenFrom, required String tokenTo, double? fromInput, double? slippage}) async {
     try {
       final tokenFromAddress = tokenFrom.toLowerCase();
       final tokenToAddress = tokenTo.toLowerCase();
@@ -21,7 +21,7 @@ class GetSwapInfoUseCase {
       final double slippageTolerance = slippage ?? 0.01;
 
       final response = await _repo.fetchPairInfo(
-          tokenFrom: tokenFromAddress, tokenTo: tokenToAddress, fromTokenInput: tokenFromInput);
+          tokenB: tokenFromAddress, tokenA: tokenToAddress, fromTokenInput: tokenFromInput);
 
       final isSuccess = response.isLeft();
       if (isSuccess) {
