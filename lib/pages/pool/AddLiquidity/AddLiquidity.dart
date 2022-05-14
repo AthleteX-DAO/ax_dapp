@@ -516,7 +516,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     "+",
                     style: textStyle(Colors.grey[600]!, 35, true),
                   )),
-
                   // Bottom Token container
                   createTokenButton(2, elementWdt, _tokenAmountTwoController),
                 ],
