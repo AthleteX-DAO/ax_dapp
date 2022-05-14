@@ -25,15 +25,16 @@ void main() {
     final testAxInput = 1.13;
     final toPrice = 1.01;
     final fromPrice = 1.01;
-    final minimumReceived = 0.21;
+    final testMinimumReceived = 0.21;
+    final testPriceImpact = 12.01;
     final testReceivedAmount = 1.01;
     final testTotalFee = 4.01;
 
     final targetTokenSwapInfo = TokenSwapInfo(
         toPrice: toPrice,
         fromPrice: fromPrice,
-        minimumReceived: minimumReceived,
-        priceImpact: testReceivedAmount,
+        minimumReceived: testMinimumReceived,
+        priceImpact: testPriceImpact,
         receiveAmount: testReceivedAmount,
         totalFee: testTotalFee);
     final Success testSuccessResponse = Success(targetTokenSwapInfo);

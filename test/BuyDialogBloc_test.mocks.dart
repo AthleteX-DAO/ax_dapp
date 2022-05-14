@@ -10,9 +10,9 @@ import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart'
 import 'package:ax_dapp/service/Controller/Controller.dart' as _i4;
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart' as _i10;
 import 'package:ax_dapp/service/Controller/Token.dart' as _i11;
+import 'package:ax_dapp/service/Controller/WalletController.dart' as _i3;
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart'
     as _i9;
-import 'package:ax_dapp/service/Controller/WalletController.dart' as _i3;
 import 'package:fpdart/fpdart.dart' as _i2;
 import 'package:get/get.dart' as _i5;
 import 'package:get/get_state_manager/src/simple/list_notifier.dart' as _i12;

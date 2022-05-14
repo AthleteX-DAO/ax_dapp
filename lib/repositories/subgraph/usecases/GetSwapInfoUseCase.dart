@@ -21,7 +21,7 @@ class GetSwapInfoUseCase {
       final double slippageTolerance = slippage ?? 0.01;
 
       final response = await _repo.fetchPairInfo(
-          tokenB: tokenFromAddress, tokenA: tokenToAddress, fromTokenInput: tokenFromInput);
+          tokenA: tokenFromAddress, tokenB: tokenToAddress, fromTokenInput: tokenFromInput);
 
       final isSuccess = response.isLeft();
       if (isSuccess) {
@@ -47,13 +47,13 @@ class GetSwapInfoUseCase {
         final lpFee = tokenFromInput * 0.0025;
         final protocolFee = tokenFromInput * 0.0005;
         final totalFees = lpFee + protocolFee;
-        final tokenFromInputNoFee = tokenFromInput - totalFees;
-        final receiveAmount = (tokenFromInputNoFee) *
-            (toReserve / (fromReserve + tokenFromInputNoFee));
+        final tokenFromInputAfterFee = tokenFromInput - totalFees;
+        final receiveAmount = (tokenFromInputAfterFee) *
+            (toReserve / (fromReserve + tokenFromInputAfterFee));
         final priceImpact = 100 *
             (1 -
                 ((fromReserve * (toReserve - receiveAmount)) /
-                    (toReserve * (fromReserve + tokenFromInputNoFee))));
+                    (toReserve * (fromReserve + tokenFromInputAfterFee))));
 
         final minimumReceiveAmt = receiveAmount * (1 - slippageTolerance);
 

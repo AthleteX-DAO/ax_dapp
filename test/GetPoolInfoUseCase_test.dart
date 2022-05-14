@@ -8,7 +8,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'GetPoolInfoUseCase.mocks.dart';
+import 'GetPoolInfoUseCase_test.mocks.dart';
+
 
 @GenerateMocks([GetPairInfoUseCase])
 void main() {
