@@ -2,7 +2,7 @@ name: Run Build
 
 on:
   pull_request:
-    branches: [ develop ]
+    branches: [ * ]
 
 jobs:
   build:
