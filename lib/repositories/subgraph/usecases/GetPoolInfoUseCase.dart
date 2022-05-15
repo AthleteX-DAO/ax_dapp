@@ -9,15 +9,15 @@ class GetPoolInfoUseCase {
   GetPoolInfoUseCase(this._repo);
 
   Future<Either<Success, SubgraphError>> fetchPairInfo(
-      {required String tokenFrom, required String tokenTo}) async {
-    final tokenFromAddress = tokenFrom.toLowerCase();
-    final tokenToAddress = tokenTo.toLowerCase();
+      {required String tokenA, required String tokenB}) async {
+    final tokenFromAddress = tokenA.toLowerCase();
+    final tokenToAddress = tokenB.toLowerCase();
     try {
       print("token0 address: $tokenFromAddress");
       print("token1 address: $tokenToAddress");
       print("fetching swap info");
       final tokenPairData = await _repo.fetchPairInfo(
-          tokenFrom: tokenFromAddress, tokenTo: tokenToAddress);
+          tokenA: tokenFromAddress, tokenB: tokenToAddress);
 
       if (tokenPairData.isLeft()) {
         final tokenPair = tokenPairData.getLeft().toNullable()!.pairInfo;

@@ -40,7 +40,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       emit(state.copyWith(
           tokenFromBalance: double.parse(tokenFromBalance),
           tokenToBalance: double.parse(tokenToBalance)));
-      final response = await repo.fetchSwaplInfo(
+      final response = await repo.fetchSwapInfo(
           tokenFrom: state.tokenFrom.address.value,
           tokenTo: state.tokenTo.address.value);
       final isSuccess = response.isLeft();
@@ -72,7 +72,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     final tokenInputFromAmount = event.tokenInputFromAmount;
     print("On New Apt Input: $tokenInputFromAmount");
     try {
-      final response = await repo.fetchSwaplInfo(
+      final response = await repo.fetchSwapInfo(
           tokenFrom: state.tokenFrom.address.value,
           tokenTo: state.tokenTo.address.value, fromInput: tokenInputFromAmount);
       final isSuccess = response.isLeft();

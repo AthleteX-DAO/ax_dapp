@@ -37,7 +37,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       if (isSuccess) {
         swapController.updateFromAddress(event.currentTokenAddress);
         swapController.updateToAddress(AXT.polygonAddress);
-        final swapInfo = response.getLeft().toNullable()!.swapInfo;
+        final swapInfo = response.getLeft().toNullable()!.sellInfo;
         final balance = await wallet.getTotalBalanceForToken(event.currentTokenAddress);
         //do some math
         emit(state.copyWith(
@@ -93,7 +93,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         if (swapController.amount1.value != aptInputAmount) {
           swapController.updateFromAmount(aptInputAmount);
         }
-        final swapInfo = response.getLeft().toNullable()!.swapInfo;
+        final swapInfo = response.getLeft().toNullable()!.sellInfo;
         //do some math
         emit(state.copyWith(
             balance: balance, 

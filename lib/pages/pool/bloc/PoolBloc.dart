@@ -43,8 +43,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
       emit(state.copy(
           balance0: double.parse(balance0), balance1: double.parse(balance1)));
       final response = await repo.fetchPairInfo(
-          tokenFrom: state.token0!.address.value,
-          tokenTo: state.token1!.address.value);
+          tokenA: state.token0!.address.value,
+          tokenB: state.token1!.address.value);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
@@ -76,8 +76,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     emit(state.copy(token0: token0, balance0: balance0));
     try {
       final response = await repo.fetchPairInfo(
-          tokenFrom: state.token0!.address.value,
-          tokenTo: state.token1!.address.value);
+          tokenA: state.token0!.address.value,
+          tokenB: state.token1!.address.value);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
@@ -109,8 +109,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     emit(state.copy(token1: token1, balance1: balance1));
     try {
       final response = await repo.fetchPairInfo(
-          tokenFrom: state.token0!.address.value,
-          tokenTo: state.token1!.address.value);
+          tokenA: state.token0!.address.value,
+          tokenB: state.token1!.address.value);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
@@ -144,8 +144,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     print("On New token0 Input: $token0InputAmount");
     try {
       final response = await repo.fetchPairInfo(
-          tokenFrom: state.token0!.address.value,
-          tokenTo: state.token1!.address.value);
+          tokenA: state.token0!.address.value,
+          tokenB: state.token1!.address.value);
       final isSuccess = response.isLeft();
       if (isSuccess) {
         print("On New token0 Input: Success");
@@ -177,8 +177,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     print("On New token1 Input: $token1InputAmount");
     try {
       final response = await repo.fetchPairInfo(
-          tokenFrom: state.token0!.address.value,
-          tokenTo: state.token1!.address.value);
+          tokenA: state.token0!.address.value,
+          tokenB: state.token1!.address.value);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
