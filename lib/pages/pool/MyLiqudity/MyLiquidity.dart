@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyLiquidity extends StatefulWidget {
-  MyLiquidity({Key? key}) : super(key: key);
+  final Function togglePool;
+  MyLiquidity({Key? key, required this.togglePool}) : super(key: key);
 
   @override
   State<MyLiquidity> createState() => _MyLiquidityState();
