@@ -58,13 +58,13 @@ void main() {
 
     await untilCalled(
         mockRepoUseCase.fetchAptBuyInfo(
-            aptAddress: captureAnyNamed('aptAddress'),
-            axInput: captureAnyNamed('axInput'))
+            aptAddress: anyNamed('aptAddress'),
+            axInput: anyNamed('axInput'))
     );
 
     final verificationResult = verify(mockRepoUseCase.fetchAptBuyInfo(
-        aptAddress: anyNamed('aptAddress'),
-        axInput: anyNamed('axInput')));
+        aptAddress: captureAnyNamed('aptAddress'),
+        axInput: captureAnyNamed('axInput')));
 
     verificationResult.called(1);
     expect(verificationResult.captured, ['', testAxInput]);
@@ -107,14 +107,14 @@ void main() {
     buyDialogBloc.add(OnLoadDialog(currentTokenAddress: testTokenAddress));
 
     await untilCalled(mockRepoUseCase.fetchAptBuyInfo(
-        aptAddress: captureAnyNamed('aptAddress'),
-        axInput: captureAnyNamed('axInput')));
+        aptAddress: anyNamed('aptAddress'),
+        axInput: anyNamed('axInput')));
 
     final verificationResult = verify(mockRepoUseCase.fetchAptBuyInfo(
-        aptAddress: anyNamed('aptAddress')));
+        aptAddress: captureAnyNamed('aptAddress')));
 
     verificationResult.called(1);
-    expect(verificationResult.captured, [testTokenAddress, null]);
+    expect(verificationResult.captured, [testTokenAddress]);
 
     expectLater(
         buyDialogBloc.stream,

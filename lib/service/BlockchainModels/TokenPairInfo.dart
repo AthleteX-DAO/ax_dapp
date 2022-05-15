@@ -1,4 +1,6 @@
-class TokenSwapInfo {
+import 'package:equatable/equatable.dart';
+
+class TokenSwapInfo extends Equatable {
   final double toPrice;
   final double fromPrice;
   final double minimumReceived;
@@ -17,4 +19,8 @@ class TokenSwapInfo {
         receiveAmount: 0.0,
         totalFee: 0.0);
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [toPrice, fromPrice, minimumReceived, priceImpact, receiveAmount, totalFee];
 }

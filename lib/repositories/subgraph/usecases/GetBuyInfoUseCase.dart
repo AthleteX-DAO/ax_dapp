@@ -18,8 +18,8 @@ class GetBuyInfoUseCase {
   Future<Either<Success, Error>> fetchAptBuyInfo(
       {required String aptAddress, double? axInput}) async {
     try {
-      final newAxInput = axInput ?? 0.0;
-      final response = await _repo.fetchSwaplInfo(
+      final newAxInput  = axInput ?? 0.0;
+      final response = await _repo.fetchSwapInfo(
           tokenFrom: AXT.polygonAddress, tokenTo: aptAddress, fromInput: newAxInput);
       final isSuccess = response.isLeft();
       if (isSuccess) {
