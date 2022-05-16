@@ -1,0 +1,72 @@
+{
+      "user": {
+        "liquidityPositions": [
+          {
+            "pair": {
+              "id": "0x49c62531a60feb3ccc8f85a6bb897bce53036e5b",
+              "name": "AX-JSST1010",
+              "token0": {
+                "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df",
+                "name": "AthleteX",
+                "symbol": "AX"
+              },
+              "token1": {
+                "id": "0xce44443d4f652fc6c48f62258c75278e11909d6a",
+                "name": "Juan Soto Linear Short Token",
+                "symbol": "JSST1010"
+              },
+              "token0Price": "7500",
+              "token1Price": "0.0001333333333333333333333333333333333",
+              "reserve0": "7500",
+              "reserve1": "1",
+              "totalSupply": "86.602540378443863676"
+            },
+            "liquidityTokenBalance": "86.602540378443863676"
+          },
+          {
+            "pair": {
+              "id": "0xe802266d4ed92cc5beb5c065c7b247d572f16ab5",
+              "name": "VGJST1010-AX",
+              "token0": {
+                "id": "0x37d388321c2ce1e130e36443e8dae91836a786c0",
+                "name": "Vladimir Guerrero Jr Linear Short Token",
+                "symbol": "VGJST1010"
+              },
+              "token1": {
+                "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df",
+                "name": "AthleteX",
+                "symbol": "AX"
+              },
+              "token0Price": "0.0003333288955998664068907110305488578",
+              "token1Price": "3000.039940132933331758812728421569",
+              "reserve0": "0.999996676688755609",
+              "reserve1": "3000.029970066466665879",
+              "totalSupply": "54.772437868266676205"
+            },
+            "liquidityTokenBalance": "54.77243782262343373"
+          },
+          {
+            "pair": {
+              "id": "0xfaaee596be3f5903b1904d7946c19ade39b5813d",
+              "name": "AX-MSLT1010",
+              "token0": {
+                "id": "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df",
+                "name": "AthleteX",
+                "symbol": "AX"
+              },
+              "token1": {
+                "id": "0xdf40952aaa578272061bd40becc125a5a510a62f",
+                "name": "Marcus Semien Linear Long Token",
+                "symbol": "MSLT1010"
+              },
+              "token0Price": "7904.717333333333332647836246186667",
+              "token1Price": "0.0001265067374114832358441558441558442",
+              "reserve0": "7700",
+              "reserve1": "0.974101878068420916",
+              "totalSupply": "86.602540378443863676"
+            },
+            "liquidityTokenBalance": "86.602540378443863676"
+          }
+        ]
+      }
+  }
