@@ -1,8 +1,4 @@
-import 'package:ax_dapp/pages/pool/models/PoolPairInfo.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/TokenList.dart' show TokenList;
-import 'package:ax_dapp/util/BlocStatus.dart';
-import 'package:equatable/equatable.dart';
+part of 'package:ax_dapp/pages/pool/AddLiquidity/bloc/PoolBloc.dart';
 
 class PoolState extends Equatable {
   final double shareOfPoolPercentage;

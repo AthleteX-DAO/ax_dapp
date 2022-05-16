@@ -1,6 +1,6 @@
 import 'package:ax_dapp/pages/pool/AddLiquidity/AddLiquidity.dart';
+import 'package:ax_dapp/pages/pool/AddLiquidity/bloc/PoolBloc.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/MyLiquidity.dart';
-import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
 import 'package:ax_dapp/service/Athlete.dart';

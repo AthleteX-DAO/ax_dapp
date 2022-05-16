@@ -1,5 +1,4 @@
-import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:equatable/equatable.dart';
+part of 'package:ax_dapp/pages/pool/AddLiquidity/bloc/PoolBloc.dart';
 
 abstract class PoolEvent extends Equatable {}
 

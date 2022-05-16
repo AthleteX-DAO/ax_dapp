@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/pool/models/PoolPairInfo.dart';
+import 'package:ax_dapp/pages/pool/AddLiquidity/models/PoolPairInfo.dart';
 import 'package:fpdart/fpdart.dart';
 import 'GetPairInfoUseCase.dart';
 import 'SubgraphError.dart';

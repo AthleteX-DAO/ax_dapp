@@ -33,6 +33,18 @@ class SubGraphRepo {
     else
       return Either.left(result.data);
   }
+
+  Future<Either<Map<String, dynamic>?, OperationException>>
+      queryAllPairsForWalletId(String walletId) async {
+    final result = await _client.query(
+      QueryOptions(
+          document: parseString(_getAllLiquidityPositionsForWalletId(walletId))),
+    );
+    if (result.hasException)
+      return Either.right(result.exception!);
+    else
+      return Either.left(result.data);
+  }
 }
 
 ///token0/token1 can be either the APT token address or the
@@ -56,8 +68,8 @@ query {
     reserve1
 		token0Price
     token1Price
-  } 
-} 
+  }
+}
 """;
 
 ///This returns all available pairs in the AthleteX Subgraph
@@ -73,4 +85,33 @@ query {
   	totalSupply
   }
 }
+""";
+
+String _getAllLiquidityPositionsForWalletId(String walletId) => """
+  query {
+    user(id: "$walletId") {
+      liquidityPositions {
+        pair {
+          id
+          name
+          token0{
+            id
+            name
+            symbol
+          }
+          token1{
+            id
+            name
+            symbol
+          }
+          token0Price
+          token1Price
+          reserve0
+          reserve1
+          totalSupply
+        }
+        liquidityTokenBalance
+      }
+    }
+  }
 """;
