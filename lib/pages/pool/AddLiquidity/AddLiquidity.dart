@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
 import 'package:ax_dapp/pages/pool/models/PoolEvent.dart';
 import 'package:ax_dapp/pages/pool/models/PoolState.dart';
+import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
@@ -249,9 +250,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
           }
 
           return Container(
-            height: 70,
+            height: 80,
             width: tokenContainerWdt,
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             decoration:
                 boxDecoration(Colors.transparent, 20, .5, Colors.grey[400]!),
             child: Column(
@@ -405,24 +406,25 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   children: <Widget>[
                     Container(
                         child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Container(
+                            margin: EdgeInsets.only(right: 15),
                             child: Text(
-                          "20.24",
-                          style: textStyle(Colors.white, 38, false),
-                        )),
+                              "20.24",
+                              style: textStyle(Colors.white, 21, false),
+                            )),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
                               "${token0!.ticker}/${token1!.name}",
-                              style: textStyle(Colors.white, 16, false),
+                              style: textStyle(Colors.white, 15, false),
                             ),
                             Text(
                               "LP Tokens",
-                              style: textStyle(Colors.white, 16, false),
+                              style: textStyle(Colors.white, 15, false),
                             )
                           ],
                         )
@@ -502,37 +504,13 @@ class _AddLiquidityState extends State<AddLiquidity> {
                 ),
                 // addLiquidityToolTip(elementWdt),
                 showYouReceived(10),
-                (isAdvDetails)
-                    ? Container(
-                        width: elementWdt,
-                        height: 45,
-                        decoration: boxDecoration(
-                            Colors.amber[400]!, 100, 0, Colors.amber[400]!),
-                        child: TextButton(
-                          onPressed: () => showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  poolAddLiquidity(context,
-                                      (token1.ticker + " " + token1.name))),
-                          child: Text(
-                            "Add Liquidity",
-                            style: textStyle(Colors.black, 16, true),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        width: elementWdt,
-                        height: 45,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 1, Colors.amber[400]!),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Approve",
-                            style: textStyle(Colors.amber[400]!, 16, true),
-                          ),
-                        ),
-                      ),
+                ApproveButton(
+                    elementWdt * 0.9,
+                    40,
+                    "Approve",
+                    bloc.poolController.approve,
+                    bloc.poolController.addLiquidity,
+                    transactionConfirmed)
               ],
             ),
           );
@@ -544,9 +522,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
           double allLiquidityCardHgt,
           bool isAdvDetails,
         ) {
-          //elementWdt is half the page layout width
+          //elementWdt is half the page layout width for desktop version
           double elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
-          double tokensSectionHgt = isWeb ? 275 : allLiquidityCardHgt * 0.55;
+          double tokensSectionHgt = isWeb ? 280 : allLiquidityCardHgt * 0.55;
           //Returns the contents of all liquidity pool card
           return <Widget>[
             //Tokens side add liq. -left side of all liquidity pool card in desktop, top of card in mobile-
@@ -556,15 +534,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  //Balance text on top of tokenContainer
-                  Container(
-                    alignment: Alignment.bottomRight,
-                    padding: EdgeInsets.only(right: 50),
-                    child: Text(
-                      "Balance: $balance0",
-                      style: textStyle(Colors.grey[600]!, 13, false),
-                    ),
-                  ),
                   //Top Token container
                   createTokenButton(1, elementWdt, _tokenAmountOneController),
                   Container(
@@ -572,14 +541,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     "+",
                     style: textStyle(Colors.grey[600]!, 35, true),
                   )),
-                  Container(
-                    alignment: Alignment.bottomRight,
-                    padding: EdgeInsets.only(right: 50),
-                    child: Text(
-                      "Balance: $balance1",
-                      style: textStyle(Colors.grey[600]!, 13, false),
-                    ),
-                  ),
+
                   // Bottom Token container
                   createTokenButton(2, elementWdt, _tokenAmountTwoController),
                 ],
@@ -602,6 +564,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
             children: <Widget>[
               //Liquidity pool grey card
               Container(
+                margin: EdgeInsets.only(top: 20),
                 width: layoutWdt,
                 height: allLiquidityCardHgt,
                 decoration: boxDecoration(Colors.grey[800]!.withOpacity(0.25),
@@ -619,8 +582,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                             allLiquidityCardHgt, isAdvDetails),
                       ),
               ),
-              //Empty filler space for web
-              if (isWeb) Container(height: layoutHgt * 0.5 - 300),
             ],
           );
         }
