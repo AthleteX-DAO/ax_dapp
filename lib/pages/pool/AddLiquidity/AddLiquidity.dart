@@ -1,6 +1,4 @@
-import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
-import 'package:ax_dapp/pages/pool/models/PoolEvent.dart';
-import 'package:ax_dapp/pages/pool/models/PoolState.dart';
+import 'package:ax_dapp/pages/pool/AddLiquidity/bloc/PoolBloc.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';

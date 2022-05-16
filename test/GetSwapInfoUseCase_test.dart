@@ -44,10 +44,11 @@ void main() {
       "testName",
       tokenFromReserve.toString(),
       tokenToReserve.toString(),
-      Token(targetTokenFrom.toLowerCase(), "targetTokenFrom"),
-      Token(targetTokenTo.toLowerCase(), "targetTokenTo"),
+      Token(targetTokenFrom.toLowerCase(), "targetTokenFrom", null),
+      Token(targetTokenTo.toLowerCase(), "targetTokenTo", null),
       testTokenFromPrice,
       testTokenToPrice,
+      null
     );
 
     final Success testSuccessResponse = Success(tokenPairInfo);
@@ -84,12 +85,13 @@ void main() {
       //reserve0
       tokenFromReserve.toString(),
       //reserve1
-      Token(targetTokenTo.toLowerCase(), "targetTokenFrom"),
+      Token(targetTokenTo.toLowerCase(), "targetTokenFrom", null),
       //token0
-      Token(targetTokenFrom.toLowerCase(), "targetTokenTo"),
+      Token(targetTokenFrom.toLowerCase(), "targetTokenTo", null),
       //token1
       testTokenToPrice,
       testTokenFromPrice,
+      null
     );
 
     final Success testSuccessResponse = Success(tokenPairInfo);

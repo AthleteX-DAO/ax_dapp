@@ -34,10 +34,11 @@ void main() {
       "testName",
       "testReserve0",
       "testReserve1",
-      Token(targetTokenA.toLowerCase(), "tokenAName"),
-      Token(targetTokenB.toLowerCase(), "tokenBName"),
+      Token(targetTokenA.toLowerCase(), "tokenAName", null),
+      Token(targetTokenB.toLowerCase(), "tokenBName", null),
       tokenAPrice,
       tokenBPrice,
+      null
     );
 
     final Success testSuccessResponse = Success(poolPairInfo);
@@ -75,10 +76,11 @@ void main() {
       "testName",
       "testReserve0",
       "testReserve1",
-      Token(targetTokenB.toLowerCase(), "tokenBName"),
-      Token(targetTokenA.toLowerCase(), "tokenAName"),
+      Token(targetTokenB.toLowerCase(), "tokenBName", null),
+      Token(targetTokenA.toLowerCase(), "tokenAName", null),
       tokenAPrice,
       tokenBPrice,
+      null,
     );
 
     final Success testSuccessResponse = Success(poolPairInfo);
