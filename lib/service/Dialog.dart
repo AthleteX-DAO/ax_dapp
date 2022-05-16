@@ -378,7 +378,7 @@ Dialog depositDialog(
                     Container(width: 15),
                     Expanded(
                       child: Text(
-                        "${selectedFarm.strStakedAlias}",
+                        "${selectedFarm.strStakedAlias.value.length > 0 ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ),
@@ -2108,7 +2108,7 @@ Dialog removeDialog(
                     Container(width: 15),
                     Expanded(
                       child: Text(
-                        "${selectedFarm.strStakedAlias}",
+                        "${selectedFarm.strStakedAlias.value.length > 0 ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ),
