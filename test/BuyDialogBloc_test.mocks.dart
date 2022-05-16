@@ -5,13 +5,14 @@
 import 'dart:async' as _i8;
 import 'dart:ui' as _i13;
 
-import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart' as _i7;
+import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart'
+    as _i7;
 import 'package:ax_dapp/service/Controller/Controller.dart' as _i4;
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart' as _i10;
 import 'package:ax_dapp/service/Controller/Token.dart' as _i11;
+import 'package:ax_dapp/service/Controller/WalletController.dart' as _i3;
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart'
     as _i9;
-import 'package:ax_dapp/service/Controller/WalletController.dart' as _i3;
 import 'package:fpdart/fpdart.dart' as _i2;
 import 'package:get/get.dart' as _i5;
 import 'package:get/get_state_manager/src/simple/list_notifier.dart' as _i12;
@@ -48,19 +49,20 @@ class _FakeBigInt_7 extends _i1.Fake implements BigInt {}
 class _FakeInternalFinalCallback_8<T> extends _i1.Fake
     implements _i5.InternalFinalCallback<T> {}
 
-/// A class which mocks [GetAPTBuyInfoUseCase].
+/// A class which mocks [GetBuyInfoUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetAPTBuyInfoUseCase extends _i1.Mock
-    implements _i7.GetAPTBuyInfoUseCase {
-  MockGetAPTBuyInfoUseCase() {
+class MockGetBuyInfoUseCase extends _i1.Mock implements _i7.GetBuyInfoUseCase {
+  MockGetBuyInfoUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
   _i8.Future<_i2.Either<_i7.Success, _i7.Error>> fetchAptBuyInfo(
-          String? targetAddress) =>
-      (super.noSuchMethod(Invocation.method(#fetchAptBuyInfo, [targetAddress]),
+          {String? aptAddress, double? axInput}) =>
+      (super.noSuchMethod(
+              Invocation.method(#fetchAptBuyInfo, [],
+                  {#aptAddress: aptAddress, #axInput: axInput}),
               returnValue: Future<_i2.Either<_i7.Success, _i7.Error>>.value(
                   _FakeEither_0<_i7.Success, _i7.Error>()))
           as _i8.Future<_i2.Either<_i7.Success, _i7.Error>>);

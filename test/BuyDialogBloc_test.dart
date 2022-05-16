@@ -1,10 +1,10 @@
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-import 'package:ax_dapp/dialogs/buy/models/BuyDialogEvent.dart';
-import 'package:ax_dapp/dialogs/buy/models/BuyDialogState.dart';
-import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptBuyInfo.dart';
+import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:mockito/annotations.dart';
@@ -13,72 +13,123 @@ import 'package:test/test.dart';
 
 import 'BuyDialogBloc_test.mocks.dart';
 
-@GenerateMocks(
-    [GetAPTBuyInfoUseCase, GetTotalTokenBalanceUseCase, SwapController])
+ @GenerateMocks(
+    [GetBuyInfoUseCase, GetTotalTokenBalanceUseCase, SwapController])
 void main() {
-  var mockRepoUseCase = MockGetAPTBuyInfoUseCase();
+  var mockRepoUseCase = MockGetBuyInfoUseCase();
   var mockWalletController = MockGetTotalTokenBalanceUseCase();
   var mockSwapController = MockSwapController();
-  var buyDialogBloc = BuyDialogBloc(
-      repo: mockRepoUseCase,
-      wallet: mockWalletController,
-      swapController: mockSwapController);
-  final testAptBuyInfo = AptBuyInfo(0.0234, 5);
+
+  late BuyDialogBloc buyDialogBloc;
 
   setUp(() {
-    mockRepoUseCase = MockGetAPTBuyInfoUseCase();
+    mockRepoUseCase = MockGetBuyInfoUseCase();
     mockWalletController = MockGetTotalTokenBalanceUseCase();
     mockSwapController = MockSwapController();
+
     buyDialogBloc = BuyDialogBloc(
         repo: mockRepoUseCase,
         wallet: mockWalletController,
         swapController: mockSwapController);
-
-    when(mockRepoUseCase.fetchAptBuyInfo(any))
-        .thenAnswer((_) async => Either.left(Success(testAptBuyInfo)));
-    when(mockSwapController.amount1).thenReturn(0.0.obs);
   });
 
-  test("Should calculate slippage successfully ", () async {
-    final inputAmount = 2.5;
-    final result =
-        buyDialogBloc.calculateTransactionInfo(testAptBuyInfo, inputAmount);
-    print(result.receiveAmount!.toStringAsFixed(8));
-    print(result.priceImpact!.toStringAsFixed(2));
-    print(result.minimumReceived!.toStringAsFixed(8));
-    print(result.price!.toStringAsFixed(6));
-    print(result.totalFee!.toStringAsFixed(6));
-    assert(result.receiveAmount!.toStringAsFixed(8) == "0.00777660");
-    assert(result.priceImpact!.toStringAsFixed(2) == "55.44");
-    assert(result.minimumReceived!.toStringAsFixed(8) == "0.00769883");
-    assert(result.price!.toStringAsFixed(8) == "0.00468000");
-    assert(result.totalFee!.toStringAsFixed(8) == "0.00750000");
-  });
-
-  test(
-      "Should update state with new axInputAmount and transaction info, on max buy tap",
-      () async {
-    final testTokenAddress = "testTokenAddress";
-    final targetMaxInput = 100.00;
+  test("Should successfully update Bloc State up on New AX input Event", () async {
+    final double testAxInput = 30.00;
+    final double testWalletBalance = 100.00;
+    final testSwapInfo = TokenSwapInfo(
+        toPrice: 1.09,
+        fromPrice: 3.90,
+        minimumReceived: 1.34,
+        priceImpact: 42.5,
+        totalFee: 0.54,
+        receiveAmount: 0.54,
+    );
     when(mockWalletController.getTotalAxBalance())
-        .thenAnswer((_) async => targetMaxInput);
-    buyDialogBloc.add(OnLoadDialog(currentTokenAddress: testTokenAddress));
-    buyDialogBloc.add(OnMaxBuyTap());
+        .thenAnswer((_) => Future.value(testWalletBalance));
+    when(mockRepoUseCase.fetchAptBuyInfo(
+            aptAddress: captureThat(isEmpty, named: 'aptAddress'),
+            axInput: captureThat(same(testAxInput), named: 'axInput')))
+        .thenAnswer((_) => Future.value(Either.left(Success(testSwapInfo))));
+
+    when(mockSwapController.updateFromAmount(testAxInput)).thenReturn(null);
+    when(mockSwapController.amount1).thenReturn(0.0.obs);
+
+    buyDialogBloc.add(OnNewAxInput(axInputAmount: testAxInput));
+
+    await untilCalled(
+        mockRepoUseCase.fetchAptBuyInfo(
+            aptAddress: anyNamed('aptAddress'),
+            axInput: anyNamed('axInput'))
+    );
+
+    final verificationResult = verify(mockRepoUseCase.fetchAptBuyInfo(
+        aptAddress: captureAnyNamed('aptAddress'),
+        axInput: captureAnyNamed('axInput')));
+
+    verificationResult.called(1);
+    expect(verificationResult.captured, ['', testAxInput]);
+
     expectLater(
         buyDialogBloc.stream,
         emitsInOrder([
-          isA<BuyDialogState>(),
-          isA<BuyDialogState>(),
-          isA<BuyDialogState>(),
           predicate<BuyDialogState>((state) =>
-              state.balance == targetMaxInput &&
-              state.status == Status.success &&
-              state.receiveAmount == 0.022218857142857144 &&
-              state.priceImpact == 99.75894846955019 &&
-              state.minimumReceived == 0.02199666857142857 &&
-              state.price == 0.00468 &&
-              state.totalFee == 0.3 &&
-              state.axInputAmount == targetMaxInput &&
+              state.axInputAmount == state.axInputAmount &&
+              state.balance == state.balance &&
+              state.status == BlocStatus.success &&
+              state.aptBuyInfo ==
+                  AptBuyInfo(
+                      aptPrice: testSwapInfo.toPrice,
+                      minimumReceived: testSwapInfo.minimumReceived,
+                      priceImpact: testSwapInfo.priceImpact,
+                      receiveAmount: testSwapInfo.receiveAmount,
+                      totalFee: testSwapInfo.totalFee) &&
+              state.tokenAddress.isEmpty)
+        ]));
+  });
+
+  test("Should successfully update Bloc State up on Load Dialog Event", () async {
+    final testTokenAddress = "testTokenAddress";
+    final double testWalletBalance = 100.00;
+    final testSwapInfo = TokenSwapInfo(
+      toPrice: 1.09,
+      fromPrice: 3.90,
+      minimumReceived: 1.34,
+      priceImpact: 42.5,
+      totalFee: 0.54,
+      receiveAmount: 0.54,
+    );
+    when(mockWalletController.getTotalAxBalance())
+        .thenAnswer((_) => Future.value(testWalletBalance));
+    when(mockRepoUseCase.fetchAptBuyInfo(
+            aptAddress: captureAnyNamed('aptAddress')))
+        .thenAnswer((_) => Future.value(Either.left(Success(testSwapInfo))));
+
+    buyDialogBloc.add(OnLoadDialog(currentTokenAddress: testTokenAddress));
+
+    await untilCalled(mockRepoUseCase.fetchAptBuyInfo(
+        aptAddress: anyNamed('aptAddress'),
+        axInput: anyNamed('axInput')));
+
+    final verificationResult = verify(mockRepoUseCase.fetchAptBuyInfo(
+        aptAddress: captureAnyNamed('aptAddress')));
+
+    verificationResult.called(1);
+    expect(verificationResult.captured, [testTokenAddress]);
+
+    expectLater(
+        buyDialogBloc.stream,
+        emitsInOrder([
+          predicate<BuyDialogState>((state) =>
+              state.axInputAmount == state.axInputAmount &&
+              state.balance == testWalletBalance &&
+              state.status == BlocStatus.success &&
+              state.aptBuyInfo ==
+                  AptBuyInfo(
+                      aptPrice: testSwapInfo.toPrice,
+                      minimumReceived: testSwapInfo.minimumReceived,
+                      priceImpact: testSwapInfo.priceImpact,
+                      receiveAmount: testSwapInfo.receiveAmount,
+                      totalFee: testSwapInfo.totalFee) &&
               state.tokenAddress == testTokenAddress)
         ]));
   });

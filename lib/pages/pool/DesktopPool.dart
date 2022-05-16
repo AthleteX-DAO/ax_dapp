@@ -1,15 +1,14 @@
 import 'package:ax_dapp/pages/pool/AddLiquidity/AddLiquidity.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/MyLiquidity.dart';
 import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
-import 'package:ax_dapp/repositories/usecases/GetPairInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
-import '../../repositories/SubGraphRepo.dart';
 
 class DesktopPool extends StatefulWidget {
   const DesktopPool({Key? key}) : super(key: key);
@@ -163,8 +162,8 @@ class _DesktopPoolState extends State<DesktopPool> {
                 child: (isAllLiquidity)
                     ? BlocProvider(
                         create: (BuildContext context) => PoolBloc(
-                            repo: GetPairInfoUseCase(
-                              RepositoryProvider.of<SubGraphRepo>(context),
+                            repo: GetPoolInfoUseCase(
+                              RepositoryProvider.of<GetPairInfoUseCase>(context),
                             ),
                             walletController: Get.find(),
                             poolController: Get.find()),

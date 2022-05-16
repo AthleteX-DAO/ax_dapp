@@ -1,13 +1,12 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-import 'package:ax_dapp/dialogs/buy/usecases/GetAPTBuyInfoUseCase.dart';
 import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
-import 'package:ax_dapp/dialogs/sell/usecases/GetAPTSellInfoUseCase.dart';
-import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
+import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
-import 'package:ax_dapp/repositories/SubGraphRepo.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
@@ -1086,16 +1085,10 @@ class _AthletePageState extends State<AthletePage> {
                                                     create: (
                                                         BuildContext context) =>
                                                         BuyDialogBloc(
-                                                            repo: GetAPTBuyInfoUseCase(
-                                                              RepositoryProvider
-                                                                  .of<
-                                                                  SubGraphRepo>(
-                                                                  context),
-                                                            ),
-                                                            wallet:
-                                                            GetTotalTokenBalanceUseCase(Get.find()),
-                                                            swapController: Get
-                                                                .find()),
+                                                            repo: RepositoryProvider
+                                                                  .of<GetBuyInfoUseCase>(context),
+                                                            wallet: GetTotalTokenBalanceUseCase(Get.find()),
+                                                            swapController: Get.find()),
                                                     child: BuyDialog(
                                                         athlete.name,
                                                         athlete.warPrice,
@@ -1124,12 +1117,12 @@ class _AthletePageState extends State<AthletePage> {
                                                     create: (
                                                         BuildContext context) =>
                                                         SellDialogBloc(
-                                                            repo: GetAPTSellInfoUseCase(
+                                                            repo:
                                                               RepositoryProvider
                                                                   .of<
-                                                                  SubGraphRepo>(
+                                                                  GetSellInfoUseCase>(
                                                                   context),
-                                                            ),
+
                                                             wallet:
                                                             GetTotalTokenBalanceUseCase(Get.find()),
                                                             swapController: Get
@@ -1426,12 +1419,8 @@ class _AthletePageState extends State<AthletePage> {
                                                               create: (
                                                                   BuildContext context) =>
                                                                   BuyDialogBloc(
-                                                                      repo: GetAPTBuyInfoUseCase(
-                                                                        RepositoryProvider
-                                                                            .of<
-                                                                            SubGraphRepo>(
-                                                                            context),
-                                                                      ),
+                                                                      repo: RepositoryProvider
+                                                                            .of<GetBuyInfoUseCase>(context),
                                                                       wallet:
                                                                       GetTotalTokenBalanceUseCase(Get.find()),
                                                                       swapController: Get
@@ -1463,14 +1452,13 @@ class _AthletePageState extends State<AthletePage> {
                                                               create: (
                                                                   BuildContext context) =>
                                                                   SellDialogBloc(
-                                                                      repo: GetAPTSellInfoUseCase(
-                                                                        RepositoryProvider
-                                                                            .of<
-                                                                            SubGraphRepo>(
-                                                                            context),
-                                                                      ),
+                                                                      repo:
+                                                                      RepositoryProvider
+                                                                          .of<GetSellInfoUseCase>(context),
                                                                       wallet:
-                                                                      GetTotalTokenBalanceUseCase(Get.find()),
+                                                                      GetTotalTokenBalanceUseCase(
+                                                                          Get
+                                                                              .find()),
                                                                       swapController: Get
                                                                           .find()),
                                                               child: SellDialog(

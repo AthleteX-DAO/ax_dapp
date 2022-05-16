@@ -1,19 +1,16 @@
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
-import 'package:ax_dapp/pages/trade/models/TradePageEvent.dart';
-import 'package:ax_dapp/pages/trade/models/TradePageState.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
-import '../../service/TokenList.dart';
 
 class DesktopTrade extends StatefulWidget {
   const DesktopTrade({Key? key}) : super(key: key);
@@ -51,28 +48,23 @@ class _DesktopTradeState extends State<DesktopTrade> {
     return BlocBuilder<TradePageBloc, TradePageState>(
       buildWhen: (previous, current) => current.status.name.isNotEmpty,
       builder: (context, state) {
-        print("Trying to read TradePageBloc");
         final bloc = context.read<TradePageBloc>();
-        print("Read TradePageBloc");
-        print("TradePage price: ${state.price}");
-        final price = state.price.toStringAsFixed(6);
+        final price = state.swapInfo.toPrice.toStringAsFixed(6);
         final tokenToBalance = state.tokenToBalance.toStringAsFixed(6);
         final tokenFromBalance = state.tokenFromBalance.toStringAsFixed(6);
-        final minReceived = state.minimumReceived.toStringAsFixed(6);
-        final priceImpact = state.priceImpact.toStringAsFixed(6);
-        final receiveAmount = state.receiveAmount.toStringAsFixed(6);
-        final totalFee = state.totalFees.toStringAsFixed(6);
+        final minReceived = state.swapInfo.minimumReceived.toStringAsFixed(6);
+        final priceImpact = state.swapInfo.priceImpact.toStringAsFixed(6);
+        final receiveAmount = state.swapInfo.receiveAmount.toStringAsFixed(6);
+        final totalFee = state.swapInfo.totalFee.toStringAsFixed(6);
         final slippageTolerance = 1;
         // print("TradePage tokenFrom: ${state.tokenFrom!.address.value}");
-        final Token? tokenFrom = state.tokenFrom ?? TokenList.tokenList[0];
-        final Token? tokenTo = state.tokenTo ?? TokenList.tokenList[3];
+        final Token tokenFrom = state.tokenFrom;
+        final Token tokenTo = state.tokenTo;
         // TODO: add autofill feature
         // final tokenInputFromAmount = state.tokenInputFromAmount;
         // final tokenInputToAmount = state.tokenInputToAmount;
 
-        if (state.status == Status.initial) {
-          bloc.add(SetTokenFrom(tokenFrom: TokenList.tokenList[0]));
-          bloc.add(SetTokenTo(tokenTo: TokenList.tokenList[3]));
+        if (state.status == BlocStatus.initial) {
           bloc.add(PageRefreshEvent());
         }
 
@@ -123,10 +115,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
         bool isTokenSelected(Token selectedToken, int tknNum) {
           if (tknNum == 1) {
-            return selectedToken.address == state.tokenFrom?.address;
+            return selectedToken.address == state.tokenFrom.address;
           } else {
             //tknNum == 2
-            return selectedToken.address == state.tokenTo?.address;
+            return selectedToken.address == state.tokenTo.address;
           }
         }
 
@@ -227,22 +219,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
           BoxDecoration decor =
               boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
           if (tknNum == 1) {
-            if (tokenFrom == null)
-              decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
-
-            if (tokenFrom != null) {
               tkr = tokenFrom.ticker;
               tokenImage = tokenFrom.icon;
-            }
           } else {
             //tknNum == 2
-            if (tokenTo == null)
-              decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
-
-            if (tokenTo != null) {
               tkr = tokenTo.ticker;
               tokenImage = tokenTo.icon;
-            }
           }
 
           return Container(
@@ -341,7 +323,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   ),
                 ),
                 Text(
-                  "$price " + tokenTo!.ticker + " per " + tokenFrom!.ticker,
+                  "$price " + tokenTo.ticker + " per " + tokenFrom.ticker,
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
@@ -365,7 +347,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   ),
                 ),
                 Text(
-                  "$lpFee ${tokenFrom!.ticker}",
+                  "$lpFee ${tokenFrom.ticker}",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
@@ -413,7 +395,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   ),
                 ),
                 Text(
-                  "$minReceived " + tokenTo!.ticker,
+                  "$minReceived " + tokenTo.ticker,
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
@@ -461,7 +443,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   ),
                 ),
                 Text(
-                  "$receiveAmount " + tokenTo!.ticker,
+                  "$receiveAmount " + tokenTo.ticker,
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
