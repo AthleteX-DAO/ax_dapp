@@ -33,6 +33,7 @@ class GysrApi {
         owner {
           id
         }
+        stakingModule
       }
     }
   ''';
@@ -63,6 +64,7 @@ class GysrApi {
             owner {
               id
             }
+            stakingModule
           }
         }
       }

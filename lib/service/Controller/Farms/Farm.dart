@@ -7,8 +7,6 @@ import 'package:ax_dapp/contracts/Pool.g.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 
-String strRouterAddress = "0x31b1f3b9ebb950d0256607972760da0b6f0680d5";
-
 class Farm {
   // decalaration of member varibles
   late Pool contract;
@@ -19,6 +17,7 @@ class Farm {
   String strAddress = "";
   String strStakeTokenAddress = "";
   String strRewardTokenAddress = "";
+  String strStakingModule = "";
   double dAPR = 0.0;
   double dTVL = 0.0;
   double dStakeTokenPrice = 0.0;
@@ -38,7 +37,8 @@ class Farm {
   // contructor with poolInfo from api
   Farm(dynamic poolInfo) {
     this.strAddress = poolInfo['id'].toString();
-    this.strName = "${poolInfo['stakingToken']['alias']} APT";
+    this.strName =
+        "${poolInfo['stakingToken']['alias'].length > 0 ? poolInfo['stakingToken']['alias'] : poolInfo['stakingToken']['symbol']} APT";
     this.dAPR = double.parse(poolInfo['apr']);
     this.dTVL = double.parse(poolInfo['tvl']);
     this.dStaked = RxDouble(double.parse(poolInfo['staked']));
@@ -47,6 +47,7 @@ class Farm {
     this.dRewardTokenPrice = double.parse(poolInfo['rewardToken']['price']);
     this.strStakeTokenAddress = poolInfo['stakingToken']['id'].toString();
     this.strRewardTokenAddress = poolInfo['rewardToken']['id'].toString();
+    this.strStakingModule = poolInfo['stakingModule'].toString();
 
     this.strStakedSymbol = RxString(poolInfo['stakingToken']['symbol']);
     this.strRewardSymbol = RxString(poolInfo['rewardToken']['symbol']);
@@ -73,6 +74,7 @@ class Farm {
     this.dRewardTokenPrice = farm.dRewardTokenPrice;
     this.strStakeTokenAddress = farm.strStakeTokenAddress;
     this.strRewardTokenAddress = farm.strRewardTokenAddress;
+    this.strStakingModule = farm.strStakingModule;
     this.strStakedSymbol = farm.strStakedSymbol;
     this.strRewardSymbol = farm.strRewardSymbol;
     this.strStakedAlias = farm.strStakedAlias;
@@ -150,7 +152,7 @@ class Farm {
   /// @return {void}
   Future<void> approve() async {
     Web3Dart.EthereumAddress routerAddress =
-        Web3Dart.EthereumAddress.fromHex(strRouterAddress);
+        Web3Dart.EthereumAddress.fromHex(this.strStakingModule);
     Web3Dart.EthereumAddress tokenAddress =
         Web3Dart.EthereumAddress.fromHex(this.strStakeTokenAddress);
     ERC20 rewardToken = ERC20(address: tokenAddress, client: rpcClient);
