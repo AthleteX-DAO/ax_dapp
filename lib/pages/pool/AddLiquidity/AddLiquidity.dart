@@ -341,6 +341,24 @@ class _AddLiquidityState extends State<AddLiquidity> {
           );
         }
 
+        Widget youWillReceiveToolTip() {
+          return Tooltip(
+            height: 50,
+            padding: EdgeInsets.all(10),
+            verticalOffset: -60,
+            // preferBelow: false,
+            decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(25)),
+            richMessage: TextSpan(
+                text:
+                    "*Output is estimated. If the price changes by more than 2%, your transaction will revert.",
+                style: TextStyle(color: Colors.grey[400], fontSize: 18)),
+            child:
+                Icon(Icons.info_outline_rounded, color: Colors.grey, size: 20),
+          );
+        }
+
         Widget poolShareDetailsHeader(double elementWdt, bool isAdvDetails) {
           return Container(
             height: 30,
@@ -370,10 +388,22 @@ class _AddLiquidityState extends State<AddLiquidity> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "You will receive:",
-                  style: textStyle(Colors.grey[600]!, 16, false),
+                height: 25,
+                child: Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "You will receive:",
+                        style: textStyle(Colors.grey[600]!, 18, false),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 6),
+                      alignment: Alignment.topRight,
+                      child: youWillReceiveToolTip(),
+                    ),
+                  ],
                 ),
               ),
               Container(
@@ -405,12 +435,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         )
                       ],
                     )),
-                    Container(
-                      child: Text(
-                          "*Output is estimated. If the price changes by more than 2%, your transaction will revert.",
-                          style:
-                              TextStyle(color: Colors.grey[600], fontSize: 11)),
-                    ),
                   ],
                 ),
               )
@@ -480,7 +504,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                 // addLiquidityToolTip(elementWdt),
                 showYouReceived(10),
                 ApproveButton(
-                    elementWdt * 0.9,
+                    elementWdt * 0.95,
                     40,
                     "Approve",
                     bloc.poolController.approve,
