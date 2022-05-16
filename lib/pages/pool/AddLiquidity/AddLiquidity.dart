@@ -32,30 +32,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
     super.initState();
   }
 
-  onTokenAmountChange() {
-    // //if from amount changed, autocomplete to amount
-    // if (_tokenAmountOneFocusNode.hasFocus) {
-    //   final tokenOne = double.tryParse(_tokenAmountOneController.text);
-    //
-    //   if (tokenOne != null) {
-    //     //Update amount 1
-    //     token1Amount = double.parse(_tokenAmountOneController.text);
-    //     poolController.updateTopAmount(token1Amount);
-    //   }
-    // }
-    // //if to amount changed, autocomplete from amount
-    // if (_tokenAmountTwoFocusNode.hasFocus) {
-    //   final tokenTwo = double.tryParse(_tokenAmountTwoController.text);
-    //
-    //   if (tokenTwo != null) {
-    //     //Autocomplete and update amount 1
-    //     //Update amount 2
-    //     token2Amount = double.parse(_tokenAmountTwoController.text);
-    //     poolController.updateBottomAmount(token2Amount);
-    //   }
-    // }
-  }
-
   @override
   void dispose() {
     _tokenAmountOneController.dispose();
