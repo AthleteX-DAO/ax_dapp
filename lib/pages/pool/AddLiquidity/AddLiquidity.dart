@@ -10,7 +10,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class AddLiquidity extends StatefulWidget {
   AddLiquidity({Key? key}) : super(key: key);
