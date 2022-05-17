@@ -35,6 +35,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
   Future<void> _mapRefreshEventToState(
       PageRefreshEvent event, Emitter<PoolState> emit) async {
     emit(state.copy(status: BlocStatus.loading));
+    poolController.updateTknAddress1(state.token0!.address.value);
+    poolController.updateTknAddress2(state.token1!.address.value);
     try {
       final balance0 =
           await walletController.getTokenBalance(state.token0!.address.value);
@@ -140,7 +142,9 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
   Future<void> _mapToken0InputChangedEventToState(
       Token0InputChanged event, Emitter<PoolState> emit) async {
     final token0InputAmount = event.token0Input;
-
+    if (poolController.amount1.value != token0InputAmount) {
+      poolController.updateTopAmount(token0InputAmount);
+    }
     print("On New token0 Input: $token0InputAmount");
     try {
       final response = await repo.fetchPairInfo(
@@ -149,14 +153,11 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
       final isSuccess = response.isLeft();
       if (isSuccess) {
         print("On New token0 Input: Success");
-        if (poolController.amount1.value != token0InputAmount) {
-          poolController.updateTopAmount(token0InputAmount);
-        }
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         emit(state.copy(
           status: BlocStatus.success,
           token0Price: poolInfo.token0Price,
-            token1Price: poolInfo.token1Price,
+          token1Price: poolInfo.token1Price,
         ));
       } else {
         print("On New token0 Input: Failure");
@@ -173,7 +174,9 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
   Future<void> _mapToken1InputChangedEventToState(
       Token1InputChanged event, Emitter<PoolState> emit) async {
     final token1InputAmount = event.token1Input;
-
+    if (poolController.amount2.value != token1InputAmount) {
+      poolController.updateBottomAmount(token1InputAmount);
+    }
     print("On New token1 Input: $token1InputAmount");
     try {
       final response = await repo.fetchPairInfo(
@@ -183,9 +186,6 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
 
       if (isSuccess) {
         print("On New token1 Input: Success");
-        if (poolController.amount2.value != token1InputAmount) {
-          poolController.updateBottomAmount(token1InputAmount);
-        }
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         emit(state.copy(
           status: BlocStatus.success,

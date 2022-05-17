@@ -60,8 +60,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
         final double balance1 = state.balance1;
         Token? token0 = state.token0;
         Token? token1 = state.token1;
-        print("$token0Price desktopPool");
-        print("$token1Price desktopPool");
 
         if (state.status == BlocStatus.initial) {
           bloc.add(PageRefreshEvent());
@@ -114,13 +112,13 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   ? null
                   : () {
                       if (tknNum == 1) {
-                        if (token == token1) {
+                        if (token == token0) {
                           bloc.add(SwapTokens());
                         } else {
                           bloc.add(Token0SelectionChanged(token0: token));
                         }
                       } else {
-                        if (token == token0) {
+                        if (token == token1) {
                           bloc.add(SwapTokens());
                         } else {
                           bloc.add(Token1SelectionChanged(token1: token));
@@ -294,9 +292,15 @@ class _AddLiquidityState extends State<AddLiquidity> {
                           child: IntrinsicWidth(
                             child: TextFormField(
                               controller: tokenAmountController,
-                              onChanged: (token0Input) {
-                                bloc.add(Token0InputChanged(
-                                    double.parse(token0Input)));
+                              onChanged: (tokenInput) {
+                                if(tknNum == 1){
+                                  bloc.add(Token0InputChanged(
+                                    double.parse(tokenInput)));
+                                } else {
+                                  bloc.add(Token1InputChanged(
+                                    double.parse(tokenInput)));
+                                }
+                                
                               },
                               style: textStyle(Colors.grey[400]!, 22, false),
                               decoration: InputDecoration(
