@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/pool/bloc/PoolBloc.dart';
 import 'package:ax_dapp/pages/pool/models/PoolEvent.dart';
 import 'package:ax_dapp/pages/pool/models/PoolState.dart';
+import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
@@ -29,30 +30,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
   @override
   void initState() {
     super.initState();
-  }
-
-  onTokenAmountChange() {
-    // //if from amount changed, autocomplete to amount
-    // if (_tokenAmountOneFocusNode.hasFocus) {
-    //   final tokenOne = double.tryParse(_tokenAmountOneController.text);
-    //
-    //   if (tokenOne != null) {
-    //     //Update amount 1
-    //     token1Amount = double.parse(_tokenAmountOneController.text);
-    //     poolController.updateTopAmount(token1Amount);
-    //   }
-    // }
-    // //if to amount changed, autocomplete from amount
-    // if (_tokenAmountTwoFocusNode.hasFocus) {
-    //   final tokenTwo = double.tryParse(_tokenAmountTwoController.text);
-    //
-    //   if (tokenTwo != null) {
-    //     //Autocomplete and update amount 1
-    //     //Update amount 2
-    //     token2Amount = double.parse(_tokenAmountTwoController.text);
-    //     poolController.updateBottomAmount(token2Amount);
-    //   }
-    // }
   }
 
   @override
@@ -204,6 +181,17 @@ class _AddLiquidityState extends State<AddLiquidity> {
           );
         }
 
+        Widget showBalance(int tknNum) {
+          return Container(
+            padding: EdgeInsets.only(right: 10),
+            alignment: Alignment.bottomRight,
+            child: Text(
+              tknNum == 1 ? "Balance: $balance0" : "Balance: $balance1",
+              style: textStyle(Colors.grey[600]!, 13, false),
+            ),
+          );
+        }
+
         Widget createTokenButton(
           int tknNum,
           double elementWdt,
@@ -237,92 +225,220 @@ class _AddLiquidityState extends State<AddLiquidity> {
           }
 
           return Container(
-            height: 70,
+            height: 80,
             width: tokenContainerWdt,
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             decoration:
                 boxDecoration(Colors.transparent, 20, .5, Colors.grey[400]!),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                // left-half of token box (dropdown menu button containing token)
-                Container(
-                  width: 175,
-                  height: 40,
-                  decoration: decor,
-                  child: TextButton(
-                    // onPressed: (){},
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          AthleteTokenList(context, tknNum, createTokenElement),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    // left-half of token box (dropdown menu button containing token)
+                    Container(
+                      width: 175,
+                      height: 40,
+                      decoration: decor,
+                      child: TextButton(
+                        // onPressed: (){},
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AthleteTokenList(
+                              context, tknNum, createTokenElement),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: tokenImage!,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                            Container(width: 10),
+                            Expanded(
+                              child: Text(tkr,
+                                  style: textStyle(Colors.white, 16, true)),
+                            ),
+                            Icon(Icons.keyboard_arrow_down,
+                                color: Colors.white, size: 25)
+                          ],
+                        ),
+                      ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // right-half of token box (max button and input box)
+                    Container(
+                        child: Row(
                       children: <Widget>[
+                        //Max Button
                         Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: tokenImage!,
-                              fit: BoxFit.fill,
+                            height: 24,
+                            width: 40,
+                            decoration: boxDecoration(Colors.transparent, 100,
+                                0.5, Colors.grey[400]!),
+                            child: TextButton(
+                                onPressed: () {},
+                                child: Text("MAX",
+                                    style: textStyle(
+                                        Colors.grey[400]!, 8, false)))),
+                        //Amount input box
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints(maxWidth: tokenContainerWdt * 0.5),
+                          child: IntrinsicWidth(
+                            child: TextFormField(
+                              controller: tokenAmountController,
+                              onChanged: (token0Input) {
+                                bloc.add(Token0InputChanged(
+                                    double.parse(token0Input)));
+                              },
+                              style: textStyle(Colors.grey[400]!, 22, false),
+                              decoration: InputDecoration(
+                                hintText: '0.00',
+                                hintStyle:
+                                    textStyle(Colors.grey[400]!, 22, false),
+                                contentPadding: const EdgeInsets.all(9),
+                                border: InputBorder.none,
+                              ),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    (RegExp(r'^(\d+)?\.?\d{0,6}'))),
+                              ],
                             ),
                           ),
                         ),
-                        Container(width: 10),
-                        Expanded(
-                          child: Text(tkr,
-                              style: textStyle(Colors.white, 16, true)),
-                        ),
-                        Icon(Icons.keyboard_arrow_down,
-                            color: Colors.white, size: 25)
                       ],
-                    ),
-                  ),
-                ),
-                // right-half of token box (max button and input box)
-                Container(
-                    child: Row(
-                  children: <Widget>[
-                    //Max Button
-                    Container(
-                        height: 24,
-                        width: 40,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                        child: TextButton(
-                            onPressed: () {},
-                            child: Text("MAX",
-                                style:
-                                    textStyle(Colors.grey[400]!, 8, false)))),
-                    //Amount input box
-                    SizedBox(
-                      width: tokenContainerWdt * 0.15,
-                      child: TextFormField(
-                        controller: tokenAmountController,
-                        onChanged: (token0Input) {
-                          bloc.add(
-                              Token0InputChanged(double.parse(token0Input)));
-                        },
-                        style: textStyle(Colors.grey[400]!, 22, false),
-                        decoration: InputDecoration(
-                          hintText: '0.00',
-                          hintStyle: textStyle(Colors.grey[400]!, 22, false),
-                          contentPadding: const EdgeInsets.all(9),
-                          border: InputBorder.none,
-                        ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                              (RegExp(r'^(\d+)?\.?\d{0,6}'))),
-                        ],
-                      ),
-                    ),
+                    ))
                   ],
-                ))
+                ),
+                showBalance(tknNum),
               ],
             ),
+          );
+        }
+
+        Widget addLiquidityToolTip(double elementWdt) {
+          return Tooltip(
+            height: 50,
+            padding: EdgeInsets.all(10),
+            verticalOffset: -100,
+            // preferBelow: false,
+            decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(25)),
+            richMessage: TextSpan(
+                text:
+                    "*Add liquidity to earn 0.25% of all trades on this pair proportional to your share of the pool and receive LP tokens.",
+                style: TextStyle(color: Colors.grey[400], fontSize: 18)),
+            child:
+                Icon(Icons.info_outline_rounded, color: Colors.grey, size: 25),
+          );
+        }
+
+        Widget youWillReceiveToolTip() {
+          return Tooltip(
+            height: 50,
+            padding: EdgeInsets.all(10),
+            verticalOffset: -60,
+            // preferBelow: false,
+            decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(25)),
+            richMessage: TextSpan(
+                text:
+                    "*Output is estimated. If the price changes by more than 2%, your transaction will revert.",
+                style: TextStyle(color: Colors.grey[400], fontSize: 18)),
+            child:
+                Icon(Icons.info_outline_rounded, color: Colors.grey, size: 20),
+          );
+        }
+
+        Widget poolShareDetailsHeader(double elementWdt, bool isAdvDetails) {
+          return Container(
+            height: 30,
+            width: elementWdt,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    (isAdvDetails)
+                        ? "Details: Price and Pool Share"
+                        : "Details",
+                    style: textStyle(Colors.white, 21, true),
+                  ),
+                ),
+                Container(
+                    margin: EdgeInsets.only(left: 6),
+                    alignment: Alignment.topRight,
+                    child: addLiquidityToolTip(elementWdt))
+              ],
+            ),
+          );
+        }
+
+        Widget showYouReceived(amountToReceive) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 25,
+                child: Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "You will receive:",
+                        style: textStyle(Colors.grey[600]!, 18, false),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 6),
+                      alignment: Alignment.topRight,
+                      child: youWillReceiveToolTip(),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                            margin: EdgeInsets.only(right: 15),
+                            child: Text(
+                              "20.24",
+                              style: textStyle(Colors.white, 21, false),
+                            )),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "${token0!.ticker}/${token1!.name}",
+                              style: textStyle(Colors.white, 15, false),
+                            ),
+                            Text(
+                              "LP Tokens",
+                              style: textStyle(Colors.white, 15, false),
+                            )
+                          ],
+                        )
+                      ],
+                    )),
+                  ],
+                ),
+              )
+            ],
           );
         }
 
@@ -333,16 +449,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
             padding: const EdgeInsets.only(top: 20, bottom: 20, right: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  child: Text(
-                    (isAdvDetails)
-                        ? "Details: Price and Pool Share"
-                        : "Details",
-                    style: textStyle(Colors.white, 21, true),
-                  ),
-                ),
+                poolShareDetailsHeader(elementWdt, isAdvDetails),
                 Container(
                   width: elementWdt,
                   child: Row(
@@ -357,11 +466,11 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         style: textStyle(Colors.white, 15, false),
                       ),
                       Text(
-                        "Share of pool:",
+                        "${token1.ticker} per ${token0.ticker}:",
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "0.12%",
+                        "$token1Price",
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ],
@@ -374,11 +483,11 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "${token1.ticker} per ${token0.ticker}:",
+                        "Share of pool:",
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "$token1Price",
+                        "0.12%",
                         style: textStyle(Colors.white, 15, false),
                       ),
                       Text(
@@ -387,61 +496,20 @@ class _AddLiquidityState extends State<AddLiquidity> {
                       ),
                       Text(
                         "24.12%",
-                        style: TextStyle(color: Colors.white),
+                        style: textStyle(Colors.white, 15, false),
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  width: elementWdt,
-                  child: RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text:
-                                "*Add liquidity to earn 0.25% of all trades on this pair",
-                            style: TextStyle(
-                                color: Colors.grey[600], fontSize: 15)),
-                        TextSpan(
-                            text:
-                                " proportional to your share of the pool and receive LP tokens.",
-                            style: TextStyle(
-                                color: Colors.grey[600], fontSize: 15)),
-                      ],
-                    ),
-                  ),
-                ),
-                (isAdvDetails)
-                    ? Container(
-                        width: elementWdt,
-                        height: 45,
-                        decoration: boxDecoration(
-                            Colors.amber[400]!, 100, 0, Colors.amber[400]!),
-                        child: TextButton(
-                          onPressed: () => showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  poolAddLiquidity(context,
-                                      (token1.ticker + " " + token1.name))),
-                          child: Text(
-                            "Add Liquidity",
-                            style: textStyle(Colors.black, 16, true),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        width: elementWdt,
-                        height: 45,
-                        decoration: boxDecoration(
-                            Colors.transparent, 100, 1, Colors.amber[400]!),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Approve",
-                            style: textStyle(Colors.amber[400]!, 16, true),
-                          ),
-                        ),
-                      )
+                // addLiquidityToolTip(elementWdt),
+                showYouReceived(10),
+                ApproveButton(
+                    elementWdt * 0.95,
+                    40,
+                    "Approve",
+                    bloc.poolController.approve,
+                    bloc.poolController.addLiquidity,
+                    transactionConfirmed)
               ],
             ),
           );
@@ -453,8 +521,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
           double allLiquidityCardHgt,
           bool isAdvDetails,
         ) {
+          //elementWdt is half the page layout width for desktop version
           double elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
-          double tokensSectionHgt = isWeb ? 275 : allLiquidityCardHgt * 0.55;
+          double tokensSectionHgt = isWeb ? 280 : allLiquidityCardHgt * 0.55;
           //Returns the contents of all liquidity pool card
           return <Widget>[
             //Tokens side add liq. -left side of all liquidity pool card in desktop, top of card in mobile-
@@ -464,12 +533,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  //Balance text on top of tokenContainer
-                  Container(
-                      alignment: Alignment.bottomRight,
-                      padding: EdgeInsets.only(right: 50),
-                      child: Text("Balance: $balance0",
-                          style: textStyle(Colors.grey[600]!, 13, false))),
                   //Top Token container
                   createTokenButton(1, elementWdt, _tokenAmountOneController),
                   Container(
@@ -477,11 +540,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     "+",
                     style: textStyle(Colors.grey[600]!, 35, true),
                   )),
-                  Container(
-                      alignment: Alignment.bottomRight,
-                      padding: EdgeInsets.only(right: 50),
-                      child: Text("Balance: $balance1",
-                          style: textStyle(Colors.grey[600]!, 13, false))),
                   // Bottom Token container
                   createTokenButton(2, elementWdt, _tokenAmountTwoController),
                 ],
@@ -504,6 +562,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
             children: <Widget>[
               //Liquidity pool grey card
               Container(
+                margin: EdgeInsets.only(top: 20),
                 width: layoutWdt,
                 height: allLiquidityCardHgt,
                 decoration: boxDecoration(Colors.grey[800]!.withOpacity(0.25),
@@ -521,8 +580,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                             allLiquidityCardHgt, isAdvDetails),
                       ),
               ),
-              //Empty filler space for web
-              if (isWeb) Container(height: layoutHgt * 0.5 - 300),
             ],
           );
         }
