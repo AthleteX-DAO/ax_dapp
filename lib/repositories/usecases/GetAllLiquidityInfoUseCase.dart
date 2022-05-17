@@ -20,9 +20,9 @@ class GetAllLiquidityInfoUseCase {
 
       if (tokenPairData.isLeft()) {
         final data = tokenPairData.getLeft().toNullable();
-        if (data != null) {
-          print("data retrieved: ${data.toString()}");
-          final user = data["user"];
+        print("data retrieved: ${data.toString()}");
+        final user = data!["user"];
+        if (user != null) {
           print("user retrieved: ${user.toString()}");
           final liquidityPositions = user["liquidityPositions"];
           print("liquidityPositions =  ${liquidityPositions.toString()}");

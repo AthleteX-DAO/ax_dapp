@@ -280,7 +280,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
         if (state.status == BlocStatus.loading) {
           return loading();
         }
-        if (state.status == BlocStatus.no_data) {
+        if (state.status == BlocStatus.no_data || (state.status == BlocStatus.success && state.cards.isEmpty)) {
           return emptyWallet();
         }
         if (state.status == BlocStatus.no_wallet) {
@@ -333,9 +333,9 @@ class _MyLiquidityState extends State<MyLiquidity> {
   Widget emptyWallet() {
     return Center(
       child: SizedBox(
-        height: 70,
+        height: 100,
         width: 400,
-        child: Text("Connect wallet does not contain any Liquidity Tokens. You can get your positions in Add Liquidity tab.",
+        child: Text("Connected wallet does not contain any Liquidity Tokens. You can get your positions on Add Liquidity page.",
             style: TextStyle(color: Colors.amber, fontSize: 30)),
       ),
     );
