@@ -281,7 +281,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
           return loading();
         }
         if (state.status == BlocStatus.no_data || (state.status == BlocStatus.success && state.cards.isEmpty)) {
-          return emptyWallet();
+          return emptyWallet(_layoutWdt, _layoutHgt);
         }
         if (state.status == BlocStatus.no_wallet) {
           return noWallet();
@@ -296,7 +296,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
             Row(
               children: [
                 //searchbar for desktop (next to toggle button)
-                if (_isWeb) createMyLiquiditySearchBar(_layoutHgt, _layoutWdt),
+                if (_isWeb) createMyLiquiditySearchBar(gridHgt, _layoutWdt),
               ],
             ),
             Container(
@@ -330,11 +330,11 @@ class _MyLiquidityState extends State<MyLiquidity> {
     );
   }
   
-  Widget emptyWallet() {
+  Widget emptyWallet(height, width) {
     return Center(
       child: SizedBox(
-        height: 100,
-        width: 400,
+        height: height,
+        width: width,
         child: Text("Connected wallet does not contain any Liquidity Tokens. You can get your positions on Add Liquidity page.",
             style: TextStyle(color: Colors.amber, fontSize: 30)),
       ),
