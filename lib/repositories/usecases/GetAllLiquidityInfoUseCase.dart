@@ -20,9 +20,9 @@ class GetAllLiquidityInfoUseCase {
 
       if (tokenPairData.isLeft()) {
         final data = tokenPairData.getLeft().toNullable();
-        if (data != null) {
-          print("data retrieved: ${data.toString()}");
-          final user = data["user"];
+        print("data retrieved: ${data.toString()}");
+        final user = data!["user"];
+        if (user != null) {
           print("user retrieved: ${user.toString()}");
           final liquidityPositions = user["liquidityPositions"];
           print("liquidityPositions =  ${liquidityPositions.toString()}");
@@ -74,8 +74,8 @@ class GetAllLiquidityInfoUseCase {
         .toDecimal(
             scaleOnInfinitePrecision:
                 37); //TODO: How to round irrational numbers? https://athletex.atlassian.net/browse/AX-519
-    final String token0LpAmount = (shareOfPool * reserve0).toString();
-    final String token1LpAmount = (shareOfPool * reserve1).toString();
+    final Decimal token0LpAmount = (shareOfPool * reserve0);
+    final Decimal token1LpAmount = (shareOfPool * reserve1);
     final String apy = '0'; // TODO: Implement APY calculation. https://athletex.atlassian.net/browse/AX-509
     return LiquidityPositionInfo(
         token0Name: token0Name,
@@ -85,10 +85,10 @@ class GetAllLiquidityInfoUseCase {
         token0Address: token0Address,
         token1Address: token1Address,
         lpTokenPairAddress: lpTokenPairAddress,
-        lpTokenPairBalance: lpTokenPairBalance.toString(),
-        token0LpAmount: token0LpAmount,
-        token1LpAmount: token1LpAmount,
-        shareOfPool: shareOfPool.toString(),
+        lpTokenPairBalance: lpTokenPairBalance.toStringAsFixed(6),
+        token0LpAmount: token0LpAmount.toStringAsFixed(6),
+        token1LpAmount: token1LpAmount.toStringAsFixed(6),
+        shareOfPool: (shareOfPool * Decimal.fromInt(100)).toStringAsFixed(6),
         apy: apy);
   }
 }

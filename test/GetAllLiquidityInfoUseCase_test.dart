@@ -26,12 +26,13 @@ void main() {
 
     final GetAllLiquidityInfoUseCase useCase =
         GetAllLiquidityInfoUseCase(subGraphRepo);
-    final result = await useCase.fetchAllLiquidityPositions(
-        walletAddress: walletIdTest);
-
+    final result =
+        await useCase.fetchAllLiquidityPositions(walletAddress: walletIdTest);
+    
     assert(result.isLeft());
     final myLiquidityItemInfos =
         result.getLeft().toNullable()!.liquidityPositionsList;
+    print(myLiquidityItemInfos);
     assert(myLiquidityItemInfos![0] ==
         LiquidityPositionInfo(
             token0Name: "AthleteX",
@@ -41,10 +42,10 @@ void main() {
             token0Address: "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df",
             token1Address: "0xce44443d4f652fc6c48f62258c75278e11909d6a",
             lpTokenPairAddress: "0x49c62531a60feb3ccc8f85a6bb897bce53036e5b",
-            lpTokenPairBalance: "86.602540378443863676",
-            token0LpAmount: "7500",
-            token1LpAmount: "1",
-            shareOfPool: "1",
+            lpTokenPairBalance: "86.602540",
+            token0LpAmount: "7500.000000",
+            token1LpAmount: "1.000000",
+            shareOfPool: "100.000000",
             apy: "0"));
     assert(myLiquidityItemInfos![1] ==
         LiquidityPositionInfo(
@@ -55,12 +56,12 @@ void main() {
             token0Address: "0x37d388321c2ce1e130e36443e8dae91836a786c0",
             token1Address: "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df",
             lpTokenPairAddress: "0xe802266d4ed92cc5beb5c065c7b247d572f16ab5",
-            lpTokenPairBalance: "54.77243782262343373",
+            lpTokenPairBalance: "54.772438",
             token0LpAmount:
-                "0.9999966758554333658295323780775610007220832419929938746",
+                "0.999997",
             token1LpAmount:
-                "3000.0299675664666533664286035424856331482552533636647849126",
-            shareOfPool: "0.9999999991666749874311478757398923594",
+                "3000.029968",
+            shareOfPool: "100.000000",
             apy: "0"));
     assert(myLiquidityItemInfos![2] ==
         LiquidityPositionInfo(
@@ -71,10 +72,10 @@ void main() {
             token0Address: "0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df",
             token1Address: "0xdf40952aaa578272061bd40becc125a5a510a62f",
             lpTokenPairAddress: "0xfaaee596be3f5903b1904d7946c19ade39b5813d",
-            lpTokenPairBalance: "86.602540378443863676",
-            token0LpAmount: "7700",
-            token1LpAmount: "0.974101878068420916",
-            shareOfPool: "1",
+            lpTokenPairBalance: "86.602540",
+            token0LpAmount: "7700.000000",
+            token1LpAmount: "0.974102",
+            shareOfPool: "100.000000",
             apy: "0"));
   });
 }
