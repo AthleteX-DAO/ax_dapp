@@ -9,8 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// ignore: must_be_immutable
 class AddLiquidity extends StatefulWidget {
-  AddLiquidity({Key? key}) : super(key: key);
+  Token? token0;
+  Token? token1;
+  AddLiquidity({Key? key, this.token0, this.token1}) : super(key: key);
 
   @override
   State<AddLiquidity> createState() => _AddLiquidityState();
@@ -61,6 +64,13 @@ class _AddLiquidityState extends State<AddLiquidity> {
 
         if (state.status == BlocStatus.initial) {
           bloc.add(PageRefreshEvent());
+        }
+
+        if (widget.token0 != null && widget.token1 != null) {
+          bloc.add(Token0SelectionChanged(token0: widget.token0!));
+          bloc.add(Token1SelectionChanged(token1: widget.token1!));
+          widget.token0 = null;
+          widget.token1 = null;
         }
 
         TextStyle textStyle(Color color, double size, bool isBold) {

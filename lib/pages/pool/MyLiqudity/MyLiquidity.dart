@@ -1,3 +1,4 @@
+import 'package:ax_dapp/pages/pool/MyLiqudity/AddLiquidityTokenPair.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/bloc/MyLiquidityBloc.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/models/MyLiquidityItemInfo.dart';
 import 'package:ax_dapp/service/Dialog.dart';
@@ -8,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyLiquidity extends StatefulWidget {
-  MyLiquidity({Key? key}) : super(key: key);
+  final Function togglePool;
+  MyLiquidity({Key? key, required this.togglePool}) : super(key: key);
 
   @override
   State<MyLiquidity> createState() => _MyLiquidityState();
@@ -182,14 +184,16 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         decoration: boxDecoration(
                             Colors.amber[400]!, 100, 0, Colors.amber[400]!),
                         child: TextButton(
-                            onPressed: () => showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    poolAddLiquidity(
-                                        context,
-                                        (TokenList.tokenList[0].ticker +
-                                            " " +
-                                            TokenList.tokenList[0].name))),
+                            onPressed: () {
+                              AddLiquidityTokenPair tokenPair =
+                                  AddLiquidityTokenPair.fromTokenPairAddresses(
+                                      liquidityPositionInfo.token0Address,
+                                      liquidityPositionInfo.token1Address);
+                              print("Calling togglePool from MyLiquidity:");
+                              widget.togglePool(
+                                  token0: tokenPair.token0,
+                                  token1: tokenPair.token1);
+                            },
                             child: Text(
                               "Add",
                               style: textStyle(Colors.black, 20, true),
@@ -275,12 +279,13 @@ class _MyLiquidityState extends State<MyLiquidity> {
         final bloc = context.read<MyLiquidityBloc>();
         final cards = state.cards;
         if (state.status == BlocStatus.initial) {
-            bloc.add(LoadEvent());
+          bloc.add(LoadEvent());
         }
         if (state.status == BlocStatus.loading) {
           return loading();
         }
-        if (state.status == BlocStatus.no_data || (state.status == BlocStatus.success && state.cards.isEmpty)) {
+        if (state.status == BlocStatus.no_data ||
+            (state.status == BlocStatus.success && state.cards.isEmpty)) {
           return emptyWallet(_layoutWdt, _layoutHgt);
         }
         if (state.status == BlocStatus.no_wallet) {
@@ -329,17 +334,19 @@ class _MyLiquidityState extends State<MyLiquidity> {
       },
     );
   }
-  
+
   Widget emptyWallet(height, width) {
     return Center(
       child: SizedBox(
         height: height,
         width: width,
-        child: Text("Connected wallet does not contain any Liquidity Tokens. You can get your positions on Add Liquidity page.",
+        child: Text(
+            "Connected wallet does not contain any Liquidity Tokens. You can get your positions on Add Liquidity page.",
             style: TextStyle(color: Colors.amber, fontSize: 30)),
       ),
     );
   }
+
   Widget loadingError() {
     return Center(
       child: SizedBox(
@@ -350,7 +357,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
       ),
     );
   }
-  
+
   Widget noWallet() {
     return Center(
       child: SizedBox(

@@ -6,6 +6,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
 import 'package:ax_dapp/repositories/usecases/GetAllLiquidityInfoUseCase.dart';
 import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetWalletAddressUseCase.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -23,39 +24,16 @@ class DesktopPool extends StatefulWidget {
 class _DesktopPoolState extends State<DesktopPool> {
   bool isAllLiquidity = true;
   bool isWeb = true;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  onTokenAmountChange() {
-    // //if from amount changed, autocomplete to amount
-    // if (_tokenAmountOneFocusNode.hasFocus) {
-    //   final tokenOne = double.tryParse(_tokenAmountOneController.text);
-    //
-    //   if (tokenOne != null) {
-    //     //Update amount 1
-    //     token1Amount = double.parse(_tokenAmountOneController.text);
-    //     poolController.updateTopAmount(token1Amount);
-    //   }
-    // }
-    // //if to amount changed, autocomplete from amount
-    // if (_tokenAmountTwoFocusNode.hasFocus) {
-    //   final tokenTwo = double.tryParse(_tokenAmountTwoController.text);
-    //
-    //   if (tokenTwo != null) {
-    //     //Autocomplete and update amount 1
-    //     //Update amount 2
-    //     token2Amount = double.parse(_tokenAmountTwoController.text);
-    //     poolController.updateBottomAmount(token2Amount);
-    //   }
-    // }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+  Token? token0;
+  Token? token1;
+  void togglePool({Token? token0, Token? token1}) {
+    setState(() {
+      if (token0 != null && token1 != null) {
+        this.token0 = token0;
+        this.token1 = token1;
+      }
+      isAllLiquidity = !isAllLiquidity;
+    });
   }
 
   @override
@@ -88,9 +66,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 child: TextButton(
                     onPressed: () {
                       if (!isAllLiquidity) {
-                        setState(() {
-                          isAllLiquidity = true;
-                        });
+                        togglePool();
                       }
                     },
                     child: Text("Add Liquidity",
@@ -105,9 +81,7 @@ class _DesktopPoolState extends State<DesktopPool> {
               child: TextButton(
                 onPressed: () {
                   if (isAllLiquidity) {
-                    setState(() {
-                      isAllLiquidity = false;
-                    });
+                    togglePool();
                   }
                 },
                 child: Text(
@@ -146,6 +120,10 @@ class _DesktopPoolState extends State<DesktopPool> {
     }
 
     //bloc build return widget
+    if (this.token0 != null)
+      print("Inside Desktop Pool: ${this.token0!.ticker}");
+    if (this.token1 != null)
+      print("Inside Desktop Pool: ${this.token1!.ticker}");
     return SingleChildScrollView(
       physics: ClampingScrollPhysics(),
       child: Container(
@@ -165,18 +143,30 @@ class _DesktopPoolState extends State<DesktopPool> {
                 child: (isAllLiquidity)
                     ? BlocProvider(
                         create: (BuildContext context) => PoolBloc(
-                            repo: GetPoolInfoUseCase(
-                              RepositoryProvider.of<GetPairInfoUseCase>(context),
+                              repo: GetPoolInfoUseCase(
+                                RepositoryProvider.of<GetPairInfoUseCase>(
+                                    context),
+                              ),
+                              walletController: Get.find(),
+                              poolController: Get.find(),
+                              token0: this.token0 ?? null,
+                              token1: this.token1 ?? null,
                             ),
-                            walletController: Get.find(),
-                            poolController: Get.find()),
-                        child: AddLiquidity())
+                        child: (this.token0 != null && this.token1 != null)
+                            ? AddLiquidity(
+                                token0: this.token0,
+                                token1: this.token1,
+                              )
+                            : AddLiquidity())
                     : BlocProvider(
                         create: (BuildContext context) => MyLiquidityBloc(
-                            repo: 
-                              RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
-                            controller: GetWalletAddressUseCase(Get.find()),),
-                        child: MyLiquidity()),
+                              repo: RepositoryProvider.of<
+                                  GetAllLiquidityInfoUseCase>(context),
+                              controller: GetWalletAddressUseCase(Get.find()),
+                            ),
+                        child: MyLiquidity(
+                          togglePool: togglePool,
+                        )),
               )
             ],
           )),

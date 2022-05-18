@@ -130,12 +130,13 @@ class _V1AppState extends State<V1App> {
                     ),
                 child: DesktopTrade())
           else if (pageNumber == 2)
-            BlocProvider(
-                create: (BuildContext context) => PoolBloc(
-                    repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-                    walletController: Get.find(),
-                    poolController: Get.find()),
-                child: DesktopPool())
+            // BlocProvider(
+            //     create: (BuildContext context) => PoolBloc(
+            //         repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
+            //         walletController: Get.find(),
+            //         poolController: Get.find()),
+            //     child: DesktopPool())
+            DesktopPool()
           else if (pageNumber == 3)
             DesktopFarm()
         ],

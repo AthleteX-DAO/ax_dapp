@@ -15,11 +15,15 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
   final GetPoolInfoUseCase repo;
   final WalletController walletController;
   final PoolController poolController;
+  final Token? token0;
+  final Token? token1;
 
   PoolBloc(
       {required this.repo,
       required this.walletController,
-      required this.poolController})
+      required this.poolController,
+      this.token0,
+      this.token1})
       : super(PoolState()) {
     on<PageRefreshEvent>(_mapRefreshEventToState);
     on<Token0SelectionChanged>(_mapToken0SelectionChangedEventToState);
@@ -34,7 +38,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     on<SwapTokens>(_mapSwapTokensEventToState);
   }
 
-  get initialState => PoolState();
+  get initialState => PoolState(token0: this.token0, token1: this.token1);
 
   Future<void> _mapRefreshEventToState(
       PageRefreshEvent event, Emitter<PoolState> emit) async {
