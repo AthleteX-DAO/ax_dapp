@@ -1,9 +1,12 @@
 import 'package:ax_dapp/pages/pool/AddLiquidity/AddLiquidity.dart';
 import 'package:ax_dapp/pages/pool/AddLiquidity/bloc/PoolBloc.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/MyLiquidity.dart';
+import 'package:ax_dapp/pages/pool/MyLiqudity/bloc/MyLiquidityBloc.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
+import 'package:ax_dapp/repositories/usecases/GetAllLiquidityInfoUseCase.dart';
 import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/Controller/usecases/GetWalletAddressUseCase.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -168,7 +171,12 @@ class _DesktopPoolState extends State<DesktopPool> {
                             walletController: Get.find(),
                             poolController: Get.find()),
                         child: AddLiquidity())
-                    : MyLiquidity(),
+                    : BlocProvider(
+                        create: (BuildContext context) => MyLiquidityBloc(
+                            repo: 
+                              RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
+                            controller: GetWalletAddressUseCase(Get.find()),),
+                        child: MyLiquidity()),
               )
             ],
           )),
