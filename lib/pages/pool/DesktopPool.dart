@@ -74,8 +74,6 @@ class _DesktopPoolState extends State<DesktopPool> {
     final double toggleWdt = isWeb ? 260 : layoutWdt;
 
     //bloc build return widget
-    String name = "athleteName";
-    var wid = _width;
     PoolController poolController = Get.find();
     return SingleChildScrollView(
       physics: ClampingScrollPhysics(),
