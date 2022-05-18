@@ -11,13 +11,14 @@ class AddLiquidityTokenPair {
 
   factory AddLiquidityTokenPair.fromTokenPairAddresses(
       String token0Address, String token1Address) {
-    int tokenAIndex = TokenList.tokenList
-        .indexWhere((element) => element.address.value == token0Address);
-    int tokenBIndex = TokenList.tokenList
-        .indexWhere((element) => element.address.value == token1Address);
-
-    print('[Console] - token0: ${TokenList.tokenList[tokenAIndex]}');
-    print('[Console] - token1: ${TokenList.tokenList[tokenBIndex]}');
+    int tokenAIndex = TokenList.tokenList.indexWhere(
+        (token) => token.address.value.toLowerCase() == token0Address);
+    int tokenBIndex = TokenList.tokenList.indexWhere(
+        (token) => token.address.value.toLowerCase() == token1Address);
+    print(
+        '[Console] - tokenA index: $tokenAIndex token0 address: $token0Address');
+    print(
+        '[Console] - tokenB index: $tokenBIndex token1 address: $token1Address');
 
     return AddLiquidityTokenPair(
         token0: TokenList.tokenList[tokenAIndex],

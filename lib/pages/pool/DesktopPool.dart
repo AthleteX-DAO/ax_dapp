@@ -152,13 +152,21 @@ class _DesktopPoolState extends State<DesktopPool> {
                               token0: this.token0 ?? null,
                               token1: this.token1 ?? null,
                             ),
-                        child: AddLiquidity())
+                        child: (this.token0 != null && this.token1 != null)
+                            ? AddLiquidity(
+                                token0: this.token0,
+                                token1: this.token1,
+                              )
+                            : AddLiquidity())
                     : BlocProvider(
                         create: (BuildContext context) => MyLiquidityBloc(
-                            repo: 
-                              RepositoryProvider.of<GetAllLiquidityInfoUseCase>(context),
-                            controller: GetWalletAddressUseCase(Get.find()),),
-                        child: MyLiquidity(togglePool: togglePool,)),
+                              repo: RepositoryProvider.of<
+                                  GetAllLiquidityInfoUseCase>(context),
+                              controller: GetWalletAddressUseCase(Get.find()),
+                            ),
+                        child: MyLiquidity(
+                          togglePool: togglePool,
+                        )),
               )
             ],
           )),
