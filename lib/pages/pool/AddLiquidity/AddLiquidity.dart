@@ -112,13 +112,13 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   ? null
                   : () {
                       if (tknNum == 1) {
-                        if (token == token0) {
+                        if (token == token1) {
                           bloc.add(SwapTokens());
                         } else {
                           bloc.add(Token0SelectionChanged(token0: token));
                         }
                       } else {
-                        if (token == token1) {
+                        if (token == token0) {
                           bloc.add(SwapTokens());
                         } else {
                           bloc.add(Token1SelectionChanged(token1: token));
