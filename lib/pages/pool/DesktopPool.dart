@@ -36,7 +36,7 @@ class _DesktopPoolState extends State<DesktopPool> {
         this.token0 = token0;
         this.token1 = token1;
       }
-      currentTabIndex = 1;
+      currentTabIndex = 0;
     });
   }
 
