@@ -55,10 +55,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
       buildWhen: (previous, current) => current != previous,
       builder: (context, state) {
         final bloc = context.read<PoolBloc>();
-        final token0Price = state.token0Price.toStringAsFixed(6);
-        final token1Price = state.token1Price.toStringAsFixed(6);
-        final double balance0 = state.balance0;
-        final double balance1 = state.balance1;
+        final poolInfo = state.poolPairInfo;
+        final balance0 = state.balance0;
+        final balance1 = state.balance1;
         Token? token0 = state.token0;
         Token? token1 = state.token1;
 
@@ -99,10 +98,10 @@ class _AddLiquidityState extends State<AddLiquidity> {
 
         isTokenSelected(Token currentToken, int tknNum) {
           if (tknNum == 1) {
-            return currentToken.address == token0!.address;
+            return currentToken.address == token0.address;
           } else {
             //tknNum == 2
-            return currentToken.address == token1!.address;
+            return currentToken.address == token1.address;
           }
         }
 
@@ -213,21 +212,11 @@ class _AddLiquidityState extends State<AddLiquidity> {
           BoxDecoration decor =
               boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
           if (tknNum == 1) {
-            if (token0 == null)
-              decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
-
-            if (token0 != null) {
               tkr = token0.ticker;
               tokenImage = token0.icon;
-            }
-          } else {
-            if (token1 == null)
-              decor = boxDecoration(Colors.blue, 100, 0, Colors.blue);
-
-            if (token1 != null) {
+          } else {            
               tkr = token1.ticker;
               tokenImage = token1.icon;
-            }
           }
 
           return Container(
@@ -301,14 +290,11 @@ class _AddLiquidityState extends State<AddLiquidity> {
                             child: TextFormField(
                               controller: tokenAmountController,
                               onChanged: (tokenInput) {
-                                if(tknNum == 1){
-                                  bloc.add(Token0InputChanged(
-                                    double.parse(tokenInput)));
+                                if (tknNum == 1) {
+                                  bloc.add(Token0InputChanged(tokenInput));
                                 } else {
-                                  bloc.add(Token1InputChanged(
-                                    double.parse(tokenInput)));
+                                  bloc.add(Token1InputChanged(tokenInput));
                                 }
-                                
                               },
                               style: textStyle(Colors.grey[400]!, 22, false),
                               decoration: InputDecoration(
@@ -428,7 +414,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         Container(
                             margin: EdgeInsets.only(right: 15),
                             child: Text(
-                              "20.24",
+                              "$amountToReceive",
                               style: textStyle(Colors.white, 21, false),
                             )),
                         Column(
@@ -436,7 +422,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              "${token0!.ticker}/${token1!.name}",
+                              "${token0.ticker}/${token1.ticker}",
                               style: textStyle(Colors.white, 15, false),
                             ),
                             Text(
@@ -470,11 +456,11 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        " ${token0!.ticker} per ${token1!.ticker}:",
+                        " ${token0.ticker} per ${token1.ticker}:",
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "$token0Price",
+                        "${poolInfo.token0Price}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                       Text(
@@ -482,7 +468,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "$token1Price",
+                        "${poolInfo.token1Price}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ],
@@ -499,7 +485,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "0.12%",
+                        "${poolInfo.shareOfPool}%",
                         style: textStyle(Colors.white, 15, false),
                       ),
                       Text(
@@ -507,14 +493,14 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "24.12%",
+                        "${poolInfo.apy}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ],
                   ),
                 ),
                 // addLiquidityToolTip(elementWdt),
-                showYouReceived(10),
+                showYouReceived(poolInfo.recieveAmount),
                 ApproveButton(
                     elementWdt * 0.95,
                     40,

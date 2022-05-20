@@ -68,6 +68,7 @@ query {
     reserve1
 		token0Price
     token1Price
+    totalSupply
   }
 }
 """;
