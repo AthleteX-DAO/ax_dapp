@@ -29,4 +29,9 @@ class FarmModel {
       this.dRewards,
       this.dStakeTokenPrice,
       this.dRewardTokenPrice);
+
+  @override
+  String toString() {
+    return 'APTFarmInfo(name: "${this.strName}", address: "${this.strAddress}", stakedAlias: "${this.strStakedAlias}", stakedSymbol: "${this.strStakedSymbol}", rewardSymbol: "${this.strRewardSymbol}", stakeTokenAddress: "${this.strStakeTokenAddress}", rewardTokenAddress: "${this.strRewardTokenAddress}", stakingModule: "${this.strStakingModule}", apr: "${this.dAPR}", tvl: "${this.dTVL}", staked: "${this.dStaked}", rewards: "${this.dRewards}", stakeTokenPrice: "${this.dStakeTokenPrice}", rewardTokenPrice: "${this.dRewardTokenPrice}")';
+  }
 }
