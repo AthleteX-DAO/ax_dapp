@@ -1,77 +1,90 @@
 part of 'package:ax_dapp/pages/pool/AddLiquidity/bloc/PoolBloc.dart';
 
 class PoolState extends Equatable {
-  final double shareOfPoolPercentage;
-  final double expectedYield;
-  final double balance0;
-  final double balance1;
-  final Token? token0;
-  final Token? token1;
+  final String shareOfPool;
+  final String apy;
+  final String balance0;
+  final String balance1;
   final double token0AmountInput;
   final double token1AmountInput;
+  final Token token0;
+  final Token token1;
   final BlocStatus status;
-  final double token0Price;
-  final double token1Price;
+  final PoolPairInfo poolPairInfo;
 
-  PoolState(
-      {this.status = BlocStatus.initial,
-      Token? token0,
-      Token? token1,
-      double? balance0,
-      double? balance1,
-      double? shareOfPoolPercentage,
-      double? expectedYield,
-      double? token0AmountInput,
-      double? token1AmountInput,
-      double? token0Price,
-      double? token1Price})
-      : token0 = token0 ?? TokenList.tokenList[0],
-        token1 = token1 ?? TokenList.tokenList[1],
-        balance0 = balance0 ?? 0.0,
-        balance1 = balance1 ?? 0.0,
-        shareOfPoolPercentage = shareOfPoolPercentage ?? 0.0,
-        expectedYield = expectedYield ?? 0.0,
-        token0AmountInput = token0AmountInput ?? 0.0,
-        token1AmountInput = token1AmountInput ?? 0.0,
-        token0Price = token0Price ?? 0.0,
-        token1Price = token1Price ?? 0.0;
+  factory PoolState.initial() {
+    return PoolState(
+        shareOfPool: '0.0',
+        apy: '0.0',
+        balance0: "0.0",
+        balance1: "0.0",
+        token0AmountInput: 0.0,
+        token1AmountInput: 0.0,
+        token0: TokenList.tokenList[0],
+        token1: TokenList.tokenList[1],
+        status: BlocStatus.initial,
+        poolPairInfo: PoolPairInfo.empty());
+  }
+
+  PoolState({
+    required this.shareOfPool,
+    required this.apy,
+    required this.balance0,
+    required this.balance1,
+    required this.token0AmountInput,
+    required this.token1AmountInput,
+    required this.token0,
+    required this.token1,
+    required this.status,
+    required this.poolPairInfo,
+  });
 
   @override
-  List<Object?> get props => [
-        token0,
-        token1,
-        shareOfPoolPercentage,
-        expectedYield,
-        status,
-        token0Price,
-        token1Price
-      ];
+  List<Object> get props {
+    return [
+      shareOfPool,
+      apy,
+      balance0,
+      balance1,
+      token0AmountInput,
+      token1AmountInput,
+      token0,
+      token1,
+      status,
+      poolPairInfo,
+    ];
+  }
 
-  PoolState copy(
-      {BlocStatus? status,
-      Token? token0,
-      Token? token1,
-      PoolPairInfo? pairInfo,
-      double? shareOfPoolPercentage,
-      double? expectedYield,
-      double? balance0,
-      double? balance1,
-      double? token0AmountInput,
-      double? token1AmountInput,
-      double? token0Price,
-      double? token1Price}) {
+  
+
+  @override
+  String toString() {
+    return 'PoolState(shareOfPool: $shareOfPool, apy: $apy, balance0: $balance0, balance1: $balance1, token0AmountInput: $token0AmountInput, token1AmountInput: $token1AmountInput, token0: $token0, token1: $token1, status: $status, poolPairInfo: $poolPairInfo)';
+  }
+
+  PoolState copyWith({
+    String? shareOfPool,
+    String? apy,
+    String? balance0,
+    String? balance1,
+    double? token0AmountInput,
+    double? token1AmountInput,
+    Token? token0,
+    Token? token1,
+    BlocStatus? status,
+    PoolPairInfo? poolPairInfo,
+  }) {
     return PoolState(
-        status: status ?? BlocStatus.initial,
-        token0: token0 ?? this.token0,
-        token1: token1 ?? this.token1,
-        shareOfPoolPercentage:
-            shareOfPoolPercentage ?? this.shareOfPoolPercentage,
-        expectedYield: expectedYield ?? this.expectedYield,
-        balance0: balance0 ?? this.balance0,
-        balance1: balance1 ?? this.balance1,
-        token0AmountInput: token0AmountInput ?? this.token0AmountInput,
-        token1AmountInput: token1AmountInput ?? this.token1AmountInput,
-        token0Price: token0Price ?? this.token0Price,
-        token1Price: token1Price ?? this.token1Price);
+      shareOfPool: shareOfPool ?? this.shareOfPool,
+      apy: apy ?? this.apy,
+      balance0: balance0 ?? this.balance0,
+      balance1: balance1 ?? this.balance1,
+      token0AmountInput: token0AmountInput ?? this.token0AmountInput,
+      token1AmountInput: token1AmountInput ?? this.token1AmountInput,
+      token0: token0 ?? this.token0,
+      token1: token1 ?? this.token1,
+      status: status ?? this.status,
+      poolPairInfo: poolPairInfo ?? this.poolPairInfo,
+    );
   }
 }

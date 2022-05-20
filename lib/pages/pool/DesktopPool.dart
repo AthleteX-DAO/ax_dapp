@@ -133,8 +133,6 @@ class _DesktopPoolState extends State<DesktopPool> {
                                 ),
                                 walletController: Get.find(),
                                 poolController: Get.find(),
-                                token0: this.token0 ?? null,
-                                token1: this.token1 ?? null,
                               ),
                           child: (this.token0 != null && this.token1 != null)
                               ? AddLiquidity(

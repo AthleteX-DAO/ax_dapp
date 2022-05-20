@@ -37,7 +37,7 @@ class MaxToken1InputButtonClicked extends PoolEvent {
 }
 
 class Token0InputChanged extends PoolEvent {
-  final double token0Input;
+  final String token0Input;
 
   Token0InputChanged(this.token0Input);
 
@@ -46,7 +46,7 @@ class Token0InputChanged extends PoolEvent {
 }
 
 class Token1InputChanged extends PoolEvent {
-  final double token1Input;
+  final String token1Input;
 
   Token1InputChanged(this.token1Input);
 
