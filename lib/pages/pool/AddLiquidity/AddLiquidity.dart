@@ -485,7 +485,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "${poolInfo.shareOfPool}",
+                        "${poolInfo.shareOfPool}%",
                         style: textStyle(Colors.white, 15, false),
                       ),
                       Text(
