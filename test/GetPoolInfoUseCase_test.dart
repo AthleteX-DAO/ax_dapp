@@ -26,19 +26,19 @@ void main() {
       () async {
     final targetTokenA = "targetTokenA";
     final targetTokenB = "targetTokenB";
-    final tokenAPrice = "1.01";
-    final tokenBPrice = "1.3";
+    final tokenAPrice = "1.010000";
+    final tokenBPrice = "1.300000";
 
     final poolPairInfo = TokenPair(
       "testId",
       "testName",
-      "testReserve0",
-      "testReserve1",
+      "100",
+      "100",
       Token(targetTokenA.toLowerCase(), "tokenAName", null),
       Token(targetTokenB.toLowerCase(), "tokenBName", null),
       tokenAPrice,
       tokenBPrice,
-      null
+      "100"
     );
 
     final Success testSuccessResponse = Success(poolPairInfo);
@@ -51,10 +51,8 @@ void main() {
         tokenA: targetTokenA, tokenB: targetTokenB);
 
     assert(response.isLeft());
-    assert(response.getLeft().toNullable()!.pairInfo.token0Price ==
-        double.parse(tokenAPrice));
-    assert(response.getLeft().toNullable()!.pairInfo.token1Price ==
-        double.parse(tokenBPrice));
+    assert(response.getLeft().toNullable()!.pairInfo.token0Price == tokenAPrice);
+    assert(response.getLeft().toNullable()!.pairInfo.token1Price == tokenBPrice);
     expect(
         verify(mockRepo.fetchPairInfo(
                 tokenA: captureAnyNamed('tokenA'),
@@ -68,19 +66,19 @@ void main() {
       () async {
     final targetTokenA = "targetTokenA";
     final targetTokenB = "targetTokenB";
-    final tokenAPrice = "1.01";
-    final tokenBPrice = "1.3";
+    final tokenAPrice = "1.010000";
+    final tokenBPrice = "1.300000";
 
     final poolPairInfo = TokenPair(
       "testId",
       "testName",
-      "testReserve0",
-      "testReserve1",
+      "100",
+      "100",
       Token(targetTokenB.toLowerCase(), "tokenBName", null),
       Token(targetTokenA.toLowerCase(), "tokenAName", null),
       tokenAPrice,
       tokenBPrice,
-      null,
+      "100",
     );
 
     final Success testSuccessResponse = Success(poolPairInfo);
@@ -93,10 +91,8 @@ void main() {
         tokenA: targetTokenA, tokenB: targetTokenB);
 
     assert(response.isLeft());
-    assert(response.getLeft().toNullable()!.pairInfo.token0Price ==
-        double.parse(tokenBPrice));
-    assert(response.getLeft().toNullable()!.pairInfo.token1Price ==
-        double.parse(tokenAPrice));
+    assert(response.getLeft().toNullable()!.pairInfo.token0Price == tokenBPrice);
+    assert(response.getLeft().toNullable()!.pairInfo.token1Price == tokenAPrice);
     expect(
         verify(mockRepo.fetchPairInfo(
           tokenB: captureAnyNamed('tokenB'),
