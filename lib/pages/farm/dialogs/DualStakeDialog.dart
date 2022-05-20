@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 import 'package:ax_dapp/pages/farm/modules/DialogTextStyle.dart';
 
-import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
+import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/pages/farm/dialogs/TrxConfirmedDialog.dart';
 
-Dialog DualStakeDialog(BuildContext context, Farm selectedFarm, String athlete,
-    double layoutWdt, bool isWeb) {
+Dialog DualStakeDialog(BuildContext context, FarmController selectedFarm,
+    String athlete, double layoutWdt, bool isWeb) {
   double _height = MediaQuery.of(context).size.height;
   double wid = isWeb ? 390 : layoutWdt;
   double hgt = _height < 455 ? _height : 450;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
+import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:ax_dapp/pages/farm/components/SingleLogoFarmTitle.dart';
 import 'package:ax_dapp/pages/farm/components/DoubleLogoFarmTitle.dart';
 import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 
-Widget FarmItem(BuildContext context, bool isWeb, Farm farm, double listHeight,
-    double layoutWdt) {
+Widget FarmItem(BuildContext context, bool isWeb, FarmController farm,
+    double listHeight, double layoutWdt) {
   double minCardHeight = 200;
   double maxCardHeight = 350;
   double cardWidth = isWeb ? 500 : layoutWdt;
@@ -44,7 +44,6 @@ Widget FarmItem(BuildContext context, bool isWeb, Farm farm, double listHeight,
               "TVL",
               style: txStyle,
             ),
-            // Obx(() => Text("\$${farm.strTVL}", style: txStyle))
             Text("\$${farm.dTVL.toStringAsFixed(2)}", style: txStyle)
           ],
         ),
@@ -54,7 +53,6 @@ Widget FarmItem(BuildContext context, bool isWeb, Farm farm, double listHeight,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text("Total APR", style: txStyle),
-            // Obx(() => Text("${farm.strAPR}%", style: txStyle))
             Text("${farm.dAPR.toStringAsFixed(2)}%", style: txStyle)
           ],
         ),

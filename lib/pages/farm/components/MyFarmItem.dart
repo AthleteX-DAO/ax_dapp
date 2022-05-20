@@ -3,14 +3,14 @@ import 'package:ax_dapp/pages/farm/dialogs/UnstakeDialog.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
+import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:ax_dapp/pages/farm/components/SingleLogoFarmTitle.dart';
 import 'package:ax_dapp/pages/farm/components/DoubleLogoFarmTitle.dart';
 import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 
 // First card of the my farms page is unique
-Widget MyFarmItem(BuildContext context, bool isWeb, Farm farm,
+Widget MyFarmItem(BuildContext context, bool isWeb, FarmController farm,
     double listHeight, double layoutWidth) {
   double minCardHeight = 450;
   double maxCardHeight = 500;

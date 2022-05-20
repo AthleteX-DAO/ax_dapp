@@ -6,7 +6,7 @@ import 'package:ax_dapp/pages/farm/dialogs/UnstakeConfirmedDialog.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 import 'package:ax_dapp/pages/farm/modules/DialogTextStyle.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
-import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
+import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 
 Future<void> testFunction() async {
   print("[Console] hello world");
@@ -14,13 +14,13 @@ Future<void> testFunction() async {
 }
 
 Dialog UnstakeDialog(
-    BuildContext context, Farm farm, double layoutWdt, bool isWeb) {
+    BuildContext context, FarmController farm, double layoutWdt, bool isWeb) {
   double _height = MediaQuery.of(context).size.height;
   double wid = isWeb ? 390 : layoutWdt;
   double hgt = _height < 455 ? _height : 450;
   double dialogHorPadding = 30;
 
-  Farm selectedFarm = Farm.fromFarm(farm);
+  FarmController selectedFarm = FarmController.fromFarm(farm);
   RxDouble totalStakedBalance = 0.0.obs;
   TextEditingController unStakeAxInput = TextEditingController();
 

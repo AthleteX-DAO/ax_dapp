@@ -1,14 +1,24 @@
-import 'package:ax_dapp/pages/farm/components/FarmItem.dart';
-import 'package:ax_dapp/pages/farm/components/MyFarmItem.dart';
+import 'package:ax_dapp/pages/farm/components/LoadingError.dart';
+import 'package:ax_dapp/pages/farm/components/NoData.dart';
+import 'package:ax_dapp/pages/farm/components/NoWallet.dart';
+import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:get/get.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
-import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
+import 'package:ax_dapp/pages/farm/bloc/FarmBloc.dart';
+import 'package:ax_dapp/pages/farm/bloc/FarmEvent.dart';
+import 'package:ax_dapp/pages/farm/bloc/FarmState.dart';
+import 'package:ax_dapp/pages/farm/components/Loading.dart';
+import 'package:ax_dapp/pages/farm/components/FarmItem.dart';
+import 'package:ax_dapp/pages/farm/components/MyFarmItem.dart';
+import 'package:ax_dapp/pages/farm/usecases/GetFarmDataUseCase.dart';
 import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
+import 'package:ax_dapp/service/Controller/usecases/GetWalletAddressUseCase.dart';
 
 class DesktopFarm extends StatefulWidget {
   const DesktopFarm({Key? key}) : super(key: key);
@@ -18,25 +28,17 @@ class DesktopFarm extends StatefulWidget {
 }
 
 class _DesktopFarmState extends State<DesktopFarm> {
-  final farmController = FarmController();
   final myController = TextEditingController();
   bool isWeb = true;
   bool isAllFarms = true;
 
-  /// initialize farms list from the farm controller
-  /// will update it as async function
-  void initAsyncState() {}
-
   // ignore: must_call_super
-  void initState() {
-    initAsyncState();
-  }
+  void initState() {}
 
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
     // widget tree.
-    farmController.dispose();
     myController.dispose();
     super.dispose();
   }
@@ -59,94 +61,133 @@ class _DesktopFarmState extends State<DesktopFarm> {
           : EdgeInsets.only(top: AppBar().preferredSize.height + 10),
       alignment: Alignment.center,
       child: Container(
-        //outermost dimensions for farm section
-        width: layoutWdt,
-        height: layoutHgt,
-        child: farmLayout(layoutHgt, layoutWdt),
-      ),
+          //outermost dimensions for farm section
+          width: layoutWdt,
+          height: layoutHgt,
+          // child:  FarmLayout(layoutHgt, layoutWdt),
+          child: BlocProvider(
+              create: (BuildContext context) => FarmBloc(
+                  repo: GetFarmDataUseCase(),
+                  controller: GetWalletAddressUseCase(Get.find())),
+              child: FarmLayout(layoutHgt, layoutWdt))),
     );
   }
 
-  Widget farmLayout(double layoutHgt, double layoutWdt) {
+  Widget FarmLayout(double layoutHgt, double layoutWdt) {
     //Contains Participating farms, search bar, toggle buttons and cards for all farms
     double listHeight = (isWeb && isAllFarms) ? 225 : layoutHgt * 0.80;
     //If web and in MyFarms list height 500
     if (isWeb && !isAllFarms) listHeight = 500;
 
-    Widget toggle = toggleFarmButton(layoutWdt, layoutHgt);
+    final double _layoutHgt = layoutHgt * 0.8;
+    final double _layoutWdt = isWeb ? layoutWdt * 0.8 : layoutWdt * 0.9;
 
-    return Wrap(runSpacing: layoutHgt * 0.02, children: <Widget>[
-      Row(
-        mainAxisAlignment:
-            isWeb ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            width: isWeb ? 300 : layoutWdt / 2,
-            height: isWeb ? 45 : layoutHgt * 0.05,
-            child: isAllFarms
-                ? Text(
-                    "Participating Farms",
-                    style: textStyle(Colors.white, 24, true, false),
-                  )
-                : Container(
-                    child: Text(
-                      "My Farms",
-                      style: textStyle(Colors.white, 24, true, false),
-                    ),
+    return BlocBuilder<FarmBloc, FarmState>(
+        buildWhen: (((previous, current) => previous != current)),
+        builder: (context, state) {
+          final bloc = context.read<FarmBloc>();
+          final farms = state.farms;
+          final stakedFarms = state.stakedFarms;
+          Widget widget = loading();
+
+          if (state.status == BlocStatus.initial) {
+            if (state.isAllFarms)
+              bloc.add(OnLoadFarms());
+            else
+              bloc.add(OnLoadStakedFarms());
+          }
+
+          if (state.status == BlocStatus.error) {
+            widget = loadingError();
+          }
+
+          if (state.status == BlocStatus.no_data) {
+            widget = noData(_layoutHgt, _layoutWdt);
+          }
+
+          if (!state.isAllFarms && state.status == BlocStatus.no_wallet) {
+            widget = noWallet();
+          }
+
+          Widget toggle = toggleFarmButton(bloc, layoutWdt, layoutHgt);
+
+          return Wrap(runSpacing: layoutHgt * 0.02, children: <Widget>[
+            Row(
+              mainAxisAlignment: isWeb
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: isWeb ? 300 : layoutWdt / 2,
+                  height: isWeb ? 45 : layoutHgt * 0.05,
+                  child: isAllFarms
+                      ? Text(
+                          "Participating Farms",
+                          style: textStyle(Colors.white, 24, true, false),
+                        )
+                      : Container(
+                          child: Text(
+                            "My Farms",
+                            style: textStyle(Colors.white, 24, true, false),
+                          ),
+                        ),
+                ),
+                if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
+              ],
+            ),
+            if (isWeb)
+              Row(
+                children: <Widget>[
+                  createSearchBar(bloc, layoutWdt, layoutHgt),
+                  SizedBox(width: 50),
+                  toggle
+                ],
+              ),
+            if (!isWeb) toggle,
+            Container(
+              //contains list of allfarms cards
+              width: layoutWdt,
+              height: listHeight,
+              child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(
+                    dragDevices: {
+                      PointerDeviceKind.mouse,
+                      PointerDeviceKind.touch,
+                    },
                   ),
-          ),
-          if (!isWeb) createSearchBar(layoutWdt, layoutHgt),
-        ],
-      ),
-      if (isWeb)
-        Row(
-          children: <Widget>[
-            createSearchBar(layoutWdt, layoutHgt),
-            SizedBox(width: 50),
-            toggle
-          ],
-        ),
-      if (!isWeb) toggle,
-      Container(
-        //contains list of allfarms cards
-        width: layoutWdt,
-        height: listHeight,
-        child: ScrollConfiguration(
-          behavior: ScrollConfiguration.of(context).copyWith(
-            dragDevices: {
-              PointerDeviceKind.mouse,
-              PointerDeviceKind.touch,
-            },
-          ),
-          child: Obx(() => ListView.builder(
-                padding: EdgeInsets.zero,
-                scrollDirection: isWeb ? Axis.horizontal : Axis.vertical,
-                physics: BouncingScrollPhysics(),
-                itemCount: isAllFarms
-                    ? farmController.filteredAllFarms.length
-                    : farmController.filteredStakedFarms.length,
-                itemBuilder: (context, index) {
-                  return isAllFarms
-                      ? FarmItem(
-                          context,
-                          isWeb,
-                          farmController.filteredAllFarms[index],
-                          listHeight,
-                          layoutWdt)
-                      : MyFarmItem(
-                          context,
-                          isWeb,
-                          farmController.filteredStakedFarms[index],
-                          listHeight,
-                          layoutWdt);
-                },
-              )),
-        ),
-      ),
-    ]);
+                  child: state.status != BlocStatus.success
+                      ? widget
+                      : ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection:
+                              isWeb ? Axis.horizontal : Axis.vertical,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: isAllFarms
+                              ? state.farms.length
+                              : state.stakedFarms.length,
+                          itemBuilder: (context, index) {
+                            return isAllFarms
+                                ? FarmItem(
+                                    context,
+                                    isWeb,
+                                    FarmController(state.farms[index]),
+                                    listHeight,
+                                    layoutWdt)
+                                : MyFarmItem(
+                                    context,
+                                    isWeb,
+                                    FarmController(state.stakedFarms[index]),
+                                    listHeight,
+                                    layoutWdt);
+                          },
+                        )),
+            ),
+          ]);
+        });
   }
 
-  Container toggleFarmButton(double layoutWdt, double layoutHgt) {
+  Container toggleFarmButton(
+      FarmBloc bloc, double layoutWdt, double layoutHgt) {
     return Container(
       width: isWeb ? 200 : layoutWdt,
       height: 40,
@@ -166,6 +207,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       myController.clear();
                       setState(() {
                         isAllFarms = true;
+                        bloc.add(OnChangeFarmTab(isAllFarms: true));
                       });
                     }
                   },
@@ -183,8 +225,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     if (isAllFarms) {
                       myController.clear();
                       setState(() {
-                        // myFarmsListSearchFilter = myFarmsList;
                         isAllFarms = false;
+                        bloc.add(OnChangeFarmTab(isAllFarms: false));
                       });
                     }
                   },
@@ -195,7 +237,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
   }
 
-  Widget createSearchBar(double layoutWdt, double layoutHgt) {
+  Widget createSearchBar(FarmBloc bloc, double layoutWdt, double layoutHgt) {
     return Container(
       width: isWeb ? 250 : layoutWdt / 2,
       height: isWeb ? 40 : layoutHgt * 0.05,
@@ -214,9 +256,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
               child: TextFormField(
                 controller: myController,
                 onChanged: (value) {
-                  setState(() {
-                    farmController.filterFarms(value);
-                  });
+                  bloc.add(OnSearchFarms(searchedName: value));
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,

@@ -4,16 +4,30 @@ import 'package:ax_dapp/pages/farm/models/FarmModel.dart';
 
 class FarmState extends Equatable {
   final List<FarmModel> farms;
+  final List<FarmModel> stakedFarms;
   final BlocStatus status;
+  final bool isAllFarms;
 
-  const FarmState({this.status = BlocStatus.initial, List<FarmModel>? farms})
-      : farms = farms ?? const [];
+  const FarmState(
+      {this.status = BlocStatus.initial,
+      this.isAllFarms = true,
+      List<FarmModel>? farms,
+      List<FarmModel>? stakedFarms})
+      : farms = farms ?? const [],
+        stakedFarms = stakedFarms ?? const [];
 
   @override
-  List<Object?> get props => [farms];
+  List<Object?> get props => [farms, stakedFarms, isAllFarms, status];
 
-  FarmState copy({List<FarmModel>? farms, BlocStatus? status}) {
+  FarmState copy(
+      {List<FarmModel>? farms,
+      List<FarmModel>? stakedFarms,
+      BlocStatus? status,
+      bool? isAllFarms}) {
     return FarmState(
-        farms: farms ?? this.farms, status: status ?? BlocStatus.initial);
+        farms: farms ?? this.farms,
+        stakedFarms: stakedFarms ?? this.stakedFarms,
+        status: status ?? this.status,
+        isAllFarms: isAllFarms ?? this.isAllFarms);
   }
 }
