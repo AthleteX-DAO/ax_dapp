@@ -4,7 +4,7 @@ import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 import 'package:ax_dapp/pages/farm/modules/DialogTextStyle.dart';
 
 // dynamic
-Dialog RewardClaimDialog(BuildContext context) {
+Dialog rewardClaimDialog(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = _width < 505 ? _width : 500;

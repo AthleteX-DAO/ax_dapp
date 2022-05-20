@@ -13,7 +13,7 @@ Future<void> testFunction() async {
   return;
 }
 
-Dialog UnstakeDialog(
+Dialog unstakeDialog(
     BuildContext context, FarmController farm, double layoutWdt, bool isWeb) {
   double _height = MediaQuery.of(context).size.height;
   double wid = isWeb ? 390 : layoutWdt;
@@ -227,7 +227,7 @@ Dialog UnstakeDialog(
               ), */
               //ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
               ApproveButton(175, 45, 'Approve', testFunction,
-                  selectedFarm.unstake, UnstakeConfirmedDialog),
+                  selectedFarm.unstake, unstakeConfirmedDialog),
             ],
           )
         ],

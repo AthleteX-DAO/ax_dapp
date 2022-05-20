@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 import 'package:ax_dapp/pages/farm/modules/DialogTextStyle.dart';
 
-Dialog UnstakeConfirmedDialog(BuildContext context) {
+Dialog unstakeConfirmedDialog(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
   double wid = 500;

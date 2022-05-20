@@ -10,7 +10,7 @@ import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 
 // First card of the my farms page is unique
-Widget MyFarmItem(BuildContext context, bool isWeb, FarmController farm,
+Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
     double listHeight, double layoutWidth) {
   double minCardHeight = 450;
   double maxCardHeight = 500;
@@ -23,9 +23,9 @@ Widget MyFarmItem(BuildContext context, bool isWeb, FarmController farm,
 
   Widget farmTitleWidget;
   if (farm.athlete == null)
-    farmTitleWidget = SingleLogoFarmTitle(context, isWeb, farm, cardWidth);
+    farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
   else
-    farmTitleWidget = DoubleLogoFarmTitle(context, isWeb, farm, cardWidth);
+    farmTitleWidget = doubleLogoFarmTitle(context, isWeb, farm, cardWidth);
 
   return Container(
     margin: isWeb
@@ -160,7 +160,7 @@ Widget MyFarmItem(BuildContext context, bool isWeb, FarmController farm,
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    RewardClaimDialog(context))
+                                    rewardClaimDialog(context))
                           },
                       child: Text("Claim Rewards",
                           style: textStyle(Colors.black, 14, true, false)))),
@@ -174,7 +174,7 @@ Widget MyFarmItem(BuildContext context, bool isWeb, FarmController farm,
                       onPressed: () => showDialog(
                           context: context,
                           builder: (BuildContext context) =>
-                              UnstakeDialog(context, farm, cardWidth, isWeb)),
+                              unstakeDialog(context, farm, cardWidth, isWeb)),
                       child: Text("Unstake Liquidity",
                           style:
                               textStyle(Colors.amber[600]!, 14, true, false)))),

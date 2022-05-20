@@ -9,7 +9,7 @@ import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/pages/farm/dialogs/TrxConfirmedDialog.dart';
 
-Dialog DualStakeDialog(BuildContext context, FarmController selectedFarm,
+Dialog dualStakeDialog(BuildContext context, FarmController selectedFarm,
     String athlete, double layoutWdt, bool isWeb) {
   double _height = MediaQuery.of(context).size.height;
   double wid = isWeb ? 390 : layoutWdt;

@@ -69,11 +69,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
               create: (BuildContext context) => FarmBloc(
                   repo: GetFarmDataUseCase(),
                   controller: GetWalletAddressUseCase(Get.find())),
-              child: FarmLayout(layoutHgt, layoutWdt))),
+              child: farmLayout(layoutHgt, layoutWdt))),
     );
   }
 
-  Widget FarmLayout(double layoutHgt, double layoutWdt) {
+  Widget farmLayout(double layoutHgt, double layoutWdt) {
     //Contains Participating farms, search bar, toggle buttons and cards for all farms
     double listHeight = (isWeb && isAllFarms) ? 225 : layoutHgt * 0.80;
     //If web and in MyFarms list height 500
@@ -86,8 +86,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
         buildWhen: (((previous, current) => previous != current)),
         builder: (context, state) {
           final bloc = context.read<FarmBloc>();
-          final farms = state.farms;
-          final stakedFarms = state.stakedFarms;
           Widget widget = loading();
 
           if (state.status == BlocStatus.initial) {
@@ -167,13 +165,13 @@ class _DesktopFarmState extends State<DesktopFarm> {
                               : state.stakedFarms.length,
                           itemBuilder: (context, index) {
                             return isAllFarms
-                                ? FarmItem(
+                                ? farmItem(
                                     context,
                                     isWeb,
                                     FarmController(state.farms[index]),
                                     listHeight,
                                     layoutWdt)
-                                : MyFarmItem(
+                                : myFarmItem(
                                     context,
                                     isWeb,
                                     FarmController(state.stakedFarms[index]),

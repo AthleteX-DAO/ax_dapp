@@ -6,7 +6,7 @@ import 'package:ax_dapp/pages/farm/components/DoubleLogoFarmTitle.dart';
 import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 
-Widget FarmItem(BuildContext context, bool isWeb, FarmController farm,
+Widget farmItem(BuildContext context, bool isWeb, FarmController farm,
     double listHeight, double layoutWdt) {
   double minCardHeight = 200;
   double maxCardHeight = 350;
@@ -18,9 +18,9 @@ Widget FarmItem(BuildContext context, bool isWeb, FarmController farm,
   TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
   Widget farmTitleWidget;
   if (farm.athlete == null) {
-    farmTitleWidget = SingleLogoFarmTitle(context, isWeb, farm, cardWidth);
+    farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
   } else {
-    farmTitleWidget = DoubleLogoFarmTitle(context, isWeb, farm, cardWidth);
+    farmTitleWidget = doubleLogoFarmTitle(context, isWeb, farm, cardWidth);
   }
 
   return Container(

@@ -6,15 +6,15 @@ import 'package:ax_dapp/pages/farm/dialogs/DualStakeDialog.dart';
 import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 
-Widget SingleLogoFarmTitle(
+Widget singleLogoFarmTitle(
     BuildContext context, bool isWeb, FarmController farm, double cardWidth) {
   //Dialog that appears when stake button is pressed
   Dialog participatingDialog;
   if (farm.athlete == null) {
-    participatingDialog = StakeDialog(context, farm, cardWidth, isWeb);
+    participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
   } else {
     participatingDialog =
-        DualStakeDialog(context, farm, farm.athlete!, cardWidth, isWeb);
+        dualStakeDialog(context, farm, farm.athlete!, cardWidth, isWeb);
   }
   return Container(
       width: cardWidth,
