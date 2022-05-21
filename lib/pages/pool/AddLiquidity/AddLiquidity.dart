@@ -20,9 +20,6 @@ class AddLiquidity extends StatefulWidget {
 }
 
 class _AddLiquidityState extends State<AddLiquidity> {
-  late double token1Amount;
-  late double token2Amount;
-
   final TextEditingController _tokenAmountOneController =
       TextEditingController();
   final TextEditingController _tokenAmountTwoController =
@@ -197,6 +194,23 @@ class _AddLiquidityState extends State<AddLiquidity> {
           );
         }
 
+        onTokenInputChange(tokenNumber, tokenInput) {
+          if (tokenInput == '') {
+            tokenInput = '0';
+          }
+          if (tokenNumber == 1) {
+            bloc.add(Token0InputChanged(tokenInput.toString()));
+            final tokenTwoAmount = double.parse(tokenInput) / poolInfo.ratio;
+            _tokenAmountTwoController.text = tokenTwoAmount.toStringAsFixed(6);
+            bloc.add(Token1InputChanged(tokenTwoAmount.toString()));
+          } else {
+            bloc.add(Token1InputChanged(tokenInput.toString()));
+            final tokenOneAmount = double.parse(tokenInput) * poolInfo.ratio;
+            _tokenAmountOneController.text = tokenOneAmount.toStringAsFixed(6);
+            bloc.add(Token0InputChanged(tokenOneAmount.toString()));
+          }
+        }
+
         Widget createTokenButton(
           int tknNum,
           double elementWdt,
@@ -212,11 +226,11 @@ class _AddLiquidityState extends State<AddLiquidity> {
           BoxDecoration decor =
               boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
           if (tknNum == 1) {
-              tkr = token0.ticker;
-              tokenImage = token0.icon;
-          } else {            
-              tkr = token1.ticker;
-              tokenImage = token1.icon;
+            tkr = token0.ticker;
+            tokenImage = token0.icon;
+          } else {
+            tkr = token1.ticker;
+            tokenImage = token1.icon;
           }
 
           return Container(
@@ -272,16 +286,21 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         child: Row(
                       children: <Widget>[
                         //Max Button
-                        Container(
-                            height: 24,
-                            width: 40,
-                            decoration: boxDecoration(Colors.transparent, 100,
-                                0.5, Colors.grey[400]!),
-                            child: TextButton(
-                                onPressed: () {},
-                                child: Text("MAX",
-                                    style: textStyle(
-                                        Colors.grey[400]!, 8, false)))),
+                        if (tknNum == 1) ...[
+                          Container(
+                              height: 24,
+                              width: 40,
+                              decoration: boxDecoration(Colors.transparent, 100,
+                                  0.5, Colors.grey[400]!),
+                              child: TextButton(
+                                  onPressed: () {
+                                    _tokenAmountOneController.text = balance0;
+                                    onTokenInputChange(tknNum, balance0);
+                                  },
+                                  child: Text("MAX",
+                                      style: textStyle(
+                                          Colors.grey[400]!, 8, false))))
+                        ],
                         //Amount input box
                         ConstrainedBox(
                           constraints:
@@ -290,11 +309,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                             child: TextFormField(
                               controller: tokenAmountController,
                               onChanged: (tokenInput) {
-                                if (tknNum == 1) {
-                                  bloc.add(Token0InputChanged(tokenInput));
-                                } else {
-                                  bloc.add(Token1InputChanged(tokenInput));
-                                }
+                                onTokenInputChange(tknNum, tokenInput);
                               },
                               style: textStyle(Colors.grey[400]!, 22, false),
                               decoration: InputDecoration(
