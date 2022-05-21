@@ -7,7 +7,6 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -25,6 +24,11 @@ class _MyLiquidityState extends State<MyLiquidity> {
   double _width = 0;
   double _layoutHgt = 0;
   int currentTabIndex = 0;
+  PoolController poolController = Get.find();
+  double value = 0;
+
+  double originalTokenAmount = 1124.4752;
+  double tokenAmount = 1124.4752;
 
   @override
   Widget build(BuildContext context) {
@@ -301,7 +305,6 @@ class _MyLiquidityState extends State<MyLiquidity> {
         }
         String athleteName = "athleteName";
 
-        PoolController poolController = Get.find();
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,7 +355,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                        height: _layoutWdt * 0.38,
+                        height: _layoutWdt * 0.42,
                         width: _width * 0.5,
                         padding:
                             EdgeInsets.symmetric(vertical: 22, horizontal: 30),
@@ -370,15 +373,136 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                     children: <Widget>[
                                       Text(
                                         "Remove Liquidity",
-                                        style: textStyle(Colors.white, 20, false),
+                                        style:
+                                            textStyle(Colors.white, 20, false),
                                       ),
                                     ]),
+                                Column(
+                                  children: [
+                                    Text("Amount"),
+                                    Row(
+                                      children: [
+                                        Container(
+                                            child: Text(
+                                          "$value%",
+                                          style:
+                                              textStyle(Colors.white, 36, true),
+                                        )),
+                                        Spacer(),
+                                        Container(
+                                          decoration: boxDecoration(
+                                              Colors.grey[600]!,
+                                              4,
+                                              0.5,
+                                              Colors.grey[600]!),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  value = 25;
+                                                  tokenAmount =
+                                                      originalTokenAmount * .25;
+                                                });
+                                              },
+                                              child: Text(
+                                                "25%",
+                                                style: textStyle(
+                                                    Colors.white, 12, true),
+                                              )),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 10),
+                                          decoration: boxDecoration(
+                                              Colors.grey[600]!,
+                                              4,
+                                              0.5,
+                                              Colors.grey[600]!),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  value = 50;
+                                                  tokenAmount =
+                                                      originalTokenAmount * .50;
+                                                });
+                                              },
+                                              child: Text(
+                                                "50%",
+                                                style: textStyle(
+                                                    Colors.white, 12, true),
+                                              )),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 10),
+                                          decoration: boxDecoration(
+                                              Colors.grey[600]!,
+                                              4,
+                                              0.5,
+                                              Colors.grey[600]!),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  value = 75;
+                                                  tokenAmount =
+                                                      originalTokenAmount * .75;
+                                                });
+                                              },
+                                              child: Text(
+                                                "75%",
+                                                style: textStyle(
+                                                    Colors.white, 12, true),
+                                              )),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 10),
+                                          decoration: boxDecoration(
+                                              Colors.grey[600]!,
+                                              4,
+                                              0.5,
+                                              Colors.grey[600]!),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  value = 100;
+                                                  tokenAmount =
+                                                      (originalTokenAmount *
+                                                          1.0);
+                                                });
+                                              },
+                                              child: Text(
+                                                "100%",
+                                                style: textStyle(
+                                                    Colors.white, 12, true),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                    Slider(
+                                      thumbColor:
+                                          Colors.amber.withOpacity(0.88),
+                                      inactiveColor:
+                                          Colors.amber.withOpacity(0.5),
+                                      activeColor: Colors.amber,
+                                      value: value,
+                                      onChanged: (double newValue) {
+                                        setState(() {
+                                          value = newValue.roundToDouble();
+                                          var amountPercent = value / 100;
+                                          tokenAmount = (originalTokenAmount *
+                                              amountPercent);
+                                        });
+                                      },
+                                      min: 0,
+                                      max: 100,
+                                      divisions: 100,
+                                      label: "$value",
+                                    ),
+                                  ],
+                                ),
                                 Container(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       "Your position:",
-                                      style:
-                                          textStyle(Colors.grey[600]!, 16, false),
+                                      style: textStyle(
+                                          Colors.grey[600]!, 16, false),
                                     )),
                                 // ax per apt & share of pool
                                 Container(
@@ -392,7 +516,9 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             Text(
-                                              "AX/" + athleteName + " LP Tokens:",
+                                              "AX/" +
+                                                  athleteName +
+                                                  " LP Tokens:",
                                               style: textStyle(
                                                   Colors.white, 16, false),
                                             ),
@@ -450,103 +576,109 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       "Remove:",
-                                      style:
-                                          textStyle(Colors.grey[600]!, 16, false),
+                                      style: textStyle(
+                                          Colors.grey[600]!, 16, false),
                                     )),
                                 Container(
                                     width: _width,
-                                    decoration: boxDecoration(Colors.transparent,
-                                        20, 0.5, Colors.grey[600]!),
-                                    child: Container(
-                                        width: _width - 50,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            // LP Tokens
-                                            Container(
-                                                padding:
-                                                    EdgeInsets.only(left: 20),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      "Balance: 20.24",
-                                                      style: textStyle(
-                                                          Colors.grey[600]!,
-                                                          9,
-                                                          false),
-                                                    ),
-                                                    Text(
-                                                      "LP Tokens",
-                                                      style: textStyle(
-                                                          Colors.white,
-                                                          16,
-                                                          false),
-                                                    )
-                                                  ],
-                                                )),
-                                            // Max/amount
-                                            Container(
-                                              width: _width * .325,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Container(
-                                                      height: 17.5,
-                                                      width: 37.5,
-                                                      decoration: boxDecoration(
-                                                          Colors.transparent,
-                                                          100,
-                                                          0.5,
-                                                          Colors.grey[600]!),
-                                                      child: TextButton(
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                            "MAX",
-                                                            style: textStyle(
-                                                                Colors.grey[600]!,
-                                                                9,
-                                                                false),
-                                                          ))),
-                                                  SizedBox(
-                                                    width: 70,
-                                                    child: TextFormField(
-                                                      onChanged: (value) {
-                                                        var amount =
-                                                            double.parse(value);
-                                                        print(amount);
-                                                      },
-                                                      style: textStyle(
-                                                          Colors.grey[400]!,
-                                                          22,
-                                                          false),
-                                                      decoration: InputDecoration(
-                                                        hintText: '0.00',
-                                                        hintStyle: textStyle(
-                                                            Colors.grey[400]!,
-                                                            22,
-                                                            false),
-                                                        contentPadding:
-                                                            const EdgeInsets.all(
-                                                                9),
-                                                        border: InputBorder.none,
-                                                      ),
-                                                      inputFormatters: [
-                                                        FilteringTextInputFormatter
-                                                            .allow((RegExp(
-                                                                r'^(\d+)?\.?\d{0,6}'))),
+                                    decoration: boxDecoration(
+                                        Colors.transparent,
+                                        5,
+                                        0.5,
+                                        Colors.grey[600]!),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                            width: _width - 50,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: <Widget>[
+                                                // LP Tokens
+                                                Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          "LP Token",
+                                                          style: textStyle(
+                                                              Colors.white,
+                                                              16,
+                                                              false),
+                                                        )
                                                       ],
-                                                    ),
+                                                    )),
+                                                Spacer(),
+                                                Container(
+                                                  width: _width * .20,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: <Widget>[
+                                                      SizedBox(
+                                                        width: 100,
+                                                        child: Text(
+                                                          "$tokenAmount",
+                                                          textAlign:
+                                                              TextAlign.end,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ))),
+                                                )
+                                              ],
+                                            )),
+                                        Container(
+                                            width: _width - 50,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: <Widget>[
+                                                // LP Tokens
+                                                Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          "LP Token",
+                                                          style: textStyle(
+                                                              Colors.white,
+                                                              16,
+                                                              false),
+                                                        )
+                                                      ],
+                                                    )),
+                                                Spacer(),
+                                                Container(
+                                                  width: _width * .20,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: <Widget>[
+                                                      SizedBox(
+                                                        width: 100,
+                                                        child: Text(
+                                                          "$tokenAmount",
+                                                          textAlign:
+                                                              TextAlign.end,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ))
+                                      ],
+                                    )),
+
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -610,7 +742,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                       decoration: BoxDecoration(
                                         border: Border.all(color: Colors.amber),
                                         color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(100),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
                                       ),
                                       child: TextButton(
                                         onPressed: () {
