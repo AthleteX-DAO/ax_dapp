@@ -27,7 +27,23 @@ class LiquidityPositionInfo extends Equatable {
     required this.token1LpAmount,
     required this.shareOfPool,
     required this.apy,
-  });  
+  });
+
+  factory LiquidityPositionInfo.empty() {
+    return LiquidityPositionInfo(
+        token0Name: 'token0Name',
+        token1Name: "token1Name",
+        token0Symbol: "token0Symbol",
+        token1Symbol: "token1Symbol",
+        token0Address: "token0Address",
+        token1Address: "token1Address",
+        lpTokenPairAddress: "lpTokenPairAddress",
+        lpTokenPairBalance: "0.0",
+        token0LpAmount: "0.0",
+        token1LpAmount: "0.0",
+        shareOfPool: "0.0",
+        apy: "0.0");
+  }
 
   @override
   List<Object> get props {

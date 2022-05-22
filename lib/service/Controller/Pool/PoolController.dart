@@ -2,6 +2,7 @@ import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/contracts/APTRouter.g.dart';
 import 'package:ax_dapp/contracts/Dex.g.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
@@ -12,7 +13,12 @@ class PoolController extends GetxController {
   late Dex _factory;
   late APTRouter _aptRouter;
   var address1 = "".obs, address2 = "".obs;
+  String lpTokenAAddress = "";
+  String lpTokenBAddress = "";
+  String lpTokenPairAddress = "";
+  double removePercentage = 0.0;
   var amount1 = 0.0.obs, amount2 = 0.0.obs;
+  WalletController walletController = Get.find();
   final tokenClient = Web3Client("https://polygon-rpc.com", new Client());
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
@@ -101,14 +107,43 @@ class PoolController extends GetxController {
     controller.updateTxString(txString);
   }
 
+  Future<void> approveRemove() async {
+    print("[Console] Pool Controller -> Inside approveRemove");
+    String txStringA = "";
+    print("[Console-Debug] lpTokenAddress: $lpTokenPairAddress");
+    EthereumAddress lpTokenEthAddress =
+        EthereumAddress.fromHex(lpTokenPairAddress);
+    ERC20 lpToken =
+        ERC20(address: lpTokenEthAddress, client: controller.client.value);
+    BigInt lpTokenBalance = normalizeInput(double.parse(
+        await walletController.getTokenBalance(lpTokenPairAddress)));
+    BigInt approveAmount =
+        (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
+    print("[Console-Debug] approveAmount: $approveAmount");
+    try {
+      print("[Console] Pool Controller -> Before approve");
+      txStringA = await lpToken.approve(routerMainnetAddress, approveAmount,
+          credentials: controller.credentials);
+      controller.updateTxString(txStringA);
+      print("[Console] Pool Controller -> Approved");
+    } catch (e) {
+      print("[Console] Error happens");
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> removeLiquidity() async {
-    BigInt liquidity = BigInt.from(0);
-    BigInt amountAMin = normalizeInput(amount1.value);
-    BigInt amountBMin = normalizeInput(amount2.value);
+    BigInt lpTokenBalance = normalizeInput(double.parse(
+        await walletController.getTokenBalance(lpTokenPairAddress)));
+    BigInt liquidity =
+        (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
+    print("[Console-Debug] removeAmount: $liquidity");
+    BigInt amountAMin = BigInt.zero;
+    BigInt amountBMin = BigInt.zero;
     EthereumAddress tokenAAddress =
-        EthereumAddress.fromHex("${address1.value}");
+        EthereumAddress.fromHex("$lpTokenAAddress");
     EthereumAddress tokenBAddress =
-        EthereumAddress.fromHex("${address2.value}");
+        EthereumAddress.fromHex("$lpTokenBAddress");
 
     Credentials credentials = controller.credentials;
     EthereumAddress to = await controller.credentials.extractAddress();
