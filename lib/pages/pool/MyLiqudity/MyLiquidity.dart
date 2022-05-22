@@ -26,9 +26,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
   int currentTabIndex = 0;
   PoolController poolController = Get.find();
   double value = 0;
-
-  double originalTokenAmount = 1124.4752;
-  double tokenAmount = 1124.4752;
+  LiquidityPositionInfo infoOfSelectedCard = LiquidityPositionInfo.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -55,28 +53,6 @@ class _MyLiquidityState extends State<MyLiquidity> {
                 //Item's title with icons
                 Row(
                   children: [
-                    //AX icon
-                    Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage(liquidityPositionInfo.token0Symbol),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage(liquidityPositionInfo.token1Symbol),
-                        ),
-                      ),
-                    ),
-                    //title
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -217,6 +193,13 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         onPressed: () {
                           setState(() {
                             currentTabIndex = 1;
+                            infoOfSelectedCard = liquidityPositionInfo;
+                            poolController.lpTokenAAddress =
+                                liquidityPositionInfo.token0Address;
+                            poolController.lpTokenBAddress =
+                                liquidityPositionInfo.token1Address;
+                            poolController.lpTokenPairAddress =
+                                liquidityPositionInfo.lpTokenPairAddress;
                           });
                         },
                         child: Text(
@@ -303,7 +286,6 @@ class _MyLiquidityState extends State<MyLiquidity> {
         if (state.status == BlocStatus.error) {
           return loadingError();
         }
-        String athleteName = "athleteName";
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -399,8 +381,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               onPressed: () {
                                                 setState(() {
                                                   value = 25;
-                                                  tokenAmount =
-                                                      originalTokenAmount * .25;
+                                                  poolController
+                                                      .removePercentage = value;
                                                 });
                                               },
                                               child: Text(
@@ -420,8 +402,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               onPressed: () {
                                                 setState(() {
                                                   value = 50;
-                                                  tokenAmount =
-                                                      originalTokenAmount * .50;
+                                                  poolController
+                                                      .removePercentage = value;
                                                 });
                                               },
                                               child: Text(
@@ -441,8 +423,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               onPressed: () {
                                                 setState(() {
                                                   value = 75;
-                                                  tokenAmount =
-                                                      originalTokenAmount * .75;
+                                                  poolController
+                                                      .removePercentage = value;
                                                 });
                                               },
                                               child: Text(
@@ -462,9 +444,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               onPressed: () {
                                                 setState(() {
                                                   value = 100;
-                                                  tokenAmount =
-                                                      (originalTokenAmount *
-                                                          1.0);
+                                                  poolController
+                                                      .removePercentage = value;
                                                 });
                                               },
                                               child: Text(
@@ -485,9 +466,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                       onChanged: (double newValue) {
                                         setState(() {
                                           value = newValue.roundToDouble();
-                                          var amountPercent = value / 100;
-                                          tokenAmount = (originalTokenAmount *
-                                              amountPercent);
+                                          poolController.removePercentage =
+                                              value;
                                         });
                                       },
                                       min: 0,
@@ -516,13 +496,13 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             Text(
-                                              "AX/" +
-                                                  athleteName +
+                                              "${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}" +
                                                   " LP Tokens:",
                                               style: textStyle(
                                                   Colors.white, 16, false),
                                             ),
-                                            Text("20.24",
+                                            Text(
+                                                "${infoOfSelectedCard.lpTokenPairBalance}",
                                                 style: textStyle(
                                                     Colors.white, 16, false))
                                           ],
@@ -536,7 +516,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               style: textStyle(
                                                   Colors.grey[600]!, 16, false),
                                             ),
-                                            Text("0.12%",
+                                            Text(
+                                                "${infoOfSelectedCard.shareOfPool}%",
                                                 style: textStyle(
                                                     Colors.white, 16, false))
                                           ],
@@ -546,11 +527,12 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             Text(
-                                              "AX deposited:",
+                                              "${infoOfSelectedCard.token0Symbol} deposited:",
                                               style: textStyle(
                                                   Colors.grey[600]!, 16, false),
                                             ),
-                                            Text("1,000",
+                                            Text(
+                                                "${infoOfSelectedCard.token0LpAmount}",
                                                 style: textStyle(
                                                     Colors.white, 16, false))
                                           ],
@@ -560,11 +542,14 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             Text(
-                                              athleteName + " deposited:",
+                                              infoOfSelectedCard.token1Symbol +
+                                                  " deposited:",
                                               style: textStyle(
                                                   Colors.grey[600]!, 16, false),
                                             ),
-                                            Text("500",
+                                            Text(
+                                                infoOfSelectedCard
+                                                    .token1LpAmount,
                                                 style: textStyle(
                                                     Colors.white, 16, false))
                                           ],
@@ -580,148 +565,107 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                           Colors.grey[600]!, 16, false),
                                     )),
                                 Container(
-                                    width: _width,
-                                    decoration: boxDecoration(
-                                        Colors.transparent,
-                                        5,
-                                        0.5,
-                                        Colors.grey[600]!),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                            width: _width - 50,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: <Widget>[
-                                                // LP Tokens
-                                                Container(
-                                                    padding: EdgeInsets.only(
-                                                        left: 20),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                        Text(
-                                                          "LP Token",
-                                                          style: textStyle(
-                                                              Colors.white,
-                                                              16,
-                                                              false),
-                                                        )
-                                                      ],
-                                                    )),
-                                                Spacer(),
-                                                Container(
-                                                  width: _width * .20,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        width: 100,
-                                                        child: Text(
-                                                          "$tokenAmount",
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            )),
-                                        Container(
-                                            width: _width - 50,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: <Widget>[
-                                                // LP Tokens
-                                                Container(
-                                                    padding: EdgeInsets.only(
-                                                        left: 20),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                        Text(
-                                                          "LP Token",
-                                                          style: textStyle(
-                                                              Colors.white,
-                                                              16,
-                                                              false),
-                                                        )
-                                                      ],
-                                                    )),
-                                                Spacer(),
-                                                Container(
-                                                  width: _width * .20,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        width: 100,
-                                                        child: Text(
-                                                          "$tokenAmount",
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ))
-                                      ],
-                                    )),
-
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "You will receive:",
-                                    style:
-                                        textStyle(Colors.grey[600]!, 16, false),
-                                  ),
-                                ),
-                                Container(
+                                  width: _width,
+                                  decoration: boxDecoration(Colors.transparent,
+                                      5, 0.5, Colors.grey[600]!),
                                   child: Column(
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            "AX per " + athleteName,
-                                            style: textStyle(
-                                                Colors.grey[600]!, 16, false),
-                                          ),
-                                          Text(
-                                            "1,000",
-                                            style: textStyle(
-                                                Colors.white, 16, false),
-                                          )
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            athleteName + " per AX",
-                                            style: textStyle(
-                                                Colors.grey[600]!, 16, false),
-                                          ),
-                                          Text(
-                                            "500",
-                                            style: textStyle(
-                                                Colors.white, 16, false),
-                                          )
-                                        ],
-                                      )
+                                    children: [
+                                      Container(
+                                          width: _width - 50,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              // LP Tokens
+                                              Container(
+                                                  padding:
+                                                      EdgeInsets.only(left: 20),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        infoOfSelectedCard
+                                                            .token0Symbol,
+                                                        style: textStyle(
+                                                            Colors.white,
+                                                            16,
+                                                            false),
+                                                      )
+                                                    ],
+                                                  )),
+                                              Spacer(),
+                                              Container(
+                                                width: _width * .20,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: Text(
+                                                        (double.parse(infoOfSelectedCard
+                                                                    .token0LpAmount) *
+                                                                (value / 100))
+                                                            .toStringAsFixed(6),
+                                                        textAlign:
+                                                            TextAlign.end,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          )),
+                                      Container(
+                                          width: _width - 50,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              // LP Tokens
+                                              Container(
+                                                  padding:
+                                                      EdgeInsets.only(left: 20),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        infoOfSelectedCard
+                                                            .token1Symbol,
+                                                        style: textStyle(
+                                                            Colors.white,
+                                                            16,
+                                                            false),
+                                                      )
+                                                    ],
+                                                  )),
+                                              Spacer(),
+                                              Container(
+                                                width: _width * .20,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: Text(
+                                                        (double.parse(infoOfSelectedCard
+                                                                    .token1LpAmount) *
+                                                                (value / 100))
+                                                            .toStringAsFixed(6),
+                                                        textAlign:
+                                                            TextAlign.end,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ))
                                     ],
                                   ),
                                 ),
@@ -731,7 +675,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                         175,
                                         40,
                                         "Approve",
-                                        poolController.approve,
+                                        poolController.approveRemove,
                                         poolController.removeLiquidity,
                                         removalConfirmed),
                                     Spacer(),
