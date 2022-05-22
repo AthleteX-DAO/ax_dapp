@@ -1,78 +1,164 @@
+import 'dart:typed_data';
+import 'package:ax_dapp/pages/farm/models/FarmModel.dart';
+import 'package:ax_dapp/util/UserInputNorm.dart';
+import 'package:http/http.dart';
 import 'package:get/get.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:web3dart/web3dart.dart' as Web3Dart;
+import 'package:ax_dapp/contracts/Pool.g.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
-import 'package:ax_dapp/service/Controller/Farms/Farm.dart';
-import 'package:ax_dapp/service/GraphQL/GysrApi.dart';
+import 'package:ax_dapp/contracts/ERC20.g.dart';
 
-class FarmController extends GetxController {
-  // declaration of member variables
-  final String owner = "0xe1bf752fd7480992345629bf3866f6618d57a7da"; // this is the address of pool contract owner
+class FarmController {
+  // decalaration of member varibles
+  late Pool contract;
 
   Controller controller = Get.find();
-  RxList<Farm> allFarms = RxList.empty();
-  RxList<Farm> stakedFarms = RxList.empty();
-  RxList<Farm> filteredAllFarms = RxList.empty();
-  RxList<Farm> filteredStakedFarms = RxList.empty();
+  String? athlete;
+  String strName = "";
+  String strAddress = "";
+  String strStakeTokenAddress = "";
+  String strRewardTokenAddress = "";
+  String strStakingModule = "";
+  double dAPR = 0.0;
+  double dTVL = 0.0;
+  double dStakeTokenPrice = 0.0;
+  double dRewardTokenPrice = 0.0;
 
-  FarmController() {
-    // initialize async variables
-    initialize();
+  RxDouble dStaked = 0.0.obs;
+  RxDouble dRewards = 0.0.obs;
+  RxString strStakedSymbol = "".obs;
+  RxString strRewardSymbol = "".obs;
+  RxString strStakedAlias = "".obs;
+
+  RxDouble dUnStakeBalance = 0.0.obs;
+  RxDouble dStakeBalance = 0.0.obs;
+
+  late Web3Dart.Web3Client rpcClient;
+
+  // contructor with poolInfo from api
+  FarmController(FarmModel farm) {
+    this.strAddress = farm.strAddress;
+    this.strName = farm.strName;
+    this.dAPR = farm.dAPR;
+    this.dTVL = farm.dTVL;
+    this.dStaked = RxDouble(farm.dStaked);
+    this.dRewards = RxDouble(farm.dRewards);
+    this.dStakeTokenPrice = farm.dStakeTokenPrice;
+    this.dRewardTokenPrice = farm.dRewardTokenPrice;
+    this.strStakeTokenAddress = farm.strStakeTokenAddress;
+    this.strRewardTokenAddress = farm.strRewardTokenAddress;
+    this.strStakingModule = farm.strStakingModule;
+
+    this.strStakedSymbol = RxString(farm.strStakedSymbol);
+    this.strRewardSymbol = RxString(farm.strRewardSymbol);
+    this.strStakedAlias = RxString(farm.strStakedAlias);
+
+    Web3Dart.EthereumAddress address =
+        Web3Dart.EthereumAddress.fromHex(this.strAddress);
+    String rpcUrl = controller.mainRPCUrl;
+    if (Controller.supportedChains.containsKey(controller.networkID.value))
+      rpcUrl = Controller.supportedChains[controller.networkID.value]!;
+    rpcClient = Web3Dart.Web3Client(rpcUrl, Client());
+    this.contract = new Pool(address: address, client: rpcClient);
   }
 
-  /// This function is used to initialize async variables
+  // constructor from another farm
+  FarmController.fromFarm(FarmController farm) {
+    this.strAddress = farm.strAddress;
+    this.strName = farm.strName;
+    this.dAPR = farm.dAPR;
+    this.dTVL = farm.dTVL;
+    this.dStaked = farm.dStaked;
+    this.dRewards = farm.dRewards;
+    this.dStakeTokenPrice = farm.dStakeTokenPrice;
+    this.dRewardTokenPrice = farm.dRewardTokenPrice;
+    this.strStakeTokenAddress = farm.strStakeTokenAddress;
+    this.strRewardTokenAddress = farm.strRewardTokenAddress;
+    this.strStakingModule = farm.strStakingModule;
+    this.strStakedSymbol = farm.strStakedSymbol;
+    this.strRewardSymbol = farm.strRewardSymbol;
+    this.strStakedAlias = farm.strStakedAlias;
+    this.rpcClient = farm.rpcClient;
+    this.contract = farm.contract;
+
+    String account = controller.publicAddress.value.hex;
+    // account = "0x22b3e4b38fb2f260302787b18b1401747eacf8d4";
+    this.updateStakedBalance(account);
+  }
+
+  /// This function is used to stake tokens on a specific farm
+  /// and also update the txHash string on conroller
   ///
   /// @return {void}
-  Future<void> initialize() async {
-    GysrApi gApi = GysrApi();
-    final QueryResult allFarmsResult = await gApi.getAllFarms(owner);
+  Future<void> stake() async {
+    Uint8List stakingData = Uint8List.fromList([]);
+    Uint8List rewardData = Uint8List.fromList([]);
 
-    if (allFarmsResult.hasException) {
-      print(allFarmsResult.exception.toString());
-      return;
-    }
+    BigInt stakeAmount = normalizeInput(this.dStakeBalance.value);
+    String txHash = await this.contract.stake(
+        stakeAmount, stakingData, rewardData,
+        credentials: controller.credentials);
+    controller.updateTxString(txHash);
+  }
 
-    if (allFarmsResult.data!['pools'] == null) {
-      print("[Console] No farms");
-      return;
-    }
+  /// This function is used to unstake tokens on a specific farm
+  /// and also update the txHash string on conroller
+  ///
+  /// @param {double} this is the decimal amount to unstake
+  ///
+  /// @return {void}
+  Future<void> unstake() async {
+    Uint8List stakingData = Uint8List.fromList([]);
+    Uint8List rewardData = Uint8List.fromList([]);
 
-    for (dynamic pool in allFarmsResult.data!['pools']!) {
-      allFarms.add(Farm(pool));
-      filteredAllFarms.add(Farm(pool));
-    }
+    BigInt unstakeAmount = normalizeInput(this.dUnStakeBalance.value);
+    String txHash = await this.contract.unstake(
+        unstakeAmount, stakingData, rewardData,
+        credentials: controller.credentials);
+    controller.updateTxString(txHash);
+  }
 
-    print("[Contract-Count] ${allFarms.length}");
+  /// This function is used to stake tokens on a specific farm
+  /// and also update the txHash string on conroller
+  ///
+  /// @return {void}
+  Future<void> claim() async {
+    Uint8List stakingData = Uint8List.fromList([]);
+    Uint8List rewardData = Uint8List.fromList([]);
 
-    String account = controller.publicAddress.value.hex.toLowerCase();
-    // account = "0x571f8e570efe1fb0ba8ff75f4749b629a471f458"; // staked account for test
-    // account = "0x22b3e4b38fb2f260302787b18b1401747eacf8d4"; // staked account for test
-    final QueryResult stakedFarmsResult = await gApi.getStakedFarms(account);
-    
-    if (stakedFarmsResult.hasException) {
-      print(stakedFarmsResult.exception.toString());
-      return;
-    }
+    String txHash = await this.contract.claim(
+        BigInt.from(100), stakingData, rewardData,
+        credentials: controller.credentials);
+    controller.updateTxString(txHash);
+  }
 
-    if (stakedFarmsResult.data!['user'] == null) {
-      print('[Console] No staked farms');
-      return;
-    }
+  /// This function is used to get balance of staked farm
+  ///
+  /// @param {String} the address of the account
+  /// @return {void}
+  Future<void> updateStakedBalance(String strAccount) async {
+    Web3Dart.EthereumAddress ethAccount =
+        Web3Dart.EthereumAddress.fromHex(strAccount);
+    List<BigInt> balances = await this.contract.stakingBalances(ethAccount);
+    Web3Dart.EtherAmount stakedWeiBalance =
+        Web3Dart.EtherAmount.inWei(balances[0]);
+    double stakedEtherBalance =
+        stakedWeiBalance.getValueInUnit(Web3Dart.EtherUnit.ether);
+    this.dStaked.value = stakedEtherBalance;
+  }
 
-    for(dynamic position in stakedFarmsResult.data!['user']!['positions']) {
-      stakedFarms.add(Farm(position['pool']));
-      filteredStakedFarms.add(Farm(position['pool']));
-    }
-
-
-}
-
-  /// This function is used to filter farms using keyword
-  /// 
-  /// @param {String} keyword for filtering farms
-  /// @return {void} 
-  void filterFarms(String keyword) {
-    print("filterFarms");
-    filteredAllFarms = RxList(allFarms.where((farm) => farm.strName.toUpperCase().contains(keyword.toUpperCase())).toList());
-    filteredStakedFarms = RxList(stakedFarms.where((farm) => farm.strName.toUpperCase().contains(keyword.toUpperCase())).toList());
+  /// This function is used to approve the reward token
+  ///
+  /// @return {void}
+  Future<void> approve() async {
+    Web3Dart.EthereumAddress routerAddress =
+        Web3Dart.EthereumAddress.fromHex(this.strStakingModule);
+    Web3Dart.EthereumAddress tokenAddress =
+        Web3Dart.EthereumAddress.fromHex(this.strStakeTokenAddress);
+    ERC20 rewardToken = ERC20(address: tokenAddress, client: rpcClient);
+    BigInt approveAmount = normalizeInput(this.dStakeBalance.value);
+    String txHash = await rewardToken.approve(routerAddress, approveAmount,
+        credentials: controller.credentials);
+    controller.updateTxString(txHash);
   }
 }

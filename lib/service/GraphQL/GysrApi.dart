@@ -83,12 +83,12 @@ class GysrApi {
     _gysrApiClient = _gysrApiClientHelper.initializeClientWithoutCache();
   }
 
-  /// @title  getAllFarms
-  /// @desc   get all farms list from gysr api
+  /// @title  fetchAllFarms
+  /// @desc   fetch all farms list from gysr api
   ///
   /// @param {String} the address of contract owner
   /// @return {Future<QueryResult>} the list of farms
-  Future<QueryResult> getAllFarms(String owner) async {
+  Future<QueryResult> fetchAllFarms(String owner) async {
     final result = await _gysrApiClientHelper.performQuery(
         _gysrApiClient, getAllFarmsQuery,
         variables: <String, dynamic>{"owner": owner});
@@ -100,7 +100,7 @@ class GysrApi {
   ///
   /// @param {String} the address of current account
   /// @return {Future<QueryResult>} the list of farms
-  Future<QueryResult> getStakedFarms(String account) async {
+  Future<QueryResult> fetchStakedFarms(String account) async {
     final result = await _gysrApiClientHelper.performQuery(
         _gysrApiClient, getStakedFarmsQuery,
         variables: <String, dynamic>{"account": account});

@@ -1,0 +1,62 @@
+import 'package:flutter/material.dart';
+
+import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
+import 'package:ax_dapp/pages/farm/dialogs/StakeDialog.dart';
+import 'package:ax_dapp/pages/farm/dialogs/DualStakeDialog.dart';
+import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
+import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
+
+Widget doubleLogoFarmTitle(
+    BuildContext context, bool isWeb, FarmController farm, double cardWidth) {
+  Dialog participatingDialog;
+  cardWidth = isWeb ? 500 : cardWidth;
+  if (farm.athlete == null) {
+    participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
+  } else {
+    participatingDialog =
+        dualStakeDialog(context, farm, farm.athlete!, cardWidth, isWeb);
+  }
+  return Container(
+      width: cardWidth,
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage("assets/images/x.jpg"),
+                ),
+              ),
+            ),
+            Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  scale: 0.5,
+                  image: AssetImage("assets/images/apt.png"),
+                ),
+              ),
+            ),
+            Container(width: 5),
+            Expanded(
+              child: Text(farm.strName,
+                  style: textStyle(Colors.white, 20, false, false)),
+            ),
+            Container(
+                width: 120,
+                height: 35,
+                decoration: boxDecoration(
+                    Colors.amber[600]!, 100, 0, Colors.amber[600]!),
+                child: TextButton(
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => participatingDialog),
+                    child: Text("Stake",
+                        style: textStyle(Colors.black, 14, true, false)))),
+          ]));
+}
