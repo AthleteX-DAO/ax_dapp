@@ -145,7 +145,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
             Container(
               //contains list of allfarms cards
               width: layoutWdt,
-              height: listHeight,
+              height: layoutHgt,
               child: ScrollConfiguration(
                   behavior: ScrollConfiguration.of(context).copyWith(
                     dragDevices: {
@@ -155,26 +155,33 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   ),
                   child: state.status != BlocStatus.success
                       ? widget
-                      : ListView.builder(
+                      : GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: isWeb ? 4 : 1,
+                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 5,
+                            childAspectRatio: state.isAllFarms ? 1.75 : 1,
+                          ),
                           padding: EdgeInsets.zero,
-                          scrollDirection:
-                              isWeb ? Axis.horizontal : Axis.vertical,
+                          scrollDirection: Axis.vertical,
                           physics: BouncingScrollPhysics(),
                           itemCount: isAllFarms
-                              ? state.farms.length
-                              : state.stakedFarms.length,
+                              ? state.filteredFarms.length
+                              : state.filteredStakedFarms.length,
                           itemBuilder: (context, index) {
                             return isAllFarms
                                 ? farmItem(
                                     context,
                                     isWeb,
-                                    FarmController(state.farms[index]),
+                                    FarmController(state.filteredFarms[index]),
                                     listHeight,
                                     layoutWdt)
                                 : myFarmItem(
                                     context,
                                     isWeb,
-                                    FarmController(state.stakedFarms[index]),
+                                    FarmController(
+                                        state.filteredStakedFarms[index]),
                                     listHeight,
                                     layoutWdt);
                           },

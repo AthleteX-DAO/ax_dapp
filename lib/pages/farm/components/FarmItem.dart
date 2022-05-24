@@ -27,8 +27,8 @@ Widget farmItem(BuildContext context, bool isWeb, FarmController farm,
     height: cardHeight,
     width: cardWidth,
     margin: isWeb
-        ? EdgeInsets.symmetric(horizontal: 10)
-        : EdgeInsets.symmetric(vertical: 10),
+        ? EdgeInsets.symmetric(horizontal: 5, vertical: 5)
+        : EdgeInsets.symmetric(vertical: 5),
     padding: EdgeInsets.symmetric(horizontal: 20),
     decoration: boxDecoration(
         Color(0x80424242).withOpacity(0.25), 20, 1, Colors.grey[600]!),

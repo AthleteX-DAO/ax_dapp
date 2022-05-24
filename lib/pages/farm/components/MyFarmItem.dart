@@ -14,7 +14,7 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
     double listHeight, double layoutWidth) {
   double minCardHeight = 450;
   double maxCardHeight = 500;
-  double cardWidth = isWeb ? 500 : layoutWidth;
+  double cardWidth = isWeb ? (layoutWidth / 4) - 50 : layoutWidth;
   double cardHeight = listHeight * 0.7;
   if (cardHeight < minCardHeight) cardHeight = minCardHeight;
   if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
@@ -29,8 +29,8 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
 
   return Container(
     margin: isWeb
-        ? EdgeInsets.symmetric(horizontal: 10)
-        : EdgeInsets.symmetric(vertical: 10),
+        ? EdgeInsets.symmetric(horizontal: 5, vertical: 5)
+        : EdgeInsets.symmetric(vertical: 5),
     padding: EdgeInsets.symmetric(horizontal: 20),
     height: cardHeight,
     width: cardWidth,
@@ -150,7 +150,7 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
             children: <Widget>[
               Container(
                   //subtract padding for card's content for mobile
-                  width: isWeb ? 215 : (cardWidth / 2) - 25,
+                  width: (cardWidth / 2) - 25,
                   height: 35,
                   decoration: boxDecoration(
                       Colors.amber[600]!, 100, 0, Colors.amber[600]!),
@@ -166,7 +166,7 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
                           style: textStyle(Colors.black, 14, true, false)))),
               Container(
                   //width takes into account padding for card's content
-                  width: isWeb ? 240 : (cardWidth / 2) - 25,
+                  width: (cardWidth / 2) - 25,
                   height: 35,
                   decoration: boxDecoration(
                       Colors.transparent, 100, 0, Colors.amber[600]!),
