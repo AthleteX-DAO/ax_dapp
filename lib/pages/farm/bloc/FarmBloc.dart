@@ -31,7 +31,8 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
       emit(state.copy(status: BlocStatus.loading));
       final List<FarmModel> farms = await repo.fetchAllFarms(owner);
       if (farms.length > 0)
-        emit(state.copy(farms: farms, status: BlocStatus.success));
+        emit(state.copy(
+            farms: farms, filteredFarms: farms, status: BlocStatus.success));
       else
         emit(state.copy(status: BlocStatus.no_data));
     } catch (e) {
@@ -50,8 +51,10 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
       if (account != null) {
         final stakedFarms = await repo.fetchStakedFarms(account);
         if (stakedFarms.length > 0)
-          emit(
-              state.copy(stakedFarms: stakedFarms, status: BlocStatus.success));
+          emit(state.copy(
+              stakedFarms: stakedFarms,
+              filteredStakedFarms: stakedFarms,
+              status: BlocStatus.success));
         else
           emit(state.copy(status: BlocStatus.no_data));
       } else {
@@ -66,12 +69,12 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
 
   void _mapSearchEventToState(OnSearchFarms event, Emitter<FarmState> emit) {
     emit(state.copy(
-        farms: state.farms
+        filteredFarms: state.farms
             .where((farm) => farm.strName
                 .toUpperCase()
                 .contains(event.searchedName.toUpperCase()))
             .toList(),
-        stakedFarms: state.stakedFarms
+        filteredStakedFarms: state.stakedFarms
             .where((farm) => farm.strName
                 .toUpperCase()
                 .contains(event.searchedName.toUpperCase()))
