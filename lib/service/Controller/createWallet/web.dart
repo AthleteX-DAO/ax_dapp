@@ -1,11 +1,10 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:html';
-import 'package:web3dart/browser.dart';
 import 'package:web3dart/web3dart.dart' as Web3Dart;
-
 import 'abstractWallet.dart';
 import 'package:flutter_web3/flutter_web3.dart' as FlutterWeb3;
+import 'package:web3_browser/web3_browser.dart';
 
 DappWallet newWallet() => WebWallet();
 

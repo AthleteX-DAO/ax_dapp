@@ -1,15 +1,15 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, unused_local_variable
 
+import 'package:erc20/erc20.dart';
 import 'package:get/get.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:flutter/material.dart';
-import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 
 // Token must be swappable
 class Token extends GetxController {
   Controller controller = Get.find();
-  late Erc20 erc20;
+  late ERC20 erc20;
   late EthereumAddress ethAddress;
   String name, ticker;
   AssetImage? icon;
@@ -22,7 +22,7 @@ class Token extends GetxController {
   Token(this.name, this.ticker, tokenAddress, [this.icon]) {
     updateAddress(tokenAddress);
     ethAddress = EthereumAddress.fromHex(address.value);
-    erc20 = Erc20(address: ethAddress, client: controller.client.value);
+    erc20 = ERC20(address: ethAddress, client: controller.client.value);
     update();
   }
 

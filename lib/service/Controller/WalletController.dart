@@ -1,6 +1,6 @@
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:erc20/erc20.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -44,7 +44,7 @@ class WalletController extends GetxController {
     }
     Web3Client rpcClient = Web3Client(rpcUrl, Client());
     tokenEthAddress = EthereumAddress.fromHex(tokenAddress);
-    var ax = Erc20(address: tokenEthAddress, client: rpcClient);
+    var ax = ERC20(address: tokenEthAddress, client: rpcClient);
     try {
       BigInt rawBalance = await ax.balanceOf(walletAddress);
       print("Raw Balance: $rawBalance");
@@ -105,7 +105,7 @@ class WalletController extends GetxController {
       rpcUrl = "https://polygon-rpc.com";
     }
     Web3Client rpcClient = Web3Client(rpcUrl, Client());
-    Erc20 token = Erc20(address: tokenEthAddress, client: rpcClient);
+    ERC20 token = ERC20(address: tokenEthAddress, client: rpcClient);
     return token.symbol();
   }
 
