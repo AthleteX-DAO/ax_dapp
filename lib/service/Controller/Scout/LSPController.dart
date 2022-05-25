@@ -4,7 +4,7 @@ import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';
 import '../../../contracts/LongShortPair.g.dart';
-import 'package:web3dart/contracts/erc20.dart';
+import 'package:erc20/erc20.dart';
 import 'package:http/http.dart';
 import '../../TokenList.dart';
 import '../Controller.dart';
@@ -49,7 +49,7 @@ class LSPController extends GetxController {
         BigInt.from(10).pow(18); // removes 18 zeros from collateralPerPair
     print("[Console] Inside approve()");
     EthereumAddress axtaddress = EthereumAddress.fromHex(AXT.polygonAddress);
-    Erc20 axt = Erc20(address: axtaddress, client: tokenClient);
+    ERC20 axt = ERC20(address: axtaddress, client: tokenClient);
     try {
       await axt.approve(address, amount, credentials: controller.credentials);
     } catch (e) {

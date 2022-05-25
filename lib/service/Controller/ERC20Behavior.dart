@@ -1,5 +1,5 @@
 import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:web3dart/contracts/erc20.dart';
+import 'package:erc20/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 
 mixin ERC20Behavior on Token {
@@ -22,7 +22,7 @@ mixin ERC20Behavior on Token {
     print("[Console] Token address $theAddress");
     updateAddress(theAddress);
     EthereumAddress ethAddress = EthereumAddress.fromHex(theAddress);
-    erc20 = Erc20(address: ethAddress, client: controller.client.value);
+    erc20 = ERC20(address: ethAddress, client: controller.client.value);
     update();
   }
 
