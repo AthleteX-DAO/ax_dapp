@@ -693,6 +693,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                         onPressed: () {
                                           setState(() {
                                             currentTabIndex = 0;
+                                            value = 0;
                                           });
                                         },
                                         child: Text(
