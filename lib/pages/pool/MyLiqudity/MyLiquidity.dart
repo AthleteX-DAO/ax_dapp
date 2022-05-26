@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/pool/MyLiqudity/AddLiquidityTokenPair.dart';
+import 'package:ax_dapp/pages/pool/MyLiqudity/GetTokenPairIcons.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/bloc/MyLiquidityBloc.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/models/MyLiquidityItemInfo.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
@@ -27,6 +28,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
   PoolController poolController = Get.find();
   double value = 0;
   LiquidityPositionInfo infoOfSelectedCard = LiquidityPositionInfo.empty();
+  AssetImage? token0Icon = AssetImage('assets/images/apt.png');
+  AssetImage? token1Icon = AssetImage('assets/images/apt.png');
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +44,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
 
     Widget myLiquidityPoolGridItem(
         LiquidityPositionInfo liquidityPositionInfo, double layoutWdt) {
+          GetTokenPairIcons tokenIcons = GetTokenPairIcons.fromTokenTicker(liquidityPositionInfo.token0Symbol, liquidityPositionInfo.token1Symbol);
       return ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: GridTile(
@@ -53,6 +57,28 @@ class _MyLiquidityState extends State<MyLiquidity> {
                 //Item's title with icons
                 Row(
                   children: [
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          scale: 0.5,
+                          image: tokenIcons.token0.icon!,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          scale: 0.5,
+                          image: tokenIcons.token1.icon!,
+                        ),
+                      ),
+                    ),
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -193,6 +219,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         onPressed: () {
                           setState(() {
                             currentTabIndex = 1;
+                            token0Icon = tokenIcons.token0.icon;
+                            token1Icon = tokenIcons.token1.icon;
                             infoOfSelectedCard = liquidityPositionInfo;
                             poolController.lpTokenAAddress =
                                 liquidityPositionInfo.token0Address;
@@ -337,7 +365,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                        height: _layoutWdt * 0.42,
+                        height: _layoutWdt * 0.46,
                         width: _width * 0.5,
                         padding:
                             EdgeInsets.symmetric(vertical: 22, horizontal: 30),
@@ -566,9 +594,11 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                     )),
                                 Container(
                                   width: _width,
+                                  height: _height * 0.1,
                                   decoration: boxDecoration(Colors.transparent,
-                                      5, 0.5, Colors.grey[600]!),
+                                      15, 0.5, Colors.grey[600]!),
                                   child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
                                           width: _width - 50,
@@ -576,27 +606,32 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: <Widget>[
-                                              // LP Tokens
                                               Container(
-                                                  padding:
-                                                      EdgeInsets.only(left: 20),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        infoOfSelectedCard
-                                                            .token0Symbol,
-                                                        style: textStyle(
-                                                            Colors.white,
-                                                            16,
-                                                            false),
-                                                      )
-                                                    ],
-                                                  )),
+                                                margin: EdgeInsets.only(left: 30),
+                                                width: 35,
+                                                height: 35,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                    scale: 0.25,
+                                                    image: token0Icon!,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                infoOfSelectedCard
+                                                    .token0Symbol,
+                                                style: textStyle(
+                                                    Colors.white,
+                                                    16,
+                                                    false),
+                                              ),
                                               Spacer(),
                                               Container(
+                                                margin: EdgeInsets.only(right: 30),
                                                 width: _width * .20,
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -624,27 +659,32 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: <Widget>[
-                                              // LP Tokens
                                               Container(
-                                                  padding:
-                                                      EdgeInsets.only(left: 20),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        infoOfSelectedCard
-                                                            .token1Symbol,
-                                                        style: textStyle(
-                                                            Colors.white,
-                                                            16,
-                                                            false),
-                                                      )
-                                                    ],
-                                                  )),
+                                                margin: EdgeInsets.only(left: 30),
+                                                width: 35,
+                                                height: 35,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                    scale: 0.25,
+                                                    image: token1Icon!,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                infoOfSelectedCard
+                                                    .token1Symbol,
+                                                style: textStyle(
+                                                    Colors.white,
+                                                    16,
+                                                    false),
+                                              ),
                                               Spacer(),
                                               Container(
+                                                margin: EdgeInsets.only(right: 30),
                                                 width: _width * .20,
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -669,6 +709,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                     ],
                                   ),
                                 ),
+                                SizedBox(height: _height * 0.03,),
                                 Row(
                                   children: [
                                     ApproveButton(
