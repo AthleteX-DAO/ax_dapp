@@ -365,7 +365,6 @@ class _MyLiquidityState extends State<MyLiquidity> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                        height: _layoutWdt * 0.46,
                         width: _width * 0.5,
                         padding:
                             EdgeInsets.symmetric(vertical: 22, horizontal: 30),
@@ -709,7 +708,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: _height * 0.03,),
+                                SizedBox(height: _height * 0.03),
                                 Row(
                                   children: [
                                     ApproveButton(
@@ -721,7 +720,6 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                         removalConfirmed),
                                     Spacer(),
                                     Container(
-                                      // margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
                                       width: 175,
                                       height: 40,
                                       decoration: BoxDecoration(
