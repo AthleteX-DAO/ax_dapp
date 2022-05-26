@@ -55,20 +55,15 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
   Future<void> _mapSearchBarInputEventToState(
       SearchBarInputEvent event, Emitter<MyLiquidityState> emit) async {
     emit(state.copyWith(status: BlocStatus.loading));
+    String parsedInput = event.searchBarInput.trim().toLowerCase();
     final List<LiquidityPositionInfo> filteredList = state.cards
         .where((liquidityPosition) =>
-            liquidityPosition.token0Name
-                .toLowerCase()
-                .contains(event.searchBarInput.toLowerCase()) ||
-            liquidityPosition.token1Name
-                .toLowerCase()
-                .contains(event.searchBarInput.toLowerCase()) ||
+            liquidityPosition.token0Name.toLowerCase().contains(parsedInput) ||
+            liquidityPosition.token1Name.toLowerCase().contains(parsedInput) ||
             liquidityPosition.token0Symbol
                 .toLowerCase()
-                .contains(event.searchBarInput.toLowerCase()) ||
-            liquidityPosition.token1Symbol
-                .toLowerCase()
-                .contains(event.searchBarInput.toLowerCase()))
+                .contains(parsedInput) ||
+            liquidityPosition.token1Symbol.toLowerCase().contains(parsedInput))
         .toList();
     emit(state.copyWith(
       status: BlocStatus.success,
