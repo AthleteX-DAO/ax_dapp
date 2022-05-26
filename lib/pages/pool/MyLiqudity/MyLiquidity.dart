@@ -228,7 +228,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
       );
     }
 
-    Widget createMyLiquiditySearchBar(double layoutHgt, double layoutWdt) {
+    Widget createMyLiquiditySearchBar(
+        double layoutHgt, double layoutWdt, MyLiquidityBloc bloc) {
       return Container(
         margin: EdgeInsets.only(bottom: layoutHgt * 0.01),
         //1 - title width
@@ -249,7 +250,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
               child: Container(
                 child: TextFormField(
                   onChanged: (value) {
-                    setState(() {});
+                    bloc.add(SearchBarInputEvent(searchBarInput: value));
                   },
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -269,7 +270,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
       buildWhen: ((previous, current) => previous != current),
       builder: (context, state) {
         final bloc = context.read<MyLiquidityBloc>();
-        final cards = state.cards;
+        final filteredCards = state.filteredCards;
         if (state.status == BlocStatus.initial) {
           bloc.add(LoadEvent());
         }
@@ -301,7 +302,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                       children: [
                         //searchbar for desktop (next to toggle button)
                         if (_isWeb)
-                          createMyLiquiditySearchBar(gridHgt, _layoutWdt),
+                          createMyLiquiditySearchBar(gridHgt, _layoutWdt, bloc),
                       ],
                     ),
                     Container(
@@ -323,10 +324,10 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                 mainAxisSpacing: 20,
                                 mainAxisExtent: 265,
                               ),
-                        itemCount: cards.length,
+                        itemCount: filteredCards.length,
                         itemBuilder: (BuildContext ctx, index) {
                           return myLiquidityPoolGridItem(
-                              cards[index], _layoutWdt);
+                              filteredCards[index], _layoutWdt);
                         },
                       ),
                     )
