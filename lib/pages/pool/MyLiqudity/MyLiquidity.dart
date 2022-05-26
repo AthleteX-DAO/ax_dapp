@@ -1,5 +1,4 @@
 import 'package:ax_dapp/pages/pool/MyLiqudity/AddLiquidityTokenPair.dart';
-import 'package:ax_dapp/pages/pool/MyLiqudity/GetTokenPairIcons.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/bloc/MyLiquidityBloc.dart';
 import 'package:ax_dapp/pages/pool/MyLiqudity/models/MyLiquidityItemInfo.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
@@ -44,7 +43,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
 
     Widget myLiquidityPoolGridItem(
         LiquidityPositionInfo liquidityPositionInfo, double layoutWdt) {
-          GetTokenPairIcons tokenIcons = GetTokenPairIcons.fromTokenTicker(liquidityPositionInfo.token0Symbol, liquidityPositionInfo.token1Symbol);
+          AddLiquidityTokenPair tokenPair = AddLiquidityTokenPair.fromTokenPairAddresses(liquidityPositionInfo.token0Address, liquidityPositionInfo.token1Address);
       return ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: GridTile(
@@ -64,7 +63,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           scale: 0.5,
-                          image: tokenIcons.token0.icon!,
+                          image: tokenPair.token0.icon!,
                         ),
                       ),
                     ),
@@ -75,7 +74,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           scale: 0.5,
-                          image: tokenIcons.token1.icon!,
+                          image: tokenPair.token1.icon!,
                         ),
                       ),
                     ),
@@ -219,8 +218,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         onPressed: () {
                           setState(() {
                             currentTabIndex = 1;
-                            token0Icon = tokenIcons.token0.icon;
-                            token1Icon = tokenIcons.token1.icon;
+                            token0Icon = tokenPair.token0.icon;
+                            token1Icon = tokenPair.token1.icon;
                             infoOfSelectedCard = liquidityPositionInfo;
                             poolController.lpTokenAAddress =
                                 liquidityPositionInfo.token0Address;
