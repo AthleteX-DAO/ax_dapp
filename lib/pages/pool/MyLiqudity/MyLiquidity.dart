@@ -732,6 +732,9 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                         onPressed: () {
                                           setState(() {
                                             currentTabIndex = 0;
+                                            value = 0;
+                                            poolController
+                                                .removePercentage = value;
                                           });
                                         },
                                         child: Text(
