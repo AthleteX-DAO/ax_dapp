@@ -5,6 +5,8 @@ class PoolPairInfo {
   final String shareOfPool;
   final double ratio;
   final String recieveAmount;
+  final String reserve0;
+  final String reserve1;
 
   PoolPairInfo({
     required this.token0Price,
@@ -12,17 +14,22 @@ class PoolPairInfo {
     required this.apy,
     required this.shareOfPool,
     required this.ratio,
-    required this.recieveAmount
+    required this.recieveAmount,
+    required this.reserve0,
+    required this.reserve1,
   });
 
   factory PoolPairInfo.empty() {
     return PoolPairInfo(
-        token0Price: '0',
-        token1Price: '0',
-        apy: '0',
-        shareOfPool: '0',
-        ratio: 0.0,
-        recieveAmount: '0');
+      token0Price: '0',
+      token1Price: '0',
+      apy: '0',
+      shareOfPool: '0',
+      ratio: 0.0,
+      recieveAmount: '0',
+      reserve0: '0',
+      reserve1: '0',
+    );
   }
 
   @override
