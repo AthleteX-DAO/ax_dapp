@@ -694,6 +694,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                           setState(() {
                                             currentTabIndex = 0;
                                             value = 0;
+                                            poolController
+                                                .removePercentage = value;
                                           });
                                         },
                                         child: Text(
