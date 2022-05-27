@@ -46,16 +46,20 @@ class GetPoolInfoUseCase {
           token1Price = double.parse(tokenPair.token0Price);
           reserve1 = double.parse(tokenPair.reserve0);
         }
-        final double ratio = (reserve0/reserve1);
-        final double recieveAmount = min(((token0Input * totalSupply)/reserve0),((token1Input * totalSupply)/reserve1));
-        final double shareOfPool = (recieveAmount/totalSupply) * 100;
+        final double ratio = (reserve0 / reserve1);
+        final double recieveAmount = min(
+            ((token0Input * totalSupply) / reserve0),
+            ((token1Input * totalSupply) / reserve1));
+        final double shareOfPool = (recieveAmount / totalSupply) * 100;
         final PoolPairInfo poolPairInfo = PoolPairInfo(
             token0Price: token0Price.toStringAsFixed(6),
             token1Price: token1Price.toStringAsFixed(6),
             apy: '0',
             shareOfPool: shareOfPool.toStringAsFixed(6),
             ratio: ratio,
-            recieveAmount: recieveAmount.toStringAsFixed(6));
+            recieveAmount: recieveAmount.toStringAsFixed(6),
+            reserve0: reserve0.toStringAsFixed(6),
+            reserve1: reserve1.toStringAsFixed(6));
         return Either.left(Success(poolPairInfo));
       } else {
         return Either.right(

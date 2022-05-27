@@ -471,19 +471,19 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        " ${token0.ticker} per ${token1.ticker}:",
+                        " ${token0.ticker} Liquidity:",
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "${poolInfo.token0Price}",
+                        "${poolInfo.reserve0}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                       Text(
-                        "${token1.ticker} per ${token0.ticker}:",
+                        "${token1.ticker} Liquidity:",
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "${poolInfo.token1Price}",
+                        "${poolInfo.reserve1}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ],
