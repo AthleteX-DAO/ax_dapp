@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:ax_dapp/pages/farm/models/FarmModel.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ class FarmController {
   late Pool contract;
 
   Controller controller = Get.find();
+  WalletController wallet = Get.find();
   String? athlete;
   String strName = "";
   String strAddress = "";
@@ -32,6 +34,8 @@ class FarmController {
 
   RxDouble dUnStakeBalance = 0.0.obs;
   RxDouble dStakeBalance = 0.0.obs;
+
+  RxString strCurrentBalance = "0".obs;
 
   late Web3Dart.Web3Client rpcClient;
 
@@ -60,6 +64,7 @@ class FarmController {
       rpcUrl = Controller.supportedChains[controller.networkID.value]!;
     rpcClient = Web3Dart.Web3Client(rpcUrl, Client());
     this.contract = new Pool(address: address, client: rpcClient);
+    this.updateCurrentBalance();
   }
 
   // constructor from another farm
@@ -80,11 +85,20 @@ class FarmController {
     this.strStakedAlias = farm.strStakedAlias;
     this.rpcClient = farm.rpcClient;
     this.contract = farm.contract;
+    this.strCurrentBalance = farm.strCurrentBalance;
 
     String account = controller.publicAddress.value.hex;
-    // account = "0x22b3e4b38fb2f260302787b18b1401747eacf8d4";
     this.updateStakedBalance(account);
+    this.updateCurrentBalance();
   }
+
+  /// This function is used to get current Balance from wallet
+  /// 
+  /// @return {void}
+  Future<void> updateCurrentBalance() async {
+    this.strCurrentBalance.value = await wallet.getTokenBalance(this.strStakeTokenAddress);
+  }
+
 
   /// This function is used to stake tokens on a specific farm
   /// and also update the txHash string on conroller
