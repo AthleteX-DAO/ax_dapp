@@ -312,7 +312,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                               BoxConstraints(maxWidth: tokenContainerWdt * 0.5),
                           child: IntrinsicWidth(
                             child: TextFormField(
-                              readOnly: ((tknNum == 2) & (state.status == BlocStatus.success)) ? isReadOnly : !isReadOnly,
+                              readOnly: ((tknNum == 2) && (state.status == BlocStatus.success)) ? isReadOnly : !isReadOnly,
                               controller: tokenAmountController,
                               onChanged: (tokenInput) {
                                 if (state.status == BlocStatus.success) {
