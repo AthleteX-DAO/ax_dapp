@@ -37,6 +37,8 @@ class _AddLiquidityState extends State<AddLiquidity> {
     super.dispose();
   }
 
+  var isReadOnly = true;
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaquery = MediaQuery.of(context);
@@ -310,6 +312,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                               BoxConstraints(maxWidth: tokenContainerWdt * 0.5),
                           child: IntrinsicWidth(
                             child: TextFormField(
+                              readOnly: ((tknNum == 2) && (state.status == BlocStatus.success)) ? isReadOnly : !isReadOnly,
                               controller: tokenAmountController,
                               onChanged: (tokenInput) {
                                 if (state.status == BlocStatus.success) {
