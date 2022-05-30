@@ -1145,43 +1145,16 @@ Dialog yourAXDialog(BuildContext context) {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Container(
-                              child: Text(
-                                "Balance:",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
+                            Text(
+                              "Balance:",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey[600],
                               ),
                             ),
-                            Container(
-                              child: Obx(
-                                () => Text(
-                                  "${walletController.yourBalance} AX",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey[600],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "Unclaimed:",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                "50 AX",
+                            Obx(
+                              () => Text(
+                                "${walletController.yourBalance} AX",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[600],
@@ -1207,22 +1180,18 @@ Dialog yourAXDialog(BuildContext context) {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Container(
-                              child: Text(
-                                "AX price:",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
+                            Text(
+                              "AX price:",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey[600],
                               ),
                             ),
-                            Container(
-                              child: Text(
-                                "${walletController.axPrice} USD",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
+                            Text(
+                              "${walletController.axPrice} USD",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey[600],
                               ),
                             )
                           ],
@@ -1230,22 +1199,18 @@ Dialog yourAXDialog(BuildContext context) {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Container(
-                              child: Text(
-                                "AX in circulation:",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
+                            Text(
+                              "AX in circulation:",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey[600],
                               ),
                             ),
-                            Container(
-                              child: Text(
-                                "${walletController.axCirculation}",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
+                            Text(
+                              "${walletController.axCirculation}",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey[600],
                               ),
                             ),
                           ],
@@ -1253,22 +1218,18 @@ Dialog yourAXDialog(BuildContext context) {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Container(
-                              child: Text(
-                                "AX total supply:",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
+                            Text(
+                              "AX total supply:",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey[600],
                               ),
                             ),
-                            Container(
-                              child: Text(
-                                "${walletController.axTotalSupply}",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey[600],
-                                ),
+                            Text(
+                              "${walletController.axTotalSupply}",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey[600],
                               ),
                             ),
                           ],
@@ -1292,19 +1253,7 @@ Dialog yourAXDialog(BuildContext context) {
                                   },
                                   child: Text("Buy AX",
                                       style:
-                                          textStyle(Colors.black, 14, true)))),
-
-                          /**  Button currently doesn't work, so obfuscating for now */
-                          // Container(
-                          //     width: 150,
-                          //     height: 30,
-                          //     decoration: boxDecoration(Colors.transparent, 100,
-                          //         0, Colors.amber[600]!),
-                          //     child: TextButton(
-                          //         onPressed: () {},
-                          //         child: Text("+ Add to Wallet",
-                          //             style: textStyle(
-                          //                 Colors.amber[600]!, 14, true)))),
+                                          textStyle(Colors.black, 14, true)))),                                                
                         ])),
               ])))));
 }
