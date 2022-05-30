@@ -18,7 +18,7 @@ class WalletController extends GetxController {
   Controller controller = Get.find();
 
   Future<void> getYourAxBalance() async {
-    if(!_isWalletConnected()) return;
+    if (!_isWalletConnected()) return;
     if (controller.networkID.value == Controller.MAINNET_CHAIN_ID) {
       axAddress = AXT.polygonAddress;
     } else {
@@ -91,9 +91,12 @@ class WalletController extends GetxController {
   }
 
   void buyAX() {
-    String axEth =
-        "https://app.sushi.com/swap?inputCurrency=0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df&outputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
-    launchUrl(Uri.parse(axEth));
+    // TODO: Update this when we need sushiswap connection
+    // String axEth =
+    //     "https://app.sushi.com/swap?inputCurrency=0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df&outputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
+    String axEthUniswap = "https://app.uniswap.org/#/swap?chain=polygon";
+
+    launchUrl(Uri.parse(axEthUniswap));
   }
 
   Future<String> getTokenSymbol(String tokenAddress) async {
