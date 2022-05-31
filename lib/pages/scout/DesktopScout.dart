@@ -144,34 +144,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                 textStyle(Colors.white, sportFilterTxSz, false, false),
                 textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
       )),
-      Container(
-          child: TextButton(
-        onPressed: () {
-          if (sportState != 2)
-            setState(() {
-              sportState = 2;
-            });
-        },
-        child: Text("NBA",
-            style: textSwapState(
-                sportState == 2,
-                textStyle(Colors.white, sportFilterTxSz, false, false),
-                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
-      )),
-      Container(
-          child: TextButton(
-        onPressed: () {
-          if (sportState != 3)
-            setState(() {
-              sportState = 3;
-            });
-        },
-        child: Text("MMA",
-            style: textSwapState(
-                sportState == 3,
-                textStyle(Colors.white, sportFilterTxSz, false, false),
-                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
-      )),
       Spacer(),
       Container(
         child: createSearchBar(),
@@ -257,98 +229,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                       if (sportState != 1)
                         setState(() {
                           sportState = 1;
-                          allSportsTitle = "NFL";
+                          allSportsTitle = "MLB";
                         });
-                    },
-                  ),
-                  PopupMenuItem(
-                    value: 1,
-                    child: ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(right: 8),
-                              child: Icon(
-                                Icons.sports_basketball,
-                                size: sportFilterIconSz,
-                              )),
-                          Text("NBA",
-                              style: textSwapState(
-                                  sportState == 2,
-                                  textStyle(Colors.white, sportFilterTxSz,
-                                      false, false),
-                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                      false, true))),
-                        ],
-                      ),
-                    ),
-                    onTap: () {
-                      if (sportState != 2)
-                        setState(() {
-                          sportState = 2;
-                          allSportsTitle = "NBA";
-                        });
-                    },
-                  ),
-                  PopupMenuItem(
-                    value: 1,
-                    child: ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(right: 8),
-                              child: Icon(
-                                Icons.sports_kabaddi,
-                                size: sportFilterIconSz,
-                              )),
-                          Text("MMA",
-                              style: textSwapState(
-                                  sportState == 3,
-                                  textStyle(Colors.white, sportFilterTxSz,
-                                      false, false),
-                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                      false, true))),
-                        ],
-                      ),
-                    ),
-                    onTap: () {
-                      if (sportState != 3)
-                        setState(() {
-                          sportState = 3;
-                        });
-                      allSportsTitle = "MMA";
-                    },
-                  ),
-                  PopupMenuItem(
-                    value: 1,
-                    child: ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(right: 8),
-                              child: Icon(
-                                Icons.sports_soccer,
-                                size: sportFilterIconSz,
-                              )),
-                          Text("Soccer",
-                              style: textSwapState(
-                                  sportState == 4,
-                                  textStyle(Colors.white, sportFilterTxSz,
-                                      false, false),
-                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                      false, true))),
-                        ],
-                      ),
-                    ),
-                    onTap: () {
-                      if (sportState != 4)
-                        setState(() {
-                          sportState = 4;
-                        });
-                      allSportsTitle = "Soccer";
                     },
                   ),
                 ],
