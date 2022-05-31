@@ -37,6 +37,8 @@ class _AddLiquidityState extends State<AddLiquidity> {
     super.dispose();
   }
 
+  var isReadOnly = true;
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaquery = MediaQuery.of(context);
@@ -129,6 +131,8 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         }
                       }
                       bloc.add(PageRefreshEvent());
+                      _tokenAmountOneController.clear();
+                      _tokenAmountTwoController.clear();
                       setState(() {
                         Navigator.pop(context);
                       });
@@ -250,7 +254,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                       height: 40,
                       decoration: decor,
                       child: TextButton(
-                        // onPressed: (){},
                         onPressed: () => showDialog(
                           context: context,
                           builder: (BuildContext context) => AthleteTokenList(
@@ -295,7 +298,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
                               child: TextButton(
                                   onPressed: () {
                                     _tokenAmountOneController.text = balance0;
-                                    onTokenInputChange(tknNum, balance0);
+                                    if (state.status == BlocStatus.success) {
+                                      onTokenInputChange(tknNum, balance0);
+                                    }
                                   },
                                   child: Text("MAX",
                                       style: textStyle(
@@ -307,9 +312,12 @@ class _AddLiquidityState extends State<AddLiquidity> {
                               BoxConstraints(maxWidth: tokenContainerWdt * 0.5),
                           child: IntrinsicWidth(
                             child: TextFormField(
+                              readOnly: ((tknNum == 2) && (state.status == BlocStatus.success)) ? isReadOnly : !isReadOnly,
                               controller: tokenAmountController,
                               onChanged: (tokenInput) {
-                                onTokenInputChange(tknNum, tokenInput);
+                                if (state.status == BlocStatus.success) {
+                                  onTokenInputChange(tknNum, tokenInput);
+                                }
                               },
                               style: textStyle(Colors.grey[400]!, 22, false),
                               decoration: InputDecoration(
@@ -359,7 +367,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
             height: 50,
             padding: EdgeInsets.all(10),
             verticalOffset: -60,
-            // preferBelow: false,
             decoration: BoxDecoration(
                 color: Colors.grey[800],
                 borderRadius: BorderRadius.circular(25)),
@@ -471,19 +478,19 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        " ${token0.ticker} per ${token1.ticker}:",
+                        " ${token0.ticker} Liquidity:",
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "${poolInfo.token0Price}",
+                        "${poolInfo.reserve0}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                       Text(
-                        "${token1.ticker} per ${token0.ticker}:",
+                        "${token1.ticker} Liquidity:",
                         style: textStyle(Colors.grey[600]!, 15, false),
                       ),
                       Text(
-                        "${poolInfo.token1Price}",
+                        "${poolInfo.reserve1}",
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ],
@@ -514,7 +521,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     ],
                   ),
                 ),
-                // addLiquidityToolTip(elementWdt),
                 showYouReceived(poolInfo.recieveAmount),
                 ApproveButton(
                     elementWdt * 0.95,
@@ -555,6 +561,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   )),
                   // Bottom Token container
                   createTokenButton(2, elementWdt, _tokenAmountTwoController),
+                  if (state.status == BlocStatus.no_data) ...[
+                    Text('Not Created - Please input both token amounts'),
+                  ]
                 ],
               ),
             ),

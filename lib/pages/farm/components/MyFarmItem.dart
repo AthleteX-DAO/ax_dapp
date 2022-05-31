@@ -41,6 +41,18 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
       children: <Widget>[
         // Farm Title
         farmTitleWidget,
+        // Current Balance
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Current Balance",
+              style: txStyle,
+            ),
+            Obx(() => Text("${farm.strCurrentBalance} ${farm.strStakedSymbol}",
+                style: txStyle))
+          ],
+        ),
         //Upper information section
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

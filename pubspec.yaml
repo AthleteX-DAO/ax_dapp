@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.5.0
+version: 0.5.0-hotfix-1.0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -31,7 +31,6 @@ dependencies:
   url_launcher: ^6.1.0
   fl_chart: ^0.50.1
   toggle_switch: ^2.0.1
-  charts_flutter: ^0.12.0
   syncfusion_flutter_charts: ^20.1.51
   coingecko_api: ^1.0.2+2
   font_awesome_flutter: ^10.1.0
@@ -58,17 +57,16 @@ dependencies:
   fpdart: ^0.0.14
   json_annotation: ^4.5.0
   local_auth: ^2.0.0
+  charts_flutter: ^0.12.0
+  url_launcher_web: ^2.0.9
+  web3dart: ^2.3.5
+  web3_browser: ^0.0.1
+  erc20: ^1.0.0
 
 dependency_overrides:
-  charts_flutter:
-    git:
-      url: https://github.com/google/charts
-      path: charts_flutter
-  url_launcher_web: 2.0.9
-  web3dart: 2.3.5
 
 
-dev_dependencies: 
+dev_dependencies:
   test: ^1.21.1
   mockito: ^5.1.0
   build_runner: ^2.1.10

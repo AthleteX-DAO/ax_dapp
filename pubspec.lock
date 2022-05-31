@@ -158,11 +158,9 @@ packages:
   charts_flutter:
     dependency: "direct main"
     description:
-      path: charts_flutter
-      ref: HEAD
-      resolved-ref: d6adb193ff91d2042941bad388845cbc8c5cd964
-      url: "https://github.com/google/charts"
-    source: git
+      name: charts_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.12.0"
   checked_yaml:
     dependency: transitive
@@ -304,6 +302,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  erc20:
+    dependency: "direct main"
+    description:
+      name: erc20
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   ffi:
     dependency: transitive
     description:
@@ -1146,7 +1151,7 @@ packages:
     source: hosted
     version: "2.0.5"
   url_launcher_web:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       name: url_launcher_web
       url: "https://pub.dartlang.org"
@@ -1201,8 +1206,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  web3_browser:
+    dependency: "direct main"
+    description:
+      name: web3_browser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   web3dart:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       name: web3dart
       url: "https://pub.dartlang.org"
@@ -1259,4 +1271,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=2.17.0-0 <3.0.0"
-  flutter: ">=2.8.0"
+  flutter: ">=2.10.0"
