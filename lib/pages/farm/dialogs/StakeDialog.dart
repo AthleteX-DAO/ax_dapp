@@ -7,6 +7,7 @@ import 'package:ax_dapp/pages/farm/modules/DialogTextStyle.dart';
 
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/pages/farm/dialogs/TrxConfirmedDialog.dart';
 
 Dialog stakeDialog(
@@ -18,6 +19,7 @@ Dialog stakeDialog(
 
   FarmController selectedFarm = FarmController.fromFarm(farm);
   TextEditingController stakeAxInput = TextEditingController();
+  WalletController walletController = Get.find();
   RxDouble totalStakedBalance = 0.0.obs;
 
   return Dialog(
@@ -60,7 +62,7 @@ Dialog stakeDialog(
             children: <Widget>[
               //Amount Box
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.symmetric(vertical: 30),
                 // padding: const EdgeInsets.all(10),
                 // Amount box was overflowing by 30px after using dialogHorPadding
                 width: wid - dialogHorPadding - 30,
@@ -104,13 +106,18 @@ Dialog stakeDialog(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
                         onPressed: () {
-                            stakeAxInput.text = selectedFarm.strCurrentBalance.value;
+                          walletController
+                              .getTokenBalance(farm.strStakeTokenAddress)
+                              .then((tokenBalance) {
+                            stakeAxInput.text = tokenBalance;
                             selectedFarm.dStakeBalance.value =
-                                double.parse(selectedFarm.strCurrentBalance.value);
+                                double.parse(tokenBalance);
                             totalStakedBalance.value =
                                 selectedFarm.dStaked.value +
                                     selectedFarm.dStakeBalance.value;
-                         },
+                            print(stakeAxInput);
+                          });
+                        },
                         child: Text(
                           "Max",
                           style: textStyle(Colors.grey[400]!, 9, false),
@@ -144,19 +151,6 @@ Dialog stakeDialog(
                   ],
                 ),
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Current ${selectedFarm.strStakedSymbol} Balance",
-                style: textStyle(Colors.grey[400]!, 14, false),
-              ),
-              Obx(() => Text(
-                    "${selectedFarm.strCurrentBalance} ${selectedFarm.strStakedSymbol}",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
             ],
           ),
           Row(

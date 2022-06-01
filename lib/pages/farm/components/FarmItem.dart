@@ -5,7 +5,6 @@ import 'package:ax_dapp/pages/farm/components/SingleLogoFarmTitle.dart';
 import 'package:ax_dapp/pages/farm/components/DoubleLogoFarmTitle.dart';
 import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
-import 'package:get/get.dart';
 
 Widget farmItem(BuildContext context, bool isWeb, FarmController farm,
     double listHeight, double layoutWdt) {
@@ -37,18 +36,6 @@ Widget farmItem(BuildContext context, bool isWeb, FarmController farm,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         farmTitleWidget,
-        // Current Balance
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              "Current Balance",
-              style: txStyle,
-            ),
-            Obx(() => Text("${farm.strCurrentBalance} ${farm.strStakedSymbol}",
-                style: txStyle))
-          ],
-        ),
         // TVL
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,6 +47,7 @@ Widget farmItem(BuildContext context, bool isWeb, FarmController farm,
             Text("\$${farm.dTVL.toStringAsFixed(2)}", style: txStyle)
           ],
         ),
+
         // Total APY
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
