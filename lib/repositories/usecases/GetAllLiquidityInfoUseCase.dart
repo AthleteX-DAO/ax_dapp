@@ -38,7 +38,7 @@ class GetAllLiquidityInfoUseCase {
                   .toList();
           final List<LiquidityPositionInfo> liquidityPositionsNoZeroBalance =
               liquidityPositionsWithZeroBalance
-                  .where((lpPosition) => lpPosition.lpTokenPairBalance != '0').toList();
+                  .where((lpPosition) => lpPosition.lpTokenPairBalance != '0.000000').toList();
           print(liquidityPositionsNoZeroBalance);
           return Either.left(Success(liquidityPositionsNoZeroBalance));
         } else {

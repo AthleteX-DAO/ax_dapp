@@ -15,6 +15,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
   MyLiquidityBloc({required this.repo, required this.controller})
       : super(MyLiquidityState.initial()) {
     on<LoadEvent>(_mapLoadEventToState);
+    on<SearchBarInputEvent>(_mapSearchBarInputEventToState);
   }
 
   Future<void> _mapLoadEventToState(
@@ -29,15 +30,17 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
         if (isSuccess) {
           final liquidityPositionsList =
               response.getLeft().toNullable()!.liquidityPositionsList;
-          if(liquidityPositionsList != null) {
-            emit(state.copyWith(cards: liquidityPositionsList, status: BlocStatus.success));
-          }
-          else {
+          if (liquidityPositionsList != null) {
+            emit(state.copyWith(
+                cards: liquidityPositionsList,
+                filteredCards: liquidityPositionsList,
+                status: BlocStatus.success));
+          } else {
             emit(state.copyWith(status: BlocStatus.no_data));
           }
         } else {
           final errorMsg = response.getRight().toNullable()!.errorMsg;
-          //TODO Create User facing error messages 
+          //TODO Create User facing error messages
           print(errorMsg);
           emit(state.copyWith(status: BlocStatus.error));
         }
@@ -47,5 +50,24 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
     }
+  }
+
+  Future<void> _mapSearchBarInputEventToState(
+      SearchBarInputEvent event, Emitter<MyLiquidityState> emit) async {
+    emit(state.copyWith(status: BlocStatus.loading));
+    String parsedInput = event.searchBarInput.trim().toLowerCase();
+    final List<LiquidityPositionInfo> filteredList = state.cards
+        .where((liquidityPosition) =>
+            liquidityPosition.token0Name.toLowerCase().contains(parsedInput) ||
+            liquidityPosition.token1Name.toLowerCase().contains(parsedInput) ||
+            liquidityPosition.token0Symbol
+                .toLowerCase()
+                .contains(parsedInput) ||
+            liquidityPosition.token1Symbol.toLowerCase().contains(parsedInput))
+        .toList();
+    emit(state.copyWith(
+      status: BlocStatus.success,
+      filteredCards: filteredList,
+    ));
   }
 }

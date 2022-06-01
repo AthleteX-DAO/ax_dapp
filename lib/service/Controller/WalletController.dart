@@ -1,6 +1,6 @@
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:erc20/erc20.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -18,7 +18,7 @@ class WalletController extends GetxController {
   Controller controller = Get.find();
 
   Future<void> getYourAxBalance() async {
-    if(!_isWalletConnected()) return;
+    if (!_isWalletConnected()) return;
     if (controller.networkID.value == Controller.MAINNET_CHAIN_ID) {
       axAddress = AXT.polygonAddress;
     } else {
@@ -44,7 +44,7 @@ class WalletController extends GetxController {
     }
     Web3Client rpcClient = Web3Client(rpcUrl, Client());
     tokenEthAddress = EthereumAddress.fromHex(tokenAddress);
-    var ax = Erc20(address: tokenEthAddress, client: rpcClient);
+    var ax = ERC20(address: tokenEthAddress, client: rpcClient);
     try {
       BigInt rawBalance = await ax.balanceOf(walletAddress);
       print("Raw Balance: $rawBalance");
@@ -91,9 +91,12 @@ class WalletController extends GetxController {
   }
 
   void buyAX() {
-    String axEth =
-        "https://app.sushi.com/swap?inputCurrency=0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df&outputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
-    launchUrl(Uri.parse(axEth));
+    // TODO: Update this when we need sushiswap connection
+    // String axEth =
+    //     "https://app.sushi.com/swap?inputCurrency=0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df&outputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
+    String axEthUniswap = "https://app.uniswap.org/#/swap?chain=polygon";
+
+    launchUrl(Uri.parse(axEthUniswap));
   }
 
   Future<String> getTokenSymbol(String tokenAddress) async {
@@ -105,7 +108,7 @@ class WalletController extends GetxController {
       rpcUrl = "https://polygon-rpc.com";
     }
     Web3Client rpcClient = Web3Client(rpcUrl, Client());
-    Erc20 token = Erc20(address: tokenEthAddress, client: rpcClient);
+    ERC20 token = ERC20(address: tokenEthAddress, client: rpcClient);
     return token.symbol();
   }
 
