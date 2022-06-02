@@ -79,6 +79,8 @@ query {
  pairs {
   	id
     name
+    token0Price
+    token1Price
     token0 {name, id}
     token1 {name, id}
     reserve0 

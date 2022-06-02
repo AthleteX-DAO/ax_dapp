@@ -6,6 +6,7 @@ import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
+import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
@@ -115,11 +116,10 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == 0)
             BlocProvider(
                 create: (BuildContext context) => ScoutPageBloc(
-                        repo: GetScoutAthletesDataUseCase([
-                      RepositoryProvider.of<MLBRepo>(context),
-                      //NFLRepo
-                      //MLBRepo
-                    ])),
+                        repo: GetScoutAthletesDataUseCase(
+                          graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+                          sportsRepos: [ RepositoryProvider.of<MLBRepo>(context) ]
+                    )),
                 child: DesktopScout())
           else if (pageNumber == 1)
             BlocProvider(
@@ -148,11 +148,10 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
-                      repo: GetScoutAthletesDataUseCase([
-                    RepositoryProvider.of<MLBRepo>(context),
-                    //NFLRepo
-                    //NBARepo
-                  ])),
+                      repo: GetScoutAthletesDataUseCase(
+                        graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+                        sportsRepos: [ RepositoryProvider.of<MLBRepo>(context) ]
+                  )),
               child: DesktopScout()),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(

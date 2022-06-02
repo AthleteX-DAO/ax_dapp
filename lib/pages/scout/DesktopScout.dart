@@ -397,7 +397,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                   Container(
                     width: _width * 0.12,
                     child: Text(
-                      "Market Price",
+                      "Market Price(Long)",
+                      style: textStyle(Colors.grey[400]!, 10, false, false),
+                    ),
+                  ),
+                  Container(
+                    width: _width * 0.12,
+                    child: Text(
+                      "Market Price(Short)",
                       style: textStyle(Colors.grey[400]!, 10, false, false),
                     ),
                   ),
@@ -751,7 +758,16 @@ class _DesktopScoutState extends State<DesktopScout> {
                     Container(
                         width: _width * 0.12,
                         child: Row(children: <Widget>[
-                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                          Text(athlete.longTokenPrice.toStringAsFixed(4) + ' AX',
+                              style: textStyle(Colors.white, 16, false, false)),
+                          Container(width: 10),
+                          Text("+4%",
+                              style: textStyle(Colors.green, 12, false, false))
+                        ])),
+                    Container(
+                        width: _width * 0.12,
+                        child: Row(children: <Widget>[
+                          Text(athlete.shortTokenPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("+4%",

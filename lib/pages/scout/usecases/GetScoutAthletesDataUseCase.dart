@@ -1,13 +1,21 @@
+import 'dart:html';
+
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
+import 'package:ax_dapp/pages/scout/models/PairModel.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
+import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 
 class GetScoutAthletesDataUseCase {
+  final SubGraphRepo graphRepo;
   final Map<SupportedSport, SportsRepo<SportAthlete>> _repos = Map();
+  List<PairModel> allPairs = [];
 
-  GetScoutAthletesDataUseCase(List<SportsRepo<SportAthlete>> sportsRepos) {
+  GetScoutAthletesDataUseCase({required this.graphRepo, required List<SportsRepo<SportAthlete>> sportsRepos}) {
     sportsRepos.forEach((repo) {
       _repos[repo.sport] = repo;
     });
@@ -15,6 +23,7 @@ class GetScoutAthletesDataUseCase {
 
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
       SupportedSport sportSelection) async {
+    allPairs = await fetchAllPairs();
     /// If specific sport is selected return athletes from that specific repo
     if (sportSelection != SupportedSport.ALL) {
       var repo = _repos[sportSelection]!;
@@ -34,12 +43,37 @@ class GetScoutAthletesDataUseCase {
     }
   }
 
+  Future<List<PairModel>> fetchAllPairs() async {
+    final response = await graphRepo.queryAllPairs();
+    if(!response.isLeft())
+      return List.empty();
+    final pairsInfo = response.getLeft().toNullable()!['pairs'];  
+    List<PairModel> pairs = _mapPairsToPairModel(pairsInfo);
+    return pairs;
+  }
+
+  double getMarketPrice(String strTokenName, bool isLong) {
+    String strAXTokenName = "AthleteX";
+    String strLongTokenPrefix = "Linear Long Token";
+    String strShortTokenPrefix = "Linear Short Token";
+    String strTokenFullName = isLong ? "$strTokenName $strLongTokenPrefix" : "$strTokenName $strShortTokenPrefix";
+    final index0 = allPairs.indexWhere((pair) => pair.strToken0Name == strTokenFullName && pair.strToken1Name == strAXTokenName);
+    final index1 = allPairs.indexWhere((pair) => pair.strToken0Name == strAXTokenName && pair.strToken1Name == strTokenFullName);
+    if(index0 >= 0)
+      return allPairs[index0].dToken1Price;
+    else if(index1 >= 0)
+      return allPairs[index1].dToken0Price;
+    return 0;
+  }
+
   List<AthleteScoutModel> _mapAthleteToScoutModel(
       List<SportAthlete> athletes, SportsRepo<SportAthlete> repo) {
     List<AthleteScoutModel> mappedAthletes = [];
     athletes.forEach((athlete) {
       //TODO DANGEROUS CHANGE THIS TO NOT BE COUPLED TO MLB
       final mlbAthlete = (athlete as MLBAthlete);
+      double dLongTokenPrice = getMarketPrice(mlbAthlete.name, true);
+      double dShortTokenPrice = getMarketPrice(mlbAthlete.name, false);
       mappedAthletes.add(AthleteScoutModel(
           mlbAthlete.id,
           mlbAthlete.name,
@@ -56,8 +90,30 @@ class GetScoutAthletesDataUseCase {
           mlbAthlete.weightedOnBasePercentage,
           mlbAthlete.errors,
           mlbAthlete.inningsPlayed,
+          dLongTokenPrice,
+          dShortTokenPrice
       ));
     });
     return mappedAthletes;
+  }
+
+  List<PairModel> _mapPairsToPairModel(dynamic response) {
+    List<PairModel> pairs = [];
+    response.forEach((pair) => {
+      pairs.add(PairModel(
+        pair["id"].toString(),
+        pair["name"].toString(),
+        double.parse(pair['token0Price']),
+        double.parse(pair['token1Price']),
+        pair["token0"]["name"].toString(),
+        pair["token1"]["name"].toString(),
+        pair["token0"]["id"].toString(),
+        pair["token1"]["id"].toString(),
+        double.parse(pair["reserve0"]),
+        double.parse(pair["reserve1"]),
+        double.parse(pair["totalSupply"])
+      ))
+    });
+    return pairs;
   }
 }
