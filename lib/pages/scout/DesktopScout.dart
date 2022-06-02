@@ -585,10 +585,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(athlete.team,
+                                Text(retrieveTeamCityName(athlete.team),
                                     style: textStyle(
                                         Colors.white, 18, false, false)),
-                                Text(athlete.team,
+                                Text(retrieveTeamNickname(athlete.team),
                                     style: textStyle(
                                         Colors.grey[700]!, 10, false, false))
                               ])),
@@ -630,21 +630,17 @@ class _DesktopScoutState extends State<DesktopScout> {
                               if (kIsWeb) {
                                 showDialog(
                                     context: context,
-                                    builder: (BuildContext context) =>
-                                    BlocProvider(
+                                    builder: (BuildContext context) => BlocProvider(
                                         create: (BuildContext context) =>
                                             BuyDialogBloc(
                                                 repo: RepositoryProvider.of<
-                                                      GetBuyInfoUseCase>(
-                                                      context),
-                                                wallet: GetTotalTokenBalanceUseCase(Get.find()),
+                                                    GetBuyInfoUseCase>(context),
+                                                wallet:
+                                                    GetTotalTokenBalanceUseCase(
+                                                        Get.find()),
                                                 swapController: Get.find()),
-                                        child: BuyDialog(
-                                            athlete.name,
-                                            athlete.warPrice,
-                                            athlete.id)
-                                    )
-                                );
+                                        child: BuyDialog(athlete.name,
+                                            athlete.warPrice, athlete.id)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;
@@ -740,10 +736,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(athlete.team,
+                                Text(retrieveTeamCityName(athlete.team),
                                     style: textStyle(
                                         Colors.white, 18, false, false)),
-                                Text(athlete.team,
+                                Text(retrieveTeamNickname(athlete.team),
                                     style: textStyle(
                                         Colors.grey[700]!, 10, false, false))
                               ])),
@@ -781,21 +777,17 @@ class _DesktopScoutState extends State<DesktopScout> {
                               if (kIsWeb) {
                                 showDialog(
                                     context: context,
-                                    builder: (BuildContext context) =>
-                                        BlocProvider(
-                                            create: (BuildContext context) =>
-                                                BuyDialogBloc(
-                                                    repo: RepositoryProvider.of<
-                                                          GetBuyInfoUseCase>(
-                                                          context),
-                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
-                                                    swapController: Get.find()),
-                                            child: BuyDialog(
-                                                athlete.name,
-                                                athlete.warPrice,
-                                                athlete.id)
-                                        )
-                                );
+                                    builder: (BuildContext context) => BlocProvider(
+                                        create: (BuildContext context) =>
+                                            BuyDialogBloc(
+                                                repo: RepositoryProvider.of<
+                                                    GetBuyInfoUseCase>(context),
+                                                wallet:
+                                                    GetTotalTokenBalanceUseCase(
+                                                        Get.find()),
+                                                swapController: Get.find()),
+                                        child: BuyDialog(athlete.name,
+                                            athlete.warPrice, athlete.id)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;

@@ -49,7 +49,6 @@ class _AthletePageState extends State<AthletePage> {
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
 
-
   @override
   void initState() {
     super.initState();
@@ -267,7 +266,6 @@ class _AthletePageState extends State<AthletePage> {
       String marketPricePercent,
       String bookValue,
       String bookValuePercent) {
-
     return Container(
         width: _width,
         child: Column(
@@ -826,7 +824,8 @@ class _AthletePageState extends State<AthletePage> {
                                         Text("Team",
                                             style: textStyle(greyTextColor, 12,
                                                 false, false)),
-                                        Text("${athlete.team}",
+                                        Text(
+                                            "${retrieveTeamCityName(athlete.team)} ${retrieveTeamNickname(athlete.team)}",
                                             style: textStyle(greyTextColor, 12,
                                                 false, false))
                                       ]),
@@ -1080,24 +1079,14 @@ class _AthletePageState extends State<AthletePage> {
                                             minimumSize: Size(50, 30)),
                                         onPressed: () => showDialog(
                                             context: context,
-                                            builder: (BuildContext context) =>
-                                                BlocProvider(
-                                                    create: (
-                                                        BuildContext context) =>
-                                                        BuyDialogBloc(
-                                                            repo: RepositoryProvider
-                                                                  .of<GetBuyInfoUseCase>(context),
-                                                            wallet: GetTotalTokenBalanceUseCase(Get.find()),
-                                                            swapController: Get.find()),
-                                                    child: BuyDialog(
-                                                        athlete.name,
-                                                        athlete.warPrice,
-                                                        athlete.id)
-                                                )
-                                        ),
-                                        child: Text("Buy",
-                                            style: textStyle(primaryOrangeColor,
-                                                20, false, false)))),
+                                            builder: (BuildContext context) => BlocProvider(
+                                                create: (BuildContext context) => BuyDialogBloc(
+                                                    repo: RepositoryProvider.of<
+                                                        GetBuyInfoUseCase>(context),
+                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
+                                                    swapController: Get.find()),
+                                                child: BuyDialog(athlete.name, athlete.warPrice, athlete.id))),
+                                        child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
                                 Container(
                                     width: 160,
                                     height: _buttonHeight,
@@ -1112,30 +1101,14 @@ class _AthletePageState extends State<AthletePage> {
                                             minimumSize: Size(50, 30)),
                                         onPressed: () => showDialog(
                                             context: context,
-                                            builder: (BuildContext context) =>
-                                                BlocProvider(
-                                                    create: (
-                                                        BuildContext context) =>
-                                                        SellDialogBloc(
-                                                            repo:
-                                                              RepositoryProvider
-                                                                  .of<
-                                                                  GetSellInfoUseCase>(
-                                                                  context),
-
-                                                            wallet:
-                                                            GetTotalTokenBalanceUseCase(Get.find()),
-                                                            swapController: Get
-                                                                .find()),
-                                                    child: SellDialog(
-                                                        athlete.name,
-                                                        athlete.warPrice,
-                                                        athlete.id)
-                                                )
-                                            ),
-                                        child: Text("Sell",
-                                            style: textStyle(primaryOrangeColor,
-                                                20, false, false))))
+                                            builder: (BuildContext context) => BlocProvider(
+                                                create: (BuildContext context) => SellDialogBloc(
+                                                    repo: RepositoryProvider.of<
+                                                        GetSellInfoUseCase>(context),
+                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
+                                                    swapController: Get.find()),
+                                                child: SellDialog(athlete.name, athlete.warPrice, athlete.id))),
+                                        child: Text("Sell", style: textStyle(primaryOrangeColor, 20, false, false))))
                               ]),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1413,28 +1386,16 @@ class _AthletePageState extends State<AthletePage> {
                                           child: TextButton(
                                               onPressed: () => showDialog(
                                                   context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          BlocProvider(
-                                                              create: (
-                                                                  BuildContext context) =>
-                                                                  BuyDialogBloc(
-                                                                      repo: RepositoryProvider
-                                                                            .of<GetBuyInfoUseCase>(context),
-                                                                      wallet:
-                                                                      GetTotalTokenBalanceUseCase(Get.find()),
-                                                                      swapController: Get
-                                                                          .find()),
-                                                              child: BuyDialog(
-                                                                  athlete.name,
-                                                                  athlete
-                                                                      .warPrice,
-                                                                  athlete.id)
-                                                          )
-                                              ),
-                                              child: Text("Buy",
-                                                  style: textStyle(Colors.black,
-                                                      20, false, false)))),
+                                                  builder: (BuildContext context) => BlocProvider(
+                                                      create: (BuildContext context) => BuyDialogBloc(
+                                                          repo: RepositoryProvider
+                                                              .of<GetBuyInfoUseCase>(
+                                                                  context),
+                                                          wallet:
+                                                              GetTotalTokenBalanceUseCase(Get.find()),
+                                                          swapController: Get.find()),
+                                                      child: BuyDialog(athlete.name, athlete.warPrice, athlete.id))),
+                                              child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
                                       Container(
                                           width: 175,
                                           height: 50,
@@ -1446,31 +1407,21 @@ class _AthletePageState extends State<AthletePage> {
                                           child: TextButton(
                                               onPressed: () => showDialog(
                                                   context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          BlocProvider(
-                                                              create: (
-                                                                  BuildContext context) =>
-                                                                  SellDialogBloc(
-                                                                      repo:
-                                                                      RepositoryProvider
-                                                                          .of<GetSellInfoUseCase>(context),
-                                                                      wallet:
-                                                                      GetTotalTokenBalanceUseCase(
-                                                                          Get
-                                                                              .find()),
-                                                                      swapController: Get
-                                                                          .find()),
-                                                              child: SellDialog(
-                                                                  athlete.name,
-                                                                  athlete
-                                                                      .warPrice,
-                                                                  athlete.id)
-                                                          )
-                                                  ),
+                                                  builder: (BuildContext context) => BlocProvider(
+                                                      create: (BuildContext context) => SellDialogBloc(
+                                                          repo: RepositoryProvider.of<GetSellInfoUseCase>(
+                                                              context),
+                                                          wallet:
+                                                              GetTotalTokenBalanceUseCase(
+                                                                  Get.find()),
+                                                          swapController:
+                                                              Get.find()),
+                                                      child: SellDialog(
+                                                          athlete.name,
+                                                          athlete.warPrice,
+                                                          athlete.id))),
                                               child: Text("Sell",
-                                                  style: textStyle(Colors.black,
-                                                      20, false, false))))
+                                                  style: textStyle(Colors.black, 20, false, false))))
                                     ]),
                                 Row(
                                     mainAxisAlignment:
@@ -1568,32 +1519,35 @@ class _AthletePageState extends State<AthletePage> {
                               Spacer(),
                               Container(
                                 width: 100,
-                                  height: 20,
-                                  child:
-                                    FutureBuilder<String>(
-                                      future: _isLongApt ? walletController.getTokenSymbol(getLongAptAddress(athlete.id)) : walletController.getTokenSymbol(getShortAptAddress(athlete.id)),
-                                      builder: (context, snapshot) {
-                                        //Check API response data
-                                        if (snapshot.hasError) {
-                                          // can't get symbol
-                                          return showSymbol('---');
-                                        } else if (snapshot.hasData) {
-                                          // got the balance
-                                          return showSymbol(snapshot.data!);
-                                        } else {
-                                          // loading
-                                          return Center(
-                                            child: SizedBox(
-                                              child: CircularProgressIndicator(
-                                                  color: Colors.amber),
-                                              height: 10.0,
-                                              width: 10.0,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
+                                height: 20,
+                                child: FutureBuilder<String>(
+                                  future: _isLongApt
+                                      ? walletController.getTokenSymbol(
+                                          getLongAptAddress(athlete.id))
+                                      : walletController.getTokenSymbol(
+                                          getShortAptAddress(athlete.id)),
+                                  builder: (context, snapshot) {
+                                    //Check API response data
+                                    if (snapshot.hasError) {
+                                      // can't get symbol
+                                      return showSymbol('---');
+                                    } else if (snapshot.hasData) {
+                                      // got the balance
+                                      return showSymbol(snapshot.data!);
+                                    } else {
+                                      // loading
+                                      return Center(
+                                        child: SizedBox(
+                                          child: CircularProgressIndicator(
+                                              color: Colors.amber),
+                                          height: 10.0,
+                                          width: 10.0,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
                               Spacer(),
                               Container(
                                   width: 200,
@@ -1737,7 +1691,8 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Team",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text("${athlete.team}",
+                              Text(
+                                  "${retrieveTeamCityName(athlete.team)} ${retrieveTeamNickname(athlete.team)}",
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
@@ -1902,13 +1857,11 @@ class _AthletePageState extends State<AthletePage> {
   }
 
   Widget showSymbol(String symbol) {
-     return Center(
-       child: Text(
-         "Symbol: \$$symbol",
-         style: textStyle(greyTextColor, 10, false, false),
-           textAlign: TextAlign.center
-       ),
-     );
+    return Center(
+      child: Text("Symbol: \$$symbol",
+          style: textStyle(greyTextColor, 10, false, false),
+          textAlign: TextAlign.center),
+    );
   }
 
   Widget buildGraph(List scaledPrice, List time, BuildContext context) {
