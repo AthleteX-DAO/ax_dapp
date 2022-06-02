@@ -8,28 +8,24 @@ import 'package:equatable/equatable.dart';
 class ScoutPageState extends Equatable {
 
   final List<AthleteScoutModel> athletes;
-  final List<PairModel> pairs;
   final SupportedSport selectedSport;
   final BlocStatus status;
 
   const ScoutPageState({
     this.status = BlocStatus.initial,
     List<AthleteScoutModel>? athletes,
-    List<PairModel>? pairs,
-    this.selectedSport = SupportedSport.ALL}) : athletes = athletes ?? const [], pairs = pairs ?? const[];
+    this.selectedSport = SupportedSport.ALL}) : athletes = athletes ?? const [];
 
   @override
-  List<Object?> get props => [athletes, pairs];
+  List<Object?> get props => [athletes];
 
   ScoutPageState copy({
     List<AthleteScoutModel>? athletes,
-    List<PairModel>? pairs,
     SupportedSport? selectedSport,
     BlocStatus? status
   }) {
     return ScoutPageState(
         athletes: athletes ?? this.athletes,
-        pairs: pairs ?? this.pairs,
         selectedSport: selectedSport ?? this.selectedSport,
         status: status ?? BlocStatus.initial
     );

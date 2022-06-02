@@ -1631,8 +1631,8 @@ class _AthletePageState extends State<AthletePage> {
                                         Row(children: <Widget>[
                                           Text(
                                               (_longAptIndex == 0)
-                                                  ? longMarketPrice
-                                                  : shortMarketPrice,
+                                                  ? "${athlete.longTokenPrice.toStringAsFixed(2)} AX"
+                                                  : "${athlete.shortTokenPrice.toStringAsFixed(2)} AX",
                                               style: textStyle(Colors.white, 20,
                                                   false, false)),
                                           Container(

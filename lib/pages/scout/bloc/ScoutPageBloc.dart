@@ -22,10 +22,6 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
       emit(state.copy(status: BlocStatus.loading));
 
       final response = await repo.fetchSupportedAthletes(state.selectedSport);
-      final pairs = await repo.fetchAllPairs();
-      print("[Console - fecting pairs start]");
-      print(pairs);
-      print("[Console - fetching pairs end]");
 
       emit(state.copy(
           athletes: response,
