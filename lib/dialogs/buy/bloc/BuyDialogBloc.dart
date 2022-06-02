@@ -43,7 +43,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
             status: BlocStatus.success,
             tokenAddress: event.currentTokenAddress,
             aptBuyInfo: AptBuyInfo(
-                aptPrice: pairInfo.toPrice,
+                axPerAptPrice: pairInfo.fromPrice,
                 minimumReceived: pairInfo.minimumReceived,
                 priceImpact: pairInfo.priceImpact,
                 receiveAmount: pairInfo.receiveAmount,
@@ -52,10 +52,12 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copyWith(status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
+        emit(state.copyWith(
+            status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
       }
     } catch (e) {
-      emit(state.copyWith(status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
+      emit(state.copyWith(
+          status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
     }
   }
 
@@ -83,8 +85,8 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     print("On New Apt Input: $axInputAmount");
     print("Token Address: ${state.tokenAddress}");
     try {
-      final response =
-          await repo.fetchAptBuyInfo(aptAddress: state.tokenAddress, axInput: axInputAmount);
+      final response = await repo.fetchAptBuyInfo(
+          aptAddress: state.tokenAddress, axInput: axInputAmount);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
@@ -97,21 +99,22 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
             status: BlocStatus.success,
             balance: balance,
             aptBuyInfo: AptBuyInfo(
-                aptPrice: pairInfo.toPrice,
+                axPerAptPrice: pairInfo.fromPrice,
                 minimumReceived: pairInfo.minimumReceived,
                 priceImpact: pairInfo.priceImpact,
                 receiveAmount: pairInfo.receiveAmount,
-                totalFee: pairInfo.totalFee
-                )));
+                totalFee: pairInfo.totalFee)));
       } else {
         print("On New Apt Input: Failure");
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copyWith(status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
+        emit(state.copyWith(
+            status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
       }
     } catch (e) {
-      emit(state.copyWith(status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
+      emit(state.copyWith(
+          status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
     }
   }
 }
