@@ -179,8 +179,9 @@ Dialog walletDialog(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: _height * 0.43,
-      width: _width * 0.8,
+      constraints: BoxConstraints(minHeight: 235, maxHeight: 250),
+      height: _height * 0.26,
+      width: _width * 0.20,
       padding: EdgeInsets.all(20),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
@@ -193,28 +194,27 @@ Dialog walletDialog(BuildContext context) {
                 "Choose Wallet",
                 style: textStyle(Colors.white, 18, true),
               ),
-              Container(
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        size: 30,
-                        color: Colors.white,
-                      )))
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.close,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 40),
-                width: _width * 0.6,
+                margin: EdgeInsets.symmetric(vertical: 30),
+                width: _width * 0.15,
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
-                //Comment this widget (TextButton) for Android
                 child: TextButton(
                   onPressed: () {
                     controller.connect().then((response) {
@@ -239,54 +239,50 @@ Dialog walletDialog(BuildContext context) {
                       }
                     });
                   },
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Container(
-                          height: 30,
-                          width: 30,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage("assets/images/fox.png"),
-                              fit: BoxFit.fill,
-                            ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/fox.png"),
+                            fit: BoxFit.fill,
                           ),
                         ),
-                        Text(
-                          "Metamask",
-                          style: textStyle(Colors.white, 16, false),
-                        ),
-                        //empty container
-                        Container(
-                          margin: EdgeInsets.only(left: 20),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        "Metamask",
+                        style: textStyle(Colors.white, 16, false),
+                      ),
+                      //empty container
+                      Container(
+                        margin: EdgeInsets.only(left: 20),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ],
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 4),
-            width: _width * 0.6,
+            margin: EdgeInsets.symmetric(vertical: 4),
+            width: _width * 0.15,
             height: 45,
             decoration:
                 boxDecoration(Colors.transparent, 100, 2, Colors.grey[400]!),
-            child: Center(
-                child: TextButton(
+            child: TextButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MobileLoginPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MobileLoginPage()));
               },
               child: Text(
                 "Add/Create wallet",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white),
               ),
-            )),
-          )
+            ),
+          ),
         ],
       ),
     ),
