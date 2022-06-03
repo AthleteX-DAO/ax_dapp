@@ -1,7 +1,3 @@
-import 'dart:html';
-
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/pages/scout/models/PairModel.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';

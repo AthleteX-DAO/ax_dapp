@@ -1528,12 +1528,10 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
     final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
 
-    final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
