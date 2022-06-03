@@ -398,7 +398,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             style: textStyle(
                                 Colors.grey[400]!, 12, false, false))),
                   Container(
-                    width: _width * 0.12,
+                    width: _width * 0.18,
                     child: Text(
                       "Market Price",
                       style: textStyle(Colors.grey[400]!, 10, false, false),
@@ -752,7 +752,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               ])),
                     // Market Price / Change
                     Container(
-                        width: _width * 0.12,
+                        width: _width * 0.18,
                         child: Row(children: <Widget>[
                           Text(isLongToken ? 
                                 athlete.longTokenPrice.toStringAsFixed(4) + ' AX' : 

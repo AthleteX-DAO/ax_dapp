@@ -23,7 +23,7 @@ class GetScoutAthletesDataUseCase {
 
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
       SupportedSport sportSelection) async {
-    allPairs = await fetchAllPairs();
+    allPairs = await fetchSpecificPairs("AX");
     /// If specific sport is selected return athletes from that specific repo
     if (sportSelection != SupportedSport.ALL) {
       var repo = _repos[sportSelection]!;
@@ -43,12 +43,15 @@ class GetScoutAthletesDataUseCase {
     }
   }
 
-  Future<List<PairModel>> fetchAllPairs() async {
-    final response = await graphRepo.queryAllPairs();
+  Future<List<PairModel>> fetchSpecificPairs(String token) async {
+    final response = await graphRepo.querySpecificPairs(token);
     if(!response.isLeft())
       return List.empty();
-    final pairsInfo = response.getLeft().toNullable()!['pairs'];  
-    List<PairModel> pairs = _mapPairsToPairModel(pairsInfo);
+    final prefixInfos = response.getLeft().toNullable()!['prefix'];
+    final suffixInfos = response.getLeft().toNullable()!['suffix'];
+    List<PairModel> prefixPairs = _mapPairsToPairModel(prefixInfos);
+    List<PairModel> suffixPairs = _mapPairsToPairModel(suffixInfos);
+    List<PairModel> pairs = [...prefixPairs, ...suffixPairs];
     return pairs;
   }
 
