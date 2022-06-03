@@ -35,6 +35,19 @@ class SubGraphRepo {
   }
 
   Future<Either<Map<String, dynamic>?, OperationException>>
+      querySpecificPairs(String token) async {
+    final result = await _client.query(
+      QueryOptions(
+          document: parseString(_getSpecificPairs(token)),
+          pollInterval: const Duration(seconds: 10)),
+    );
+    if (result.hasException)
+      return Either.right(result.exception!);
+    else
+      return Either.left(result.data);
+  }
+
+  Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairsForWalletId(String walletId) async {
     final result = await _client.query(
       QueryOptions(
@@ -79,6 +92,35 @@ query {
  pairs {
   	id
     name
+    token0Price
+    token1Price
+    token0 {name, id}
+    token1 {name, id}
+    reserve0 
+    reserve1
+  	totalSupply
+  }
+}
+""";
+
+String _getSpecificPairs(String token) => """
+query {
+  prefix: pairs(where: {name_starts_with: "$token-"}) {
+  	id
+    name
+    token0Price
+    token1Price
+    token0 {name, id}
+    token1 {name, id}
+    reserve0 
+    reserve1
+  	totalSupply
+  },
+  suffix: pairs(where: {name_ends_with: "-$token"}) {
+  	id
+    name
+    token0Price
+    token1Price
     token0 {name, id}
     token1 {name, id}
     reserve0 

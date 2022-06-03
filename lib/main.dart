@@ -29,6 +29,7 @@ void main() async {
     client: _gQLClient,
     child: MultiRepositoryProvider(
       providers: [
+        RepositoryProvider(create: (context) => _subGraphRepo),
         RepositoryProvider(
           create: (context) => MLBRepo(_mlbApi),
         ),

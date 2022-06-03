@@ -1479,12 +1479,10 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
     final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
 
-    final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
@@ -1585,8 +1583,8 @@ class _AthletePageState extends State<AthletePage> {
                                         Row(children: <Widget>[
                                           Text(
                                               (_longAptIndex == 0)
-                                                  ? longMarketPrice
-                                                  : shortMarketPrice,
+                                                  ? "${athlete.longTokenPrice.toStringAsFixed(2)} AX"
+                                                  : "${athlete.shortTokenPrice.toStringAsFixed(2)} AX",
                                               style: textStyle(Colors.white, 20,
                                                   false, false)),
                                           Container(
