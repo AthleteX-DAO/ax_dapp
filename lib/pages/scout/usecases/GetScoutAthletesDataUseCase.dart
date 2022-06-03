@@ -9,7 +9,7 @@ import 'package:ax_dapp/util/SupportedSports.dart';
 class GetScoutAthletesDataUseCase {
   final SubGraphRepo graphRepo;
   final Map<SupportedSport, SportsRepo<SportAthlete>> _repos = Map();
-  List<dynamic> allPairs = [];
+  List<TokenPair> allPairs = [];
 
   GetScoutAthletesDataUseCase({required this.graphRepo, required List<SportsRepo<SportAthlete>> sportsRepos}) {
     sportsRepos.forEach((repo) {
@@ -39,20 +39,17 @@ class GetScoutAthletesDataUseCase {
     }
   }
 
-  Future<List<dynamic>> fetchSpecificPairs(String token) async {
+  Future<List<TokenPair>> fetchSpecificPairs(String token) async {
     final response = await graphRepo.querySpecificPairs(token);
     if(!response.isLeft())
       return List.empty();
     final prefixInfos = response.getLeft().toNullable()!['prefix'];
     final suffixInfos = response.getLeft().toNullable()!['suffix'];
-    final prefixPairs = 
-      prefixInfos.map((dynamic pair) => TokenPair.fromJson(pair as Map<String, dynamic>)).toList();
-    final suffixPairs = 
-      suffixInfos.map((dynamic pair) => TokenPair.fromJson(pair as Map<String, dynamic>)).toList();
+    List<TokenPair> prefixPairs = 
+      prefixInfos.map<TokenPair>((pair) => TokenPair.fromJson(pair as Map<String, dynamic>)).toList();
+    List<TokenPair> suffixPairs = 
+      suffixInfos.map<TokenPair>((pair) => TokenPair.fromJson(pair as Map<String, dynamic>)).toList();
     final pairs = [...prefixPairs, ...suffixPairs];
-    print("[Console-Pairs Start]");
-    print(pairs[0].toJson());
-    print("[Console-Pairs End");
     return pairs;
   }
 
