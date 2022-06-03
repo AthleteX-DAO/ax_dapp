@@ -29,11 +29,12 @@ class WebWallet extends DappWallet {
   }
 
   //Comment this for Android
-  Future<bool> addTokenToWallet() async {
-    print("[Console] Adding AX token to MetaMask wallet");
+  Future<bool> addTokenToWallet(String tokenAddress, String tokenTicker) async {
+    print("[Console] - Adding $tokenTicker to MetaMask wallet");
+    print("[Console] - Current Address: $tokenAddress");
     bool result = await FlutterWeb3.ethereum!.walletWatchAssets(
-        address: "0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df",
-        symbol: "AX",
+        address: tokenAddress,
+        symbol: tokenTicker,
         decimals: 18);
     print("[Console] Result of adding AX token to MetaMask. {$result}");
     return result;

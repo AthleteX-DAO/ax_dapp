@@ -18,6 +18,7 @@ import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -70,6 +71,7 @@ class _V1AppState extends State<V1App> {
     Get.put(SwapController());
     Get.put(WalletController());
     Get.put(PoolController());
+    Get.put(WebWallet());
   }
 
   @override
