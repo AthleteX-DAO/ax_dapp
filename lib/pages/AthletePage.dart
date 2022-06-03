@@ -1585,7 +1585,7 @@ class _AthletePageState extends State<AthletePage> {
                                               (_longAptIndex == 0)
                                                   ? "${athlete.longTokenPrice.toStringAsFixed(2)} AX"
                                                   : "${athlete.shortTokenPrice.toStringAsFixed(2)} AX",
-                                              style: textStyle(Colors.white, 20,
+                                              style: textStyle(Colors.white, 14,
                                                   false, false)),
                                           Container(
                                               //alignment: Alignment.topLeft,
@@ -1597,7 +1597,7 @@ class _AthletePageState extends State<AthletePage> {
                                                       12, false, false))),
                                         ]),
                                         Text("4.24 AX",
-                                            style: textStyle(greyTextColor, 20,
+                                            style: textStyle(greyTextColor, 14,
                                                 false, false))
                                       ]))
                             ]),
