@@ -49,6 +49,9 @@ class _V1AppState extends State<V1App> {
   Token matic = MATIC("Polygon", "MATIC");
   late PageController _pageController;
   var _selectedIndex = 0;
+  List<String> dropDownMenuItems = ["Matic Network", "SX Network"];
+  String selectVal = "Matic Network";
+  String axText = "Ax";
 
   animateToPage(int index) {
     // use this to animate to the page
@@ -509,24 +512,34 @@ class _V1AppState extends State<V1App> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             if (network)
-              TextButton(
-                onPressed: () {
-                  String urlString = "https://polygonscan.com/";
-                  launchUrl(Uri.parse(urlString));
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    const Icon(
-                      Icons.link,
-                      color: Colors.grey,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  const Icon(
+                    Icons.link,
+                    color: Colors.grey,
+                  ),
+                  DropdownButtonHideUnderline(
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        dropdownColor: Colors.black,
+                        borderRadius: BorderRadius.circular(10),
+                        elevation: 1,
+                        value: selectVal,
+                        items: dropDownMenuItems.map((itemOne){
+                          return DropdownMenuItem(
+                            enabled: false,
+                              value: itemOne,
+                              child: Text(itemOne)
+                          );
+                        }).toList(),
+                        onChanged: (value){
+
+                        },),
                     ),
-                    Text(
-                      "Matic/Polygon",
-                      style: textStyle(Colors.grey[400]!, 11, false, false),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             if (matic)
               TextButton(
@@ -564,7 +577,7 @@ class _V1AppState extends State<V1App> {
                     ),
                   ),
                   Text(
-                    "AX",
+                    axText,
                     style: textStyle(Colors.grey[400]!, 11, false, false),
                   ),
                 ],
