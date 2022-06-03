@@ -104,14 +104,6 @@ class TokenList {
   ];
 }
 
-String getAptTicker(int id, bool isLong) {
-  int tokenIndex = TokenList.namesList.indexWhere((athleteNames) => athleteNames[1] == id);
-  if (isLong) {
-    return TokenList.namesList[tokenIndex][2];
-  }
-  return TokenList.namesList[tokenIndex][3];
-}
-
 String getLongAptAddress(int id) {
   if (TokenList.idToAddress.containsKey(id)) {
     return TokenList.idToAddress[id]![1];

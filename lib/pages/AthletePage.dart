@@ -1312,7 +1312,7 @@ class _AthletePageState extends State<AthletePage> {
                           Colors.transparent),
                       child: TextButton(
                         onPressed: () {
-                          webWallet.addTokenToWallet(_getCurrentTokenAddress(), getAptTicker(athlete.id, _isLongApt));
+                          webWallet.addTokenToWallet(_getCurrentTokenAddress());
                         },
                         child: Text(
                           "+ Add to Wallet",
