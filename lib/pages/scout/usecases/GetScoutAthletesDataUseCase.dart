@@ -1,7 +1,7 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
-import 'package:ax_dapp/pages/scout/models/PairModel.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
+import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
@@ -9,7 +9,7 @@ import 'package:ax_dapp/util/SupportedSports.dart';
 class GetScoutAthletesDataUseCase {
   final SubGraphRepo graphRepo;
   final Map<SupportedSport, SportsRepo<SportAthlete>> _repos = Map();
-  List<PairModel> allPairs = [];
+  List<dynamic> allPairs = [];
 
   GetScoutAthletesDataUseCase({required this.graphRepo, required List<SportsRepo<SportAthlete>> sportsRepos}) {
     sportsRepos.forEach((repo) {
@@ -39,15 +39,20 @@ class GetScoutAthletesDataUseCase {
     }
   }
 
-  Future<List<PairModel>> fetchSpecificPairs(String token) async {
+  Future<List<dynamic>> fetchSpecificPairs(String token) async {
     final response = await graphRepo.querySpecificPairs(token);
     if(!response.isLeft())
       return List.empty();
     final prefixInfos = response.getLeft().toNullable()!['prefix'];
     final suffixInfos = response.getLeft().toNullable()!['suffix'];
-    List<PairModel> prefixPairs = _mapPairsToPairModel(prefixInfos);
-    List<PairModel> suffixPairs = _mapPairsToPairModel(suffixInfos);
-    List<PairModel> pairs = [...prefixPairs, ...suffixPairs];
+    final prefixPairs = 
+      prefixInfos.map((dynamic pair) => TokenPair.fromJson(pair as Map<String, dynamic>)).toList();
+    final suffixPairs = 
+      suffixInfos.map((dynamic pair) => TokenPair.fromJson(pair as Map<String, dynamic>)).toList();
+    final pairs = [...prefixPairs, ...suffixPairs];
+    print("[Console-Pairs Start]");
+    print(pairs[0].toJson());
+    print("[Console-Pairs End");
     return pairs;
   }
 
@@ -56,12 +61,12 @@ class GetScoutAthletesDataUseCase {
     String strLongTokenPrefix = "Linear Long Token";
     String strShortTokenPrefix = "Linear Short Token";
     String strTokenFullName = isLong ? "$strTokenName $strLongTokenPrefix" : "$strTokenName $strShortTokenPrefix";
-    final index0 = allPairs.indexWhere((pair) => pair.strToken0Name == strTokenFullName && pair.strToken1Name == strAXTokenName);
-    final index1 = allPairs.indexWhere((pair) => pair.strToken0Name == strAXTokenName && pair.strToken1Name == strTokenFullName);
+    final index0 = allPairs.indexWhere((pair) => pair.token0.name == strTokenFullName && pair.token1.name == strAXTokenName);
+    final index1 = allPairs.indexWhere((pair) => pair.token0.name == strAXTokenName && pair.token1.name == strTokenFullName);
     if(index0 >= 0)
-      return allPairs[index0].dToken1Price;
+      return double.parse(allPairs[index0].token1Price);
     else if(index1 >= 0)
-      return allPairs[index1].dToken0Price;
+      return double.parse(allPairs[index1].token0Price);
     return 0;
   }
 
@@ -94,25 +99,5 @@ class GetScoutAthletesDataUseCase {
       ));
     });
     return mappedAthletes;
-  }
-
-  List<PairModel> _mapPairsToPairModel(dynamic response) {
-    List<PairModel> pairs = [];
-    response.forEach((pair) => {
-      pairs.add(PairModel(
-        pair["id"].toString(),
-        pair["name"].toString(),
-        double.parse(pair['token0Price']),
-        double.parse(pair['token1Price']),
-        pair["token0"]["name"].toString(),
-        pair["token1"]["name"].toString(),
-        pair["token0"]["id"].toString(),
-        pair["token1"]["id"].toString(),
-        double.parse(pair["reserve0"]),
-        double.parse(pair["reserve1"]),
-        double.parse(pair["totalSupply"])
-      ))
-    });
-    return pairs;
   }
 }

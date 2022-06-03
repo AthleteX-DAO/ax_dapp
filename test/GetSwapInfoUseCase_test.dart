@@ -48,6 +48,7 @@ void main() {
       Token(targetTokenTo.toLowerCase(), "targetTokenTo", null),
       testTokenFromPrice,
       testTokenToPrice,
+      null,
       null
     );
 
@@ -91,6 +92,7 @@ void main() {
       //token1
       testTokenToPrice,
       testTokenFromPrice,
+      null,
       null
     );
 
