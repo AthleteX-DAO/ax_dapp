@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:html';
+import 'package:erc20/erc20.dart';
+import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart' as Web3Dart;
 import 'abstractWallet.dart';
 import 'package:flutter_web3/flutter_web3.dart' as FlutterWeb3;
@@ -29,12 +31,20 @@ class WebWallet extends DappWallet {
   }
 
   //Comment this for Android
-  Future<bool> addTokenToWallet() async {
-    print("[Console] Adding AX token to MetaMask wallet");
+  Future<bool> addTokenToWallet(String tokenAddress) async {
+    print("[Console] - Current Address: $tokenAddress");
+    // get the ticker and get the decimals
+    Web3Dart.EthereumAddress tokenEthAddress = Web3Dart.EthereumAddress.fromHex(tokenAddress);
+    Web3Dart.Web3Client rpcClient = Web3Dart.Web3Client(mainRPCUrl, Client());
+    ERC20 token = ERC20(address: tokenEthAddress, client: rpcClient);
+    String symbol = await token.symbol();
+    print('[Console] - $symbol');
+    int decimals = (await token.decimals()).toInt();
+    print('[Console] - $decimals');
     bool result = await FlutterWeb3.ethereum!.walletWatchAssets(
-        address: "0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df",
-        symbol: "AX",
-        decimals: 18);
+        address: tokenAddress,
+        symbol: symbol,
+        decimals: decimals);
     print("[Console] Result of adding AX token to MetaMask. {$result}");
     return result;
   }

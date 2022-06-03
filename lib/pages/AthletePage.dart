@@ -9,6 +9,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
@@ -1171,6 +1172,7 @@ class _AthletePageState extends State<AthletePage> {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double wid = _width * 0.4;
+    final WebWallet webWallet = Get.find();
     if (_width < 1160) wid = _width * 0.95;
     return Container(
         height: 650,
@@ -1297,6 +1299,27 @@ class _AthletePageState extends State<AthletePage> {
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(width: 30),
+                  Container(
+                    width: 100,
+                    child: Container(
+                      height: 20,
+                      decoration: boxDecoration(
+                          Colors.amber[500]!.withOpacity(0.20),
+                          500,
+                          1,
+                          Colors.transparent),
+                      child: TextButton(
+                        onPressed: () {
+                          webWallet.addTokenToWallet(_getCurrentTokenAddress());
+                        },
+                        child: Text(
+                          "+ Add to Wallet",
+                          style: textStyle(Colors.amber[500]!, 10, false, false),
+                        ),
+                      ),
+                    ),
                   ),
                 ])),
             // graph
@@ -1940,4 +1963,11 @@ class _AthletePageState extends State<AthletePage> {
         borderRadius: BorderRadius.circular(rad),
         border: Border.all(color: borCol, width: borWid));
   }
+
+  String _getCurrentTokenAddress() {
+    return _isLongApt
+        ? getLongAptAddress(athlete.id)
+        : getShortAptAddress(athlete.id);
+  }
+
 }
