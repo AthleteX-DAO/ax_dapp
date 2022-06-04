@@ -1502,12 +1502,10 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
     final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
 
-    final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
@@ -1608,9 +1606,9 @@ class _AthletePageState extends State<AthletePage> {
                                         Row(children: <Widget>[
                                           Text(
                                               (_longAptIndex == 0)
-                                                  ? longMarketPrice
-                                                  : shortMarketPrice,
-                                              style: textStyle(Colors.white, 20,
+                                                  ? "${athlete.longTokenPrice.toStringAsFixed(2)} AX"
+                                                  : "${athlete.shortTokenPrice.toStringAsFixed(2)} AX",
+                                              style: textStyle(Colors.white, 14,
                                                   false, false)),
                                           Container(
                                               //alignment: Alignment.topLeft,
@@ -1622,7 +1620,7 @@ class _AthletePageState extends State<AthletePage> {
                                                       12, false, false))),
                                         ]),
                                         Text("4.24 AX",
-                                            style: textStyle(greyTextColor, 20,
+                                            style: textStyle(greyTextColor, 14,
                                                 false, false))
                                       ]))
                             ]),

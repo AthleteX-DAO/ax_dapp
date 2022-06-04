@@ -29,6 +29,7 @@ class DesktopScout extends StatefulWidget {
 class _DesktopScoutState extends State<DesktopScout> {
   final myController = TextEditingController();
   bool athletePage = false;
+  bool isLongToken = true;
   int sportState = 0;
   String allSportsTitle = "All Sports";
   String longTitle = "Long";
@@ -145,6 +146,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                 textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
       )),
       Spacer(),
+      toggleTokenButton(800, 40),
+      Container(width: 10),
       Container(
         child: createSearchBar(),
       ),
@@ -395,7 +398,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             style: textStyle(
                                 Colors.grey[400]!, 12, false, false))),
                   Container(
-                    width: _width * 0.12,
+                    width: _width * 0.18,
                     child: Text(
                       "Market Price",
                       style: textStyle(Colors.grey[400]!, 10, false, false),
@@ -745,9 +748,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                               ])),
                     // Market Price / Change
                     Container(
-                        width: _width * 0.12,
+                        width: _width * 0.18,
                         child: Row(children: <Widget>[
-                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                          Text(isLongToken ? 
+                                athlete.longTokenPrice.toStringAsFixed(4) + ' AX' : 
+                                athlete.shortTokenPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("+4%",
@@ -941,4 +946,53 @@ class _DesktopScoutState extends State<DesktopScout> {
         borderRadius: BorderRadius.circular(rad),
         border: Border.all(color: borCol, width: borWid));
   }
+
+  Container toggleTokenButton(double layoutWdt, double layoutHgt) {
+    return Container(
+      width: kIsWeb ? 250 : layoutWdt,
+      height: 30,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Container(
+              width: kIsWeb ? 115 : (layoutWdt / 2) - 5,
+              height: 20,
+              decoration: isLongToken
+                  ? boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent)
+                  : boxDecoration(
+                      Colors.transparent, 100, 0, Colors.transparent),
+              child: TextButton(
+                  onPressed: () {
+                    if (!isLongToken) {
+                      setState(() {
+                        isLongToken = true;
+                      });
+                    }
+                  },
+                  child: Text("Long Token",
+                      style: textStyle(Colors.white, 14, true, false)))),
+          Container(
+              width: kIsWeb ? 115 : (layoutWdt / 2) - 5,
+              height: 20,
+              decoration: isLongToken
+                  ? boxDecoration(
+                      Colors.transparent, 100, 0, Colors.transparent)
+                  : boxDecoration(
+                      Colors.grey[600]!, 100, 0, Colors.transparent),
+              child: TextButton(
+                  onPressed: () {
+                    if (isLongToken) {
+                      setState(() {
+                        isLongToken = false;
+                      });
+                    }
+                  },
+                  child: Text("Short Token",
+                      style: textStyle(Colors.white, 14, true, false))))
+        ],
+      ),
+    );
+  }
 }
+

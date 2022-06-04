@@ -1,13 +1,17 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
+import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
+import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 
 class GetScoutAthletesDataUseCase {
+  final SubGraphRepo graphRepo;
   final Map<SupportedSport, SportsRepo<SportAthlete>> _repos = Map();
+  List<TokenPair> allPairs = [];
 
-  GetScoutAthletesDataUseCase(List<SportsRepo<SportAthlete>> sportsRepos) {
+  GetScoutAthletesDataUseCase({required this.graphRepo, required List<SportsRepo<SportAthlete>> sportsRepos}) {
     sportsRepos.forEach((repo) {
       _repos[repo.sport] = repo;
     });
@@ -15,6 +19,7 @@ class GetScoutAthletesDataUseCase {
 
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
       SupportedSport sportSelection) async {
+    allPairs = await fetchSpecificPairs("AX");
     /// If specific sport is selected return athletes from that specific repo
     if (sportSelection != SupportedSport.ALL) {
       var repo = _repos[sportSelection]!;
@@ -34,12 +39,42 @@ class GetScoutAthletesDataUseCase {
     }
   }
 
+  Future<List<TokenPair>> fetchSpecificPairs(String token) async {
+    final response = await graphRepo.querySpecificPairs(token);
+    if(!response.isLeft())
+      return List.empty();
+    final prefixInfos = response.getLeft().toNullable()!['prefix'];
+    final suffixInfos = response.getLeft().toNullable()!['suffix'];
+    List<TokenPair> prefixPairs = 
+      prefixInfos.map<TokenPair>((pair) => TokenPair.fromJson(pair as Map<String, dynamic>)).toList();
+    List<TokenPair> suffixPairs = 
+      suffixInfos.map<TokenPair>((pair) => TokenPair.fromJson(pair as Map<String, dynamic>)).toList();
+    final pairs = [...prefixPairs, ...suffixPairs];
+    return pairs;
+  }
+
+  double getMarketPrice(String strTokenName, bool isLong) {
+    String strAXTokenName = "AthleteX";
+    String strLongTokenPrefix = "Linear Long Token";
+    String strShortTokenPrefix = "Linear Short Token";
+    String strTokenFullName = isLong ? "$strTokenName $strLongTokenPrefix" : "$strTokenName $strShortTokenPrefix";
+    final index0 = allPairs.indexWhere((pair) => pair.token0.name == strTokenFullName && pair.token1.name == strAXTokenName);
+    final index1 = allPairs.indexWhere((pair) => pair.token0.name == strAXTokenName && pair.token1.name == strTokenFullName);
+    if(index0 >= 0)
+      return double.parse(allPairs[index0].token1Price);
+    else if(index1 >= 0)
+      return double.parse(allPairs[index1].token0Price);
+    return 0;
+  }
+
   List<AthleteScoutModel> _mapAthleteToScoutModel(
       List<SportAthlete> athletes, SportsRepo<SportAthlete> repo) {
     List<AthleteScoutModel> mappedAthletes = [];
     athletes.forEach((athlete) {
       //TODO DANGEROUS CHANGE THIS TO NOT BE COUPLED TO MLB
       final mlbAthlete = (athlete as MLBAthlete);
+      double dLongTokenPrice = getMarketPrice(mlbAthlete.name, true);
+      double dShortTokenPrice = getMarketPrice(mlbAthlete.name, false);
       mappedAthletes.add(AthleteScoutModel(
           mlbAthlete.id,
           mlbAthlete.name,
@@ -56,6 +91,8 @@ class GetScoutAthletesDataUseCase {
           mlbAthlete.weightedOnBasePercentage,
           mlbAthlete.errors,
           mlbAthlete.inningsPlayed,
+          dLongTokenPrice,
+          dShortTokenPrice
       ));
     });
     return mappedAthletes;
