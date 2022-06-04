@@ -1312,7 +1312,7 @@ class _AthletePageState extends State<AthletePage> {
                           Colors.transparent),
                       child: TextButton(
                         onPressed: () {
-                          webWallet.addTokenToWallet(_getCurrentTokenAddress());
+                          webWallet.addTokenToWallet(_getCurrentTokenAddress(), _getTokenImage());
                         },
                         child: Text(
                           "+ Add to Wallet",
@@ -1968,4 +1968,9 @@ class _AthletePageState extends State<AthletePage> {
         : getShortAptAddress(athlete.id);
   }
 
+  String _getTokenImage() {
+    return _isLongApt
+    ? "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_noninverted.png" 
+    : "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_inverted.png";
+  }
 }
