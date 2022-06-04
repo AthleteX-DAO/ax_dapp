@@ -31,7 +31,7 @@ class WebWallet extends DappWallet {
   }
 
   //Comment this for Android
-  Future<bool> addTokenToWallet(String tokenAddress) async {
+  Future<bool> addTokenToWallet(String tokenAddress, String tokenImage) async {
     print("[Console] - Current Address: $tokenAddress");
     // get the ticker and get the decimals
     Web3Dart.EthereumAddress tokenEthAddress = Web3Dart.EthereumAddress.fromHex(tokenAddress);
@@ -44,7 +44,8 @@ class WebWallet extends DappWallet {
     bool result = await FlutterWeb3.ethereum!.walletWatchAssets(
         address: tokenAddress,
         symbol: symbol,
-        decimals: decimals);
+        decimals: decimals,
+        image: tokenImage);
     print("[Console] Result of adding AX token to MetaMask. {$result}");
     return result;
   }
