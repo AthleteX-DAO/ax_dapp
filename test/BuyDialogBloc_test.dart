@@ -13,8 +13,7 @@ import 'package:test/test.dart';
 
 import 'BuyDialogBloc_test.mocks.dart';
 
- @GenerateMocks(
-    [GetBuyInfoUseCase, GetTotalTokenBalanceUseCase, SwapController])
+@GenerateMocks([GetBuyInfoUseCase, GetTotalTokenBalanceUseCase, SwapController])
 void main() {
   var mockRepoUseCase = MockGetBuyInfoUseCase();
   var mockWalletController = MockGetTotalTokenBalanceUseCase();
@@ -33,16 +32,17 @@ void main() {
         swapController: mockSwapController);
   });
 
-  test("Should successfully update Bloc State up on New AX input Event", () async {
+  test("Should successfully update Bloc State up on New AX input Event",
+      () async {
     final double testAxInput = 30.00;
     final double testWalletBalance = 100.00;
     final testSwapInfo = TokenSwapInfo(
-        toPrice: 1.09,
-        fromPrice: 3.90,
-        minimumReceived: 1.34,
-        priceImpact: 42.5,
-        totalFee: 0.54,
-        receiveAmount: 0.54,
+      toPrice: 1.09,
+      fromPrice: 3.90,
+      minimumReceived: 1.34,
+      priceImpact: 42.5,
+      totalFee: 0.54,
+      receiveAmount: 0.54,
     );
     when(mockWalletController.getTotalAxBalance())
         .thenAnswer((_) => Future.value(testWalletBalance));
@@ -56,11 +56,8 @@ void main() {
 
     buyDialogBloc.add(OnNewAxInput(axInputAmount: testAxInput));
 
-    await untilCalled(
-        mockRepoUseCase.fetchAptBuyInfo(
-            aptAddress: anyNamed('aptAddress'),
-            axInput: anyNamed('axInput'))
-    );
+    await untilCalled(mockRepoUseCase.fetchAptBuyInfo(
+        aptAddress: anyNamed('aptAddress'), axInput: anyNamed('axInput')));
 
     final verificationResult = verify(mockRepoUseCase.fetchAptBuyInfo(
         aptAddress: captureAnyNamed('aptAddress'),
@@ -78,7 +75,7 @@ void main() {
               state.status == BlocStatus.success &&
               state.aptBuyInfo ==
                   AptBuyInfo(
-                      aptPrice: testSwapInfo.toPrice,
+                      axPerAptPrice: testSwapInfo.fromPrice,
                       minimumReceived: testSwapInfo.minimumReceived,
                       priceImpact: testSwapInfo.priceImpact,
                       receiveAmount: testSwapInfo.receiveAmount,
@@ -87,7 +84,8 @@ void main() {
         ]));
   });
 
-  test("Should successfully update Bloc State up on Load Dialog Event", () async {
+  test("Should successfully update Bloc State up on Load Dialog Event",
+      () async {
     final testTokenAddress = "testTokenAddress";
     final double testWalletBalance = 100.00;
     final testSwapInfo = TokenSwapInfo(
@@ -107,8 +105,7 @@ void main() {
     buyDialogBloc.add(OnLoadDialog(currentTokenAddress: testTokenAddress));
 
     await untilCalled(mockRepoUseCase.fetchAptBuyInfo(
-        aptAddress: anyNamed('aptAddress'),
-        axInput: anyNamed('axInput')));
+        aptAddress: anyNamed('aptAddress'), axInput: anyNamed('axInput')));
 
     final verificationResult = verify(mockRepoUseCase.fetchAptBuyInfo(
         aptAddress: captureAnyNamed('aptAddress')));
@@ -125,7 +122,7 @@ void main() {
               state.status == BlocStatus.success &&
               state.aptBuyInfo ==
                   AptBuyInfo(
-                      aptPrice: testSwapInfo.toPrice,
+                      axPerAptPrice: testSwapInfo.fromPrice,
                       minimumReceived: testSwapInfo.minimumReceived,
                       priceImpact: testSwapInfo.priceImpact,
                       receiveAmount: testSwapInfo.receiveAmount,

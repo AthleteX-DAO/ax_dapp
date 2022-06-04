@@ -9,8 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-
 class BuyDialog extends StatefulWidget {
   final String athleteName;
   final double aptPrice;
@@ -28,7 +26,8 @@ class _BuyDialogState extends State<BuyDialog> {
   TextEditingController _aptAmountController = TextEditingController();
 
   TokenType _currentTokenTypeSelection = TokenType.Long;
-  double slippageTolerance = 1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
+  double slippageTolerance =
+      1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
 
   Widget toggleLongShortToken(double wid, double hgt) {
     return Container(
@@ -47,7 +46,9 @@ class _BuyDialogState extends State<BuyDialog> {
                       borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsets.zero,
                   minimumSize: Size(50, 30),
-                  primary: (_currentTokenTypeSelection == TokenType.Long) ? Colors.amber : Colors.transparent,
+                  primary: (_currentTokenTypeSelection == TokenType.Long)
+                      ? Colors.amber
+                      : Colors.transparent,
                 ),
                 onPressed: () {
                   setState(() {
@@ -72,7 +73,9 @@ class _BuyDialogState extends State<BuyDialog> {
                         borderRadius: BorderRadius.circular(20)),
                     padding: EdgeInsets.zero,
                     minimumSize: Size(50, 30),
-                    primary: (_currentTokenTypeSelection == TokenType.Long) ? Colors.transparent : Colors.black),
+                    primary: (_currentTokenTypeSelection == TokenType.Long)
+                        ? Colors.transparent
+                        : Colors.black),
                 onPressed: () {
                   setState(() {
                     _currentTokenTypeSelection = TokenType.Short;
@@ -101,12 +104,7 @@ class _BuyDialogState extends State<BuyDialog> {
         children: [
           Text("Price:", style: textStyle(Colors.white, 15, false)),
           Text(
-            "$price " +
-                widget.athleteName +
-                " " +
-                _currentTokenTypeSelection.name +
-                " APT" +
-                " per AX",
+            "$price AX per ${widget.athleteName} ${_currentTokenTypeSelection.name} APT",
             style: textStyle(Colors.white, 15, false),
           ),
         ],
@@ -206,7 +204,11 @@ class _BuyDialogState extends State<BuyDialog> {
             style: textStyle(Colors.white, 15, false),
           ),
           Text(
-            "$amountToReceive " + widget.athleteName + " " + _currentTokenTypeSelection.name + " APT",
+            "$amountToReceive " +
+                widget.athleteName +
+                " " +
+                _currentTokenTypeSelection.name +
+                " APT",
             style: textStyle(Colors.white, 15, false),
           ),
         ],
@@ -228,11 +230,13 @@ class _BuyDialogState extends State<BuyDialog> {
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           final bloc = context.read<BuyDialogBloc>();
-          final price = state.aptBuyInfo.aptPrice.toStringAsFixed(6);
+          final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
           final balance = state.balance;
-          final minReceived = state.aptBuyInfo.minimumReceived.toStringAsFixed(6);
+          final minReceived =
+              state.aptBuyInfo.minimumReceived.toStringAsFixed(6);
           final priceImpact = state.aptBuyInfo.priceImpact.toStringAsFixed(6);
-          final receiveAmount = state.aptBuyInfo.receiveAmount.toStringAsFixed(6);
+          final receiveAmount =
+              state.aptBuyInfo.receiveAmount.toStringAsFixed(6);
           final totalFee = state.aptBuyInfo.totalFee;
           if (state.tokenAddress.isEmpty ||
               state.tokenAddress != _getCurrentTokenAddress()) {
@@ -388,7 +392,7 @@ class _BuyDialogState extends State<BuyDialog> {
                                     border: InputBorder.none,
                                   ),
                                   onChanged: (value) {
-                                    if(value.isEmpty) value = "0";
+                                    if (value.isEmpty) value = "0";
                                     bloc.add(OnNewAxInput(
                                         axInputAmount: double.parse(value)));
                                   },
@@ -482,8 +486,7 @@ class _BuyDialogState extends State<BuyDialog> {
   }
 
   void reloadBuyDialog(BuyDialogBloc bloc) {
-    bloc.add(OnLoadDialog(
-        currentTokenAddress: _getCurrentTokenAddress()));
+    bloc.add(OnLoadDialog(currentTokenAddress: _getCurrentTokenAddress()));
   }
 
   String _getCurrentTokenAddress() {
