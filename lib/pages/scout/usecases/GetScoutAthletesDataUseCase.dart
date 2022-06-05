@@ -29,9 +29,9 @@ class GetScoutAthletesDataUseCase {
   Future<double> fetchAxPrice() async {
     final axPrice;
     CoinGeckoResult axMarketData = await coinGeckoRepo.getAxPrice();
-    List<MarketData> axDataByCurrencty =
+    List<MarketData> axDataByCurrency =
         axMarketData.data.marketData.dataByCurrency;
-    axPrice = axDataByCurrencty.firstWhere((axPrice) => axPrice.coinId == 'usd');
+    axPrice = axDataByCurrency.firstWhere((axPrice) => axPrice.coinId == 'usd');
     print("AX Price: ${axPrice.currentPrice}");
     return axPrice.currentPrice ?? 0.0;
   }

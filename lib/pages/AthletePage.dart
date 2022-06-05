@@ -1087,7 +1087,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         GetBuyInfoUseCase>(context),
                                                     wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
-                                                child: BuyDialog(athlete.name, athlete.warPrice, athlete.id))),
+                                                child: BuyDialog(athlete.name, athlete.bookPrice, athlete.id))),
                                         child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
                                 Container(
                                     width: 160,
@@ -1109,7 +1109,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         GetSellInfoUseCase>(context),
                                                     wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
-                                                child: SellDialog(athlete.name, athlete.warPrice, athlete.id))),
+                                                child: SellDialog(athlete.name, athlete.bookPrice, athlete.id))),
                                         child: Text("Sell", style: textStyle(primaryOrangeColor, 20, false, false))))
                               ]),
                           Row(
@@ -1418,7 +1418,7 @@ class _AthletePageState extends State<AthletePage> {
                                                           wallet:
                                                               GetTotalTokenBalanceUseCase(Get.find()),
                                                           swapController: Get.find()),
-                                                      child: BuyDialog(athlete.name, athlete.warPrice, athlete.id))),
+                                                      child: BuyDialog(athlete.name, athlete.bookPrice, athlete.id))),
                                               child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
                                       Container(
                                           width: 175,
@@ -1442,7 +1442,7 @@ class _AthletePageState extends State<AthletePage> {
                                                               Get.find()),
                                                       child: SellDialog(
                                                           athlete.name,
-                                                          athlete.warPrice,
+                                                          athlete.bookPrice,
                                                           athlete.id))),
                                               child: Text("Sell",
                                                   style: textStyle(Colors.black, 20, false, false))))
