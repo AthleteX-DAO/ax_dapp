@@ -6,6 +6,7 @@ import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
 import 'package:ax_dapp/pages/trade/DesktopTrade.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
+import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
@@ -123,7 +124,8 @@ class _V1AppState extends State<V1App> {
                 create: (BuildContext context) => ScoutPageBloc(
                         repo: GetScoutAthletesDataUseCase(
                           graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                          sportsRepos: [ RepositoryProvider.of<MLBRepo>(context) ]
+                          sportsRepos: [ RepositoryProvider.of<MLBRepo>(context) ], 
+                          coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
                     )),
                 child: DesktopScout())
           else if (pageNumber == 1)
@@ -155,7 +157,8 @@ class _V1AppState extends State<V1App> {
               create: (BuildContext context) => ScoutPageBloc(
                       repo: GetScoutAthletesDataUseCase(
                         graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                        sportsRepos: [ RepositoryProvider.of<MLBRepo>(context) ]
+                        sportsRepos: [ RepositoryProvider.of<MLBRepo>(context) ], 
+                        coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
                   )),
               child: DesktopScout()),
           BlocProvider(

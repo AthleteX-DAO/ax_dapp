@@ -539,7 +539,6 @@ class _DesktopScoutState extends State<DesktopScout> {
   // Athlete Cards
   Widget createListCardsForMobile(AthleteScoutModel athlete) {
     double _width = MediaQuery.of(context).size.width;
-    double bookPrice = athlete.bookPrice;
     bool view = true;
     bool team = true;
     if (_width < 910) view = false;
@@ -602,20 +601,29 @@ class _DesktopScoutState extends State<DesktopScout> {
                       children: [
                         Container(
                             child: Row(children: <Widget>[
-                          Text(bookPrice.toStringAsFixed(4) + ' AX',
+                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("+4%",
                               style: textStyle(Colors.green, 12, false, false))
                         ])),
                         Container(
-                            child: Row(children: <Widget>[
-                          Text(bookPrice.toStringAsFixed(4) + ' AX',
-                              style: textStyle(Colors.white, 16, false, false)),
-                          Container(width: 10),
-                          Text("-2%",
-                              style: textStyle(Colors.red, 12, false, false))
-                        ])),
+                            child: Column(
+                              children: [
+                                Row(children: <Widget>[
+                              Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                                  style: textStyle(
+                                      Colors.white, 16, false, false)),
+                              Container(width: 10),
+                              Text("-2%",
+                                  style:
+                                      textStyle(Colors.red, 12, false, false))
+                            ]),
+                            Text(athlete.bookPriceUsd.toStringAsFixed(4) + ' AX',
+                                  style: textStyle(
+                                      Colors.amberAccent, 14, false, false)),
+                          ],
+                        )),
                       ],
                     ),
                   ]),
@@ -644,7 +652,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                                         Get.find()),
                                                 swapController: Get.find()),
                                         child: BuyDialog(athlete.name,
-                                            athlete.warPrice, athlete.id)));
+                                            athlete.bookPrice, athlete.id)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;
@@ -750,29 +758,80 @@ class _DesktopScoutState extends State<DesktopScout> {
                     // Market Price / Change
                     Container(
                         width: _width * 0.18,
-                        child: Row(children: <Widget>[
-                          Text(isLongToken ? 
-                                athlete.longTokenPrice.toStringAsFixed(4) + ' AX' : 
-                                athlete.shortTokenPrice.toStringAsFixed(4) + ' AX',
-                              style: textStyle(Colors.white, 16, false, false)),
-                          Container(width: 10),
-                          Text(isLongToken ?
-                                getPercentageDesc(athlete.longTokenPercentage) :
-                                getPercentageDesc(athlete.shortTokenPercentage),
-                              style: isLongToken ? 
-                                textStyle(getPercentageColor(athlete.longTokenPercentage), 12, false, false) :
-                                textStyle(getPercentageColor(athlete.shortTokenPercentage), 12, false, false)
-                              )
-                        ])),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                    isLongToken
+                                        ? athlete.longTokenPrice
+                                                .toStringAsFixed(4) +
+                                            ' AX'
+                                        : athlete.shortTokenPrice
+                                                .toStringAsFixed(4) +
+                                            ' AX',
+                                    style: textStyle(
+                                        Colors.white, 16, false, false)),
+                                Container(width: 10),
+                                Text(
+                                    isLongToken
+                                        ? getPercentageDesc(
+                                            athlete.longTokenPercentage)
+                                        : getPercentageDesc(
+                                            athlete.shortTokenPercentage),
+                                    style: isLongToken
+                                        ? textStyle(
+                                            getPercentageColor(
+                                                athlete.longTokenPercentage),
+                                            12,
+                                            false,
+                                            false)
+                                        : textStyle(
+                                            getPercentageColor(
+                                                athlete.shortTokenPercentage),
+                                            12,
+                                            false,
+                                            false)),
+                              ],
+                            ),
+                            Text(
+                              isLongToken
+                                  ? '\$' +
+                                      athlete.longTokenPriceUsd
+                                          .toStringAsFixed(4)
+                                  : '\$' +
+                                      athlete.shortTokenPriceUsd
+                                          .toStringAsFixed(4),
+                              style: textStyle(
+                                  Colors.amberAccent, 14, false, false),
+                            ),
+                          ],
+                        ),
+                      ),
                     Container(
-                        child: Row(children: <Widget>[
-                      Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
-                          style: textStyle(Colors.white, 16, false, false)),
-                      Container(width: 10),
-                      Text("-2%",
-                          style: textStyle(Colors.red, 12, false, false))
-                    ])),
-                  ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(children: <Widget>[
+                              Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                                  style: textStyle(
+                                      Colors.white, 16, false, false)),
+                              Container(width: 10),
+                              Text("-2%",
+                                  style:
+                                      textStyle(Colors.red, 12, false, false)),
+                            ]),
+                            Text('\$' + athlete.bookPriceUsd.toStringAsFixed(4),
+                                style: textStyle(
+                                    Colors.amberAccent, 14, false, false)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ), 
                   Row(children: <Widget>[
                     // Buy
                     Container(
@@ -798,7 +857,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                                         Get.find()),
                                                 swapController: Get.find()),
                                         child: BuyDialog(athlete.name,
-                                            athlete.warPrice, athlete.id)));
+                                            athlete.bookPrice, athlete.id)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;

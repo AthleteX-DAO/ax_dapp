@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/LandingPage.dart';
+import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
@@ -10,6 +11,7 @@ import 'package:ax_dapp/repositories/usecases/GetAllLiquidityInfoUseCase.dart';
 import 'package:ax_dapp/service/Api/MLBAthleteAPI.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLClientHelper.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLConfiguration.dart';
+import 'package:coingecko_api/coingecko_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +19,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 final _dio = Dio();
 final _mlbApi = MLBAthleteAPI(_dio);
+final _coinGeckoApi = CoinGeckoApi();
 final _graphQLClientHelper =
     GraphQLClientHelper(GraphQLConfiguration.athleteDexApiLink);
 void main() async {
@@ -32,6 +35,9 @@ void main() async {
         RepositoryProvider(create: (context) => _subGraphRepo),
         RepositoryProvider(
           create: (context) => MLBRepo(_mlbApi),
+        ),
+        RepositoryProvider(
+          create: (context) => CoinGeckoRepo(_coinGeckoApi),
         ),
         RepositoryProvider(create: (context) => _getPairInfoUseCase),
         RepositoryProvider(create: (context) => _getSwapInfoUseCase),

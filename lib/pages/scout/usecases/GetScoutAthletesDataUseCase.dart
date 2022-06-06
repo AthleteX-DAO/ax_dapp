@@ -1,31 +1,51 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/pages/scout/models/MarketModel.dart';
+import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
+import 'package:coingecko_api/coingecko_result.dart';
+import 'package:coingecko_api/data/market_data.dart';
 
 class GetScoutAthletesDataUseCase {
+  static const collateralizationMultiplier = 1000;
   final SubGraphRepo graphRepo;
+  final CoinGeckoRepo coinGeckoRepo;
   final Map<SupportedSport, SportsRepo<SportAthlete>> _repos = Map();
   List<TokenPair> allPairs = [];
 
-  GetScoutAthletesDataUseCase({required this.graphRepo, required List<SportsRepo<SportAthlete>> sportsRepos}) {
+  GetScoutAthletesDataUseCase(
+      {required this.graphRepo,
+      required this.coinGeckoRepo,
+      required List<SportsRepo<SportAthlete>> sportsRepos}) {
     sportsRepos.forEach((repo) {
       _repos[repo.sport] = repo;
     });
   }
 
+  Future<double> fetchAxPrice() async {
+    final axPrice;
+    CoinGeckoResult axMarketData = await coinGeckoRepo.getAxPrice();
+    List<MarketData> axDataByCurrency =
+        axMarketData.data.marketData.dataByCurrency;
+    axPrice = axDataByCurrency.firstWhere((axPrice) => axPrice.coinId == 'usd');
+    print("AX Price: ${axPrice.currentPrice}");
+    return axPrice.currentPrice ?? 0.0;
+  }
+
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
       SupportedSport sportSelection) async {
     allPairs = await fetchSpecificPairs("AX");
+    //fetching AX Price
+    final axPrice = await fetchAxPrice();
     /// If specific sport is selected return athletes from that specific repo
     if (sportSelection != SupportedSport.ALL) {
       var repo = _repos[sportSelection]!;
       final List<SportAthlete> response = await repo.getSupportedPlayers();
-      return _mapAthleteToScoutModel(response, repo);
+      return _mapAthleteToScoutModel(response, repo, axPrice);
     } else {
       /// if ALL sports is selected fetch for each sport and add athletes to a
       /// combined list
@@ -34,7 +54,8 @@ class GetScoutAthletesDataUseCase {
           .map((key, repo) => MapEntry(key, repo.getSupportedPlayers()))
           .values);
       response.asMap().forEach((key, response) {
-        athletes.addAll(_mapAthleteToScoutModel(response, _repos.values.elementAt(key)));
+        athletes.addAll(
+            _mapAthleteToScoutModel(response, _repos.values.elementAt(key), axPrice));
       });
       return athletes;
     }
@@ -80,7 +101,7 @@ class GetScoutAthletesDataUseCase {
   }
 
   List<AthleteScoutModel> _mapAthleteToScoutModel(
-      List<SportAthlete> athletes, SportsRepo<SportAthlete> repo) {
+      List<SportAthlete> athletes, SportsRepo<SportAthlete> repo, double axPrice) {
     List<AthleteScoutModel> mappedAthletes = [];
     athletes.forEach((athlete) {
       //TODO DANGEROUS CHANGE THIS TO NOT BE COUPLED TO MLB
@@ -92,7 +113,7 @@ class GetScoutAthletesDataUseCase {
           mlbAthlete.name,
           mlbAthlete.position,
           mlbAthlete.team,
-          mlbAthlete.price,
+          mlbAthlete.price * collateralizationMultiplier,
           repo.sport,
           mlbAthlete.timeStamp,
           mlbAthlete.homeRuns,
@@ -106,7 +127,10 @@ class GetScoutAthletesDataUseCase {
           longToken.marketPrice,
           shortToken.marketPrice,
           longToken.percentage,
-          shortToken.percentage
+          shortToken.percentage,
+          mlbAthlete.price * collateralizationMultiplier * axPrice, 
+          longToken.marketPrice * axPrice, 
+          shortToken.marketPrice * axPrice,
       ));
     });
     return mappedAthletes;
