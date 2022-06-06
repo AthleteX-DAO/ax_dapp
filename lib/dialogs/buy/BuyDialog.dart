@@ -349,7 +349,7 @@ class _BuyDialogState extends State<BuyDialog> {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   scale: 0.5,
-                                  image: AssetImage("assets/images/x.png"),
+                                  image: AssetImage("assets/images/X_Logo_Black_BR.png"),
                                 ),
                               ),
                             ),
