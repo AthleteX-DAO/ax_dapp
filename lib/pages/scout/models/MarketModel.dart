@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class MarketModel {
   final double marketPrice;
   final double percentage;
