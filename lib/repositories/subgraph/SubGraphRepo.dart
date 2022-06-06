@@ -38,7 +38,7 @@ class SubGraphRepo {
       querySpecificPairs(String token) async {
     final result = await _client.query(
       QueryOptions(
-          document: parseString(_getSpecificPairs(token)),
+          document: parseString(_getSpecificPairs(token, 0)),
           pollInterval: const Duration(seconds: 10)),
     );
     if (result.hasException)
@@ -103,7 +103,7 @@ query {
 }
 """;
 
-String _getSpecificPairs(String token) => """
+String _getSpecificPairs(String token, int startTime) => """
 query {
   prefix: pairs(where: {name_starts_with: "$token-"}) {
   	id
@@ -115,6 +115,19 @@ query {
     reserve0 
     reserve1
   	totalSupply
+    pairHourData(where: {hourStartUnix_gte: $startTime}, first: 1) {
+      hourStartUnix
+      pair {
+        id
+        name
+        token0 {id, name}
+        token1 {id, name}
+        reserve0
+        reserve1
+        token0Price
+        token1Price
+      }
+    }
   },
   suffix: pairs(where: {name_ends_with: "-$token"}) {
   	id
@@ -126,6 +139,19 @@ query {
     reserve0 
     reserve1
   	totalSupply
+    pairHourData(where: {hourStartUnix_gte: $startTime}, first: 1) {
+      hourStartUnix
+      pair {
+        id
+        name
+        token0 {id, name}
+        token1 {id, name}
+        reserve0
+        reserve1
+        token0Price
+        token1Price
+      }
+    }
   }
 }
 """;
