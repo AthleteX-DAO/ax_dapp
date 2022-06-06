@@ -1869,11 +1869,6 @@ class _AthletePageState extends State<AthletePage> {
                                         ),
                                       ]))
                             ]),
-                        Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text("View All Stats",
-                                style: textStyle(
-                                    primaryOrangeColor, 16, false, true))),
                       ])),
             ]));
   }
