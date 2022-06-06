@@ -8,6 +8,7 @@ import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
+import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -755,8 +756,13 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 athlete.shortTokenPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
-                          Text("+4%",
-                              style: textStyle(Colors.green, 12, false, false))
+                          Text(isLongToken ?
+                                getPercentageDesc(athlete.longTokenPercentage) :
+                                getPercentageDesc(athlete.shortTokenPercentage),
+                              style: isLongToken ? 
+                                textStyle(getPercentageColor(athlete.longTokenPercentage), 12, false, false) :
+                                textStyle(getPercentageColor(athlete.shortTokenPercentage), 12, false, false)
+                              )
                         ])),
                     Container(
                         child: Row(children: <Widget>[

@@ -14,6 +14,7 @@ import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
+import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
@@ -1502,11 +1503,9 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longMarketPricePercent = "-2%";
     final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
 
-    final shortMarketPricePercent = "-1%";
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
@@ -1610,15 +1609,17 @@ class _AthletePageState extends State<AthletePage> {
                                                   : "${athlete.shortTokenPrice.toStringAsFixed(2)} AX",
                                               style: textStyle(Colors.white, 14,
                                                   false, false)),
+                                          Container(width: 5),
                                           Container(
                                               //alignment: Alignment.topLeft,
                                               child: Text(
                                                   (_longAptIndex == 0)
-                                                      ? longMarketPricePercent
-                                                      : shortMarketPricePercent,
-                                                  style: textStyle(Colors.red,
-                                                      12, false, false))),
-                                        ]),
+                                                      ? getPercentageDesc(athlete.longTokenPercentage)
+                                                      : getPercentageDesc(athlete.shortTokenPercentage),
+                                                  style: (_longAptIndex == 0) 
+                                                      ? textStyle(getPercentageColor(athlete.longTokenPercentage), 12, false, false)
+                                                      : textStyle(getPercentageColor(athlete.shortTokenPercentage), 12, false, false)))
+                                          ]),
                                         Text("4.24 AX",
                                             style: textStyle(greyTextColor, 14,
                                                 false, false))

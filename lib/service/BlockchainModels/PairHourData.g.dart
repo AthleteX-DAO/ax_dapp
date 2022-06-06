@@ -7,7 +7,7 @@ part of 'PairHourData.dart';
 // **************************************************************************
 
 PairHourData _$PairHourDataFromJson(Map<String, dynamic> json) => PairHourData(
-      json['hourStartUnix'] as String,
+      json['hourStartUnix'] as int,
       TokenPair.fromJson(json['pair'] as Map<String, dynamic>),
     );
 

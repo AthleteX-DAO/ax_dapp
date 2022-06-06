@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
+import 'package:ax_dapp/pages/scout/models/MarketModel.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
@@ -53,18 +54,29 @@ class GetScoutAthletesDataUseCase {
     return pairs;
   }
 
-  double getMarketPrice(String strTokenName, bool isLong) {
-    String strAXTokenName = "AthleteX";
-    String strLongTokenPrefix = "Linear Long Token";
-    String strShortTokenPrefix = "Linear Short Token";
-    String strTokenFullName = isLong ? "$strTokenName $strLongTokenPrefix" : "$strTokenName $strShortTokenPrefix";
-    final index0 = allPairs.indexWhere((pair) => pair.token0.name == strTokenFullName && pair.token1.name == strAXTokenName);
-    final index1 = allPairs.indexWhere((pair) => pair.token0.name == strAXTokenName && pair.token1.name == strTokenFullName);
-    if(index0 >= 0)
-      return double.parse(allPairs[index0].token1Price);
-    else if(index1 >= 0)
-      return double.parse(allPairs[index1].token0Price);
-    return 0;
+  MarketModel getMarketPrice(String strTokenName, bool isLong) {
+    final String strAXTokenName = "AthleteX";
+    final String strLongTokenPrefix = "Linear Long Token";
+    final String strShortTokenPrefix = "Linear Short Token";
+    final String strTokenFullName = isLong ? "$strTokenName $strLongTokenPrefix" : "$strTokenName $strShortTokenPrefix";
+
+    // Looking for a pair which has the same token name as strTokenFullName
+    final int index0 = allPairs.indexWhere((pair) => pair.token0.name == strTokenFullName && pair.token1.name == strAXTokenName);
+    final int index1 = allPairs.indexWhere((pair) => pair.token0.name == strAXTokenName && pair.token1.name == strTokenFullName);
+
+    double marketPrice = 0.0;
+    if(index0 >= 0) // if current token equals to token0 of the pair
+      marketPrice =  double.parse(allPairs[index0].token1Price);
+    else if(index1 >= 0) // if current token equals to token1 of the pair
+      marketPrice = double.parse(allPairs[index1].token0Price);
+
+    double recentPrice = marketPrice;
+    if(index0 >= 0 && allPairs[index0].pairHourData!.length > 0) // if current token equals to token0 of the pair
+      recentPrice = double.parse(allPairs[index0].pairHourData![0].pair.token1Price);
+    else if (index1 >=0 && allPairs[index1].pairHourData!.length > 0) // if current token equals to token1 of the pair
+      recentPrice = double.parse(allPairs[index1].pairHourData![0].pair.token0Price);
+
+    return MarketModel(marketPrice: marketPrice, recentPrice: recentPrice);
   }
 
   List<AthleteScoutModel> _mapAthleteToScoutModel(
@@ -73,8 +85,8 @@ class GetScoutAthletesDataUseCase {
     athletes.forEach((athlete) {
       //TODO DANGEROUS CHANGE THIS TO NOT BE COUPLED TO MLB
       final mlbAthlete = (athlete as MLBAthlete);
-      double dLongTokenPrice = getMarketPrice(mlbAthlete.name, true);
-      double dShortTokenPrice = getMarketPrice(mlbAthlete.name, false);
+      MarketModel longToken = getMarketPrice(mlbAthlete.name, true);
+      MarketModel shortToken = getMarketPrice(mlbAthlete.name, false);
       mappedAthletes.add(AthleteScoutModel(
           mlbAthlete.id,
           mlbAthlete.name,
@@ -91,8 +103,10 @@ class GetScoutAthletesDataUseCase {
           mlbAthlete.weightedOnBasePercentage,
           mlbAthlete.errors,
           mlbAthlete.inningsPlayed,
-          dLongTokenPrice,
-          dShortTokenPrice
+          longToken.marketPrice,
+          shortToken.marketPrice,
+          longToken.percentage,
+          shortToken.percentage
       ));
     });
     return mappedAthletes;
