@@ -1,15 +1,15 @@
 import 'package:ax_dapp/pages/farm/DesktopFarm.dart';
 import 'package:ax_dapp/pages/pool/AddLiquidity/bloc/PoolBloc.dart';
 import 'package:ax_dapp/pages/pool/DesktopPool.dart';
-import 'package:ax_dapp/pages/trade/DesktopTrade.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
+import 'package:ax_dapp/pages/trade/DesktopTrade.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
+import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
-import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
@@ -49,6 +49,9 @@ class _V1AppState extends State<V1App> {
   Token matic = MATIC("Polygon", "MATIC");
   late PageController _pageController;
   var _selectedIndex = 0;
+  List<String> dropDownMenuItems = ["Matic Network", "SX Network"];
+  String selectVal = "Matic Network";
+  String axText = "Ax";
 
   animateToPage(int index) {
     // use this to animate to the page
@@ -328,10 +331,8 @@ class _V1AppState extends State<V1App> {
       height: MediaQuery.of(context).size.height * 0.1,
       color: Colors.transparent,
       padding: const EdgeInsets.only(left: 40.0, top: 0.0, right: 40),
-
       child: Center(
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Row(
@@ -340,7 +341,8 @@ class _V1AppState extends State<V1App> {
                   // margin: ,
                   child: InkWell(
                     child: Text('athletex.io'),
-                    onTap: () => launchUrl(Uri.parse('https://www.athletex.io/')),
+                    onTap: () =>
+                        launchUrl(Uri.parse('https://www.athletex.io/')),
                   ),
                   width: 72,
                   height: 20,
@@ -364,8 +366,8 @@ class _V1AppState extends State<V1App> {
                             color: Colors.grey[400],
                           )),
                       IconButton(
-                          onPressed: () => launchUrl(
-                              Uri.parse('https://twitter.com/athletex_dao?s=20')),
+                          onPressed: () => launchUrl(Uri.parse(
+                              'https://twitter.com/athletex_dao?s=20')),
                           icon: FaIcon(
                             FontAwesomeIcons.twitter,
                             size: 25,
@@ -509,24 +511,32 @@ class _V1AppState extends State<V1App> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             if (network)
-              TextButton(
-                onPressed: () {
-                  String urlString = "https://polygonscan.com/";
-                  launchUrl(Uri.parse(urlString));
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    const Icon(
-                      Icons.link,
-                      color: Colors.grey,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  const Icon(
+                    Icons.link,
+                    color: Colors.grey,
+                  ),
+                  DropdownButtonHideUnderline(
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        dropdownColor: Colors.black,
+                        borderRadius: BorderRadius.circular(10),
+                        elevation: 1,
+                        value: selectVal,
+                        items: dropDownMenuItems.map((itemOne) {
+                          return DropdownMenuItem(
+                              enabled: false,
+                              value: itemOne,
+                              child: Text(itemOne));
+                        }).toList(),
+                        onChanged: (value) {},
+                      ),
                     ),
-                    Text(
-                      "Matic/Polygon",
-                      style: textStyle(Colors.grey[400]!, 11, false, false),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             if (matic)
               TextButton(
@@ -564,7 +574,7 @@ class _V1AppState extends State<V1App> {
                     ),
                   ),
                   Text(
-                    "AX",
+                    axText,
                     style: textStyle(Colors.grey[400]!, 11, false, false),
                   ),
                 ],
