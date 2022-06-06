@@ -14,6 +14,7 @@ import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
+import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
@@ -1616,8 +1617,8 @@ class _AthletePageState extends State<AthletePage> {
                                                       ? getPercentageDesc(athlete.longTokenPercentage)
                                                       : getPercentageDesc(athlete.shortTokenPercentage),
                                                   style: (_longAptIndex == 0) 
-                                                      ? getPercentageStyle(athlete.longTokenPercentage)
-                                                      : getPercentageStyle(athlete.shortTokenPercentage)))
+                                                      ? textStyle(getPercentageColor(athlete.longTokenPercentage), 12, false, false)
+                                                      : textStyle(getPercentageColor(athlete.shortTokenPercentage), 12, false, false)))
                                           ]),
                                         Text("4.24 AX",
                                             style: textStyle(greyTextColor, 14,
@@ -1952,22 +1953,6 @@ class _AthletePageState extends State<AthletePage> {
         fontFamily: 'OpenSans',
         fontSize: size,
       );
-  }
-
-  String getPercentageDesc(double percentage) {
-    String sign = "";
-    if(percentage > 0)
-      sign = "+";
-    else if (percentage < 0)
-      sign = "-";
-
-    return "$sign ${percentage.abs().toStringAsFixed(2)}%";
-  }
-
-  TextStyle getPercentageStyle(double percentage) {
-    if (percentage >= 0)
-      return textStyle(Colors.green, 12, false, false);
-    return textStyle(Colors.red, 12, false, false);
   }
 
   BoxDecoration boxDecoration(

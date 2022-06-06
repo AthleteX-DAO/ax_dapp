@@ -36,8 +36,8 @@ class SubGraphRepo {
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       querySpecificPairs(String token) async {
+    // calculating the first time of 24 hours ago as secondsSinceEpoch
     final int startTime = (DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch / 1000).round();
-    print("StartTime: $startTime");
 
     final result = await _client.query(
       QueryOptions(

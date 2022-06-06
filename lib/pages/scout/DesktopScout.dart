@@ -8,6 +8,7 @@ import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
+import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -759,8 +760,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 getPercentageDesc(athlete.longTokenPercentage) :
                                 getPercentageDesc(athlete.shortTokenPercentage),
                               style: isLongToken ? 
-                                getPercentageStyle(athlete.longTokenPercentage) :
-                                getPercentageStyle(athlete.shortTokenPercentage)
+                                textStyle(getPercentageColor(athlete.longTokenPercentage), 12, false, false) :
+                                textStyle(getPercentageColor(athlete.shortTokenPercentage), 12, false, false)
                               )
                         ])),
                     Container(
@@ -900,8 +901,6 @@ class _DesktopScoutState extends State<DesktopScout> {
     );
   }
 
-  
-
   double searchWidth(double widthSize) {
     double _width;
     if (kIsWeb) {
@@ -939,22 +938,6 @@ class _DesktopScoutState extends State<DesktopScout> {
         fontFamily: 'OpenSans',
         fontSize: size,
       );
-  }
-
-  String getPercentageDesc(double percentage) {
-    String sign = "";
-    if(percentage > 0)
-      sign = "+";
-    else if (percentage < 0)
-      sign = "-";
-
-    return "$sign ${percentage.abs().toStringAsFixed(2)}%";
-  }
-
-  TextStyle getPercentageStyle(double percentage) {
-    if (percentage >= 0)
-      return textStyle(Colors.green, 12, false, false);
-    return textStyle(Colors.red, 12, false, false);
   }
 
   TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
