@@ -755,8 +755,13 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 athlete.shortTokenPrice.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
-                          Text("+4%",
-                              style: textStyle(Colors.green, 12, false, false))
+                          Text(isLongToken ?
+                                getPercentageDesc(athlete.longTokenPercentage) :
+                                getPercentageDesc(athlete.shortTokenPercentage),
+                              style: isLongToken ? 
+                                getPercentageStyle(athlete.longTokenPercentage) :
+                                getPercentageStyle(athlete.shortTokenPercentage)
+                              )
                         ])),
                     Container(
                         child: Row(children: <Widget>[
@@ -895,6 +900,8 @@ class _DesktopScoutState extends State<DesktopScout> {
     );
   }
 
+  
+
   double searchWidth(double widthSize) {
     double _width;
     if (kIsWeb) {
@@ -932,6 +939,22 @@ class _DesktopScoutState extends State<DesktopScout> {
         fontFamily: 'OpenSans',
         fontSize: size,
       );
+  }
+
+  String getPercentageDesc(double percentage) {
+    String sign = "";
+    if(percentage > 0)
+      sign = "+";
+    else if (percentage < 0)
+      sign = "-";
+
+    return "$sign ${percentage.abs().toStringAsFixed(2)}%";
+  }
+
+  TextStyle getPercentageStyle(double percentage) {
+    if (percentage >= 0)
+      return textStyle(Colors.green, 12, false, false);
+    return textStyle(Colors.red, 12, false, false);
   }
 
   TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {

@@ -21,6 +21,8 @@ class AthleteScoutModel {
 
   final double longTokenPrice;
   final double shortTokenPrice;
+  final double longTokenPercentage;
+  final double shortTokenPercentage;
 
   AthleteScoutModel(
       this.id,
@@ -39,7 +41,9 @@ class AthleteScoutModel {
       this.errors,
       this.inningsPlayed,
       this.longTokenPrice,
-      this.shortTokenPrice
+      this.shortTokenPrice,
+      this.longTokenPercentage,
+      this.shortTokenPercentage
       ) {
     this.bookPrice = this.warPrice * collateralizationMultiplier;
   }

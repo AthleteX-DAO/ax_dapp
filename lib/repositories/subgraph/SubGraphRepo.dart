@@ -36,9 +36,12 @@ class SubGraphRepo {
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       querySpecificPairs(String token) async {
+    final int startTime = (DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch / 1000).round();
+    print("StartTime: $startTime");
+
     final result = await _client.query(
       QueryOptions(
-          document: parseString(_getSpecificPairs(token, 0)),
+          document: parseString(_getSpecificPairs(token, startTime)),
           pollInterval: const Duration(seconds: 10)),
     );
     if (result.hasException)

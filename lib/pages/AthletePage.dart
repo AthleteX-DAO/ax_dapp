@@ -1610,15 +1610,17 @@ class _AthletePageState extends State<AthletePage> {
                                                   : "${athlete.shortTokenPrice.toStringAsFixed(2)} AX",
                                               style: textStyle(Colors.white, 14,
                                                   false, false)),
+                                          Container(width: 5),
                                           Container(
                                               //alignment: Alignment.topLeft,
                                               child: Text(
                                                   (_longAptIndex == 0)
-                                                      ? longMarketPricePercent
-                                                      : shortMarketPricePercent,
-                                                  style: textStyle(Colors.red,
-                                                      12, false, false))),
-                                        ]),
+                                                      ? getPercentageDesc(athlete.longTokenPercentage)
+                                                      : getPercentageDesc(athlete.shortTokenPercentage),
+                                                  style: (_longAptIndex == 0) 
+                                                      ? getPercentageStyle(athlete.longTokenPercentage)
+                                                      : getPercentageStyle(athlete.shortTokenPercentage)))
+                                          ]),
                                         Text("4.24 AX",
                                             style: textStyle(greyTextColor, 14,
                                                 false, false))
@@ -1952,6 +1954,22 @@ class _AthletePageState extends State<AthletePage> {
         fontFamily: 'OpenSans',
         fontSize: size,
       );
+  }
+
+  String getPercentageDesc(double percentage) {
+    String sign = "";
+    if(percentage > 0)
+      sign = "+";
+    else if (percentage < 0)
+      sign = "-";
+
+    return "$sign ${percentage.abs().toStringAsFixed(2)}%";
+  }
+
+  TextStyle getPercentageStyle(double percentage) {
+    if (percentage >= 0)
+      return textStyle(Colors.green, 12, false, false);
+    return textStyle(Colors.red, 12, false, false);
   }
 
   BoxDecoration boxDecoration(

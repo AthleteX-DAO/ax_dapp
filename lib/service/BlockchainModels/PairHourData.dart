@@ -5,7 +5,7 @@ part 'PairHourData.g.dart';
 
 @JsonSerializable()
 class PairHourData {
-  final String hourStartUnix;
+  final int hourStartUnix;
   final TokenPair pair;
   PairHourData(this.hourStartUnix, this.pair);
 
