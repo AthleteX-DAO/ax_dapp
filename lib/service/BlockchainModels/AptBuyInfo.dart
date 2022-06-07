@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class AptBuyInfo extends Equatable{
-  final double aptPrice;
+class AptBuyInfo extends Equatable {
+  final double axPerAptPrice;
   final double minimumReceived;
   final double priceImpact;
   final double receiveAmount;
@@ -9,14 +9,14 @@ class AptBuyInfo extends Equatable{
 
   factory AptBuyInfo.empty() {
     return AptBuyInfo(
-        aptPrice: 0.0,
+        axPerAptPrice: 0.0,
         minimumReceived: 0.0,
         priceImpact: 0.0,
         receiveAmount: 0.0,
         totalFee: 0.0);
   }
   AptBuyInfo(
-      {required this.aptPrice,
+      {required this.axPerAptPrice,
       required this.minimumReceived,
       required this.priceImpact,
       required this.receiveAmount,
@@ -25,6 +25,5 @@ class AptBuyInfo extends Equatable{
   @override
   // TODO: implement props
   List<Object?> get props =>
-      [aptPrice, minimumReceived, priceImpact, receiveAmount, totalFee];
+      [axPerAptPrice, minimumReceived, priceImpact, receiveAmount, totalFee];
 }
-

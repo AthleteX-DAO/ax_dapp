@@ -38,7 +38,8 @@ void main() {
       Token(targetTokenB.toLowerCase(), "tokenBName", null),
       tokenAPrice,
       tokenBPrice,
-      "100"
+      "100",
+      null
     );
 
     final Success testSuccessResponse = Success(poolPairInfo);
@@ -79,6 +80,7 @@ void main() {
       tokenAPrice,
       tokenBPrice,
       "100",
+      null
     );
 
     final Success testSuccessResponse = Success(poolPairInfo);

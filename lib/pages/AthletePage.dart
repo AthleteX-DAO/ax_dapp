@@ -9,10 +9,12 @@ import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
+import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
@@ -48,7 +50,6 @@ class _AthletePageState extends State<AthletePage> {
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
-
 
   @override
   void initState() {
@@ -267,7 +268,6 @@ class _AthletePageState extends State<AthletePage> {
       String marketPricePercent,
       String bookValue,
       String bookValuePercent) {
-
     return Container(
         width: _width,
         child: Column(
@@ -826,7 +826,8 @@ class _AthletePageState extends State<AthletePage> {
                                         Text("Team",
                                             style: textStyle(greyTextColor, 12,
                                                 false, false)),
-                                        Text("${athlete.team}",
+                                        Text(
+                                            "${retrieveTeamCityName(athlete.team)} ${retrieveTeamNickname(athlete.team)}",
                                             style: textStyle(greyTextColor, 12,
                                                 false, false))
                                       ]),
@@ -1080,24 +1081,14 @@ class _AthletePageState extends State<AthletePage> {
                                             minimumSize: Size(50, 30)),
                                         onPressed: () => showDialog(
                                             context: context,
-                                            builder: (BuildContext context) =>
-                                                BlocProvider(
-                                                    create: (
-                                                        BuildContext context) =>
-                                                        BuyDialogBloc(
-                                                            repo: RepositoryProvider
-                                                                  .of<GetBuyInfoUseCase>(context),
-                                                            wallet: GetTotalTokenBalanceUseCase(Get.find()),
-                                                            swapController: Get.find()),
-                                                    child: BuyDialog(
-                                                        athlete.name,
-                                                        athlete.warPrice,
-                                                        athlete.id)
-                                                )
-                                        ),
-                                        child: Text("Buy",
-                                            style: textStyle(primaryOrangeColor,
-                                                20, false, false)))),
+                                            builder: (BuildContext context) => BlocProvider(
+                                                create: (BuildContext context) => BuyDialogBloc(
+                                                    repo: RepositoryProvider.of<
+                                                        GetBuyInfoUseCase>(context),
+                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
+                                                    swapController: Get.find()),
+                                                child: BuyDialog(athlete.name, athlete.bookPrice, athlete.id))),
+                                        child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
                                 Container(
                                     width: 160,
                                     height: _buttonHeight,
@@ -1112,30 +1103,14 @@ class _AthletePageState extends State<AthletePage> {
                                             minimumSize: Size(50, 30)),
                                         onPressed: () => showDialog(
                                             context: context,
-                                            builder: (BuildContext context) =>
-                                                BlocProvider(
-                                                    create: (
-                                                        BuildContext context) =>
-                                                        SellDialogBloc(
-                                                            repo:
-                                                              RepositoryProvider
-                                                                  .of<
-                                                                  GetSellInfoUseCase>(
-                                                                  context),
-
-                                                            wallet:
-                                                            GetTotalTokenBalanceUseCase(Get.find()),
-                                                            swapController: Get
-                                                                .find()),
-                                                    child: SellDialog(
-                                                        athlete.name,
-                                                        athlete.warPrice,
-                                                        athlete.id)
-                                                )
-                                            ),
-                                        child: Text("Sell",
-                                            style: textStyle(primaryOrangeColor,
-                                                20, false, false))))
+                                            builder: (BuildContext context) => BlocProvider(
+                                                create: (BuildContext context) => SellDialogBloc(
+                                                    repo: RepositoryProvider.of<
+                                                        GetSellInfoUseCase>(context),
+                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
+                                                    swapController: Get.find()),
+                                                child: SellDialog(athlete.name, athlete.bookPrice, athlete.id))),
+                                        child: Text("Sell", style: textStyle(primaryOrangeColor, 20, false, false))))
                               ]),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1198,6 +1173,7 @@ class _AthletePageState extends State<AthletePage> {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double wid = _width * 0.4;
+    final WebWallet webWallet = Get.find();
     if (_width < 1160) wid = _width * 0.95;
     return Container(
         height: 650,
@@ -1325,6 +1301,27 @@ class _AthletePageState extends State<AthletePage> {
                       ),
                     ],
                   ),
+                  SizedBox(width: 30),
+                  Container(
+                    width: 100,
+                    child: Container(
+                      height: 20,
+                      decoration: boxDecoration(
+                          Colors.amber[500]!.withOpacity(0.20),
+                          500,
+                          1,
+                          Colors.transparent),
+                      child: TextButton(
+                        onPressed: () {
+                          webWallet.addTokenToWallet(_getCurrentTokenAddress(), _getTokenImage());
+                        },
+                        child: Text(
+                          "+ Add to Wallet",
+                          style: textStyle(Colors.amber[500]!, 10, false, false),
+                        ),
+                      ),
+                    ),
+                  ),
                 ])),
             // graph
             Container(
@@ -1413,28 +1410,16 @@ class _AthletePageState extends State<AthletePage> {
                                           child: TextButton(
                                               onPressed: () => showDialog(
                                                   context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          BlocProvider(
-                                                              create: (
-                                                                  BuildContext context) =>
-                                                                  BuyDialogBloc(
-                                                                      repo: RepositoryProvider
-                                                                            .of<GetBuyInfoUseCase>(context),
-                                                                      wallet:
-                                                                      GetTotalTokenBalanceUseCase(Get.find()),
-                                                                      swapController: Get
-                                                                          .find()),
-                                                              child: BuyDialog(
-                                                                  athlete.name,
-                                                                  athlete
-                                                                      .warPrice,
-                                                                  athlete.id)
-                                                          )
-                                              ),
-                                              child: Text("Buy",
-                                                  style: textStyle(Colors.black,
-                                                      20, false, false)))),
+                                                  builder: (BuildContext context) => BlocProvider(
+                                                      create: (BuildContext context) => BuyDialogBloc(
+                                                          repo: RepositoryProvider
+                                                              .of<GetBuyInfoUseCase>(
+                                                                  context),
+                                                          wallet:
+                                                              GetTotalTokenBalanceUseCase(Get.find()),
+                                                          swapController: Get.find()),
+                                                      child: BuyDialog(athlete.name, athlete.bookPrice, athlete.id))),
+                                              child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
                                       Container(
                                           width: 175,
                                           height: 50,
@@ -1446,31 +1431,21 @@ class _AthletePageState extends State<AthletePage> {
                                           child: TextButton(
                                               onPressed: () => showDialog(
                                                   context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          BlocProvider(
-                                                              create: (
-                                                                  BuildContext context) =>
-                                                                  SellDialogBloc(
-                                                                      repo:
-                                                                      RepositoryProvider
-                                                                          .of<GetSellInfoUseCase>(context),
-                                                                      wallet:
-                                                                      GetTotalTokenBalanceUseCase(
-                                                                          Get
-                                                                              .find()),
-                                                                      swapController: Get
-                                                                          .find()),
-                                                              child: SellDialog(
-                                                                  athlete.name,
-                                                                  athlete
-                                                                      .warPrice,
-                                                                  athlete.id)
-                                                          )
-                                                  ),
+                                                  builder: (BuildContext context) => BlocProvider(
+                                                      create: (BuildContext context) => SellDialogBloc(
+                                                          repo: RepositoryProvider.of<GetSellInfoUseCase>(
+                                                              context),
+                                                          wallet:
+                                                              GetTotalTokenBalanceUseCase(
+                                                                  Get.find()),
+                                                          swapController:
+                                                              Get.find()),
+                                                      child: SellDialog(
+                                                          athlete.name,
+                                                          athlete.bookPrice,
+                                                          athlete.id))),
                                               child: Text("Sell",
-                                                  style: textStyle(Colors.black,
-                                                      20, false, false))))
+                                                  style: textStyle(Colors.black, 20, false, false))))
                                     ]),
                                 Row(
                                     mainAxisAlignment:
@@ -1528,13 +1503,9 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longMarketPrice = "4.18 AX";
-    final longMarketPricePercent = "-2%";
     final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
 
-    final shortMarketPrice = "2.18 AX";
-    final shortMarketPricePercent = "-1%";
     final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
@@ -1568,32 +1539,35 @@ class _AthletePageState extends State<AthletePage> {
                               Spacer(),
                               Container(
                                 width: 100,
-                                  height: 20,
-                                  child:
-                                    FutureBuilder<String>(
-                                      future: _isLongApt ? walletController.getTokenSymbol(getLongAptAddress(athlete.id)) : walletController.getTokenSymbol(getShortAptAddress(athlete.id)),
-                                      builder: (context, snapshot) {
-                                        //Check API response data
-                                        if (snapshot.hasError) {
-                                          // can't get symbol
-                                          return showSymbol('---');
-                                        } else if (snapshot.hasData) {
-                                          // got the balance
-                                          return showSymbol(snapshot.data!);
-                                        } else {
-                                          // loading
-                                          return Center(
-                                            child: SizedBox(
-                                              child: CircularProgressIndicator(
-                                                  color: Colors.amber),
-                                              height: 10.0,
-                                              width: 10.0,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
+                                height: 20,
+                                child: FutureBuilder<String>(
+                                  future: _isLongApt
+                                      ? walletController.getTokenSymbol(
+                                          getLongAptAddress(athlete.id))
+                                      : walletController.getTokenSymbol(
+                                          getShortAptAddress(athlete.id)),
+                                  builder: (context, snapshot) {
+                                    //Check API response data
+                                    if (snapshot.hasError) {
+                                      // can't get symbol
+                                      return showSymbol('---');
+                                    } else if (snapshot.hasData) {
+                                      // got the balance
+                                      return showSymbol(snapshot.data!);
+                                    } else {
+                                      // loading
+                                      return Center(
+                                        child: SizedBox(
+                                          child: CircularProgressIndicator(
+                                              color: Colors.amber),
+                                          height: 10.0,
+                                          width: 10.0,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
                               Spacer(),
                               Container(
                                   width: 200,
@@ -1631,21 +1605,23 @@ class _AthletePageState extends State<AthletePage> {
                                         Row(children: <Widget>[
                                           Text(
                                               (_longAptIndex == 0)
-                                                  ? longMarketPrice
-                                                  : shortMarketPrice,
-                                              style: textStyle(Colors.white, 20,
+                                                  ? "${athlete.longTokenPrice.toStringAsFixed(2)} AX"
+                                                  : "${athlete.shortTokenPrice.toStringAsFixed(2)} AX",
+                                              style: textStyle(Colors.white, 14,
                                                   false, false)),
+                                          Container(width: 5),
                                           Container(
                                               //alignment: Alignment.topLeft,
                                               child: Text(
                                                   (_longAptIndex == 0)
-                                                      ? longMarketPricePercent
-                                                      : shortMarketPricePercent,
-                                                  style: textStyle(Colors.red,
-                                                      12, false, false))),
-                                        ]),
+                                                      ? getPercentageDesc(athlete.longTokenPercentage)
+                                                      : getPercentageDesc(athlete.shortTokenPercentage),
+                                                  style: (_longAptIndex == 0) 
+                                                      ? textStyle(getPercentageColor(athlete.longTokenPercentage), 12, false, false)
+                                                      : textStyle(getPercentageColor(athlete.shortTokenPercentage), 12, false, false)))
+                                          ]),
                                         Text("4.24 AX",
-                                            style: textStyle(greyTextColor, 20,
+                                            style: textStyle(greyTextColor, 14,
                                                 false, false))
                                       ]))
                             ]),
@@ -1737,7 +1713,8 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Team",
                                   style: textStyle(
                                       greyTextColor, 20, false, false)),
-                              Text("${athlete.team}",
+                              Text(
+                                  "${retrieveTeamCityName(athlete.team)} ${retrieveTeamNickname(athlete.team)}",
                                   style: textStyle(
                                       greyTextColor, 20, false, false))
                             ]),
@@ -1892,23 +1869,16 @@ class _AthletePageState extends State<AthletePage> {
                                         ),
                                       ]))
                             ]),
-                        Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text("View All Stats",
-                                style: textStyle(
-                                    primaryOrangeColor, 16, false, true))),
                       ])),
             ]));
   }
 
   Widget showSymbol(String symbol) {
-     return Center(
-       child: Text(
-         "Symbol: \$$symbol",
-         style: textStyle(greyTextColor, 10, false, false),
-           textAlign: TextAlign.center
-       ),
-     );
+    return Center(
+      child: Text("Symbol: \$$symbol",
+          style: textStyle(greyTextColor, 10, false, false),
+          textAlign: TextAlign.center),
+    );
   }
 
   Widget buildGraph(List scaledPrice, List time, BuildContext context) {
@@ -1986,5 +1956,17 @@ class _AthletePageState extends State<AthletePage> {
         color: col,
         borderRadius: BorderRadius.circular(rad),
         border: Border.all(color: borCol, width: borWid));
+  }
+
+  String _getCurrentTokenAddress() {
+    return _isLongApt
+        ? getLongAptAddress(athlete.id)
+        : getShortAptAddress(athlete.id);
+  }
+
+  String _getTokenImage() {
+    return _isLongApt
+    ? "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_noninverted.png" 
+    : "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_inverted.png";
   }
 }

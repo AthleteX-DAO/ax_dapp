@@ -35,6 +35,22 @@ class SubGraphRepo {
   }
 
   Future<Either<Map<String, dynamic>?, OperationException>>
+      querySpecificPairs(String token) async {
+    // calculating the first time of 24 hours ago as secondsSinceEpoch
+    final int startTime = (DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch / 1000).round();
+
+    final result = await _client.query(
+      QueryOptions(
+          document: parseString(_getSpecificPairs(token, startTime)),
+          pollInterval: const Duration(seconds: 10)),
+    );
+    if (result.hasException)
+      return Either.right(result.exception!);
+    else
+      return Either.left(result.data);
+  }
+
+  Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairsForWalletId(String walletId) async {
     final result = await _client.query(
       QueryOptions(
@@ -79,11 +95,66 @@ query {
  pairs {
   	id
     name
+    token0Price
+    token1Price
     token0 {name, id}
     token1 {name, id}
     reserve0 
     reserve1
   	totalSupply
+  }
+}
+""";
+
+String _getSpecificPairs(String token, int startTime) => """
+query {
+  prefix: pairs(where: {name_starts_with: "$token-"}) {
+  	id
+    name
+    token0Price
+    token1Price
+    token0 {name, id}
+    token1 {name, id}
+    reserve0 
+    reserve1
+  	totalSupply
+    pairHourData(where: {hourStartUnix_gte: $startTime}, first: 1) {
+      hourStartUnix
+      pair {
+        id
+        name
+        token0 {id, name}
+        token1 {id, name}
+        reserve0
+        reserve1
+        token0Price
+        token1Price
+      }
+    }
+  },
+  suffix: pairs(where: {name_ends_with: "-$token"}) {
+  	id
+    name
+    token0Price
+    token1Price
+    token0 {name, id}
+    token1 {name, id}
+    reserve0 
+    reserve1
+  	totalSupply
+    pairHourData(where: {hourStartUnix_gte: $startTime}, first: 1) {
+      hourStartUnix
+      pair {
+        id
+        name
+        token0 {id, name}
+        token1 {id, name}
+        reserve0
+        reserve1
+        token0Price
+        token1Price
+      }
+    }
   }
 }
 """;

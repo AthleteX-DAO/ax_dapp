@@ -5,9 +5,8 @@ class AthleteScoutModel {
   final String name;
   final String position;
   final String team;
-  final double warPrice;
-  late double bookPrice;
-  static const collateralizationMultiplier = 1000;
+  final double bookPrice;
+  final double bookPriceUsd;
   final SupportedSport sport;
   final String time;
   final double homeRuns;
@@ -19,12 +18,19 @@ class AthleteScoutModel {
   final double errors;
   final double inningsPlayed;
 
+  final double longTokenPrice;
+  final double longTokenPriceUsd;
+  final double shortTokenPrice;
+  final double longTokenPercentage;
+  final double shortTokenPercentage;
+  final double shortTokenPriceUsd;
+
   AthleteScoutModel(
       this.id,
       this.name,
       this.position,
       this.team,
-      this.warPrice,
+      this.bookPrice,
       this.sport,
       this.time,
       this.homeRuns,
@@ -34,7 +40,12 @@ class AthleteScoutModel {
       this.atBats,
       this.weightedOnBasePercentage,
       this.errors,
-      this.inningsPlayed) {
-    this.bookPrice = this.warPrice * collateralizationMultiplier;
-  }
+      this.inningsPlayed,
+      this.longTokenPrice,
+      this.shortTokenPrice,
+      this.longTokenPercentage,
+      this.shortTokenPercentage,
+      this.bookPriceUsd,
+      this.longTokenPriceUsd,
+      this.shortTokenPriceUsd);
 }
