@@ -4,8 +4,10 @@ import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
+import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:coingecko_api/coingecko_result.dart';
 import 'package:coingecko_api/data/market_data.dart';
@@ -75,15 +77,13 @@ class GetScoutAthletesDataUseCase {
     return pairs;
   }
 
-  MarketModel getMarketPrice(String strTokenName, bool isLong) {
-    final String strAXTokenName = "AthleteX";
-    final String strLongTokenPrefix = "Linear Long Token";
-    final String strShortTokenPrefix = "Linear Short Token";
-    final String strTokenFullName = isLong ? "$strTokenName $strLongTokenPrefix" : "$strTokenName $strShortTokenPrefix";
-
-    // Looking for a pair which has the same token name as strTokenFullName
-    final int index0 = allPairs.indexWhere((pair) => pair.token0.name == strTokenFullName && pair.token1.name == strAXTokenName);
-    final int index1 = allPairs.indexWhere((pair) => pair.token0.name == strAXTokenName && pair.token1.name == strTokenFullName);
+  MarketModel getMarketModel(String strTokenAddr) {
+    final String strAXTAddr = AXT.polygonAddress.toString().toUpperCase();
+    // Looking for a pair which has the same token name as strTokenAddr (token address as uppercase)
+    final int index0 = 
+      allPairs.indexWhere((pair) => pair.token0.id.toUpperCase() == strTokenAddr && pair.token1.id.toUpperCase() == strAXTAddr);
+    final int index1 = 
+      allPairs.indexWhere((pair) => pair.token0.id.toUpperCase() == strAXTAddr && pair.token1.id.toUpperCase() == strTokenAddr);
 
     double marketPrice = 0.0;
     if(index0 >= 0) // if current token equals to token0 of the pair
@@ -106,8 +106,11 @@ class GetScoutAthletesDataUseCase {
     athletes.forEach((athlete) {
       //TODO DANGEROUS CHANGE THIS TO NOT BE COUPLED TO MLB
       final mlbAthlete = (athlete as MLBAthlete);
-      MarketModel longToken = getMarketPrice(mlbAthlete.name, true);
-      MarketModel shortToken = getMarketPrice(mlbAthlete.name, false);
+      final String strLongTokenAddr = TokenList.idToAddress[mlbAthlete.id]![1].toUpperCase();
+      final String strShortTokenAddr = TokenList.idToAddress[mlbAthlete.id]![2].toUpperCase();
+      MarketModel longToken = getMarketModel(strLongTokenAddr);
+      MarketModel shortToken = getMarketModel(strShortTokenAddr);
+      
       mappedAthletes.add(AthleteScoutModel(
           mlbAthlete.id,
           mlbAthlete.name,
