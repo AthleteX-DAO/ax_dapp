@@ -600,18 +600,52 @@ class _DesktopScoutState extends State<DesktopScout> {
                       index: _marketVsBookPriceIndex,
                       children: [
                         Container(
-                            child: Row(children: <Widget>[
-                          Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
-                              style: textStyle(Colors.white, 16, false, false)),
-                          Container(width: 10),
-                          Text("+4%",
-                              style: textStyle(Colors.green, 12, false, false))
-                        ])),
+                            child: Row(
+                          children: <Widget>[
+                            Text(
+                                isLongToken
+                                    ? athlete.longTokenPrice
+                                            .toStringAsFixed(4) +
+                                        ' AX'
+                                    : athlete.shortTokenPrice
+                                            .toStringAsFixed(4) +
+                                        ' AX',
+                                style:
+                                    textStyle(Colors.white, 16, false, false)),
+                            Container(width: 10),
+                            Text(
+                                isLongToken
+                                    ? getPercentageDesc(
+                                        athlete.longTokenPercentage)
+                                    : getPercentageDesc(
+                                        athlete.shortTokenPercentage),
+                                style: isLongToken
+                                    ? textStyle(
+                                        getPercentageColor(
+                                            athlete.longTokenPercentage),
+                                        12,
+                                        false,
+                                        false)
+                                    : textStyle(
+                                        getPercentageColor(
+                                            athlete.shortTokenPercentage),
+                                        12,
+                                        false,
+                                        false)),
+                          ],
+                        )),
                         Container(
                             child: Column(
-                              children: [
-                                Row(children: <Widget>[
-                              Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                          children: [
+                            Row(children: <Widget>[
+                              Text(
+                                  isLongToken
+                                      ? athlete.longTokenBookPrice
+                                              .toStringAsFixed(4) +
+                                          ' AX'
+                                      : athlete.shortTokenBookPrice
+                                              .toStringAsFixed(4) +
+                                          ' AX',
                                   style: textStyle(
                                       Colors.white, 16, false, false)),
                               Container(width: 10),
@@ -619,9 +653,16 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   style:
                                       textStyle(Colors.red, 12, false, false))
                             ]),
-                            Text(athlete.bookPriceUsd.toStringAsFixed(4) + ' AX',
-                                  style: textStyle(
-                                      Colors.amberAccent, 14, false, false)),
+                            Text(
+                                isLongToken
+                                    ? athlete.longTokenBookPriceUsd
+                                            .toStringAsFixed(4) +
+                                        ' AX'
+                                    : athlete.shortTokenPriceUsd
+                                            .toStringAsFixed(4) +
+                                        ' AX',
+                                style: textStyle(
+                                    Colors.amberAccent, 14, false, false)),
                           ],
                         )),
                       ],
@@ -651,8 +692,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                                                     GetTotalTokenBalanceUseCase(
                                                         Get.find()),
                                                 swapController: Get.find()),
-                                        child: BuyDialog(athlete.name,
-                                            athlete.bookPrice, athlete.id)));
+                                        child: BuyDialog(
+                                            athlete.name,
+                                            athlete.longTokenBookPrice,
+                                            athlete.id)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;
@@ -718,45 +761,47 @@ class _DesktopScoutState extends State<DesktopScout> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Row(children: <Widget>[
-                    // Icon
-                    Container(
-                        width: 50,
-                        child: Icon(Icons.sports_baseball,
-                            color: Colors.grey[700])),
-                    // Athlete Name
-                    Container(
-                        width: athNameBx,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(athlete.name,
-                                  style: textStyle(
-                                      Colors.white, 18, false, false)),
-                              Text(
-                                  retrieveFullMLBAthletePosition(
-                                      athlete.position),
-                                  style: textStyle(
-                                      Colors.grey[700]!, 10, false, false))
-                            ])),
-                    // Team
-                    if (team)
+                  Row(
+                    children: <Widget>[
+                      // Icon
                       Container(
-                          width: _width * 0.12,
+                          width: 50,
+                          child: Icon(Icons.sports_baseball,
+                              color: Colors.grey[700])),
+                      // Athlete Name
+                      Container(
+                          width: athNameBx,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(retrieveTeamCityName(athlete.team),
+                                Text(athlete.name,
                                     style: textStyle(
                                         Colors.white, 18, false, false)),
-                                Text(retrieveTeamNickname(athlete.team),
+                                Text(
+                                    retrieveFullMLBAthletePosition(
+                                        athlete.position),
                                     style: textStyle(
                                         Colors.grey[700]!, 10, false, false))
                               ])),
-                    // Market Price / Change
-                    Container(
+                      // Team
+                      if (team)
+                        Container(
+                            width: _width * 0.12,
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(retrieveTeamCityName(athlete.team),
+                                      style: textStyle(
+                                          Colors.white, 18, false, false)),
+                                  Text(retrieveTeamNickname(athlete.team),
+                                      style: textStyle(
+                                          Colors.grey[700]!, 10, false, false))
+                                ])),
+                      // Market Price / Change
+                      Container(
                         width: _width * 0.18,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -810,13 +855,20 @@ class _DesktopScoutState extends State<DesktopScout> {
                           ],
                         ),
                       ),
-                    Container(
+                      Container(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(children: <Widget>[
-                              Text(athlete.bookPrice.toStringAsFixed(4) + ' AX',
+                              Text(
+                                  isLongToken
+                                      ? athlete.longTokenBookPrice
+                                              .toStringAsFixed(4) +
+                                          ' AX'
+                                      : athlete.shortTokenBookPrice
+                                              .toStringAsFixed(4) +
+                                          'AX',
                                   style: textStyle(
                                       Colors.white, 16, false, false)),
                               Container(width: 10),
@@ -824,14 +876,21 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   style:
                                       textStyle(Colors.red, 12, false, false)),
                             ]),
-                            Text('\$' + athlete.bookPriceUsd.toStringAsFixed(4),
+                            Text(
+                                isLongToken
+                                    ? '\$' +
+                                        athlete.longTokenBookPriceUsd
+                                            .toStringAsFixed(4)
+                                    : '\$' +
+                                        athlete.shortTokenBookPriceUsd
+                                            .toStringAsFixed(4),
                                 style: textStyle(
                                     Colors.amberAccent, 14, false, false)),
                           ],
                         ),
                       ),
                     ],
-                  ), 
+                  ),
                   Row(children: <Widget>[
                     // Buy
                     Container(
@@ -856,8 +915,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                                                     GetTotalTokenBalanceUseCase(
                                                         Get.find()),
                                                 swapController: Get.find()),
-                                        child: BuyDialog(athlete.name,
-                                            athlete.bookPrice, athlete.id)));
+                                        child: BuyDialog(
+                                            athlete.name,
+                                            athlete.longTokenBookPrice,
+                                            athlete.id)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;
@@ -1060,4 +1121,3 @@ class _DesktopScoutState extends State<DesktopScout> {
     );
   }
 }
-

@@ -5,8 +5,10 @@ class AthleteScoutModel {
   final String name;
   final String position;
   final String team;
-  final double bookPrice;
-  final double bookPriceUsd;
+  final double longTokenBookPrice;
+  final double longTokenBookPriceUsd;
+  final double shortTokenBookPrice;
+  final double shortTokenBookPriceUsd;
   final SupportedSport sport;
   final String time;
   final double homeRuns;
@@ -30,7 +32,8 @@ class AthleteScoutModel {
       this.name,
       this.position,
       this.team,
-      this.bookPrice,
+      this.longTokenBookPrice,
+      this.shortTokenBookPrice,
       this.sport,
       this.time,
       this.homeRuns,
@@ -45,7 +48,8 @@ class AthleteScoutModel {
       this.shortTokenPrice,
       this.longTokenPercentage,
       this.shortTokenPercentage,
-      this.bookPriceUsd,
+      this.longTokenBookPriceUsd,
+      this.shortTokenBookPriceUsd,
       this.longTokenPriceUsd,
       this.shortTokenPriceUsd);
 }

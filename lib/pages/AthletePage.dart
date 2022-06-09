@@ -71,12 +71,13 @@ class _AthletePageState extends State<AthletePage> {
   IndexedStack buildWebViewContainer(BuildContext context) {
     final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
-    final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    final longBookValue = "${athlete.longTokenBookPrice.toStringAsFixed(2)} AX";
     final longBookValuePercent = "+4%";
 
     final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
-    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    final shortBookValue =
+        "${athlete.shortTokenBookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
     return IndexedStack(index: _longAptIndex, children: [
@@ -235,12 +236,14 @@ class _AthletePageState extends State<AthletePage> {
   SafeArea buildMobileView(BuildContext context) {
     final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
-    final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    final longBookValue =
+        "${athlete.longTokenBookPrice.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
 
     final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
-    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    final shortBookValue =
+        "${athlete.shortTokenBookPrice.toStringAsFixed(2)} AX ";
     final shortBookValuePercent = "+2%";
 
     double _width = MediaQuery.of(context).size.width;
@@ -505,8 +508,13 @@ class _AthletePageState extends State<AthletePage> {
                               Colors.transparent, 10, 1, secondaryGreyColor),
                           child: Stack(
                             children: <Widget>[
-                              buildGraph(
-                                  [athlete.bookPrice], [athlete.time], context),
+                              buildGraph([
+                                _isLongApt
+                                    ? athlete.longTokenBookPrice
+                                    : athlete.shortTokenBookPrice
+                              ], [
+                                athlete.time
+                              ], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -1087,7 +1095,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         GetBuyInfoUseCase>(context),
                                                     wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
-                                                child: BuyDialog(athlete.name, athlete.bookPrice, athlete.id))),
+                                                child: BuyDialog(athlete.name, athlete.longTokenBookPrice, athlete.id))),
                                         child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
                                 Container(
                                     width: 160,
@@ -1109,7 +1117,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         GetSellInfoUseCase>(context),
                                                     wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
-                                                child: SellDialog(athlete.name, athlete.bookPrice, athlete.id))),
+                                                child: SellDialog(athlete.name, athlete.longTokenBookPrice, athlete.id))),
                                         child: Text("Sell", style: textStyle(primaryOrangeColor, 20, false, false))))
                               ]),
                           Row(
@@ -1313,11 +1321,13 @@ class _AthletePageState extends State<AthletePage> {
                           Colors.transparent),
                       child: TextButton(
                         onPressed: () {
-                          webWallet.addTokenToWallet(_getCurrentTokenAddress(), _getTokenImage());
+                          webWallet.addTokenToWallet(
+                              _getCurrentTokenAddress(), _getTokenImage());
                         },
                         child: Text(
                           "+ Add to Wallet",
-                          style: textStyle(Colors.amber[500]!, 10, false, false),
+                          style:
+                              textStyle(Colors.amber[500]!, 10, false, false),
                         ),
                       ),
                     ),
@@ -1337,8 +1347,13 @@ class _AthletePageState extends State<AthletePage> {
                           child: Stack(
                             children: <Widget>[
                               // Graph
-                              buildGraph(
-                                  [athlete.bookPrice], [athlete.time], context),
+                              buildGraph([
+                                _isLongApt
+                                    ? athlete.longTokenBookPrice
+                                    : athlete.shortTokenBookPrice
+                              ], [
+                                athlete.time
+                              ], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -1362,10 +1377,17 @@ class _AthletePageState extends State<AthletePage> {
                                                         .spaceBetween,
                                                 children: <Widget>[
                                                   Text(
-                                                      athlete.bookPrice
-                                                              .toStringAsFixed(
-                                                                  4) +
-                                                          " AX",
+                                                      _isLongApt
+                                                          ? athlete
+                                                                  .longTokenBookPrice
+                                                                  .toStringAsFixed(
+                                                                      4) +
+                                                              " AX"
+                                                          : athlete
+                                                                  .shortTokenBookPrice
+                                                                  .toStringAsFixed(
+                                                                      4) +
+                                                              " AX",
                                                       style: textStyle(
                                                           Colors.white,
                                                           14,
@@ -1418,7 +1440,7 @@ class _AthletePageState extends State<AthletePage> {
                                                           wallet:
                                                               GetTotalTokenBalanceUseCase(Get.find()),
                                                           swapController: Get.find()),
-                                                      child: BuyDialog(athlete.name, athlete.bookPrice, athlete.id))),
+                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice, athlete.id))),
                                               child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
                                       Container(
                                           width: 175,
@@ -1433,19 +1455,18 @@ class _AthletePageState extends State<AthletePage> {
                                                   context: context,
                                                   builder: (BuildContext context) => BlocProvider(
                                                       create: (BuildContext context) => SellDialogBloc(
-                                                          repo: RepositoryProvider.of<GetSellInfoUseCase>(
-                                                              context),
-                                                          wallet:
-                                                              GetTotalTokenBalanceUseCase(
-                                                                  Get.find()),
+                                                          repo: RepositoryProvider
+                                                              .of<GetSellInfoUseCase>(
+                                                                  context),
+                                                          wallet: GetTotalTokenBalanceUseCase(
+                                                              Get.find()),
                                                           swapController:
                                                               Get.find()),
                                                       child: SellDialog(
                                                           athlete.name,
-                                                          athlete.bookPrice,
+                                                          athlete.longTokenBookPrice,
                                                           athlete.id))),
-                                              child: Text("Sell",
-                                                  style: textStyle(Colors.black, 20, false, false))))
+                                              child: Text("Sell", style: textStyle(Colors.black, 20, false, false))))
                                     ]),
                                 Row(
                                     mainAxisAlignment:
@@ -1503,10 +1524,12 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    final longBookValue =
+        "${athlete.longTokenBookPrice.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
 
-    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    final shortBookValue =
+        "${athlete.shortTokenBookPrice.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
     final WalletController walletController = Get.find();
@@ -1614,12 +1637,24 @@ class _AthletePageState extends State<AthletePage> {
                                               //alignment: Alignment.topLeft,
                                               child: Text(
                                                   (_longAptIndex == 0)
-                                                      ? getPercentageDesc(athlete.longTokenPercentage)
-                                                      : getPercentageDesc(athlete.shortTokenPercentage),
-                                                  style: (_longAptIndex == 0) 
-                                                      ? textStyle(getPercentageColor(athlete.longTokenPercentage), 12, false, false)
-                                                      : textStyle(getPercentageColor(athlete.shortTokenPercentage), 12, false, false)))
-                                          ]),
+                                                      ? getPercentageDesc(athlete
+                                                          .longTokenPercentage)
+                                                      : getPercentageDesc(athlete
+                                                          .shortTokenPercentage),
+                                                  style: (_longAptIndex == 0)
+                                                      ? textStyle(
+                                                          getPercentageColor(athlete
+                                                              .longTokenPercentage),
+                                                          12,
+                                                          false,
+                                                          false)
+                                                      : textStyle(
+                                                          getPercentageColor(athlete
+                                                              .shortTokenPercentage),
+                                                          12,
+                                                          false,
+                                                          false)))
+                                        ]),
                                         Text("4.24 AX",
                                             style: textStyle(greyTextColor, 14,
                                                 false, false))
@@ -1966,7 +2001,7 @@ class _AthletePageState extends State<AthletePage> {
 
   String _getTokenImage() {
     return _isLongApt
-    ? "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_noninverted.png" 
-    : "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_inverted.png";
+        ? "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_noninverted.png"
+        : "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_inverted.png";
   }
 }
