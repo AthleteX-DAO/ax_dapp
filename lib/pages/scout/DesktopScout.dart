@@ -1,5 +1,6 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/models/SportsModel/MLBAthleteScoutModel.dart';
 import 'package:ax_dapp/pages/scout/models/SportsModel/NFLAthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
@@ -806,43 +807,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      // Icon
-                      Container(
-                          width: 50,
-                          child: Icon(Icons.sports_baseball,
-                              color: Colors.grey[700])),
-                      // Athlete Name
-                      Container(
-                          width: athNameBx,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(athlete.name,
-                                    style: textStyle(
-                                        Colors.white, 18, false, false)),
-                                Text(
-                                    retrieveFullMLBAthletePosition(
-                                        athlete.position),
-                                    style: textStyle(
-                                        Colors.grey[700]!, 10, false, false))
-                              ])),
-                      // Team
-                      if (team)
-                        Container(
-                            width: _width * 0.12,
-                            child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(retrieveTeamCityName(athlete.team),
-                                      style: textStyle(
-                                          Colors.white, 18, false, false)),
-                                  Text(retrieveTeamNickname(athlete.team),
-                                      style: textStyle(
-                                          Colors.grey[700]!, 10, false, false))
-                                ])),
+                      AthleteDetailsWidget(athlete).createListCardsForWeb(team, _width, athNameBx),
                       // Market Price / Change
                       Container(
                         width: _width * 0.18,

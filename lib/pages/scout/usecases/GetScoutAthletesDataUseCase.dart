@@ -124,10 +124,9 @@ class GetScoutAthletesDataUseCase {
     List<AthleteScoutModel> mappedAthletes = [];
     athletes.forEach(
       (athlete) {
-        final String strLongTokenAddr =
-            TokenList.idToAddress[athlete.id]![1].toUpperCase();
-        final String strShortTokenAddr =
-            TokenList.idToAddress[athlete.id]![2].toUpperCase();
+        bool isIdFound = TokenList.idToAddress.containsKey(athlete.id);
+        String strLongTokenAddr = isIdFound ? TokenList.idToAddress[athlete.id]![1].toUpperCase() : "";
+        String strShortTokenAddr = isIdFound ? TokenList.idToAddress[athlete.id]![2].toUpperCase() : "";
         print('[Console] - Long Token $strLongTokenAddr');
         print('[Console] - Short Token $strShortTokenAddr');
         MarketModel longToken = getMarketModel(strLongTokenAddr, athlete.price);

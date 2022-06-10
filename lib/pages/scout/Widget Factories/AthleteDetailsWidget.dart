@@ -21,6 +21,8 @@ abstract class AthleteDetailsWidget {
 
   Widget athleteDetails();
   Widget keyStatistics();
+  Widget createListCardsForWeb(team, _width, athNameBx);
+  Widget createListCardsForMobile(team, _width, athNameBx);
 }
 
 class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
@@ -189,6 +191,55 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                     ]))
           ]),
         ]));
+  }
+
+  @override
+  Widget createListCardsForWeb(team, _width, athNameBx){
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          // Icon
+          Container(
+              width: 50,
+              child: Icon(Icons.sports_baseball,
+              color: Colors.grey[700])),
+          Container(
+          width: athNameBx,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(_athlete.name,
+                    style: textStyle(
+                        Colors.white, 18, false, false)),
+                Text(
+                    retrieveFullMLBAthletePosition(_athlete.position),
+                    style: textStyle(
+                        Colors.grey[700]!, 10, false, false))
+              ])),
+          Container(
+            width: _width * 0.12,
+            child: Column(
+                mainAxisAlignment:
+                    MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text((retrieveTeamCityName(_athlete.team)),
+                      style: textStyle(
+                          Colors.white, 18, false, false)),
+                  Text(retrieveTeamNickname(_athlete.team),
+                      style: textStyle(
+                          Colors.grey[700]!, 10, false, false))
+                ])),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget createListCardsForMobile(team, _width, athNameBx){
+    return Container();
   }
 }
 
@@ -380,6 +431,55 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
           ]),
         ]));
   }
+  @override
+  Widget createListCardsForWeb(team, _width, athNameBx){
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          // Icon
+          Container(
+              width: 50,
+              child: Icon(Icons.sports_football,
+              color: Colors.grey[700])),
+          Container(
+          width: athNameBx,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(_athlete.name,
+                    style: textStyle(
+                        Colors.white, 18, false, false)),
+                Text(
+                    "Test",
+                    style: textStyle(
+                        Colors.grey[700]!, 10, false, false))
+              ])),
+          if(team)
+            Container(
+              width: _width * 0.12,
+              child: Column(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("TeamName",
+                        style: textStyle(
+                            Colors.white, 18, false, false)),
+                    Text("TeamNickName",
+                        style: textStyle(
+                            Colors.grey[700]!, 10, false, false))
+                  ])),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget createListCardsForMobile(team, _width, athNameBx){
+    return Container();
+  }
 }
 
 class NoStatsShownWidget implements AthleteDetailsWidget {
@@ -394,6 +494,20 @@ class NoStatsShownWidget implements AthleteDetailsWidget {
   Widget keyStatistics() {
     return Center(
       child: Text('No statistics shown for selected athlete'),
+    );
+  }
+
+  @override
+  Widget createListCardsForWeb(team, _width, athNameBx){
+    return Center(
+      child: Text('No data shown for Athlete Card'),
+    );
+  }
+
+  @override
+  Widget createListCardsForMobile(team, _width, athNameBx){
+    return Center(
+      child: Text('No data shown for Athlete Card'),
     );
   }
 }

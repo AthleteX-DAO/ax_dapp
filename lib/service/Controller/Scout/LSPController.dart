@@ -71,7 +71,8 @@ class LSPController extends GetxController {
       print("[Console] Updated the aptAddress to $aptAddress");
     } else {
       aptAddress.value = '';
-      throw Exception("Player id is not supported!");
+      // Comment this out for now to access the athlete page for other sports
+      //throw Exception("Player id is not supported!");
     }
     update();
   }
