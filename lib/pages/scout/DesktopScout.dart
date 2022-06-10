@@ -1,5 +1,7 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/pages/scout/models/SportsModel/MLBAthleteScoutModel.dart';
+import 'package:ax_dapp/pages/scout/models/SportsModel/NFLAthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/pages/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
@@ -67,7 +69,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             bloc.add(OnPageRefresh());
           }
           if (athletePage && curAthlete != null)
-            return AthletePage(athlete: curAthlete!);
+            return AthletePage(
+              athlete: curAthlete!,
+            );
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),
             child: Container(
@@ -91,9 +95,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                         width: _width * 1,
                         height: 40,
                         child: kIsWeb
-                            ? buildFilterMenuWeb(sportFilterTxSz, _width)
+                            ? buildFilterMenuWeb(state, bloc, sportFilterTxSz, _width)
                             : buildFilterMenu(
-                                sportFilterTxSz, sportFilterIconSz),
+                                state, bloc, sportFilterTxSz, sportFilterIconSz),
                       ),
                       // List Headers
                       buildListviewHeaders(),
@@ -103,16 +107,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ] else if (state.status == BlocStatus.error) ...[
                         scoutLoadingError(),
                       ],
-                      state.selectedSport == SupportedSport.ALL
-                          ? buildListview(state)
-                          : buildFilterMenu(sportFilterTxSz, sportFilterIconSz)
+                      buildListview(state),
                       // ListView of Athletes
                     ])),
           );
         });
   }
 
-  Row buildFilterMenuWeb(double sportFilterTxSz, double _width) {
+  Row buildFilterMenuWeb(ScoutPageState state, ScoutPageBloc bloc, double sportFilterTxSz, double _width) {
     return Row(children: [
       Text("APT List", style: textStyle(Colors.white, 18, false, false)),
       Text("|", style: textStyle(Colors.white, 18, false, false)),
@@ -124,6 +126,7 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               sportState = 0;
             });
+          bloc.add(SelectSport(selectedSport: SupportedSport.ALL));
         },
         child: Text("ALL",
             style: textSwapState(
@@ -139,10 +142,27 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               sportState = 1;
             });
+          bloc.add(SelectSport(selectedSport: SupportedSport.MLB));
         },
         child: Text("MLB",
             style: textSwapState(
                 sportState == 1,
+                textStyle(Colors.white, sportFilterTxSz, false, false),
+                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
+      )),
+      Container(
+          child: TextButton(
+        onPressed: () {
+          myController.clear();
+          if (sportState != 2)
+            setState(() {
+              sportState = 2;
+            });
+          bloc.add(SelectSport(selectedSport: SupportedSport.NFL));
+        },
+        child: Text("NFL",
+            style: textSwapState(
+                sportState == 2,
                 textStyle(Colors.white, sportFilterTxSz, false, false),
                 textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
       )),
@@ -156,7 +176,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   IndexedStack buildFilterMenu(
-      double sportFilterTxSz, double sportFilterIconSz) {
+      ScoutPageState state, ScoutPageBloc bloc, double sportFilterTxSz, double sportFilterIconSz) {
     return IndexedStack(
       index: _widgetIndex,
       children: [
@@ -497,6 +517,9 @@ class _DesktopScoutState extends State<DesktopScout> {
     double _height = MediaQuery.of(context).size.height;
     double hgt = _height * 0.8 - 120;
     List<AthleteScoutModel> athletesList = state.athletes;
+    if (state.status == BlocStatus.error){
+      return filterMenuError();
+    }
     // all athletes
     if (state.selectedSport == SupportedSport.ALL)
       return Container(
@@ -510,7 +533,20 @@ class _DesktopScoutState extends State<DesktopScout> {
                     ? createListCardsForWeb(athletesList[index])
                     : createListCardsForMobile(athletesList[index]);
               }));
-    // NFL athletes only
+    // MLB athletes only
+    else if (state.selectedSport == SupportedSport.MLB)
+      return Container(
+          height: hgt,
+          child: ListView.builder(
+              padding: EdgeInsets.only(top: 10),
+              physics: BouncingScrollPhysics(),
+              itemCount: 0,
+              itemBuilder: (context, index) {
+                return kIsWeb
+                    ? createListCardsForWeb(this.curAthlete as MLBAthleteScoutModel)
+                    : createListCardsForMobile(this.curAthlete as MLBAthleteScoutModel);
+              }));
+    // MLB athletes only
     else if (state.selectedSport == SupportedSport.NFL)
       return Container(
           height: hgt,
@@ -520,20 +556,27 @@ class _DesktopScoutState extends State<DesktopScout> {
               itemCount: 0,
               itemBuilder: (context, index) {
                 return kIsWeb
-                    ? createListCardsForWeb(this.curAthlete!)
-                    : createListCardsForMobile(this.curAthlete!);
+                    ? createListCardsForWeb(this.curAthlete as NFLAthleteScoutModel)
+                    : createListCardsForMobile(this.curAthlete as NFLAthleteScoutModel);
               }));
     // other athletes
     else {
-      String spt = "NBA";
-      if (sportState == 3) spt = "MMA";
-      if (sportState == 4) spt = "Soccer";
       return Container(
           height: hgt,
           child: Center(
-              child: Text("No " + spt + " Athletes Currently",
+              child: Text("Athletes will be supported soon!",
                   style: textStyle(Colors.white, 32, true, false))));
     }
+  }
+
+  Widget filterMenuError() {
+    return Center(
+      child: SizedBox(
+        height: 70,
+        width: 400,
+        child: Text('Athletes not supported yet', style: TextStyle(color: Colors.red, fontSize: 30),),
+      ),
+    );
   }
 
   // Athlete Cards
@@ -604,10 +647,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                           children: <Widget>[
                             Text(
                                 isLongToken
-                                    ? athlete.longTokenPrice
+                                    ? athlete.longTokenPrice!
                                             .toStringAsFixed(4) +
                                         ' AX'
-                                    : athlete.shortTokenPrice
+                                    : athlete.shortTokenPrice!
                                             .toStringAsFixed(4) +
                                         ' AX',
                                 style:
@@ -616,19 +659,19 @@ class _DesktopScoutState extends State<DesktopScout> {
                             Text(
                                 isLongToken
                                     ? getPercentageDesc(
-                                        athlete.longTokenPercentage)
+                                        athlete.longTokenPercentage!)
                                     : getPercentageDesc(
-                                        athlete.shortTokenPercentage),
+                                        athlete.shortTokenPercentage!),
                                 style: isLongToken
                                     ? textStyle(
                                         getPercentageColor(
-                                            athlete.longTokenPercentage),
+                                            athlete.longTokenPercentage!),
                                         12,
                                         false,
                                         false)
                                     : textStyle(
                                         getPercentageColor(
-                                            athlete.shortTokenPercentage),
+                                            athlete.shortTokenPercentage!),
                                         12,
                                         false,
                                         false)),
@@ -640,10 +683,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                             Row(children: <Widget>[
                               Text(
                                   isLongToken
-                                      ? athlete.longTokenBookPrice
+                                      ? athlete.longTokenBookPrice!
                                               .toStringAsFixed(4) +
                                           ' AX'
-                                      : athlete.shortTokenBookPrice
+                                      : athlete.shortTokenBookPrice!
                                               .toStringAsFixed(4) +
                                           ' AX',
                                   style: textStyle(
@@ -655,10 +698,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                             ]),
                             Text(
                                 isLongToken
-                                    ? athlete.longTokenBookPriceUsd
+                                    ? athlete.longTokenBookPriceUsd!
                                             .toStringAsFixed(4) +
                                         ' AX'
-                                    : athlete.shortTokenPriceUsd
+                                    : athlete.shortTokenPriceUsd!
                                             .toStringAsFixed(4) +
                                         ' AX',
                                 style: textStyle(
@@ -694,7 +737,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                                 swapController: Get.find()),
                                         child: BuyDialog(
                                             athlete.name,
-                                            athlete.longTokenBookPrice,
+                                            athlete.longTokenBookPrice!,
                                             athlete.id)));
                               } else {
                                 setState(() {
@@ -811,10 +854,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                               children: <Widget>[
                                 Text(
                                     isLongToken
-                                        ? athlete.longTokenPrice
+                                        ? athlete.longTokenPrice!
                                                 .toStringAsFixed(4) +
                                             ' AX'
-                                        : athlete.shortTokenPrice
+                                        : athlete.shortTokenPrice!
                                                 .toStringAsFixed(4) +
                                             ' AX',
                                     style: textStyle(
@@ -823,19 +866,19 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 Text(
                                     isLongToken
                                         ? getPercentageDesc(
-                                            athlete.longTokenPercentage)
+                                            athlete.longTokenPercentage!)
                                         : getPercentageDesc(
-                                            athlete.shortTokenPercentage),
+                                            athlete.shortTokenPercentage!),
                                     style: isLongToken
                                         ? textStyle(
                                             getPercentageColor(
-                                                athlete.longTokenPercentage),
+                                                athlete.longTokenPercentage!),
                                             12,
                                             false,
                                             false)
                                         : textStyle(
                                             getPercentageColor(
-                                                athlete.shortTokenPercentage),
+                                                athlete.shortTokenPercentage!),
                                             12,
                                             false,
                                             false)),
@@ -844,10 +887,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                             Text(
                               isLongToken
                                   ? '\$' +
-                                      athlete.longTokenPriceUsd
+                                      athlete.longTokenPriceUsd!
                                           .toStringAsFixed(4)
                                   : '\$' +
-                                      athlete.shortTokenPriceUsd
+                                      athlete.shortTokenPriceUsd!
                                           .toStringAsFixed(4),
                               style: textStyle(
                                   Colors.amberAccent, 14, false, false),
@@ -863,10 +906,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                             Row(children: <Widget>[
                               Text(
                                   isLongToken
-                                      ? athlete.longTokenBookPrice
+                                      ? athlete.longTokenBookPrice!
                                               .toStringAsFixed(4) +
                                           ' AX'
-                                      : athlete.shortTokenBookPrice
+                                      : athlete.shortTokenBookPrice!
                                               .toStringAsFixed(4) +
                                           'AX',
                                   style: textStyle(
@@ -879,10 +922,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                             Text(
                                 isLongToken
                                     ? '\$' +
-                                        athlete.longTokenBookPriceUsd
+                                        athlete.longTokenBookPriceUsd!
                                             .toStringAsFixed(4)
                                     : '\$' +
-                                        athlete.shortTokenBookPriceUsd
+                                        athlete.shortTokenBookPriceUsd!
                                             .toStringAsFixed(4),
                                 style: textStyle(
                                     Colors.amberAccent, 14, false, false)),
@@ -917,7 +960,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                                 swapController: Get.find()),
                                         child: BuyDialog(
                                             athlete.name,
-                                            athlete.longTokenBookPrice,
+                                            athlete.longTokenBookPrice!,
                                             athlete.id)));
                               } else {
                                 setState(() {

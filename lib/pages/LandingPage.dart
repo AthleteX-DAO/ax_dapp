@@ -82,7 +82,7 @@ class _LandingPageState extends State<LandingPage> {
       BuildContext context, double tradingTextSize) {
     return FutureBuilder<dynamic>(
       // future: AthleteApi.getAthletesLocally(context),
-      future: AthleteApi.getAthletesFromIdsDict(context),
+      // future: AthleteApi.getAthletesFromIdsDict(context),
       builder: (context, snapshot) {
         //Check API response data
         if (snapshot.hasError) {
