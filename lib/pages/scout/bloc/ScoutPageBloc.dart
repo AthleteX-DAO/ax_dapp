@@ -22,12 +22,16 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
       emit(state.copyWith(status: BlocStatus.loading));
 
       final response = await repo.fetchSupportedAthletes(SupportedSport.ALL);
-
-      emit(state.copyWith(
+      if (response.isNotEmpty) {
+        emit(state.copyWith(
           athletes: response,
           filteredAthletes: response,
           selectedSport: SupportedSport.ALL,
           status: BlocStatus.success));
+      } else {
+        print("[Console] Scout Page -> All Athletes not supported");
+        emit(state.copyWith(status: BlocStatus.no_data, filteredAthletes: [], athletes: [], selectedSport: null));
+      }    
     } catch (e) {
       print("[Console] Scout Page -> Failed to load athlete list: $e");
       emit(state.copyWith(status: BlocStatus.error));
@@ -36,9 +40,19 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
 
   void _mapSelectSportToState(
       SelectSport event, Emitter<ScoutPageState> emit) async {
-        emit(state.copyWith(status: BlocStatus.loading));
-        final List<AthleteScoutModel> filteredList = state.athletes.where((athlete) => event.selectedSport.name == athlete.sport.name).toList();
-        emit(state.copyWith(status: BlocStatus.success, filteredAthletes: filteredList, selectedSport: event.selectedSport));
+        try {
+          emit(state.copyWith(status: BlocStatus.loading));
+          final List<AthleteScoutModel> filteredList = state.athletes.where((athlete) => event.selectedSport.name == athlete.sport.name).toList();
+          if (filteredList.isNotEmpty) {
+            emit(state.copyWith(status: BlocStatus.success, filteredAthletes: filteredList, selectedSport: event.selectedSport));
+          } else {
+            print("[Console] Scout Page -> Selected Sport not supported");
+            emit(state.copyWith(status: BlocStatus.no_data, filteredAthletes: [], selectedSport: event.selectedSport));
+          } 
+        } catch (e) {
+          print("[Console] Scout Page -> Failed to load athlete list: $e");
+          emit(state.copyWith(status: BlocStatus.error));
+        }
   }
 
   void _mapSearchAthleteEventToState(

@@ -63,6 +63,7 @@ class _DesktopScoutState extends State<DesktopScout> {
         buildWhen: (previous, current) => current.status.name.isNotEmpty,
         builder: (context, state) {
           final bloc = context.read<ScoutPageBloc>();
+          final filteredAthletes = state.filteredAthletes;
           if (state.status == BlocStatus.initial) {
             bloc.add(OnPageRefresh());
           }
@@ -99,13 +100,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ),
                       // List Headers
                       buildListviewHeaders(),
-                      //if (state.status == Status.loading) scoutLoading(),
                       if (state.status == BlocStatus.loading) ...[
                         scoutLoading(),
                       ] else if (state.status == BlocStatus.error) ...[
                         scoutLoadingError(),
+                      ] else if (state.status == BlocStatus.no_data)...[
+                        filterMenuError(),
                       ],
-                      buildListview(state),
+                      buildListview(state, filteredAthletes)
                       // ListView of Athletes
                     ])),
           );
@@ -124,7 +126,7 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               sportState = 0;
             });
-          bloc.add(SelectSport(selectedSport: SupportedSport.ALL));
+          bloc.add(OnPageRefresh());
         },
         child: Text("ALL",
             style: textSwapState(
@@ -161,6 +163,22 @@ class _DesktopScoutState extends State<DesktopScout> {
         child: Text("NFL",
             style: textSwapState(
                 sportState == 2,
+                textStyle(Colors.white, sportFilterTxSz, false, false),
+                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
+      )),
+      Container(
+          child: TextButton(
+        onPressed: () {
+          myController.clear();
+          if (sportState != 3)
+            setState(() {
+              sportState = 3;
+            });
+          bloc.add(SelectSport(selectedSport: SupportedSport.NBA));
+        },
+        child: Text("NBA",
+            style: textSwapState(
+                sportState == 3,
                 textStyle(Colors.white, sportFilterTxSz, false, false),
                 textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
       )),
@@ -511,29 +529,9 @@ class _DesktopScoutState extends State<DesktopScout> {
     );
   }
 
-  Widget buildListview(ScoutPageState state) {
+  Widget buildListview(ScoutPageState state, filteredAthletes) {
     double _height = MediaQuery.of(context).size.height;
     double hgt = _height * 0.8 - 120;
-    final athletes = state.athletes;
-    final filteredAthletes = state.filteredAthletes;
-    if (state.status == BlocStatus.error){
-      return filterMenuError();
-    }
-    // all athletes
-    if (state.selectedSport == SupportedSport.ALL) {
-      return Container(
-        height: hgt,
-        child: ListView.builder(
-            padding: EdgeInsets.only(top: 10),
-            physics: BouncingScrollPhysics(),
-            itemCount: athletes.length,
-            itemBuilder: (context, index) {
-              return kIsWeb
-                  ? createListCardsForWeb(athletes[index])
-                  : createListCardsForMobile(athletes[index]);
-          }));
-    }
-    // Specific athletes by sport
     return Container(
         height: hgt,
         child: ListView.builder(
