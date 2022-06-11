@@ -1,7 +1,9 @@
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:equatable/equatable.dart';
 
-class ScoutPageEvent extends Equatable {
+abstract class ScoutPageEvent extends Equatable {
+  const ScoutPageEvent();
+  
   @override
   List<Object?> get props => [];
 }
