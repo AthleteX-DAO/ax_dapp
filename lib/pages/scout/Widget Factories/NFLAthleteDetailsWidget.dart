@@ -36,7 +36,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                     Text("Team",
                         style: textStyle(greyTextColor, 20, false, false)),
                     Text(
-                        "${retrieveTeamCityName(_athlete.team)} ${retrieveTeamNickname(_athlete.team)}",
+                        "${retrieveNFLTeamCityName(_athlete.team)} ${retrieveNFLTeamNickName(_athlete.team)}",
                         style: textStyle(greyTextColor, 20, false, false))
                   ]),
               Row(
@@ -44,7 +44,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   children: <Widget>[
                     Text("Position",
                         style: textStyle(greyTextColor, 20, false, false)),
-                    Text(retrieveFullMLBAthletePosition(_athlete.position),
+                    Text(retrieveFullNFLAthletePosition(_athlete.position),
                         style: textStyle(greyTextColor, 20, false, false))
                   ]),
               Row(
@@ -52,7 +52,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   children: <Widget>[
                     Text("Season Start",
                         style: textStyle(greyTextColor, 20, false, false)),
-                    Text("Mar 31, 2022",
+                    Text("Sep 8, 2022",
                         style: textStyle(greyTextColor, 20, false, false))
                   ]),
               Row(
@@ -60,7 +60,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                   children: <Widget>[
                     Text("Season End",
                         style: textStyle(greyTextColor, 20, false, false)),
-                    Text("Nov 2, 2022",
+                    Text("Jan 8, 2023",
                         style: textStyle(greyTextColor, 20, false, false))
                   ]),
             ]));
@@ -89,49 +89,37 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                         children: <Widget>[
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("Passing Yards",
+                            child: Text("Yds",
                                 style:
                                     textStyle(greyTextColor, 10, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("Passing Touchdowns",
+                            child: Text("Tds",
                                 style:
                                     textStyle(greyTextColor, 10, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("Reception",
+                            child: Text("Recpt",
                                 style:
                                     textStyle(greyTextColor, 10, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("Receive Yards",
+                            child: Text("RecYds",
                                 style:
                                     textStyle(greyTextColor, 10, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("Receive Touch",
+                            child: Text("RecTch",
                                 style:
                                     textStyle(greyTextColor, 10, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("Rushing yards",
-                                style:
-                                    textStyle(greyTextColor, 10, false, false)),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text("Offensive Snaps",
-                                style:
-                                    textStyle(greyTextColor, 10, false, false)),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text("Defensive Snaps",
+                            child: Text("RusYds",
                                 style:
                                     textStyle(greyTextColor, 10, false, false)),
                           ),
@@ -179,16 +167,6 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                         child: Text(_athlete.rushingYards.toString(),
                             style: textStyle(greyTextColor, 10, false, false)),
                       ),
-                      Container(
-                        alignment: Alignment.bottomLeft,
-                        child: Text(_athlete.offensiveSnapsPlayed.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomLeft,
-                        child: Text(_athlete.defensiveSnapsPlayed.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
-                      ),
                     ]))
           ]),
         ]));
@@ -214,7 +192,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                     style: textStyle(
                         Colors.white, 18, false, false)),
                 Text(
-                    "Test",
+                    retrieveFullNFLAthletePosition(_athlete.position),
                     style: textStyle(
                         Colors.grey[700]!, 10, false, false))
               ])),
@@ -226,10 +204,10 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                       MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("TeamName",
+                    Text(retrieveNFLTeamCityName(_athlete.team),
                         style: textStyle(
                             Colors.white, 18, false, false)),
-                    Text("TeamNickName",
+                    Text(retrieveNFLTeamNickName(_athlete.team),
                         style: textStyle(
                             Colors.grey[700]!, 10, false, false))
                   ])),
