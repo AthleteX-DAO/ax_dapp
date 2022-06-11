@@ -10,21 +10,11 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
   @override
   Future<List<NFLAthlete>> getAllPlayers() async {
     // TODO: Change this to query API
-    //final file = new File('assets/nfl_athletes.json');
     final jsonData = await rootBundle.loadString('assets/nfl_athletes.json');
-    //final jsonString = await file.readAsString();
     final body = jsonDecode(jsonData) as List<dynamic>;
-    //final body = json.decode(jsonData).cast<Map<String, dynamic>>();
-    print(body);
-
-    //return List<NFLAthlete>.from(body.map((item) => NFLAthlete.fromJson(item))).toList();
-    
     final List<NFLAthlete> response =
         body.map((jsonObject) => NFLAthlete.fromJson(jsonObject)).toList();
-    print("[NFL Repo]: $response");
     return response;
-
-    //return body.map<NFLAthlete>((json) => NFLAthlete.fromJson(json)).toList();
   }
 
   @override

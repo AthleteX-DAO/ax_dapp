@@ -9,9 +9,8 @@ import '../models/ScoutPageEvent.dart';
 
 class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   final GetScoutAthletesDataUseCase repo;
-  final List<AthleteScoutModel> mlbAthletes = [];
 
-  ScoutPageBloc({required this.repo}) : super(const ScoutPageState()) {
+  ScoutPageBloc({required this.repo}) : super(ScoutPageState.initial()) {
     on<OnPageRefresh>(_mapRefreshEventToState);
     on<SelectSport>(_mapSelectSportToState);
     on<OnAthleteSearch>(_mapSearchAthleteEventToState);
@@ -20,27 +19,26 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   void _mapRefreshEventToState(
       OnPageRefresh event, Emitter<ScoutPageState> emit) async {
     try {
-      emit(state.copy(status: BlocStatus.loading));
+      emit(state.copyWith(status: BlocStatus.loading));
 
       final response = await repo.fetchSupportedAthletes(SupportedSport.ALL);
 
-      emit(state.copy(
+      emit(state.copyWith(
           athletes: response,
+          filteredAthletes: response,
           selectedSport: SupportedSport.ALL,
           status: BlocStatus.success));
     } catch (e) {
       print("[Console] Scout Page -> Failed to load athlete list: $e");
-      emit(state.copy(status: BlocStatus.error));
+      emit(state.copyWith(status: BlocStatus.error));
     }
   }
 
   void _mapSelectSportToState(
       SelectSport event, Emitter<ScoutPageState> emit) async {
-    emit(state.copy(
-        athletes: state.athletes
-            .where((athlete) => event.selectedSport.name == athlete.sport.name)
-            .toList(),
-        selectedSport: event.selectedSport));
+        emit(state.copyWith(status: BlocStatus.loading));
+        final List<AthleteScoutModel> filteredList = state.athletes.where((athlete) => event.selectedSport.name == athlete.sport.name).toList();
+        emit(state.copyWith(status: BlocStatus.success, filteredAthletes: filteredList, selectedSport: event.selectedSport));
   }
 
   void _mapSearchAthleteEventToState(

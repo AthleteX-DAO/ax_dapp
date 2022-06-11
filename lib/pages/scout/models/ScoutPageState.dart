@@ -5,25 +5,37 @@ import 'package:equatable/equatable.dart';
 
 class ScoutPageState extends Equatable {
   final List<AthleteScoutModel> athletes;
+  final List<AthleteScoutModel> filteredAthletes;
   final SupportedSport selectedSport;
   final BlocStatus status;
+  ScoutPageState({
+    required this.athletes,
+    required this.filteredAthletes,
+    required this.selectedSport,
+    required this.status,
+  });
 
-  const ScoutPageState(
-      {this.status = BlocStatus.initial,
-      List<AthleteScoutModel>? athletes,
-      this.selectedSport = SupportedSport.ALL})
-      : athletes = athletes ?? const [];
+  factory ScoutPageState.initial() {
+    return ScoutPageState(athletes: [], filteredAthletes: [], status: BlocStatus.initial, selectedSport: SupportedSport.ALL);
+  }
+
+  ScoutPageState copyWith({
+    List<AthleteScoutModel>? filteredAthletes,
+    SupportedSport? selectedSport,
+    BlocStatus? status,
+    List<AthleteScoutModel>? athletes,
+  }) {
+    return ScoutPageState(
+      athletes: athletes ?? this.athletes,
+      filteredAthletes: filteredAthletes ?? this.filteredAthletes,
+      status: status ?? this.status,
+      selectedSport: selectedSport ?? this.selectedSport,
+    );
+  }
 
   @override
-  List<Object?> get props => [athletes];
+  List<Object> get props => [athletes, filteredAthletes, selectedSport, status];
 
-  ScoutPageState copy(
-      {List<AthleteScoutModel>? athletes,
-      SupportedSport? selectedSport,
-      BlocStatus? status}) {
-    return ScoutPageState(
-        athletes: athletes ?? this.athletes,
-        selectedSport: selectedSport ?? this.selectedSport,
-        status: status ?? BlocStatus.initial);
-  }
+  @override
+  String toString() => 'MyLiquidityState(cards: $athletes, status: $status, filteredAthletes: $filteredAthletes, selectedSport: $selectedSport)';
 }

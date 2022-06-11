@@ -1,7 +1,6 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
-import 'package:ax_dapp/pages/scout/models/SportsModel/AthleteScoutModelExports.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/pages/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
@@ -515,57 +514,57 @@ class _DesktopScoutState extends State<DesktopScout> {
   Widget buildListview(ScoutPageState state) {
     double _height = MediaQuery.of(context).size.height;
     double hgt = _height * 0.8 - 120;
-    List<AthleteScoutModel> athletesList = state.athletes;
+    final filteredAthletes = state.filteredAthletes;
     if (state.status == BlocStatus.error){
       return filterMenuError();
     }
     // all athletes
-    if (state.selectedSport == SupportedSport.ALL)
-      return Container(
-          height: hgt,
-          child: ListView.builder(
-              padding: EdgeInsets.only(top: 10),
-              physics: BouncingScrollPhysics(),
-              itemCount: athletesList.length,
-              itemBuilder: (context, index) {
-                return kIsWeb
-                    ? createListCardsForWeb(athletesList[index])
-                    : createListCardsForMobile(athletesList[index]);
-              }));
-    // MLB athletes only
-    else if (state.selectedSport == SupportedSport.MLB)
-      return Container(
-          height: hgt,
-          child: ListView.builder(
-              padding: EdgeInsets.only(top: 10),
-              physics: BouncingScrollPhysics(),
-              itemCount: 0,
-              itemBuilder: (context, index) {
-                return kIsWeb
-                    ? createListCardsForWeb(this.curAthlete as MLBAthleteScoutModel)
-                    : createListCardsForMobile(this.curAthlete as MLBAthleteScoutModel);
-              }));
-    // MLB athletes only
-    else if (state.selectedSport == SupportedSport.NFL)
-      return Container(
-          height: hgt,
-          child: ListView.builder(
-              padding: EdgeInsets.only(top: 10),
-              physics: BouncingScrollPhysics(),
-              itemCount: 0,
-              itemBuilder: (context, index) {
-                return kIsWeb
-                    ? createListCardsForWeb(this.curAthlete as NFLAthleteScoutModel)
-                    : createListCardsForMobile(this.curAthlete as NFLAthleteScoutModel);
-              }));
-    // other athletes
-    else {
-      return Container(
-          height: hgt,
-          child: Center(
-              child: Text("Athletes will be supported soon!",
-                  style: textStyle(Colors.white, 32, true, false))));
-    }
+    //if (state.selectedSport == SupportedSport.ALL)
+    return Container(
+        height: hgt,
+        child: ListView.builder(
+            padding: EdgeInsets.only(top: 10),
+            physics: BouncingScrollPhysics(),
+            itemCount: filteredAthletes.length,
+            itemBuilder: (context, index) {
+              return kIsWeb
+                  ? createListCardsForWeb(filteredAthletes[index])
+                  : createListCardsForMobile(filteredAthletes[index]);
+          }));
+    // // MLB athletes only
+    // else if (state.selectedSport == SupportedSport.MLB)
+    //   return Container(
+    //       height: hgt,
+    //       child: ListView.builder(
+    //           padding: EdgeInsets.only(top: 10),
+    //           physics: BouncingScrollPhysics(),
+    //           itemCount: 0,
+    //           itemBuilder: (context, index) {
+    //             return kIsWeb
+    //                 ? createListCardsForWeb(this.curAthlete!)
+    //                 : createListCardsForMobile(this.curAthlete!);
+    //           }));
+    // // MLB athletes only
+    // else if (state.selectedSport == SupportedSport.NFL)
+    //   return Container(
+    //       height: hgt,
+    //       child: ListView.builder(
+    //           padding: EdgeInsets.only(top: 10),
+    //           physics: BouncingScrollPhysics(),
+    //           itemCount: 0,
+    //           itemBuilder: (context, index) {
+    //             return kIsWeb
+    //                 ? createListCardsForWeb(this.curAthlete!)
+    //                 : createListCardsForMobile(this.curAthlete!);
+    //           }));
+    // // other athletes
+    // else {
+    //   return Container(
+    //       height: hgt,
+    //       child: Center(
+    //           child: Text("Athletes will be supported soon!",
+    //               style: textStyle(Colors.white, 32, true, false))));
+    // }
   }
 
   Widget filterMenuError() {

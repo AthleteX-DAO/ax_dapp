@@ -127,13 +127,9 @@ class GetScoutAthletesDataUseCase {
         bool isIdFound = TokenList.idToAddress.containsKey(athlete.id);
         String strLongTokenAddr = isIdFound ? TokenList.idToAddress[athlete.id]![1].toUpperCase() : "";
         String strShortTokenAddr = isIdFound ? TokenList.idToAddress[athlete.id]![2].toUpperCase() : "";
-        print('[Console] - Long Token $strLongTokenAddr');
-        print('[Console] - Short Token $strShortTokenAddr');
         MarketModel longToken = getMarketModel(strLongTokenAddr, athlete.price);
         MarketModel shortToken = getMarketModel(
             strShortTokenAddr, collateralizationPerPair - athlete.price);
-        print('[Console] - Long Token $longToken');
-        print('[Console] - Short Token $shortToken');
         AthleteScoutModel athleteScoutModel;
         switch (repo.sport) {
           case (SupportedSport.MLB):
