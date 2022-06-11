@@ -12,7 +12,6 @@ import 'package:ax_dapp/repositories/usecases/GetAllLiquidityInfoUseCase.dart';
 import 'package:ax_dapp/service/Api/MLBAthleteAPI.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLClientHelper.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLConfiguration.dart';
-import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:coingecko_api/coingecko_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

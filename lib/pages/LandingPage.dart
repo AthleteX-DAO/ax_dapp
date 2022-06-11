@@ -1,5 +1,4 @@
 import 'package:ax_dapp/pages/V1App.dart';
-import 'package:ax_dapp/service/AthleteApi.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
