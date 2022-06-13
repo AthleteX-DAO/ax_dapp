@@ -62,7 +62,7 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
           ),
           Container(
               margin: EdgeInsets.only(top: 30),
-              child: Text("Your unique 10 word seed phrase")),
+              child: Text("Your unique 12  word seed phrase")),
           Container(
               height: _height * .08,
               width: _width * .8,
