@@ -7,6 +7,8 @@ import 'package:web3dart/web3dart.dart' as Web3Dart;
 import 'abstractWallet.dart';
 import 'package:flutter_web3/flutter_web3.dart' as FlutterWeb3;
 import 'package:web3_browser/web3_browser.dart';
+import 'package:bip39/bip39.dart'
+    as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 
 DappWallet newWallet() => WebWallet();
 
@@ -69,5 +71,21 @@ class WebWallet extends DappWallet {
           blockExplorerUrls: ['https://polygonscan.com/']);
       print("[Console] The Polygon mainnet is added and also switched");
     }
+  }
+  
+  void createNewMnemonic() {
+    this.mnemonic = bip39.generateMnemonic();
+    this.seedHex = bip39.mnemonicToSeedHex(mnemonic);
+  }
+
+// This will import mnemonics & convert to seed hexes
+  Future<bool> importMnemonic(String _mnemonic) async {
+    // validate if mnemonic
+    bool isValidMnemonic = bip39.validateMnemonic(_mnemonic);
+    if (isValidMnemonic) {
+      this.seedHex = bip39.mnemonicToSeedHex(_mnemonic);
+      this.mnemonic = _mnemonic;
+    }
+    return isValidMnemonic;
   }
 }
