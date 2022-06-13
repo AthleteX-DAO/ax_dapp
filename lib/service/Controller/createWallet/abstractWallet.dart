@@ -19,4 +19,8 @@ abstract class DappWallet {
   }
 
   Future<dynamic> connect();
+
+  void createNewMnemonic();
+  
+  Future<bool> importMnemonic(String _mnemonic);
 }
