@@ -30,8 +30,8 @@ class DesktopScout extends StatefulWidget {
 class _DesktopScoutState extends State<DesktopScout> {
   final myController = TextEditingController();
   bool athletePage = false;
-  bool isLongToken = true;
-  int sportState = 0;
+  static bool isLongToken = true;
+  static int sportState = 0;
   String allSportsTitle = "All Sports";
   String longTitle = "Long";
   AthleteScoutModel? curAthlete;
@@ -578,7 +578,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Row(children: <Widget>[
-                    AthleteDetailsWidget(athlete).createListCardsForMobile(team, _width, athNameBx),
+                    AthleteDetailsWidget(athlete).athleteDetailsCardsForMobile(team, _width, athNameBx),
                     // Market Price / Change
                     IndexedStack(
                       index: _marketVsBookPriceIndex,
@@ -747,7 +747,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      AthleteDetailsWidget(athlete).createListCardsForWeb(team, _width, athNameBx),
+                      AthleteDetailsWidget(athlete).athleteDetailsCardsForWeb(team, _width, athNameBx),
                       // Market Price / Change
                       Container(
                         width: _width * 0.18,

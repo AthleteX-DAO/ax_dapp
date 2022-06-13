@@ -10,7 +10,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
   NFLAthleteDetailsWidget(this._athlete);
 
   @override
-  Widget athleteDetails() {
+  Widget athletePageDetails() {
     return Container(
         height: 250,
         child: Column(
@@ -67,8 +67,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
   }
 
   @override
-  Widget keyStatistics() {
-    // TODO: implement keyStatistics
+  Widget athletePageKeyStatistics() {
     return Container(
         height: 150,
         child:
@@ -172,7 +171,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
         ]));
   }
   @override
-  Widget createListCardsForWeb(team, _width, athNameBx){
+  Widget athleteDetailsCardsForWeb(team, _width, athNameBx){
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,7 +216,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
   }
 
   @override
-  Widget createListCardsForMobile(team, _width, athNameBx){
+  Widget athleteDetailsCardsForMobile(team, _width, athNameBx){
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -799,9 +799,9 @@ class _AthletePageState extends State<AthletePage> {
                                       ]),
                                 ])),
                             // Detail Section
-                            AthleteDetailsWidget(athlete).athleteDetails(),
+                            AthleteDetailsWidget(athlete).athletePageDetails(),
                             // Stats section
-                            AthleteDetailsWidget(athlete).keyStatistics(),
+                            AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
                           ])),
                     ],
                   )
@@ -1465,9 +1465,9 @@ class _AthletePageState extends State<AthletePage> {
                             ]),
                       ])),
               // Detail Section
-              AthleteDetailsWidget(athlete).athleteDetails(),
+              AthleteDetailsWidget(athlete).athletePageDetails(),
               // Stats section
-              AthleteDetailsWidget(athlete).keyStatistics(),
+              AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
             ]));
   }
 

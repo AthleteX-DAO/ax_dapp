@@ -17,36 +17,36 @@ abstract class AthleteDetailsWidget {
     }
   }
 
-  Widget athleteDetails();
-  Widget keyStatistics();
-  Widget createListCardsForWeb(team, _width, athNameBx);
-  Widget createListCardsForMobile(team, _width, athNameBx);
+  Widget athletePageDetails();
+  Widget athletePageKeyStatistics();
+  Widget athleteDetailsCardsForWeb(team, _width, athNameBx);
+  Widget athleteDetailsCardsForMobile(team, _width, athNameBx);
 }
 
 class NoStatsShownWidget implements AthleteDetailsWidget {
   @override
-  Widget athleteDetails() {
+  Widget athletePageDetails() {
     return Center(
       child: Text('No details for selected athlete'),
     );
   }
 
   @override
-  Widget keyStatistics() {
+  Widget athletePageKeyStatistics() {
     return Center(
       child: Text('No statistics shown for selected athlete'),
     );
   }
 
   @override
-  Widget createListCardsForWeb(team, _width, athNameBx){
+  Widget athleteDetailsCardsForWeb(team, _width, athNameBx){
     return Center(
       child: Text('No data shown for Athlete Card'),
     );
   }
 
   @override
-  Widget createListCardsForMobile(team, _width, athNameBx){
+  Widget athleteDetailsCardsForMobile(team, _width, athNameBx){
     return Center(
       child: Text('No data shown for Athlete Card'),
     );
