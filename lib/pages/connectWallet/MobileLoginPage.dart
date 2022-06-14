@@ -1,6 +1,8 @@
-import 'package:ax_dapp/pages/connectWallet/DeviceAuthentication.dart';
 import 'package:ax_dapp/pages/connectWallet/MobileAxWalletLoginPage.dart';
+import 'package:ax_dapp/pages/connectWallet/DeviceAuthentication.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'MobileCreateWalletPage.dart';
 
 class MobileLoginPage extends StatefulWidget {
@@ -11,6 +13,14 @@ class MobileLoginPage extends StatefulWidget {
 }
 
 class _MobileLoginPageState extends State<MobileLoginPage> {
+  late Controller controller;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = Get.find();
+  }
+
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -63,11 +73,12 @@ class _MobileLoginPageState extends State<MobileLoginPage> {
             decoration: boxDecoration(Colors.amber[300]!.withOpacity(0.15), 20,
                 1, Colors.transparent),
             child: TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => MobileCreateWalletPage()));
+                controller.generateMnemonic();
               },
               child: Text(
                 "Create Wallet",

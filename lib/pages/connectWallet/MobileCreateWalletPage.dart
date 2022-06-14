@@ -1,4 +1,6 @@
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'MobileWalletConfirmPage.dart';
 
 class MobileCreateWalletPage extends StatefulWidget {
@@ -14,6 +16,7 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
   Color secondaryGreyColor = Color.fromRGBO(255, 255, 255, 0.1);
   Color greyTextColor = Color.fromRGBO(160, 160, 160, 1);
   Color secondaryOrangeColor = Color.fromRGBO(254, 197, 0, 0.2);
+  Controller controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +73,11 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
               decoration: boxDecoration(
                   Colors.grey.withOpacity(.2), 10, 1, Colors.grey),
               child: Center(
-                  child: Text(
-                " Apple Pecker Gator Mountain Daddy Bing Bong Vanilla Ice Cream",
+                  child: Obx(() => Text(
+                "${controller.mnemonic}",
                 style: TextStyle(fontSize: 14),
                 textAlign: TextAlign.center,
-              ))),
+              )))),
           Container(
             margin: EdgeInsets.only(top: 40),
             width: _width * .8,
