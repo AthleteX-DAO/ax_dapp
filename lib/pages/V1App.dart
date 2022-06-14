@@ -127,7 +127,6 @@ class _V1AppState extends State<V1App> {
                       graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                       sportsRepos: [
                         RepositoryProvider.of<MLBRepo>(context),
-                        RepositoryProvider.of<NFLRepo>(context)
                       ],
                       coinGeckoRepo:
                           RepositoryProvider.of<CoinGeckoRepo>(context),
@@ -164,7 +163,6 @@ class _V1AppState extends State<V1App> {
                     graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                     sportsRepos: [
                       RepositoryProvider.of<MLBRepo>(context),
-                      RepositoryProvider.of<NFLRepo>(context)
                     ],
                     coinGeckoRepo:
                         RepositoryProvider.of<CoinGeckoRepo>(context),

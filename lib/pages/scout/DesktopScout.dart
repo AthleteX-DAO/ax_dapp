@@ -150,38 +150,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                 textStyle(Colors.white, sportFilterTxSz, false, false),
                 textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
       )),
-      Container(
-          child: TextButton(
-        onPressed: () {
-          myController.clear();
-          if (sportState != 2)
-            setState(() {
-              sportState = 2;
-            });
-          bloc.add(SelectSport(selectedSport: SupportedSport.NFL));
-        },
-        child: Text("NFL",
-            style: textSwapState(
-                sportState == 2,
-                textStyle(Colors.white, sportFilterTxSz, false, false),
-                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
-      )),
-      Container(
-          child: TextButton(
-        onPressed: () {
-          myController.clear();
-          if (sportState != 3)
-            setState(() {
-              sportState = 3;
-            });
-          bloc.add(SelectSport(selectedSport: SupportedSport.NBA));
-        },
-        child: Text("NBA",
-            style: textSwapState(
-                sportState == 3,
-                textStyle(Colors.white, sportFilterTxSz, false, false),
-                textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
-      )),
       Spacer(),
       toggleTokenButton(800, 40),
       Container(width: 10),
