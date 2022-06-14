@@ -163,7 +163,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copyWith(status: BlocStatus.error));
+        emit(state.copyWith(status: BlocStatus.no_data));
       }
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
@@ -198,7 +198,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copyWith(status: BlocStatus.error));
+        emit(state.copyWith(status: BlocStatus.no_data));
       }
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
