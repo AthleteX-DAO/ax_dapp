@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:ax_dapp/pages/farm/models/FarmModel.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/util/BalanceInfo.dart';
 import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
@@ -35,6 +36,8 @@ class FarmController {
   RxDouble dUnStakeBalance = 0.0.obs;
   RxDouble dStakeBalance = 0.0.obs;
 
+  BigInt nMaxStakedAmount = BigInt.zero;
+  BigInt nMaxStakeAmount = BigInt.zero;
   RxString strCurrentBalance = "0".obs;
 
   late Web3Dart.Web3Client rpcClient;
@@ -93,12 +96,14 @@ class FarmController {
   }
 
   /// This function is used to get current Balance from wallet
-  /// 
+  ///
   /// @return {void}
   Future<void> updateCurrentBalance() async {
-    this.strCurrentBalance.value = await wallet.getTokenBalance(this.strStakeTokenAddress);
+    BalanceInfo balance =
+        await wallet.getTokenBalanceAsInfo(this.strStakeTokenAddress);
+    this.nMaxStakeAmount = balance.nWeiAmount;
+    this.strCurrentBalance.value = balance.strFloorEthAmount;
   }
-
 
   /// This function is used to stake tokens on a specific farm
   /// and also update the txHash string on conroller
@@ -108,7 +113,9 @@ class FarmController {
     Uint8List stakingData = Uint8List.fromList([]);
     Uint8List rewardData = Uint8List.fromList([]);
 
-    BigInt stakeAmount = normalizeInput(this.dStakeBalance.value);
+    BigInt inputAmount = normalizeInput(this.dStakeBalance.value);
+    BigInt stakeAmount =
+        inputAmount > this.nMaxStakeAmount ? this.nMaxStakeAmount : inputAmount;
     String txHash = await this.contract.stake(
         stakeAmount, stakingData, rewardData,
         credentials: controller.credentials);
@@ -124,10 +131,14 @@ class FarmController {
   Future<void> unstake() async {
     Uint8List stakingData = Uint8List.fromList([]);
     Uint8List rewardData = Uint8List.fromList([]);
-
-    BigInt unstakeAmount = normalizeInput(this.dUnStakeBalance.value);
+    BigInt inputAmount = normalizeInput(this.dUnStakeBalance.value);
+    BigInt unStakeAmount = inputAmount > this.nMaxStakedAmount
+        ? this.nMaxStakedAmount
+        : inputAmount;
+    print("[UnStake Amount]");
+    print(unStakeAmount);
     String txHash = await this.contract.unstake(
-        unstakeAmount, stakingData, rewardData,
+        unStakeAmount, stakingData, rewardData,
         credentials: controller.credentials);
     controller.updateTxString(txHash);
   }
@@ -154,11 +165,9 @@ class FarmController {
     Web3Dart.EthereumAddress ethAccount =
         Web3Dart.EthereumAddress.fromHex(strAccount);
     List<BigInt> balances = await this.contract.stakingBalances(ethAccount);
-    Web3Dart.EtherAmount stakedWeiBalance =
-        Web3Dart.EtherAmount.inWei(balances[0]);
-    double stakedEtherBalance =
-        stakedWeiBalance.getValueInUnit(Web3Dart.EtherUnit.ether);
-    this.dStaked.value = stakedEtherBalance;
+    BalanceInfo balance = BalanceInfo(balances[0]);
+    this.nMaxStakedAmount = balance.nWeiAmount;
+    this.dStaked.value = balance.dFloorEthAmount;
   }
 
   /// This function is used to approve the reward token
@@ -170,7 +179,9 @@ class FarmController {
     Web3Dart.EthereumAddress tokenAddress =
         Web3Dart.EthereumAddress.fromHex(this.strStakeTokenAddress);
     ERC20 rewardToken = ERC20(address: tokenAddress, client: rpcClient);
-    BigInt approveAmount = normalizeInput(this.dStakeBalance.value);
+    BigInt inputAmount = normalizeInput(this.dStakeBalance.value);
+    BigInt approveAmount =
+        inputAmount > this.nMaxStakeAmount ? this.nMaxStakeAmount : inputAmount;
     String txHash = await rewardToken.approve(routerAddress, approveAmount,
         credentials: controller.credentials);
     controller.updateTxString(txHash);

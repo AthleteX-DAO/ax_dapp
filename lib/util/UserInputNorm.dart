@@ -1,4 +1,5 @@
 import 'package:decimal/decimal.dart';
+import 'package:web3dart/web3dart.dart';
 
 // Use this function to convert user input(double) into BigInt.
 
@@ -17,4 +18,11 @@ BigInt normalizeInput(double input) {
   Decimal inDecimal =
       Decimal.parse(input.toString()) * Decimal.fromInt(10).pow(18);
   return inDecimal.toBigInt();
+}
+
+/// Converts a BigInt to double. round double while converting
+double getEtherValue(BigInt input) {
+  EtherAmount weiAmount = EtherAmount.inWei(input);
+  double ethAmount = weiAmount.getValueInUnit(EtherUnit.ether);
+  return double.parse(ethAmount.toStringAsFixed(6));
 }

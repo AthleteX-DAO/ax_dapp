@@ -104,6 +104,7 @@ class GysrApi {
     final result = await _gysrApiClientHelper.performQuery(
         _gysrApiClient, getStakedFarmsQuery,
         variables: <String, dynamic>{"account": account});
+    print(result);
     return result;
   }
 }

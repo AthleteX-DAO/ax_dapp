@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/util/BalanceInfo.dart';
 import 'package:erc20/erc20.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
@@ -49,14 +50,35 @@ class WalletController extends GetxController {
       BigInt rawBalance = await ax.balanceOf(walletAddress);
       print("Raw Balance: $rawBalance");
       EtherAmount balanceInWei = EtherAmount.inWei(rawBalance);
-      double balanceInEther = balanceInWei.getValueInUnit(EtherUnit.ether);
-      tokenBalance = balanceInEther.toStringAsFixed(6);
+      tokenBalance = balanceInWei.getValueInUnit(EtherUnit.ether).toString();
     } catch (error) {
       tokenBalance = "0.0";
       print("[Console] Failed to retrieve the balance: $error");
     }
     update();
     return tokenBalance;
+  }
+
+  Future<BalanceInfo> getTokenBalanceAsInfo(String tokenAddress) async {
+    var walletAddress = controller.publicAddress.value;
+    late EthereumAddress tokenEthAddress;
+    late String tokenBalance;
+    var rpcUrl;
+    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
+      rpcUrl = Controller.supportedChains[controller.networkID.value];
+    }
+    Web3Client rpcClient = Web3Client(rpcUrl, Client());
+    tokenEthAddress = EthereumAddress.fromHex(tokenAddress);
+    var ax = ERC20(address: tokenEthAddress, client: rpcClient);
+    BigInt rawBalance = BigInt.zero;
+    try {
+      rawBalance = await ax.balanceOf(walletAddress);
+    } catch (error) {
+      print("[Console] Failed to retrieve the balance: $error");
+    }
+    update();
+    BalanceInfo balance = BalanceInfo(rawBalance);
+    return balance;
   }
 
   // Update circulating Supply, price, total supply in one call
