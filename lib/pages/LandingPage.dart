@@ -1,5 +1,4 @@
 import 'package:ax_dapp/pages/V1App.dart';
-import 'package:ax_dapp/service/AthleteApi.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -82,7 +81,7 @@ class _LandingPageState extends State<LandingPage> {
       BuildContext context, double tradingTextSize) {
     return FutureBuilder<dynamic>(
       // future: AthleteApi.getAthletesLocally(context),
-      future: AthleteApi.getAthletesFromIdsDict(context),
+      // future: AthleteApi.getAthletesFromIdsDict(context),
       builder: (context, snapshot) {
         //Check API response data
         if (snapshot.hasError) {
