@@ -9,14 +9,16 @@ import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:get/get.dart';
+
 //Comment this for Android
 const EMPTY_WALLET_ID = "0x0000000000000000000000000000000000000000";
 
 class Controller extends GetxController {
   /// VARIABLES
-  var seedHex = "";
+  var seedHex = "".obs;
   var credentials;
-  var mnemonic = "";
+  var mnemonic = "".obs;
+  late DappWallet web3;
   var networkID = 0.obs;
   bool activeChain = false;
   static String latestTx = "";
@@ -33,8 +35,7 @@ class Controller extends GetxController {
   String mainRPCUrl = "https://polygon-rpc.com";
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
   var client = Web3Client("https://polygon-rpc.com", Client()).obs;
-  var publicAddress =
-      EthereumAddress.fromHex(EMPTY_WALLET_ID).obs;
+  var publicAddress = EthereumAddress.fromHex(EMPTY_WALLET_ID).obs;
 
   set axTokenAddress(EthereumAddress tokenAddress) {
     axTokenAddress = EthereumAddress.fromHex("${tokenAddress.hex}");
@@ -45,13 +46,11 @@ class Controller extends GetxController {
   }
 
   void initState() async {
-    //getCurrentGas();
+    //Setting up Client & Credentials for connecting to dApp from a client
+    web3 = newWallet();
   }
 
   Future<int> connect() async {
-    //Setting up Client & Credentials for connecting to dApp from a client
-    DappWallet web3 = newWallet();
-
     //Connect and setup credentials
     await web3.connect().then((value) {
       print("Connecting Wallet... ${web3.publicAddress}");
@@ -90,8 +89,9 @@ class Controller extends GetxController {
 
   void getCurrentGas() async {
     var rawGasPrice = await client.value.getGasPrice();
-    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei).toStringAsFixed(2);
-    
+    var gasPriceinGwei =
+        rawGasPrice.getValueInUnit(EtherUnit.gwei).toStringAsFixed(2);
+
     gasString.value = "$gasPriceinGwei";
     print('Getting latest gas... $gasString');
     update();
@@ -118,5 +118,19 @@ class Controller extends GetxController {
         ? urlString = Uri.parse('https://polygonscan.com')
         : urlString = Uri.parse('https://polygonscan.com/tx/$latestTx');
     await launchUrl(urlString);
+  }
+
+  void generateMnemonic() async {
+    web3.createNewMnemonic();
+    // String generatedString = web3.seedHex;
+    this.mnemonic.value = web3.mnemonic;
+    this.seedHex.value = web3.seedHex;
+  }
+
+  Future<bool> isValidMnemonic(String theMnemonic) async {
+    bool YesOrNo = false;
+    String _mnemonic = theMnemonic;
+    YesOrNo = await web3.importMnemonic(_mnemonic);
+    return YesOrNo;
   }
 }
