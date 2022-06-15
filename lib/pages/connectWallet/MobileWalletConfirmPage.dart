@@ -68,7 +68,7 @@ class _MobileCreateWalletConfirmPageState
           ),
           Container(
               margin: EdgeInsets.only(top: 30),
-              child: Text("Input your unique 10 word seed phrase:")),
+              child: Text("Input your unique 12 word seed phrase:")),
           Container(
               height: _height * .08,
               width: _width * .8,

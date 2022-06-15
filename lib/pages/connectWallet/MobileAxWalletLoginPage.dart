@@ -66,7 +66,7 @@ class _MobileAxWalletLoginPageState extends State<MobileAxWalletLoginPage> {
           ),
           Container(
               margin: EdgeInsets.only(top: 30),
-              child: Text("Input your 10 word seed phrase:")),
+              child: Text("Input your 12 word seed phrase:")),
           Container(
               height: _height * .08,
               width: _width * .8,
