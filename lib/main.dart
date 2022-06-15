@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/LandingPage.dart';
 import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
+import 'package:ax_dapp/repositories/NFLRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
@@ -35,6 +36,9 @@ void main() async {
         RepositoryProvider(create: (context) => _subGraphRepo),
         RepositoryProvider(
           create: (context) => MLBRepo(_mlbApi),
+        ),
+        RepositoryProvider(
+          create: (context) => NFLRepo(),
         ),
         RepositoryProvider(
           create: (context) => CoinGeckoRepo(_coinGeckoApi),

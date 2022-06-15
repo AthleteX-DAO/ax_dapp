@@ -1,5 +1,1 @@
-enum SupportedSport {
-  ALL,
-  NFL,
-  MLB
-}
+enum SupportedSport { ALL, NFL, MLB, NBA}

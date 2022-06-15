@@ -123,6 +123,7 @@ flutter:
     - assets/images/X_Logo_Black_BR.png
     - assets/images/apt_noninverted.png
     - assets/images/apt_inverted.png
+    - assets/nfl_athletes.json
 
 flutter_icons:
   android: "launcher_icon"

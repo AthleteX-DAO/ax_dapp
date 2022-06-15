@@ -1,5 +1,7 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/pages/scout/models/MarketModel.dart';
+import 'package:ax_dapp/pages/scout/models/SportsModel/MLBAthleteScoutModel.dart';
+import 'package:ax_dapp/pages/scout/models/SportsModel/NFLAthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
@@ -8,6 +10,7 @@ import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/athleteModels/nfl/NFLAthlete.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:coingecko_api/coingecko_result.dart';
 import 'package:coingecko_api/data/market_data.dart';
@@ -119,45 +122,102 @@ class GetScoutAthletesDataUseCase {
   List<AthleteScoutModel> _mapAthleteToScoutModel(List<SportAthlete> athletes,
       SportsRepo<SportAthlete> repo, double axPrice) {
     List<AthleteScoutModel> mappedAthletes = [];
-    athletes.forEach((athlete) {
-      //TODO DANGEROUS CHANGE THIS TO NOT BE COUPLED TO MLB
-      final mlbAthlete = (athlete as MLBAthlete);
-      final String strLongTokenAddr =
-          TokenList.idToAddress[mlbAthlete.id]![1].toUpperCase();
-      final String strShortTokenAddr =
-          TokenList.idToAddress[mlbAthlete.id]![2].toUpperCase();
-      MarketModel longToken =
-          getMarketModel(strLongTokenAddr, mlbAthlete.price);
-      MarketModel shortToken = getMarketModel(
-          strShortTokenAddr, collateralizationPerPair - mlbAthlete.price);
-
-      mappedAthletes.add(AthleteScoutModel(
-        mlbAthlete.id,
-        mlbAthlete.name,
-        mlbAthlete.position,
-        mlbAthlete.team,
-        longToken.bookPrice,
-        shortToken.bookPrice,
-        repo.sport,
-        mlbAthlete.timeStamp,
-        mlbAthlete.homeRuns,
-        mlbAthlete.strikeOuts,
-        mlbAthlete.saves,
-        mlbAthlete.stolenBases,
-        mlbAthlete.atBats,
-        mlbAthlete.weightedOnBasePercentage,
-        mlbAthlete.errors,
-        mlbAthlete.inningsPlayed,
-        longToken.marketPrice,
-        shortToken.marketPrice,
-        longToken.percentage,
-        shortToken.percentage,
-        longToken.bookPrice * axPrice,
-        shortToken.bookPrice * axPrice,
-        longToken.marketPrice * axPrice,
-        shortToken.marketPrice * axPrice,
-      ));
-    });
+    athletes.forEach(
+      (athlete) {
+        bool isIdFound = TokenList.idToAddress.containsKey(athlete.id);
+        String strLongTokenAddr = isIdFound ? TokenList.idToAddress[athlete.id]![1].toUpperCase() : "";
+        String strShortTokenAddr = isIdFound ? TokenList.idToAddress[athlete.id]![2].toUpperCase() : "";
+        MarketModel longToken = getMarketModel(strLongTokenAddr, athlete.price);
+        MarketModel shortToken = getMarketModel(
+            strShortTokenAddr, collateralizationPerPair - athlete.price);
+        AthleteScoutModel athleteScoutModel;
+        switch (repo.sport) {
+          case (SupportedSport.MLB):
+            {
+              final mlbAthlete = athlete as MLBAthlete;
+              athleteScoutModel = MLBAthleteScoutModel(
+                  id: mlbAthlete.id,
+                  name: mlbAthlete.name,
+                  position: mlbAthlete.position,
+                  team: mlbAthlete.team,
+                  longTokenBookPrice: longToken.bookPrice,
+                  longTokenBookPriceUsd: longToken.bookPrice * axPrice,
+                  shortTokenBookPrice: shortToken.bookPrice,
+                  shortTokenBookPriceUsd: shortToken.bookPrice * axPrice,
+                  sport: repo.sport,
+                  time: mlbAthlete.timeStamp,
+                  longTokenPrice: longToken.marketPrice,
+                  shortTokenPrice: shortToken.marketPrice,
+                  longTokenPriceUsd: longToken.marketPrice * axPrice,
+                  shortTokenPriceUsd: shortToken.marketPrice * axPrice,
+                  longTokenPercentage: longToken.percentage,
+                  shortTokenPercentage: shortToken.percentage,
+                  homeRuns: mlbAthlete.homeRuns,
+                  strikeOuts: mlbAthlete.strikeOuts,
+                  saves: mlbAthlete.saves,
+                  stolenBases: mlbAthlete.stolenBases,
+                  atBats: mlbAthlete.atBats,
+                  weightedOnBasePercentage: mlbAthlete.weightedOnBasePercentage,
+                  errors: mlbAthlete.errors,
+                  inningsPlayed: mlbAthlete.inningsPlayed);
+            }
+            break;
+          case (SupportedSport.NFL):
+            {
+              final nflAthlete = athlete as NFLAthlete;
+              athleteScoutModel = NFLAthleteScoutModel(
+                  id: nflAthlete.id,
+                  name: nflAthlete.name,
+                  position: nflAthlete.position,
+                  team: nflAthlete.team,
+                  longTokenBookPrice: longToken.bookPrice,
+                  longTokenBookPriceUsd: longToken.bookPrice * axPrice,
+                  shortTokenBookPrice: shortToken.bookPrice,
+                  shortTokenBookPriceUsd: shortToken.bookPrice * axPrice,
+                  sport: repo.sport,
+                  time: nflAthlete.timeStamp,
+                  longTokenPrice: longToken.marketPrice,
+                  shortTokenPrice: shortToken.marketPrice,
+                  longTokenPercentage: longToken.percentage,
+                  shortTokenPercentage: shortToken.percentage,
+                  longTokenPriceUsd: longToken.marketPrice * axPrice,
+                  shortTokenPriceUsd: shortToken.marketPrice * axPrice,
+                  passingYards: nflAthlete.passingYards,
+                  passingTouchDowns: nflAthlete.passingTouchDowns,
+                  reception: nflAthlete.reception,
+                  receiveYards: nflAthlete.receiveYards,
+                  receiveTouch: nflAthlete.receiveTouch,
+                  rushingYards: nflAthlete.rushingYards,
+                  offensiveSnapsPlayed: nflAthlete.offensiveSnapsPlayed,
+                  defensiveSnapsPlayed: nflAthlete.defensiveSnapsPlayed);
+            }
+            break;
+          default:
+            {
+              athleteScoutModel = AthleteScoutModel(
+                id: athlete.id,
+                name: athlete.name,
+                position: athlete.position,
+                team: athlete.team,
+                longTokenBookPrice: longToken.bookPrice,
+                longTokenBookPriceUsd: longToken.bookPrice * axPrice,
+                shortTokenBookPrice: shortToken.bookPrice,
+                shortTokenBookPriceUsd: shortToken.bookPrice * axPrice,
+                //TODO: check for sport
+                sport: repo.sport,
+                time: athlete.timeStamp,
+                longTokenPrice: longToken.marketPrice,
+                shortTokenPrice: shortToken.marketPrice,
+                longTokenPercentage: longToken.percentage,
+                shortTokenPercentage: shortToken.percentage,
+                longTokenPriceUsd: longToken.marketPrice * axPrice,
+                shortTokenPriceUsd: shortToken.marketPrice * axPrice,
+              );
+            }
+        }
+        mappedAthletes.add(athleteScoutModel);
+      },
+    );
     return mappedAthletes;
   }
 }
