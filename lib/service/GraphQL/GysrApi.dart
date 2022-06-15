@@ -21,12 +21,14 @@ class GysrApi {
           alias
           price
           symbol
+          decimals
         }
         rewardToken {
           id
           alias
           price
           symbol
+          decimals
         }
         staked
         rewards
@@ -52,12 +54,14 @@ class GysrApi {
               alias
               price
               symbol
+              decimals
             }
             rewardToken {
               id
               alias
               price
               symbol
+              decimals
             }
             staked
             rewards
@@ -104,7 +108,6 @@ class GysrApi {
     final result = await _gysrApiClientHelper.performQuery(
         _gysrApiClient, getStakedFarmsQuery,
         variables: <String, dynamic>{"account": account});
-    print(result);
     return result;
   }
 }

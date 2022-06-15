@@ -1,3 +1,4 @@
+import 'package:big_decimal/big_decimal.dart';
 import 'package:decimal/decimal.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -20,9 +21,15 @@ BigInt normalizeInput(double input) {
   return inDecimal.toBigInt();
 }
 
-/// Converts a BigInt to double. round double while converting
-double getEtherValue(BigInt input) {
-  EtherAmount weiAmount = EtherAmount.inWei(input);
-  double ethAmount = weiAmount.getValueInUnit(EtherUnit.ether);
-  return double.parse(ethAmount.toStringAsFixed(6));
+BigInt getRawAmount(String input, int decimals) {
+  Decimal inDecimal = Decimal.parse(input) * Decimal.fromInt(10).pow(decimals);
+  return inDecimal.toBigInt();
+}
+
+/// Converts a BigInt to String. round double while converting
+String getViewAmount(BigInt input, int decimals) {
+  Decimal inDecimal =
+      (Decimal.fromBigInt(input) / Decimal.fromInt(10).pow(decimals))
+          .toDecimal();
+  return inDecimal.toStringAsFixed(6);
 }

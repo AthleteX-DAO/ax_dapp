@@ -28,6 +28,8 @@ class GetFarmDataUseCase {
     List<FarmModel> farms = [];
     response.forEach((pool) {
       dynamic farm = isStaked ? pool['pool'] : pool;
+      print("[stakigToken] ${farm['stakingToken']['decimals']}");
+      print("[rewardToken] ${farm['rewardToken']['decimals']}");
       farms.add(FarmModel(
           "${farm['stakingToken']['alias']!.length > 0 ? farm['stakingToken']['alias'] : farm['stakingToken']['symbol']} APT",
           farm['id'].toString(),
@@ -37,12 +39,14 @@ class GetFarmDataUseCase {
           farm['stakingToken']['id'].toString(),
           farm['rewardToken']['id'].toString(),
           farm['stakingModule'].toString(),
-          double.parse(farm['apr'].toString()),
-          double.parse(farm['tvl'].toString()),
-          double.parse(farm['staked'].toString()),
-          double.parse(farm['rewards'].toString()),
-          double.parse(farm['stakingToken']['price']),
-          double.parse(farm['rewardToken']['price'])));
+          farm['apr'].toString(),
+          farm['tvl'].toString(),
+          farm['staked'].toString(),
+          farm['rewards'].toString(),
+          farm['stakingToken']['price'].toString(),
+          farm['rewardToken']['price'].toString(),
+          int.parse(farm['stakingToken']['decimals']),
+          int.parse(farm['rewardToken']['decimals'])));
     });
     return farms;
   }

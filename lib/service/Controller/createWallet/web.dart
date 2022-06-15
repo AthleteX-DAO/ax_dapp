@@ -22,9 +22,13 @@ class WebWallet extends DappWallet {
       this.client = Web3Dart.Web3Client.custom(window.ethereum!.asRpcService());
       this.credentials = await window.ethereum!.requestAccount();
       this.publicAddress = credentials.address;
-      this.networkID = await Web3Dart.Web3Client.custom(window.ethereum!.asRpcService()).getNetworkId();
-      print("[Console] This is the public address: ${this.publicAddress}, and network: ${this.networkID}");
-      print("[Console] This is the credentials type: ${this.credentials.toString()}");
+      this.networkID =
+          await Web3Dart.Web3Client.custom(window.ethereum!.asRpcService())
+              .getNetworkId();
+      print(
+          "[Console] This is the public address: ${this.publicAddress}, and network: ${this.networkID}");
+      print(
+          "[Console] This is the credentials type: ${this.credentials.toString()}");
     } else {
       print("[Console] Ethereum is not supproted. Please install MetaMask.");
     }
@@ -34,7 +38,8 @@ class WebWallet extends DappWallet {
   Future<bool> addTokenToWallet(String tokenAddress, String tokenImage) async {
     print("[Console] - Current Address: $tokenAddress");
     // get the ticker and get the decimals
-    Web3Dart.EthereumAddress tokenEthAddress = Web3Dart.EthereumAddress.fromHex(tokenAddress);
+    Web3Dart.EthereumAddress tokenEthAddress =
+        Web3Dart.EthereumAddress.fromHex(tokenAddress);
     Web3Dart.Web3Client rpcClient = Web3Dart.Web3Client(mainRPCUrl, Client());
     ERC20 token = ERC20(address: tokenEthAddress, client: rpcClient);
     String symbol = await token.symbol();
@@ -48,6 +53,15 @@ class WebWallet extends DappWallet {
         image: tokenImage);
     print("[Console] Result of adding AX token to MetaMask. {$result}");
     return result;
+  }
+
+  Future<int> getTokenDecimal(String tokenAddress) async {
+    Web3Dart.EthereumAddress tokenEthAddress =
+        Web3Dart.EthereumAddress.fromHex(tokenAddress);
+    Web3Dart.Web3Client rpcClient = Web3Dart.Web3Client(mainRPCUrl, Client());
+    ERC20 token = ERC20(address: tokenEthAddress, client: rpcClient);
+    int decimals = (await token.decimals()).toInt();
+    return decimals;
   }
 
   Future<void> switchNetwork() async {

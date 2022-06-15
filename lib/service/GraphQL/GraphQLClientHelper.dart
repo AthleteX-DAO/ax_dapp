@@ -15,7 +15,7 @@ class GraphQLClientHelper {
 
   GraphQLClient initializeClientWithoutCache() {
     final policies = Policies(
-      fetch: FetchPolicy.noCache,
+      fetch: FetchPolicy.networkOnly,
     );
     return GraphQLClient(
         link: _httpLink,
