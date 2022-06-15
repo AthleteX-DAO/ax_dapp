@@ -28,7 +28,8 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
       OnLoadFarms event, Emitter<FarmState> emit) async {
     try {
       print("load farms");
-      emit(state.copy(status: BlocStatus.loading));
+      emit(
+          state.copy(status: BlocStatus.loading, farms: [], filteredFarms: []));
       final List<FarmModel> farms = await repo.fetchAllFarms(owner);
       if (farms.length > 0)
         emit(state.copy(
@@ -45,11 +46,15 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
       OnLoadStakedFarms event, Emitter<FarmState> emit) async {
     try {
       print("load staked farms");
-      emit(state.copy(status: BlocStatus.loading));
+      emit(state.copy(
+          status: BlocStatus.loading,
+          stakedFarms: [],
+          filteredStakedFarms: []));
       final String? account = controller.getWalletAddress();
       print("account address: $account");
       if (account != null) {
         final stakedFarms = await repo.fetchStakedFarms(account);
+        print("[StakedFarms] ${stakedFarms.length}");
         if (stakedFarms.length > 0)
           emit(state.copy(
               stakedFarms: stakedFarms,

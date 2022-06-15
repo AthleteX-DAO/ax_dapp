@@ -21,12 +21,14 @@ class GysrApi {
           alias
           price
           symbol
+          decimals
         }
         rewardToken {
           id
           alias
           price
           symbol
+          decimals
         }
         staked
         rewards
@@ -52,12 +54,14 @@ class GysrApi {
               alias
               price
               symbol
+              decimals
             }
             rewardToken {
               id
               alias
               price
               symbol
+              decimals
             }
             staked
             rewards
