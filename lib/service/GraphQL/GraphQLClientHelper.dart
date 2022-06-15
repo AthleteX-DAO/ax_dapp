@@ -9,8 +9,11 @@ class GraphQLClientHelper {
 
   Future<ValueNotifier<GraphQLClient>> initializeClient() async {
     await initHiveForFlutter();
+    final networkOnlyPolicy = Policies(cacheReread: CacheRereadPolicy.ignoreAll, fetch: FetchPolicy.networkOnly, error: ErrorPolicy.ignore);
     return ValueNotifier(GraphQLClient(
-        link: _httpLink, cache: GraphQLCache(store: HiveStore())));
+        link: _httpLink,
+        cache: GraphQLCache(store: HiveStore()),
+        defaultPolicies: DefaultPolicies(query: networkOnlyPolicy, watchMutation: networkOnlyPolicy, watchQuery: networkOnlyPolicy, mutate: networkOnlyPolicy, subscribe: networkOnlyPolicy)));
   }
 
   GraphQLClient initializeClientWithoutCache() {

@@ -24,9 +24,7 @@ class SubGraphRepo {
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairs() async {
     final result = await _client.query(
-      QueryOptions(
-          document: parseString(_getAllPairs()),
-          pollInterval: const Duration(seconds: 10)),
+      QueryOptions(document: parseString(_getAllPairs())),
     );
     if (result.hasException)
       return Either.right(result.exception!);
@@ -40,10 +38,7 @@ class SubGraphRepo {
     final int startTime = (DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch / 1000).round();
 
     final result = await _client.query(
-      QueryOptions(
-          document: parseString(_getSpecificPairs(token, startTime)),
-          pollInterval: const Duration(seconds: 10)),
-    );
+      QueryOptions(document: parseString(_getSpecificPairs(token, startTime))));
     if (result.hasException)
       return Either.right(result.exception!);
     else
