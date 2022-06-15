@@ -1,6 +1,4 @@
-import 'package:big_decimal/big_decimal.dart';
 import 'package:decimal/decimal.dart';
-import 'package:web3dart/web3dart.dart';
 
 // Use this function to convert user input(double) into BigInt.
 

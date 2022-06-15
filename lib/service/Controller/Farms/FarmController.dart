@@ -2,7 +2,6 @@ import 'dart:typed_data';
 import 'package:ax_dapp/pages/farm/models/FarmModel.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/util/UserInputInfo.dart';
-import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart' as Web3Dart;
