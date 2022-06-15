@@ -115,7 +115,7 @@ class FarmController {
     UserInputInfo inputInfo = UserInputInfo.fromInput(
         inputAmount: this.strStakeInput.value,
         decimals: this.nStakeTokenDecimals);
-    BigInt amount = getMaximamAmount(this.stakingInfo.value, inputInfo);
+    BigInt amount = getMaximumAmount(this.stakingInfo.value, inputInfo);
     String txHash = await this.contract.stake(amount, stakingData, rewardData,
         credentials: controller.credentials);
     controller.updateTxString(txHash);
@@ -133,7 +133,7 @@ class FarmController {
     UserInputInfo inputInfo = UserInputInfo.fromInput(
         inputAmount: this.strUnStakeInput.value,
         decimals: this.nStakeTokenDecimals);
-    BigInt amount = getMaximamAmount(stakedInfo.value, inputInfo);
+    BigInt amount = getMaximumAmount(stakedInfo.value, inputInfo);
     String txHash = await this.contract.unstake(amount, stakingData, rewardData,
         credentials: controller.credentials);
     controller.updateTxString(txHash);
@@ -177,13 +177,13 @@ class FarmController {
     UserInputInfo inputInfo = UserInputInfo.fromInput(
         inputAmount: this.strStakeInput.value,
         decimals: this.nStakeTokenDecimals);
-    BigInt amount = getMaximamAmount(this.stakingInfo.value, inputInfo);
+    BigInt amount = getMaximumAmount(this.stakingInfo.value, inputInfo);
     String txHash = await rewardToken.approve(routerAddress, amount,
         credentials: controller.credentials);
     controller.updateTxString(txHash);
   }
 
-  BigInt getMaximamAmount(UserInputInfo raw, UserInputInfo input) {
+  BigInt getMaximumAmount(UserInputInfo raw, UserInputInfo input) {
     return input.rawAmount > raw.rawAmount ? raw.rawAmount : input.rawAmount;
   }
 }
