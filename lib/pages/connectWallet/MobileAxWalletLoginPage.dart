@@ -1,5 +1,7 @@
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MobileAxWalletLoginPage extends StatefulWidget {
   const MobileAxWalletLoginPage({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class _MobileAxWalletLoginPageState extends State<MobileAxWalletLoginPage> {
   Color greyTextColor = Color.fromRGBO(160, 160, 160, 1);
   Color secondaryOrangeColor = Color.fromRGBO(254, 197, 0, 0.2);
   final seedPhraseTextController = TextEditingController();
-
+  Controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -83,6 +85,12 @@ class _MobileAxWalletLoginPageState extends State<MobileAxWalletLoginPage> {
                 ),
                 style: TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
                 textAlign: TextAlign.center,
+                validator: (seedPhrase) {
+                  if (controller.isValidMnemonic(seedPhrase!))
+                    return null;
+                  else
+                    return "Invalid Mnemonic";
+                },
               ))),
           Container(
             margin: EdgeInsets.only(top: 60),

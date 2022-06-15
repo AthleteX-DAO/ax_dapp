@@ -1,5 +1,7 @@
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MobileCreateWalletConfirmPage extends StatefulWidget {
   const MobileCreateWalletConfirmPage({Key? key}) : super(key: key);
@@ -17,7 +19,7 @@ class _MobileCreateWalletConfirmPageState
   Color greyTextColor = Color.fromRGBO(160, 160, 160, 1);
   Color secondaryOrangeColor = Color.fromRGBO(254, 197, 0, 0.2);
   final seedPhraseTextController = TextEditingController();
-
+  Controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -77,6 +79,12 @@ class _MobileCreateWalletConfirmPageState
                   child: TextFormField(
                 controller: seedPhraseTextController,
                 maxLines: null,
+                validator: (seedPhrase) {
+                  if (controller.isValidMnemonic(seedPhrase!))
+                    return null;
+                  else
+                    return "Invalid Mnemonic";
+                },
                 decoration: InputDecoration(
                   hintText: 'Enter your seed phrase here...',
                   focusedBorder: InputBorder.none,
