@@ -1,7 +1,8 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
 import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';
-
+import 'package:bip39/bip39.dart'
+    as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
 import './createWallet/createWallet.dart'
     if (dart.library.io) './createWallet/mobile.dart'
     if (dart.library.js) './createWallet/web.dart';
@@ -127,10 +128,8 @@ class Controller extends GetxController {
     this.seedHex.value = web3.seedHex;
   }
 
-  Future<bool> isValidMnemonic(String theMnemonic) async {
-    bool YesOrNo = false;
-    String _mnemonic = theMnemonic;
-    YesOrNo = await web3.importMnemonic(_mnemonic);
+  bool isValidMnemonic(String theMnemonic) {
+    bool YesOrNo = bip39.validateMnemonic(theMnemonic);
     return YesOrNo;
   }
 }
