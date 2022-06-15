@@ -19,6 +19,14 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
   Color secondaryOrangeColor = Color.fromRGBO(254, 197, 0, 0.2);
   Controller controller = Get.find();
 
+  // This function is triggered when the copy icon is pressed
+  Future<void> _copyToClipboard() async {
+    await Clipboard.setData(ClipboardData(text: controller.mnemonic.value));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Copied to clipboard'),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -67,7 +75,11 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
           Container(
               margin: EdgeInsets.only(top: 30),
               child: Text("Your unique 12  word seed phrase")),
-          Container(
+          GestureDetector(
+            onTap: () {
+              _copyToClipboard();
+            },
+            child: Container(
               height: _height * .08,
               width: _width * .8,
               margin: EdgeInsets.only(top: 10),
@@ -75,10 +87,12 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
                   Colors.grey.withOpacity(.2), 10, 1, Colors.grey),
               child: Center(
                   child: Obx(() => Text(
-                "${controller.mnemonic}",
-                style: TextStyle(fontSize: 14),
-                textAlign: TextAlign.center,
-              )))),
+                        "${controller.mnemonic}",
+                        style: TextStyle(fontSize: 14),
+                        textAlign: TextAlign.center,
+                      ))),
+            ),
+          ),
           Container(
             margin: EdgeInsets.only(top: 40),
             width: _width * .8,
