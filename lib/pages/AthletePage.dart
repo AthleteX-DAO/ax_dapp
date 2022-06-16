@@ -929,7 +929,8 @@ class _AthletePageState extends State<AthletePage> {
     final WebWallet webWallet = Get.find();
     if (_width < 1160) wid = _width * 0.95;
     return Container(
-        height: 650,
+        height: _height / 1.5,
+        constraints: BoxConstraints(minHeight: 650, maxHeight: 850),
         child: Column(
           children: <Widget>[
             // title
