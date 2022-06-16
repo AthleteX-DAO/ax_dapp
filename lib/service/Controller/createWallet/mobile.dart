@@ -28,9 +28,10 @@ class MobileWallet extends DappWallet {
     }
 
     this.client = Web3Client(rpcUrl, Client());
-    this.publicAddress = credentials.extractAddress();
     this.credentials = EthPrivateKey.fromHex(seedHex);
-    this.networkID = client.getNetworkId();
+    this.publicAddress = await credentials.extractAddress();
+    print('Credentials $credentials, Public Address $publicAddress');
+    this.networkID = await client.getNetworkId();
     print("[Console] updated client and credentials at $publicAddress");
   }
 
