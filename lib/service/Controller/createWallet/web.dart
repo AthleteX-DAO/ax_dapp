@@ -13,6 +13,11 @@ DappWallet newWallet() => WebWallet();
 class WebWallet extends DappWallet {
   String mainRPCUrl = "https://polygon-rpc.com";
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
+  FlutterWeb3.Ethereum? ethereum = FlutterWeb3.ethereum;
+
+  FlutterWeb3.Ethereum? getEthereumApiObj() {
+    return this.ethereum;
+  }
 
   @override
   Future<void> connect() async {
@@ -46,7 +51,7 @@ class WebWallet extends DappWallet {
     print('[Console] - $symbol');
     int decimals = (await token.decimals()).toInt();
     print('[Console] - $decimals');
-    bool result = await FlutterWeb3.ethereum!.walletWatchAssets(
+    bool result = await this.ethereum!.walletWatchAssets(
         address: tokenAddress,
         symbol: symbol,
         decimals: decimals,
@@ -69,7 +74,7 @@ class WebWallet extends DappWallet {
 
     try {
       // switching the chain
-      await FlutterWeb3.ethereum!.walletSwitchChain(137);
+      await this.ethereum!.walletSwitchChain(137);
       print("[Console] MetaMask swtiched the chain to Polygon mainnet");
     } catch (err) {
       // adding chain to the metamask

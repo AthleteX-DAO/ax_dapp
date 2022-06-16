@@ -21,6 +21,7 @@ import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/createWallet/web.dart';
+import 'package:ax_dapp/service/Controller/usecases/GetChainChangesUseCase.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -122,11 +123,11 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == 0)
             BlocProvider(
                 create: (BuildContext context) => ScoutPageBloc(
-                        repo: GetScoutAthletesDataUseCase(
+                    chainChangeUseCase:
+                        GetChainChangesUseCase(webWallet: Get.find()),
+                    repo: GetScoutAthletesDataUseCase(
                       graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                      sportsRepos: [
-                        RepositoryProvider.of<MLBRepo>(context),
-                      ],
+                      sportsRepos: [RepositoryProvider.of<MLBRepo>(context)],
                       coinGeckoRepo:
                           RepositoryProvider.of<CoinGeckoRepo>(context),
                     )),
@@ -158,11 +159,11 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
-                      repo: GetScoutAthletesDataUseCase(
+                  chainChangeUseCase:
+                      GetChainChangesUseCase(webWallet: Get.find()),
+                  repo: GetScoutAthletesDataUseCase(
                     graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                    sportsRepos: [
-                      RepositoryProvider.of<MLBRepo>(context),
-                    ],
+                    sportsRepos: [RepositoryProvider.of<MLBRepo>(context)],
                     coinGeckoRepo:
                         RepositoryProvider.of<CoinGeckoRepo>(context),
                   )),

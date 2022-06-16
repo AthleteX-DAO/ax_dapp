@@ -9,6 +9,7 @@ import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:get/get.dart';
+
 //Comment this for Android
 const EMPTY_WALLET_ID = "0x0000000000000000000000000000000000000000";
 
@@ -33,8 +34,7 @@ class Controller extends GetxController {
   String mainRPCUrl = "https://polygon-rpc.com";
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
   var client = Web3Client("https://polygon-rpc.com", Client()).obs;
-  var publicAddress =
-      EthereumAddress.fromHex(EMPTY_WALLET_ID).obs;
+  var publicAddress = EthereumAddress.fromHex(EMPTY_WALLET_ID).obs;
 
   set axTokenAddress(EthereumAddress tokenAddress) {
     axTokenAddress = EthereumAddress.fromHex("${tokenAddress.hex}");
@@ -60,7 +60,7 @@ class Controller extends GetxController {
 
     try {
       networkID.value = web3.networkID;
-      print(networkID.value);
+      print("[Controller] Network id value: ${networkID.value}");
     } catch (e) {
       throw ("NetworkId value is breaking $e");
     }
@@ -90,8 +90,9 @@ class Controller extends GetxController {
 
   void getCurrentGas() async {
     var rawGasPrice = await client.value.getGasPrice();
-    var gasPriceinGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei).toStringAsFixed(2);
-    
+    var gasPriceinGwei =
+        rawGasPrice.getValueInUnit(EtherUnit.gwei).toStringAsFixed(2);
+
     gasString.value = "$gasPriceinGwei";
     print('Getting latest gas... $gasString');
     update();
