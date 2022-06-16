@@ -1,3 +1,4 @@
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +20,27 @@ class _MobileCreateWalletConfirmPageState
   Color greyTextColor = Color.fromRGBO(160, 160, 160, 1);
   Color secondaryOrangeColor = Color.fromRGBO(254, 197, 0, 0.2);
   final seedPhraseTextController = TextEditingController();
+  WalletController walletController = Get.find();
   Controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+
+      connectAccountBox() {
+      controller.connect().then((response) {
+        if (response == -1) {
+          // No MetaMask
+          Navigator.pop(context);
+        } else if (response == 0) {
+          // Wrong network
+          Navigator.pop(context);
+        } else {
+          walletController.getTokenMetrics();
+          walletController.getYourAxBalance();
+        }
+      });
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -125,6 +142,7 @@ class _MobileCreateWalletConfirmPageState
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => V1App()));
+                  
               },
               child: Text(
                 "Continue to App",
