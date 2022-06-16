@@ -13,7 +13,7 @@ class WalletController extends GetxController {
   late String axAddress;
   var axPrice = "-".obs;
   var axCirculation = "-".obs;
-  var axTotalSupply = "-".obs;
+  var axTotalSupply = "100 million".obs;
   var yourBalance = "-".obs;
   var tokenPrice = 0.0.obs;
   Controller controller = Get.find();
