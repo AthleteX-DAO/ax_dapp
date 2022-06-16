@@ -1,3 +1,4 @@
+import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +16,33 @@ class _MobileAxWalletLoginPageState extends State<MobileAxWalletLoginPage> {
   Color primaryWhiteColor = Color.fromRGBO(255, 255, 255, 1);
   Color primaryOrangeColor = Color.fromRGBO(254, 197, 0, 1);
   Color secondaryGreyColor = Color.fromRGBO(255, 255, 255, 0.1);
-  Color greyTextColor = Color.fromRGBO(160, 160, 160, 1);
   Color secondaryOrangeColor = Color.fromRGBO(254, 197, 0, 0.2);
+  Color greyTextColor = Color.fromRGBO(160, 160, 160, 1);
   final seedPhraseTextController = TextEditingController();
+  WalletController walletController = Get.find();
+  final _formKey = GlobalKey<FormState>();
   Controller controller = Get.find();
+
+
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+
+    connectAccountBox() {
+      controller.connect().then((response) {
+        if (response == -1) {
+          // No MetaMask
+          Navigator.pop(context);
+        } else if (response == 0) {
+          // Wrong network
+          Navigator.pop(context);
+        } else {
+          walletController.getTokenMetrics();
+          walletController.getYourAxBalance();
+        }
+      });
+    }
 
     return Scaffold(
       body: Container(
@@ -74,7 +94,10 @@ class _MobileAxWalletLoginPageState extends State<MobileAxWalletLoginPage> {
               decoration: boxDecoration(
                   Colors.grey.withOpacity(.2), 10, 1, Colors.grey),
               child: Center(
-                  child: TextFormField(
+                  child: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.always,
+                    child: TextFormField(
                 controller: seedPhraseTextController,
                 maxLines: null,
                 decoration: InputDecoration(
@@ -91,7 +114,7 @@ class _MobileAxWalletLoginPageState extends State<MobileAxWalletLoginPage> {
                   else
                     return "Invalid Mnemonic";
                 },
-              ))),
+              )))),
           Container(
             margin: EdgeInsets.only(top: 60),
             width: _width * 0.5,
@@ -101,6 +124,7 @@ class _MobileAxWalletLoginPageState extends State<MobileAxWalletLoginPage> {
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => V1App()));
+                connectAccountBox();
               },
               child: Text(
                 "Continue to App",
