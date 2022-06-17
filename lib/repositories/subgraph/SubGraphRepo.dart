@@ -38,7 +38,7 @@ class SubGraphRepo {
       String token) async {
     // calculating the first time of 24 hours ago as secondsSinceEpoch
     final int startTime = (DateTime.now()
-                .subtract(const Duration(days: 2))
+                .subtract(const Duration(days: 1))
                 .millisecondsSinceEpoch /
             1000)
         .round();
