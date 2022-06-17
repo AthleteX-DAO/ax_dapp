@@ -23,7 +23,6 @@ class _MobileAxWalletLoginPageState extends State<MobileAxWalletLoginPage> {
   final _formKey = GlobalKey<FormState>();
   Controller controller = Get.find();
 
-
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -54,85 +53,88 @@ class _MobileAxWalletLoginPageState extends State<MobileAxWalletLoginPage> {
             fit: BoxFit.fill,
           ),
         ),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
-            Widget>[
-          Container(
-            color: Colors.transparent,
-            width: _width,
-            height: _height * 0.1,
-            child: Stack(
-              children: [
-                Positioned(
-                    left: 20,
-                    bottom: 0,
-                    height: 80,
-                    width: 40,
-                    child: IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: Icon(Icons.arrow_back))),
-                Positioned(
-                    left: 60,
-                    bottom: 0,
-                    height: 80,
-                    width: _width * .7,
-                    child: Center(
-                        child: Text(
-                      "Import AX Wallet",
-                      style:
-                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                    ))),
-              ],
-            ),
-          ),
-          Container(
-              margin: EdgeInsets.only(top: 30),
-              child: Text("Input your 12 word seed phrase:")),
-          Container(
-              height: _height * .08,
-              width: _width * .8,
-              margin: EdgeInsets.only(top: 10),
-              decoration: boxDecoration(
-                  Colors.grey.withOpacity(.2), 10, 1, Colors.grey),
-              child: Center(
-                  child: Form(
-                    key: _formKey,
-                    autovalidateMode: AutovalidateMode.always,
-                    child: TextFormField(
-                controller: seedPhraseTextController,
-                maxLines: null,
-                decoration: InputDecoration(
-                  hintText: 'Enter your seed phrase here...',
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  contentPadding: EdgeInsetsDirectional.only(start: 10.0),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                color: Colors.transparent,
+                width: _width,
+                height: _height * 0.1,
+                child: Stack(
+                  children: [
+                    Positioned(
+                        left: 20,
+                        bottom: 0,
+                        height: 80,
+                        width: 40,
+                        child: IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: Icon(Icons.arrow_back))),
+                    Positioned(
+                        left: 60,
+                        bottom: 0,
+                        height: 80,
+                        width: _width * .7,
+                        child: Center(
+                            child: Text(
+                          "Import AX Wallet",
+                          style: TextStyle(
+                              fontSize: 28, fontWeight: FontWeight.bold),
+                        ))),
+                  ],
                 ),
-                style: TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
-                textAlign: TextAlign.center,
-                validator: (seedPhrase) {
-                  if (controller.isValidMnemonic(seedPhrase!))
-                    return null;
-                  else
-                    return "Invalid Mnemonic";
-                },
-              )))),
-          Container(
-            margin: EdgeInsets.only(top: 60),
-            width: _width * 0.5,
-            decoration: boxDecoration(Colors.amber[300]!.withOpacity(0.15), 20,
-                1, Colors.transparent),
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => V1App()));
-                connectAccountBox();
-              },
-              child: Text(
-                "Continue to App",
-                style: textStyle(Colors.amber[400]!, 20, true, false),
               ),
-            ),
-          ),
-        ]),
+              Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: Text("Input your 12 word seed phrase:")),
+              Container(
+                  height: _height * .08,
+                  width: _width * .8,
+                  margin: EdgeInsets.only(top: 10),
+                  decoration: boxDecoration(
+                      Colors.grey.withOpacity(.2), 10, 1, Colors.grey),
+                  child: Center(
+                      child: Form(
+                          key: _formKey,
+                          autovalidateMode: AutovalidateMode.always,
+                          child: TextFormField(
+                            controller: seedPhraseTextController,
+                            maxLines: null,
+                            decoration: InputDecoration(
+                              hintText: 'Enter your seed phrase here...',
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              contentPadding:
+                                  EdgeInsetsDirectional.only(start: 10.0),
+                            ),
+                            style: TextStyle(
+                                fontSize: 14, overflow: TextOverflow.ellipsis),
+                            textAlign: TextAlign.center,
+                            validator: (seedPhrase) {
+                              if (controller.isValidMnemonic(seedPhrase!))
+                                return "This mnemonic is valid!";
+                              else
+                                return "Invalid Mnemonic";
+                            },
+                          )))),
+              Container(
+                margin: EdgeInsets.only(top: 60),
+                width: _width * 0.5,
+                decoration: boxDecoration(Colors.amber[300]!.withOpacity(0.15),
+                    20, 1, Colors.transparent),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => V1App()));
+                    connectAccountBox();
+                  },
+                  child: Text(
+                    "Continue to App",
+                    style: textStyle(Colors.amber[400]!, 20, true, false),
+                  ),
+                ),
+              ),
+            ]),
       ),
     );
   }
