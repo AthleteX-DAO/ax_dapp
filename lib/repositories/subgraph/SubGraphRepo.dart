@@ -43,6 +43,8 @@ class SubGraphRepo {
             1000)
         .round();
 
+    print("[StartTime] $startTime");
+
     final result = await _client.query(
       QueryOptions(
           document: parseString(_getSpecificPairs(token, startTime)),
@@ -123,7 +125,7 @@ query {
     reserve0 
     reserve1
   	totalSupply
-    pairHourData(where: {hourStartUnix_gte: $startTime}, first: 1) {
+    pairHourData(where: {hourStartUnix_lte: $startTime}, first: 1, orderBy: hourStartUnix, orderDirection: desc) {
       hourStartUnix
       reserve0
       reserve1
@@ -149,7 +151,7 @@ query {
     reserve0 
     reserve1
   	totalSupply
-    pairHourData(where: {hourStartUnix_gte: $startTime}, first: 1) {
+    pairHourData(where: {hourStartUnix_lte: $startTime}, first: 1, orderBy: hourStartUnix, orderDirection: desc) {
       hourStartUnix
       reserve0
       reserve1
