@@ -3,6 +3,7 @@ import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
+import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
@@ -15,6 +16,7 @@ import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/Colors.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';
+import 'package:ax_dapp/util/chart/AthletePageGraph.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
@@ -22,8 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../util/AthletePageFormatHelper.dart';
-import 'scout/Widget Factories/AthleteDetailsWidget.dart';
+import '../../util/AthletePageFormatHelper.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
@@ -1093,16 +1094,13 @@ class _AthletePageState extends State<AthletePage> {
                           child: Stack(
                             children: <Widget>[
                               // Graph
-                              buildGraph([
-                                _isLongApt
-                                    ? athlete.longTokenBookPrice
-                                    : athlete.shortTokenBookPrice
-                              ], [
-                                athlete.time
-                              ], context),
+                              Padding(
+                                padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 14.0),
+                                child: AthletePageGraph(),
+                              ),
                               // Price
                               Align(
-                                  alignment: Alignment(-.85, -.8),
+                                  alignment: Alignment(-.60, -.8),
                                   child: Container(
                                       height: 45,
                                       child: Column(
@@ -1176,17 +1174,12 @@ class _AthletePageState extends State<AthletePage> {
                                               0,
                                               primaryOrangeColor),
                                           child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) => BlocProvider(
-                                                      create: (BuildContext context) => BuyDialogBloc(
-                                                          repo: RepositoryProvider
-                                                              .of<GetBuyInfoUseCase>(
-                                                                  context),
-                                                          wallet:
-                                                              GetTotalTokenBalanceUseCase(Get.find()),
-                                                          swapController: Get.find()),
-                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => AthletePageGraph()));
+                                              },
                                               child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
                                       Container(
                                           width: 175,
