@@ -924,7 +924,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                   hintStyle:
                       TextStyle(color: Color.fromRGBO(235, 235, 245, 0.6)),
                 ),
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-z.]'))],
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-z. ]'))],
               ),
             ),
           ),
