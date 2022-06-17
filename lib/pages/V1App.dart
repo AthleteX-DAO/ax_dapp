@@ -24,12 +24,14 @@ import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetChainChangesUseCase.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
+import 'package:ax_dapp/util/EthereumChainWrapper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_web3/flutter_web3.dart' as FlutterWeb3;
 
 class V1App extends StatefulWidget {
   @override
@@ -124,7 +126,7 @@ class _V1AppState extends State<V1App> {
             BlocProvider(
                 create: (BuildContext context) => ScoutPageBloc(
                     chainChangeUseCase:
-                        GetChainChangesUseCase(webWallet: Get.find()),
+                        GetChainChangesUseCase(EthereumWebChainWrapper()),
                     repo: GetScoutAthletesDataUseCase(
                       graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                       sportsRepos: [RepositoryProvider.of<MLBRepo>(context)],
@@ -160,7 +162,7 @@ class _V1AppState extends State<V1App> {
           BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
                   chainChangeUseCase:
-                      GetChainChangesUseCase(webWallet: Get.find()),
+                      GetChainChangesUseCase(EthereumWebChainWrapper()),
                   repo: GetScoutAthletesDataUseCase(
                     graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                     sportsRepos: [RepositoryProvider.of<MLBRepo>(context)],
