@@ -42,7 +42,6 @@ class SubGraphRepo {
                 .millisecondsSinceEpoch /
             1000)
         .round();
-    print("[Start Time] $startTime");
 
     final result = await _client.query(
       QueryOptions(
