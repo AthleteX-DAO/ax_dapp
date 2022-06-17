@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ax_dapp/service/athleteModels/nfl/NFLAthleteStats.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:ax_dapp/repositories/SportsRepo.dart';
@@ -58,5 +59,11 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
       String team, String position) {
     // TODO: implement getPlayersByTeamAtPosition
     throw UnimplementedError();
+  }
+
+  @override
+  Future<List<NFLAthleteStats>> getPlayersStatsHistory() async {
+    List<NFLAthleteStats> list = List.empty();
+    return list;
   }
 }
