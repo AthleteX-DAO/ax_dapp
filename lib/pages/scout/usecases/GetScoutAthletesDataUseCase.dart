@@ -97,22 +97,23 @@ class GetScoutAthletesDataUseCase {
 
     double marketPrice = 0.0;
     if (index0 >= 0) // if current token equals to token0 of the pair
-      marketPrice = double.parse(allPairs[index0].token1Price);
+      marketPrice = double.parse(allPairs[index0].reserve1) /
+          double.parse(allPairs[index0].reserve0);
     else if (index1 >= 0) // if current token equals to token1 of the pair
-      marketPrice = double.parse(allPairs[index1].token0Price);
+      marketPrice = double.parse(allPairs[index1].reserve0) /
+          double.parse(allPairs[index1].reserve1);
 
     double recentPrice = marketPrice;
     if (index0 >= 0 &&
         allPairs[index0].pairHourData!.length >
             0) // if current token equals to token0 of the pair
-      recentPrice =
-          double.parse(allPairs[index0].pairHourData![0].pair.token1Price);
+      recentPrice = double.parse(allPairs[index0].pairHourData![0].reserve1) /
+          double.parse(allPairs[index0].pairHourData![0].reserve0);
     else if (index1 >= 0 &&
         allPairs[index1].pairHourData!.length >
             0) // if current token equals to token1 of the pair
-      recentPrice =
-          double.parse(allPairs[index1].pairHourData![0].pair.token0Price);
-
+      recentPrice = double.parse(allPairs[index1].pairHourData![0].reserve0) /
+          double.parse(allPairs[index1].pairHourData![0].reserve1);
     return MarketModel(
         marketPrice: marketPrice,
         recentPrice: recentPrice,
@@ -125,8 +126,12 @@ class GetScoutAthletesDataUseCase {
     athletes.forEach(
       (athlete) {
         bool isIdFound = TokenList.idToAddress.containsKey(athlete.id);
-        String strLongTokenAddr = isIdFound ? TokenList.idToAddress[athlete.id]![1].toUpperCase() : "";
-        String strShortTokenAddr = isIdFound ? TokenList.idToAddress[athlete.id]![2].toUpperCase() : "";
+        String strLongTokenAddr = isIdFound
+            ? TokenList.idToAddress[athlete.id]![1].toUpperCase()
+            : "";
+        String strShortTokenAddr = isIdFound
+            ? TokenList.idToAddress[athlete.id]![2].toUpperCase()
+            : "";
         MarketModel longToken = getMarketModel(strLongTokenAddr, athlete.price);
         MarketModel shortToken = getMarketModel(
             strShortTokenAddr, collateralizationPerPair - athlete.price);
