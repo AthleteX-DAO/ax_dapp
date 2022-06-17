@@ -21,13 +21,14 @@ class _MobileCreateWalletConfirmPageState
   Color secondaryOrangeColor = Color.fromRGBO(254, 197, 0, 0.2);
   final seedPhraseTextController = TextEditingController();
   WalletController walletController = Get.find();
+  final _formKey = GlobalKey<FormState>();
   Controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
-      connectAccountBox() {
+    connectAccountBox() {
       controller.connect().then((response) {
         if (response == -1) {
           // No MetaMask
@@ -93,24 +94,29 @@ class _MobileCreateWalletConfirmPageState
               decoration: boxDecoration(
                   Colors.grey.withOpacity(.2), 10, 1, Colors.grey),
               child: Center(
-                  child: TextFormField(
-                controller: seedPhraseTextController,
-                maxLines: null,
-                validator: (seedPhrase) {
-                  if (controller.isValidMnemonic(seedPhrase!))
-                    return null;
-                  else
-                    return "Invalid Mnemonic";
-                },
-                decoration: InputDecoration(
-                  hintText: 'Enter your seed phrase here...',
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  contentPadding: EdgeInsetsDirectional.only(start: 10.0),
-                ),
-                style: TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
-                textAlign: TextAlign.center,
-              ))),
+                  child: Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.always,
+                      child: TextFormField(
+                        controller: seedPhraseTextController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your seed phrase here...',
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          contentPadding:
+                              EdgeInsetsDirectional.only(start: 10.0),
+                        ),
+                        style: TextStyle(
+                            fontSize: 14, overflow: TextOverflow.ellipsis),
+                        textAlign: TextAlign.center,
+                        validator: (seedPhrase) {
+                          if (controller.isValidMnemonic(seedPhrase!))
+                            return "This mnemonic is valid!";
+                          else
+                            return "Invalid Mnemonic";
+                        },
+                      )))),
           Container(
             margin: EdgeInsets.only(top: 40),
             width: _width * .8,
@@ -142,7 +148,7 @@ class _MobileCreateWalletConfirmPageState
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => V1App()));
-                  
+                connectAccountBox();
               },
               child: Text(
                 "Continue to App",
