@@ -26,11 +26,13 @@ class OnPageRefresh extends ScoutPageEvent {
 
 class OnAthleteSearch extends ScoutPageEvent {
   final String searchedName;
+  final SupportedSport selectedSport;
 
   OnAthleteSearch({
     required this.searchedName,
+    required this.selectedSport,
   });
 
   @override
-  List<Object?> get props => [searchedName];
+  List<Object?> get props => [searchedName, selectedSport];
 }

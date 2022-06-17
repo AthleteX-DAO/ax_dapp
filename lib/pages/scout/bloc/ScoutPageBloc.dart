@@ -42,13 +42,18 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
       SelectSport event, Emitter<ScoutPageState> emit) async {
         try {
           emit(state.copyWith(status: BlocStatus.loading));
-          final List<AthleteScoutModel> filteredList = state.athletes.where((athlete) => event.selectedSport.name == athlete.sport.name).toList();
-          if (filteredList.isNotEmpty) {
-            emit(state.copyWith(status: BlocStatus.success, filteredAthletes: filteredList, selectedSport: event.selectedSport));
+          if(event.selectedSport != SupportedSport.ALL) {
+            final List<AthleteScoutModel> filteredList = state.athletes.where((athlete) => event.selectedSport.name == athlete.sport.name).toList();
+            if (filteredList.isNotEmpty) {
+              emit(state.copyWith(status: BlocStatus.success, filteredAthletes: filteredList, selectedSport: event.selectedSport));
+            } else {
+              print("[Console] Scout Page -> Selected Sport not supported");
+              emit(state.copyWith(status: BlocStatus.no_data, filteredAthletes: [], selectedSport: event.selectedSport));
+            } 
           } else {
-            print("[Console] Scout Page -> Selected Sport not supported");
-            emit(state.copyWith(status: BlocStatus.no_data, filteredAthletes: [], selectedSport: event.selectedSport));
-          } 
+            final List<AthleteScoutModel> filteredList = state.athletes.where((athlete) => event.selectedSport == SupportedSport.ALL).toList();
+            emit(state.copyWith(status: BlocStatus.success, filteredAthletes: filteredList, selectedSport: SupportedSport.ALL));
+          }
         } catch (e) {
           print("[Console] Scout Page -> Failed to load athlete list: $e");
           emit(state.copyWith(status: BlocStatus.error));
@@ -57,6 +62,18 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
 
   void _mapSearchAthleteEventToState(
       OnAthleteSearch event, Emitter<ScoutPageState> emit) {
-    //TODO update list with search result
+        String parsedInput = event.searchedName.trim().toUpperCase();
+        if (event.selectedSport != SupportedSport.ALL) {
+          emit(state.copyWith(
+          filteredAthletes: state.athletes.where((athlete) => athlete.name.toUpperCase().contains(parsedInput) && event.selectedSport.name == athlete.sport.name).toList(),
+          status: BlocStatus.success,
+          ));
+        }
+        else {
+          emit(state.copyWith(
+          filteredAthletes: state.athletes.where((athlete) => athlete.name.toUpperCase().contains(parsedInput)).toList(),
+          status: BlocStatus.success,
+          ));
+        }
   }
 }
