@@ -1,6 +1,9 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
+import 'package:ax_dapp/repositories/MlbRepo.dart';
+import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/pages/athlete/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
@@ -68,8 +71,12 @@ class _DesktopScoutState extends State<DesktopScout> {
             bloc.add(OnPageRefresh());
           }
           if (athletePage && curAthlete != null)
-            return AthletePage(
-              athlete: curAthlete!,
+            return BlocProvider(
+              create: (context) => AthletePageBloc(
+                  repo: RepositoryProvider.of<MLBRepo>(context)),
+              child: AthletePage(
+                athlete: curAthlete!,
+              ),
             );
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),
@@ -94,9 +101,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                         width: _width * 1,
                         height: 40,
                         child: kIsWeb
-                            ? buildFilterMenuWeb(state, bloc, sportFilterTxSz, _width)
-                            : buildFilterMenu(
-                                state, bloc, sportFilterTxSz, sportFilterIconSz),
+                            ? buildFilterMenuWeb(
+                                state, bloc, sportFilterTxSz, _width)
+                            : buildFilterMenu(state, bloc, sportFilterTxSz,
+                                sportFilterIconSz),
                       ),
                       // List Headers
                       buildListviewHeaders(),
@@ -104,7 +112,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         scoutLoading(),
                       ] else if (state.status == BlocStatus.error) ...[
                         scoutLoadingError(),
-                      ] else if (state.status == BlocStatus.no_data)...[
+                      ] else if (state.status == BlocStatus.no_data) ...[
                         filterMenuError(),
                       ],
                       buildListview(state, filteredAthletes)
@@ -114,7 +122,8 @@ class _DesktopScoutState extends State<DesktopScout> {
         });
   }
 
-  Row buildFilterMenuWeb(ScoutPageState state, ScoutPageBloc bloc, double sportFilterTxSz, double _width) {
+  Row buildFilterMenuWeb(ScoutPageState state, ScoutPageBloc bloc,
+      double sportFilterTxSz, double _width) {
     return Row(children: [
       Text("APT List", style: textStyle(Colors.white, 18, false, false)),
       Text("|", style: textStyle(Colors.white, 18, false, false)),
@@ -159,8 +168,8 @@ class _DesktopScoutState extends State<DesktopScout> {
     ]);
   }
 
-  IndexedStack buildFilterMenu(
-      ScoutPageState state, ScoutPageBloc bloc, double sportFilterTxSz, double sportFilterIconSz) {
+  IndexedStack buildFilterMenu(ScoutPageState state, ScoutPageBloc bloc,
+      double sportFilterTxSz, double sportFilterIconSz) {
     return IndexedStack(
       index: _widgetIndex,
       children: [
@@ -510,7 +519,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               return kIsWeb
                   ? createListCardsForWeb(filteredAthletes[index])
                   : createListCardsForMobile(filteredAthletes[index]);
-          }));
+            }));
   }
 
   Widget filterMenuError() {
@@ -518,7 +527,10 @@ class _DesktopScoutState extends State<DesktopScout> {
       child: SizedBox(
         height: 70,
         width: 400,
-        child: Text('Athletes not supported yet', style: TextStyle(color: Colors.red, fontSize: 30),),
+        child: Text(
+          'Athletes not supported yet',
+          style: TextStyle(color: Colors.red, fontSize: 30),
+        ),
       ),
     );
   }
@@ -546,7 +558,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Row(children: <Widget>[
-                    AthleteDetailsWidget(athlete).athleteDetailsCardsForMobile(team, _width, athNameBx),
+                    AthleteDetailsWidget(athlete)
+                        .athleteDetailsCardsForMobile(team, _width, athNameBx),
                     // Market Price / Change
                     IndexedStack(
                       index: _marketVsBookPriceIndex,
@@ -715,7 +728,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      AthleteDetailsWidget(athlete).athleteDetailsCardsForWeb(team, _width, athNameBx),
+                      AthleteDetailsWidget(athlete)
+                          .athleteDetailsCardsForWeb(team, _width, athNameBx),
                       // Market Price / Change
                       Container(
                         width: _width * 0.18,

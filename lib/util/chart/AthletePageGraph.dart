@@ -2,7 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class AthletePageGraph extends StatefulWidget {
-  const AthletePageGraph({Key? key}) : super(key: key);
+  final List<FlSpot> chartStats;
+  const AthletePageGraph({Key? key, required this.chartStats})
+      : super(key: key);
 
   @override
   _AthletePageGraphState createState() => _AthletePageGraphState();
@@ -28,12 +30,10 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
                   Radius.circular(18),
                 ),
                 color: Color(0xff232d37)),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  right: 18.0, left: 12.0, top: 24, bottom: 12),
-              child: LineChart(
-                isLong ? longBookValueData(): shortBookValueData(),
-              ),
+            child: LineChart(
+              isLong
+                  ? longBookValueData(widget.chartStats)
+                  : shortBookValueData(widget.chartStats),
             ),
           ),
         ),
@@ -50,8 +50,7 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
               'Long',
               style: TextStyle(
                   fontSize: 12,
-                  color:
-                      isLong ? Colors.white.withOpacity(0.5) : Colors.white),
+                  color: isLong ? Colors.white.withOpacity(0.5) : Colors.white),
             ),
           ),
         ),
@@ -121,7 +120,7 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
-  LineChartData longBookValueData() {
+  LineChartData longBookValueData(List<FlSpot> chartStats) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -169,26 +168,9 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
       borderData: FlBorderData(
           show: true,
           border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 10,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, (3000/1000)),
-            FlSpot(1, (2400/1000)),
-            FlSpot(2, (2400/1000)),
-            FlSpot(3, (5000/1000)),
-            FlSpot(4, (4500/1000)),
-            FlSpot(5, (3000/1000)),
-            FlSpot(6, (3500/1000)),
-            FlSpot(7, (3000/1000)),
-            FlSpot(8, (4000/1000)),
-            FlSpot(9, (8000/1000)),
-            FlSpot(10, (3500/1000)),
-            FlSpot(11, (4500/1000)),
-          ],
+          spots: chartStats,
           isCurved: true,
           gradient: LinearGradient(
             colors: gradientColors,
@@ -215,7 +197,7 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
     );
   }
 
-  LineChartData shortBookValueData() {
+  LineChartData shortBookValueData(List<FlSpot> chartStats) {
     return LineChartData(
       lineTouchData: LineTouchData(enabled: false),
       gridData: FlGridData(
@@ -270,19 +252,13 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
       maxY: 10,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, (3000/1000)),
-            FlSpot(1, (2400/1000)),
-            FlSpot(2, (2400/1000)),
-            FlSpot(3, (5000/1000)),
-            FlSpot(4, (4500/1000)),
-            FlSpot(5, (3000/1000)),
-            FlSpot(6, (3500/1000)),
-            FlSpot(7, (3000/1000)),
-            FlSpot(8, (4000/1000)),
-            FlSpot(9, (8000/1000)),
-            FlSpot(10, (3500/1000)),
-            FlSpot(11, (4500/1000)),
+          spots: [
+            chartStats[0],
+            chartStats[5],
+            chartStats[10],
+            chartStats[15],
+            chartStats[20],
+            chartStats[25]
           ],
           isCurved: true,
           gradient: LinearGradient(

@@ -1,19 +1,28 @@
 import 'package:ax_dapp/service/athleteModels/mlb/MLBPAthleteStats.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class AthletePageState extends Equatable {
-  final MLBAthleteStats stats;
+  final List<FlSpot> stats;
   final BlocStatus status;
+  AthletePageState({
+    required this.stats,
+    required this.status,
+  });
 
-  const AthletePageState(
-      {this.status = BlocStatus.initial, MLBAthleteStats? stats})
-      : this.stats = stats ??
-            const MLBAthleteStats(
-                id: 0, name: "", team: "", position: "", statHistory: []);
+  // const AthletePageState(
+  //     {this.status = BlocStatus.initial, MLBAthleteStats? stats})
+  //     : this.stats = stats ??
+  //           const MLBAthleteStats(
+  //               id: 0, name: "", team: "", position: "", statHistory: []);
+
+  factory AthletePageState.initial() {
+    return AthletePageState(stats: [], status: BlocStatus.initial);
+  }
 
   AthletePageState copyWith({
-    MLBAthleteStats? stats,
+    List<FlSpot>? stats,
     BlocStatus? status,
   }) {
     return AthletePageState(

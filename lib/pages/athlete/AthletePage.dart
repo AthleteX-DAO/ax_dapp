@@ -2,6 +2,9 @@ import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
+import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
+import 'package:ax_dapp/pages/athlete/models/AthletePageEvent.dart';
+import 'package:ax_dapp/pages/athlete/models/AthletePageState.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
@@ -14,11 +17,13 @@ import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/Colors.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:ax_dapp/util/chart/AthletePageGraph.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,57 +65,28 @@ class _AthletePageState extends State<AthletePage> {
     if (listView == 1) return DesktopScout();
 
     return kIsWeb.kIsWeb
-        ? buildWebViewContainer(context)
+        ? BlocBuilder<AthletePageBloc, AthletePageState>(
+            builder: (context, state) {
+              final bloc = context.read<AthletePageBloc>();
+              final chartStats = state.stats;
+              if (state.status == BlocStatus.initial) {
+                bloc.add(OnPageRefresh(playerId: athlete.id));
+              }
+              return buildWebView(athlete, chartStats);
+            },
+          )
         : buildMobileView(context);
   }
 
   IndexedStack buildWebViewContainer(BuildContext context) {
-    final longMarketPrice = "4.18 AX";
-    final longMarketPricePercent = "-2%";
-    final longBookValue = "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX";
-    final longBookValuePercent = "+4%";
-
-    final shortMarketPrice = "2.18 AX";
-    final shortMarketPricePercent = "-1%";
-    final shortBookValue =
-        "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX";
-    final shortBookValuePercent = "+2%";
-
+    List<FlSpot> chartStats = [];
     return IndexedStack(index: _longAptIndex, children: [
-      buildWebView(
-          context,
-          longMarketPrice,
-          shortMarketPrice,
-          longMarketPricePercent,
-          shortMarketPricePercent,
-          longBookValue,
-          shortBookValue,
-          longBookValuePercent,
-          shortBookValuePercent),
-      buildWebView(
-          context,
-          longMarketPrice,
-          shortMarketPrice,
-          longMarketPricePercent,
-          shortMarketPricePercent,
-          longBookValue,
-          shortBookValue,
-          longBookValuePercent,
-          shortBookValuePercent)
+      buildWebView(athlete, chartStats),
+      buildWebView(athlete, chartStats)
     ]);
   }
 
-  Container buildWebView(
-    BuildContext context,
-    String longMarketPrice,
-    String shortMarketPrice,
-    String longMarketPricePercent,
-    String shortMarketPricePercent,
-    String longBookValue,
-    String shortBookValue,
-    String longBookValuePercent,
-    String shortBookValuePercent,
-  ) {
+  Container buildWebView(AthleteScoutModel athlete, List<FlSpot> chartStats) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
@@ -128,25 +104,28 @@ class _AthletePageState extends State<AthletePage> {
                     children: <Widget>[
                       graphSide(
                         context,
-                        longMarketPrice,
-                        shortMarketPrice,
-                        longMarketPricePercent,
-                        shortMarketPricePercent,
-                        longBookValue,
-                        shortBookValue,
-                        longBookValuePercent,
-                        shortBookValuePercent,
+                        athlete.longTokenBookPrice!.toStringAsFixed(6),
+                        athlete.shortTokenPrice!.toStringAsFixed(6),
+                        athlete.longTokenPercentage!.toStringAsFixed(6),
+                        athlete.shortTokenPercentage!.toStringAsFixed(6),
+                        athlete.longTokenBookPrice!.toStringAsFixed(6),
+                        athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                        athlete.longTokenPercentage!.toStringAsFixed(
+                            6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                        athlete.shortTokenPercentage!.toStringAsFixed(6),
+                        chartStats,
                       ),
                       statsSide(
                         context,
-                        longMarketPrice,
-                        shortMarketPrice,
-                        longMarketPricePercent,
-                        shortMarketPricePercent,
-                        longBookValue,
-                        shortBookValue,
-                        longBookValuePercent,
-                        shortBookValuePercent,
+                        athlete.longTokenBookPrice!.toStringAsFixed(6),
+                        athlete.shortTokenPrice!.toStringAsFixed(6),
+                        athlete.longTokenPercentage!.toStringAsFixed(6),
+                        athlete.shortTokenPercentage!.toStringAsFixed(6),
+                        athlete.longTokenBookPrice!.toStringAsFixed(6),
+                        athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                        athlete.longTokenPercentage!.toStringAsFixed(
+                            6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                        athlete.shortTokenPercentage!.toStringAsFixed(6),
                       )
                     ],
                   ))));
@@ -167,25 +146,28 @@ class _AthletePageState extends State<AthletePage> {
                         children: <Widget>[
                           graphSide(
                             context,
-                            longMarketPrice,
-                            shortMarketPrice,
-                            longMarketPricePercent,
-                            shortMarketPricePercent,
-                            longBookValue,
-                            shortBookValue,
-                            longBookValuePercent,
-                            shortBookValuePercent,
+                            athlete.longTokenBookPrice!.toStringAsFixed(6),
+                            athlete.shortTokenPrice!.toStringAsFixed(6),
+                            athlete.longTokenPercentage!.toStringAsFixed(6),
+                            athlete.shortTokenPercentage!.toStringAsFixed(6),
+                            athlete.longTokenBookPrice!.toStringAsFixed(6),
+                            athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                            athlete.longTokenPercentage!.toStringAsFixed(
+                                6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                            athlete.shortTokenPercentage!.toStringAsFixed(6),
+                            chartStats,
                           ),
                           statsSide(
                             context,
-                            longMarketPrice,
-                            shortMarketPrice,
-                            longMarketPricePercent,
-                            shortMarketPricePercent,
-                            longBookValue,
-                            shortBookValue,
-                            longBookValuePercent,
-                            shortBookValuePercent,
+                            athlete.longTokenBookPrice!.toStringAsFixed(6),
+                            athlete.shortTokenPrice!.toStringAsFixed(6),
+                            athlete.longTokenPercentage!.toStringAsFixed(6),
+                            athlete.shortTokenPercentage!.toStringAsFixed(6),
+                            athlete.longTokenBookPrice!.toStringAsFixed(6),
+                            athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                            athlete.longTokenPercentage!.toStringAsFixed(
+                                6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                            athlete.shortTokenPercentage!.toStringAsFixed(6),
                           )
                         ],
                       )))
@@ -202,28 +184,31 @@ class _AthletePageState extends State<AthletePage> {
               height: 625,
               child: graphSide(
                 context,
-                longMarketPrice,
-                shortMarketPrice,
-                longMarketPricePercent,
-                shortMarketPricePercent,
-                longBookValue,
-                shortBookValue,
-                longBookValuePercent,
-                shortBookValuePercent,
+                athlete.longTokenBookPrice!.toStringAsFixed(6),
+                athlete.shortTokenPrice!.toStringAsFixed(6),
+                athlete.longTokenPercentage!.toStringAsFixed(6),
+                athlete.shortTokenPercentage!.toStringAsFixed(6),
+                athlete.longTokenBookPrice!.toStringAsFixed(6),
+                athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                athlete.longTokenPercentage!.toStringAsFixed(
+                    6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                athlete.shortTokenPercentage!.toStringAsFixed(6),
+                chartStats,
               ),
             ),
             Container(
                 height: 650,
                 child: statsSide(
                   context,
-                  longMarketPrice,
-                  shortMarketPrice,
-                  longMarketPricePercent,
-                  shortMarketPricePercent,
-                  longBookValue,
-                  shortBookValue,
-                  longBookValuePercent,
-                  shortBookValuePercent,
+                  athlete.longTokenBookPrice!.toStringAsFixed(6),
+                  athlete.shortTokenPrice!.toStringAsFixed(6),
+                  athlete.longTokenPercentage!.toStringAsFixed(6),
+                  athlete.shortTokenPercentage!.toStringAsFixed(6),
+                  athlete.longTokenBookPrice!.toStringAsFixed(6),
+                  athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                  athlete.longTokenPercentage!.toStringAsFixed(
+                      6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                  athlete.shortTokenPercentage!.toStringAsFixed(6),
                 ))
           ],
         )));
@@ -802,7 +787,8 @@ class _AthletePageState extends State<AthletePage> {
                             // Detail Section
                             AthleteDetailsWidget(athlete).athletePageDetails(),
                             // Stats section
-                            AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
+                            AthleteDetailsWidget(athlete)
+                                .athletePageKeyStatistics(),
                           ])),
                     ],
                   )
@@ -923,6 +909,7 @@ class _AthletePageState extends State<AthletePage> {
     String shortBookValue,
     String longBookValuePercent,
     String shortBookValuePercent,
+    List<FlSpot> chartStats,
   ) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
@@ -1095,8 +1082,9 @@ class _AthletePageState extends State<AthletePage> {
                             children: <Widget>[
                               // Graph
                               Padding(
-                                padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 14.0),
-                                child: AthletePageGraph(),
+                                padding: EdgeInsets.only(
+                                    left: 28.0, right: 28.0, top: 14.0),
+                                child: AthletePageGraph(chartStats: chartStats),
                               ),
                               // Price
                               Align(
@@ -1114,7 +1102,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   false, false)),
                                           Container(
                                               width: 130,
-                                              height: 25,
+                                              height: 40,
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -1178,9 +1166,14 @@ class _AthletePageState extends State<AthletePage> {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                        builder: (context) => AthletePageGraph()));
+                                                        builder: (context) =>
+                                                            AthletePageGraph(
+                                                                chartStats:
+                                                                    chartStats)));
                                               },
-                                              child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
+                                              child: Text("Buy",
+                                                  style: textStyle(Colors.black,
+                                                      20, false, false)))),
                                       Container(
                                           width: 175,
                                           height: 50,
