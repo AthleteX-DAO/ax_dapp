@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:ax_dapp/pages/farm/models/FarmModel.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/util/UserInputNorm.dart';
+import 'package:ax_dapp/util/UserInputInfo.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart' as Web3Dart;
@@ -21,21 +21,22 @@ class FarmController {
   String strStakeTokenAddress = "";
   String strRewardTokenAddress = "";
   String strStakingModule = "";
-  double dAPR = 0.0;
-  double dTVL = 0.0;
-  double dStakeTokenPrice = 0.0;
-  double dRewardTokenPrice = 0.0;
-
-  RxDouble dStaked = 0.0.obs;
-  RxDouble dRewards = 0.0.obs;
+  String strAPR = "";
+  String strTVL = "";
+  String strStakeTokenPrice = "";
+  String strRewardTokenPrice = "";
+  RxString strStaked = "".obs;
+  RxString strRewards = "".obs;
   RxString strStakedSymbol = "".obs;
   RxString strRewardSymbol = "".obs;
   RxString strStakedAlias = "".obs;
+  RxString strUnStakeInput = "".obs;
+  RxString strStakeInput = "".obs;
+  int nStakeTokenDecimals = 0;
+  int nRewardTokenDecimals = 0;
 
-  RxDouble dUnStakeBalance = 0.0.obs;
-  RxDouble dStakeBalance = 0.0.obs;
-
-  RxString strCurrentBalance = "0".obs;
+  Rx<UserInputInfo> stakingInfo = UserInputInfo(BigInt.zero, "0.0").obs;
+  Rx<UserInputInfo> stakedInfo = UserInputInfo(BigInt.zero, "0.0").obs;
 
   late Web3Dart.Web3Client rpcClient;
 
@@ -43,19 +44,20 @@ class FarmController {
   FarmController(FarmModel farm) {
     this.strAddress = farm.strAddress;
     this.strName = farm.strName;
-    this.dAPR = farm.dAPR;
-    this.dTVL = farm.dTVL;
-    this.dStaked = RxDouble(farm.dStaked);
-    this.dRewards = RxDouble(farm.dRewards);
-    this.dStakeTokenPrice = farm.dStakeTokenPrice;
-    this.dRewardTokenPrice = farm.dRewardTokenPrice;
+    this.strAPR = double.parse(farm.strAPR).toStringAsFixed(2);
+    this.strTVL = double.parse(farm.strTVL).toStringAsFixed(2);
+    this.strStaked = RxString(farm.strStaked);
+    this.strRewards = RxString(farm.strRewards);
+    this.strStakeTokenPrice = farm.strStakeTokenPrice;
+    this.strRewardTokenPrice = farm.strRewardTokenPrice;
     this.strStakeTokenAddress = farm.strStakeTokenAddress;
     this.strRewardTokenAddress = farm.strRewardTokenAddress;
     this.strStakingModule = farm.strStakingModule;
-
     this.strStakedSymbol = RxString(farm.strStakedSymbol);
     this.strRewardSymbol = RxString(farm.strRewardSymbol);
     this.strStakedAlias = RxString(farm.strStakedAlias);
+    this.nStakeTokenDecimals = farm.nStakeTokenDecimals;
+    this.nRewardTokenDecimals = farm.nRewardTokenDecimals;
 
     Web3Dart.EthereumAddress address =
         Web3Dart.EthereumAddress.fromHex(this.strAddress);
@@ -71,21 +73,24 @@ class FarmController {
   FarmController.fromFarm(FarmController farm) {
     this.strAddress = farm.strAddress;
     this.strName = farm.strName;
-    this.dAPR = farm.dAPR;
-    this.dTVL = farm.dTVL;
-    this.dStaked = farm.dStaked;
-    this.dRewards = farm.dRewards;
-    this.dStakeTokenPrice = farm.dStakeTokenPrice;
-    this.dRewardTokenPrice = farm.dRewardTokenPrice;
+    this.strAPR = farm.strAPR;
+    this.strTVL = farm.strTVL;
+    this.strStaked = farm.strStaked;
+    this.strRewards = farm.strRewards;
+    this.strStakeTokenPrice = farm.strStakeTokenPrice;
+    this.strRewardTokenPrice = farm.strRewardTokenPrice;
     this.strStakeTokenAddress = farm.strStakeTokenAddress;
     this.strRewardTokenAddress = farm.strRewardTokenAddress;
     this.strStakingModule = farm.strStakingModule;
     this.strStakedSymbol = farm.strStakedSymbol;
     this.strRewardSymbol = farm.strRewardSymbol;
     this.strStakedAlias = farm.strStakedAlias;
+    this.nStakeTokenDecimals = farm.nStakeTokenDecimals;
+    this.nRewardTokenDecimals = farm.nRewardTokenDecimals;
     this.rpcClient = farm.rpcClient;
     this.contract = farm.contract;
-    this.strCurrentBalance = farm.strCurrentBalance;
+    this.stakingInfo = farm.stakingInfo;
+    this.stakedInfo = farm.stakedInfo;
 
     String account = controller.publicAddress.value.hex;
     this.updateStakedBalance(account);
@@ -93,12 +98,12 @@ class FarmController {
   }
 
   /// This function is used to get current Balance from wallet
-  /// 
+  ///
   /// @return {void}
   Future<void> updateCurrentBalance() async {
-    this.strCurrentBalance.value = await wallet.getTokenBalance(this.strStakeTokenAddress);
+    stakingInfo.value = await wallet.getTokenBalanceAsInfo(
+        this.strStakeTokenAddress, this.nStakeTokenDecimals);
   }
-
 
   /// This function is used to stake tokens on a specific farm
   /// and also update the txHash string on conroller
@@ -107,10 +112,11 @@ class FarmController {
   Future<void> stake() async {
     Uint8List stakingData = Uint8List.fromList([]);
     Uint8List rewardData = Uint8List.fromList([]);
-
-    BigInt stakeAmount = normalizeInput(this.dStakeBalance.value);
-    String txHash = await this.contract.stake(
-        stakeAmount, stakingData, rewardData,
+    UserInputInfo inputInfo = UserInputInfo.fromInput(
+        inputAmount: this.strStakeInput.value,
+        decimals: this.nStakeTokenDecimals);
+    BigInt amount = getMaximumAmount(this.stakingInfo.value, inputInfo);
+    String txHash = await this.contract.stake(amount, stakingData, rewardData,
         credentials: controller.credentials);
     controller.updateTxString(txHash);
   }
@@ -124,10 +130,11 @@ class FarmController {
   Future<void> unstake() async {
     Uint8List stakingData = Uint8List.fromList([]);
     Uint8List rewardData = Uint8List.fromList([]);
-
-    BigInt unstakeAmount = normalizeInput(this.dUnStakeBalance.value);
-    String txHash = await this.contract.unstake(
-        unstakeAmount, stakingData, rewardData,
+    UserInputInfo inputInfo = UserInputInfo.fromInput(
+        inputAmount: this.strUnStakeInput.value,
+        decimals: this.nStakeTokenDecimals);
+    BigInt amount = getMaximumAmount(stakedInfo.value, inputInfo);
+    String txHash = await this.contract.unstake(amount, stakingData, rewardData,
         credentials: controller.credentials);
     controller.updateTxString(txHash);
   }
@@ -154,11 +161,8 @@ class FarmController {
     Web3Dart.EthereumAddress ethAccount =
         Web3Dart.EthereumAddress.fromHex(strAccount);
     List<BigInt> balances = await this.contract.stakingBalances(ethAccount);
-    Web3Dart.EtherAmount stakedWeiBalance =
-        Web3Dart.EtherAmount.inWei(balances[0]);
-    double stakedEtherBalance =
-        stakedWeiBalance.getValueInUnit(Web3Dart.EtherUnit.ether);
-    this.dStaked.value = stakedEtherBalance;
+    this.stakedInfo.value = UserInputInfo.fromBalance(
+        rawAmount: balances[0], decimals: this.nStakeTokenDecimals);
   }
 
   /// This function is used to approve the reward token
@@ -170,9 +174,16 @@ class FarmController {
     Web3Dart.EthereumAddress tokenAddress =
         Web3Dart.EthereumAddress.fromHex(this.strStakeTokenAddress);
     ERC20 rewardToken = ERC20(address: tokenAddress, client: rpcClient);
-    BigInt approveAmount = normalizeInput(this.dStakeBalance.value);
-    String txHash = await rewardToken.approve(routerAddress, approveAmount,
+    UserInputInfo inputInfo = UserInputInfo.fromInput(
+        inputAmount: this.strStakeInput.value,
+        decimals: this.nStakeTokenDecimals);
+    BigInt amount = getMaximumAmount(this.stakingInfo.value, inputInfo);
+    String txHash = await rewardToken.approve(routerAddress, amount,
         credentials: controller.credentials);
     controller.updateTxString(txHash);
+  }
+
+  BigInt getMaximumAmount(UserInputInfo raw, UserInputInfo input) {
+    return input.rawAmount > raw.rawAmount ? raw.rawAmount : input.rawAmount;
   }
 }

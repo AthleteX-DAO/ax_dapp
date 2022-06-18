@@ -49,7 +49,8 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
               "Current Balance",
               style: txStyle,
             ),
-            Obx(() => Text("${farm.strCurrentBalance} ${farm.strStakedSymbol}",
+            Obx(() => Text(
+                "${farm.stakingInfo.value.viewAmount} ${farm.strStakedSymbol}",
                 style: txStyle))
           ],
         ),
@@ -61,14 +62,14 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
               "Current APR",
               style: txStyle,
             ),
-            Text("${farm.dAPR.toStringAsFixed(2)}%", style: txStyle)
+            Text("${farm.strAPR}%", style: txStyle)
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text("TVL", style: txStyle),
-            Text("\$${farm.dTVL.toStringAsFixed(2)}", style: txStyle)
+            Text("\$${farm.strTVL}", style: txStyle)
           ],
         ),
         //Divider line
@@ -95,7 +96,7 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
                   style: txStyle,
                 ),
                 Obx(() => Text(
-                    "${farm.dStaked.toStringAsFixed(2)} ${farm.strStakedSymbol}",
+                    "${double.parse(farm.stakedInfo.value.viewAmount).toStringAsFixed(4)} ${farm.strStakedSymbol}",
                     style: txStyle))
               ],
             ),
@@ -109,8 +110,7 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
                   "Rewards Earned",
                   style: txStyle,
                 ),
-                Obx(() => Text(
-                    "${farm.dRewards.toStringAsFixed(2)} ${farm.strRewardSymbol}",
+                Obx(() => Text("${farm.strRewards} ${farm.strRewardSymbol}",
                     style: txStyle))
               ],
             ),
@@ -122,7 +122,7 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
               children: <Widget>[
                 Text("Total AX available (Staked + Earned)", style: txStyle),
                 Obx(() => Text(
-                    "${(farm.dStaked.value + farm.dRewards.value).toStringAsFixed(2)} ${farm.strRewardSymbol}",
+                    "${(double.parse(farm.stakedInfo.value.viewAmount) + double.parse(farm.strRewards.value)).toStringAsFixed(2)} ${farm.strRewardSymbol}",
                     style: txStyle))
               ],
             ),

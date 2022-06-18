@@ -24,9 +24,7 @@ class SubGraphRepo {
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairs() async {
     final result = await _client.query(
-      QueryOptions(
-          document: parseString(_getAllPairs()),
-          pollInterval: const Duration(seconds: 10)),
+      QueryOptions(document: parseString(_getAllPairs())),
     );
     if (result.hasException)
       return Either.right(result.exception!);
@@ -34,13 +32,19 @@ class SubGraphRepo {
       return Either.left(result.data);
   }
 
-  Future<Either<Map<String, dynamic>?, OperationException>>
-      querySpecificPairs(String token) async {
+  Future<Either<Map<String, dynamic>?, OperationException>> querySpecificPairs(
+      String token) async {
+    // calculating the first time of 24 hours ago as secondsSinceEpoch
+    final int startTime = (DateTime.now()
+                .subtract(const Duration(days: 1))
+                .millisecondsSinceEpoch /
+            1000)
+        .round();
+
+    print("[StartTime] $startTime");
+
     final result = await _client.query(
-      QueryOptions(
-          document: parseString(_getSpecificPairs(token)),
-          pollInterval: const Duration(seconds: 10)),
-    );
+      QueryOptions(document: parseString(_getSpecificPairs(token, startTime))));
     if (result.hasException)
       return Either.right(result.exception!);
     else
@@ -51,7 +55,8 @@ class SubGraphRepo {
       queryAllPairsForWalletId(String walletId) async {
     final result = await _client.query(
       QueryOptions(
-          document: parseString(_getAllLiquidityPositionsForWalletId(walletId))),
+          document:
+              parseString(_getAllLiquidityPositionsForWalletId(walletId))),
     );
     if (result.hasException)
       return Either.right(result.exception!);
@@ -103,7 +108,7 @@ query {
 }
 """;
 
-String _getSpecificPairs(String token) => """
+String _getSpecificPairs(String token, int startTime) => """
 query {
   prefix: pairs(where: {name_starts_with: "$token-"}) {
   	id
@@ -115,6 +120,21 @@ query {
     reserve0 
     reserve1
   	totalSupply
+    pairHourData(where: {hourStartUnix_lte: $startTime}, first: 1, orderBy: hourStartUnix, orderDirection: desc) {
+      hourStartUnix
+      reserve0
+      reserve1
+      pair {
+        id
+        name
+        token0 {id, name}
+        token1 {id, name}
+        reserve0
+        reserve1
+        token0Price
+        token1Price
+      }
+    }
   },
   suffix: pairs(where: {name_ends_with: "-$token"}) {
   	id
@@ -126,6 +146,21 @@ query {
     reserve0 
     reserve1
   	totalSupply
+    pairHourData(where: {hourStartUnix_lte: $startTime}, first: 1, orderBy: hourStartUnix, orderDirection: desc) {
+      hourStartUnix
+      reserve0
+      reserve1
+      pair {
+        id
+        name
+        token0 {id, name}
+        token1 {id, name}
+        reserve0
+        reserve1
+        token0Price
+        token1Price
+      }
+    }
   }
 }
 """;

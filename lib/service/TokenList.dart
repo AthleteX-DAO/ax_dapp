@@ -1,3 +1,5 @@
+import 'package:ax_dapp/service/Controller/Swap/USDC.dart';
+import 'package:ax_dapp/service/Controller/Swap/WETH.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
@@ -87,6 +89,10 @@ class TokenList {
     SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
     MATIC("Matic/Polygon", "Matic",
         AssetImage('assets/images/Polygon_Small.png')),
+    WETH("WETH", "WETH",
+        AssetImage('images/weth_small.png')),
+    USDC("USDC", "USDC",
+        AssetImage('images/USDC_small.png')),
     ...namesList.map((ath) {
       return APT(
           ath[0] + " Long APT",

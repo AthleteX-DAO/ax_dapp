@@ -16,9 +16,9 @@ TokenPair _$TokenPairFromJson(Map<String, dynamic> json) => TokenPair(
       json['token0Price'] as String,
       json['token1Price'] as String,
       json['totalSupply'] as String?,
-      json['pairHourData'] == null
-          ? null
-          : PairHourData.fromJson(json['pairHourData'] as Map<String, dynamic>),
+      (json['pairHourData'] as List<dynamic>?)
+          ?.map((e) => PairHourData.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$TokenPairToJson(TokenPair instance) {
@@ -40,6 +40,7 @@ Map<String, dynamic> _$TokenPairToJson(TokenPair instance) {
   writeNotNull('totalSupply', instance.totalSupply);
   val['token0'] = instance.token0.toJson();
   val['token1'] = instance.token1.toJson();
-  writeNotNull('pairHourData', instance.pairHourData?.toJson());
+  writeNotNull(
+      'pairHourData', instance.pairHourData?.map((e) => e.toJson()).toList());
   return val;
 }

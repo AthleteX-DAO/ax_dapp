@@ -89,6 +89,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
           Widget widget = loading();
 
           if (state.status == BlocStatus.initial) {
+            print("[initial] ${state.status}");
             if (state.isAllFarms)
               bloc.add(OnLoadFarms());
             else

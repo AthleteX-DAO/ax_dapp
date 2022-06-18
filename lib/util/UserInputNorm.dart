@@ -18,3 +18,16 @@ BigInt normalizeInput(double input) {
       Decimal.parse(input.toString()) * Decimal.fromInt(10).pow(18);
   return inDecimal.toBigInt();
 }
+
+BigInt getRawAmount(String input, int decimals) {
+  Decimal inDecimal = Decimal.parse(input) * Decimal.fromInt(10).pow(decimals);
+  return inDecimal.toBigInt();
+}
+
+/// Converts a BigInt to String. round double while converting
+String getViewAmount(BigInt input, int decimals) {
+  Decimal inDecimal =
+      (Decimal.fromBigInt(input) / Decimal.fromInt(10).pow(decimals))
+          .toDecimal();
+  return inDecimal.toStringAsFixed(6);
+}

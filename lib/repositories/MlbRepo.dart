@@ -11,7 +11,7 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
 
   MLBRepo(
     this._api,
-  ): super(SupportedSport.MLB);
+  ) : super(SupportedSport.MLB);
 
   @override
   Future<List<MLBAthlete>> getAllPlayers() async {
@@ -25,7 +25,8 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
 
   @override
   Future<List<MLBAthlete>> getSupportedPlayers() async {
-    return _api.getPlayersById(PlayerIds(SupportedMLBAthletes().getSupportedAthletesList()));
+    return _api.getPlayersById(
+        PlayerIds(SupportedMLBAthletes().getSupportedAthletesList()));
   }
 
   @override
@@ -52,5 +53,11 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
   @override
   Future<MLBAthleteStats> getPlayerStatsHistory(int id) async {
     return _api.getPlayerHistory(id);
+  }
+
+  @override
+  Future<List<MLBAthleteStats>> getPlayersStatsHistory() async {
+    List<MLBAthleteStats> list = List.empty();
+    return list;
   }
 }
