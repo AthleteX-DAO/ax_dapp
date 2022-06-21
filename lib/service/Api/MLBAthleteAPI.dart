@@ -31,5 +31,5 @@ abstract class MLBAthleteAPI {
       @Query("team") String team, @Query("position") String position);
 
   @GET("/players/{id}/history")
-  Future<MLBAthleteStats> getPlayerHistory(@Path() int id);
+  Future<MLBAthleteStats> getPlayerHistory(@Path() int id, @Query("from") String from, @Query("until") String until);
 }

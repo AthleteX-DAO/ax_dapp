@@ -22,19 +22,16 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        AspectRatio(
-          aspectRatio: 1.70,
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(18),
-                ),
-                color: Color(0xff232d37)),
-            child: LineChart(
-              isLong
-                  ? longBookValueData(widget.chartStats)
-                  : shortBookValueData(widget.chartStats),
-            ),
+        Container(
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+              color: Color(0xff232d37)),
+          child: LineChart(
+            isLong
+                ? longBookValueData(widget.chartStats)
+                : shortBookValueData(widget.chartStats),
           ),
         ),
         SizedBox(
@@ -91,7 +88,7 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 8.0,
+      space: 4.0,
       child: text,
     );
   }
@@ -170,6 +167,7 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
           border: Border.all(color: const Color(0xff37434d), width: 1)),
       lineBarsData: [
         LineChartBarData(
+          curveSmoothness: .5,
           spots: chartStats,
           isCurved: true,
           gradient: LinearGradient(
@@ -177,7 +175,7 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
-          barWidth: 5,
+          barWidth: 2,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
