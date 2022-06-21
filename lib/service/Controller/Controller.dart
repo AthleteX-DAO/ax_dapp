@@ -129,7 +129,7 @@ class Controller extends GetxController {
   }
 
   bool isValidMnemonic(String theMnemonic) {
-    bool YesOrNo = bip39.validateMnemonic(theMnemonic);
-    return YesOrNo;
+    bool yesOrNo = bip39.validateMnemonic(theMnemonic);
+    return yesOrNo;
   }
 }
