@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/util/ChainManager.dart';
 import 'package:ax_dapp/util/UserInputInfo.dart';
 import 'package:erc20/erc20.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,11 +40,7 @@ class WalletController extends GetxController {
     var walletAddress = controller.publicAddress.value;
     late EthereumAddress tokenEthAddress;
     late String tokenBalance;
-    var rpcUrl;
-    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
-      rpcUrl = Controller.supportedChains[controller.networkID.value];
-    }
-    Web3Client rpcClient = Web3Client(rpcUrl, Client());
+    Web3Client rpcClient = Web3Client(ChainManager.getChainRpcUrl(), Client());
     tokenEthAddress = EthereumAddress.fromHex(tokenAddress);
     var ax = ERC20(address: tokenEthAddress, client: rpcClient);
     try {
@@ -62,10 +59,7 @@ class WalletController extends GetxController {
   Future<UserInputInfo> getTokenBalanceAsInfo(
       String tokenAddress, int tokenDecimals) async {
     EthereumAddress walletAddress = controller.publicAddress.value;
-    var rpcUrl;
-    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
-      rpcUrl = Controller.supportedChains[controller.networkID.value];
-    }
+    var rpcUrl = ChainManager.getChainRpcUrl();
     Web3Client rpcClient = Web3Client(rpcUrl, Client());
     var token = ERC20(
         address: EthereumAddress.fromHex(tokenAddress), client: rpcClient);
@@ -123,12 +117,7 @@ class WalletController extends GetxController {
 
   Future<String> getTokenSymbol(String tokenAddress) async {
     EthereumAddress tokenEthAddress = EthereumAddress.fromHex(tokenAddress);
-    String rpcUrl = "";
-    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
-      rpcUrl = Controller.supportedChains[controller.networkID.value]!;
-    } else {
-      rpcUrl = "https://polygon-rpc.com";
-    }
+    String rpcUrl = ChainManager.getChainRpcUrl();
     Web3Client rpcClient = Web3Client(rpcUrl, Client());
     ERC20 token = ERC20(address: tokenEthAddress, client: rpcClient);
     return token.symbol();

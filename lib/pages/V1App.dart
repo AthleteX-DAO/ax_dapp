@@ -16,19 +16,20 @@ import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:ax_dapp/service/Controller/Swap/MATIC.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
+import 'package:ax_dapp/util/ChainManager.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../service/Controller/Swap/SupportedChain.dart';
 
 class V1App extends StatefulWidget {
   @override
@@ -37,7 +38,7 @@ class V1App extends StatefulWidget {
 
 class _V1AppState extends State<V1App> {
   bool isWeb = true;
-
+  late ChainManager _chainManager;
   // state change variables
   int pageNumber = 0;
   bool walletConnected =
@@ -47,11 +48,14 @@ class _V1AppState extends State<V1App> {
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
   AXT axt = AXT("AthleteX", "AX");
-  Token matic = MATIC("Polygon", "MATIC");
   late PageController _pageController;
   var _selectedIndex = 0;
-  List<String> dropDownMenuItems = ["Matic Network", "SX Network"];
-  String selectVal = "Matic Network";
+  List<String> dropDownMenuItems = [
+    ChainManager.getChainName(SupportedChain.MATIC),
+    ChainManager.getChainName(SupportedChain.TESTNET_MATIC),
+    ChainManager.getChainName(SupportedChain.SX),
+    ChainManager.getChainName(SupportedChain.TESTNET_SX)
+  ];
   String axText = "Ax";
 
   animateToPage(int index) {
@@ -72,16 +76,18 @@ class _V1AppState extends State<V1App> {
     // Init the states of everything needed for the whole dapp
     super.initState();
     _pageController = PageController(initialPage: _selectedIndex);
+    _chainManager = RepositoryProvider.of<ChainManager>(context);
     Get.put(LSPController());
     Get.put(SwapController());
     Get.put(WalletController());
     Get.put(PoolController());
-    Get.put(WebWallet());
+    Get.put(WebWallet(_chainManager));
   }
 
   @override
   Widget build(BuildContext context) {
     //check if device is in landscape and web
+    print("REBUILD V1App");
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return Scaffold(
@@ -130,7 +136,7 @@ class _V1AppState extends State<V1App> {
                       coinGeckoRepo:
                           RepositoryProvider.of<CoinGeckoRepo>(context),
                     )),
-                child: DesktopScout())
+                child: DesktopScout(key: Key(ChainManager.getSelectedChain().name)))
           else if (pageNumber == 1)
             BlocProvider(
                 create: (BuildContext context) => TradePageBloc(
@@ -138,7 +144,7 @@ class _V1AppState extends State<V1App> {
                       swapController: Get.find(),
                       walletController: Get.find(),
                     ),
-                child: DesktopTrade())
+                child: DesktopTrade(key: Key(ChainManager.getSelectedChain().name)))
           else if (pageNumber == 2)
             // BlocProvider(
             //     create: (BuildContext context) => PoolBloc(
@@ -146,9 +152,9 @@ class _V1AppState extends State<V1App> {
             //         walletController: Get.find(),
             //         poolController: Get.find()),
             //     child: DesktopPool())
-            DesktopPool()
+            DesktopPool(key: Key(ChainManager.getSelectedChain().name))
           else if (pageNumber == 3)
-            DesktopFarm()
+            DesktopFarm(key: Key(ChainManager.getSelectedChain().name))
         ],
       );
     } else {
@@ -534,14 +540,31 @@ class _V1AppState extends State<V1App> {
                         dropdownColor: Colors.black,
                         borderRadius: BorderRadius.circular(10),
                         elevation: 1,
-                        value: selectVal,
-                        items: dropDownMenuItems.map((itemOne) {
+                        value: ChainManager.getCurrentChainName(),
+                        items: dropDownMenuItems.map((selected) {
                           return DropdownMenuItem(
-                              enabled: false,
-                              value: itemOne,
-                              child: Text(itemOne));
+                              enabled: true,
+                              value: selected,
+                              child: Text(selected));
                         }).toList(),
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          print("On Chain Changed to $value");
+                          switch(value){
+                            case "Polygon Mainnet": {_chainManager.setSelectedChain(SupportedChain.MATIC); }
+                              break;
+                            case "Polygon Testnet": { _chainManager.setSelectedChain(SupportedChain.TESTNET_MATIC); }
+                              break;
+                            case "SX Mainnet": { _chainManager.setSelectedChain(SupportedChain.SX); }
+                              break;
+                           case "SX Testnet": { _chainManager.setSelectedChain(SupportedChain.TESTNET_SX); }
+                              break;
+                          }
+                          setState((){
+                            print("Switch Chain from Dropdown Menu");
+                            ChainManager.switchChain();
+                            print("Phoenix Rebuild");
+                          });
+                        },
                       ),
                     ),
                   )

@@ -1,6 +1,7 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
 import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';
+import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 
 import './createWallet/createWallet.dart'
     if (dart.library.io) './createWallet/mobile.dart'
@@ -50,7 +51,7 @@ class Controller extends GetxController {
 
   Future<int> connect() async {
     //Setting up Client & Credentials for connecting to dApp from a client
-    DappWallet web3 = newWallet();
+    WebWallet web3 = Get.find();
 
     //Connect and setup credentials
     await web3.connect().then((value) {

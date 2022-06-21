@@ -167,7 +167,7 @@ Dialog wrongNetworkDialog(BuildContext context) {
 }
 
 //dynamic
-Dialog walletDialog(BuildContext context) {
+  Dialog walletDialog(BuildContext context) {
   Controller controller = Get.find();
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
@@ -1077,7 +1077,7 @@ Dialog yourAXDialog(BuildContext context) {
   if (_width < 405) wid = _width;
   double hgt = 500;
   if (_height < 505) hgt = _height;
-
+  walletController.getYourAxBalance();
   return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(

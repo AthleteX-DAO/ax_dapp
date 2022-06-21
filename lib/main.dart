@@ -12,10 +12,12 @@ import 'package:ax_dapp/repositories/usecases/GetAllLiquidityInfoUseCase.dart';
 import 'package:ax_dapp/service/Api/MLBAthleteAPI.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLClientHelper.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLConfiguration.dart';
+import 'package:ax_dapp/util/ChainManager.dart';
 import 'package:coingecko_api/coingecko_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 final _dio = Dio();
@@ -23,6 +25,8 @@ final _mlbApi = MLBAthleteAPI(_dio);
 final _coinGeckoApi = CoinGeckoApi();
 final _graphQLClientHelper =
     GraphQLClientHelper(GraphQLConfiguration.athleteDexApiLink);
+final ChainManager _chainManager = ChainManager();
+
 void main() async {
   final _gQLClient = await _graphQLClientHelper.initializeClient();
   final _subGraphRepo = SubGraphRepo(_gQLClient.value);
@@ -53,6 +57,7 @@ void main() async {
             create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase)),
         RepositoryProvider(
             create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo)),
+        RepositoryProvider(create: (context) => _chainManager)
       ],
       child: MyApp(),
     ),
