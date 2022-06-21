@@ -198,20 +198,30 @@ class _AddLiquidityState extends State<AddLiquidity> {
           );
         }
 
-        onTokenInputChange(tokenNumber, tokenInput) {
+        onTokenInputChange(tokenNumber, tokenInput, hasData) {
           if (tokenInput == '') {
             tokenInput = '0';
           }
-          if (tokenNumber == 1) {
-            bloc.add(Token0InputChanged(tokenInput.toString()));
-            final tokenTwoAmount = double.parse(tokenInput) / poolInfo.ratio;
-            _tokenAmountTwoController.text = tokenTwoAmount.toStringAsFixed(6);
-            bloc.add(Token1InputChanged(tokenTwoAmount.toString()));
-          } else {
-            bloc.add(Token1InputChanged(tokenInput.toString()));
-            final tokenOneAmount = double.parse(tokenInput) * poolInfo.ratio;
-            _tokenAmountOneController.text = tokenOneAmount.toStringAsFixed(6);
-            bloc.add(Token0InputChanged(tokenOneAmount.toString()));
+          if (hasData) {
+            if (tokenNumber == 1) {
+              bloc.add(Token0InputChanged(tokenInput.toString()));
+              final tokenTwoAmount = double.parse(tokenInput) / poolInfo.ratio;
+              _tokenAmountTwoController.text = tokenTwoAmount.toStringAsFixed(6);
+              bloc.add(Token1InputChanged(tokenTwoAmount.toString()));
+            } else {
+              bloc.add(Token1InputChanged(tokenInput.toString()));
+              final tokenOneAmount = double.parse(tokenInput) * poolInfo.ratio;
+              _tokenAmountOneController.text = tokenOneAmount.toStringAsFixed(6);
+              bloc.add(Token0InputChanged(tokenOneAmount.toString()));
+            }
+          }
+          else {
+            if (tokenNumber == 1) {
+              bloc.add(Token0InputChanged(tokenInput.toString()));
+            }
+            else {
+              bloc.add(Token1InputChanged(tokenInput.toString()));
+            }
           }
         }
 
@@ -299,7 +309,10 @@ class _AddLiquidityState extends State<AddLiquidity> {
                                   onPressed: () {
                                     _tokenAmountOneController.text = balance0;
                                     if (state.status == BlocStatus.success) {
-                                      onTokenInputChange(tknNum, balance0);
+                                      onTokenInputChange(tknNum, balance0, true);
+                                    }
+                                    else {
+                                      onTokenInputChange(tknNum, balance0, false);
                                     }
                                   },
                                   child: Text("MAX",
@@ -312,11 +325,16 @@ class _AddLiquidityState extends State<AddLiquidity> {
                               BoxConstraints(maxWidth: tokenContainerWdt * 0.5),
                           child: IntrinsicWidth(
                             child: TextFormField(
-                              readOnly: ((tknNum == 2) && (state.status == BlocStatus.success)) ? isReadOnly : !isReadOnly,
+                              readOnly: ((tknNum == 2) &&
+                                      (state.status == BlocStatus.success))
+                                  ? isReadOnly
+                                  : !isReadOnly,
                               controller: tokenAmountController,
                               onChanged: (tokenInput) {
                                 if (state.status == BlocStatus.success) {
-                                  onTokenInputChange(tknNum, tokenInput);
+                                  onTokenInputChange(tknNum, tokenInput, true);
+                                } else {
+                                  onTokenInputChange(tknNum, tokenInput, false);
                                 }
                               },
                               style: textStyle(Colors.grey[400]!, 22, false),

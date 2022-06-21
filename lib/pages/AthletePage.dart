@@ -13,7 +13,7 @@ import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
-import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
+import 'package:ax_dapp/util/Colors.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
@@ -22,13 +22,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../util/AthletePageFormatHelper.dart';
+import 'scout/Widget Factories/AthleteDetailsWidget.dart';
+
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
 
-  const AthletePage({
-    Key? key,
-    required this.athlete,
-  }) : super(key: key);
+  const AthletePage({Key? key, required this.athlete}) : super(key: key);
 
   @override
   _AthletePageState createState() => _AthletePageState(athlete);
@@ -42,11 +42,6 @@ class _AthletePageState extends State<AthletePage> {
 
   int _widgetIndex = 0;
   int _longAptIndex = 0;
-  Color primaryWhiteColor = Color.fromRGBO(255, 255, 255, 1);
-  Color primaryOrangeColor = Color.fromRGBO(254, 197, 0, 1);
-  Color secondaryGreyColor = Color.fromRGBO(56, 56, 56, 1);
-  Color greyTextColor = Color.fromRGBO(160, 160, 160, 1);
-  Color secondaryOrangeColor = Color.fromRGBO(254, 197, 0, 0.2);
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
@@ -71,12 +66,13 @@ class _AthletePageState extends State<AthletePage> {
   IndexedStack buildWebViewContainer(BuildContext context) {
     final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
-    final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    final longBookValue = "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX";
     final longBookValuePercent = "+4%";
 
     final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
-    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    final shortBookValue =
+        "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
     return IndexedStack(index: _longAptIndex, children: [
@@ -235,12 +231,14 @@ class _AthletePageState extends State<AthletePage> {
   SafeArea buildMobileView(BuildContext context) {
     final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
-    final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    final longBookValue =
+        "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
 
     final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
-    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    final shortBookValue =
+        "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX ";
     final shortBookValuePercent = "+2%";
 
     double _width = MediaQuery.of(context).size.width;
@@ -505,8 +503,13 @@ class _AthletePageState extends State<AthletePage> {
                               Colors.transparent, 10, 1, secondaryGreyColor),
                           child: Stack(
                             children: <Widget>[
-                              buildGraph(
-                                  [athlete.bookPrice], [athlete.time], context),
+                              buildGraph([
+                                _isLongApt
+                                    ? athlete.longTokenBookPrice
+                                    : athlete.shortTokenBookPrice
+                              ], [
+                                athlete.time
+                              ], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -796,259 +799,9 @@ class _AthletePageState extends State<AthletePage> {
                                       ]),
                                 ])),
                             // Detail Section
-                            Container(
-                                child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                  Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text("Details",
-                                          style: textStyle(
-                                              Colors.white, 15, false, false))),
-                                  Divider(thickness: 1, color: greyTextColor),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text("Sport / League",
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false)),
-                                        Text("${athlete.sport.name}",
-                                            //toDo add map for the different league
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false))
-                                      ]),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text("Team",
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false)),
-                                        Text(
-                                            "${retrieveTeamCityName(athlete.team)} ${retrieveTeamNickname(athlete.team)}",
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false))
-                                      ]),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text("Position",
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false)),
-                                        Text(
-                                            retrieveFullMLBAthletePosition(
-                                                athlete.position),
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false))
-                                      ]),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text("Season Start",
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false)),
-                                        Text("Sep 1, 2021",
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false))
-                                      ]),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text("Season End",
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false)),
-                                        Text("Jan 10, 2022",
-                                            style: textStyle(greyTextColor, 12,
-                                                false, false))
-                                      ]),
-                                ])),
+                            AthleteDetailsWidget(athlete).athletePageDetails(),
                             // Stats section
-                            Container(
-                                height: 100,
-                                margin: EdgeInsets.only(top: 2),
-                                child: Column(children: <Widget>[
-                                  Container(
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                        Container(
-                                          child: Text("Key Statistics",
-                                              style: textStyle(Colors.white, 15,
-                                                  false, false)),
-                                        ),
-                                        Container(
-                                            width: _width * 0.4375,
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text("AtBat",
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text("HR",
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text("wOBA",
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text("SB",
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text("Err",
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text("InPl",
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                ])),
-                                      ])),
-                                  Divider(thickness: 1, color: greyTextColor),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text("Current season Stats",
-                                              style: textStyle(greyTextColor,
-                                                  12, false, false)),
-                                        ),
-                                        Container(
-                                            width: _width * 0.4375,
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text(
-                                                        athlete.atBats
-                                                            .toString(),
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text(
-                                                        athlete.homeRuns
-                                                            .toString(),
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text(
-                                                        athlete
-                                                            .weightedOnBasePercentage
-                                                            .toStringAsFixed(3),
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text(
-                                                        athlete.stolenBase
-                                                            .toString(),
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text(
-                                                        athlete.errors
-                                                            .toString(),
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text(
-                                                        athlete.inningsPlayed
-                                                            .toString(),
-                                                        style: textStyle(
-                                                            greyTextColor,
-                                                            10,
-                                                            false,
-                                                            false)),
-                                                  ),
-                                                ]))
-                                      ]),
-                                  Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text("View All Stats",
-                                          style: textStyle(primaryOrangeColor,
-                                              12, false, true))),
-                                ])),
+                            AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
                           ])),
                     ],
                   )
@@ -1087,7 +840,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         GetBuyInfoUseCase>(context),
                                                     wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
-                                                child: BuyDialog(athlete.name, athlete.bookPrice, athlete.id))),
+                                                child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
                                         child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
                                 Container(
                                     width: 160,
@@ -1109,7 +862,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         GetSellInfoUseCase>(context),
                                                     wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
-                                                child: SellDialog(athlete.name, athlete.bookPrice, athlete.id))),
+                                                child: SellDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
                                         child: Text("Sell", style: textStyle(primaryOrangeColor, 20, false, false))))
                               ]),
                           Row(
@@ -1176,7 +929,8 @@ class _AthletePageState extends State<AthletePage> {
     final WebWallet webWallet = Get.find();
     if (_width < 1160) wid = _width * 0.95;
     return Container(
-        height: 650,
+        height: _height / 1.5,
+        constraints: BoxConstraints(minHeight: 650, maxHeight: 850),
         child: Column(
           children: <Widget>[
             // title
@@ -1313,11 +1067,13 @@ class _AthletePageState extends State<AthletePage> {
                           Colors.transparent),
                       child: TextButton(
                         onPressed: () {
-                          webWallet.addTokenToWallet(_getCurrentTokenAddress(), _getTokenImage());
+                          webWallet.addTokenToWallet(
+                              _getCurrentTokenAddress(), _getTokenImage());
                         },
                         child: Text(
                           "+ Add to Wallet",
-                          style: textStyle(Colors.amber[500]!, 10, false, false),
+                          style:
+                              textStyle(Colors.amber[500]!, 10, false, false),
                         ),
                       ),
                     ),
@@ -1337,8 +1093,13 @@ class _AthletePageState extends State<AthletePage> {
                           child: Stack(
                             children: <Widget>[
                               // Graph
-                              buildGraph(
-                                  [athlete.bookPrice], [athlete.time], context),
+                              buildGraph([
+                                _isLongApt
+                                    ? athlete.longTokenBookPrice
+                                    : athlete.shortTokenBookPrice
+                              ], [
+                                athlete.time
+                              ], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -1362,10 +1123,17 @@ class _AthletePageState extends State<AthletePage> {
                                                         .spaceBetween,
                                                 children: <Widget>[
                                                   Text(
-                                                      athlete.bookPrice
-                                                              .toStringAsFixed(
-                                                                  4) +
-                                                          " AX",
+                                                      _isLongApt
+                                                          ? athlete
+                                                                  .longTokenBookPrice!
+                                                                  .toStringAsFixed(
+                                                                      4) +
+                                                              " AX"
+                                                          : athlete
+                                                                  .shortTokenBookPrice!
+                                                                  .toStringAsFixed(
+                                                                      4) +
+                                                              " AX",
                                                       style: textStyle(
                                                           Colors.white,
                                                           14,
@@ -1418,7 +1186,7 @@ class _AthletePageState extends State<AthletePage> {
                                                           wallet:
                                                               GetTotalTokenBalanceUseCase(Get.find()),
                                                           swapController: Get.find()),
-                                                      child: BuyDialog(athlete.name, athlete.bookPrice, athlete.id))),
+                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
                                               child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
                                       Container(
                                           width: 175,
@@ -1433,19 +1201,18 @@ class _AthletePageState extends State<AthletePage> {
                                                   context: context,
                                                   builder: (BuildContext context) => BlocProvider(
                                                       create: (BuildContext context) => SellDialogBloc(
-                                                          repo: RepositoryProvider.of<GetSellInfoUseCase>(
-                                                              context),
-                                                          wallet:
-                                                              GetTotalTokenBalanceUseCase(
-                                                                  Get.find()),
+                                                          repo: RepositoryProvider
+                                                              .of<GetSellInfoUseCase>(
+                                                                  context),
+                                                          wallet: GetTotalTokenBalanceUseCase(
+                                                              Get.find()),
                                                           swapController:
                                                               Get.find()),
                                                       child: SellDialog(
                                                           athlete.name,
-                                                          athlete.bookPrice,
+                                                          athlete.longTokenBookPrice!,
                                                           athlete.id))),
-                                              child: Text("Sell",
-                                                  style: textStyle(Colors.black, 20, false, false))))
+                                              child: Text("Sell", style: textStyle(Colors.black, 20, false, false))))
                                     ]),
                                 Row(
                                     mainAxisAlignment:
@@ -1503,10 +1270,12 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX ";
+    final longBookValue =
+        "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
 
-    final shortBookValue = "${athlete.bookPrice.toStringAsFixed(2)} AX";
+    final shortBookValue =
+        "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
 
     final WalletController walletController = Get.find();
@@ -1605,8 +1374,8 @@ class _AthletePageState extends State<AthletePage> {
                                         Row(children: <Widget>[
                                           Text(
                                               (_longAptIndex == 0)
-                                                  ? "${athlete.longTokenPrice.toStringAsFixed(2)} AX"
-                                                  : "${athlete.shortTokenPrice.toStringAsFixed(2)} AX",
+                                                  ? "${athlete.longTokenPrice!.toStringAsFixed(2)} AX"
+                                                  : "${athlete.shortTokenPrice!.toStringAsFixed(2)} AX",
                                               style: textStyle(Colors.white, 14,
                                                   false, false)),
                                           Container(width: 5),
@@ -1614,12 +1383,24 @@ class _AthletePageState extends State<AthletePage> {
                                               //alignment: Alignment.topLeft,
                                               child: Text(
                                                   (_longAptIndex == 0)
-                                                      ? getPercentageDesc(athlete.longTokenPercentage)
-                                                      : getPercentageDesc(athlete.shortTokenPercentage),
-                                                  style: (_longAptIndex == 0) 
-                                                      ? textStyle(getPercentageColor(athlete.longTokenPercentage), 12, false, false)
-                                                      : textStyle(getPercentageColor(athlete.shortTokenPercentage), 12, false, false)))
-                                          ]),
+                                                      ? getPercentageDesc(athlete
+                                                          .longTokenPercentage!)
+                                                      : getPercentageDesc(athlete
+                                                          .shortTokenPercentage!),
+                                                  style: (_longAptIndex == 0)
+                                                      ? textStyle(
+                                                          getPercentageColor(athlete
+                                                              .longTokenPercentage!),
+                                                          12,
+                                                          false,
+                                                          false)
+                                                      : textStyle(
+                                                          getPercentageColor(athlete
+                                                              .shortTokenPercentage!),
+                                                          12,
+                                                          false,
+                                                          false)))
+                                        ]),
                                         Text("4.24 AX",
                                             style: textStyle(greyTextColor, 14,
                                                 false, false))
@@ -1685,191 +1466,9 @@ class _AthletePageState extends State<AthletePage> {
                             ]),
                       ])),
               // Detail Section
-              Container(
-                  height: 250,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text("Details",
-                                style:
-                                    textStyle(Colors.white, 24, false, false))),
-                        Divider(thickness: 1, color: greyTextColor),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Sport / League",
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false)),
-                              Text("${athlete.sport.name}",
-                                  //toDo add map for the different league
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false))
-                            ]),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Team",
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false)),
-                              Text(
-                                  "${retrieveTeamCityName(athlete.team)} ${retrieveTeamNickname(athlete.team)}",
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false))
-                            ]),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Position",
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false)),
-                              Text(
-                                  retrieveFullMLBAthletePosition(
-                                      athlete.position),
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false))
-                            ]),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Season Start",
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false)),
-                              Text("Mar 31, 2022",
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false))
-                            ]),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text("Season End",
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false)),
-                              Text("Nov 2, 2022",
-                                  style: textStyle(
-                                      greyTextColor, 20, false, false))
-                            ]),
-                      ])),
+              AthleteDetailsWidget(athlete).athletePageDetails(),
               // Stats section
-              Container(
-                  height: 150,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Container(
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                              Container(
-                                child: Text("Key Statistics",
-                                    style: textStyle(
-                                        Colors.white, 24, false, false)),
-                              ),
-                              Container(
-                                  width: 260,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("AtBat",
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("HR",
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("wOBA",
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("SB",
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("Err",
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("InPl",
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                      ])),
-                            ])),
-                        Divider(thickness: 1, color: greyTextColor),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                child: Text("Current season Stats",
-                                    style: textStyle(
-                                        greyTextColor, 16, false, false)),
-                              ),
-                              Container(
-                                  width: 260,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text(athlete.atBats.toString(),
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text(
-                                              athlete.homeRuns.toString(),
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text(
-                                              athlete.weightedOnBasePercentage
-                                                  .toStringAsFixed(3),
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text(
-                                              athlete.stolenBase.toString(),
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text(athlete.errors.toString(),
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text(
-                                              athlete.inningsPlayed.toString(),
-                                              style: textStyle(greyTextColor,
-                                                  10, false, false)),
-                                        ),
-                                      ]))
-                            ]),
-                      ])),
+              AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
             ]));
   }
 
@@ -1921,43 +1520,6 @@ class _AthletePageState extends State<AthletePage> {
     );
   }
 
-  TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    if (isBold) if (isUline)
-      return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-          fontWeight: FontWeight.w400,
-          decoration: TextDecoration.underline);
-    else
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-      );
-    else if (isUline)
-      return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-          decoration: TextDecoration.underline);
-    else
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
-  }
-
-  BoxDecoration boxDecoration(
-      Color col, double rad, double borWid, Color borCol) {
-    return BoxDecoration(
-        color: col,
-        borderRadius: BorderRadius.circular(rad),
-        border: Border.all(color: borCol, width: borWid));
-  }
-
   String _getCurrentTokenAddress() {
     return _isLongApt
         ? getLongAptAddress(athlete.id)
@@ -1966,7 +1528,7 @@ class _AthletePageState extends State<AthletePage> {
 
   String _getTokenImage() {
     return _isLongApt
-    ? "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_noninverted.png" 
-    : "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_inverted.png";
+        ? "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_noninverted.png"
+        : "https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_inverted.png";
   }
 }

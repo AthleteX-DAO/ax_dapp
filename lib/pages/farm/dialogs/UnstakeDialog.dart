@@ -103,12 +103,12 @@ Dialog unstakeDialog(
                       child: TextButton(
                         onPressed: () {
                           unStakeAxInput.text =
-                              selectedFarm.dStaked.value.toString();
-                          selectedFarm.dUnStakeBalance.value =
-                              double.parse(unStakeAxInput.text);
-                          totalStakedBalance.value =
-                              selectedFarm.dStaked.value -
-                                  selectedFarm.dUnStakeBalance.value;
+                              selectedFarm.stakedInfo.value.viewAmount;
+                          selectedFarm.strUnStakeInput.value =
+                              unStakeAxInput.text;
+                          totalStakedBalance.value = double.parse(
+                                  selectedFarm.stakedInfo.value.viewAmount) -
+                              double.parse(selectedFarm.strUnStakeInput.value);
                         },
                         child: Text(
                           "Max",
@@ -121,11 +121,10 @@ Dialog unstakeDialog(
                       child: TextFormField(
                         controller: unStakeAxInput,
                         onChanged: (value) {
-                          selectedFarm.dUnStakeBalance.value =
-                              double.parse(value);
-                          totalStakedBalance.value =
-                              selectedFarm.dStaked.value -
-                                  selectedFarm.dUnStakeBalance.value;
+                          selectedFarm.strUnStakeInput.value = value;
+                          totalStakedBalance.value = double.parse(
+                                  selectedFarm.stakedInfo.value.viewAmount) -
+                              double.parse(selectedFarm.strUnStakeInput.value);
                         },
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
@@ -153,7 +152,7 @@ Dialog unstakeDialog(
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Obx(() => Text(
-                    "${selectedFarm.dStaked} ${selectedFarm.strStakedSymbol}",
+                    "${selectedFarm.stakedInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}",
                     style: textStyle(Colors.grey[400]!, 14, false),
                   )),
             ],
@@ -177,7 +176,7 @@ Dialog unstakeDialog(
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Obx(() => Text(
-                    "${selectedFarm.dUnStakeBalance} ${selectedFarm.strStakedSymbol}",
+                    "${selectedFarm.strUnStakeInput.value} ${selectedFarm.strStakedSymbol}",
                     style: textStyle(Colors.grey[400]!, 14, false),
                   )),
             ],
