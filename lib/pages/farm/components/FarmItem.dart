@@ -45,7 +45,8 @@ Widget farmItem(BuildContext context, bool isWeb, FarmController farm,
               "Current Balance",
               style: txStyle,
             ),
-            Obx(() => Text("${farm.strCurrentBalance} ${farm.strStakedSymbol}",
+            Obx(() => Text(
+                "${farm.stakingInfo.value.viewAmount} ${farm.strStakedSymbol}",
                 style: txStyle))
           ],
         ),
@@ -57,7 +58,7 @@ Widget farmItem(BuildContext context, bool isWeb, FarmController farm,
               "TVL",
               style: txStyle,
             ),
-            Text("\$${farm.dTVL.toStringAsFixed(2)}", style: txStyle)
+            Text("\$${farm.strTVL}", style: txStyle)
           ],
         ),
         // Total APY
@@ -65,7 +66,7 @@ Widget farmItem(BuildContext context, bool isWeb, FarmController farm,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text("Total APR", style: txStyle),
-            Text("${farm.dAPR.toStringAsFixed(2)}%", style: txStyle)
+            Text("${farm.strAPR}%", style: txStyle)
           ],
         ),
       ],

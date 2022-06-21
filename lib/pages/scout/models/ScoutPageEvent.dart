@@ -1,7 +1,9 @@
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:equatable/equatable.dart';
 
-class ScoutPageEvent extends Equatable {
+abstract class ScoutPageEvent extends Equatable {
+  const ScoutPageEvent();
+  
   @override
   List<Object?> get props => [];
 }
@@ -24,11 +26,13 @@ class OnPageRefresh extends ScoutPageEvent {
 
 class OnAthleteSearch extends ScoutPageEvent {
   final String searchedName;
+  final SupportedSport selectedSport;
 
   OnAthleteSearch({
     required this.searchedName,
+    required this.selectedSport,
   });
 
   @override
-  List<Object?> get props => [searchedName];
+  List<Object?> get props => [searchedName, selectedSport];
 }

@@ -5,51 +5,34 @@ class AthleteScoutModel {
   final String name;
   final String position;
   final String team;
-  final double longTokenBookPrice;
-  final double longTokenBookPriceUsd;
-  final double shortTokenBookPrice;
-  final double shortTokenBookPriceUsd;
+  final double? longTokenBookPrice;
+  final double? longTokenBookPriceUsd;
+  final double? shortTokenBookPrice;
+  final double? shortTokenBookPriceUsd;
   final SupportedSport sport;
   final String time;
-  final double homeRuns;
-  final double strikeOuts;
-  final double saves;
-  final double stolenBase;
-  final double atBats;
-  final double weightedOnBasePercentage;
-  final double errors;
-  final double inningsPlayed;
-
-  final double longTokenPrice;
-  final double longTokenPriceUsd;
-  final double shortTokenPrice;
-  final double longTokenPercentage;
-  final double shortTokenPercentage;
-  final double shortTokenPriceUsd;
+  final double? longTokenPrice;
+  final double? longTokenPriceUsd;
+  final double? shortTokenPrice;
+  final double? longTokenPercentage;
+  final double? shortTokenPercentage;
+  final double? shortTokenPriceUsd;
 
   AthleteScoutModel(
-      this.id,
-      this.name,
-      this.position,
-      this.team,
-      this.longTokenBookPrice,
-      this.shortTokenBookPrice,
-      this.sport,
-      this.time,
-      this.homeRuns,
-      this.strikeOuts,
-      this.saves,
-      this.stolenBase,
-      this.atBats,
-      this.weightedOnBasePercentage,
-      this.errors,
-      this.inningsPlayed,
-      this.longTokenPrice,
-      this.shortTokenPrice,
-      this.longTokenPercentage,
-      this.shortTokenPercentage,
-      this.longTokenBookPriceUsd,
-      this.shortTokenBookPriceUsd,
-      this.longTokenPriceUsd,
-      this.shortTokenPriceUsd);
+      {required this.id,
+      required this.name,
+      required this.position,
+      required this.team,
+      required this.longTokenBookPrice,
+      required this.longTokenBookPriceUsd,
+      required this.shortTokenBookPrice,
+      required this.shortTokenBookPriceUsd,
+      required this.sport,
+      required this.time,
+      required this.longTokenPrice,
+      required this.shortTokenPrice,
+      required this.longTokenPercentage,
+      required this.shortTokenPercentage,
+      required this.longTokenPriceUsd,
+      required this.shortTokenPriceUsd});
 }

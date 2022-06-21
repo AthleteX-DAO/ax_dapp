@@ -104,13 +104,13 @@ Dialog stakeDialog(
                           Colors.transparent, 100, 0.5, Colors.grey[400]!),
                       child: TextButton(
                         onPressed: () {
-                            stakeAxInput.text = selectedFarm.strCurrentBalance.value;
-                            selectedFarm.dStakeBalance.value =
-                                double.parse(selectedFarm.strCurrentBalance.value);
-                            totalStakedBalance.value =
-                                selectedFarm.dStaked.value +
-                                    selectedFarm.dStakeBalance.value;
-                         },
+                          stakeAxInput.text =
+                              selectedFarm.stakingInfo.value.viewAmount;
+                          selectedFarm.strStakeInput.value = stakeAxInput.text;
+                          totalStakedBalance.value = double.parse(
+                                  selectedFarm.stakedInfo.value.viewAmount) +
+                              double.parse(selectedFarm.strStakeInput.value);
+                        },
                         child: Text(
                           "Max",
                           style: textStyle(Colors.grey[400]!, 9, false),
@@ -122,11 +122,10 @@ Dialog stakeDialog(
                       child: TextFormField(
                         controller: stakeAxInput,
                         onChanged: (value) {
-                          selectedFarm.dStakeBalance.value =
-                              double.parse(value);
-                          totalStakedBalance.value =
-                              selectedFarm.dStaked.value +
-                                  selectedFarm.dStakeBalance.value;
+                          selectedFarm.strStakeInput.value = value;
+                          totalStakedBalance.value = double.parse(
+                                  selectedFarm.stakedInfo.value.viewAmount) +
+                              double.parse(selectedFarm.strStakeInput.value);
                         },
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
@@ -154,7 +153,7 @@ Dialog stakeDialog(
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Obx(() => Text(
-                    "${selectedFarm.strCurrentBalance} ${selectedFarm.strStakedSymbol}",
+                    "${selectedFarm.stakingInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}",
                     style: textStyle(Colors.grey[400]!, 14, false),
                   )),
             ],
@@ -167,7 +166,7 @@ Dialog stakeDialog(
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Obx(() => Text(
-                    "${selectedFarm.dStaked.toString()} ${selectedFarm.strStakedSymbol}",
+                    "${selectedFarm.stakedInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}",
                     style: textStyle(Colors.grey[400]!, 14, false),
                   )),
             ],
@@ -191,7 +190,7 @@ Dialog stakeDialog(
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
               Obx(() => Text(
-                    "${selectedFarm.dStakeBalance.value.toString()} ${selectedFarm.strStakedSymbol}",
+                    "${selectedFarm.strStakeInput.value} ${selectedFarm.strStakedSymbol}",
                     style: textStyle(Colors.grey[400]!, 14, false),
                   )),
             ],
