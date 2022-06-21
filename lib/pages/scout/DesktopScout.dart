@@ -4,6 +4,7 @@ import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
+import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/pages/athlete/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
@@ -31,10 +32,12 @@ class DesktopScout extends StatefulWidget {
 }
 
 class _DesktopScoutState extends State<DesktopScout> {
-  final myController = TextEditingController();
+  final myController = TextEditingController(text: input);
+  static String input = "";
   bool athletePage = false;
   static bool isLongToken = true;
   static int sportState = 0;
+  static SupportedSport supportedSport = SupportedSport.ALL;
   String allSportsTitle = "All Sports";
   String longTitle = "Long";
   AthleteScoutModel? curAthlete;
@@ -46,6 +49,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     // Clean up the controller when the widget is removed from the
     // widget tree.
     myController.dispose();
+    input = "";
     super.dispose();
   }
 
@@ -131,15 +135,14 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: TextButton(
         onPressed: () {
           myController.clear();
-          if (sportState != 0)
-            setState(() {
-              sportState = 0;
-            });
-          bloc.add(OnPageRefresh());
+          setState(() {
+            supportedSport = SupportedSport.ALL;
+          });
+          bloc.add(SelectSport(selectedSport: SupportedSport.ALL));
         },
         child: Text("ALL",
             style: textSwapState(
-                sportState == 0,
+                supportedSport == SupportedSport.ALL,
                 textStyle(Colors.white, sportFilterTxSz, false, false),
                 textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
       )),
@@ -147,15 +150,14 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: TextButton(
         onPressed: () {
           myController.clear();
-          if (sportState != 1)
-            setState(() {
-              sportState = 1;
-            });
+          setState(() {
+            supportedSport = SupportedSport.MLB;
+          });
           bloc.add(SelectSport(selectedSport: SupportedSport.MLB));
         },
         child: Text("MLB",
             style: textSwapState(
-                sportState == 1,
+                supportedSport == SupportedSport.MLB,
                 textStyle(Colors.white, sportFilterTxSz, false, false),
                 textStyle(Colors.amber[400]!, sportFilterTxSz, false, true))),
       )),
@@ -163,7 +165,7 @@ class _DesktopScoutState extends State<DesktopScout> {
       toggleTokenButton(800, 40),
       Container(width: 10),
       Container(
-        child: createSearchBar(),
+        child: createSearchBar(bloc, supportedSport),
       ),
     ]);
   }
@@ -335,7 +337,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                   child: Expanded(
                     child: Row(
                       children: [
-                        createSearchBar(),
+                        createSearchBar(bloc, supportedSport),
                         Spacer(),
                       ],
                     ),
@@ -904,7 +906,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     return textWidget;
   }
 
-  Widget createSearchBar() {
+  Widget createSearchBar(ScoutPageBloc bloc, SupportedSport selectedSport) {
     double widthSize = MediaQuery.of(context).size.width;
     return Container(
       width: searchWidth(widthSize),
@@ -928,7 +930,13 @@ class _DesktopScoutState extends State<DesktopScout> {
             child: Container(
               child: TextFormField(
                 controller: myController,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  setState(() {
+                    input = value;
+                  });
+                  bloc.add(OnAthleteSearch(
+                      searchedName: value, selectedSport: selectedSport));
+                },
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 8.5),
@@ -936,6 +944,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                   hintStyle:
                       TextStyle(color: Color.fromRGBO(235, 235, 245, 0.6)),
                 ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[a-zA-z. ]'))
+                ],
               ),
             ),
           ),
