@@ -124,6 +124,8 @@ flutter:
     - assets/images/apt_noninverted.png
     - assets/images/apt_inverted.png
     - assets/nfl_athletes.json
+    - assets/images/weth_small.png
+    - assets/images/USDC_small.png
 
 flutter_icons:
   android: "launcher_icon"
