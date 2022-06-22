@@ -29,8 +29,8 @@ class TradePageState extends Equatable {
         tokenInputFromAmount: 0,
         tokenInputToAmount: 0,
         status: BlocStatus.initial,
-        tokenFrom: TokenList.tokenList[0],
-        tokenTo: TokenList.tokenList[3],
+        tokenFrom: TokenListManager.getTokenList()[0],
+        tokenTo: TokenListManager.getTokenList()[3],
         swapInfo: TokenSwapInfo.empty());
   }
 

@@ -1,6 +1,5 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
-import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';
 import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 
 import './createWallet/createWallet.dart'

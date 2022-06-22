@@ -11,7 +11,7 @@ import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
-import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/service/TokenListManager.dart';
 import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/Colors.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';

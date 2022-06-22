@@ -3,7 +3,7 @@ import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/service/TokenListManager.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

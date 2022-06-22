@@ -1,4 +1,4 @@
-import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/service/TokenListManager.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -28,7 +28,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     super.initState();
 
     tokenNumber = widget.tknNum;
-    tokenListFilter = TokenList.tokenList;
+    tokenListFilter = TokenListManager.getTokenList();
   }
 
   @override
@@ -125,7 +125,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    tokenListFilter = TokenList.tokenList
+                    tokenListFilter = TokenListManager.getTokenList()
                         .where((token) => token.ticker
                             .toUpperCase()
                             .contains(value.toUpperCase()))

@@ -20,8 +20,8 @@ class PoolState extends Equatable {
         balance1: "0.0",
         token0AmountInput: 0.0,
         token1AmountInput: 0.0,
-        token0: TokenList.tokenList[0],
-        token1: TokenList.tokenList[1],
+        token0: TokenListManager.getTokenList()[0],
+        token1: TokenListManager.getTokenList()[1],
         status: BlocStatus.initial,
         poolPairInfo: PoolPairInfo.empty());
   }

@@ -1,4 +1,6 @@
 import 'package:ax_dapp/service/Controller/ERC20Behavior.dart';
+import 'package:ax_dapp/service/Controller/Swap/SupportedChain.dart';
+import 'package:ax_dapp/util/ChainManager.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 
@@ -9,7 +11,7 @@ class AXT extends Token with ERC20Behavior {
       "0x76d9a6e4cdefc840a47069b71824ad8ff4819e85"; 
 
   AXT(String name, String ticker, [AssetImage? icon])
-      : super(name, ticker, polygonAddress) {
+      : super(name, ticker, ChainManager.getSelectedChain() == SupportedChain.MATIC ? polygonAddress : mumbaiAddress) {
     if (icon != null) {
       super.icon = icon;
     }
