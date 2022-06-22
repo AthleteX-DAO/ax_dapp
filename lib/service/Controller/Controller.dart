@@ -2,9 +2,6 @@
 
 import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 
-import './createWallet/createWallet.dart'
-    if (dart.library.io) './createWallet/mobile.dart'
-    if (dart.library.js) './createWallet/web.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
