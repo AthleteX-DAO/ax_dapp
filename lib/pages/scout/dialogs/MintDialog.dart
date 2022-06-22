@@ -1,8 +1,10 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
+import 'package:ax_dapp/service/Controller/Swap/SupportedChain.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/util/ChainManager.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,8 +43,8 @@ class _MintDialogState extends State<MintDialog> {
 
   Future<void> updateStats() async {
     try {
-      balance.value =
-          await walletController.getTokenBalance(AXT.polygonAddress);
+      balance.value = ChainManager.getSelectedChain() == SupportedChain.MATIC ?
+          await walletController.getTokenBalance(AXT.polygonAddress) : await walletController.getTokenBalance(AXT.mumbaiAddress);
       maxAmount.value = double.parse(balance.value) /
           15000; // 15000 is collateral per pair for the APTs
     } catch (error) {

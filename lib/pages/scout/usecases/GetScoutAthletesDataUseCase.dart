@@ -6,7 +6,7 @@ import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/SportsRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
-import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/service/TokenListPolygon.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
@@ -125,12 +125,12 @@ class GetScoutAthletesDataUseCase {
     List<AthleteScoutModel> mappedAthletes = [];
     athletes.forEach(
       (athlete) {
-        bool isIdFound = TokenList.idToAddress.containsKey(athlete.id);
+        bool isIdFound = TokenListPolygon.idToAddress.containsKey(athlete.id);
         String strLongTokenAddr = isIdFound
-            ? TokenList.idToAddress[athlete.id]![1].toUpperCase()
+            ? TokenListPolygon.idToAddress[athlete.id]![1].toUpperCase()
             : "";
         String strShortTokenAddr = isIdFound
-            ? TokenList.idToAddress[athlete.id]![2].toUpperCase()
+            ? TokenListPolygon.idToAddress[athlete.id]![2].toUpperCase()
             : "";
         MarketModel longToken = getMarketModel(strLongTokenAddr, athlete.price);
         MarketModel shortToken = getMarketModel(

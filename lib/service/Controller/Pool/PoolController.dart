@@ -2,7 +2,9 @@ import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/contracts/APTRouter.g.dart';
 import 'package:ax_dapp/contracts/Dex.g.dart';
+import 'package:ax_dapp/service/Controller/Swap/SupportedChain.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/util/ChainManager.dart';
 import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
@@ -10,8 +12,6 @@ import 'package:get/get.dart';
 
 class PoolController extends GetxController {
   Controller controller = Get.find();
-  late Dex _factory;
-  late APTRouter _aptRouter;
   var address1 = "".obs, address2 = "".obs;
   String lpTokenAAddress = "";
   String lpTokenBAddress = "";
@@ -33,16 +33,6 @@ class PoolController extends GetxController {
       EthereumAddress.fromHex("0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B");
   final EthereumAddress routerMainnetAddress =
       EthereumAddress.fromHex("0x15e4eb77713CD274472D95bDfcc7797F6a8C2D95");
-
-  PoolController() {
-    // This is meant to switch as per the correct chain
-    EthereumAddress routerAddress = routerMainnetAddress;
-    EthereumAddress dexAddress = dexMainnetAddress;
-
-    _factory = Dex(address: dexAddress, client: controller.client.value);
-    _aptRouter =
-        APTRouter(address: routerAddress, client: controller.client.value);
-  }
 
   Future<void> approve() async {
     print("[Console] Pool Controller -> Inside approve");
@@ -92,8 +82,9 @@ class PoolController extends GetxController {
 
     EthereumAddress to = await controller.credentials.extractAddress();
     Credentials credentials = controller.credentials;
-
-    String txString = await _aptRouter.addLiquidity(
+    APTRouter aptRouter =
+        APTRouter(address: ChainManager.getSelectedChain() == SupportedChain.MATIC ? routerMainnetAddress : routerTestnetAddress, client: controller.client.value);
+    String txString = await aptRouter.addLiquidity(
         tokenAAddress,
         tokenBAddress,
         amountADesired,
@@ -147,8 +138,9 @@ class PoolController extends GetxController {
 
     Credentials credentials = controller.credentials;
     EthereumAddress to = await controller.credentials.extractAddress();
-
-    String txString = await _aptRouter.removeLiquidity(tokenAAddress,
+    APTRouter aptRouter =
+        APTRouter(address: ChainManager.getSelectedChain() == SupportedChain.MATIC ? routerMainnetAddress : routerTestnetAddress, client: controller.client.value);
+    String txString = await aptRouter.removeLiquidity(tokenAAddress,
         tokenBAddress, liquidity, amountAMin, amountBMin, to, twoMinuteDeadline,
         credentials: credentials);
     controller.updateTxString(txString);
@@ -158,9 +150,9 @@ class PoolController extends GetxController {
     final credentials = controller.credentials;
     EthereumAddress tknA = EthereumAddress.fromHex("$address1");
     EthereumAddress tknB = EthereumAddress.fromHex("$address2");
-
+    Dex factory = Dex(address: ChainManager.getSelectedChain() == SupportedChain.MATIC ? dexMainnetAddress : dexTestnetAddress, client: controller.client.value);
     String txString =
-        await _factory.createPair(tknA, tknB, credentials: credentials);
+        await factory.createPair(tknA, tknB, credentials: credentials);
     controller.updateTxString(txString);
   }
 

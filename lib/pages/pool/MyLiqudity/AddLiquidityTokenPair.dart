@@ -1,5 +1,5 @@
 import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/service/TokenListManager.dart';
 
 class AddLiquidityTokenPair {
   final Token token0;
@@ -11,9 +11,9 @@ class AddLiquidityTokenPair {
 
   factory AddLiquidityTokenPair.fromTokenPairAddresses(
       String token0Address, String token1Address) {
-    int tokenAIndex = TokenList.tokenList.indexWhere(
+    int tokenAIndex = TokenListManager.getTokenList().indexWhere(
         (token) => token.address.value.toLowerCase() == token0Address);
-    int tokenBIndex = TokenList.tokenList.indexWhere(
+    int tokenBIndex = TokenListManager.getTokenList().indexWhere(
         (token) => token.address.value.toLowerCase() == token1Address);
     print(
         '[Console] - tokenA index: $tokenAIndex token0 address: $token0Address');
@@ -21,7 +21,7 @@ class AddLiquidityTokenPair {
         '[Console] - tokenB index: $tokenBIndex token1 address: $token1Address');
 
     return AddLiquidityTokenPair(
-        token0: TokenList.tokenList[tokenAIndex],
-        token1: TokenList.tokenList[tokenBIndex]);
+        token0: TokenListManager.getTokenList()[tokenAIndex],
+        token1: TokenListManager.getTokenList()[tokenBIndex]);
   }
 }

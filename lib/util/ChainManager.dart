@@ -6,6 +6,7 @@ class ChainManager {
 
   void setSelectedChain(SupportedChain selectedChain) {
     _selectedChain = selectedChain;
+    print("[Console] Chain has been set to ${_selectedChain.name}");
   }
 
   static SupportedChain getSelectedChain() { return _selectedChain; }

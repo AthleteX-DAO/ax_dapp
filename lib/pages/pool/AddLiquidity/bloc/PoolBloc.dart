@@ -3,9 +3,9 @@ import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/TokenListManager.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ax_dapp/service/TokenList.dart' show TokenList;
 import 'package:equatable/equatable.dart';
 
 part 'package:ax_dapp/pages/pool/AddLiquidity/models/PoolEvent.dart';
