@@ -31,7 +31,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_web3/flutter_web3.dart' as FlutterWeb3;
 
 class V1App extends StatefulWidget {
   @override
