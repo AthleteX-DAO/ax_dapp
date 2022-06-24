@@ -21,6 +21,7 @@ import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/Colors.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:ax_dapp/util/chart/AthletePageGraph.dart';
+import 'package:ax_dapp/util/chart/extensions/graphData.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
 import 'package:fl_chart/fl_chart.dart';
@@ -28,6 +29,8 @@ import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../util/AthletePageFormatHelper.dart';
 
@@ -79,14 +82,14 @@ class _AthletePageState extends State<AthletePage> {
   }
 
   IndexedStack buildWebViewContainer(BuildContext context) {
-    List<FlSpot> chartStats = [];
+    List<GraphData> chartStats = [];
     return IndexedStack(index: _longAptIndex, children: [
       buildWebView(athlete, chartStats),
       buildWebView(athlete, chartStats)
     ]);
   }
 
-  Container buildWebView(AthleteScoutModel athlete, List<FlSpot> chartStats) {
+  Container buildWebView(AthleteScoutModel athlete, List<GraphData> chartStats) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
@@ -909,7 +912,7 @@ class _AthletePageState extends State<AthletePage> {
     String shortBookValue,
     String longBookValuePercent,
     String shortBookValuePercent,
-    List<FlSpot> chartStats,
+    List<GraphData> chartStats,
   ) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
@@ -1084,108 +1087,39 @@ class _AthletePageState extends State<AthletePage> {
                               Padding(
                                 padding: EdgeInsets.only(
                                     left: 28.0, right: 28.0, top: 14.0),
-                                child: AthletePageGraph(chartStats: chartStats),
+                                child: SfCartesianChart(
+                                  title: ChartTitle(text: 'Yearly sales analysis'),
+                                  legend: Legend(isVisible: true),
+                                  series: <FastLineSeries>[
+                                    FastLineSeries<GraphData, DateTime>(
+                                        name: 'Price',
+                                        dataSource: chartStats,
+                                        xValueMapper: ( GraphData data, _) => data.date,
+                                        yValueMapper: (GraphData data, _) => data.price,
+                                        dataLabelSettings: DataLabelSettings(isVisible: true),
+                                        enableTooltip: true,
+                                        color: Colors.orange,
+                                        width: 4,
+                                        opacity: 1,
+                                        dashArray: <double>[5, 5],
+                                        )
+                                  ],
+                                  primaryXAxis: DateTimeAxis(
+                                    dateFormat: DateFormat.MMM(),
+                                    majorGridLines: MajorGridLines(width: 0)
+
+                                  ),
+                                  primaryYAxis: NumericAxis(
+                                    interval: 100,
+                                      minimum: 4000,
+                                      maximum: 10000,
+                                      labelFormat: '{value}K',
+                                      numberFormat: NumberFormat.simpleCurrency(decimalDigits: 0)),
+                                ),
                               ),
                               // Price
                             ],
                           )),
-                      Container(
-                          width: wid * .875,
-                          height: 150,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              primaryOrangeColor,
-                                              100,
-                                              0,
-                                              primaryOrangeColor),
-                                          child: TextButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AthletePageGraph(
-                                                                chartStats:
-                                                                    chartStats)));
-                                              },
-                                              child: Text("Buy",
-                                                  style: textStyle(Colors.black,
-                                                      20, false, false)))),
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.white,
-                                              100,
-                                              0,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) => BlocProvider(
-                                                      create: (BuildContext context) => SellDialogBloc(
-                                                          repo: RepositoryProvider
-                                                              .of<GetSellInfoUseCase>(
-                                                                  context),
-                                                          wallet: GetTotalTokenBalanceUseCase(
-                                                              Get.find()),
-                                                          swapController:
-                                                              Get.find()),
-                                                      child: SellDialog(
-                                                          athlete.name,
-                                                          athlete.longTokenBookPrice!,
-                                                          athlete.id))),
-                                              child: Text("Sell", style: textStyle(Colors.black, 20, false, false))))
-                                    ]),
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.transparent,
-                                              100,
-                                              2,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          MintDialog(athlete)),
-                                              child: Text("Mint",
-                                                  style: textStyle(Colors.white,
-                                                      20, false, false)))),
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.transparent,
-                                              100,
-                                              2,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      RedeemDialog(athlete)),
-                                              child: Text("Redeem",
-                                                  style: textStyle(Colors.white,
-                                                      20, false, false))))
-                                    ]),
-                              ]))
                     ])),
           ],
         ));

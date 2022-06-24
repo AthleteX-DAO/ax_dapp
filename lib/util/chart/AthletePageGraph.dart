@@ -84,10 +84,31 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
       case 1:
         text = '1K';
         break;
+      case 2:
+        text = '2k';
+        break;
+      case 3:
+        text = '3k';
+        break;
+      case 4:
+        text = '4k';
+        break;
       case 5:
         text = '5k';
         break;
-      case 10:
+      case 6:
+        text = '6k';
+        break;
+      case 7:
+        text = '7k';
+        break;
+      case 8:
+        text = '8k';
+        break;
+      case 9:
+        text = '9k';
+        break;
+        case 10:
         text = '10k';
         break;
       default:
@@ -101,11 +122,15 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
     final List<FlSpot> newData = chartStats.toSet().toList();
     print('[Console] - New data: $newData');
     return LineChartData(
+      minY: 0,
+      maxY: 10,
+      minX: 0,
+      maxX: 31,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
         horizontalInterval: 1,
-        verticalInterval: 1,
+        verticalInterval: 1000,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: const Color(0xff37434d),
@@ -130,17 +155,17 @@ class _AthletePageGraphState extends State<AthletePageGraph> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: false,
-            reservedSize: 30,
+            reservedSize: 1,
             interval: 1,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: false,
+            showTitles: true,
             interval: 1,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
+            reservedSize: 32,
           ),
         ),
       ),
