@@ -127,7 +127,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
               Widget>[
             Container(
-              child: Text("Current season Stats",
+              child: Text("Current Season Stats",
                   style: textStyle(greyTextColor, 20, false, false)),
             ),
             Container(
