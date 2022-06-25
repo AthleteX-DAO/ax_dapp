@@ -382,7 +382,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
 
         Widget youWillReceiveToolTip() {
           return Tooltip(
-            //height: 50,
+            height: 50,
             padding: EdgeInsets.all(10),
             verticalOffset: -60,
             decoration: BoxDecoration(
