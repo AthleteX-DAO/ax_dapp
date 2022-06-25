@@ -8,6 +8,7 @@ import 'package:ax_dapp/pages/trade/DesktopTrade.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
 import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
+import 'package:ax_dapp/repositories/NFLRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
@@ -126,6 +127,7 @@ class _V1AppState extends State<V1App> {
                       graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                       sportsRepos: [
                         RepositoryProvider.of<MLBRepo>(context),
+                        RepositoryProvider.of<NFLRepo>(context)
                       ],
                       coinGeckoRepo:
                           RepositoryProvider.of<CoinGeckoRepo>(context),
