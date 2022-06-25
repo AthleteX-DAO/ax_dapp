@@ -68,7 +68,7 @@ class _AthletePageState extends State<AthletePage> {
     final longMarketPricePercent = "-2%";
     final longBookValue = "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX";
     final longBookValuePercent = "+4%";
-
+    
     final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
     final shortBookValue =
@@ -741,17 +741,14 @@ class _AthletePageState extends State<AthletePage> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: <Widget>[
-
                                                   Row(children: <Widget>[
                                                     Text(bookValue,
                                                         style: textStyle(
                                                             Colors.white,
                                                             12,
                                                             false,
-                                                            false)),
-                                                 
+                                                            false)),     
                                                     Container(
-                                                       
                                                         child: Text(
                                                             bookValuePercent,
                                                             style: textStyle(
@@ -760,22 +757,24 @@ class _AthletePageState extends State<AthletePage> {
                                                                 false,
                                                                 false))),
                                                   ]),
-                                                  Visibility(
-                                                  visible: false,
-                                                  child:Text(bookValue,
+                                                 
+                                                  Text(bookValue,
                                                       style: textStyle(
-                                                          greyTextColor.withOpacity(1),
+                                                          greyTextColor,
                                                           12,
                                                           false,
-                                                          false)))
+                                                          false))
                                                 ]))
-                                      ]),
+                                      ]),                                   
                                   Row(
+                                      
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
+                                       
                                         Container(
                                             width: _width * 0.175,
+                                            
                                             child: Text("MP:BV Ratio",
                                                 style: textStyle(greyTextColor,
                                                     12, false, false))),
@@ -1284,7 +1283,8 @@ class _AthletePageState extends State<AthletePage> {
     final shortBookValuePercent = "+2%";
 
     final WalletController walletController = Get.find();
-
+    final currentbookvalue = (double.parse(longMarketPrice.substring(0,2))/double.parse(longBookValue.substring(0,2)))*100;
+    final shortcurrentbookvalue = (double.parse(shortMarketPrice.substring(0,2))/double.parse(shortBookValue.substring(0,2)))*100;
     double _width = MediaQuery.of(context).size.width;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
@@ -1421,28 +1421,36 @@ class _AthletePageState extends State<AthletePage> {
                                           greyTextColor, 20, false, false))),
                               Container(
                                   width: 200,
+
                                   child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
+                                          /** 
                                           Text(
                                               (_longAptIndex == 0)
                                                   ? longBookValue
                                                   : shortBookValue,
                                               style: textStyle(Colors.white, 14,
                                                   false, false)),
+                                                  **/
+                                                  /** 
                                           Container(
+                                            
                                               child: Text(
                                                   (_longAptIndex == 0)
                                                       ? longBookValuePercent
                                                       : shortBookValuePercent,
                                                   style: textStyle(Colors.green,
                                                       12, false, false))),
+                                                      **/
                                         ]),
+                                        /** 
                                         Text(shortBookValue,
                                             style: textStyle(greyTextColor.withOpacity(0), 14,
                                                 false, false))
+                                                **/
                                       ]))
                             ]),
                         Row(
@@ -1460,7 +1468,7 @@ class _AthletePageState extends State<AthletePage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
-                                          Text("80%",
+                                          Text("${_isLongApt ? currentbookvalue.toStringAsFixed(2) :shortcurrentbookvalue.toStringAsFixed(2)}%" ,
                                               style: textStyle(greyTextColor,
                                                   16, false, false)),
                                         ]),
