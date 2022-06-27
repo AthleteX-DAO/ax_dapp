@@ -259,7 +259,7 @@ class _V1AppState extends State<V1App> {
                             },
                             child: Text("Trade",
                                 style: textSwapState(
-                                    pageNumber == 1,
+                                    pageNumber == PAGES.TRADE,
                                     textStyle(
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,

@@ -279,12 +279,12 @@ class _BuyDialogState extends State<BuyDialog> {
                         children: <TextSpan>[
                           TextSpan(
                               text:
-                                  "You can purchase APTs at Market Price with AX.",
+                                  "You can purchase APTs at Market Price with AX.\n",
                               style: TextStyle(
                                   color: Colors.grey[600],
                                   fontSize: isWeb ? 14 : 12)),
                           TextSpan(
-                              text: " Click here to",
+                              text: "Click here to",
                               style: TextStyle(
                                   color: Colors.grey[600],
                                   fontSize: isWeb ? 14 : 12)),
