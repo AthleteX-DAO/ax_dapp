@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:ax_dapp/pages/farm/components/SingleLogoFarmTitle.dart';
-import 'package:ax_dapp/pages/farm/components/DoubleLogoFarmTitle.dart';
+//TODO: Uncomment when dualStakeDialog is functional
+// import 'package:ax_dapp/pages/farm/components/DoubleLogoFarmTitle.dart';
 import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 import 'package:get/get.dart';
