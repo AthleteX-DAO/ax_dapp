@@ -11,7 +11,6 @@ import '../models/ScoutPageEvent.dart';
 
 class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   final GetScoutAthletesDataUseCase repo;
-  final List<AthleteScoutModel> mlbAthletes = [];
   final GetChainChangesUseCase chainChangeUseCase;
   late Stream _chainChangeStream;
 
