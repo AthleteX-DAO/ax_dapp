@@ -111,6 +111,17 @@ class TokenList {
           idToAddress[ath[1]]![2]);
     }),
   ];
+
+  static String mapTickerToName(String ticker) {
+    return tokenList.firstWhere((token) => token.ticker == ticker).name;
+  }
+
+  //Ask about this
+  static AssetImage mapAptTypeToImage(String longOrShort) {
+    return longOrShort.toLowerCase() == "long"
+        ? AssetImage('assets/images/apt_noninverted.png')
+        : AssetImage('assets/images/apt_inverted.png');
+  }
 }
 
 class TokenIndex {

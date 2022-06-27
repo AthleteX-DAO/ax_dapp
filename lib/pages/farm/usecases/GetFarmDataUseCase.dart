@@ -11,6 +11,7 @@ class GetFarmDataUseCase {
     final QueryResult response = await gysrApi.fetchAllFarms(owner);
     if (response.hasException) throw response.exception.toString();
     allFarms = _mapQueryResultToFarmModel(response.data!['pools'], false);
+    print('[fetchAllFarms]: ${response.data!['pools']}');
     return allFarms;
   }
 
@@ -28,8 +29,8 @@ class GetFarmDataUseCase {
     List<FarmModel> farms = [];
     response.forEach((pool) {
       dynamic farm = isStaked ? pool['pool'] : pool;
-      print("[stakigToken] ${farm['stakingToken']['decimals']}");
-      print("[rewardToken] ${farm['rewardToken']['decimals']}");
+      print("[stakigToken] ${farm['stakingToken']}");
+      print("[rewardToken] ${farm['rewardToken']}");
       farms.add(FarmModel(
           "${farm['stakingToken']['alias']!.length > 0 ? farm['stakingToken']['alias'] : farm['stakingToken']['symbol']} APT",
           farm['id'].toString(),

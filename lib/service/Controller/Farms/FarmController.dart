@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:ax_dapp/pages/farm/models/FarmModel.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/util/UserInputInfo.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
@@ -40,10 +41,11 @@ class FarmController {
 
   late Web3Dart.Web3Client rpcClient;
 
-  // contructor with poolInfo from api
+  // constructor with poolInfo from api
   FarmController(FarmModel farm) {
     this.strAddress = farm.strAddress;
     this.strName = farm.strName;
+    this.athlete = _getAthleteTokenNameFromAlias(farm.strStakedAlias);
     this.strAPR = double.parse(farm.strAPR).toStringAsFixed(2);
     this.strTVL = double.parse(farm.strTVL).toStringAsFixed(2);
     this.strStaked = RxString(farm.strStaked);
@@ -73,6 +75,7 @@ class FarmController {
   FarmController.fromFarm(FarmController farm) {
     this.strAddress = farm.strAddress;
     this.strName = farm.strName;
+    this.athlete = farm.athlete;
     this.strAPR = farm.strAPR;
     this.strTVL = farm.strTVL;
     this.strStaked = farm.strStaked;
@@ -103,6 +106,16 @@ class FarmController {
   Future<void> updateCurrentBalance() async {
     stakingInfo.value = await wallet.getTokenBalanceAsInfo(
         this.strStakeTokenAddress, this.nStakeTokenDecimals);
+  }
+
+  dynamic _getAthleteTokenNameFromAlias(String stakingAlias) {
+    // returns athlete token name given an alias, returns null if stakingAlias is empty
+    // stakingToken alias example: 'AJLT1010-AX' or 'AX-CCST1010' or ''
+    if (stakingAlias.length == 0) return null;
+    List<String> tickers = stakingAlias.split('-');
+    //we want athlete ticker not 'AX'
+    String athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
+    return TokenList.mapTickerToName(athleteTicker);
   }
 
   /// This function is used to stake tokens on a specific farm

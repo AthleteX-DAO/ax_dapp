@@ -10,12 +10,13 @@ Widget singleLogoFarmTitle(
     BuildContext context, bool isWeb, FarmController farm, double cardWidth) {
   //Dialog that appears when stake button is pressed
   Dialog participatingDialog;
-  if (farm.athlete == null) {
-    participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
-  } else {
-    participatingDialog =
-        dualStakeDialog(context, farm, farm.athlete!, cardWidth, isWeb);
-  }
+  //TODO: dualStakeDialog does not currently work, uncomment if else statement once it is fixed
+  // if (farm.athlete == null) {
+  participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
+  // } else {
+  //   participatingDialog =
+  //       dualStakeDialog(context, farm, farm.athlete!, cardWidth, isWeb);
+  // }
   return Container(
       width: cardWidth,
       child: Row(
@@ -33,7 +34,8 @@ Widget singleLogoFarmTitle(
             ),
             Container(width: 15),
             Expanded(
-              child: Text(farm.strName,
+              child: Text(
+                  farm.athlete == null ? farm.strName : farm.athlete! + ' Farm',
                   style: textStyle(Colors.white, 20, false, false)),
             ),
             Container(

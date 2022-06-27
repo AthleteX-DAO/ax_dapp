@@ -43,9 +43,10 @@ Widget doubleLogoFarmTitle(
               ),
             ),
             Container(width: 5),
+            //athlete can't be null because it is checked above
             Expanded(
-              child: Text(farm.strName,
-                  style: textStyle(Colors.white, 20, false, false)),
+              child: Text(farm.athlete! + " Farm",
+                  style: textStyle(Colors.white, 16, false, false)),
             ),
             Container(
                 width: 120,

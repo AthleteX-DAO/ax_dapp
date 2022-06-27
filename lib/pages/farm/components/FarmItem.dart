@@ -18,11 +18,12 @@ Widget farmItem(BuildContext context, bool isWeb, FarmController farm,
 
   TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
   Widget farmTitleWidget;
-  if (farm.athlete == null) {
-    farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
-  } else {
-    farmTitleWidget = doubleLogoFarmTitle(context, isWeb, farm, cardWidth);
-  }
+  //TODO: dualStakeDialog does not currently work, uncomment if else statement once it is fixed
+  // if (farm.athlete == null) {
+  farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
+  // } else {
+  //   farmTitleWidget = doubleLogoFarmTitle(context, isWeb, farm, cardWidth);
+  // }
 
   return Container(
     height: cardHeight,
