@@ -219,12 +219,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
           BoxDecoration decor =
               boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
           if (tknNum == 1) {
-              tkr = tokenFrom.ticker;
-              tokenImage = tokenFrom.icon;
+            tkr = tokenFrom.ticker;
+            tokenImage = tokenFrom.icon;
           } else {
             //tknNum == 2
-              tkr = tokenTo.ticker;
-              tokenImage = tokenTo.icon;
+            tkr = tokenTo.ticker;
+            tokenImage = tokenTo.icon;
           }
 
           return Container(

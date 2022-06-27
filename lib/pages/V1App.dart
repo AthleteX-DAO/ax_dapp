@@ -30,6 +30,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+enum PAGES { SCOUT, TRADE, POOL, FARM }
+
 class V1App extends StatefulWidget {
   @override
   _V1AppState createState() => _V1AppState();
@@ -39,7 +41,8 @@ class _V1AppState extends State<V1App> {
   bool isWeb = true;
 
   // state change variables
-  int pageNumber = 0;
+  PAGES pageNumber = PAGES.SCOUT;
+  bool isBuyAX = false;
   bool walletConnected =
       false; //flag to check if user has connected their wallet
   bool allFarms = true;
@@ -53,6 +56,21 @@ class _V1AppState extends State<V1App> {
   List<String> dropDownMenuItems = ["Matic Network", "SX Network"];
   String selectVal = "Matic Network";
   String axText = "Ax";
+
+  setPageNumber(PAGES page) {
+    setState(() {
+      pageNumber = page;
+      isBuyAX = false;
+    });
+  }
+
+  goToScoutPage() {
+    setState(() {
+      pageNumber = PAGES.TRADE;
+      isBuyAX = true;
+    });
+    print("Go to Scout Page");
+  }
 
   animateToPage(int index) {
     // use this to animate to the page
@@ -119,7 +137,7 @@ class _V1AppState extends State<V1App> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          if (pageNumber == 0)
+          if (pageNumber == PAGES.SCOUT)
             BlocProvider(
                 create: (BuildContext context) => ScoutPageBloc(
                         repo: GetScoutAthletesDataUseCase(
@@ -130,16 +148,17 @@ class _V1AppState extends State<V1App> {
                       coinGeckoRepo:
                           RepositoryProvider.of<CoinGeckoRepo>(context),
                     )),
-                child: DesktopScout())
-          else if (pageNumber == 1)
+                child: DesktopScout(goToScoutPage: this.goToScoutPage))
+          else if (pageNumber == PAGES.TRADE)
             BlocProvider(
                 create: (BuildContext context) => TradePageBloc(
-                      repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                      swapController: Get.find(),
-                      walletController: Get.find(),
-                    ),
+                    repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
+                    controller: Get.find(),
+                    swapController: Get.find(),
+                    walletController: Get.find(),
+                    isBuyAX: this.isBuyAX),
                 child: DesktopTrade())
-          else if (pageNumber == 2)
+          else if (pageNumber == PAGES.POOL)
             // BlocProvider(
             //     create: (BuildContext context) => PoolBloc(
             //         repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
@@ -147,7 +166,7 @@ class _V1AppState extends State<V1App> {
             //         poolController: Get.find()),
             //     child: DesktopPool())
             DesktopPool()
-          else if (pageNumber == 3)
+          else if (pageNumber == PAGES.FARM)
             DesktopFarm()
         ],
       );
@@ -166,13 +185,14 @@ class _V1AppState extends State<V1App> {
                     coinGeckoRepo:
                         RepositoryProvider.of<CoinGeckoRepo>(context),
                   )),
-              child: DesktopScout()),
+              child: DesktopScout(goToScoutPage: this.goToScoutPage)),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
-              repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-              swapController: Get.find(),
-              walletController: Get.find(),
-            ),
+                repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
+                controller: Get.find(),
+                swapController: Get.find(),
+                walletController: Get.find(),
+                isBuyAX: this.isBuyAX),
             child: DesktopTrade(),
           ),
           BlocProvider(
@@ -221,14 +241,12 @@ class _V1AppState extends State<V1App> {
                     Container(
                         child: TextButton(
                             onPressed: () {
-                              if (pageNumber != 0)
-                                setState(() {
-                                  pageNumber = 0;
-                                });
+                              if (pageNumber != PAGES.SCOUT)
+                                setPageNumber(PAGES.SCOUT);
                             },
                             child: Text("Scout",
                                 style: textSwapState(
-                                    pageNumber == 0,
+                                    pageNumber == PAGES.SCOUT,
                                     textStyle(
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
@@ -236,10 +254,8 @@ class _V1AppState extends State<V1App> {
                     Container(
                         child: TextButton(
                             onPressed: () {
-                              if (pageNumber != 1)
-                                setState(() {
-                                  pageNumber = 1;
-                                });
+                              if (pageNumber != PAGES.TRADE)
+                                setPageNumber(PAGES.TRADE);
                             },
                             child: Text("Trade",
                                 style: textSwapState(
@@ -251,14 +267,12 @@ class _V1AppState extends State<V1App> {
                     Container(
                         child: TextButton(
                             onPressed: () {
-                              if (pageNumber != 2)
-                                setState(() {
-                                  pageNumber = 2;
-                                });
+                              if (pageNumber != PAGES.POOL)
+                                setPageNumber(PAGES.POOL);
                             },
                             child: Text("Pool",
                                 style: textSwapState(
-                                    pageNumber == 2,
+                                    pageNumber == PAGES.POOL,
                                     textStyle(
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,
@@ -266,14 +280,12 @@ class _V1AppState extends State<V1App> {
                     Container(
                         child: TextButton(
                             onPressed: () {
-                              if (pageNumber != 3)
-                                setState(() {
-                                  pageNumber = 3;
-                                });
+                              if (pageNumber != PAGES.FARM)
+                                setPageNumber(PAGES.FARM);
                             },
                             child: Text("Farm",
                                 style: textSwapState(
-                                    pageNumber == 3,
+                                    pageNumber == PAGES.FARM,
                                     textStyle(
                                         Colors.white, tabTxSz, true, false),
                                     textStyle(Colors.amber[400]!, tabTxSz, true,

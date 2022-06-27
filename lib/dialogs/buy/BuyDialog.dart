@@ -14,8 +14,10 @@ class BuyDialog extends StatefulWidget {
   final String athleteName;
   final double aptPrice;
   final int athleteId;
+  final void Function() goToScoutPage;
 
-  BuyDialog(this.athleteName, this.aptPrice, this.athleteId);
+  BuyDialog(
+      this.athleteName, this.aptPrice, this.athleteId, this.goToScoutPage);
 
   @override
   State<StatefulWidget> createState() => _BuyDialogState();
@@ -293,7 +295,8 @@ class _BuyDialogState extends State<BuyDialog> {
                                   fontSize: isWeb ? 14 : 12),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  print('Buy AX');
+                                  Navigator.pop(context);
+                                  widget.goToScoutPage();
                                 }),
                         ],
                       ),
