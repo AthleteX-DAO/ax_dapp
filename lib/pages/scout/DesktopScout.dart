@@ -950,7 +950,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   double searchWidth(double widthSize) {
     double _width;
     if (kIsWeb) {
-      _width = widthSize * 0.15;
+      _width = widthSize * 0.26;
     } else {
       _width = widthSize * 0.66;
     }
