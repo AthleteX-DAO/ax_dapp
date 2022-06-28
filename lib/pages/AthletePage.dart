@@ -27,8 +27,11 @@ import 'scout/Widget Factories/AthleteDetailsWidget.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
+  final void Function() goToTradePage;
 
-  const AthletePage({Key? key, required this.athlete}) : super(key: key);
+  const AthletePage(
+      {Key? key, required this.athlete, required this.goToTradePage})
+      : super(key: key);
 
   @override
   _AthletePageState createState() => _AthletePageState(athlete);
@@ -56,7 +59,7 @@ class _AthletePageState extends State<AthletePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (listView == 1) return DesktopScout();
+    if (listView == 1) return DesktopScout(goToTradePage: widget.goToTradePage);
 
     return kIsWeb.kIsWeb
         ? buildWebViewContainer(context)
@@ -66,9 +69,10 @@ class _AthletePageState extends State<AthletePage> {
   IndexedStack buildWebViewContainer(BuildContext context) {
     final longMarketPrice = "4.18 AX";
     final longMarketPricePercent = "-2%";
-    final longBookValue = "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX";
+    final longBookValue =
+        "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX";
     final longBookValuePercent = "+4%";
-    
+
     final shortMarketPrice = "2.18 AX";
     final shortMarketPricePercent = "-1%";
     final shortBookValue =
@@ -747,7 +751,7 @@ class _AthletePageState extends State<AthletePage> {
                                                             Colors.white,
                                                             12,
                                                             false,
-                                                            false)),     
+                                                            false)),
                                                     Container(
                                                         child: Text(
                                                             bookValuePercent,
@@ -757,7 +761,6 @@ class _AthletePageState extends State<AthletePage> {
                                                                 false,
                                                                 false))),
                                                   ]),
-                                                 
                                                   Text(bookValue,
                                                       style: textStyle(
                                                           greyTextColor,
@@ -765,16 +768,13 @@ class _AthletePageState extends State<AthletePage> {
                                                           false,
                                                           false))
                                                 ]))
-                                      ]),                                   
+                                      ]),
                                   Row(
-                                      
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                       
                                         Container(
                                             width: _width * 0.175,
-                                            
                                             child: Text("MP:BV Ratio",
                                                 style: textStyle(greyTextColor,
                                                     12, false, false))),
@@ -805,7 +805,8 @@ class _AthletePageState extends State<AthletePage> {
                             // Detail Section
                             AthleteDetailsWidget(athlete).athletePageDetails(),
                             // Stats section
-                            AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
+                            AthleteDetailsWidget(athlete)
+                                .athletePageKeyStatistics(),
                           ])),
                     ],
                   )
@@ -844,7 +845,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         GetBuyInfoUseCase>(context),
                                                     wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
-                                                child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
+                                                child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToTradePage))),
                                         child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
                                 Container(
                                     width: 160,
@@ -1190,7 +1191,7 @@ class _AthletePageState extends State<AthletePage> {
                                                           wallet:
                                                               GetTotalTokenBalanceUseCase(Get.find()),
                                                           swapController: Get.find()),
-                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
+                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToTradePage))),
                                               child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
                                       Container(
                                           width: 175,
@@ -1281,8 +1282,10 @@ class _AthletePageState extends State<AthletePage> {
         "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
     final WalletController walletController = Get.find();
-    final longCurrentBookValueRatio = (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
-    final shortCurrentBookValueRatio = (athlete.shortTokenPrice! / athlete.shortTokenBookPrice!) * 100;
+    final longCurrentBookValueRatio =
+        (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
+    final shortCurrentBookValueRatio =
+        (athlete.shortTokenPrice! / athlete.shortTokenBookPrice!) * 100;
     double _width = MediaQuery.of(context).size.width;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
@@ -1338,18 +1341,18 @@ class _AthletePageState extends State<AthletePage> {
                                     }
                                   },
                                 ),
-                              ),                                                                                
+                              ),
                               Container(
                                   alignment: Alignment.bottomLeft,
                                   child: Text("Current",
-                                      style: textStyle(greyTextColor,
-                                          14, false, false))),
+                                      style: textStyle(
+                                          greyTextColor, 14, false, false))),
                               // TODO get the all time high book value and market value prices
                               // Container(
                               //     alignment: Alignment.bottomRight,
                               //     child: Text("All-Time High",
                               //         style: textStyle(greyTextColor,
-                              //             14, false, false)))                                                                                                                    
+                              //             14, false, false)))
                             ]),
                         Divider(thickness: 1, color: greyTextColor),
                         Row(
@@ -1364,38 +1367,38 @@ class _AthletePageState extends State<AthletePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        Text(
+                                    Text(
+                                        (_longAptIndex == 0)
+                                            ? "${athlete.longTokenPrice!.toStringAsFixed(2)} AX"
+                                            : "${athlete.shortTokenPrice!.toStringAsFixed(2)} AX",
+                                        style: textStyle(
+                                            Colors.white, 14, false, false)),
+                                    Container(width: 5),
+                                    Container(
+                                        child: Text(
                                             (_longAptIndex == 0)
-                                                ? "${athlete.longTokenPrice!.toStringAsFixed(2)} AX"
-                                                : "${athlete.shortTokenPrice!.toStringAsFixed(2)} AX",
-                                            style: textStyle(Colors.white, 14,
-                                                false, false)),
-                                        Container(width: 5),
-                                        Container(
-                                            child: Text(
-                                                (_longAptIndex == 0)
-                                                    ? getPercentageDesc(athlete
-                                                        .longTokenPercentage!)
-                                                    : getPercentageDesc(athlete
+                                                ? getPercentageDesc(athlete
+                                                    .longTokenPercentage!)
+                                                : getPercentageDesc(athlete
+                                                    .shortTokenPercentage!),
+                                            style: (_longAptIndex == 0)
+                                                ? textStyle(
+                                                    getPercentageColor(athlete
+                                                        .longTokenPercentage!),
+                                                    12,
+                                                    false,
+                                                    false)
+                                                : textStyle(
+                                                    getPercentageColor(athlete
                                                         .shortTokenPercentage!),
-                                                style: (_longAptIndex == 0)
-                                                    ? textStyle(
-                                                        getPercentageColor(athlete
-                                                            .longTokenPercentage!),
-                                                        12,
-                                                        false,
-                                                        false)
-                                                    : textStyle(
-                                                        getPercentageColor(athlete
-                                                            .shortTokenPercentage!),
-                                                        12,
-                                                        false,
-                                                        false))),
-                                        // TODO get the all time high book value and market value prices
-                                        // Text("4.24 AX",
-                                        //     style: textStyle(greyTextColor, 14,
-                                        //         false, false))
-                                      ]))
+                                                    12,
+                                                    false,
+                                                    false))),
+                                    // TODO get the all time high book value and market value prices
+                                    // Text("4.24 AX",
+                                    //     style: textStyle(greyTextColor, 14,
+                                    //         false, false))
+                                  ]))
                             ]),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1408,16 +1411,21 @@ class _AthletePageState extends State<AthletePage> {
                               Container(
                                 child: Row(
                                   children: <Widget>[
-                                    Text((_longAptIndex == 0) ? longBookValue : shortBookValue, style: textStyle(Colors.white, 14, false, false)), 
-                                    Container(                                          
-                                    child: Text(
+                                    Text(
                                         (_longAptIndex == 0)
-                                            ? longBookValuePercent
-                                            : shortBookValuePercent,
-                                        style: textStyle(Colors.green,
-                                            12, false, false))),
-                                    //TODO get the all time high book value and market value prices                                       
-                                      // Text(shortBookValue, style: textStyle(greyTextColor, 14, false, false))
+                                            ? longBookValue
+                                            : shortBookValue,
+                                        style: textStyle(
+                                            Colors.white, 14, false, false)),
+                                    Container(
+                                        child: Text(
+                                            (_longAptIndex == 0)
+                                                ? longBookValuePercent
+                                                : shortBookValuePercent,
+                                            style: textStyle(Colors.green, 12,
+                                                false, false))),
+                                    //TODO get the all time high book value and market value prices
+                                    // Text(shortBookValue, style: textStyle(greyTextColor, 14, false, false))
                                   ],
                                 ),
                               ),
@@ -1431,13 +1439,14 @@ class _AthletePageState extends State<AthletePage> {
                                       style: textStyle(
                                           greyTextColor, 20, false, false))),
                               Container(
-                                child: Text("${_isLongApt ? longCurrentBookValueRatio.toStringAsFixed(2) :shortCurrentBookValueRatio.toStringAsFixed(2)}%" ,
-                                              style: textStyle(greyTextColor,
-                                                  16, false, false)),
+                                child: Text(
+                                    "${_isLongApt ? longCurrentBookValueRatio.toStringAsFixed(2) : shortCurrentBookValueRatio.toStringAsFixed(2)}%",
+                                    style: textStyle(
+                                        greyTextColor, 16, false, false)),
                               ),
                               // TODO get the all time high book value and market value prices
-                              // Container(                            
-                              //   child: Text("120%", style: textStyle(greyTextColor, 16,false, false)),                            
+                              // Container(
+                              //   child: Text("120%", style: textStyle(greyTextColor, 16,false, false)),
                               // ),
                             ]),
                       ])),

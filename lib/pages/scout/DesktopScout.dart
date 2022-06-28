@@ -20,7 +20,10 @@ import 'package:get/get_instance/get_instance.dart';
 import 'models/AthleteScoutModel.dart';
 
 class DesktopScout extends StatefulWidget {
+  final void Function() goToTradePage;
+
   const DesktopScout({
+    required this.goToTradePage,
     Key? key,
   }) : super(key: key);
 
@@ -73,8 +76,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           }
           if (athletePage && curAthlete != null)
             return AthletePage(
-              athlete: curAthlete!,
-            );
+                athlete: curAthlete!, goToTradePage: widget.goToTradePage);
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),
             child: Container(
@@ -655,7 +657,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         child: BuyDialog(
                                             athlete.name,
                                             athlete.longTokenBookPrice!,
-                                            athlete.id)));
+                                            athlete.id,
+                                            widget.goToTradePage)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;
@@ -843,7 +846,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         child: BuyDialog(
                                             athlete.name,
                                             athlete.longTokenBookPrice!,
-                                            athlete.id)));
+                                            athlete.id,
+                                            widget.goToTradePage)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;

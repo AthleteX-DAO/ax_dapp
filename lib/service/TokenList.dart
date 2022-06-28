@@ -78,7 +78,12 @@ class TokenList {
     ["Fernando Tatis Jr.", 10007217, "FTJLT1010", "FTJST1010"],
     ["Jose Ramirez", 10000352, "JRLT1010", "JRST1010"],
     ["Juan Soto", 10006794, "JSLT1010", "JSST1010"],
-    ["Marcus Semien", 10000908, "MSLT1010", "MSST1010",], 
+    [
+      "Marcus Semien",
+      10000908,
+      "MSLT1010",
+      "MSST1010",
+    ],
     ["Starling Marte", 10001009, "SMLT1010", "SMST1010"],
     ["Trea Turner", 10002094, "TTLT1010", "TTST1010"],
     ["Vladimir Guerrero Jr.", 10007501, "VGJLT1010", "VGJST1010"],
@@ -89,10 +94,8 @@ class TokenList {
     SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
     MATIC("Matic/Polygon", "Matic",
         AssetImage('assets/images/Polygon_Small.png')),
-    WETH("WETH", "WETH",
-        AssetImage('assets/images/weth_small.png')),
-    USDC("USDC", "USDC",
-        AssetImage('assets/images/USDC_small.png')),
+    WETH("WETH", "WETH", AssetImage('assets/images/weth_small.png')),
+    USDC("USDC", "USDC", AssetImage('assets/images/USDC_small.png')),
     ...namesList.map((ath) {
       return APT(
           ath[0] + " Long APT",
@@ -108,6 +111,13 @@ class TokenList {
           idToAddress[ath[1]]![2]);
     }),
   ];
+}
+
+class TokenIndex {
+  static int get ax => 0;
+  static int get sx => 1;
+  static int get matic => 2;
+  static int get weth => 3;
 }
 
 String getLongAptAddress(int id) {
