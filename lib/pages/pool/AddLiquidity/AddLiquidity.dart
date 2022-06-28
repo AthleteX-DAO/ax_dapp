@@ -414,7 +414,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                 ),
                 Container(
                     margin: EdgeInsets.only(left: 6),
-                    alignment: Alignment.topRight,
                     child: addLiquidityToolTip(elementWdt))
               ],
             ),
@@ -438,7 +437,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 6),
-                      alignment: Alignment.topRight,
                       child: youWillReceiveToolTip(),
                     ),
                   ],

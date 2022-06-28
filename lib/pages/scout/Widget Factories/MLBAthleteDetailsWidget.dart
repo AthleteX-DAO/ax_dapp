@@ -81,7 +81,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                       style: textStyle(Colors.white, 24, false, false)),
                 ),
                 Container(
-                    width: 260,
+                    width: 300,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -89,37 +89,37 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                             alignment: Alignment.bottomLeft,
                             child: Text("AtBat",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 15, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
                             child: Text("HR",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 15, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
                             child: Text("wOBA",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 15, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
                             child: Text("SB",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 15, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
                             child: Text("Err",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 15, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
                             child: Text("InPl",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 15, false, false)),
                           ),
                         ])),
               ])),
@@ -127,45 +127,45 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
               Widget>[
             Container(
-              child: Text("Current season Stats",
-                  style: textStyle(greyTextColor, 16, false, false)),
+              child: Text("Current Season Stats",
+                  style: textStyle(greyTextColor, 20, false, false)),
             ),
             Container(
-                width: 260,
+                width: 300,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.atBats.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 15, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.homeRuns.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 15, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(
                             _athlete.weightedOnBasePercentage
                                 .toStringAsFixed(3),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 15, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.stolenBases.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 15, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.errors.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 15, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.inningsPlayed.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 15, false, false)),
                       ),
                     ]))
           ]),

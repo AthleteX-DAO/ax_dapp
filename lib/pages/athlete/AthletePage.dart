@@ -744,6 +744,7 @@ class _AthletePageState extends State<AthletePage> {
                                                                 false,
                                                                 false))),
                                                   ]),
+
                                                   Text(bookValue,
                                                       style: textStyle(
                                                           greyTextColor,
@@ -753,12 +754,15 @@ class _AthletePageState extends State<AthletePage> {
                                                 ]))
                                       ]),
                                   Row(
+
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
+
                                         Container(
                                             width: _width * 0.175,
-                                            child: Text("MP/BV Ratio",
+
+                                            child: Text("MP:BV Ratio",
                                                 style: textStyle(greyTextColor,
                                                     12, false, false))),
                                         Container(
@@ -788,8 +792,7 @@ class _AthletePageState extends State<AthletePage> {
                             // Detail Section
                             AthleteDetailsWidget(athlete).athletePageDetails(),
                             // Stats section
-                            AthleteDetailsWidget(athlete)
-                                .athletePageKeyStatistics(),
+                            AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
                           ])),
                     ],
                   )
@@ -1166,36 +1169,185 @@ class _AthletePageState extends State<AthletePage> {
                                 ),
                               ),
                               // Price
+                              Align(
+                                  alignment: Alignment(-.85, -.8),
+                                  child: Container(
+                                      height: 45,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text("Book Value Chart",
+                                              style: textStyle(Colors.white, 9,
+                                                  false, false)),
+                                          Container(
+                                              width: 130,
+                                              height: 25,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Text(
+                                                      _isLongApt
+                                                          ? athlete
+                                                                  .longTokenBookPrice!
+                                                                  .toStringAsFixed(
+                                                                      4) +
+                                                              " AX"
+                                                          : athlete
+                                                                  .shortTokenBookPrice!
+                                                                  .toStringAsFixed(
+                                                                      4) +
+                                                              " AX",
+                                                      style: textStyle(
+                                                          Colors.white,
+                                                          14,
+                                                          true,
+                                                          false)),
+                                                  Container(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: Text(
+                                                          (_longAptIndex == 0)
+                                                              ? longBookValuePercent
+                                                              : shortBookValuePercent,
+                                                          style: textStyle(
+                                                              Colors.green,
+                                                              12,
+                                                              false,
+                                                              false)))
+                                                ],
+                                              ))
+                                        ],
+                                      ))),
                             ],
                           )),
+                      Container(
+                          width: wid * .875,
+                          height: 150,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Container(
+                                          width: 175,
+                                          height: 50,
+                                          decoration: boxDecoration(
+                                              primaryOrangeColor,
+                                              100,
+                                              0,
+                                              primaryOrangeColor),
+                                          child: TextButton(
+                                              onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) => BlocProvider(
+                                                      create: (BuildContext context) => BuyDialogBloc(
+                                                          repo: RepositoryProvider
+                                                              .of<GetBuyInfoUseCase>(
+                                                                  context),
+                                                          wallet:
+                                                              GetTotalTokenBalanceUseCase(Get.find()),
+                                                          swapController: Get.find()),
+                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
+                                              child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
+                                      Container(
+                                          width: 175,
+                                          height: 50,
+                                          decoration: boxDecoration(
+                                              Colors.white,
+                                              100,
+                                              0,
+                                              Colors.white),
+                                          child: TextButton(
+                                              onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) => BlocProvider(
+                                                      create: (BuildContext context) => SellDialogBloc(
+                                                          repo: RepositoryProvider
+                                                              .of<GetSellInfoUseCase>(
+                                                                  context),
+                                                          wallet: GetTotalTokenBalanceUseCase(
+                                                              Get.find()),
+                                                          swapController:
+                                                              Get.find()),
+                                                      child: SellDialog(
+                                                          athlete.name,
+                                                          athlete.longTokenBookPrice!,
+                                                          athlete.id))),
+                                              child: Text("Sell", style: textStyle(Colors.black, 20, false, false))))
+                                    ]),
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Container(
+                                          width: 175,
+                                          height: 50,
+                                          decoration: boxDecoration(
+                                              Colors.transparent,
+                                              100,
+                                              2,
+                                              Colors.white),
+                                          child: TextButton(
+                                              onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          MintDialog(athlete)),
+                                              child: Text("Mint",
+                                                  style: textStyle(Colors.white,
+                                                      20, false, false)))),
+                                      Container(
+                                          width: 175,
+                                          height: 50,
+                                          decoration: boxDecoration(
+                                              Colors.transparent,
+                                              100,
+                                              2,
+                                              Colors.white),
+                                          child: TextButton(
+                                              onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      RedeemDialog(athlete)),
+                                              child: Text("Redeem",
+                                                  style: textStyle(Colors.white,
+                                                      20, false, false))))
+                                    ]),
+                              ]))
                     ])),
           ],
         ));
   }
 
-  Widget statsSide(BuildContext context,
-      String longMarketPrice,
-      String shortMarketPrice,
-      String longMarketPricePercent,
-      String shortMarketPricePercent,
-      String longBookValue,
-      String shortBookValue,
-      String longBookValuePercent,
-      String shortBookValuePercent,) {
+  Widget statsSide(
+    BuildContext context,
+    String longMarketPrice,
+    String shortMarketPrice,
+    String longMarketPricePercent,
+    String shortMarketPricePercent,
+    String longBookValue,
+    String shortBookValue,
+    String longBookValuePercent,
+    String shortBookValuePercent,
+  ) {
     final longBookValue =
         "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
-
     final shortBookValue =
         "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
-
     final WalletController walletController = Get.find();
-
-    double _width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final longCurrentBookValueRatio = (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
+    final shortCurrentBookValueRatio = (athlete.shortTokenPrice! / athlete.shortTokenBookPrice!) * 100;
+    double _width = MediaQuery.of(context).size.width;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
 
@@ -1214,22 +1366,21 @@ class _AthletePageState extends State<AthletePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
                                   child: Text("Price Overview",
                                       style: textStyle(
                                           Colors.white, 24, false, false))),
-                              Spacer(),
                               Container(
                                 width: 100,
                                 height: 20,
                                 child: FutureBuilder<String>(
                                   future: _isLongApt
                                       ? walletController.getTokenSymbol(
-                                      getLongAptAddress(athlete.id))
+                                          getLongAptAddress(athlete.id))
                                       : walletController.getTokenSymbol(
-                                      getShortAptAddress(athlete.id)),
+                                          getShortAptAddress(athlete.id)),
                                   builder: (context, snapshot) {
                                     //Check API response data
                                     if (snapshot.hasError) {
@@ -1252,25 +1403,17 @@ class _AthletePageState extends State<AthletePage> {
                                   },
                                 ),
                               ),
-                              Spacer(),
                               Container(
-                                  width: 200,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("Current",
-                                              style: textStyle(greyTextColor,
-                                                  14, false, false))),
-                                      Container(
-                                          alignment: Alignment.bottomRight,
-                                          child: Text("All-Time High",
-                                              style: textStyle(greyTextColor,
-                                                  14, false, false)))
-                                    ],
-                                  ))
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text("Current",
+                                      style: textStyle(greyTextColor,
+                                          14, false, false))),
+                              // TODO get the all time high book value and market value prices
+                              // Container(
+                              //     alignment: Alignment.bottomRight,
+                              //     child: Text("All-Time High",
+                              //         style: textStyle(greyTextColor,
+                              //             14, false, false)))
                             ]),
                         Divider(thickness: 1, color: greyTextColor),
                         Row(
@@ -1281,48 +1424,41 @@ class _AthletePageState extends State<AthletePage> {
                                       style: textStyle(
                                           greyTextColor, 20, false, false))),
                               Container(
-                                  width: 200,
                                   child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        Row(children: <Widget>[
-                                          Text(
-                                              (_longAptIndex == 0)
-                                                  ? "${athlete.longTokenPrice!
-                                                  .toStringAsFixed(2)} AX"
-                                                  : "${athlete.shortTokenPrice!
-                                                  .toStringAsFixed(2)} AX",
-                                              style: textStyle(Colors.white, 14,
-                                                  false, false)),
-                                          Container(width: 5),
-                                          Container(
-                                            //alignment: Alignment.topLeft,
-                                              child: Text(
-                                                  (_longAptIndex == 0)
-                                                      ? getPercentageDesc(
-                                                      athlete
-                                                          .longTokenPercentage!)
-                                                      : getPercentageDesc(
-                                                      athlete
-                                                          .shortTokenPercentage!),
-                                                  style: (_longAptIndex == 0)
-                                                      ? textStyle(
-                                                      getPercentageColor(athlete
-                                                          .longTokenPercentage!),
-                                                      12,
-                                                      false,
-                                                      false)
-                                                      : textStyle(
-                                                      getPercentageColor(athlete
-                                                          .shortTokenPercentage!),
-                                                      12,
-                                                      false,
-                                                      false)))
-                                        ]),
-                                        Text("4.24 AX",
-                                            style: textStyle(greyTextColor, 14,
-                                                false, false))
+                                        Text(
+                                            (_longAptIndex == 0)
+                                                ? "${athlete.longTokenPrice!.toStringAsFixed(2)} AX"
+                                                : "${athlete.shortTokenPrice!.toStringAsFixed(2)} AX",
+                                            style: textStyle(Colors.white, 14,
+                                                false, false)),
+                                        Container(width: 5),
+                                        Container(
+                                            child: Text(
+                                                (_longAptIndex == 0)
+                                                    ? getPercentageDesc(athlete
+                                                        .longTokenPercentage!)
+                                                    : getPercentageDesc(athlete
+                                                        .shortTokenPercentage!),
+                                                style: (_longAptIndex == 0)
+                                                    ? textStyle(
+                                                        getPercentageColor(athlete
+                                                            .longTokenPercentage!),
+                                                        12,
+                                                        false,
+                                                        false)
+                                                    : textStyle(
+                                                        getPercentageColor(athlete
+                                                            .shortTokenPercentage!),
+                                                        12,
+                                                        false,
+                                                        false))),
+                                        // TODO get the all time high book value and market value prices
+                                        // Text("4.24 AX",
+                                        //     style: textStyle(greyTextColor, 14,
+                                        //         false, false))
                                       ]))
                             ]),
                         Row(
@@ -1334,54 +1470,39 @@ class _AthletePageState extends State<AthletePage> {
                                       style: textStyle(
                                           greyTextColor, 20, false, false))),
                               Container(
-                                  width: 200,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Row(children: <Widget>[
-                                          Text(
-                                              (_longAptIndex == 0)
-                                                  ? longBookValue
-                                                  : shortBookValue,
-                                              style: textStyle(Colors.white, 14,
-                                                  false, false)),
-                                          Container(
-                                              child: Text(
-                                                  (_longAptIndex == 0)
-                                                      ? longBookValuePercent
-                                                      : shortBookValuePercent,
-                                                  style: textStyle(Colors.green,
-                                                      12, false, false))),
-                                        ]),
-                                        Text(shortBookValue,
-                                            style: textStyle(greyTextColor, 14,
-                                                false, false))
-                                      ]))
+                                child: Row(
+                                  children: <Widget>[
+                                    Text((_longAptIndex == 0) ? longBookValue : shortBookValue, style: textStyle(Colors.white, 14, false, false)),
+                                    Container(
+                                    child: Text(
+                                        (_longAptIndex == 0)
+                                            ? longBookValuePercent
+                                            : shortBookValuePercent,
+                                        style: textStyle(Colors.green,
+                                            12, false, false))),
+                                    //TODO get the all time high book value and market value prices
+                                      // Text(shortBookValue, style: textStyle(greyTextColor, 14, false, false))
+                                  ],
+                                ),
+                              ),
                             ]),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
                                   width: _width * 0.175,
-                                  child: Text("MP/BV Ratio",
+                                  child: Text("MP:BV Ratio",
                                       style: textStyle(
                                           greyTextColor, 20, false, false))),
                               Container(
-                                  width: 200,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Row(children: <Widget>[
-                                          Text("80%",
+                                child: Text("${_isLongApt ? longCurrentBookValueRatio.toStringAsFixed(2) :shortCurrentBookValueRatio.toStringAsFixed(2)}%" ,
                                               style: textStyle(greyTextColor,
                                                   16, false, false)),
-                                        ]),
-                                        Text("120%",
-                                            style: textStyle(greyTextColor, 16,
-                                                false, false))
-                                      ]))
+                              ),
+                              // TODO get the all time high book value and market value prices
+                              // Container(
+                              //   child: Text("120%", style: textStyle(greyTextColor, 16,false, false)),
+                              // ),
                             ]),
                       ])),
               // Detail Section
