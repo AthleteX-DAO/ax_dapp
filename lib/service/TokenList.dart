@@ -78,12 +78,7 @@ class TokenList {
     ["Fernando Tatis Jr.", 10007217, "FTJLT1010", "FTJST1010"],
     ["Jose Ramirez", 10000352, "JRLT1010", "JRST1010"],
     ["Juan Soto", 10006794, "JSLT1010", "JSST1010"],
-    [
-      "Marcus Semien",
-      10000908,
-      "MSLT1010",
-      "MSST1010",
-    ],
+    ["Marcus Semien", 10000908, "MSLT1010", "MSST1010"],
     ["Starling Marte", 10001009, "SMLT1010", "SMST1010"],
     ["Trea Turner", 10002094, "TTLT1010", "TTST1010"],
     ["Vladimir Guerrero Jr.", 10007501, "VGJLT1010", "VGJST1010"],

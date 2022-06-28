@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:ax_dapp/pages/farm/components/SingleLogoFarmTitle.dart';
-//TODO: Uncomment when dualStakeDialog is functional
-// import 'package:ax_dapp/pages/farm/components/DoubleLogoFarmTitle.dart';
 import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 
@@ -21,13 +19,8 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
   if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
 
   TextStyle txStyle = textStyle(Colors.grey[600]!, 14, false, false);
-
   Widget farmTitleWidget;
-  //TODO: dualStakeDialog does not currently work, uncomment if else statement once it is fixed
-  // if (farm.athlete == null)
   farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
-  // else
-  //   farmTitleWidget = doubleLogoFarmTitle(context, isWeb, farm, cardWidth);
 
   return Container(
     margin: isWeb

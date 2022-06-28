@@ -29,7 +29,7 @@ class GetFarmDataUseCase {
     List<FarmModel> farms = [];
     response.forEach((pool) {
       dynamic farm = isStaked ? pool['pool'] : pool;
-      print("[stakigToken] ${farm['stakingToken']}");
+      print("[stakingToken] ${farm['stakingToken']}");
       print("[rewardToken] ${farm['rewardToken']}");
       farms.add(FarmModel(
           "${farm['stakingToken']['alias']!.length > 0 ? farm['stakingToken']['alias'] : farm['stakingToken']['symbol']} APT",

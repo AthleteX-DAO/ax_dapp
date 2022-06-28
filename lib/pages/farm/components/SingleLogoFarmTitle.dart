@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:ax_dapp/pages/farm/dialogs/StakeDialog.dart';
-//TODO: Uncomment when dualStakeDialog is functional
-// import 'package:ax_dapp/pages/farm/dialogs/DualStakeDialog.dart';
 import 'package:ax_dapp/pages/farm/modules/PageTextStyle.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 
@@ -11,13 +9,7 @@ Widget singleLogoFarmTitle(
     BuildContext context, bool isWeb, FarmController farm, double cardWidth) {
   //Dialog that appears when stake button is pressed
   Dialog participatingDialog;
-  //TODO: dualStakeDialog does not currently work, uncomment if else statement once it is fixed
-  // if (farm.athlete == null) {
   participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
-  // } else {
-  //   participatingDialog =
-  //       dualStakeDialog(context, farm, farm.athlete!, cardWidth, isWeb);
-  // }
   return Container(
       width: cardWidth,
       child: Row(
