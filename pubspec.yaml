@@ -29,9 +29,9 @@ dependencies:
   flutter_sparkline: ^0.1.0
   velocity_x: ^3.4.0
   url_launcher: ^6.1.0
-  fl_chart: ^0.50.1
+  fl_chart: ^0.51.0
   toggle_switch: ^2.0.1
-  syncfusion_flutter_charts: ^20.1.51
+  syncfusion_flutter_charts: ^20.1.61
   coingecko_api: ^1.0.2+2
   font_awesome_flutter: ^10.1.0
   retrofit: ^3.0.1+1
