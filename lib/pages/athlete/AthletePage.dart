@@ -1417,7 +1417,7 @@ class _AthletePageState extends State<AthletePage> {
                                   width: 200,
                                   child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.end,
                                       children: <Widget>[
                                     Text(
                                         (_longAptIndex == 0)
@@ -1425,8 +1425,8 @@ class _AthletePageState extends State<AthletePage> {
                                             : "${athlete.shortTokenPrice!.toStringAsFixed(2)} AX",
                                         style: textStyle(
                                             Colors.white, 14, false, false)),
-                                    Container(width: 5),
                                     Container(
+                                      margin: EdgeInsets.only(left: 2),
                                         child: Text(
                                             (_longAptIndex == 0)
                                                 ? getPercentageDesc(athlete
