@@ -1,9 +1,11 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
+import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
-import 'package:ax_dapp/pages/AthletePage.dart';
+import 'package:ax_dapp/pages/athlete/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
@@ -75,8 +77,13 @@ class _DesktopScoutState extends State<DesktopScout> {
             bloc.add(OnPageRefresh());
           }
           if (athletePage && curAthlete != null)
-            return AthletePage(
-                athlete: curAthlete!, goToTradePage: widget.goToTradePage);
+            return BlocProvider(
+              create: (context) => AthletePageBloc(
+                  repo: RepositoryProvider.of<MLBRepo>(context)),
+              child: AthletePage(
+                athlete: curAthlete!, goToTradePage: widget.goToTradePage
+              ),
+            );
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),
             child: Container(

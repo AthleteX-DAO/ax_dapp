@@ -26,7 +26,7 @@ MLBStats _$MLBStatsFromJson(Map<String, dynamic> json) => MLBStats(
       weightedOnBasePercentage:
           (json['weightedOnBasePercentage'] as num).toDouble(),
       price: (json['price'] as num).toDouble(),
-      timeStamp: json['timeStamp'] as String,
+      timeStamp: json['timestamp'] as String,
     );
 
 Map<String, dynamic> _$MLBStatsToJson(MLBStats instance) => <String, dynamic>{
@@ -48,5 +48,5 @@ Map<String, dynamic> _$MLBStatsToJson(MLBStats instance) => <String, dynamic>{
       'plateAppearances': instance.plateAppearances,
       'weightedOnBasePercentage': instance.weightedOnBasePercentage,
       'price': instance.price,
-      'timeStamp': instance.timeStamp,
+      'timestamp': instance.timeStamp,
     };

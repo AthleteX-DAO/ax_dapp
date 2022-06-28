@@ -19,7 +19,7 @@ abstract class SportsRepo<SportAthlete> {
   Future<List<SportAthlete>> getPlayersByTeamAtPosition(
       String team, String position);
 
-  Future getPlayerStatsHistory(int id);
+  Future getPlayerStatsHistory(int id, String from, String until);
 
   Future getPlayersStatsHistory();
 }

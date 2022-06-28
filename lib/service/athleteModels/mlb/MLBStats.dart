@@ -40,7 +40,7 @@ class MLBStats {
   final double weightedOnBasePercentage;
   @JsonKey(name: "price")
   final double price;
-  @JsonKey(name: "timeStamp")
+  @JsonKey(name: "timestamp")
   final String timeStamp;
 
   const MLBStats({
