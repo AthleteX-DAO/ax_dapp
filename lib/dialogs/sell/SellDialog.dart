@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SellDialog extends StatefulWidget {
   final String athleteName;
@@ -290,23 +289,6 @@ class _SellDialogState extends State<SellDialog> {
                                   color: Colors.amber[400],
                                   fontSize: isWeb ? 14 : 12)),
                         ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    height: 50,
-                    width: wid,
-                    child: GestureDetector(
-                      onTap: () {
-                        String urlString =
-                            "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
-                        launchUrl(Uri.parse(urlString));
-                      },
-                      child: Text(
-                        'Learn How to buy AX',
-                        style:
-                            TextStyle(color: Colors.amber[400], fontSize: 14),
                       ),
                     ),
                   ),
