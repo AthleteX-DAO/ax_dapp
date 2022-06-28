@@ -1169,60 +1169,6 @@ class _AthletePageState extends State<AthletePage> {
                                 ),
                               ),
                               // Price
-                              Align(
-                                  alignment: Alignment(-.85, -.8),
-                                  child: Container(
-                                      height: 45,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text("Book Value Chart",
-                                              style: textStyle(Colors.white, 9,
-                                                  false, false)),
-                                          Container(
-                                              width: 130,
-                                              height: 25,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Text(
-                                                      _isLongApt
-                                                          ? athlete
-                                                                  .longTokenBookPrice!
-                                                                  .toStringAsFixed(
-                                                                      4) +
-                                                              " AX"
-                                                          : athlete
-                                                                  .shortTokenBookPrice!
-                                                                  .toStringAsFixed(
-                                                                      4) +
-                                                              " AX",
-                                                      style: textStyle(
-                                                          Colors.white,
-                                                          14,
-                                                          true,
-                                                          false)),
-                                                  Container(
-                                                      alignment:
-                                                          Alignment.topLeft,
-                                                      child: Text(
-                                                          (_longAptIndex == 0)
-                                                              ? longBookValuePercent
-                                                              : shortBookValuePercent,
-                                                          style: textStyle(
-                                                              Colors.green,
-                                                              12,
-                                                              false,
-                                                              false)))
-                                                ],
-                                              ))
-                                        ],
-                                      ))),
                             ],
                           )),
                       Container(
