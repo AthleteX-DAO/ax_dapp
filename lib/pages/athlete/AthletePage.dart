@@ -1132,8 +1132,7 @@ class _AthletePageState extends State<AthletePage> {
                                           maximum: 12000,
                                           labelFormat: '{value}AX',
                                           numberFormat: NumberFormat
-                                              .simpleCurrency(
-                                              decimalDigits: 0)),
+                                              .decimalPattern()),
                                     ),
                                     SfCartesianChart(
                                       legend: Legend(isVisible: true),
