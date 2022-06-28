@@ -10,12 +10,6 @@ class AthletePageState extends Equatable {
     required this.status,
   });
 
-  // const AthletePageState(
-  //     {this.status = BlocStatus.initial, MLBAthleteStats? stats})
-  //     : this.stats = stats ??
-  //           const MLBAthleteStats(
-  //               id: 0, name: "", team: "", position: "", statHistory: []);
-
   factory AthletePageState.initial() {
     return AthletePageState(stats: [], status: BlocStatus.initial);
   }
