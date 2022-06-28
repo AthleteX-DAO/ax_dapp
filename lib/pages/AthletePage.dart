@@ -1084,12 +1084,13 @@ class _AthletePageState extends State<AthletePage> {
                     ),
                   ),
                 ])),
-            // graph
+            // graph side
             Container(
                 width: wid,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
+                      //build graph
                       Container(
                           width: wid * .875,
                           height: _height * .4,
@@ -1162,11 +1163,16 @@ class _AthletePageState extends State<AthletePage> {
                                       ))),
                             ],
                           )),
+                      //give spacing between the graph and the buttons
+                      SizedBox(
+                        height: 12,
+                      ),
+                      //build buttons and tooltip
                       Container(
                           width: wid * .875,
                           height: 150,
                           child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Row(
                                     mainAxisAlignment:
@@ -1258,10 +1264,41 @@ class _AthletePageState extends State<AthletePage> {
                                                   style: textStyle(Colors.white,
                                                       20, false, false))))
                                     ]),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    scoutPageToolTip(),
+                                  ],
+                                ),                                 
                               ]))
                     ])),
           ],
         ));
+  }
+
+  Widget scoutPageToolTip() {
+    return Tooltip(
+      height: 20,
+      padding: EdgeInsets.all(20),
+      preferBelow: true,
+      decoration: BoxDecoration(
+          color: Colors.grey[800],
+          borderRadius: BorderRadius.circular(50)),
+      richMessage: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: "Buy / Sell individual APT's at their Market Price\n",
+            style: TextStyle(color: Colors.grey[400], fontSize: 18)
+          ),
+          TextSpan(
+            text: "Mint / Redeem APT Pairs for their Book Value",
+            style: TextStyle(color: Colors.grey[400], fontSize: 18)
+          ),
+        ],
+      ),
+      child:
+          Icon(Icons.info_outline_rounded, color: Colors.grey, size: 25),
+    );
   }
 
   Widget statsSide(
