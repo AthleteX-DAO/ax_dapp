@@ -56,6 +56,7 @@ class _AthletePageState extends State<AthletePage> {
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
+  late ZoomPanBehavior _zoomPanBehavior;
 
   @override
   void initState() {
@@ -63,6 +64,7 @@ class _AthletePageState extends State<AthletePage> {
     final LSPController lspController = Get.find();
     lspController.updateAptAddress(athlete.id);
     print(athlete.id);
+    _zoomPanBehavior = ZoomPanBehavior(enableMouseWheelZooming: true, enablePanning: true,);
   }
 
   @override
@@ -1097,6 +1099,7 @@ class _AthletePageState extends State<AthletePage> {
                                   children: [
                                     SfCartesianChart(
                                       legend: Legend(isVisible: true),
+                                      zoomPanBehavior: _zoomPanBehavior,
                                       enableSideBySideSeriesPlacement: true,
                                       series: <FastLineSeries>[
                                         FastLineSeries<GraphData, DateTime>(
