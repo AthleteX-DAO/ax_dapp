@@ -17,12 +17,6 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
 
   void _mapPageRefreshEventToState(
       OnPageRefresh event, Emitter<AthletePageState> emit) async {
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    DateTime todaysDate = DateTime.now();
-    DateTime yesterdaysDate =
-        DateTime(todaysDate.year, todaysDate.month, todaysDate.day - 1);
-    final String todaysDateString = formatter.format(todaysDate);
-    final String yesterdaysDateString = formatter.format(yesterdaysDate);
     try {
       print("load page stats");
       final int playerId = event.playerId;

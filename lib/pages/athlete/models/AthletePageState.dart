@@ -1,8 +1,6 @@
-import 'package:ax_dapp/service/athleteModels/mlb/MLBPAthleteStats.dart';
 import 'package:ax_dapp/util/chart/extensions/graphData.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class AthletePageState extends Equatable {
   final List<GraphData> stats;
