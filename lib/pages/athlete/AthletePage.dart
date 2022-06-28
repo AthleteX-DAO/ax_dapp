@@ -30,8 +30,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../util/AthletePageFormatHelper.dart';
-import 'scout/Widget Factories/AthleteDetailsWidget.dart';
+import '../../util/AthletePageFormatHelper.dart';
+import '../scout/Widget Factories/AthleteDetailsWidget.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
@@ -1091,7 +1091,7 @@ class _AthletePageState extends State<AthletePage> {
                                 padding: EdgeInsets.only(
                                     left: 28.0, right: 28.0, top: 14.0),
                                 child: (chartStats.isEmpty)
-                                    ? CircularProgressIndicator()
+                                    ? Center(child: CircularProgressIndicator())
                                     : IndexedStack(
                                   index: (_longAptIndex),
                                   children: [
