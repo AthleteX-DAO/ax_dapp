@@ -31,7 +31,7 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
   }
 
   @override
-  Future getPlayerStatsHistory(int id) {
+  Future getPlayerStatsHistory(int id, String from, String until) {
     // TODO: implement getPlayerStatsHistory
     throw UnimplementedError();
   }
