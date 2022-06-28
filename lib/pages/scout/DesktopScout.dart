@@ -907,7 +907,6 @@ class _DesktopScoutState extends State<DesktopScout> {
       decoration: boxDecoration(Color.fromRGBO(118, 118, 128, 0.24), 20, 1,
           Color.fromRGBO(118, 118, 128, 0.24)),
       child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(width: 6),
@@ -943,13 +942,6 @@ class _DesktopScoutState extends State<DesktopScout> {
               ),
             ),
           ),
-          Container(
-            child: Icon(
-              Icons.mic,
-              color: Color.fromRGBO(235, 235, 245, 0.6),
-              size: 20,
-            ),
-          ),
         ],
       ),
     );
@@ -958,7 +950,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   double searchWidth(double widthSize) {
     double _width;
     if (kIsWeb) {
-      _width = widthSize * 0.26;
+      _width = widthSize * 0.15;
     } else {
       _width = widthSize * 0.66;
     }
