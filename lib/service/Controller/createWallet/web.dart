@@ -4,6 +4,7 @@ import 'dart:html';
 import 'package:erc20/erc20.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart' as Web3Dart;
+import 'package:web3dart/web3dart.dart';
 import 'abstractWallet.dart';
 import 'package:flutter_web3/flutter_web3.dart' as FlutterWeb3;
 import 'package:web3_browser/web3_browser.dart';
@@ -17,10 +18,29 @@ class WebWallet extends DappWallet {
   String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
 
   @override
-  Future<void> connect() async {
+  Future<void> connect({String? rpcUrl}) async {
+    const POLYGON_RPC = 'https://polygon-rpc.com';
+
+    if (rpcUrl == null) {
+      rpcUrl = POLYGON_RPC;
+    }
+
+    if (seedHex == null) {
+      this.createNewMnemonic();
+    }
+
+    this.client = Web3Client(rpcUrl, Client());
+    this.credentials = EthPrivateKey.fromHex(seedHex);
+    this.publicAddress = await credentials.extractAddress();
+    print('Credentials $credentials, Public Address $publicAddress');
+    this.networkID = await client.getNetworkId();
+    print("[Console] updated client and credentials at $publicAddress");
+  }
+
+  Future<void> connectwithMetamask() async {
     if (FlutterWeb3.Ethereum.isSupported) {
       await this.switchNetwork();
-
+      // Anything with the 'ethereum' object is not allowed
       this.client = Web3Dart.Web3Client.custom(window.ethereum!.asRpcService());
       this.credentials = await window.ethereum!.requestAccount();
       this.publicAddress = credentials.address;
@@ -86,7 +106,7 @@ class WebWallet extends DappWallet {
       print("[Console] The Polygon mainnet is added and also switched");
     }
   }
-  
+
   void createNewMnemonic() {
     this.mnemonic = bip39.generateMnemonic();
     this.seedHex = bip39.mnemonicToSeedHex(mnemonic);

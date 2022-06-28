@@ -18,7 +18,7 @@ abstract class DappWallet {
     return _connectedWalletInstance;
   }
 
-  Future<dynamic> connect();
+  Future<dynamic> connect({String? rpcUrl});
 
   void createNewMnemonic();
   

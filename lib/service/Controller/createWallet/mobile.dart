@@ -10,7 +10,7 @@ class MobileWallet extends DappWallet {
   var rpcUrl = "https://polygon-rpc.com";
 
   @override
-  Future<void> connect() async {
+  Future<void> connect({String? rpcUrl}) async {
     String rpcUrl = "";
     String mainRPCUrl = "https://polygon-rpc.com";
     String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";

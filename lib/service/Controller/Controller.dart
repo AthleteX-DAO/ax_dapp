@@ -1,8 +1,10 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
 import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';
+import 'package:ax_dapp/service/Controller/createWallet/mobile.dart';
 import 'package:bip39/bip39.dart'
     as bip39; // Basics of BIP39 https://coldbit.com/bip-39-basics-from-randomness-to-mnemonic-words/
+
 import './createWallet/createWallet.dart'
     if (dart.library.io) './createWallet/mobile.dart'
     if (dart.library.js) './createWallet/web.dart';
@@ -48,15 +50,21 @@ class Controller extends GetxController {
 
   void initState() async {
     //Setting up Client & Credentials for connecting to dApp from a client
-    web3 = newWallet();
+    // There are two types of logins that work --> Web login & Mobile login we want
+        web3 = DappWallet.instance!;
   }
 
   Future<int> connect() async {
     //Connect and setup credentials
-    await web3.connect().then((value) {
-      print("Connecting Wallet... ${web3.publicAddress}");
-      this.publicAddress.value = web3.publicAddress;
-    });
+
+    try {
+      await web3.connect().then((value) {
+        print("Connecting Wallet... ${web3.publicAddress}");
+        this.publicAddress.value = web3.publicAddress;
+      });
+    } catch (e) {
+      throw ("Unable to connect to wallet! \n $e");
+    }
 
     try {
       networkID.value = web3.networkID;
