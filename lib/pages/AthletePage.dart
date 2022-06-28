@@ -27,10 +27,10 @@ import 'scout/Widget Factories/AthleteDetailsWidget.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
-  final void Function() goToScoutPage;
+  final void Function() goToTradePage;
 
   const AthletePage(
-      {Key? key, required this.athlete, required this.goToScoutPage})
+      {Key? key, required this.athlete, required this.goToTradePage})
       : super(key: key);
 
   @override
@@ -59,7 +59,7 @@ class _AthletePageState extends State<AthletePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (listView == 1) return DesktopScout(goToScoutPage: widget.goToScoutPage);
+    if (listView == 1) return DesktopScout(goToTradePage: widget.goToTradePage);
 
     return kIsWeb.kIsWeb
         ? buildWebViewContainer(context)
@@ -845,7 +845,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         GetBuyInfoUseCase>(context),
                                                     wallet: GetTotalTokenBalanceUseCase(Get.find()),
                                                     swapController: Get.find()),
-                                                child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToScoutPage))),
+                                                child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToTradePage))),
                                         child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
                                 Container(
                                     width: 160,
@@ -1191,7 +1191,7 @@ class _AthletePageState extends State<AthletePage> {
                                                           wallet:
                                                               GetTotalTokenBalanceUseCase(Get.find()),
                                                           swapController: Get.find()),
-                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToScoutPage))),
+                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToTradePage))),
                                               child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
                                       Container(
                                           width: 175,

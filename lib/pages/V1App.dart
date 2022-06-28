@@ -64,7 +64,7 @@ class _V1AppState extends State<V1App> {
     });
   }
 
-  goToScoutPage() {
+  goToTradePage() {
     setState(() {
       pageNumber = PAGES.TRADE;
       isBuyAX = true;
@@ -148,7 +148,7 @@ class _V1AppState extends State<V1App> {
                       coinGeckoRepo:
                           RepositoryProvider.of<CoinGeckoRepo>(context),
                     )),
-                child: DesktopScout(goToScoutPage: this.goToScoutPage))
+                child: DesktopScout(goToTradePage: this.goToTradePage))
           else if (pageNumber == PAGES.TRADE)
             BlocProvider(
                 create: (BuildContext context) => TradePageBloc(
@@ -185,7 +185,7 @@ class _V1AppState extends State<V1App> {
                     coinGeckoRepo:
                         RepositoryProvider.of<CoinGeckoRepo>(context),
                   )),
-              child: DesktopScout(goToScoutPage: this.goToScoutPage)),
+              child: DesktopScout(goToTradePage: this.goToTradePage)),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
                 repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
