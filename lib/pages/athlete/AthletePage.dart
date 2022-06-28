@@ -1125,7 +1125,7 @@ class _AthletePageState extends State<AthletePage> {
                                               width: 0),
                                           interval: 100,
                                           minimum: 4000,
-                                          maximum: 15000,
+                                          maximum: 12000,
                                           labelFormat: '{value}K',
                                           numberFormat: NumberFormat
                                               .simpleCurrency(
