@@ -23,8 +23,8 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
       emit(state.copyWith(status: BlocStatus.loading));
       DateTime now = DateTime.now();
       String formattedDate = DateFormat('yyyy-MM-dd').format(now);
-      var from = "2022-06-01";
       var until = formattedDate;
+      var from = "2022-06-01";
       final MLBAthleteStats stats = await repo.getPlayerStatsHistory(
           playerId, from, until);
       print("fetched MLBAthlete data");
