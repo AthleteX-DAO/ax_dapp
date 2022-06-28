@@ -918,7 +918,6 @@ class _DesktopScoutState extends State<DesktopScout> {
       decoration: boxDecoration(Color.fromRGBO(118, 118, 128, 0.24), 20, 1,
           Color.fromRGBO(118, 118, 128, 0.24)),
       child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(width: 6),
@@ -952,13 +951,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                   FilteringTextInputFormatter.allow(RegExp('[a-zA-z. ]'))
                 ],
               ),
-            ),
-          ),
-          Container(
-            child: Icon(
-              Icons.mic,
-              color: Color.fromRGBO(235, 235, 245, 0.6),
-              size: 20,
             ),
           ),
         ],
