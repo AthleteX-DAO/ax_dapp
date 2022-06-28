@@ -90,9 +90,9 @@ class TokenList {
     MATIC("Matic/Polygon", "Matic",
         AssetImage('assets/images/Polygon_Small.png')),
     WETH("WETH", "WETH",
-        AssetImage('assets/images/weth_small.png')),
+        AssetImage('images/weth_small.png')),
     USDC("USDC", "USDC",
-        AssetImage('assets/images/USDC_small.png')),
+        AssetImage('images/USDC_small.png')),
     ...namesList.map((ath) {
       return APT(
           ath[0] + " Long APT",
