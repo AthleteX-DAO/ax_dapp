@@ -80,75 +80,47 @@ Widget myFarmItem(BuildContext context, bool isWeb, FarmController farm,
                   style: textStyle(Colors.white, 20, false, false)),
             ]),
         //Show different information for AX item card and AX with APT card
-        if (farm.athlete == null) ...[
-          Container(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Currently Staked",
-                  style: txStyle,
-                ),
-                Obx(() => Text(
-                    "${double.parse(farm.stakedInfo.value.viewAmount).toStringAsFixed(4)} ${farm.strStakedSymbol}",
-                    style: txStyle))
-              ],
-            ),
+        Container(
+          width: cardWidth,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Currently Staked",
+                style: txStyle,
+              ),
+              Obx(() => Text(
+                  "${double.parse(farm.stakedInfo.value.viewAmount).toStringAsFixed(4)} ${farm.strStakedSymbol}",
+                  style: txStyle))
+            ],
           ),
-          Container(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Rewards Earned",
-                  style: txStyle,
-                ),
-                Obx(() => Text("${farm.strRewards} ${farm.strRewardSymbol}",
-                    style: txStyle))
-              ],
-            ),
+        ),
+        Container(
+          width: cardWidth,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Rewards Earned",
+                style: txStyle,
+              ),
+              Obx(() => Text("${farm.strRewards} ${farm.strRewardSymbol}",
+                  style: txStyle))
+            ],
           ),
-          Container(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text("Total AX available (Staked + Earned)", style: txStyle),
-                Obx(() => Text(
-                    "${(double.parse(farm.stakedInfo.value.viewAmount) + double.parse(farm.strRewards.value)).toStringAsFixed(2)} ${farm.strRewardSymbol}",
-                    style: txStyle))
-              ],
-            ),
+        ),
+        Container(
+          width: cardWidth,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("Total AX available (Staked + Earned)", style: txStyle),
+              Obx(() => Text(
+                  "${(double.parse(farm.stakedInfo.value.viewAmount) + double.parse(farm.strRewards.value)).toStringAsFixed(2)} ${farm.strRewardSymbol}",
+                  style: txStyle))
+            ],
           ),
-        ] else ...[
-          Container(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "LP tokens provided",
-                  style: txStyle,
-                ),
-                Text("100 LP", style: txStyle)
-              ],
-            ),
-          ),
-          Container(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text("Rewards Earned", style: txStyle),
-                Obx(() => Text(
-                    "{farmController.rewardsEarned} ${farm.strRewardSymbol}",
-                    style: txStyle))
-              ],
-            ),
-          ),
-        ],
+        ),
         //Claim rewards and Unstake liquidity buttons
         Container(
           width: cardWidth,
