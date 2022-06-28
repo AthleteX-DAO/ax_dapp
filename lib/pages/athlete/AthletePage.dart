@@ -20,11 +20,9 @@ import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/Colors.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';
-import 'package:ax_dapp/util/chart/AthletePageGraph.dart';
 import 'package:ax_dapp/util/chart/extensions/graphData.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart' as series;
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -529,7 +527,7 @@ class _AthletePageState extends State<AthletePage> {
                                                           false)),
                                                   Container(
                                                       alignment:
-                                                          Alignment.topLeft,
+                                                      Alignment.topLeft,
                                                       child: Text(
                                                           bookValuePercent,
                                                           style: textStyle(
@@ -1064,7 +1062,7 @@ class _AthletePageState extends State<AthletePage> {
                         child: Text(
                           "+ Add to Wallet",
                           style:
-                              textStyle(Colors.amber[500]!, 10, false, false),
+                          textStyle(Colors.amber[500]!, 10, false, false),
                         ),
                       ),
                     ),
@@ -1087,34 +1085,84 @@ class _AthletePageState extends State<AthletePage> {
                               Padding(
                                 padding: EdgeInsets.only(
                                     left: 28.0, right: 28.0, top: 14.0),
-                                child: SfCartesianChart(
-                                  title: ChartTitle(text: 'Yearly sales analysis'),
-                                  legend: Legend(isVisible: true),
-                                  series: <FastLineSeries>[
-                                    FastLineSeries<GraphData, DateTime>(
-                                        name: 'Price',
-                                        dataSource: chartStats,
-                                        xValueMapper: ( GraphData data, _) => data.date,
-                                        yValueMapper: (GraphData data, _) => data.price,
-                                        dataLabelSettings: DataLabelSettings(isVisible: true),
-                                        enableTooltip: true,
-                                        color: Colors.orange,
-                                        width: 4,
-                                        opacity: 1,
-                                        dashArray: <double>[5, 5],
+                                child: (chartStats.isEmpty)
+                                    ? CircularProgressIndicator()
+                                    : IndexedStack(
+                                  index: (_longAptIndex),
+                                  children: [
+                                    SfCartesianChart(
+                                      legend: Legend(isVisible: true),
+                                      enableSideBySideSeriesPlacement: true,
+                                      series: <FastLineSeries>[
+                                        FastLineSeries<GraphData, DateTime>(
+                                          name: 'Price',
+                                          dataSource: chartStats.toSet()
+                                              .toList(),
+                                          xValueMapper: (GraphData data,
+                                              _) => data.date,
+                                          yValueMapper: (GraphData data,
+                                              _) => (data.price),
+                                          dataLabelSettings: DataLabelSettings(
+                                              isVisible: true,
+                                              textStyle: TextStyle(fontSize: 10,
+                                                  color: Colors.white)),
+                                          enableTooltip: true,
+                                          color: Colors.orange,
+                                          width: 2,
+                                          opacity: 1,
+                                          dashArray: <double>[5, 5],
                                         )
+                                      ],
+                                      primaryXAxis: DateTimeAxis(
+                                        dateFormat: DateFormat.Md(),
+                                      ),
+                                      primaryYAxis: NumericAxis(
+                                          majorGridLines: MajorGridLines(
+                                              width: 0),
+                                          interval: 100,
+                                          minimum: 4000,
+                                          maximum: 12000,
+                                          labelFormat: '{value}K',
+                                          numberFormat: NumberFormat
+                                              .simpleCurrency(
+                                              decimalDigits: 0)),
+                                    ),
+                                    SfCartesianChart(
+                                      legend: Legend(isVisible: true),
+                                      series: <FastLineSeries>[
+                                        FastLineSeries<GraphData, DateTime>(
+                                          name: 'Price',
+                                          dataSource: chartStats,
+                                          xValueMapper: (GraphData data,
+                                              _) => data.date,
+                                          yValueMapper: (GraphData data,
+                                              _) => (15000 - data.price),
+                                          dataLabelSettings: DataLabelSettings(
+                                              isVisible: true,
+                                              textStyle: TextStyle(fontSize: 10,
+                                                  color: Colors.white)),
+                                          enableTooltip: true,
+                                          color: Colors.orange,
+                                          width: 2,
+                                          opacity: 1,
+                                          dashArray: <double>[5, 5],
+                                        )
+                                      ],
+                                      primaryXAxis: DateTimeAxis(
+                                        dateFormat: DateFormat.Md(),
+                                      ),
+                                      primaryYAxis: NumericAxis(
+                                          majorGridLines: MajorGridLines(
+                                              width: 0),
+                                          interval: 100,
+                                          minimum: 4000,
+                                          maximum: 12000,
+                                          labelFormat: '{value}K',
+                                          numberFormat: NumberFormat
+                                              .simpleCurrency(
+                                              decimalDigits: 0)),
+                                    )
                                   ],
-                                  primaryXAxis: DateTimeAxis(
-                                    dateFormat: DateFormat.MMM(),
-                                    majorGridLines: MajorGridLines(width: 0)
-
-                                  ),
-                                  primaryYAxis: NumericAxis(
-                                    interval: 100,
-                                      minimum: 4000,
-                                      maximum: 10000,
-                                      labelFormat: '{value}K',
-                                      numberFormat: NumberFormat.simpleCurrency(decimalDigits: 0)),
                                 ),
                               ),
                               // Price
@@ -1125,17 +1173,15 @@ class _AthletePageState extends State<AthletePage> {
         ));
   }
 
-  Widget statsSide(
-    BuildContext context,
-    String longMarketPrice,
-    String shortMarketPrice,
-    String longMarketPricePercent,
-    String shortMarketPricePercent,
-    String longBookValue,
-    String shortBookValue,
-    String longBookValuePercent,
-    String shortBookValuePercent,
-  ) {
+  Widget statsSide(BuildContext context,
+      String longMarketPrice,
+      String shortMarketPrice,
+      String longMarketPricePercent,
+      String shortMarketPricePercent,
+      String longBookValue,
+      String shortBookValue,
+      String longBookValuePercent,
+      String shortBookValuePercent,) {
     final longBookValue =
         "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
@@ -1146,7 +1192,10 @@ class _AthletePageState extends State<AthletePage> {
 
     final WalletController walletController = Get.find();
 
-    double _width = MediaQuery.of(context).size.width;
+    double _width = MediaQuery
+        .of(context)
+        .size
+        .width;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
 
@@ -1178,9 +1227,9 @@ class _AthletePageState extends State<AthletePage> {
                                 child: FutureBuilder<String>(
                                   future: _isLongApt
                                       ? walletController.getTokenSymbol(
-                                          getLongAptAddress(athlete.id))
+                                      getLongAptAddress(athlete.id))
                                       : walletController.getTokenSymbol(
-                                          getShortAptAddress(athlete.id)),
+                                      getShortAptAddress(athlete.id)),
                                   builder: (context, snapshot) {
                                     //Check API response data
                                     if (snapshot.hasError) {
@@ -1208,7 +1257,7 @@ class _AthletePageState extends State<AthletePage> {
                                   width: 200,
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Container(
                                           alignment: Alignment.bottomLeft,
@@ -1235,37 +1284,41 @@ class _AthletePageState extends State<AthletePage> {
                                   width: 200,
                                   child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
                                           Text(
                                               (_longAptIndex == 0)
-                                                  ? "${athlete.longTokenPrice!.toStringAsFixed(2)} AX"
-                                                  : "${athlete.shortTokenPrice!.toStringAsFixed(2)} AX",
+                                                  ? "${athlete.longTokenPrice!
+                                                  .toStringAsFixed(2)} AX"
+                                                  : "${athlete.shortTokenPrice!
+                                                  .toStringAsFixed(2)} AX",
                                               style: textStyle(Colors.white, 14,
                                                   false, false)),
                                           Container(width: 5),
                                           Container(
-                                              //alignment: Alignment.topLeft,
+                                            //alignment: Alignment.topLeft,
                                               child: Text(
                                                   (_longAptIndex == 0)
-                                                      ? getPercentageDesc(athlete
+                                                      ? getPercentageDesc(
+                                                      athlete
                                                           .longTokenPercentage!)
-                                                      : getPercentageDesc(athlete
+                                                      : getPercentageDesc(
+                                                      athlete
                                                           .shortTokenPercentage!),
                                                   style: (_longAptIndex == 0)
                                                       ? textStyle(
-                                                          getPercentageColor(athlete
-                                                              .longTokenPercentage!),
-                                                          12,
-                                                          false,
-                                                          false)
+                                                      getPercentageColor(athlete
+                                                          .longTokenPercentage!),
+                                                      12,
+                                                      false,
+                                                      false)
                                                       : textStyle(
-                                                          getPercentageColor(athlete
-                                                              .shortTokenPercentage!),
-                                                          12,
-                                                          false,
-                                                          false)))
+                                                      getPercentageColor(athlete
+                                                          .shortTokenPercentage!),
+                                                      12,
+                                                      false,
+                                                      false)))
                                         ]),
                                         Text("4.24 AX",
                                             style: textStyle(greyTextColor, 14,
@@ -1284,7 +1337,7 @@ class _AthletePageState extends State<AthletePage> {
                                   width: 200,
                                   child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
                                           Text(
@@ -1318,7 +1371,7 @@ class _AthletePageState extends State<AthletePage> {
                                   width: 200,
                                   child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Row(children: <Widget>[
                                           Text("80%",
