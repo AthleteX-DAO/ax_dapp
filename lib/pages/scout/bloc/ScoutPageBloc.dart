@@ -20,21 +20,18 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     on<SelectSport>(_mapSelectSportToState);
     on<OnAthleteSearch>(_mapSearchAthleteEventToState);
     _chainChangeStream = chainChangeUseCase.stream;
+    _chainChangeStream.listen((event) {
+      print('Inside listener in Scout Page $event');
+      if (event == CurrentChain.UNSUPPORTED_CHAIN) {
+        print('Please change your network to Polygon or SX');
+      }
+    });
   }
 
   void _mapRefreshEventToState(
       OnPageRefresh event, Emitter<ScoutPageState> emit) async {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
-      _chainChangeStream.listen((event) {
-        print('Inside listener in Scout Page $event');
-        if (event == CurrentChain.UNSUPPORTED_CHAIN) {
-          print('Please change your network to Polygon');
-        }
-      });
-      _chainChangeStream.listen((event) {
-        print('Second chain change listener: $event');
-      });
       final response = await repo.fetchSupportedAthletes(SupportedSport.ALL);
       if (response.isNotEmpty) {
         emit(state.copyWith(
