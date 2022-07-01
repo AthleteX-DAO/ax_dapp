@@ -32,10 +32,12 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
       print("fetched MLBAthlete data");
       final List<GraphData> graphStats = stats.statHistory
           .map((stat) => GraphData(
-              DateFormat("yyy-MM-dd HH:mm:ss").parse(stat.timeStamp),
+              DateFormat("yyy-MM-dd").parse(stat.timeStamp),
               stat.price * 1000))
-          .toList();
-      emit(state.copyWith(stats: graphStats, status: BlocStatus.success));
+          .toList();    
+      var seen = <DateTime>{};
+      final List<GraphData> distinct = graphStats.where((element) => seen.add(element.date)).toList();
+      emit(state.copyWith(stats: distinct, status: BlocStatus.success));
     } catch (e) {
       print("[Console] AthletePage -> Failed to fetch player stats: $e");
       emit(state.copyWith(status: BlocStatus.error));
