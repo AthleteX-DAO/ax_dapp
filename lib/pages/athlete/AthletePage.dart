@@ -3,6 +3,8 @@ import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
 import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
+import 'package:ax_dapp/pages/athlete/components/BuildLongChart.dart';
+import 'package:ax_dapp/pages/athlete/components/BuildShortChart.dart';
 import 'package:ax_dapp/pages/athlete/models/AthletePageEvent.dart';
 import 'package:ax_dapp/pages/athlete/models/AthletePageState.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
@@ -16,18 +18,14 @@ import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/createWallet/web.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/service/TokenList.dart';
-import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/Colors.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:ax_dapp/util/chart/extensions/graphData.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../util/AthletePageFormatHelper.dart';
@@ -339,8 +337,6 @@ class _AthletePageState extends State<AthletePage> {
                                 if (_longAptIndex == 0) {
                                   _isLongApt = true;
                                 }
-                                print(
-                                    " The current index is $_longAptIndex  of 0 and it should show the Short");
                               });
                             },
                             child: Text(
@@ -373,8 +369,6 @@ class _AthletePageState extends State<AthletePage> {
                                 if (_longAptIndex == 1) {
                                   _isLongApt = false;
                                 }
-                                print(
-                                    " The current index is $_longAptIndex  of 1 and it should show the short");
                               });
                             },
                             child: Text(
@@ -475,8 +469,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_widgetIndex == 1) {
                                         _isDisplayingChart = false;
                                       }
-                                      print(
-                                          " The current index is $_widgetIndex  of 1 and it should show the stats");
                                     });
                                   },
                                   child: Text(
@@ -500,13 +492,6 @@ class _AthletePageState extends State<AthletePage> {
                               Colors.transparent, 10, 1, secondaryGreyColor),
                           child: Stack(
                             children: <Widget>[
-                              buildGraph([
-                                _isLongApt
-                                    ? athlete.longTokenBookPrice
-                                    : athlete.shortTokenBookPrice
-                              ], [
-                                athlete.time
-                              ], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -584,8 +569,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_widgetIndex == 0) {
                                         _isDisplayingChart = true;
                                       }
-                                      print(
-                                          " The current index is $_widgetIndex of 0 and it should show the chart");
                                     });
                                   },
                                   child: Text(
@@ -1000,8 +983,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_longAptIndex == 0) {
                                         _isLongApt = true;
                                       }
-                                      print(
-                                          " The current index is $_longAptIndex  of 0 and it should show the Short");
                                     });
                                   },
                                   child: Text(
@@ -1034,8 +1015,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_longAptIndex == 1) {
                                         _isLongApt = false;
                                       }
-                                      print(
-                                          " The current index is $_longAptIndex  of 1 and it should show the short");
                                     });
                                   },
                                   child: Text(
@@ -1101,80 +1080,8 @@ class _AthletePageState extends State<AthletePage> {
                                     : IndexedStack(
                                   index: (_longAptIndex),
                                   children: [
-                                    SfCartesianChart(
-                                      tooltipBehavior: _longToolTipBehavior,
-                                      legend: Legend(isVisible: true),
-                                      zoomPanBehavior: _zoomPanBehavior,
-                                      enableSideBySideSeriesPlacement: true,
-                                      series: <FastLineSeries>[
-                                        FastLineSeries<GraphData, DateTime>(
-                                          name: 'Price',
-                                          dataSource: chartStats.toSet()
-                                              .toList(),
-                                          xValueMapper: (GraphData data,
-                                              _) => data.date,
-                                          yValueMapper: (GraphData data,
-                                              _) => (data.price),
-                                          dataLabelSettings: DataLabelSettings(
-                                              isVisible: true,
-                                              textStyle: TextStyle(fontSize: 10,
-                                                  color: Colors.white)),
-                                          enableTooltip: true,
-                                          color: Colors.orange,
-                                          width: 2,
-                                          opacity: 1,
-                                          dashArray: <double>[5, 5],
-                                        )
-                                      ],
-                                      primaryXAxis: DateTimeAxis(
-                                        dateFormat: DateFormat.Md(),
-                                      ),
-                                      primaryYAxis: NumericAxis(
-                                          majorGridLines: MajorGridLines(
-                                              width: 0),
-                                          interval: 100,
-                                          minimum: 4000,
-                                          maximum: 12000,
-                                          labelFormat: '{value}AX',
-                                          numberFormat: NumberFormat
-                                              .decimalPattern()),
-                                    ),
-                                    SfCartesianChart(
-                                      tooltipBehavior: _shortToolTipBehavior,
-                                      zoomPanBehavior: _zoomPanBehavior,
-                                      enableSideBySideSeriesPlacement: true,
-                                      legend: Legend(isVisible: true),
-                                      series: <FastLineSeries>[
-                                        FastLineSeries<GraphData, DateTime>(
-                                          name: 'Price',
-                                          dataSource: chartStats,
-                                          xValueMapper: (GraphData data,
-                                              _) => data.date,
-                                          yValueMapper: (GraphData data,
-                                              _) => (15000 - data.price),
-                                          dataLabelSettings: DataLabelSettings(
-                                              isVisible: true,
-                                              textStyle: TextStyle(fontSize: 10,
-                                                  color: Colors.white)),
-                                          enableTooltip: true,
-                                          color: Colors.orange,
-                                          width: 2,
-                                          opacity: 1,
-                                          dashArray: <double>[5, 5],
-                                        )
-                                      ],
-                                      primaryXAxis: DateTimeAxis(
-                                        dateFormat: DateFormat.Md(),
-                                      ),
-                                      primaryYAxis: NumericAxis(
-                                          majorGridLines: MajorGridLines(
-                                              width: 0),
-                                          interval: 100,
-                                          minimum: 4000,
-                                          maximum: 12000,
-                                          labelFormat: '{value}AX',
-                                          numberFormat: NumberFormat.decimalPattern()),
-                                    )
+                                    buildLongChart(chartStats, _longToolTipBehavior, _zoomPanBehavior),
+                                    buildShortChart(chartStats, _shortToolTipBehavior, _zoomPanBehavior)
                                   ],
                                 ),
                               ),
@@ -1522,46 +1429,6 @@ class _AthletePageState extends State<AthletePage> {
       child: Text("Symbol: \$$symbol",
           style: textStyle(greyTextColor, 10, false, false),
           textAlign: TextAlign.center),
-    );
-  }
-
-  Widget buildGraph(List scaledPrice, List time, BuildContext context) {
-    // local variables
-    List<series.Series<dynamic, DateTime>> athleteData;
-    DateTime curTime = DateTime(-1);
-    DateTime lastHour = DateTime(-1);
-    DateTime maxTime = DateTime(-1);
-    List<WarTimeSeries> data = [];
-
-    for (int i = 0; i < scaledPrice.length; i++) {
-      print(scaledPrice);
-      curTime = DateTime.parse(time[i]);
-      // only new points
-      if (lastHour.year == -1 ||
-          (lastHour.isBefore(curTime) && curTime.hour != lastHour.hour)) {
-        lastHour = curTime;
-        // sets maximum if latest time
-        if (maxTime == DateTime(-1) || maxTime.isBefore(curTime))
-          maxTime = curTime;
-
-        data.add(WarTimeSeries(curTime, scaledPrice[i]));
-      }
-    }
-
-    athleteData = [
-      new charts.Series<WarTimeSeries, DateTime>(
-        id: 'War',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (WarTimeSeries wts, _) => wts.time,
-        measureFn: (WarTimeSeries wts, _) => wts.scaledPrice,
-        data: data,
-      )
-    ];
-
-    return Container(
-      child: charts.TimeSeriesChart(
-        athleteData,
-      ),
     );
   }
 
