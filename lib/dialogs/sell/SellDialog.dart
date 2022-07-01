@@ -344,8 +344,8 @@ class _SellDialogState extends State<SellDialog> {
                             Expanded(                         
                               child: Text(
                                 _currentTokenTypeSelection == TokenType.Long ? 
-                                getLongAthleteSymbol(widget.athleteId) + " APT" :
-                                getShortAthleteSymbol(widget.athleteId) + " APT",
+                                "${getLongAthleteSymbol(widget.athleteId)} APT" :
+                                "${getShortAthleteSymbol(widget.athleteId)} APT",
                                 style: textStyle(Colors.white, 15, false),
                               ),
                             ),
