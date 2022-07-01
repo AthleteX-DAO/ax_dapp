@@ -57,6 +57,8 @@ class _AthletePageState extends State<AthletePage> {
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
   late ZoomPanBehavior _zoomPanBehavior;
+  late TooltipBehavior _longToolTipBehavior;
+  late TooltipBehavior _shortToolTipBehavior;
 
   @override
   void initState() {
@@ -65,6 +67,8 @@ class _AthletePageState extends State<AthletePage> {
     lspController.updateAptAddress(athlete.id);
     print(athlete.id);
     _zoomPanBehavior = ZoomPanBehavior(enableMouseWheelZooming: true, enablePanning: true,);
+    _longToolTipBehavior = TooltipBehavior(enable: true);
+    _shortToolTipBehavior = TooltipBehavior(enable: true);
   }
 
   @override
@@ -1098,6 +1102,7 @@ class _AthletePageState extends State<AthletePage> {
                                   index: (_longAptIndex),
                                   children: [
                                     SfCartesianChart(
+                                      tooltipBehavior: _longToolTipBehavior,
                                       legend: Legend(isVisible: true),
                                       zoomPanBehavior: _zoomPanBehavior,
                                       enableSideBySideSeriesPlacement: true,
@@ -1135,6 +1140,9 @@ class _AthletePageState extends State<AthletePage> {
                                               .decimalPattern()),
                                     ),
                                     SfCartesianChart(
+                                      tooltipBehavior: _shortToolTipBehavior,
+                                      zoomPanBehavior: _zoomPanBehavior,
+                                      enableSideBySideSeriesPlacement: true,
                                       legend: Legend(isVisible: true),
                                       series: <FastLineSeries>[
                                         FastLineSeries<GraphData, DateTime>(
@@ -1163,11 +1171,9 @@ class _AthletePageState extends State<AthletePage> {
                                               width: 0),
                                           interval: 100,
                                           minimum: 4000,
-                                          maximum: 15000,
-                                          labelFormat: '{value}K',
-                                          numberFormat: NumberFormat
-                                              .simpleCurrency(
-                                              decimalDigits: 0)),
+                                          maximum: 12000,
+                                          labelFormat: '{value}AX',
+                                          numberFormat: NumberFormat.decimalPattern()),
                                     )
                                   ],
                                 ),
