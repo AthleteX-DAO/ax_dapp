@@ -1,22 +1,15 @@
-import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
-import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
-import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
 import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
 import 'package:ax_dapp/pages/athlete/components/BuildLongChart.dart';
 import 'package:ax_dapp/pages/athlete/components/BuildShortChart.dart';
+import 'package:ax_dapp/pages/athlete/components/Buttons.dart';
 import 'package:ax_dapp/pages/athlete/models/AthletePageEvent.dart';
 import 'package:ax_dapp/pages/athlete/models/AthletePageState.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
-import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/createWallet/web.dart';
-import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/Colors.dart';
@@ -801,92 +794,14 @@ class _AthletePageState extends State<AthletePage> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryOrangeColor,
-                                        100,
-                                        0,
-                                        secondaryOrangeColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) => BlocProvider(
-                                                create: (BuildContext context) => BuyDialogBloc(
-                                                    repo: RepositoryProvider.of<
-                                                        GetBuyInfoUseCase>(context),
-                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
-                                                    swapController: Get.find()),
-                                                child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToTradePage))),
-                                        child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryOrangeColor,
-                                        100,
-                                        0,
-                                        secondaryOrangeColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) => BlocProvider(
-                                                create: (BuildContext context) => SellDialogBloc(
-                                                    repo: RepositoryProvider.of<
-                                                        GetSellInfoUseCase>(context),
-                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
-                                                    swapController: Get.find()),
-                                                child: SellDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
-                                        child: Text("Sell", style: textStyle(primaryOrangeColor, 20, false, false))))
+                                buyButton(context, athlete, widget.goToTradePage),
+                                sellButton(context, athlete)
                               ]),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryGreyColor,
-                                        100,
-                                        2,
-                                        secondaryGreyColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                MintDialog(athlete)),
-                                        child: Text("Mint",
-                                            style: textStyle(primaryWhiteColor,
-                                                20, false, false)))),
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryGreyColor,
-                                        100,
-                                        2,
-                                        secondaryGreyColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                RedeemDialog(athlete)),
-                                        child: Text("Redeem",
-                                            style: textStyle(primaryWhiteColor,
-                                                20, false, false))))
+                                mintButton(context, athlete),
+                                redeemButton(context, athlete)
                               ]),
                         ])),
               )
@@ -1103,91 +1018,15 @@ class _AthletePageState extends State<AthletePage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              primaryOrangeColor,
-                                              100,
-                                              0,
-                                              primaryOrangeColor),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) => BlocProvider(
-                                                      create: (BuildContext context) => BuyDialogBloc(
-                                                          repo: RepositoryProvider
-                                                              .of<GetBuyInfoUseCase>(
-                                                                  context),
-                                                          wallet:
-                                                              GetTotalTokenBalanceUseCase(Get.find()),
-                                                          swapController: Get.find()),
-                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToTradePage))),
-                                              child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.white,
-                                              100,
-                                              0,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) => BlocProvider(
-                                                      create: (BuildContext context) => SellDialogBloc(
-                                                          repo: RepositoryProvider
-                                                              .of<GetSellInfoUseCase>(
-                                                                  context),
-                                                          wallet: GetTotalTokenBalanceUseCase(
-                                                              Get.find()),
-                                                          swapController:
-                                                              Get.find()),
-                                                      child: SellDialog(
-                                                          athlete.name,
-                                                          athlete.longTokenBookPrice!,
-                                                          athlete.id))),
-                                              child: Text("Sell", style: textStyle(Colors.black, 20, false, false))))
+                                      buyButton(context, athlete, widget.goToTradePage),
+                                      sellButton(context, athlete)
                                     ]),
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.transparent,
-                                              100,
-                                              2,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          MintDialog(athlete)),
-                                              child: Text("Mint",
-                                                  style: textStyle(Colors.white,
-                                                      20, false, false)))),
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.transparent,
-                                              100,
-                                              2,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      RedeemDialog(athlete)),
-                                              child: Text("Redeem",
-                                                  style: textStyle(Colors.white,
-                                                      20, false, false))))
+                                      mintButton(context, athlete),
+                                      redeemButton(context, athlete)
                                     ]),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -1237,14 +1076,8 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longBookValue =
-        "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
-
-    final shortBookValue =
-        "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
-
     final WalletController walletController = Get.find();
     final longCurrentBookValueRatio =
         (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
@@ -1380,8 +1213,8 @@ class _AthletePageState extends State<AthletePage> {
                                   children: <Widget>[
                                     Text(
                                         (_longAptIndex == 0)
-                                            ? longBookValue
-                                            : shortBookValue,
+                                            ? "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX"
+                                            : "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX",
                                         style: textStyle(
                                             Colors.white, 14, false, false)),
                                     Container(
