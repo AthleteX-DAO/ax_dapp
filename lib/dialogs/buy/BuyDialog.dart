@@ -42,7 +42,7 @@ class _BuyDialogState extends State<BuyDialog> {
       padding: EdgeInsets.all(1.5),
       width: wid * 0.25,
       height: hgt * 0.05,
-      decoration: boxDecoration(Colors.transparent, 20, 1, Color.fromARGB(255, 97, 82, 82)),
+      decoration: boxDecoration(Colors.transparent, 20, 1, Colors.grey[800]!),
       child: Container(
         child: Row(
           children: [
