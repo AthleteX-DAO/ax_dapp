@@ -329,7 +329,7 @@ class _SellDialogState extends State<SellDialog> {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   scale: 0.5,
-                                  image: AssetImage("assets/images/X_Logo_Black_BR.png"),
+                                  image: _currentTokenTypeSelection == TokenType.Long ? AssetImage("assets/images/apt_noninverted.png") : AssetImage("assets/images/apt_inverted.png"),
                                 ),
                               ),
                             ),
