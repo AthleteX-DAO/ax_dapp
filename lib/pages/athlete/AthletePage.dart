@@ -1,33 +1,24 @@
-import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
-import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
-import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
 import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
+import 'package:ax_dapp/pages/athlete/components/BuildLongChart.dart';
+import 'package:ax_dapp/pages/athlete/components/BuildShortChart.dart';
+import 'package:ax_dapp/pages/athlete/components/Buttons.dart';
 import 'package:ax_dapp/pages/athlete/models/AthletePageEvent.dart';
 import 'package:ax_dapp/pages/athlete/models/AthletePageState.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
-import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/createWallet/web.dart';
-import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/service/TokenList.dart';
-import 'package:ax_dapp/service/WarTimeSeries.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/Colors.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';
 import 'package:ax_dapp/util/chart/extensions/graphData.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:charts_flutter/flutter.dart' as series;
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../util/AthletePageFormatHelper.dart';
@@ -57,6 +48,8 @@ class _AthletePageState extends State<AthletePage> {
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
   late ZoomPanBehavior _zoomPanBehavior;
+  late TooltipBehavior _longToolTipBehavior;
+  late TooltipBehavior _shortToolTipBehavior;
 
   @override
   void initState() {
@@ -65,6 +58,8 @@ class _AthletePageState extends State<AthletePage> {
     lspController.updateAptAddress(athlete.id);
     print(athlete.id);
     _zoomPanBehavior = ZoomPanBehavior(enableMouseWheelZooming: true, enablePanning: true,);
+    _longToolTipBehavior = TooltipBehavior(enable: true);
+    _shortToolTipBehavior = TooltipBehavior(enable: true);
   }
 
   @override
@@ -335,8 +330,6 @@ class _AthletePageState extends State<AthletePage> {
                                 if (_longAptIndex == 0) {
                                   _isLongApt = true;
                                 }
-                                print(
-                                    " The current index is $_longAptIndex  of 0 and it should show the Short");
                               });
                             },
                             child: Text(
@@ -369,8 +362,6 @@ class _AthletePageState extends State<AthletePage> {
                                 if (_longAptIndex == 1) {
                                   _isLongApt = false;
                                 }
-                                print(
-                                    " The current index is $_longAptIndex  of 1 and it should show the short");
                               });
                             },
                             child: Text(
@@ -471,8 +462,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_widgetIndex == 1) {
                                         _isDisplayingChart = false;
                                       }
-                                      print(
-                                          " The current index is $_widgetIndex  of 1 and it should show the stats");
                                     });
                                   },
                                   child: Text(
@@ -496,13 +485,6 @@ class _AthletePageState extends State<AthletePage> {
                               Colors.transparent, 10, 1, secondaryGreyColor),
                           child: Stack(
                             children: <Widget>[
-                              buildGraph([
-                                _isLongApt
-                                    ? athlete.longTokenBookPrice
-                                    : athlete.shortTokenBookPrice
-                              ], [
-                                athlete.time
-                              ], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -580,8 +562,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_widgetIndex == 0) {
                                         _isDisplayingChart = true;
                                       }
-                                      print(
-                                          " The current index is $_widgetIndex of 0 and it should show the chart");
                                     });
                                   },
                                   child: Text(
@@ -814,92 +794,14 @@ class _AthletePageState extends State<AthletePage> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryOrangeColor,
-                                        100,
-                                        0,
-                                        secondaryOrangeColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) => BlocProvider(
-                                                create: (BuildContext context) => BuyDialogBloc(
-                                                    repo: RepositoryProvider.of<
-                                                        GetBuyInfoUseCase>(context),
-                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
-                                                    swapController: Get.find()),
-                                                child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToTradePage))),
-                                        child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryOrangeColor,
-                                        100,
-                                        0,
-                                        secondaryOrangeColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) => BlocProvider(
-                                                create: (BuildContext context) => SellDialogBloc(
-                                                    repo: RepositoryProvider.of<
-                                                        GetSellInfoUseCase>(context),
-                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
-                                                    swapController: Get.find()),
-                                                child: SellDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
-                                        child: Text("Sell", style: textStyle(primaryOrangeColor, 20, false, false))))
+                                buyButton(context, athlete, widget.goToTradePage),
+                                sellButton(context, athlete)
                               ]),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryGreyColor,
-                                        100,
-                                        2,
-                                        secondaryGreyColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                MintDialog(athlete)),
-                                        child: Text("Mint",
-                                            style: textStyle(primaryWhiteColor,
-                                                20, false, false)))),
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryGreyColor,
-                                        100,
-                                        2,
-                                        secondaryGreyColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                RedeemDialog(athlete)),
-                                        child: Text("Redeem",
-                                            style: textStyle(primaryWhiteColor,
-                                                20, false, false))))
+                                mintButton(context, athlete),
+                                redeemButton(context, athlete)
                               ]),
                         ])),
               )
@@ -996,8 +898,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_longAptIndex == 0) {
                                         _isLongApt = true;
                                       }
-                                      print(
-                                          " The current index is $_longAptIndex  of 0 and it should show the Short");
                                     });
                                   },
                                   child: Text(
@@ -1030,8 +930,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_longAptIndex == 1) {
                                         _isLongApt = false;
                                       }
-                                      print(
-                                          " The current index is $_longAptIndex  of 1 and it should show the short");
                                     });
                                   },
                                   child: Text(
@@ -1097,78 +995,8 @@ class _AthletePageState extends State<AthletePage> {
                                     : IndexedStack(
                                   index: (_longAptIndex),
                                   children: [
-                                    SfCartesianChart(
-                                      legend: Legend(isVisible: true),
-                                      zoomPanBehavior: _zoomPanBehavior,
-                                      enableSideBySideSeriesPlacement: true,
-                                      series: <FastLineSeries>[
-                                        FastLineSeries<GraphData, DateTime>(
-                                          name: 'Price',
-                                          dataSource: chartStats.toSet()
-                                              .toList(),
-                                          xValueMapper: (GraphData data,
-                                              _) => data.date,
-                                          yValueMapper: (GraphData data,
-                                              _) => (data.price),
-                                          dataLabelSettings: DataLabelSettings(
-                                              isVisible: true,
-                                              textStyle: TextStyle(fontSize: 10,
-                                                  color: Colors.white)),
-                                          enableTooltip: true,
-                                          color: Colors.orange,
-                                          width: 2,
-                                          opacity: 1,
-                                          dashArray: <double>[5, 5],
-                                        )
-                                      ],
-                                      primaryXAxis: DateTimeAxis(
-                                        dateFormat: DateFormat.Md(),
-                                      ),
-                                      primaryYAxis: NumericAxis(
-                                          majorGridLines: MajorGridLines(
-                                              width: 0),
-                                          interval: 100,
-                                          minimum: 4000,
-                                          maximum: 12000,
-                                          labelFormat: '{value}AX',
-                                          numberFormat: NumberFormat
-                                              .decimalPattern()),
-                                    ),
-                                    SfCartesianChart(
-                                      legend: Legend(isVisible: true),
-                                      series: <FastLineSeries>[
-                                        FastLineSeries<GraphData, DateTime>(
-                                          name: 'Price',
-                                          dataSource: chartStats,
-                                          xValueMapper: (GraphData data,
-                                              _) => data.date,
-                                          yValueMapper: (GraphData data,
-                                              _) => (15000 - data.price),
-                                          dataLabelSettings: DataLabelSettings(
-                                              isVisible: true,
-                                              textStyle: TextStyle(fontSize: 10,
-                                                  color: Colors.white)),
-                                          enableTooltip: true,
-                                          color: Colors.orange,
-                                          width: 2,
-                                          opacity: 1,
-                                          dashArray: <double>[5, 5],
-                                        )
-                                      ],
-                                      primaryXAxis: DateTimeAxis(
-                                        dateFormat: DateFormat.Md(),
-                                      ),
-                                      primaryYAxis: NumericAxis(
-                                          majorGridLines: MajorGridLines(
-                                              width: 0),
-                                          interval: 100,
-                                          minimum: 4000,
-                                          maximum: 15000,
-                                          labelFormat: '{value}K',
-                                          numberFormat: NumberFormat
-                                              .simpleCurrency(
-                                              decimalDigits: 0)),
-                                    )
+                                    buildLongChart(chartStats, _longToolTipBehavior, _zoomPanBehavior),
+                                    buildShortChart(chartStats, _shortToolTipBehavior, _zoomPanBehavior)
                                   ],
                                 ),
                               ),
@@ -1190,91 +1018,15 @@ class _AthletePageState extends State<AthletePage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              primaryOrangeColor,
-                                              100,
-                                              0,
-                                              primaryOrangeColor),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) => BlocProvider(
-                                                      create: (BuildContext context) => BuyDialogBloc(
-                                                          repo: RepositoryProvider
-                                                              .of<GetBuyInfoUseCase>(
-                                                                  context),
-                                                          wallet:
-                                                              GetTotalTokenBalanceUseCase(Get.find()),
-                                                          swapController: Get.find()),
-                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, widget.goToTradePage))),
-                                              child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.white,
-                                              100,
-                                              0,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) => BlocProvider(
-                                                      create: (BuildContext context) => SellDialogBloc(
-                                                          repo: RepositoryProvider
-                                                              .of<GetSellInfoUseCase>(
-                                                                  context),
-                                                          wallet: GetTotalTokenBalanceUseCase(
-                                                              Get.find()),
-                                                          swapController:
-                                                              Get.find()),
-                                                      child: SellDialog(
-                                                          athlete.name,
-                                                          athlete.longTokenBookPrice!,
-                                                          athlete.id))),
-                                              child: Text("Sell", style: textStyle(Colors.black, 20, false, false))))
+                                      buyButton(context, athlete, widget.goToTradePage),
+                                      sellButton(context, athlete)
                                     ]),
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.transparent,
-                                              100,
-                                              2,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          MintDialog(athlete)),
-                                              child: Text("Mint",
-                                                  style: textStyle(Colors.white,
-                                                      20, false, false)))),
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.transparent,
-                                              100,
-                                              2,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      RedeemDialog(athlete)),
-                                              child: Text("Redeem",
-                                                  style: textStyle(Colors.white,
-                                                      20, false, false))))
+                                      mintButton(context, athlete),
+                                      redeemButton(context, athlete)
                                     ]),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -1324,14 +1076,8 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longBookValue =
-        "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
-
-    final shortBookValue =
-        "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
-
     final WalletController walletController = Get.find();
     final longCurrentBookValueRatio =
         (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
@@ -1467,8 +1213,8 @@ class _AthletePageState extends State<AthletePage> {
                                   children: <Widget>[
                                     Text(
                                         (_longAptIndex == 0)
-                                            ? longBookValue
-                                            : shortBookValue,
+                                            ? "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX"
+                                            : "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX",
                                         style: textStyle(
                                             Colors.white, 14, false, false)),
                                     Container(
@@ -1516,46 +1262,6 @@ class _AthletePageState extends State<AthletePage> {
       child: Text("Symbol: \$$symbol",
           style: textStyle(greyTextColor, 10, false, false),
           textAlign: TextAlign.center),
-    );
-  }
-
-  Widget buildGraph(List scaledPrice, List time, BuildContext context) {
-    // local variables
-    List<series.Series<dynamic, DateTime>> athleteData;
-    DateTime curTime = DateTime(-1);
-    DateTime lastHour = DateTime(-1);
-    DateTime maxTime = DateTime(-1);
-    List<WarTimeSeries> data = [];
-
-    for (int i = 0; i < scaledPrice.length; i++) {
-      print(scaledPrice);
-      curTime = DateTime.parse(time[i]);
-      // only new points
-      if (lastHour.year == -1 ||
-          (lastHour.isBefore(curTime) && curTime.hour != lastHour.hour)) {
-        lastHour = curTime;
-        // sets maximum if latest time
-        if (maxTime == DateTime(-1) || maxTime.isBefore(curTime))
-          maxTime = curTime;
-
-        data.add(WarTimeSeries(curTime, scaledPrice[i]));
-      }
-    }
-
-    athleteData = [
-      new charts.Series<WarTimeSeries, DateTime>(
-        id: 'War',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (WarTimeSeries wts, _) => wts.time,
-        measureFn: (WarTimeSeries wts, _) => wts.scaledPrice,
-        data: data,
-      )
-    ];
-
-    return Container(
-      child: charts.TimeSeriesChart(
-        athleteData,
-      ),
     );
   }
 
