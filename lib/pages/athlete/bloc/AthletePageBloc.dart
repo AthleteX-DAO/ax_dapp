@@ -35,9 +35,9 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
               DateFormat("yyy-MM-dd").parse(stat.timeStamp),
               stat.price * 1000))
           .toList();    
-      var seen = <DateTime>{};
-      final List<GraphData> distinct = graphStats.where((element) => seen.add(element.date)).toList();
-      emit(state.copyWith(stats: distinct, status: BlocStatus.success));
+      Set<DateTime> seenDates = {};
+      final List<GraphData> distinctPoints = graphStats.where((element) => seenDates.add(element.date)).toList();
+      emit(state.copyWith(stats: distinctPoints, status: BlocStatus.success));
     } catch (e) {
       print("[Console] AthletePage -> Failed to fetch player stats: $e");
       emit(state.copyWith(status: BlocStatus.error));
