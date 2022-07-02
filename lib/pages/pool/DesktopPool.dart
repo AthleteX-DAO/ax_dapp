@@ -121,6 +121,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 alignment: Alignment.center,
               ),
               IndexedStack(
+                alignment: AlignmentDirectional.center,
                 index: currentTabIndex,
                 children: [
                   Container(

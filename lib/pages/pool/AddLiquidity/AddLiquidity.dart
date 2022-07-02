@@ -206,20 +206,20 @@ class _AddLiquidityState extends State<AddLiquidity> {
             if (tokenNumber == 1) {
               bloc.add(Token0InputChanged(tokenInput.toString()));
               final tokenTwoAmount = double.parse(tokenInput) / poolInfo.ratio;
-              _tokenAmountTwoController.text = tokenTwoAmount.toStringAsFixed(6);
+              _tokenAmountTwoController.text =
+                  tokenTwoAmount.toStringAsFixed(6);
               bloc.add(Token1InputChanged(tokenTwoAmount.toString()));
             } else {
               bloc.add(Token1InputChanged(tokenInput.toString()));
               final tokenOneAmount = double.parse(tokenInput) * poolInfo.ratio;
-              _tokenAmountOneController.text = tokenOneAmount.toStringAsFixed(6);
+              _tokenAmountOneController.text =
+                  tokenOneAmount.toStringAsFixed(6);
               bloc.add(Token0InputChanged(tokenOneAmount.toString()));
             }
-          }
-          else {
+          } else {
             if (tokenNumber == 1) {
               bloc.add(Token0InputChanged(tokenInput.toString()));
-            }
-            else {
+            } else {
               bloc.add(Token1InputChanged(tokenInput.toString()));
             }
           }
@@ -309,10 +309,11 @@ class _AddLiquidityState extends State<AddLiquidity> {
                                   onPressed: () {
                                     _tokenAmountOneController.text = balance0;
                                     if (state.status == BlocStatus.success) {
-                                      onTokenInputChange(tknNum, balance0, true);
-                                    }
-                                    else {
-                                      onTokenInputChange(tknNum, balance0, false);
+                                      onTokenInputChange(
+                                          tknNum, balance0, true);
+                                    } else {
+                                      onTokenInputChange(
+                                          tknNum, balance0, false);
                                     }
                                   },
                                   child: Text("MAX",
@@ -402,7 +403,8 @@ class _AddLiquidityState extends State<AddLiquidity> {
             height: 30,
             width: elementWdt,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment:
+                  isWeb ? MainAxisAlignment.start : MainAxisAlignment.center,
               children: [
                 Container(
                   child: Text(
@@ -427,6 +429,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
               Container(
                 height: 25,
                 child: Row(
+                  mainAxisAlignment: isWeb
+                      ? MainAxisAlignment.start
+                      : MainAxisAlignment.center,
                   children: [
                     Container(
                       alignment: Alignment.centerLeft,
@@ -447,7 +452,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   children: <Widget>[
                     Container(
                         child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: isWeb
+                          ? MainAxisAlignment.spaceAround
+                          : MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
                             margin: EdgeInsets.only(right: 15),
@@ -493,21 +500,33 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        " ${token0.ticker} Liquidity:",
-                        style: textStyle(Colors.grey[600]!, 15, false),
+                      Container(
+                        width: elementWdt / 4,
+                        child: Text(
+                          "${token0.ticker} Liquidity:",
+                          style: textStyle(Colors.grey[600]!, 15, false),
+                        ),
                       ),
-                      Text(
-                        "${poolInfo.reserve0}",
-                        style: textStyle(Colors.white, 15, false),
+                      Container(
+                        width: elementWdt / 4,
+                        child: Text(
+                          "${poolInfo.reserve0}",
+                          style: textStyle(Colors.white, 15, false),
+                        ),
                       ),
-                      Text(
-                        "${token1.ticker} Liquidity:",
-                        style: textStyle(Colors.grey[600]!, 15, false),
+                      Container(
+                        width: elementWdt / 4,
+                        child: Text(
+                          "${token1.ticker} Liquidity:",
+                          style: textStyle(Colors.grey[600]!, 15, false),
+                        ),
                       ),
-                      Text(
-                        "${poolInfo.reserve1}",
-                        style: textStyle(Colors.white, 15, false),
+                      Container(
+                        width: elementWdt / 4,
+                        child: Text(
+                          "${poolInfo.reserve1}",
+                          style: textStyle(Colors.white, 15, false),
+                        ),
                       ),
                     ],
                   ),
@@ -518,21 +537,33 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        "Share of pool:",
-                        style: textStyle(Colors.grey[600]!, 15, false),
+                      Container(
+                        width: elementWdt / 4,
+                        child: Text(
+                          "Share of pool:",
+                          style: textStyle(Colors.grey[600]!, 15, false),
+                        ),
                       ),
-                      Text(
-                        "${poolInfo.shareOfPool}%",
-                        style: textStyle(Colors.white, 15, false),
+                      Container(
+                        width: elementWdt / 4,
+                        child: Text(
+                          "${poolInfo.shareOfPool}%",
+                          style: textStyle(Colors.white, 15, false),
+                        ),
                       ),
-                      Text(
-                        "Expected yield:",
-                        style: textStyle(Colors.grey[600]!, 15, false),
+                      Container(
+                        width: elementWdt / 4,
+                        child: Text(
+                          "Expected yield:",
+                          style: textStyle(Colors.grey[600]!, 15, false),
+                        ),
                       ),
-                      Text(
-                        "${poolInfo.apy}",
-                        style: textStyle(Colors.white, 15, false),
+                      Container(
+                        width: elementWdt / 4,
+                        child: Text(
+                          "${poolInfo.apy}",
+                          style: textStyle(Colors.white, 15, false),
+                        ),
                       ),
                     ],
                   ),
