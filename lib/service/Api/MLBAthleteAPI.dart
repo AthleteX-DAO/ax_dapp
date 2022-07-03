@@ -6,7 +6,7 @@ import 'package:retrofit/http.dart';
 
 part 'MLBAthleteAPI.g.dart';
 
-@RestApi(baseUrl: "https://db.athletex.io/mlb")
+@RestApi(baseUrl: "http://db.athletex.io:8080/mlb")
 abstract class MLBAthleteAPI {
   factory MLBAthleteAPI(Dio dio, {String baseUrl}) = _MLBAthleteAPI;
 
