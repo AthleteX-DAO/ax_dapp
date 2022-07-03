@@ -10,7 +10,7 @@ part of 'MLBAthleteAPI.dart';
 
 class _MLBAthleteAPI implements MLBAthleteAPI {
   _MLBAthleteAPI(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://db.athletex.io/mlb';
+    baseUrl ??= 'http://db.athletex.io:8080/mlb';
   }
 
   final Dio _dio;
