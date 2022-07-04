@@ -19,9 +19,10 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
           value: 1,
           child: ListTile(
             leading: Icon(Icons.help_outline),
-            title: Text('Need help?'),
+            title: Text('Help'),
           ),
-          onTap: () {},
+          onTap: () => launchUrl(Uri.parse(
+              'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper')),
         ),
         PopupMenuItem(
           value: 2,
@@ -32,14 +33,6 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             title: Text('Website'),
           ),
           onTap: () => launchUrl(Uri.parse('https://www.athletex.io/')),
-        ),
-        PopupMenuItem(
-          value: 3,
-          child: ListTile(
-            leading: Icon(Icons.description_outlined),
-            title: Text('Litepaper'),
-          ),
-          onTap: () => launchUrl(Uri.parse('https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper')),
         ),
         PopupMenuItem(
           value: 4,
@@ -59,7 +52,8 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             ),
             title: Text('Discord'),
           ),
-          onTap: () => launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
+          onTap: () =>
+              launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
         ),
         PopupMenuItem(
           value: 6,
@@ -70,7 +64,8 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             ),
             title: Text('Twitter'),
           ),
-          onTap: () => launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
+          onTap: () =>
+              launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
         ),
         PopupMenuItem(
           value: 7,
