@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SellDialog extends StatefulWidget {
   final String athleteName;
@@ -26,8 +25,13 @@ class _SellDialogState extends State<SellDialog> {
   TextEditingController _aptAmountController = TextEditingController();
 
   TokenType _currentTokenTypeSelection = TokenType.Long;
-  double slippageTolerance =
-      1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
+  double slippageTolerance = 1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
+
+  @override
+  void dispose() {
+    _aptAmountController.dispose();
+    super.dispose();
+  }
 
   Widget toggleLongShortToken(double wid, double hgt) {
     return Container(
@@ -103,14 +107,16 @@ class _SellDialogState extends State<SellDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("Price:", style: textStyle(Colors.white, 15, false)),
+          _currentTokenTypeSelection == TokenType.Long ? 
           Text(
-            "$price AX per " +
-                widget.athleteName +
-                " " +
-                _currentTokenTypeSelection.name +
-                " APT",
+            "$price AX per ${getLongAthleteSymbol(widget.athleteId)} APT",
             style: textStyle(Colors.white, 15, false),
-          ),
+          )
+          : 
+          Text(
+            "$price AX per ${getShortAthleteSymbol(widget.athleteId)} APT",
+            style: textStyle(Colors.white, 15, false),
+          )
         ],
       ),
     );
@@ -293,23 +299,6 @@ class _SellDialogState extends State<SellDialog> {
                       ),
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    height: 50,
-                    width: wid,
-                    child: GestureDetector(
-                      onTap: () {
-                        String urlString =
-                            "https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin";
-                        launchUrl(Uri.parse(urlString));
-                      },
-                      child: Text(
-                        'Learn How to buy AX',
-                        style:
-                            TextStyle(color: Colors.amber[400], fontSize: 14),
-                      ),
-                    ),
-                  ),
                   //Input apt text with toggle
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -347,15 +336,16 @@ class _SellDialogState extends State<SellDialog> {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   scale: 0.5,
-                                  image: AssetImage("assets/images/X_Logo_Black_BR.png"),
+                                  image: _currentTokenTypeSelection == TokenType.Long ? AssetImage("assets/images/apt_noninverted.png") : AssetImage("assets/images/apt_inverted.png"),
                                 ),
                               ),
                             ),
                             Container(width: 15),
-                            Expanded(
+                            Expanded(                         
                               child: Text(
-                                widget.athleteName + " " + _currentTokenTypeSelection.name + " " +
-                                    " APT",
+                                _currentTokenTypeSelection == TokenType.Long ? 
+                                "${getLongAthleteSymbol(widget.athleteId)} APT" :
+                                "${getShortAthleteSymbol(widget.athleteId)} APT",
                                 style: textStyle(Colors.white, 15, false),
                               ),
                             ),

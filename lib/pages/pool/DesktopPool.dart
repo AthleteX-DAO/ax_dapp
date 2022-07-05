@@ -47,7 +47,7 @@ class _DesktopPoolState extends State<DesktopPool> {
     double _width = mediaquery.size.width;
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-    double layoutHgt = _height * 0.8;
+    double layoutHgt = _height * 0.85;
     double layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
 
     //bloc build return widget
@@ -121,6 +121,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 alignment: Alignment.center,
               ),
               IndexedStack(
+                alignment: AlignmentDirectional.center,
                 index: currentTabIndex,
                 children: [
                   Container(

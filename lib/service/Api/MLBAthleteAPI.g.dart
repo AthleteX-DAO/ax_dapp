@@ -128,9 +128,9 @@ class _MLBAthleteAPI implements MLBAthleteAPI {
   }
 
   @override
-  Future<MLBAthleteStats> getPlayerHistory(id) async {
+  Future<MLBAthleteStats> getPlayerHistory(id, from, until) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'from': from, r'until': until};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(

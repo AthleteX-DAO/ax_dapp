@@ -1,6 +1,5 @@
 part of 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
 
-
 class TradePageState extends Equatable {
   final double tokenToBalance;
   final double tokenFromBalance;
@@ -22,15 +21,27 @@ class TradePageState extends Equatable {
     required this.swapInfo,
   });
 
-  factory TradePageState.initial() {
+  factory TradePageState.initial(Controller controller, bool isBuyAX) {
+    final int networkID = controller.networkID.value;
+    Token tokenFrom = TokenList.tokenList[TokenIndex.ax];
+    Token tokenTo = TokenList.tokenList[TokenIndex.weth];
+    if (isBuyAX) {
+      if (networkID == Controller.MAINNET_CHAIN_ID) {
+        tokenFrom = TokenList.tokenList[TokenIndex.matic];
+        tokenTo = TokenList.tokenList[TokenIndex.ax];
+      } else if (networkID == Controller.MAINNET_SX_CHAIN_ID) {
+        tokenFrom = TokenList.tokenList[TokenIndex.sx];
+        tokenTo = TokenList.tokenList[TokenIndex.ax];
+      }
+    }
     return TradePageState(
         tokenToBalance: 0,
         tokenFromBalance: 0,
         tokenInputFromAmount: 0,
         tokenInputToAmount: 0,
         status: BlocStatus.initial,
-        tokenFrom: TokenList.tokenList[0],
-        tokenTo: TokenList.tokenList[3],
+        tokenFrom: tokenFrom,
+        tokenTo: tokenTo,
         swapInfo: TokenSwapInfo.empty());
   }
 

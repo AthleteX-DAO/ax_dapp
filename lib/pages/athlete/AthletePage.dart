@@ -1,34 +1,37 @@
-import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
-import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
-import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
+import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
+import 'package:ax_dapp/pages/athlete/components/AthletePageTooltip.dart';
+import 'package:ax_dapp/pages/athlete/components/BuildLongChart.dart';
+import 'package:ax_dapp/pages/athlete/components/BuildShortChart.dart';
+import 'package:ax_dapp/pages/athlete/components/Buttons.dart';
+import 'package:ax_dapp/pages/athlete/models/AthletePageEvent.dart';
+import 'package:ax_dapp/pages/athlete/models/AthletePageState.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
-import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
+import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/createWallet/web.dart';
-import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/service/TokenList.dart';
-import 'package:ax_dapp/service/WarTimeSeries.dart';
+import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/Colors.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:charts_flutter/flutter.dart' as series;
+import 'package:ax_dapp/util/chart/extensions/graphData.dart';
 import 'package:flutter/foundation.dart' as kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../util/AthletePageFormatHelper.dart';
-import 'scout/Widget Factories/AthleteDetailsWidget.dart';
+import '../../util/AthletePageFormatHelper.dart';
+import '../scout/Widget Factories/AthleteDetailsWidget.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
+  final void Function() goToTradePage;
 
-  const AthletePage({Key? key, required this.athlete}) : super(key: key);
+  const AthletePage(
+      {Key? key, required this.athlete, required this.goToTradePage})
+      : super(key: key);
 
   @override
   _AthletePageState createState() => _AthletePageState(athlete);
@@ -45,6 +48,9 @@ class _AthletePageState extends State<AthletePage> {
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
   bool _isLongApt = true;
   bool _isDisplayingChart = true;
+  late ZoomPanBehavior _zoomPanBehavior;
+  late TooltipBehavior _longToolTipBehavior;
+  late TooltipBehavior _shortToolTipBehavior;
 
   @override
   void initState() {
@@ -52,64 +58,38 @@ class _AthletePageState extends State<AthletePage> {
     final LSPController lspController = Get.find();
     lspController.updateAptAddress(athlete.id);
     print(athlete.id);
+    _zoomPanBehavior = ZoomPanBehavior(enableMouseWheelZooming: true, enablePanning: true,);
+    _longToolTipBehavior = TooltipBehavior(enable: true);
+    _shortToolTipBehavior = TooltipBehavior(enable: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (listView == 1) return DesktopScout();
+    if (listView == 1) return DesktopScout(goToTradePage: widget.goToTradePage);
 
     return kIsWeb.kIsWeb
-        ? buildWebViewContainer(context)
+        ? BlocBuilder<AthletePageBloc, AthletePageState>(
+            builder: (context, state) {
+              final bloc = context.read<AthletePageBloc>();
+              final chartStats = state.stats;
+              if (state.status == BlocStatus.initial) {
+                bloc.add(OnPageRefresh(playerId: athlete.id));
+              }
+              return buildWebView(athlete, chartStats);
+            },
+          )
         : buildMobileView(context);
   }
 
   IndexedStack buildWebViewContainer(BuildContext context) {
-    final longMarketPrice = "4.18 AX";
-    final longMarketPricePercent = "-2%";
-    final longBookValue = "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX";
-    final longBookValuePercent = "+4%";
-
-    final shortMarketPrice = "2.18 AX";
-    final shortMarketPricePercent = "-1%";
-    final shortBookValue =
-        "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX";
-    final shortBookValuePercent = "+2%";
-
+    List<GraphData> chartStats = [];
     return IndexedStack(index: _longAptIndex, children: [
-      buildWebView(
-          context,
-          longMarketPrice,
-          shortMarketPrice,
-          longMarketPricePercent,
-          shortMarketPricePercent,
-          longBookValue,
-          shortBookValue,
-          longBookValuePercent,
-          shortBookValuePercent),
-      buildWebView(
-          context,
-          longMarketPrice,
-          shortMarketPrice,
-          longMarketPricePercent,
-          shortMarketPricePercent,
-          longBookValue,
-          shortBookValue,
-          longBookValuePercent,
-          shortBookValuePercent)
+      buildWebView(athlete, chartStats),
+      buildWebView(athlete, chartStats)
     ]);
   }
 
-  Container buildWebView(
-    BuildContext context,
-    String longMarketPrice,
-    String shortMarketPrice,
-    String longMarketPricePercent,
-    String shortMarketPricePercent,
-    String longBookValue,
-    String shortBookValue,
-    String longBookValuePercent,
-    String shortBookValuePercent,
-  ) {
+  Container buildWebView(AthleteScoutModel athlete, List<GraphData> chartStats) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
@@ -127,25 +107,28 @@ class _AthletePageState extends State<AthletePage> {
                     children: <Widget>[
                       graphSide(
                         context,
-                        longMarketPrice,
-                        shortMarketPrice,
-                        longMarketPricePercent,
-                        shortMarketPricePercent,
-                        longBookValue,
-                        shortBookValue,
-                        longBookValuePercent,
-                        shortBookValuePercent,
+                        athlete.longTokenBookPrice!.toStringAsFixed(6),
+                        athlete.shortTokenPrice!.toStringAsFixed(6),
+                        athlete.longTokenPercentage!.toStringAsFixed(6),
+                        athlete.shortTokenPercentage!.toStringAsFixed(6),
+                        athlete.longTokenBookPrice!.toStringAsFixed(6),
+                        athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                        athlete.longTokenPercentage!.toStringAsFixed(
+                            6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                        athlete.shortTokenPercentage!.toStringAsFixed(6),
+                        chartStats,
                       ),
                       statsSide(
                         context,
-                        longMarketPrice,
-                        shortMarketPrice,
-                        longMarketPricePercent,
-                        shortMarketPricePercent,
-                        longBookValue,
-                        shortBookValue,
-                        longBookValuePercent,
-                        shortBookValuePercent,
+                        athlete.longTokenBookPrice!.toStringAsFixed(6),
+                        athlete.shortTokenPrice!.toStringAsFixed(6),
+                        athlete.longTokenPercentage!.toStringAsFixed(6),
+                        athlete.shortTokenPercentage!.toStringAsFixed(6),
+                        athlete.longTokenBookPrice!.toStringAsFixed(6),
+                        athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                        athlete.longTokenPercentage!.toStringAsFixed(
+                            6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                        athlete.shortTokenPercentage!.toStringAsFixed(6),
                       )
                     ],
                   ))));
@@ -166,25 +149,28 @@ class _AthletePageState extends State<AthletePage> {
                         children: <Widget>[
                           graphSide(
                             context,
-                            longMarketPrice,
-                            shortMarketPrice,
-                            longMarketPricePercent,
-                            shortMarketPricePercent,
-                            longBookValue,
-                            shortBookValue,
-                            longBookValuePercent,
-                            shortBookValuePercent,
+                            athlete.longTokenBookPrice!.toStringAsFixed(6),
+                            athlete.shortTokenPrice!.toStringAsFixed(6),
+                            athlete.longTokenPercentage!.toStringAsFixed(6),
+                            athlete.shortTokenPercentage!.toStringAsFixed(6),
+                            athlete.longTokenBookPrice!.toStringAsFixed(6),
+                            athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                            athlete.longTokenPercentage!.toStringAsFixed(
+                                6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                            athlete.shortTokenPercentage!.toStringAsFixed(6),
+                            chartStats,
                           ),
                           statsSide(
                             context,
-                            longMarketPrice,
-                            shortMarketPrice,
-                            longMarketPricePercent,
-                            shortMarketPricePercent,
-                            longBookValue,
-                            shortBookValue,
-                            longBookValuePercent,
-                            shortBookValuePercent,
+                            athlete.longTokenBookPrice!.toStringAsFixed(6),
+                            athlete.shortTokenPrice!.toStringAsFixed(6),
+                            athlete.longTokenPercentage!.toStringAsFixed(6),
+                            athlete.shortTokenPercentage!.toStringAsFixed(6),
+                            athlete.longTokenBookPrice!.toStringAsFixed(6),
+                            athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                            athlete.longTokenPercentage!.toStringAsFixed(
+                                6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                            athlete.shortTokenPercentage!.toStringAsFixed(6),
                           )
                         ],
                       )))
@@ -201,28 +187,31 @@ class _AthletePageState extends State<AthletePage> {
               height: 625,
               child: graphSide(
                 context,
-                longMarketPrice,
-                shortMarketPrice,
-                longMarketPricePercent,
-                shortMarketPricePercent,
-                longBookValue,
-                shortBookValue,
-                longBookValuePercent,
-                shortBookValuePercent,
+                athlete.longTokenBookPrice!.toStringAsFixed(6),
+                athlete.shortTokenPrice!.toStringAsFixed(6),
+                athlete.longTokenPercentage!.toStringAsFixed(6),
+                athlete.shortTokenPercentage!.toStringAsFixed(6),
+                athlete.longTokenBookPrice!.toStringAsFixed(6),
+                athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                athlete.longTokenPercentage!.toStringAsFixed(
+                    6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                athlete.shortTokenPercentage!.toStringAsFixed(6),
+                chartStats,
               ),
             ),
             Container(
                 height: 650,
                 child: statsSide(
                   context,
-                  longMarketPrice,
-                  shortMarketPrice,
-                  longMarketPricePercent,
-                  shortMarketPricePercent,
-                  longBookValue,
-                  shortBookValue,
-                  longBookValuePercent,
-                  shortBookValuePercent,
+                  athlete.longTokenBookPrice!.toStringAsFixed(6),
+                  athlete.shortTokenPrice!.toStringAsFixed(6),
+                  athlete.longTokenPercentage!.toStringAsFixed(6),
+                  athlete.shortTokenPercentage!.toStringAsFixed(6),
+                  athlete.longTokenBookPrice!.toStringAsFixed(6),
+                  athlete.shortTokenBookPrice!.toStringAsFixed(6),
+                  athlete.longTokenPercentage!.toStringAsFixed(
+                      6), //TODO: This percentage is for the market price, not book price. Change to book price change percentage when we have it.
+                  athlete.shortTokenPercentage!.toStringAsFixed(6),
                 ))
           ],
         )));
@@ -342,8 +331,6 @@ class _AthletePageState extends State<AthletePage> {
                                 if (_longAptIndex == 0) {
                                   _isLongApt = true;
                                 }
-                                print(
-                                    " The current index is $_longAptIndex  of 0 and it should show the Short");
                               });
                             },
                             child: Text(
@@ -376,8 +363,6 @@ class _AthletePageState extends State<AthletePage> {
                                 if (_longAptIndex == 1) {
                                   _isLongApt = false;
                                 }
-                                print(
-                                    " The current index is $_longAptIndex  of 1 and it should show the short");
                               });
                             },
                             child: Text(
@@ -478,8 +463,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_widgetIndex == 1) {
                                         _isDisplayingChart = false;
                                       }
-                                      print(
-                                          " The current index is $_widgetIndex  of 1 and it should show the stats");
                                     });
                                   },
                                   child: Text(
@@ -503,13 +486,6 @@ class _AthletePageState extends State<AthletePage> {
                               Colors.transparent, 10, 1, secondaryGreyColor),
                           child: Stack(
                             children: <Widget>[
-                              buildGraph([
-                                _isLongApt
-                                    ? athlete.longTokenBookPrice
-                                    : athlete.shortTokenBookPrice
-                              ], [
-                                athlete.time
-                              ], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -587,8 +563,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_widgetIndex == 0) {
                                         _isDisplayingChart = true;
                                       }
-                                      print(
-                                          " The current index is $_widgetIndex of 0 and it should show the chart");
                                     });
                                   },
                                   child: Text(
@@ -771,7 +745,7 @@ class _AthletePageState extends State<AthletePage> {
                                       children: <Widget>[
                                         Container(
                                             width: _width * 0.175,
-                                            child: Text("MP/BV Ratio",
+                                            child: Text("MP:BV Ratio",
                                                 style: textStyle(greyTextColor,
                                                     12, false, false))),
                                         Container(
@@ -801,7 +775,8 @@ class _AthletePageState extends State<AthletePage> {
                             // Detail Section
                             AthleteDetailsWidget(athlete).athletePageDetails(),
                             // Stats section
-                            AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
+                            AthleteDetailsWidget(athlete)
+                                .athletePageKeyStatistics(),
                           ])),
                     ],
                   )
@@ -820,92 +795,14 @@ class _AthletePageState extends State<AthletePage> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryOrangeColor,
-                                        100,
-                                        0,
-                                        secondaryOrangeColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) => BlocProvider(
-                                                create: (BuildContext context) => BuyDialogBloc(
-                                                    repo: RepositoryProvider.of<
-                                                        GetBuyInfoUseCase>(context),
-                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
-                                                    swapController: Get.find()),
-                                                child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
-                                        child: Text("Buy", style: textStyle(primaryOrangeColor, 20, false, false)))),
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryOrangeColor,
-                                        100,
-                                        0,
-                                        secondaryOrangeColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) => BlocProvider(
-                                                create: (BuildContext context) => SellDialogBloc(
-                                                    repo: RepositoryProvider.of<
-                                                        GetSellInfoUseCase>(context),
-                                                    wallet: GetTotalTokenBalanceUseCase(Get.find()),
-                                                    swapController: Get.find()),
-                                                child: SellDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
-                                        child: Text("Sell", style: textStyle(primaryOrangeColor, 20, false, false))))
+                                buyButton(context, athlete, widget.goToTradePage),
+                                sellButton(context, athlete)
                               ]),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryGreyColor,
-                                        100,
-                                        2,
-                                        secondaryGreyColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                MintDialog(athlete)),
-                                        child: Text("Mint",
-                                            style: textStyle(primaryWhiteColor,
-                                                20, false, false)))),
-                                Container(
-                                    width: 160,
-                                    height: _buttonHeight,
-                                    decoration: boxDecoration(
-                                        secondaryGreyColor,
-                                        100,
-                                        2,
-                                        secondaryGreyColor),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size(50, 30)),
-                                        onPressed: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                RedeemDialog(athlete)),
-                                        child: Text("Redeem",
-                                            style: textStyle(primaryWhiteColor,
-                                                20, false, false))))
+                                mintButton(context, athlete),
+                                redeemButton(context, athlete)
                               ]),
                         ])),
               )
@@ -922,6 +819,7 @@ class _AthletePageState extends State<AthletePage> {
     String shortBookValue,
     String longBookValuePercent,
     String shortBookValuePercent,
+    List<GraphData> chartStats,
   ) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
@@ -1001,8 +899,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_longAptIndex == 0) {
                                         _isLongApt = true;
                                       }
-                                      print(
-                                          " The current index is $_longAptIndex  of 0 and it should show the Short");
                                     });
                                   },
                                   child: Text(
@@ -1035,8 +931,6 @@ class _AthletePageState extends State<AthletePage> {
                                       if (_longAptIndex == 1) {
                                         _isLongApt = false;
                                       }
-                                      print(
-                                          " The current index is $_longAptIndex  of 1 and it should show the short");
                                     });
                                   },
                                   child: Text(
@@ -1079,12 +973,13 @@ class _AthletePageState extends State<AthletePage> {
                     ),
                   ),
                 ])),
-            // graph
+            // graph side
             Container(
                 width: wid,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
+                      //build graph
                       Container(
                           width: wid * .875,
                           height: _height * .4,
@@ -1093,166 +988,53 @@ class _AthletePageState extends State<AthletePage> {
                           child: Stack(
                             children: <Widget>[
                               // Graph
-                              buildGraph([
-                                _isLongApt
-                                    ? athlete.longTokenBookPrice
-                                    : athlete.shortTokenBookPrice
-                              ], [
-                                athlete.time
-                              ], context),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 28.0, right: 28.0, top: 14.0),
+                                child: (chartStats.isEmpty)
+                                    ? Center(child: CircularProgressIndicator())
+                                    : IndexedStack(
+                                  index: (_longAptIndex),
+                                  children: [
+                                    buildLongChart(chartStats, _longToolTipBehavior, _zoomPanBehavior),
+                                    buildShortChart(chartStats, _shortToolTipBehavior, _zoomPanBehavior)
+                                  ],
+                                ),
+                              ),
                               // Price
-                              Align(
-                                  alignment: Alignment(-.85, -.8),
-                                  child: Container(
-                                      height: 45,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text("Book Value Chart",
-                                              style: textStyle(Colors.white, 9,
-                                                  false, false)),
-                                          Container(
-                                              width: 130,
-                                              height: 25,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Text(
-                                                      _isLongApt
-                                                          ? athlete
-                                                                  .longTokenBookPrice!
-                                                                  .toStringAsFixed(
-                                                                      4) +
-                                                              " AX"
-                                                          : athlete
-                                                                  .shortTokenBookPrice!
-                                                                  .toStringAsFixed(
-                                                                      4) +
-                                                              " AX",
-                                                      style: textStyle(
-                                                          Colors.white,
-                                                          14,
-                                                          true,
-                                                          false)),
-                                                  Container(
-                                                      alignment:
-                                                          Alignment.topLeft,
-                                                      child: Text(
-                                                          (_longAptIndex == 0)
-                                                              ? longBookValuePercent
-                                                              : shortBookValuePercent,
-                                                          style: textStyle(
-                                                              Colors.green,
-                                                              12,
-                                                              false,
-                                                              false)))
-                                                ],
-                                              ))
-                                        ],
-                                      ))),
                             ],
                           )),
+                      //give spacing between the graph and the buttons
+                      SizedBox(
+                        height: 12,
+                      ),
+                      //build buttons and tooltip
                       Container(
                           width: wid * .875,
                           height: 150,
                           child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              primaryOrangeColor,
-                                              100,
-                                              0,
-                                              primaryOrangeColor),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) => BlocProvider(
-                                                      create: (BuildContext context) => BuyDialogBloc(
-                                                          repo: RepositoryProvider
-                                                              .of<GetBuyInfoUseCase>(
-                                                                  context),
-                                                          wallet:
-                                                              GetTotalTokenBalanceUseCase(Get.find()),
-                                                          swapController: Get.find()),
-                                                      child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id))),
-                                              child: Text("Buy", style: textStyle(Colors.black, 20, false, false)))),
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.white,
-                                              100,
-                                              0,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) => BlocProvider(
-                                                      create: (BuildContext context) => SellDialogBloc(
-                                                          repo: RepositoryProvider
-                                                              .of<GetSellInfoUseCase>(
-                                                                  context),
-                                                          wallet: GetTotalTokenBalanceUseCase(
-                                                              Get.find()),
-                                                          swapController:
-                                                              Get.find()),
-                                                      child: SellDialog(
-                                                          athlete.name,
-                                                          athlete.longTokenBookPrice!,
-                                                          athlete.id))),
-                                              child: Text("Sell", style: textStyle(Colors.black, 20, false, false))))
+                                      buyButton(context, athlete, widget.goToTradePage),
+                                      sellButton(context, athlete)
                                     ]),
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.transparent,
-                                              100,
-                                              2,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          MintDialog(athlete)),
-                                              child: Text("Mint",
-                                                  style: textStyle(Colors.white,
-                                                      20, false, false)))),
-                                      Container(
-                                          width: 175,
-                                          height: 50,
-                                          decoration: boxDecoration(
-                                              Colors.transparent,
-                                              100,
-                                              2,
-                                              Colors.white),
-                                          child: TextButton(
-                                              onPressed: () => showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      RedeemDialog(athlete)),
-                                              child: Text("Redeem",
-                                                  style: textStyle(Colors.white,
-                                                      20, false, false))))
+                                      mintButton(context, athlete),
+                                      redeemButton(context, athlete)
                                     ]),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    athletePageToolTip(),
+                                  ],
+                                ),                                 
                               ]))
                     ])),
           ],
@@ -1270,16 +1052,13 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longBookValue =
-        "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX ";
     final longBookValuePercent = "+4%";
-
-    final shortBookValue =
-        "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX";
     final shortBookValuePercent = "+2%";
-
     final WalletController walletController = Get.find();
-
+    final longCurrentBookValueRatio =
+        (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
+    final shortCurrentBookValueRatio =
+        (athlete.shortTokenPrice! / athlete.shortTokenBookPrice!) * 100;
     double _width = MediaQuery.of(context).size.width;
     double wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
@@ -1299,7 +1078,7 @@ class _AthletePageState extends State<AthletePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
                                   child: Text("Price Overview",
@@ -1339,23 +1118,16 @@ class _AthletePageState extends State<AthletePage> {
                               ),
                               Spacer(),
                               Container(
-                                  width: 200,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text("Current",
-                                              style: textStyle(greyTextColor,
-                                                  14, false, false))),
-                                      Container(
-                                          alignment: Alignment.bottomRight,
-                                          child: Text("All-Time High",
-                                              style: textStyle(greyTextColor,
-                                                  14, false, false)))
-                                    ],
-                                  ))
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text("Current",
+                                      style: textStyle(
+                                          greyTextColor, 14, false, false))),
+                              // TODO get the all time high book value and market value prices
+                              // Container(
+                              //     alignment: Alignment.bottomRight,
+                              //     child: Text("All-Time High",
+                              //         style: textStyle(greyTextColor,
+                              //             14, false, false)))
                             ]),
                         Divider(thickness: 1, color: greyTextColor),
                         Row(
@@ -1369,42 +1141,40 @@ class _AthletePageState extends State<AthletePage> {
                                   width: 200,
                                   child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.end,
                                       children: <Widget>[
-                                        Row(children: <Widget>[
-                                          Text(
-                                              (_longAptIndex == 0)
-                                                  ? "${athlete.longTokenPrice!.toStringAsFixed(2)} AX"
-                                                  : "${athlete.shortTokenPrice!.toStringAsFixed(2)} AX",
-                                              style: textStyle(Colors.white, 14,
-                                                  false, false)),
-                                          Container(width: 5),
-                                          Container(
-                                              //alignment: Alignment.topLeft,
-                                              child: Text(
-                                                  (_longAptIndex == 0)
-                                                      ? getPercentageDesc(athlete
-                                                          .longTokenPercentage!)
-                                                      : getPercentageDesc(athlete
-                                                          .shortTokenPercentage!),
-                                                  style: (_longAptIndex == 0)
-                                                      ? textStyle(
-                                                          getPercentageColor(athlete
-                                                              .longTokenPercentage!),
-                                                          12,
-                                                          false,
-                                                          false)
-                                                      : textStyle(
-                                                          getPercentageColor(athlete
-                                                              .shortTokenPercentage!),
-                                                          12,
-                                                          false,
-                                                          false)))
-                                        ]),
-                                        Text("4.24 AX",
-                                            style: textStyle(greyTextColor, 14,
-                                                false, false))
-                                      ]))
+                                    Text(
+                                        (_longAptIndex == 0)
+                                            ? "${athlete.longTokenPrice!.toStringAsFixed(2)} AX"
+                                            : "${athlete.shortTokenPrice!.toStringAsFixed(2)} AX",
+                                        style: textStyle(
+                                            Colors.white, 14, false, false)),
+                                    Container(
+                                      margin: EdgeInsets.only(left: 2),
+                                        child: Text(
+                                            (_longAptIndex == 0)
+                                                ? getPercentageDesc(athlete
+                                                    .longTokenPercentage!)
+                                                : getPercentageDesc(athlete
+                                                    .shortTokenPercentage!),
+                                            style: (_longAptIndex == 0)
+                                                ? textStyle(
+                                                    getPercentageColor(athlete
+                                                        .longTokenPercentage!),
+                                                    12,
+                                                    false,
+                                                    false)
+                                                : textStyle(
+                                                    getPercentageColor(athlete
+                                                        .shortTokenPercentage!),
+                                                    12,
+                                                    false,
+                                                    false))),
+                                    // TODO get the all time high book value and market value prices
+                                    // Text("4.24 AX",
+                                    //     style: textStyle(greyTextColor, 14,
+                                    //         false, false))
+                                  ]))
                             ]),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1415,54 +1185,45 @@ class _AthletePageState extends State<AthletePage> {
                                       style: textStyle(
                                           greyTextColor, 20, false, false))),
                               Container(
-                                  width: 200,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Row(children: <Widget>[
-                                          Text(
-                                              (_longAptIndex == 0)
-                                                  ? longBookValue
-                                                  : shortBookValue,
-                                              style: textStyle(Colors.white, 14,
-                                                  false, false)),
-                                          Container(
-                                              child: Text(
-                                                  (_longAptIndex == 0)
-                                                      ? longBookValuePercent
-                                                      : shortBookValuePercent,
-                                                  style: textStyle(Colors.green,
-                                                      12, false, false))),
-                                        ]),
-                                        Text(shortBookValue,
-                                            style: textStyle(greyTextColor, 14,
-                                                false, false))
-                                      ]))
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                        (_longAptIndex == 0)
+                                            ? "${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX"
+                                            : "${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX",
+                                        style: textStyle(
+                                            Colors.white, 14, false, false)),
+                                    Container(
+                                        child: Text(
+                                            (_longAptIndex == 0)
+                                                ? longBookValuePercent
+                                                : shortBookValuePercent,
+                                            style: textStyle(Colors.green, 12,
+                                                false, false))),
+                                    //TODO get the all time high book value and market value prices
+                                    // Text(shortBookValue, style: textStyle(greyTextColor, 14, false, false))
+                                  ],
+                                ),
+                              ),
                             ]),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
                                   width: _width * 0.175,
-                                  child: Text("MP/BV Ratio",
+                                  child: Text("MP:BV Ratio",
                                       style: textStyle(
                                           greyTextColor, 20, false, false))),
                               Container(
-                                  width: 200,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Row(children: <Widget>[
-                                          Text("80%",
-                                              style: textStyle(greyTextColor,
-                                                  16, false, false)),
-                                        ]),
-                                        Text("120%",
-                                            style: textStyle(greyTextColor, 16,
-                                                false, false))
-                                      ]))
+                                child: Text(
+                                    "${_isLongApt ? longCurrentBookValueRatio.toStringAsFixed(2) : shortCurrentBookValueRatio.toStringAsFixed(2)}%",
+                                    style: textStyle(
+                                        greyTextColor, 16, false, false)),
+                              ),
+                              // TODO get the all time high book value and market value prices
+                              // Container(
+                              //   child: Text("120%", style: textStyle(greyTextColor, 16,false, false)),
+                              // ),
                             ]),
                       ])),
               // Detail Section
@@ -1477,46 +1238,6 @@ class _AthletePageState extends State<AthletePage> {
       child: Text("Symbol: \$$symbol",
           style: textStyle(greyTextColor, 10, false, false),
           textAlign: TextAlign.center),
-    );
-  }
-
-  Widget buildGraph(List scaledPrice, List time, BuildContext context) {
-    // local variables
-    List<series.Series<dynamic, DateTime>> athleteData;
-    DateTime curTime = DateTime(-1);
-    DateTime lastHour = DateTime(-1);
-    DateTime maxTime = DateTime(-1);
-    List<WarTimeSeries> data = [];
-
-    for (int i = 0; i < scaledPrice.length; i++) {
-      print(scaledPrice);
-      curTime = DateTime.parse(time[i]);
-      // only new points
-      if (lastHour.year == -1 ||
-          (lastHour.isBefore(curTime) && curTime.hour != lastHour.hour)) {
-        lastHour = curTime;
-        // sets maximum if latest time
-        if (maxTime == DateTime(-1) || maxTime.isBefore(curTime))
-          maxTime = curTime;
-
-        data.add(WarTimeSeries(curTime, scaledPrice[i]));
-      }
-    }
-
-    athleteData = [
-      new charts.Series<WarTimeSeries, DateTime>(
-        id: 'War',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (WarTimeSeries wts, _) => wts.time,
-        measureFn: (WarTimeSeries wts, _) => wts.scaledPrice,
-        data: data,
-      )
-    ];
-
-    return Container(
-      child: charts.TimeSeriesChart(
-        athleteData,
-      ),
     );
   }
 

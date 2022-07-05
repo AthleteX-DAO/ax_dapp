@@ -1,5 +1,6 @@
 import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
@@ -10,16 +11,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'package:ax_dapp/pages/trade/models/TradePageEvent.dart';
 part 'package:ax_dapp/pages/trade/models/TradePageState.dart';
+
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   GetSwapInfoUseCase repo;
+  Controller controller;
   SwapController swapController;
   WalletController walletController;
+  bool isBuyAX;
 
   TradePageBloc(
       {required this.repo,
+      required this.controller,
       required this.swapController,
-      required this.walletController})
-      : super(TradePageState.initial()) {
+      required this.walletController,
+      required this.isBuyAX})
+      : super(TradePageState.initial(controller, isBuyAX)) {
+    print("Active Chain ${this.controller.networkID.value}");
     on<PageRefreshEvent>(_mapRefreshEventToState);
     on<MaxSwapTapEvent>(_mapMaxSwapTapEventToState);
     on<NewTokenFromInputEvent>(_mapNewTokenFromInputEventToState);
@@ -33,8 +40,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       PageRefreshEvent event, Emitter<TradePageState> emit) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
-      final tokenFromBalance = await walletController
-          .getTokenBalance(state.tokenFrom.address.value);
+      final tokenFromBalance =
+          await walletController.getTokenBalance(state.tokenFrom.address.value);
       final tokenToBalance =
           await walletController.getTokenBalance(state.tokenTo.address.value);
       emit(state.copyWith(
@@ -59,8 +66,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg);
-        emit(state.copyWith(
-          status: BlocStatus.error));
+        emit(state.copyWith(status: BlocStatus.error));
       }
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
@@ -74,7 +80,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     try {
       final response = await repo.fetchSwapInfo(
           tokenFrom: state.tokenFrom.address.value,
-          tokenTo: state.tokenTo.address.value, fromInput: tokenInputFromAmount);
+          tokenTo: state.tokenTo.address.value,
+          fromInput: tokenInputFromAmount);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
@@ -84,9 +91,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         }
         final swapInfo = response.getLeft().toNullable()!.swapInfo;
         //do some math
-        emit(state.copyWith(
-            status: BlocStatus.success,
-            swapInfo: swapInfo));
+        emit(state.copyWith(status: BlocStatus.success, swapInfo: swapInfo));
       } else {
         print("On New Apt Input: Failure");
         final errorMsg = response.getRight().toNullable()!.errorMsg;
@@ -106,8 +111,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       MaxSwapTapEvent event, Emitter<TradePageState> emit) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
-      final tokenFromBalance = await walletController
-          .getTokenBalance(state.tokenFrom.address.value);
+      final tokenFromBalance =
+          await walletController.getTokenBalance(state.tokenFrom.address.value);
       final maxInput = double.parse(tokenFromBalance);
       emit(state.copyWith(
           tokenInputFromAmount: maxInput, tokenFromBalance: maxInput));

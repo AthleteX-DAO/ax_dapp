@@ -82,7 +82,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                       style: textStyle(Colors.white, 24, false, false)),
                 ),
                 Container(
-                    width: 260,
+                    width: 300,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -90,37 +90,37 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                             alignment: Alignment.bottomLeft,
                             child: Text("Yds",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 13, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
                             child: Text("Tds",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 13, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("Recpt",
+                            child: Text("Rec",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 13, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("RecYds",
+                            child: Text("RYd",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 13, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("RecTch",
+                            child: Text("RTch",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 13, false, false)),
                           ),
                           Container(
                             alignment: Alignment.bottomLeft,
-                            child: Text("RusYds",
+                            child: Text("RuYd",
                                 style:
-                                    textStyle(greyTextColor, 10, false, false)),
+                                    textStyle(greyTextColor, 13, false, false)),
                           ),
                         ])),
               ])),
@@ -128,43 +128,43 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
               Widget>[
             Container(
-              child: Text("Current season Stats",
-                  style: textStyle(greyTextColor, 16, false, false)),
+              child: Text("Current Season Stats",
+                  style: textStyle(greyTextColor, 20, false, false)),
             ),
             Container(
-                width: 260,
+                width: 300,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.passingYards.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 13, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.passingTouchDowns.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 13, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
-                        child: Text(_athlete.reception.toStringAsFixed(3),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                        child: Text(_athlete.reception.toString(),
+                            style: textStyle(greyTextColor, 13, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.receiveYards.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 13, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.receiveTouch.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 13, false, false)),
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: Text(_athlete.rushingYards.toString(),
-                            style: textStyle(greyTextColor, 10, false, false)),
+                            style: textStyle(greyTextColor, 13, false, false)),
                       ),
                     ]))
           ]),

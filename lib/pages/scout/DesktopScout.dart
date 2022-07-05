@@ -1,9 +1,11 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
+import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
-import 'package:ax_dapp/pages/AthletePage.dart';
+import 'package:ax_dapp/pages/athlete/AthletePage.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
 import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
@@ -20,7 +22,10 @@ import 'package:get/get_instance/get_instance.dart';
 import 'models/AthleteScoutModel.dart';
 
 class DesktopScout extends StatefulWidget {
+  final void Function() goToTradePage;
+
   const DesktopScout({
+    required this.goToTradePage,
     Key? key,
   }) : super(key: key);
 
@@ -72,8 +77,12 @@ class _DesktopScoutState extends State<DesktopScout> {
             bloc.add(OnPageRefresh());
           }
           if (athletePage && curAthlete != null)
-            return AthletePage(
-              athlete: curAthlete!,
+            return BlocProvider(
+              create: (context) => AthletePageBloc(
+                  repo: RepositoryProvider.of<MLBRepo>(context)),
+              child: AthletePage(
+                athlete: curAthlete!, goToTradePage: widget.goToTradePage
+              ),
             );
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),
@@ -655,7 +664,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         child: BuyDialog(
                                             athlete.name,
                                             athlete.longTokenBookPrice!,
-                                            athlete.id)));
+                                            athlete.id,
+                                            widget.goToTradePage)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;
@@ -843,7 +853,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         child: BuyDialog(
                                             athlete.name,
                                             athlete.longTokenBookPrice!,
-                                            athlete.id)));
+                                            athlete.id,
+                                            widget.goToTradePage)));
                               } else {
                                 setState(() {
                                   curAthlete = athlete;
@@ -907,7 +918,6 @@ class _DesktopScoutState extends State<DesktopScout> {
       decoration: boxDecoration(Color.fromRGBO(118, 118, 128, 0.24), 20, 1,
           Color.fromRGBO(118, 118, 128, 0.24)),
       child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(width: 6),
@@ -941,13 +951,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                   FilteringTextInputFormatter.allow(RegExp('[a-zA-z. ]'))
                 ],
               ),
-            ),
-          ),
-          Container(
-            child: Icon(
-              Icons.mic,
-              color: Color.fromRGBO(235, 235, 245, 0.6),
-              size: 20,
             ),
           ),
         ],

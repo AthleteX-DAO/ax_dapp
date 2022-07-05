@@ -4,6 +4,7 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/util/TokenType.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +14,10 @@ class BuyDialog extends StatefulWidget {
   final String athleteName;
   final double aptPrice;
   final int athleteId;
+  final void Function() goToTradePage;
 
-  BuyDialog(this.athleteName, this.aptPrice, this.athleteId);
+  BuyDialog(
+      this.athleteName, this.aptPrice, this.athleteId, this.goToTradePage);
 
   @override
   State<StatefulWidget> createState() => _BuyDialogState();
@@ -26,8 +29,13 @@ class _BuyDialogState extends State<BuyDialog> {
   TextEditingController _aptAmountController = TextEditingController();
 
   TokenType _currentTokenTypeSelection = TokenType.Long;
-  double slippageTolerance =
-      1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
+  double slippageTolerance = 1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
+
+  @override
+  void dispose() {
+    _aptAmountController.dispose();
+    super.dispose();
+  }
 
   Widget toggleLongShortToken(double wid, double hgt) {
     return Container(
@@ -103,10 +111,16 @@ class _BuyDialogState extends State<BuyDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("Price:", style: textStyle(Colors.white, 15, false)),
+          _currentTokenTypeSelection == TokenType.Long ? 
           Text(
-            "$price AX per ${widget.athleteName} ${_currentTokenTypeSelection.name} APT",
+            "$price AX per ${getLongAthleteSymbol(widget.athleteId)} APT",
             style: textStyle(Colors.white, 15, false),
-          ),
+          )
+          : 
+          Text(
+            "$price AX per ${getShortAthleteSymbol(widget.athleteId)} APT",
+            style: textStyle(Colors.white, 15, false),
+          )
         ],
       ),
     );
@@ -203,14 +217,16 @@ class _BuyDialogState extends State<BuyDialog> {
             "You Receive:",
             style: textStyle(Colors.white, 15, false),
           ),
+          _currentTokenTypeSelection == TokenType.Long ? 
           Text(
-            "$amountToReceive " +
-                widget.athleteName +
-                " " +
-                _currentTokenTypeSelection.name +
-                " APT",
+            "$amountToReceive " + "${getLongAthleteSymbol(widget.athleteId)}" + " APT",
             style: textStyle(Colors.white, 15, false),
-          ),
+          )
+          :
+          Text(
+            "$amountToReceive " + "${getShortAthleteSymbol(widget.athleteId)}" + " APT",
+            style: textStyle(Colors.white, 15, false),
+          )
         ],
       ),
     );
@@ -276,21 +292,25 @@ class _BuyDialogState extends State<BuyDialog> {
                         children: <TextSpan>[
                           TextSpan(
                               text:
-                                  "You can purchase APTs at Market Price with AX.",
+                                  "You can purchase APTs at Market Price with AX.\n",
                               style: TextStyle(
                                   color: Colors.grey[600],
                                   fontSize: isWeb ? 14 : 12)),
                           TextSpan(
-                              text:
-                                  " You can buy AX on the Matic network through",
+                              text: "Click here to",
                               style: TextStyle(
                                   color: Colors.grey[600],
                                   fontSize: isWeb ? 14 : 12)),
                           TextSpan(
-                              text: " SushiSwap",
+                              text: " Buy AX",
                               style: TextStyle(
                                   color: Colors.amber[400],
-                                  fontSize: isWeb ? 14 : 12)),
+                                  fontSize: isWeb ? 14 : 12),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pop(context);
+                                  widget.goToTradePage();
+                                }),
                         ],
                       ),
                     ),
@@ -349,7 +369,8 @@ class _BuyDialogState extends State<BuyDialog> {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   scale: 0.5,
-                                  image: AssetImage("assets/images/X_Logo_Black_BR.png"),
+                                  image: AssetImage(
+                                      "assets/images/X_Logo_Black_BR.png"),
                                 ),
                               ),
                             ),
