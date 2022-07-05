@@ -205,43 +205,47 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Widget startTradingButton(double tradingTextSize) {
-    final double _width = MediaQuery.of(context).size.width;
     return isWeb
-        ? Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
-            decoration: isWeb
-                ? boxDecoration(Colors.transparent, 100, 1, Colors.amber[400]!)
-                : boxDecoration(Colors.amber[300]!.withOpacity(0.15), 100, 1,
-                    Colors.transparent),
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  next = true;
-                });
-              },
-              child: Text(
-                "Start Trading",
-                style:
-                    textStyle(Colors.amber[400]!, tradingTextSize, true, false),
-              ),
-            ),
-          )
-        : Container(
-            width: _width * 0.5,
-            decoration: boxDecoration(Colors.amber[300]!.withOpacity(0.15), 20,
-                1, Colors.transparent),
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => V1App()));
-              },
-              child: Text(
-                "Start",
-                style:
-                    textStyle(Colors.amber[400]!, tradingTextSize, true, false),
-              ),
-            ),
-          );
+        ? TextButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+                side: BorderSide(color: Colors.amber[400]!)
+              )
+            )
+          ),
+          onPressed: () {
+            setState(() {
+              next = true;
+            });
+          },
+          child: Text(
+            "Start Trading",
+            style:
+                textStyle(Colors.amber[400]!, tradingTextSize, true, false),
+          ),
+        )         
+        : TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[300]!.withOpacity(0.15)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(color: Colors.transparent)
+              )
+            )
+          ),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => V1App()));
+          },
+          child: Text(
+            "Start",
+            style:
+                textStyle(Colors.amber[400]!, tradingTextSize, true, false),
+          ),
+        );      
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
