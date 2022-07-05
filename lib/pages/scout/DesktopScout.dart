@@ -114,18 +114,26 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ),
                       // List Headers
                       buildListviewHeaders(),
-                      if (state.status == BlocStatus.loading) ...[
-                        scoutLoading(),
-                      ] else if (state.status == BlocStatus.error) ...[
-                        scoutLoadingError(),
-                      ] else if (state.status == BlocStatus.no_data) ...[
-                        filterMenuError(),
-                      ],
-                      buildListview(state, filteredAthletes)
-                      // ListView of Athletes
+                      buildScoutView(state, filteredAthletes),
                     ])),
           );
         });
+  }
+
+  Stack buildScoutView(ScoutPageState state, List<AthleteScoutModel> filteredAthletes) {
+    return Stack(                     
+      alignment: Alignment.center,
+      children: [
+        if (state.status == BlocStatus.loading) ...[
+          scoutLoading()
+        ] else if (state.status == BlocStatus.error) ...[
+          scoutLoadingError()
+        ] else if (state.status == BlocStatus.no_data) ...[
+          filterMenuError()
+        ],
+        buildListview(state, filteredAthletes)
+      ],                      
+    );
   }
 
   Row buildFilterMenuWeb(ScoutPageState state, ScoutPageBloc bloc,
@@ -364,25 +372,21 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   Widget scoutLoading() {
-    return Center(
-      child: SizedBox(
-          height: 50,
-          width: 50,
-          child: CircularProgressIndicator(
-            color: Colors.amber,
-          )),
-    );
+    return SizedBox(
+        height: 50,
+        width: 50,
+        child: CircularProgressIndicator(
+          color: Colors.amber,
+        ));
   }
 
   // Show the error if the athletes did not load
   Widget scoutLoadingError() {
-    return Center(
-      child: SizedBox(
-        height: 70,
-        width: 400,
-        child: Text("Athlete List Failed to Load",
-            style: TextStyle(color: Colors.red, fontSize: 30)),
-      ),
+    return SizedBox(
+      height: 70,
+      width: 400,
+      child: Text("Athlete List Failed to Load",
+          style: TextStyle(color: Colors.red, fontSize: 30)),
     );
   }
 
@@ -527,14 +531,12 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   Widget filterMenuError() {
-    return Center(
-      child: SizedBox(
-        height: 70,
-        width: 400,
-        child: Text(
-          'Athletes not supported yet',
-          style: TextStyle(color: Colors.red, fontSize: 30),
-        ),
+    return SizedBox(
+      height: 70,
+      width: 400,
+      child: Text(
+        'Athletes not supported yet',
+        style: TextStyle(color: Colors.red, fontSize: 30),
       ),
     );
   }
