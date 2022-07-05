@@ -406,7 +406,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       width: athNameBx,
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("Athlete",
+                        child: Text("Athlete (Seasonal APT)",
                             style: TextStyle(color: Colors.grey, fontSize: 12)),
                       )),
                   if (team)
@@ -418,13 +418,13 @@ class _DesktopScoutState extends State<DesktopScout> {
                   Container(
                     width: _width * 0.18,
                     child: Text(
-                      "Market Price",
+                      "Market Price / Change",
                       style: textStyle(Colors.grey[400]!, 10, false, false),
                     ),
                   ),
                   Container(
                     width: _width * 0.12,
-                    child: Text("Book Value",
+                    child: Text("Book Value / Change",
                         style: textStyle(Colors.grey[400]!, 10, false, false)),
                   ),
                 ])
