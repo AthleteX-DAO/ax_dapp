@@ -1,5 +1,5 @@
 import 'package:ax_dapp/pages/V1App.dart';
-import 'package:ax_dapp/service/AthleteList.dart';
+import 'package:ax_dapp/util/AthletePageFormatHelper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
@@ -40,19 +40,14 @@ class _LandingPageState extends State<LandingPage> {
           ? Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
               Widget>[
               //AX Markets Image
-              Container(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  height: _height * 0.2,
-                  child: Image(
-                    image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
-                  )),
+              athletexLogo(_height),
               desktopLandingPage(context, textSize),
               //Button load athletes
               Container(
-                width: isWeb ? _width * 0.20 : _width * 0.55,
+                width: _width * 0.20,
                 height: _height * 0.1,
                 margin: EdgeInsets.only(bottom: 130.0),
-                child: getAtheleteData(context, tradingTextSize),
+                child: startTradingButton(tradingTextSize)
               ),
             ])
           :
@@ -60,40 +55,25 @@ class _LandingPageState extends State<LandingPage> {
           Column(mainAxisAlignment: MainAxisAlignment.center, children: <
               Widget>[
               //AX Markets Image
-              Container(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  height: _height * 0.2,
-                  child: Image(
-                    image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
-                  )),
+              athletexLogo(_height),
               andoridLandingPage(context, textSize),
               //Button load athletes
               Container(
                 width: _width * 0.6,
                 height: _height * 0.07,
-                child: getAtheleteData(context, tradingTextSize),
+                child: startTradingButton(tradingTextSize)
               ),
             ]),
     );
   }
 
-  FutureBuilder<dynamic> getAtheleteData(
-      BuildContext context, double tradingTextSize) {
-    return FutureBuilder<dynamic>(
-      // future: AthleteApi.getAthletesLocally(context),
-      // future: AthleteApi.getAthletesFromIdsDict(context),
-      builder: (context, snapshot) {
-        //Check API response data
-        if (snapshot.hasError) {
-          return startTradingButton(tradingTextSize);
-        } else if (snapshot.hasData) {
-          AthleteList.list = snapshot.data;
-          return startTradingButton(tradingTextSize);
-        } else {
-          return startTradingButton(tradingTextSize);
-        }
-      },
-    );
+  Container athletexLogo(double _height) {
+    return Container(
+      padding: EdgeInsets.only(left: 15, right: 15),
+      height: _height * 0.2,
+      child: Image(
+        image: AssetImage("assets/images/AthleteX_Logo_Vector.png"),
+      ));
   }
 
   Widget desktopLandingPage(BuildContext context, textSize) {
@@ -246,42 +226,5 @@ class _LandingPageState extends State<LandingPage> {
                 textStyle(Colors.amber[400]!, tradingTextSize, true, false),
           ),
         );      
-  }
-
-  TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    if (isBold) if (isUline)
-      return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-          fontWeight: FontWeight.w400,
-          decoration: TextDecoration.underline);
-    else
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-      );
-    else if (isUline)
-      return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-          decoration: TextDecoration.underline);
-    else
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
-  }
-
-  BoxDecoration boxDecoration(
-      Color col, double rad, double borWid, Color borCol) {
-    return BoxDecoration(
-        color: col,
-        borderRadius: BorderRadius.circular(rad),
-        border: Border.all(color: borCol, width: borWid));
   }
 }
