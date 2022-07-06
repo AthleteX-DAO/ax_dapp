@@ -128,7 +128,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                     tokenListFilter = TokenList.tokenList
                         .where((token) => token.ticker
                             .toUpperCase()
-                            .contains(value.toUpperCase()))
+                            .contains(value.toUpperCase()) || token.name.toUpperCase().contains(value.toUpperCase()))
                         .toList();
                   });
                 },
