@@ -365,10 +365,10 @@ class _AddLiquidityState extends State<AddLiquidity> {
 
         Widget addLiquidityToolTip(double elementWdt) {
           return Tooltip(
+            triggerMode: TooltipTriggerMode.tap,
             height: 50,
             padding: EdgeInsets.all(10),
             verticalOffset: -100,
-            // preferBelow: false,
             decoration: BoxDecoration(
                 color: Colors.grey[800],
                 borderRadius: BorderRadius.circular(25)),
@@ -383,6 +383,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
 
         Widget youWillReceiveToolTip() {
           return Tooltip(
+            triggerMode: TooltipTriggerMode.tap,
             height: 50,
             padding: EdgeInsets.all(10),
             verticalOffset: -60,
