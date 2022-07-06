@@ -168,6 +168,8 @@ Dialog wrongNetworkDialog(BuildContext context) {
 
 //dynamic
 Dialog walletDialog(BuildContext context) {
+  bool isWeb = true;
+  isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   Controller controller = Get.find();
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
@@ -211,7 +213,7 @@ Dialog walletDialog(BuildContext context) {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.symmetric(vertical: 30),
-                width: _width * 0.15,
+                width: isWeb ? _width * 0.15 : _width * 0.50,
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
@@ -268,7 +270,7 @@ Dialog walletDialog(BuildContext context) {
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 4),
-            width: _width * 0.15,
+            width: isWeb ? _width * 0.15 : _width * 0.50,
             height: 45,
             decoration:
                 boxDecoration(Colors.transparent, 100, 2, Colors.grey[400]!),
