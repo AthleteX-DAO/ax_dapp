@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-Widget noData(height, width) {
+Widget noData() {
   return Center(
     child: SizedBox(
-      height: height,
-      width: width,
+      height: 70,
+      width: 400,
       child: Text("No Farms to Display.",
           style: TextStyle(color: Colors.amber, fontSize: 30)),
     ),

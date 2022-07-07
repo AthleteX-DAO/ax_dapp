@@ -96,12 +96,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
               bloc.add(OnLoadStakedFarms());
           }
 
-          if (state.status == BlocStatus.error) {
-            widget = loadingError();
-          }
-
-          if (state.status == BlocStatus.no_data) {
-            widget = noData(_layoutHgt, _layoutWdt);
+          if (state.status == BlocStatus.error || state.status == BlocStatus.no_data) {
+            widget = noData();
           }
 
           if (!state.isAllFarms && state.status == BlocStatus.no_wallet) {
