@@ -4,7 +4,7 @@ Widget noData() {
   return Center(
     child: SizedBox(
       height: 70,
-      width: 400,
+      width: 320,
       child: Text("No Farms to Display.",
           style: TextStyle(color: Colors.amber, fontSize: 30)),
     ),
