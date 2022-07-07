@@ -15,9 +15,13 @@ class GetFarmDataUseCase {
   }
 
   Future<List<FarmModel>> fetchStakedFarms(String account) async {
+    print("[Debug] staked address $account");
     List<FarmModel> stakedFarms = [];
     final QueryResult response = await gysrApi.fetchStakedFarms(account);
-    if (response.hasException) throw response.exception.toString();
+    if (response.hasException) {
+      print("[Debug] ${response.exception.toString()}");
+      throw response.exception.toString();
+    }
 
     stakedFarms =
         _mapQueryResultToFarmModel(response.data!['user']!['positions'], true);
@@ -28,8 +32,6 @@ class GetFarmDataUseCase {
     List<FarmModel> farms = [];
     response.forEach((pool) {
       dynamic farm = isStaked ? pool['pool'] : pool;
-      print("[stakigToken] ${farm['stakingToken']['decimals']}");
-      print("[rewardToken] ${farm['rewardToken']['decimals']}");
       farms.add(FarmModel(
           "${farm['stakingToken']['alias']!.length > 0 ? farm['stakingToken']['alias'] : farm['stakingToken']['symbol']} APT",
           farm['id'].toString(),
