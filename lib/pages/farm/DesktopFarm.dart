@@ -1,4 +1,3 @@
-import 'package:ax_dapp/pages/farm/components/LoadingError.dart';
 import 'package:ax_dapp/pages/farm/components/NoData.dart';
 import 'package:ax_dapp/pages/farm/components/NoWallet.dart';
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
@@ -78,9 +77,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
     double listHeight = (isWeb && isAllFarms) ? 225 : layoutHgt * 0.80;
     //If web and in MyFarms list height 500
     if (isWeb && !isAllFarms) listHeight = 500;
-
-    final double _layoutHgt = layoutHgt * 0.8;
-    final double _layoutWdt = isWeb ? layoutWdt * 0.8 : layoutWdt * 0.9;
 
     return BlocBuilder<FarmBloc, FarmState>(
         buildWhen: (((previous, current) => previous != current)),
