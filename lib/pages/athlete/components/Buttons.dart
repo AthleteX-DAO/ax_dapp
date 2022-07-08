@@ -13,94 +13,72 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-  Container buyButton(BuildContext context, AthleteScoutModel athlete, Function() goToTradePage) {
-    return Container(
-      width: 175,
+Container buyButton(BuildContext context, AthleteScoutModel athlete,
+    bool isPortraitMode, double containerWdt, Function() goToTradePage) {
+  return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
       height: 50,
-      decoration: boxDecoration(
-          primaryOrangeColor,
-          100,
-          0,
-          primaryOrangeColor),
+      //if app is in portrait, buyButton will use 1/4 of the total width
+      decoration: boxDecoration(primaryOrangeColor, 100, 0, primaryOrangeColor),
       child: TextButton(
           onPressed: () => showDialog(
               context: context,
               builder: (BuildContext context) => BlocProvider(
                   create: (BuildContext context) => BuyDialogBloc(
-                      repo: RepositoryProvider
-                          .of<GetBuyInfoUseCase>(
-                              context),
-                      wallet:
-                          GetTotalTokenBalanceUseCase(Get.find()),
+                      repo: RepositoryProvider.of<GetBuyInfoUseCase>(context),
+                      wallet: GetTotalTokenBalanceUseCase(Get.find()),
                       swapController: Get.find()),
-                  child: BuyDialog(athlete.name, athlete.longTokenBookPrice!, athlete.id, goToTradePage))),
-          child: Text("Buy", style: textStyle(Colors.black, 20, false, false))));
-  }
+                  child: BuyDialog(athlete.name, athlete.longTokenBookPrice!,
+                      athlete.id, goToTradePage))),
+          child:
+              Text("Buy", style: textStyle(Colors.black, 20, false, false))));
+}
 
-  Container sellButton(BuildContext context, AthleteScoutModel athlete) {
-    return Container(
-      width: 175,
+Container sellButton(BuildContext context, AthleteScoutModel athlete,
+    bool isPortraitMode, double containerWdt) {
+  return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
       height: 50,
-      decoration: boxDecoration(
-          Colors.white,
-          100,
-          0,
-          Colors.white),
+      // if portrait mode, use 1/3 of container width
+      decoration: boxDecoration(Colors.white, 100, 0, Colors.white),
       child: TextButton(
           onPressed: () => showDialog(
               context: context,
               builder: (BuildContext context) => BlocProvider(
                   create: (BuildContext context) => SellDialogBloc(
-                      repo: RepositoryProvider
-                          .of<GetSellInfoUseCase>(
-                              context),
-                      wallet: GetTotalTokenBalanceUseCase(
-                          Get.find()),
-                      swapController:
-                          Get.find()),
+                      repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
+                      wallet: GetTotalTokenBalanceUseCase(Get.find()),
+                      swapController: Get.find()),
                   child: SellDialog(
-                      athlete.name,
-                      athlete.longTokenBookPrice!,
-                      athlete.id))),
-          child: Text("Sell", style: textStyle(Colors.black, 20, false, false))));
-  }
+                      athlete.name, athlete.longTokenBookPrice!, athlete.id))),
+          child:
+              Text("Sell", style: textStyle(Colors.black, 20, false, false))));
+}
 
-  Container mintButton(BuildContext context, AthleteScoutModel athlete) {
-    return Container(
-      width: 175,
+Container mintButton(BuildContext context, AthleteScoutModel athlete,
+    bool isPortraitMode, double containerWdt) {
+  return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
       height: 50,
-      decoration: boxDecoration(
-          Colors.transparent,
-          100,
-          2,
-          Colors.white),
+      decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
       child: TextButton(
           onPressed: () => showDialog(
               context: context,
-              builder:
-                  (BuildContext context) =>
-                      MintDialog(athlete)),
-          child: Text("Mint",
-              style: textStyle(Colors.white,
-                  20, false, false))));
-  }
+              builder: (BuildContext context) => MintDialog(athlete)),
+          child:
+              Text("Mint", style: textStyle(Colors.white, 20, false, false))));
+}
 
-  Container redeemButton(BuildContext context, AthleteScoutModel athlete) {
-    return Container(
-      width: 175,
+Container redeemButton(BuildContext context, AthleteScoutModel athlete,
+    bool isPortraitMode, double containerWdt) {
+  return Container(
+      width: isPortraitMode ? containerWdt / 3 : 175,
       height: 50,
-      decoration: boxDecoration(
-          Colors.transparent,
-          100,
-          2,
-          Colors.white),
+      decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
       child: TextButton(
           onPressed: () => showDialog(
               context: context,
-              builder: (BuildContext
-                      context) =>
-                  RedeemDialog(athlete)),
+              builder: (BuildContext context) => RedeemDialog(athlete)),
           child: Text("Redeem",
-              style: textStyle(Colors.white,
-                  20, false, false))));
-  }
+              style: textStyle(Colors.white, 20, false, false))));
+}
