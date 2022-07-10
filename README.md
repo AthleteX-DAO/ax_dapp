@@ -158,3 +158,105 @@ $ flutter test --test-randomize-ordering-seed random
 - Use [mocktail](https://pub.dev/packages/mocktail) to create mocks in Dart with null safety without the need for manual mocks or code generation.
 - Use [bloc_test](https://pub.dev/packages/bloc_test) to test blocs and cubits; built to work with [bloc](https://pub.dev/packages/bloc) and [mocktail](https://pub.dev/packages/mocktail).
 - Use [mockingjay](https://pub.dev/packages/mockingjay) to mock, test and verify navigation calls; works with [mocktail](https://pub.dev/packages/mocktail).
+
+## UI Best Practices
+
+### Translations
+
+This project should rely on [flutter_localizations](https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html) and follow the [official internationalization guide for Flutter](https://docs.flutter.dev/development/accessibility-and-localization/internationalization).
+This approach is recommended even if there's only a locale needed.
+
+#### Adding Strings
+
+1. To add a new localizable string, open the `app_en.arb` file at `lib/l10n/arb/app_en.arb`.
+
+```arb
+{
+    "@@locale": "en",
+    "counterAppBarTitle": "Counter",
+    "@counterAppBarTitle": {
+        "description": "Text shown in the AppBar of the Counter Page"
+    }
+}
+```
+
+2. Then add a new key/value and description
+
+```arb
+{
+    "@@locale": "en",
+    "counterAppBarTitle": "Counter",
+    "@counterAppBarTitle": {
+        "description": "Text shown in the AppBar of the Counter Page"
+    },
+    "helloWorld": "Hello World",
+    "@helloWorld": {
+        "description": "Hello World Text"
+    }
+}
+```
+
+3. Use the new string
+
+```dart
+import 'package:mindspotter/l10n/l10n.dart';
+
+@override
+Widget build(BuildContext context) {
+  final l10n = context.l10n;
+  return Text(l10n.helloWorld);
+}
+```
+
+#### Adding Supported Locales
+
+Update the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info.plist` to include the new locale.
+
+```xml
+    ...
+
+    <key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>es</string>
+	</array>
+
+    ...
+```
+
+#### Adding Translations
+
+1. For each supported locale, add a new ARB file in `lib/l10n/arb`.
+
+```
+├── l10n
+│   ├── arb
+│   │   ├── app_en.arb
+│   │   └── app_es.arb
+```
+
+2. Add the translated strings to each `.arb` file:
+
+`app_en.arb`
+
+```arb
+{
+    "@@locale": "en",
+    "counterAppBarTitle": "Counter",
+    "@counterAppBarTitle": {
+        "description": "Text shown in the AppBar of the Counter Page"
+    }
+}
+```
+
+`app_es.arb`
+
+```arb
+{
+    "@@locale": "es",
+    "counterAppBarTitle": "Contador",
+    "@counterAppBarTitle": {
+        "description": "Texto mostrado en la AppBar de la página del contador"
+    }
+}
+```
