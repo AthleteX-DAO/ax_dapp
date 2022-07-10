@@ -113,5 +113,13 @@ An example of a Multimodule Monorepo directory structure is below:
 
 ## Naming Conventions
 
-- [effective dart](https://dart.dev/guides/language/effective-dart/style)
-- [bloc library naming conventions](https://bloclibrary.dev/#/blocnamingconventions?id=naming-conventions)
+- [effective dart](https://dart.dev/guides/language/effective-dart/style).
+- [bloc library naming conventions](https://bloclibrary.dev/#/blocnamingconventions?id=naming-conventions).
+
+## Formatting Conventions
+
+Code formatters fix style, spacing, line jumps, comments, which helps enforce programming and formatting rules that can be easily automated. This helps reduce future code diffs by delegating formatting concerns to an automatic tool rather than individual developers.
+
+- To check code formatting run: `flutter format --set-exit-if-changed lib test`.
+- Formatting checks should be automated via CI/CD pipelines.
+- [effective dart formatting guidelines](https://dart.dev/guides/language/effective-dart/style#do-format-your-code-using-dart-format).
