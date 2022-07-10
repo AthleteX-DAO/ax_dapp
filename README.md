@@ -163,6 +163,22 @@ $ flutter test --test-randomize-ordering-seed random
 
 ## UI Best Practices
 
+### App UI
+
+The project should contain an application package as a submodule having the role of an UI toolkit. This package is usually named `app_ui` or `{appName}_ui` and should contains the `assets` folder, reusable widgets, UI related helpers and classes for layout, navigation, platform, typography, theme, colors, etc...
+
+An example of a class storing colors is below:
+
+```
+abstract class AppColors {
+  static const Color black = Color(0xFF202124);
+
+  static const Color white = Color(0xFFFFFFFF);
+}
+```
+
+**Note:** Colors inside the app should be configured as much as possible through `ColorScheme`.
+
 ### Translations
 
 This project should rely on [flutter_localizations](https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html) and follow the [official internationalization guide for Flutter](https://docs.flutter.dev/development/accessibility-and-localization/internationalization).
