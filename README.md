@@ -120,7 +120,12 @@ An example of a Multimodule Monorepo directory structure is below:
 
 Code formatters fix style, spacing, line jumps, comments, which helps enforce programming and formatting rules that can be easily automated. This helps reduce future code diffs by delegating formatting concerns to an automatic tool rather than individual developers.
 
-- To check code formatting run: `flutter format --set-exit-if-changed lib test`.
+- To check code formatting run:
+
+```sh
+flutter format --set-exit-if-changed lib test
+```
+
 - Formatting checks should be automated via CI/CD pipelines.
 - [effective dart formatting guidelines](https://dart.dev/guides/language/effective-dart/style#do-format-your-code-using-dart-format).
 
@@ -128,7 +133,12 @@ Code formatters fix style, spacing, line jumps, comments, which helps enforce pr
 
 Code linters analyze code statically to flag programming errors, catch bugs, stylistic errors, and suspicious constructs.
 
-- To analyze the code run: `flutter analyze lib test`.
+- To analyze the code run:
+
+```sh
+flutter analyze lib test
+```
+
 - The project should use [very_good_analysis](https://pub.dev/packages/very_good_analysis) for a startup friendly set of lint rules.
 - Each submodule should contain it's own `analysis_options.yaml` file including the `very_good_analysis`.
 - Optionally, specific rules could be enabled, disabled or have their severity changed.
