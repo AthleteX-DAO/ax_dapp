@@ -165,7 +165,7 @@ $ flutter test --test-randomize-ordering-seed random
 
 ### App UI
 
-The project should contain an application package as a submodule having the role of an UI toolkit. This package is usually named `app_ui` or `{appName}_ui` and should contains the `assets` folder, reusable widgets, UI related helpers and classes for layout, navigation, platform, typography, theme, colors, etc...
+The project should contain an application package as a submodule having the role of an UI toolkit. This package is usually named `app_ui` or `{appName}_ui` and should contain the `assets` folder, reusable widgets, UI related helpers and classes for layout, navigation, platform, typography, theme, colors, etc...
 
 An example of a class storing colors is below:
 
