@@ -110,3 +110,8 @@ An example of a Multimodule Monorepo directory structure is below:
 │   ├── user_repository
 │   └── weather_repository
 ```
+
+## Naming Conventions
+
+- [effective dart](https://dart.dev/guides/language/effective-dart/style)
+- [bloc library naming conventions](https://bloclibrary.dev/#/blocnamingconventions?id=naming-conventions)
