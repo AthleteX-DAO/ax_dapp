@@ -6,15 +6,15 @@
 
 Front end UI for athlete equity MVBP built using flutter
 
-## Getting Started
+## Getting Started 🚀
 
 <!-- Mnenomic -->
 <!-- web lady wheat index recipe chunk urge boost hungry critic language crossnote: this mnemonic is not secure; don't use it on a public blockchain.
  -->
 
-## Bloc Architecture
+## Bloc Architecture ✨
 
-### Overview
+### Overview 🔍
 
 Layering our code is very important and helps us iterate quickly and with confidence. Each layer has a single responsibility and can be used and tested in isolation. This allows us to keep changes contained to a specific layer in order to minimize the impact on the entire application.
 
@@ -24,7 +24,7 @@ For example:
 - if product wants to change a criteria for the business, only the domain layer will be impacted
 - if design wants to change the application theme, only the presentation layer will be impacted
 
-### Layers
+### Layers 📚
 
 ![bloc_architecture_diagram](https://user-images.githubusercontent.com/29372054/178124498-6675ede0-d0ea-40eb-98dc-136991af6b28.png)
 
@@ -71,7 +71,7 @@ This layer takes the state from the business logic layer and renders a UI for th
 
 **Note**: This layer can be considered the "design" layer. Designers will determine the user interface in order to provide the best possible experience for the customer.
 
-### Project Structure
+### Project Structure 📁
 
 The project should adhere to the Multimodule Monorepo structure. This is an approach that compliments the layered architecture described above. It allows you to maintain a single repository(git) with multiple submodules. In some cases, data clients can be open-sourced and may eventually not be included in the project. Several benefits of maintaining a single project with multiple submodules are:
 
@@ -111,12 +111,12 @@ An example of a Multimodule Monorepo directory structure is below:
 │   └── weather_repository
 ```
 
-## Naming Conventions
+## Naming Conventions 📝
 
 - [Effective dart](https://dart.dev/guides/language/effective-dart/style).
 - [Bloc library naming conventions](https://bloclibrary.dev/#/blocnamingconventions?id=naming-conventions).
 
-## Formatting Conventions
+## Formatting Conventions 🔠
 
 Code formatters fix style, spacing, line jumps, comments, which helps enforce programming and formatting rules that can be easily automated. This helps reduce future code diffs by delegating formatting concerns to an automatic tool rather than individual developers.
 
@@ -129,7 +129,7 @@ flutter format --set-exit-if-changed lib test
 - Formatting checks should be automated via CI/CD pipelines.
 - [Effective dart formatting guidelines](https://dart.dev/guides/language/effective-dart/style#do-format-your-code-using-dart-format).
 
-## Linting
+## Linting ⚠️
 
 Code linters analyze code statically to flag programming errors, catch bugs, stylistic errors, and suspicious constructs.
 
@@ -145,7 +145,7 @@ flutter analyze lib test
 - Doc-style comments(`///`) should be used for all public members and public APIs; enforcing is done by [very_good_analysis](https://pub.dev/packages/very_good_analysis) through [public_member_api_docs](https://dart-lang.github.io/linter/lints/public_member_api_docs.html) and [package_api_docs](https://dart-lang.github.io/linter/lints/package_api_docs.html) lint rules.
   **Note**: Additional comments should be added when the code itself is not clear enough or presents high levels of complexity.
 
-## Tests
+## Tests 🧪
 
 - To run all unit and widget tests use the following command:
 
@@ -161,9 +161,9 @@ $ flutter test --test-randomize-ordering-seed random
 - Use [bloc_test](https://pub.dev/packages/bloc_test) to test blocs and cubits; built to work with [bloc](https://pub.dev/packages/bloc) and [mocktail](https://pub.dev/packages/mocktail).
 - Use [mockingjay](https://pub.dev/packages/mockingjay) to mock, test and verify navigation calls; works with [mocktail](https://pub.dev/packages/mocktail).
 
-## UI Best Practices
+## UI Best Practices ✔️
 
-### App UI
+### App UI 📱
 
 The project should contain an application package as a submodule having the role of an UI toolkit. This package is usually named `app_ui` or `{appName}_ui` and should contain the `assets` folder, reusable widgets, UI related helpers and classes for layout, navigation, platform, typography, theme, colors, etc...
 
@@ -179,7 +179,7 @@ abstract class AppColors {
 
 **Note:** Colors inside the app should be configured as much as possible through `ColorScheme`.
 
-### Translations
+### Translations 🌐
 
 This project should rely on [flutter_localizations](https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html) and follow the [official internationalization guide for Flutter](https://docs.flutter.dev/development/accessibility-and-localization/internationalization).
 This approach is recommended even if there's only a locale needed.
