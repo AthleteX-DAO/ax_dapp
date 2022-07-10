@@ -12,6 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import '../../dialogs/buy/bloc/BuyDialogBloc.dart';
+
 class DesktopTrade extends StatefulWidget {
   const DesktopTrade({Key? key}) : super(key: key);
 
@@ -25,12 +27,22 @@ class _DesktopTradeState extends State<DesktopTrade> {
   bool isWeb = true;
   TextEditingController _tokenFromInputController = TextEditingController();
   TextEditingController _tokenToInputController = TextEditingController();
+  bool canTrade = true;
 
   @override
   void dispose() {
     super.dispose();
     _tokenFromInputController.dispose();
     _tokenToInputController.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    canTrade = context.watch<BuyDialogBloc>().state.canTrade;
+
+    print(canTrade.toString() + 'this is canTrade');
   }
 
   @override
@@ -602,8 +614,15 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       ],
                     ),
                   ),
-                  ApproveButton(175, 40, "Approve", swapController.approve,
-                      swapController.swap, transactionConfirmed),
+                  ApproveButton(
+                      175,
+                      40,
+                      "Approve",
+                      swapController.approve,
+                      swapController.swap,
+                      canTrade == true
+                          ? transactionConfirmed
+                          : transactionConfirmed2),
                 ],
               ),
             ),

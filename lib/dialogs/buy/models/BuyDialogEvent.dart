@@ -32,3 +32,7 @@ class OnConfirmBuy extends BuyDialogEvent {
   @override
   List<Object?> get props => [buyPrice];
 }
+
+class OnErrorEvent extends BuyDialogEvent {
+  List<Object?> get props => [];
+}

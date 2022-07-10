@@ -29,7 +29,8 @@ class _BuyDialogState extends State<BuyDialog> {
   TextEditingController _aptAmountController = TextEditingController();
 
   TokenType _currentTokenTypeSelection = TokenType.Long;
-  double slippageTolerance = 1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
+  double slippageTolerance =
+      1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
 
   @override
   void dispose() {
@@ -111,16 +112,15 @@ class _BuyDialogState extends State<BuyDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("Price:", style: textStyle(Colors.white, 15, false)),
-          _currentTokenTypeSelection == TokenType.Long ? 
-          Text(
-            "$price AX per ${getLongAthleteSymbol(widget.athleteId)} APT",
-            style: textStyle(Colors.white, 15, false),
-          )
-          : 
-          Text(
-            "$price AX per ${getShortAthleteSymbol(widget.athleteId)} APT",
-            style: textStyle(Colors.white, 15, false),
-          )
+          _currentTokenTypeSelection == TokenType.Long
+              ? Text(
+                  "$price AX per ${getLongAthleteSymbol(widget.athleteId)} APT",
+                  style: textStyle(Colors.white, 15, false),
+                )
+              : Text(
+                  "$price AX per ${getShortAthleteSymbol(widget.athleteId)} APT",
+                  style: textStyle(Colors.white, 15, false),
+                )
         ],
       ),
     );
@@ -217,16 +217,19 @@ class _BuyDialogState extends State<BuyDialog> {
             "You Receive:",
             style: textStyle(Colors.white, 15, false),
           ),
-          _currentTokenTypeSelection == TokenType.Long ? 
-          Text(
-            "$amountToReceive " + "${getLongAthleteSymbol(widget.athleteId)}" + " APT",
-            style: textStyle(Colors.white, 15, false),
-          )
-          :
-          Text(
-            "$amountToReceive " + "${getShortAthleteSymbol(widget.athleteId)}" + " APT",
-            style: textStyle(Colors.white, 15, false),
-          )
+          _currentTokenTypeSelection == TokenType.Long
+              ? Text(
+                  "$amountToReceive " +
+                      "${getLongAthleteSymbol(widget.athleteId)}" +
+                      " APT",
+                  style: textStyle(Colors.white, 15, false),
+                )
+              : Text(
+                  "$amountToReceive " +
+                      "${getShortAthleteSymbol(widget.athleteId)}" +
+                      " APT",
+                  style: textStyle(Colors.white, 15, false),
+                )
         ],
       ),
     );

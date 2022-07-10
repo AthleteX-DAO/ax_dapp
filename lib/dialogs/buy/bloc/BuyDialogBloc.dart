@@ -22,6 +22,14 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     on<OnMaxBuyTap>(_mapMaxBuyTapEventToState);
     on<OnConfirmBuy>(_mapConfirmBuyEventToState);
     on<OnNewAxInput>(_mapNewAxInputEventToState);
+    on<OnErrorEvent>(_errorEventState);
+  }
+  void _errorEventState(
+      OnErrorEvent event, Emitter<BuyDialogState> emit) async {
+    emit(state.copyWith(
+        status: BlocStatus.error,
+        canTrade: false,
+        aptBuyInfo: AptBuyInfo.empty()));
   }
 
   void _mapLoadDialogEventToState(
@@ -51,13 +59,18 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       } else {
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        print(errorMsg);
+        print(errorMsg.toString() + ' This is mymessage 3');
         emit(state.copyWith(
-            status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
+            status: BlocStatus.error,
+            canTrade: false,
+            aptBuyInfo: AptBuyInfo.empty()));
       }
     } catch (e) {
+      print(e.toString() + ' This is mymessage 4');
       emit(state.copyWith(
-          status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
+          status: BlocStatus.error,
+          canTrade: false,
+          aptBuyInfo: AptBuyInfo.empty()));
     }
   }
 
@@ -70,8 +83,11 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       add(OnNewAxInput(axInputAmount: maxInput));
     } catch (e) {
       //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-      print(e);
-      emit(state.copyWith(status: BlocStatus.error));
+      print(e.toString() + ' This is mymessage 3');
+      emit(state.copyWith(
+        status: BlocStatus.error,
+        canTrade: false,
+      ));
     }
   }
 
@@ -108,13 +124,18 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         print("On New Apt Input: Failure");
         final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        print(errorMsg);
+        print(errorMsg.toString() + ' This is mymessage 1');
         emit(state.copyWith(
-            status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
+            status: BlocStatus.error,
+            canTrade: false,
+            aptBuyInfo: AptBuyInfo.empty()));
       }
     } catch (e) {
+      print(e.toString() + ' This is mymessage 2');
       emit(state.copyWith(
-          status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
+          status: BlocStatus.error,
+          canTrade: false,
+          aptBuyInfo: AptBuyInfo.empty()));
     }
   }
 }
