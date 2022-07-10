@@ -142,6 +142,8 @@ flutter analyze lib test
 - The project should use [very_good_analysis](https://pub.dev/packages/very_good_analysis) for a startup friendly set of lint rules.
 - Each submodule should contain it's own `analysis_options.yaml` file including the `very_good_analysis`.
 - Optionally, specific rules could be enabled, disabled or have their severity changed.
+- Doc-style comments(`///`) should be used for all public members and public APIs; enforcing is done by [very_good_analysis](https://pub.dev/packages/very_good_analysis) through [public_member_api_docs](https://dart-lang.github.io/linter/lints/public_member_api_docs.html) and [package_api_docs](https://dart-lang.github.io/linter/lints/package_api_docs.html) lint rules.
+  **Note**: Additional comments should be added when the code itself is not clear enough or presents high levels of complexity.
 
 ## Tests
 
