@@ -113,8 +113,8 @@ An example of a Multimodule Monorepo directory structure is below:
 
 ## Naming Conventions
 
-- [effective dart](https://dart.dev/guides/language/effective-dart/style).
-- [bloc library naming conventions](https://bloclibrary.dev/#/blocnamingconventions?id=naming-conventions).
+- [Effective dart](https://dart.dev/guides/language/effective-dart/style).
+- [Bloc library naming conventions](https://bloclibrary.dev/#/blocnamingconventions?id=naming-conventions).
 
 ## Formatting Conventions
 
@@ -127,7 +127,7 @@ flutter format --set-exit-if-changed lib test
 ```
 
 - Formatting checks should be automated via CI/CD pipelines.
-- [effective dart formatting guidelines](https://dart.dev/guides/language/effective-dart/style#do-format-your-code-using-dart-format).
+- [Effective dart formatting guidelines](https://dart.dev/guides/language/effective-dart/style#do-format-your-code-using-dart-format).
 
 ## Linting
 
