@@ -70,3 +70,43 @@ This layer takes the state from the business logic layer and renders a UI for th
 - This layer should only interact with the business logic layer.
 
 **Note**: This layer can be considered the "design" layer. Designers will determine the user interface in order to provide the best possible experience for the customer.
+
+### Project Structure
+
+The project should adhere to the Multimodule Monorepo structure. This is an approach that compliments the layered architecture described above. It allows you to maintain a single repository(git) with multiple submodules. In some cases, data clients can be open-sourced and may eventually not be included in the project. Several benefits of maintaining a single project with multiple submodules are:
+
+- **Discoverability:** all the packages/code can be accessed from the IDE project view
+- **Separation of concerns:** following clean architecture recommendations, each package can have a single purpose, and be part of a layer.
+- **Testability and composition:** each layer has clear rules for dependencies and should be tested independently of other layers.
+- **Reusability:** do you have more Dart/Flutter projects? Do not write the same code twice!
+- **Clarity:** clear understanding of your dependency graph (check out [pubviz](https://pub.dev/packages/pubviz))
+
+The application should use a feature-driven directory structure. This project structure enables us to scale the project by having self-contained features and allows developers to work on different features in parallel.
+Developers should make use of barrel files to export necessary files from any directory(except for `bloc`/`cubit` which are generated using [vscode bloc extensions](https://marketplace.visualstudio.com/items?itemName=FelixAngelov.bloc) and make use of `part` and `part of`).
+
+An example of a Multimodule Monorepo directory structure is below:
+
+```sh
+├── lib
+│   ├── app
+│   │   ├── bloc
+│   │   ├── extensions
+│   │   ├── models
+│   │   └── view
+│   ├── home
+│   │   └── view
+│   ├── l10n
+│   │   ├── arb
+│   ├── login
+│   │   ├── bloc
+│   │   ├── view
+│   │   └── widgets
+│   ├── sign_up
+│   │   ├── bloc
+│   │   ├── view
+│   │   └── widgets
+├── packages
+│   ├── meta_weather_api_client
+│   ├── user_repository
+│   └── weather_repository
+```
