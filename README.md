@@ -154,6 +154,7 @@ $ flutter test --test-randomize-ordering-seed random
 - Use [very_good_workflows](https://github.com/VeryGoodOpenSource/very_good_workflows) to automate your test runs as part of reusable GitHub workflows.
 - Use [test](https://pub.dev/packages/test) package to write unit tests.
 - Use [flutter_test](https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html) core library to write widget tests.
+- Use [integration_test](https://github.com/flutter/flutter/tree/main/packages/integration_test) provided by the SDK to write integration tests.
 - Use [mocktail](https://pub.dev/packages/mocktail) to create mocks in Dart with null safety without the need for manual mocks or code generation.
 - Use [bloc_test](https://pub.dev/packages/bloc_test) to test blocs and cubits; built to work with [bloc](https://pub.dev/packages/bloc) and [mocktail](https://pub.dev/packages/mocktail).
 - Use [mockingjay](https://pub.dev/packages/mockingjay) to mock, test and verify navigation calls; works with [mocktail](https://pub.dev/packages/mocktail).
