@@ -142,3 +142,18 @@ flutter analyze lib test
 - The project should use [very_good_analysis](https://pub.dev/packages/very_good_analysis) for a startup friendly set of lint rules.
 - Each submodule should contain it's own `analysis_options.yaml` file including the `very_good_analysis`.
 - Optionally, specific rules could be enabled, disabled or have their severity changed.
+
+## Tests
+
+- To run all unit and widget tests use the following command:
+
+```sh
+$ flutter test --test-randomize-ordering-seed random
+```
+
+- Use [very_good_workflows](https://github.com/VeryGoodOpenSource/very_good_workflows) to automate your test runs as part of reusable GitHub workflows.
+- Use [test](https://pub.dev/packages/test) package to write unit tests.
+- Use [flutter_test](https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html) core library to write widget tests.
+- Use [mocktail](https://pub.dev/packages/mocktail) to create mocks in Dart with null safety without the need for manual mocks or code generation.
+- Use [bloc_test](https://pub.dev/packages/bloc_test) to test blocs and cubits; built to work with [bloc](https://pub.dev/packages/bloc) and [mocktail](https://pub.dev/packages/mocktail).
+- Use [mockingjay](https://pub.dev/packages/mockingjay) to mock, test and verify navigation calls; works with [mocktail](https://pub.dev/packages/mocktail).
