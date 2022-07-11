@@ -107,19 +107,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                           Container(
                             alignment: Alignment.centerLeft,
                             child: buildFilterMenuWeb(),
-                            margin:
-                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Token Name",
-                              style: textStyle(Colors.grey[400]!, 12, false),
-                            ),
-                          ),
-                          Container(
-                            child:
-                                Divider(thickness: 1, color: Colors.grey[400]),
+                            margin: const EdgeInsets.only(top: 10.0),
                           ),
                           Container(
                               height: _height * .625 - 160,
