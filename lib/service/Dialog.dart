@@ -274,7 +274,8 @@ Dialog walletDialog(BuildContext context) {
                 boxDecoration(Colors.transparent, 100, 2, Colors.grey[400]!),
             child: TextButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MobileLoginPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MobileLoginPage()));
               },
               child: Text(
                 "Add/Create wallet",
@@ -1249,7 +1250,7 @@ Dialog yourAXDialog(BuildContext context) {
                                   },
                                   child: Text("Buy AX",
                                       style:
-                                          textStyle(Colors.black, 14, true)))),                                                
+                                          textStyle(Colors.black, 14, true)))),
                         ])),
               ])))));
 }
