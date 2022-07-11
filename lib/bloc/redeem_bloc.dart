@@ -7,7 +7,6 @@ part 'redeem_state.dart';
 class RedeemBloc extends Bloc<RedeemEvent, RedeemState> {
   RedeemBloc() : super(RedeemInitial(sucessful: false));
 
-  @override
   Stream<RedeemState> mapEventToState(
     RedeemEvent event,
   ) async* {
