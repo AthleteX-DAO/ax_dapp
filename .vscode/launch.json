@@ -10,6 +10,23 @@
             "name": "Flutter: chrome",
             "url": "http://localhost:4001",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "ax_dapp",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ax_dapp (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ax_dapp (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
         }
     ]
 }
