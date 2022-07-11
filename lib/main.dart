@@ -1,3 +1,4 @@
+import 'package:ax_dapp/bloc/redeem_bloc.dart';
 import 'package:ax_dapp/pages/LandingPage.dart';
 import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
@@ -17,6 +18,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
 
 final _dio = Dio();
 final _mlbApi = MLBAthleteAPI(_dio);
@@ -29,32 +31,37 @@ void main() async {
   final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
   final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
   print("Graph QL CLient initialized}");
-  runApp(GraphQLProvider(
-    client: _gQLClient,
-    child: MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(create: (context) => _subGraphRepo),
-        RepositoryProvider(
-          create: (context) => MLBRepo(_mlbApi),
-        ),
-        RepositoryProvider(
-          create: (context) => NFLRepo(),
-        ),
-        RepositoryProvider(
-          create: (context) => CoinGeckoRepo(_coinGeckoApi),
-        ),
-        RepositoryProvider(create: (context) => _getPairInfoUseCase),
-        RepositoryProvider(create: (context) => _getSwapInfoUseCase),
-        RepositoryProvider(
-            create: (context) => GetBuyInfoUseCase(_getSwapInfoUseCase)),
-        RepositoryProvider(
-            create: (context) => GetSellInfoUseCase(_getSwapInfoUseCase)),
-        RepositoryProvider(
-            create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase)),
-        RepositoryProvider(
-            create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo)),
-      ],
-      child: MyApp(),
+  runApp(MultiProvider(
+    providers: [
+      Provider<RedeemBloc>(create: (_) => RedeemBloc()),
+    ],
+    child: GraphQLProvider(
+      client: _gQLClient,
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(create: (context) => _subGraphRepo),
+          RepositoryProvider(
+            create: (context) => MLBRepo(_mlbApi),
+          ),
+          RepositoryProvider(
+            create: (context) => NFLRepo(),
+          ),
+          RepositoryProvider(
+            create: (context) => CoinGeckoRepo(_coinGeckoApi),
+          ),
+          RepositoryProvider(create: (context) => _getPairInfoUseCase),
+          RepositoryProvider(create: (context) => _getSwapInfoUseCase),
+          RepositoryProvider(
+              create: (context) => GetBuyInfoUseCase(_getSwapInfoUseCase)),
+          RepositoryProvider(
+              create: (context) => GetSellInfoUseCase(_getSwapInfoUseCase)),
+          RepositoryProvider(
+              create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase)),
+          RepositoryProvider(
+              create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo)),
+        ],
+        child: MyApp(),
+      ),
     ),
   ));
 }

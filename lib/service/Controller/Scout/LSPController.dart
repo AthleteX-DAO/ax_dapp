@@ -1,4 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:ax_dapp/bloc/redeem_bloc.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:get/get.dart';
@@ -62,7 +63,16 @@ class LSPController extends GetxController {
     genericLSP = LongShortPair(address: address, client: tokenClient);
     final theCredentials = controller.credentials;
     BigInt tokensToRedeem = normalizeInput(redeemAmt.value);
-    genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
+    var bloc;
+    bloc = RedeemBloc;
+
+    try {
+      genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
+      bloc.add(RedeemSuccessEvent());
+    } catch (e) {
+      bloc.add(RedeemErrorEvent());
+      print("[Console] Could not approve: $e");
+    }
   }
 
   void updateAptAddress(int athleteId) {

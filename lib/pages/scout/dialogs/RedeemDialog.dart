@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:ax_dapp/bloc/redeem_bloc.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
@@ -8,6 +9,7 @@ import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class RedeemDialog extends StatefulWidget {
@@ -30,12 +32,20 @@ class _RedeemDialogState extends State<RedeemDialog> {
 
   final WalletController walletController = Get.find();
   LSPController lspController = Get.find();
+  bool? show;
 
   @override
   void initState() {
     super.initState();
     lspController.updateAptAddress(widget.athlete.id);
     updateStats();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    //check to see if there was an error or success in redeeming
+    show = context.watch<RedeemBloc>().state.sucessful;
   }
 
   Future<void> updateStats() async {
@@ -388,11 +398,13 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       child: TextButton(
                         onPressed: () {
                           lspController.redeem();
-                          Navigator.pop(context);
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  confirmTransaction(context, true, ""));
+                          //check if there was a success in redeeming then show dialog
+                          if (show! == true) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    confirmTransaction(context, true, ""));
+                          }
                         },
                         child: Text(
                           "Confirm",
