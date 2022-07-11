@@ -351,71 +351,51 @@ class _V1AppState extends State<V1App> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.1,
       color: Colors.transparent,
-      padding: const EdgeInsets.only(left: 40.0, top: 0.0, right: 40),
+      padding: const EdgeInsets.only(left: 40.0, right: 40),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  // margin: ,
-                  child: InkWell(
-                    child: Text('athletex.io'),
-                    onTap: () =>
-                        launchUrl(Uri.parse('https://www.athletex.io/')),
+            Container(
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    child: InkWell(
+                      child: Text('athletex.io'),
+                      onTap: () =>
+                          launchUrl(Uri.parse('https://www.athletex.io/')),
+                    ),
+                    width: 72,
+                    height: 20,
                   ),
-                  width: 72,
-                  height: 20,
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      IconButton(
-                          onPressed: () =>
-                              //Discord button
-                              launchUrl(Uri.parse(
-                                  'https://discord.com/invite/WFsyAuzp9V')),
-                          icon: FaIcon(
-                            FontAwesomeIcons.discord,
-                            size: 25,
-                            color: Colors.grey[400],
-                          )),
-                      IconButton(
-                          onPressed: () => launchUrl(Uri.parse(
-                              'https://twitter.com/athletex_dao?s=20')),
-                          icon: FaIcon(
-                            FontAwesomeIcons.twitter,
-                            size: 25,
-                            color: Colors.grey[400],
-                          )),
-                      IconButton(
-                          onPressed: () => launchUrl(
-                              Uri.parse('https://github.com/SportsToken')),
-                          icon: FaIcon(
-                            FontAwesomeIcons.github,
-                            size: 25,
-                            color: Colors.grey[400],
-                          )),
-                    ],
-                  ),
-                ),
-                // Help icon button, temporarily delete
-                // IconButton(
-                //   onPressed: () {},
-                //   hoverColor: Colors.amber,
-                //   icon: Icon(
-                //     Icons.help_outline,
-                //   ),
-                //   color: Colors.white,
-                //   iconSize: 25,
-                // )
-              ],
+                  IconButton(
+                      onPressed: () =>
+                          //Discord button
+                          launchUrl(Uri.parse(
+                              'https://discord.com/invite/WFsyAuzp9V')),
+                      icon: FaIcon(
+                        FontAwesomeIcons.discord,
+                        size: 25,
+                        color: Colors.grey[400],
+                      )),
+                  IconButton(
+                      onPressed: () => launchUrl(Uri.parse(
+                          'https://twitter.com/athletex_dao?s=20')),
+                      icon: FaIcon(
+                        FontAwesomeIcons.twitter,
+                        size: 25,
+                        color: Colors.grey[400],
+                      )),
+                  IconButton(
+                      onPressed: () => launchUrl(
+                          Uri.parse('https://github.com/SportsToken')),
+                      icon: FaIcon(
+                        FontAwesomeIcons.github,
+                        size: 25,
+                        color: Colors.grey[400],
+                      )),
+                ],
+              ),
             ),
           ],
         ),

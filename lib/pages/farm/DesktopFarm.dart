@@ -31,13 +31,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
   bool isWeb = true;
   bool isAllFarms = true;
 
-  // ignore: must_call_super
-  void initState() {}
-
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
     myController.dispose();
     super.dispose();
   }
@@ -48,10 +43,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    double layoutHgt = isWeb ? _height * 0.7 : _height * 0.8;
+    double layoutHgt = _height * 0.8;
     double layoutWdt = _width * 0.95;
     if (_height < 445) layoutHgt = _height;
-
     return Container(
       width: _width,
       height: _height - AppBar().preferredSize.height,
@@ -77,13 +71,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
     double listHeight = (isWeb && isAllFarms) ? 225 : layoutHgt * 0.80;
     //If web and in MyFarms list height 500
     if (isWeb && !isAllFarms) listHeight = 500;
-
     return BlocBuilder<FarmBloc, FarmState>(
         buildWhen: (((previous, current) => previous != current)),
         builder: (context, state) {
           final bloc = context.read<FarmBloc>();
           Widget widget = loading();
-
           if (state.status == BlocStatus.initial) {
             print("[initial] ${state.status}");
             if (state.isAllFarms)
@@ -95,14 +87,14 @@ class _DesktopFarmState extends State<DesktopFarm> {
           if (state.status == BlocStatus.error || state.status == BlocStatus.no_data) {
             widget = noData();
           }
-
           if (!state.isAllFarms && state.status == BlocStatus.no_wallet) {
             widget = noWallet();
           }
-
           Widget toggle = toggleFarmButton(bloc, layoutWdt, layoutHgt);
-
-          return Wrap(runSpacing: layoutHgt * 0.02, children: <Widget>[
+          return Wrap(
+            runSpacing: layoutHgt * 0.02,
+            clipBehavior: Clip.hardEdge,
+            children: <Widget>[
             Row(
               mainAxisAlignment: isWeb
                   ? MainAxisAlignment.start
@@ -111,17 +103,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 Container(
                   width: isWeb ? 300 : layoutWdt / 2,
                   height: isWeb ? 45 : layoutHgt * 0.05,
-                  child: isAllFarms
-                      ? Text(
-                          "Participating Farms",
-                          style: textStyle(Colors.white, 24, true, false),
-                        )
-                      : Container(
-                          child: Text(
-                            "My Farms",
-                            style: textStyle(Colors.white, 24, true, false),
-                          ),
-                        ),
+                  child: Text(
+                    isAllFarms ? "Participating Farms" : "My Farms",
+                    style: textStyle(Colors.white, 24, true, false),
+                  ),
                 ),
                 if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
               ],

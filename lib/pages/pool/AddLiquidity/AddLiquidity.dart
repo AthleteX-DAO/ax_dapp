@@ -208,13 +208,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
               final tokenTwoAmount = double.parse(tokenInput) / poolInfo.ratio;
               _tokenAmountTwoController.text =
                   tokenTwoAmount.toStringAsFixed(6);
-              bloc.add(Token1InputChanged(tokenTwoAmount.toString()));
-            } else {
-              bloc.add(Token1InputChanged(tokenInput.toString()));
-              final tokenOneAmount = double.parse(tokenInput) * poolInfo.ratio;
-              _tokenAmountOneController.text =
-                  tokenOneAmount.toStringAsFixed(6);
-              bloc.add(Token0InputChanged(tokenOneAmount.toString()));
             }
           } else {
             if (tokenNumber == 1) {
