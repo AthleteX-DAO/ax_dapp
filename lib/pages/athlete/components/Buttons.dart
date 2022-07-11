@@ -66,7 +66,7 @@ Container mintButton(BuildContext context, AthleteScoutModel athlete,
               context: context,
               builder: (BuildContext context) => MintDialog(athlete)),
           child:
-              Text("Mint", style: textStyle(Colors.white, 20, false, false))));
+              Text("Mint Pair", style: textStyle(Colors.white, 20, false, false))));
 }
 
 Container redeemButton(BuildContext context, AthleteScoutModel athlete,
@@ -79,6 +79,6 @@ Container redeemButton(BuildContext context, AthleteScoutModel athlete,
           onPressed: () => showDialog(
               context: context,
               builder: (BuildContext context) => RedeemDialog(athlete)),
-          child: Text("Redeem",
+          child: Text("Redeem Pair",
               style: textStyle(Colors.white, 20, false, false))));
 }
