@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/Controller/Swap/USDC.dart';
 import 'package:ax_dapp/service/Controller/Swap/WETH.dart';
+import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
@@ -72,21 +73,28 @@ class TokenList {
   };
 
   static const List<List<dynamic>> namesList = [
-    ["Aaron Judge", 10002087, "AJLT1010", "AJST1010"],
-    ["Bryce Harper", 10001365, "BHLT1010", "BHST1010"],
-    ["Carlos Correa", 10001918, "CCLT1010", "CCST1010"],
-    ["Fernando Tatis Jr.", 10007217, "FTJLT1010", "FTJST1010"],
-    ["Jose Ramirez", 10000352, "JRLT1010", "JRST1010"],
-    ["Juan Soto", 10006794, "JSLT1010", "JSST1010"],
+    ["Aaron Judge", 10002087, "AJLT1010", "AJST1010", SupportedSport.MLB],
+    ["Bryce Harper", 10001365, "BHLT1010", "BHST1010", SupportedSport.MLB],
+    ["Carlos Correa", 10001918, "CCLT1010", "CCST1010", SupportedSport.MLB],
     [
-      "Marcus Semien",
-      10000908,
-      "MSLT1010",
-      "MSST1010",
+      "Fernando Tatis Jr.",
+      10007217,
+      "FTJLT1010",
+      "FTJST1010",
+      SupportedSport.MLB
     ],
-    ["Starling Marte", 10001009, "SMLT1010", "SMST1010"],
-    ["Trea Turner", 10002094, "TTLT1010", "TTST1010"],
-    ["Vladimir Guerrero Jr.", 10007501, "VGJLT1010", "VGJST1010"],
+    ["Jose Ramirez", 10000352, "JRLT1010", "JRST1010", SupportedSport.MLB],
+    ["Juan Soto", 10006794, "JSLT1010", "JSST1010", SupportedSport.MLB],
+    ["Marcus Semien", 10000908, "MSLT1010", "MSST1010", SupportedSport.MLB],
+    ["Starling Marte", 10001009, "SMLT1010", "SMST1010", SupportedSport.MLB],
+    ["Trea Turner", 10002094, "TTLT1010", "TTST1010", SupportedSport.MLB],
+    [
+      "Vladimir Guerrero Jr.",
+      10007501,
+      "VGJLT1010",
+      "VGJST1010",
+      SupportedSport.MLB
+    ],
   ];
 
   static final List<Token> tokenList = [
@@ -101,14 +109,16 @@ class TokenList {
           ath[0] + " Long APT",
           ath[2],
           AssetImage('assets/images/apt_noninverted.png'),
-          idToAddress[ath[1]]![1]);
+          idToAddress[ath[1]]![1],
+          ath[4]);
     }),
     ...namesList.map((ath) {
       return APT(
           ath[0] + " Short APT",
           ath[3],
           AssetImage('assets/images/apt_inverted.png'),
-          idToAddress[ath[1]]![2]);
+          idToAddress[ath[1]]![2],
+          ath[4]);
     }),
   ];
 }
@@ -142,11 +152,13 @@ String getPairAptAddress(int id) {
 }
 
 String getLongAthleteSymbol(int id) {
-  int longTokenIndex = TokenList.namesList.indexWhere((element) => element.contains(id));
+  int longTokenIndex =
+      TokenList.namesList.indexWhere((element) => element.contains(id));
   return TokenList.namesList[longTokenIndex][2];
 }
 
 String getShortAthleteSymbol(int id) {
-  int shortTokenIndex = TokenList.namesList.indexWhere((element) => element.contains(id));
+  int shortTokenIndex =
+      TokenList.namesList.indexWhere((element) => element.contains(id));
   return TokenList.namesList[shortTokenIndex][3];
 }

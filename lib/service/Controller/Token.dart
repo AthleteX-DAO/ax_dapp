@@ -1,5 +1,6 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, unused_local_variable
 
+import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:erc20/erc20.dart';
 import 'package:get/get.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
@@ -17,9 +18,11 @@ class Token extends GetxController {
   var amount = 0.0.obs;
   var balance = BigInt.zero.obs;
   var totalSupply = BigInt.zero.obs;
+  SupportedSport sport = SupportedSport.ALL;
 
   // All ' token ' classes inherit the SAME controller ( super important!!!)
-  Token(this.name, this.ticker, tokenAddress, [this.icon]) {
+  Token(this.name, this.ticker, tokenAddress,
+      [this.icon, this.sport = SupportedSport.ALL]) {
     updateAddress(tokenAddress);
     ethAddress = EthereumAddress.fromHex(address.value);
     erc20 = ERC20(address: ethAddress, client: controller.client.value);
