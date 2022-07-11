@@ -40,8 +40,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    canTrade = context.watch<BuyDialogBloc>().state.canTrade;
-
     print(canTrade.toString() + 'this is canTrade');
   }
 

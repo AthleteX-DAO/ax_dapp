@@ -24,13 +24,6 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     on<OnNewAxInput>(_mapNewAxInputEventToState);
     on<OnErrorEvent>(_errorEventState);
   }
-  void _errorEventState(
-      OnErrorEvent event, Emitter<BuyDialogState> emit) async {
-    emit(state.copyWith(
-        status: BlocStatus.error,
-        canTrade: false,
-        aptBuyInfo: AptBuyInfo.empty()));
-  }
 
   void _mapLoadDialogEventToState(
       OnLoadDialog event, Emitter<BuyDialogState> emit) async {
@@ -61,17 +54,21 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg.toString() + ' This is mymessage 3');
         emit(state.copyWith(
-            status: BlocStatus.error,
-            canTrade: false,
-            aptBuyInfo: AptBuyInfo.empty()));
+            status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
       }
     } catch (e) {
       print(e.toString() + ' This is mymessage 4');
       emit(state.copyWith(
-          status: BlocStatus.error,
-          canTrade: false,
-          aptBuyInfo: AptBuyInfo.empty()));
+          status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
     }
+  }
+
+  void _errorEventState(
+      OnErrorEvent event, Emitter<BuyDialogState> emit) async {
+    emit(state.copyWith(
+        status: BlocStatus.error,
+        canTrade: false,
+        aptBuyInfo: AptBuyInfo.empty()));
   }
 
   void _mapMaxBuyTapEventToState(
@@ -86,7 +83,6 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       print(e.toString() + ' This is mymessage 3');
       emit(state.copyWith(
         status: BlocStatus.error,
-        canTrade: false,
       ));
     }
   }
@@ -126,16 +122,12 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         print(errorMsg.toString() + ' This is mymessage 1');
         emit(state.copyWith(
-            status: BlocStatus.error,
-            canTrade: false,
-            aptBuyInfo: AptBuyInfo.empty()));
+            status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
       }
     } catch (e) {
       print(e.toString() + ' This is mymessage 2');
       emit(state.copyWith(
-          status: BlocStatus.error,
-          canTrade: false,
-          aptBuyInfo: AptBuyInfo.empty()));
+          status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
     }
   }
 }
