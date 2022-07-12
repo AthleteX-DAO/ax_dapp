@@ -96,7 +96,7 @@ An example of a Multimodule Monorepo directory structure is below:
 │   ├── home
 │   │   └── view
 │   ├── l10n
-│   │   ├── arb
+│   │   └── arb
 │   ├── login
 │   │   ├── bloc
 │   │   ├── view
