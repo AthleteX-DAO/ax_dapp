@@ -1,5 +1,10 @@
 import 'createWallet.dart';
 
+/// Thrown when MetaMask extension is not installed.
+class MetaMaskUnavailableFailure implements Exception {
+  const MetaMaskUnavailableFailure();
+}
+
 abstract class DappWallet {
   static DappWallet? _connectedWalletInstance;
   var activeChainId;
