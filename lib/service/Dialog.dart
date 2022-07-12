@@ -168,8 +168,6 @@ Dialog wrongNetworkDialog(BuildContext context) {
 
 //dynamic
 Dialog walletDialog(BuildContext context) {
-  bool isWeb = true;
-  isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   Controller controller = Get.find();
   WalletController walletController = Get.find();
 
