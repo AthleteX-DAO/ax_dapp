@@ -162,6 +162,8 @@ $ flutter test --coverage --test-randomize-ordering-seed random
 - Use [mockingjay](https://pub.dev/packages/mockingjay) to mock, test and verify navigation calls; works with [mocktail](https://pub.dev/packages/mocktail).
 - The [very_good_workflows](https://github.com/VeryGoodOpenSource/very_good_workflows) also use [very-good-coverage GitHub action](https://github.com/marketplace/actions/very-good-coverage) to check code coverage; this action can be configured(through the workflow too) to exclude paths(supports `globs` to describe file patterns) and to use a minimum coverage percentage threshold.
 
+**Note:** It's a good practice to aim at a code coverage as close to 100% as possible. Files/folders deemed to be unimportant can be excluded from the coverage so they don't affect it.
+
 ## UI Best Practices ✔️
 
 ### App UI 📱
