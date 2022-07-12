@@ -409,7 +409,7 @@ class _AthletePageState extends State<AthletePage> {
                 Spacer(),
                 Container(
                     margin: EdgeInsets.only(right: 30),
-                    width: _width * 0.22,
+                    width: _width ,
                     height: 20,
                     decoration: boxDecoration(Color.fromRGBO(254, 197, 0, 0.2),
                         100, 0, Color.fromRGBO(254, 197, 0, 0.2)),
@@ -886,10 +886,10 @@ class _AthletePageState extends State<AthletePage> {
                             });
                           },
                           child: Icon(Icons.arrow_back,
-                              size: 50, color: Colors.white))),
+                              size: 20, color: Colors.white))),
                   // APT Icon
                   Container(
-                    width: 30,
+                    width: 10,
                   ),
                   // Player Name
                   Container(
@@ -897,7 +897,7 @@ class _AthletePageState extends State<AthletePage> {
                           style: textStyle(Colors.white, 28, false, false))),
                   // '|' Symbol
                   Container(
-                      width: 50,
+                      width: 10,
                       alignment: Alignment.center,
                       child: Text("|",
                           style: textStyle(Color.fromRGBO(100, 100, 100, 1), 24,
@@ -987,9 +987,10 @@ class _AthletePageState extends State<AthletePage> {
                       ),
                     ],
                   ),
-                  SizedBox(width: 30),
-                  Container(
-                    width: 100,
+                  //SizedBox(width: 0),
+                  Expanded(
+                  child:Container(
+                    width: 0,
                     child: Container(
                       height: 20,
                       decoration: boxDecoration(
@@ -997,6 +998,7 @@ class _AthletePageState extends State<AthletePage> {
                           500,
                           1,
                           Colors.transparent),
+                      
                       child: TextButton(
                         onPressed: () {
                           webWallet.addTokenToWallet(
@@ -1004,12 +1006,15 @@ class _AthletePageState extends State<AthletePage> {
                         },
                         child: Text(
                           "+ Add to Wallet",
+                          
                           style:
                               textStyle(Colors.amber[500]!, 10, false, false),
+                              overflow: TextOverflow.ellipsis
                         ),
                       ),
                     ),
                   ),
+                  )
                 ])),
             // graph side
             Container(
