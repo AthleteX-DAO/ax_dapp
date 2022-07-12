@@ -116,8 +116,10 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
   }
 
   Future<void> _cancelAuthentication() async {
-    await auth.stopAuthentication();
-    setState(() => _isAuthenticating = false);
+    setState(() {
+      _isAuthenticating = false;
+      auth.stopAuthentication();
+    });
   }
 
   @override
@@ -145,9 +147,39 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      'Current State: $_authorized\n',
-                      style: TextStyle(color: Colors.white),
+                    Container(
+                      color: Colors.transparent,
+                      width: _width,
+                      height: _height * 0.1,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                              left: 20,
+                              bottom: 0,
+                              height: 40,
+                              width: 40,
+                              child: IconButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  icon: Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                  ))),
+                          Positioned(
+                              right: _width * .25,
+                              bottom: 0,
+                              height: 40,
+                              width: _width * .5,
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Center(
+                                  child: Text(
+                                    'Current State: $_authorized\n',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              )),
+                        ],
+                      ),
                     ),
                     if (_isAuthenticating)
                       Container(
