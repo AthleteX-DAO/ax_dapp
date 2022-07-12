@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -17,25 +18,48 @@ class AthleteTokenList extends StatefulWidget {
 
 class _AthleteTokenListState extends State<AthleteTokenList> {
   SwapController swapController = Get.find();
+  int tokenNumber = 0;
   double fromAmount = 0.0;
   double toAmount = 0.0;
-  List<Token> tokenListFilter = [];
-  int tokenNumber = 0;
   bool isWeb = true;
+
+  String keyword = "";
+  SupportedSport selectedSport = SupportedSport.ALL;
+  List<Token> tokenListFilter = [];
 
   @override
   void initState() {
     super.initState();
-
     tokenNumber = widget.tknNum;
     tokenListFilter = TokenList.tokenList;
+  }
+
+  void setSelectedSport(SupportedSport sport) {
+    setState(() {
+      selectedSport = sport;
+    });
+    updateTokenList();
+  }
+
+  void updateTokenList() {
+    setState(() {
+      tokenListFilter = TokenList.tokenList.where((token) {
+        bool flagKeyword =
+            token.ticker.toUpperCase().contains(keyword.toUpperCase()) ||
+                token.name.toUpperCase().contains(keyword.toUpperCase());
+        bool flagSport =
+            selectedSport == SupportedSport.ALL || token.sport == selectedSport;
+        return flagKeyword && flagSport;
+      }).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
-    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return Dialog(
         backgroundColor: Colors.grey[900],
         shape: RoundedRectangleBorder(
@@ -52,51 +76,50 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                 children: <Widget>[
                   // column of elements
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
-                    height: _height * .625,
-                    width: _width * 0.45 + 120,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                                height: 30,
-                                alignment: Alignment.centerLeft,
-                                child: Text("Select a Token",style: textStyle(Colors.grey[400]!, 16, false))),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Icon(Icons.close,color: Colors.grey[400], size: 30),
-                            ))
-                          ]),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: createSearchBar(),
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text("Token Name", style: textStyle(Colors.grey[400]!, 12, false),),
-                        ),   
-                        Container(
-                          child: Divider(thickness: 1, color: Colors.grey[400]),
-                        ),
-                        Container(
-                            height: _height * .625 - 125,
-                            child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                itemCount: tokenListFilter.length,
-                                itemBuilder: (context, index) {
-                                  return widget.createTokenElement(
-                                      tokenListFilter[index], tokenNumber);
-                                }
-                            )
+                      padding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                      height: _height * .625,
+                      width: _width * 0.45 + 120,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                    height: 30,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("Select a Token",
+                                        style: textStyle(
+                                            Colors.grey[400]!, 16, false))),
+                                Container(
+                                    alignment: Alignment.centerRight,
+                                    child: TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Icon(Icons.close,
+                                          color: Colors.grey[400], size: 30),
+                                    ))
+                              ]),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: createSearchBar(),
                           ),
-                      ],
-                    )
-                  )
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: buildFilterMenuWeb(),
+                            margin: const EdgeInsets.only(top: 10.0),
+                          ),
+                          Container(
+                              height: _height * .625 - 160,
+                              child: ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: tokenListFilter.length,
+                                  itemBuilder: (context, index) {
+                                    return widget.createTokenElement(
+                                        tokenListFilter[index], tokenNumber);
+                                  })),
+                        ],
+                      ))
                 ],
               )),
         ));
@@ -125,18 +148,18 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    tokenListFilter = TokenList.tokenList
-                        .where((token) => token.ticker
-                            .toUpperCase()
-                            .contains(value.toUpperCase()) || token.name.toUpperCase().contains(value.toUpperCase()))
-                        .toList();
+                    keyword = value;
                   });
+                  updateTokenList();
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 10),
                   hintText: "Search a name or paste an address",
-                  hintStyle: TextStyle(color: Colors.white, fontSize: searchBarHintTextSize, height: 1.5),
+                  hintStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: searchBarHintTextSize,
+                      height: 1.5),
                 ),
               ),
             ),
@@ -144,6 +167,51 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
         ],
       ),
     );
+  }
+
+  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
+    if (condition) return tru;
+    return fls;
+  }
+
+  Row buildFilterMenuWeb() {
+    return Row(children: [
+      Container(
+          child: TextButton(
+        onPressed: () {
+          setSelectedSport(SupportedSport.ALL);
+        },
+        child: Text("ALL",
+            style: textSwapState(
+                selectedSport == SupportedSport.ALL,
+                textStyle(Colors.white, 14, false),
+                textStyle(Colors.amber[400]!, 14, false))),
+      )),
+      Container(
+          child: TextButton(
+        onPressed: () {
+          setSelectedSport(SupportedSport.MLB);
+        },
+        child: Text("MLB",
+            style: textSwapState(
+                selectedSport == SupportedSport.MLB,
+                textStyle(Colors.white, 14, false),
+                textStyle(Colors.amber[400]!, 14, false))),
+      )),
+      Container(
+          child: TextButton(
+        onPressed: () {
+          setSelectedSport(SupportedSport.NFL);
+        },
+        child: Text("NFL",
+            style: textSwapState(
+                selectedSport == SupportedSport.NFL,
+                textStyle(Colors.white, 14, false),
+                textStyle(Colors.amber[400]!, 14, false))),
+      )),
+      Spacer(),
+      Container(width: 10),
+    ]);
   }
 
   TextStyle textStyle(Color color, double size, bool isBold) {

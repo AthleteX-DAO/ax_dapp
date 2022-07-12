@@ -153,11 +153,13 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
       if (isSuccess) {
         print("On New token0 Input: Success");
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
+        final token1InputAmount = token0InputAmount / poolInfo.ratio;
         emit(state.copyWith(
           status: BlocStatus.success,
           token0AmountInput: token0InputAmount,
           poolPairInfo: poolInfo
         ));
+        add(Token1InputChanged(token1InputAmount.toString()));
       } else {
         print("On New token0 Input: Failure");
         final errorMsg = response.getRight().toNullable()!.errorMsg;

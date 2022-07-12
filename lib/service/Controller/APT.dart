@@ -1,3 +1,4 @@
+import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/material.dart';
 import 'package:ax_dapp/service/Controller/APTBehavior.dart';
 import 'package:ax_dapp/service/Controller/ERC20Behavior.dart';
@@ -12,6 +13,7 @@ class APT extends Token with APTBehavior, ERC20Behavior {
 
   var bookPrice, marketPrice;
 
-  APT(String name, String ticker, AssetImage? icon, String aptAddress)
-      : super(name, ticker, aptAddress, icon);
+  APT(String name, String ticker, AssetImage? icon, String aptAddress,
+      SupportedSport sport)
+      : super(name, ticker, aptAddress, icon, sport);
 }

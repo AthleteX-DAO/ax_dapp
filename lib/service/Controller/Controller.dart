@@ -1,14 +1,14 @@
 // ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, invalid_use_of_internal_member
 
 import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:web3dart/web3dart.dart';
 
 import './createWallet/createWallet.dart'
     if (dart.library.io) './createWallet/mobile.dart'
     if (dart.library.js) './createWallet/web.dart';
-import 'package:http/http.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:web3dart/web3dart.dart';
-import 'package:get/get.dart';
 
 //Comment this for Android
 const EMPTY_WALLET_ID = "0x0000000000000000000000000000000000000000";
@@ -52,12 +52,18 @@ class Controller extends GetxController {
   Future<int> connect() async {
     //Setting up Client & Credentials for connecting to dApp from a client
     DappWallet web3 = newWallet();
-
-    //Connect and setup credentials
-    await web3.connect().then((value) {
-      print("Connecting Wallet... ${web3.publicAddress}");
+    try {
+      //Connect and setup credentials
+      await web3.connect();
+      final publicAddress = web3.publicAddress;
+      print("Connecting Wallet... $publicAddress");
+      if (publicAddress == null) {
+        throw const MetaMaskUnavailableFailure();
+      }
       this.publicAddress.value = web3.publicAddress;
-    });
+    } catch (_) {
+      return -1;
+    }
 
     try {
       networkID.value = web3.networkID;
