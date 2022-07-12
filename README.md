@@ -201,6 +201,8 @@ An example of the `app_ui` directory structure is below:
 │   └── weather_repository
 ```
 
+[very_good_cli](https://pub.dev/packages/very_good_cli) can be used to easily create dart/flutter packages or even a full flutter application.
+
 **Note:** Colors inside the app should be configured as much as possible through `ColorScheme`.
 
 ### Translations 🌐
