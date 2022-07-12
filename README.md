@@ -150,7 +150,7 @@ flutter analyze lib test
 - To run all unit and widget tests use the following command:
 
 ```sh
-$ flutter test --test-randomize-ordering-seed random
+$ flutter test --coverage --test-randomize-ordering-seed random
 ```
 
 - Use [very_good_workflows](https://github.com/VeryGoodOpenSource/very_good_workflows) to automate your test runs as part of reusable GitHub workflows.
@@ -160,6 +160,7 @@ $ flutter test --test-randomize-ordering-seed random
 - Use [mocktail](https://pub.dev/packages/mocktail) to create mocks in Dart with null safety without the need for manual mocks or code generation.
 - Use [bloc_test](https://pub.dev/packages/bloc_test) to test blocs and cubits; built to work with [bloc](https://pub.dev/packages/bloc) and [mocktail](https://pub.dev/packages/mocktail).
 - Use [mockingjay](https://pub.dev/packages/mockingjay) to mock, test and verify navigation calls; works with [mocktail](https://pub.dev/packages/mocktail).
+- The [very_good_workflows](https://github.com/VeryGoodOpenSource/very_good_workflows) also use [very-good-coverage GitHub action](https://github.com/marketplace/actions/very-good-coverage) to check code coverage; this action can be configured(through the workflow too) to exclude paths(supports `globs` to describe file patterns) and to use a minimum coverage percentage threshold.
 
 ## UI Best Practices ✔️
 
