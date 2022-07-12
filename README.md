@@ -177,6 +177,30 @@ abstract class AppColors {
 }
 ```
 
+An example of the `app_ui` directory structure is below:
+
+```sh
+├── lib
+│   ├── app
+│   └── l10n
+├── packages
+│   ├── app_ui
+│   │   ├── assets
+│   │   │   ├── fonts
+│   │   │   └── images
+│   │   ├── lib
+│   │   │   └── src
+│   │   │   │   ├── helpers
+│   │   │   │   ├── layout
+│   │   │   │   ├── navigation
+│   │   │   │   ├── platform
+│   │   │   │   ├── theme
+│   │   │   │   └── widgets
+│   ├── meta_weather_api_client
+│   ├── user_repository
+│   └── weather_repository
+```
+
 **Note:** Colors inside the app should be configured as much as possible through `ColorScheme`.
 
 ### Translations 🌐
