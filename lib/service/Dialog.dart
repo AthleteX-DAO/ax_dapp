@@ -265,7 +265,9 @@ Dialog walletDialog(BuildContext context) {
                 ),
               ],
             ),
-            Container(
+        Visibility(
+          visible: (!kIsWeb),
+          child:Container(
               margin: EdgeInsets.symmetric(vertical: 4),
               width: constraints.maxWidth < 450 ? constraints.maxWidth * 0.62 : constraints.maxWidth * 0.22,
               height: 45,
@@ -281,6 +283,7 @@ Dialog walletDialog(BuildContext context) {
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white),
                 ),
+              ),
               ),
             ),
           ],
