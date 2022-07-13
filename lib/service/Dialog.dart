@@ -172,8 +172,6 @@ Dialog walletDialog(BuildContext context) {
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
-  bool isWeb = true;
-  isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
@@ -268,7 +266,7 @@ Dialog walletDialog(BuildContext context) {
             ],
           ),
           Visibility(
-            visible: isWeb,
+            visible: (kIsWeb)? false : true,
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 4),
               width: _width * 0.15,
