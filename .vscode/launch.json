@@ -12,7 +12,6 @@
             "args": [
                 "-d",
                 "web-server",
-                "--web-enable-expression-evaluation"
             ],
         },
         {
@@ -24,7 +23,6 @@
             "args": [
                 "-d",
                 "web-server",
-                "--web-enable-expression-evaluation"
             ],
         },
         {
@@ -36,7 +34,6 @@
             "args": [
                 "-d",
                 "web-server",
-                "--web-enable-expression-evaluation"
             ],
         },
         {
