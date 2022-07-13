@@ -267,25 +267,28 @@ Dialog walletDialog(BuildContext context) {
                     ),
                   ],
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 4),
-                  width: constraints.maxWidth < 450
-                      ? constraints.maxWidth * 0.62
-                      : constraints.maxWidth * 0.22,
-                  height: 45,
-                  decoration: boxDecoration(
-                      Colors.transparent, 100, 2, Colors.grey[400]!),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MobileLoginPage()));
-                    },
-                    child: Text(
-                      "Add/Create wallet",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
+                Visibility(
+                  visible: (!kIsWeb),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 4),
+                    width: constraints.maxWidth < 450
+                        ? constraints.maxWidth * 0.62
+                        : constraints.maxWidth * 0.22,
+                    height: 45,
+                    decoration: boxDecoration(
+                        Colors.transparent, 100, 2, Colors.grey[400]!),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MobileLoginPage()));
+                      },
+                      child: Text(
+                        "Add/Create wallet",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
@@ -969,10 +972,7 @@ Dialog removalConfirmed(BuildContext context) {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () {
-                          Controller.viewTx();
-                          Navigator.pop(context);
-                        },
+                        onPressed: () => Navigator.pop(context),
                         child: Text(
                           "View on Polygonscan",
                           style: TextStyle(
@@ -1060,10 +1060,7 @@ Dialog transactionConfirmed(BuildContext context) {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () {
-                          Controller.viewTx();
-                          Navigator.pop(context);
-                        },
+                        onPressed: () => Navigator.pop(context),
                         child: Text(
                           "View on Polygonscan",
                           style: TextStyle(
