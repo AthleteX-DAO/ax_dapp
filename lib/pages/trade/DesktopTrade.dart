@@ -553,7 +553,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                 _tokenFromInputController.text,
                                 bloc,
                               );
-                              bloc.add(PageRefreshEvent());
                             },
                             child: Icon(
                               Icons.arrow_downward,
