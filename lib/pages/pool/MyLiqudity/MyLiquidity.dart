@@ -5,8 +5,10 @@ import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
+import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +19,56 @@ class MyLiquidity extends StatefulWidget {
 
   @override
   State<MyLiquidity> createState() => _MyLiquidityState();
+}
+
+class BadgeToken extends StatelessWidget {
+  final SupportedSport sport;
+  final String symbol;
+  const BadgeToken(this.sport, this.symbol);
+
+  @override
+  Widget build(BuildContext context) {
+    return Badge(
+      shape: BadgeShape.square,
+      borderRadius: BorderRadius.circular(8),
+      badgeContent: Text(SupportedSportName[sport]!,
+          style: textStyle(Colors.white, 12, true)),
+      position: BadgePosition.topEnd(top: -14, end: -14),
+      padding: EdgeInsets.only(top: 2, bottom: 2, left: 5, right: 5),
+      child: Text(
+        symbol,
+        style: textStyle(Colors.white, 24, true),
+      ),
+    );
+  }
+}
+
+class SimpleToken extends StatelessWidget {
+  final String symbol;
+  const SimpleToken(this.symbol);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        symbol,
+        style: textStyle(Colors.white, 24, true),
+      ),
+    );
+  }
+}
+
+class SportToken extends StatelessWidget {
+  final SupportedSport sport;
+  final String symbol;
+  const SportToken(this.sport, this.symbol);
+
+  @override
+  Widget build(BuildContext context) {
+    if (sport == SupportedSport.ALL) return SimpleToken(this.symbol);
+    return BadgeToken(sport, symbol);
+  }
 }
 
 class _MyLiquidityState extends State<MyLiquidity> {
@@ -43,7 +95,10 @@ class _MyLiquidityState extends State<MyLiquidity> {
 
     Widget myLiquidityPoolGridItem(
         LiquidityPositionInfo liquidityPositionInfo, double layoutWdt) {
-          AddLiquidityTokenPair tokenPair = AddLiquidityTokenPair.fromTokenPairAddresses(liquidityPositionInfo.token0Address, liquidityPositionInfo.token1Address);
+      AddLiquidityTokenPair tokenPair =
+          AddLiquidityTokenPair.fromTokenPairAddresses(
+              liquidityPositionInfo.token0Address,
+              liquidityPositionInfo.token1Address);
       return ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: GridTile(
@@ -78,15 +133,14 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         ),
                       ),
                     ),
+                    SportToken(tokenPair.token0.sport,
+                        liquidityPositionInfo.token0Symbol),
                     Container(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        (liquidityPositionInfo.token0Symbol) +
-                            " - " +
-                            (liquidityPositionInfo.token1Symbol),
-                        style: textStyle(Colors.white, 24, true),
-                      ),
+                      child: Text(" - "),
                     ),
+                    SportToken(tokenPair.token1.sport,
+                        liquidityPositionInfo.token1Symbol),
                   ],
                 ),
                 //Pool token information
@@ -597,7 +651,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                   decoration: boxDecoration(Colors.transparent,
                                       15, 0.5, Colors.grey[600]!),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
                                           width: _width - 50,
@@ -606,7 +661,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                                 MainAxisAlignment.spaceEvenly,
                                             children: <Widget>[
                                               Container(
-                                                margin: EdgeInsets.only(left: 30),
+                                                margin:
+                                                    EdgeInsets.only(left: 30),
                                                 width: 35,
                                                 height: 35,
                                                 decoration: BoxDecoration(
@@ -621,16 +677,14 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                                 width: 10,
                                               ),
                                               Text(
-                                                infoOfSelectedCard
-                                                    .token0Symbol,
+                                                infoOfSelectedCard.token0Symbol,
                                                 style: textStyle(
-                                                    Colors.white,
-                                                    16,
-                                                    false),
+                                                    Colors.white, 16, false),
                                               ),
                                               Spacer(),
                                               Container(
-                                                margin: EdgeInsets.only(right: 30),
+                                                margin:
+                                                    EdgeInsets.only(right: 30),
                                                 width: _width * .20,
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -659,7 +713,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                                 MainAxisAlignment.spaceEvenly,
                                             children: <Widget>[
                                               Container(
-                                                margin: EdgeInsets.only(left: 30),
+                                                margin:
+                                                    EdgeInsets.only(left: 30),
                                                 width: 35,
                                                 height: 35,
                                                 decoration: BoxDecoration(
@@ -674,16 +729,14 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                                 width: 10,
                                               ),
                                               Text(
-                                                infoOfSelectedCard
-                                                    .token1Symbol,
+                                                infoOfSelectedCard.token1Symbol,
                                                 style: textStyle(
-                                                    Colors.white,
-                                                    16,
-                                                    false),
+                                                    Colors.white, 16, false),
                                               ),
                                               Spacer(),
                                               Container(
-                                                margin: EdgeInsets.only(right: 30),
+                                                margin:
+                                                    EdgeInsets.only(right: 30),
                                                 width: _width * .20,
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -733,8 +786,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                           setState(() {
                                             currentTabIndex = 0;
                                             value = 0;
-                                            poolController
-                                                .removePercentage = value;
+                                            poolController.removePercentage =
+                                                value;
                                           });
                                         },
                                         child: Text(
