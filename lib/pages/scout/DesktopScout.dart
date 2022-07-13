@@ -2,6 +2,9 @@ import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
+import 'package:ax_dapp/pages/scout/components/filter_menu_error.dart';
+import 'package:ax_dapp/pages/scout/components/scout_loading.dart';
+import 'package:ax_dapp/pages/scout/components/scout_loading_error.dart';
 import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
@@ -114,18 +117,22 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ),
                       // List Headers
                       buildListviewHeaders(),
-                      if (state.status == BlocStatus.loading) ...[
-                        scoutLoading(),
-                      ] else if (state.status == BlocStatus.error) ...[
-                        scoutLoadingError(),
-                      ] else if (state.status == BlocStatus.no_data) ...[
-                        filterMenuError(),
-                      ],
-                      buildListview(state, filteredAthletes)
-                      // ListView of Athletes
+                      buildScoutView(state, filteredAthletes),
                     ])),
           );
         });
+  }
+
+  Stack buildScoutView(ScoutPageState state, List<AthleteScoutModel> filteredAthletes) {
+    return Stack(                     
+      alignment: Alignment.center,
+      children: [
+        if (state.status == BlocStatus.loading) ScoutLoading(),
+        if (state.status == BlocStatus.error) ScoutLoadingError(),
+        if (state.status == BlocStatus.no_data) FilterMenuError(),
+        buildListview(state, filteredAthletes)
+      ],                      
+    );
   }
 
   Row buildFilterMenuWeb(ScoutPageState state, ScoutPageBloc bloc,
@@ -363,29 +370,6 @@ class _DesktopScoutState extends State<DesktopScout> {
     );
   }
 
-  Widget scoutLoading() {
-    return Center(
-      child: SizedBox(
-          height: 50,
-          width: 50,
-          child: CircularProgressIndicator(
-            color: Colors.amber,
-          )),
-    );
-  }
-
-  // Show the error if the athletes did not load
-  Widget scoutLoadingError() {
-    return Center(
-      child: SizedBox(
-        height: 70,
-        width: 400,
-        child: Text("Athlete List Failed to Load",
-            style: TextStyle(color: Colors.red, fontSize: 30)),
-      ),
-    );
-  }
-
   Widget buildListviewHeaders() {
     double _width = MediaQuery.of(context).size.width;
 
@@ -524,19 +508,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                   ? createListCardsForWeb(filteredAthletes[index])
                   : createListCardsForMobile(filteredAthletes[index]);
             }));
-  }
-
-  Widget filterMenuError() {
-    return Center(
-      child: SizedBox(
-        height: 70,
-        width: 400,
-        child: Text(
-          'Athletes not supported yet',
-          style: TextStyle(color: Colors.red, fontSize: 30),
-        ),
-      ),
-    );
   }
 
   // Athlete Cards
