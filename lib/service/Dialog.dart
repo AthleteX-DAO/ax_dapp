@@ -180,7 +180,7 @@ Dialog walletDialog(BuildContext context) {
       builder: ((context, constraints) => Container(
         constraints: BoxConstraints(minHeight: 235, maxHeight: 250),
         height: constraints.maxHeight * 0.26,
-        width: constraints.maxWidth * 0.20,
+        width: constraints.maxWidth * 0.27,
         padding: EdgeInsets.all(20),
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
         child: Column(
@@ -210,7 +210,7 @@ Dialog walletDialog(BuildContext context) {
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 30),
-                  width: constraints.maxWidth < 450 ? constraints.maxWidth * 0.62 : constraints.maxWidth * 0.15,
+                  width: constraints.maxWidth < 450 ? constraints.maxWidth * 0.62 : constraints.maxWidth * 0.22,
                   height: 45,
                   decoration: boxDecoration(
                       Colors.transparent, 100, 2, Colors.grey[400]!),
@@ -267,7 +267,7 @@ Dialog walletDialog(BuildContext context) {
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 4),
-              width: constraints.maxWidth < 450 ? constraints.maxWidth * 0.62 : constraints.maxWidth * 0.15,
+              width: constraints.maxWidth < 450 ? constraints.maxWidth * 0.62 : constraints.maxWidth * 0.22,
               height: 45,
               decoration:
                   boxDecoration(Colors.transparent, 100, 2, Colors.grey[400]!),
