@@ -110,7 +110,9 @@ class Controller extends GetxController {
     latestTx = tx;
   }
 
-  void changeAddress() async {}
+  void changeAddress() {
+    throw UnsupportedError('MetaMask is the only currently supported wallet!');
+  }
 
   void disconnect() async {
     walletConnected = false;
