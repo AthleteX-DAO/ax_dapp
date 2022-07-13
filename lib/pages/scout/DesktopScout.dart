@@ -1,6 +1,5 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
@@ -15,8 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
-
-import '../../bloc/athelete/athelete_bloc.dart';
+import '../../bloc/athelete bloc/athelete_bloc.dart';
 import '../../bloc/scout bloc/scout_bloc.dart';
 import 'models/AthleteScoutModel.dart';
 

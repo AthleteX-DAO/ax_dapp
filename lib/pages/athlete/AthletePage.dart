@@ -1,3 +1,4 @@
+import 'package:ax_dapp/bloc/athelete%20bloc/athelete_bloc.dart';
 import 'package:ax_dapp/pages/athlete/components/AthletePageTooltip.dart';
 import 'package:ax_dapp/pages/athlete/components/BuildLongChart.dart';
 import 'package:ax_dapp/pages/athlete/components/BuildShortChart.dart';
@@ -18,8 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
-import '../../bloc/athelete/athelete_bloc.dart';
 import '../../util/AthletePageFormatHelper.dart';
 
 class AthletePage extends StatefulWidget {
