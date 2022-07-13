@@ -63,6 +63,7 @@ dependencies:
   web3_browser: ^0.0.1
   erc20: ^1.0.0
   big_decimal: ^0.3.1
+  badges: ^2.0.3
 
 dependency_overrides:
 
