@@ -172,7 +172,8 @@ Dialog walletDialog(BuildContext context) {
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
   double _width = MediaQuery.of(context).size.width;
-
+  bool isWeb = true;
+  isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
@@ -266,21 +267,26 @@ Dialog walletDialog(BuildContext context) {
               ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 4),
-            width: _width * 0.15,
-            height: 45,
-            decoration:
-                boxDecoration(Colors.transparent, 100, 2, Colors.grey[400]!),
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MobileLoginPage()));
-              },
-              child: Text(
-                "Add/Create wallet",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
+          Visibility(
+            visible: isWeb,
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 4),
+              width: _width * 0.15,
+              height: 45,
+              decoration:
+                  boxDecoration(Colors.transparent, 100, 2, Colors.grey[400]!),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MobileLoginPage()));
+                },
+                child: Text(
+                  "Add/Create wallet",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ),
