@@ -1,4 +1,3 @@
-import 'package:ax_dapp/bloc/redeem_bloc.dart';
 import 'package:ax_dapp/pages/LandingPage.dart';
 import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
@@ -19,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+
+import 'bloc/redeemBloc/redeem_bloc.dart';
 
 final _dio = Dio();
 final _mlbApi = MLBAthleteAPI(_dio);

@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:ax_dapp/bloc/redeem_bloc.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
@@ -11,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+
+import '../../../bloc/redeemBloc/redeem_bloc.dart';
+import '../../../custom widgets/confirm_transaction_dialog.dart';
 
 class RedeemDialog extends StatefulWidget {
   final AthleteScoutModel athlete;
@@ -32,20 +34,26 @@ class _RedeemDialogState extends State<RedeemDialog> {
 
   final WalletController walletController = Get.find();
   LSPController lspController = Get.find();
+
+  var bloc;
   bool? show;
 
   @override
   void initState() {
     super.initState();
     lspController.updateAptAddress(widget.athlete.id);
+
     updateStats();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    //check to see if there was an error or success in redeeming
-    show = context.watch<RedeemBloc>().state.sucessful;
+    setState(() {
+      show = context.watch<RedeemBloc>().state.sucessful;
+    });
+
+    print(show.toString() + ' show');
   }
 
   Future<void> updateStats() async {
@@ -143,6 +151,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+              ConfirmtransactionDialog(),
               Container(
                   width: wid,
                   child: Row(
@@ -396,15 +405,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           1,
                           Colors.transparent),
                       child: TextButton(
-                        onPressed: () {
-                          lspController.redeem();
-                          //check if there was a success in redeeming then show dialog
-                          if (show! == true) {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    confirmTransaction(context, true, ""));
-                          }
+                        onPressed: () async {
+                          await lspController.redeem();
                         },
                         child: Text(
                           "Confirm",
@@ -420,6 +422,13 @@ class _RedeemDialogState extends State<RedeemDialog> {
         ),
       ),
     );
+  }
+
+  void approvedDialog(BuildContext context) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            confirmTransaction(context, true, ""));
   }
 
   @override
