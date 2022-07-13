@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 import 'package:ax_dapp/pages/farm/modules/DialogTextStyle.dart';
+import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:flutter/material.dart';
 
 Dialog unstakeConfirmedDialog(BuildContext context) {
   double _height = MediaQuery.of(context).size.height;
@@ -73,7 +73,10 @@ Dialog unstakeConfirmedDialog(BuildContext context) {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Controller.viewTx();
+                          Navigator.pop(context);
+                        },
                         child: Text(
                           "View on Polygonscan",
                           style: TextStyle(
