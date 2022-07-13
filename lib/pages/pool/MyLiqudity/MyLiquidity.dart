@@ -21,6 +21,65 @@ class MyLiquidity extends StatefulWidget {
   State<MyLiquidity> createState() => _MyLiquidityState();
 }
 
+class BadgeToken extends StatelessWidget {
+  final SupportedSport sport;
+  final String symbol;
+  const BadgeToken(this.sport, this.symbol);
+
+  @override
+  Widget build(BuildContext context) {
+    return Badge(
+      shape: BadgeShape.square,
+      borderRadius: BorderRadius.circular(8),
+      badgeContent: Text(SupportedSportName[sport]!,
+          style: textStyle(Colors.white, 12, true)),
+      position: BadgePosition.topEnd(top: -14, end: -14),
+      padding: EdgeInsets.only(top: 2, bottom: 2, left: 5, right: 5),
+      child: Text(
+        symbol,
+        style: textStyle(Colors.white, 24, true),
+      ),
+    );
+  }
+}
+
+// Widget simpleToken(String symbol) {
+//   return Container(
+//     alignment: Alignment.centerLeft,
+//     child: Text(
+//       symbol,
+//       style: textStyle(Colors.white, 24, true),
+//     ),
+//   );
+// }
+class SimpleToken extends StatelessWidget {
+  final String symbol;
+  const SimpleToken(this.symbol);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        symbol,
+        style: textStyle(Colors.white, 24, true),
+      ),
+    );
+  }
+}
+
+class SportToken extends StatelessWidget {
+  final SupportedSport sport;
+  final String symbol;
+  const SportToken(this.sport, this.symbol);
+
+  @override
+  Widget build(BuildContext context) {
+    if (sport == SupportedSport.ALL) return SimpleToken(this.symbol);
+    return BadgeToken(sport, symbol);
+  }
+}
+
 class _MyLiquidityState extends State<MyLiquidity> {
   bool _isWeb = true;
   double _width = 0;
@@ -83,13 +142,13 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         ),
                       ),
                     ),
-                    sportToken(tokenPair.token0.sport,
+                    SportToken(tokenPair.token0.sport,
                         liquidityPositionInfo.token0Symbol),
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(" - "),
                     ),
-                    sportToken(tokenPair.token1.sport,
+                    SportToken(tokenPair.token1.sport,
                         liquidityPositionInfo.token1Symbol),
                   ],
                 ),
@@ -795,35 +854,5 @@ class _MyLiquidityState extends State<MyLiquidity> {
             style: TextStyle(color: Colors.amber, fontSize: 30)),
       ),
     );
-  }
-
-  Widget badgeToken(SupportedSport sport, String symbol) {
-    return Badge(
-      shape: BadgeShape.square,
-      borderRadius: BorderRadius.circular(8),
-      badgeContent: Text(SupportedSportName[sport]!,
-          style: textStyle(Colors.white, 12, true)),
-      position: BadgePosition.topEnd(top: -14, end: -14),
-      padding: EdgeInsets.only(top: 2, bottom: 2, left: 5, right: 5),
-      child: Text(
-        symbol,
-        style: textStyle(Colors.white, 24, true),
-      ),
-    );
-  }
-
-  Widget simpleToken(String symbol) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        symbol,
-        style: textStyle(Colors.white, 24, true),
-      ),
-    );
-  }
-
-  Widget sportToken(SupportedSport sport, String symbol) {
-    if (sport == SupportedSport.ALL) return simpleToken(symbol);
-    return badgeToken(sport, symbol);
   }
 }
