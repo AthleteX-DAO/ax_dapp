@@ -2,6 +2,9 @@ import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
+import 'package:ax_dapp/pages/scout/components/FilterMenuerror.dart';
+import 'package:ax_dapp/pages/scout/components/ScoutLoading.dart';
+import 'package:ax_dapp/pages/scout/components/ScoutLoadingError.dart';
 import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
@@ -125,11 +128,11 @@ class _DesktopScoutState extends State<DesktopScout> {
       alignment: Alignment.center,
       children: [
         if (state.status == BlocStatus.loading) ...[
-          scoutLoading()
+          ScoutLoading()
         ] else if (state.status == BlocStatus.error) ...[
-          scoutLoadingError()
+          ScoutLoadingError()
         ] else if (state.status == BlocStatus.no_data) ...[
-          filterMenuError()
+          FilterMenuError()
         ],
         buildListview(state, filteredAthletes)
       ],                      
@@ -371,25 +374,6 @@ class _DesktopScoutState extends State<DesktopScout> {
     );
   }
 
-  Widget scoutLoading() {
-    return SizedBox(
-        height: 50,
-        width: 50,
-        child: CircularProgressIndicator(
-          color: Colors.amber,
-        ));
-  }
-
-  // Show the error if the athletes did not load
-  Widget scoutLoadingError() {
-    return SizedBox(
-      height: 70,
-      width: 400,
-      child: Text("Athlete List Failed to Load",
-          style: TextStyle(color: Colors.red, fontSize: 30)),
-    );
-  }
-
   Widget buildListviewHeaders() {
     double _width = MediaQuery.of(context).size.width;
 
@@ -528,17 +512,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                   ? createListCardsForWeb(filteredAthletes[index])
                   : createListCardsForMobile(filteredAthletes[index]);
             }));
-  }
-
-  Widget filterMenuError() {
-    return SizedBox(
-      height: 70,
-      width: 400,
-      child: Text(
-        'Athletes not supported yet',
-        style: TextStyle(color: Colors.red, fontSize: 30),
-      ),
-    );
   }
 
   // Athlete Cards
