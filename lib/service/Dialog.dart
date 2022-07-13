@@ -178,117 +178,123 @@ Dialog walletDialog(BuildContext context) {
     ),
     child: LayoutBuilder(
       builder: ((context, constraints) => Container(
-        constraints: BoxConstraints(minHeight: 235, maxHeight: 250),
-        height: constraints.maxHeight * 0.26,
-        width: constraints.maxWidth * 0.27,
-        padding: EdgeInsets.all(20),
-        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Choose Wallet",
-                  style: textStyle(Colors.white, 18, true),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Icon(
-                    Icons.close,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            constraints: BoxConstraints(minHeight: 235, maxHeight: 250),
+            height: constraints.maxHeight * 0.26,
+            width: constraints.maxWidth * 0.27,
+            padding: EdgeInsets.all(20),
+            decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 30),
-                  width: constraints.maxWidth < 450 ? constraints.maxWidth * 0.62 : constraints.maxWidth * 0.22,
-                  height: 45,
-                  decoration: boxDecoration(
-                      Colors.transparent, 100, 2, Colors.grey[400]!),
-                  child: TextButton(
-                    onPressed: () {
-                      controller.connect().then((response) {
-                        if (response == -1) {
-                          // No MetaMask
-                          Navigator.pop(context);
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  connectMetamaskDialog(context));
-                        } else if (response == 0) {
-                          // Wrong network
-                          Navigator.pop(context);
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  wrongNetworkDialog(context));
-                        } else {
-                          Navigator.pop(context);
-                          walletController.getTokenMetrics();
-                          walletController.getYourAxBalance();
-                        }
-                      });
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Container(
-                          height: 30,
-                          width: 30,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage("assets/images/fox.png"),
-                              fit: BoxFit.fill,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Choose Wallet",
+                      style: textStyle(Colors.white, 18, true),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 30),
+                      width: constraints.maxWidth < 450
+                          ? constraints.maxWidth * 0.62
+                          : constraints.maxWidth * 0.22,
+                      height: 45,
+                      decoration: boxDecoration(
+                          Colors.transparent, 100, 2, Colors.grey[400]!),
+                      child: TextButton(
+                        onPressed: () {
+                          controller.connect().then((response) {
+                            if (response == -1) {
+                              // No MetaMask
+                              Navigator.pop(context);
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      connectMetamaskDialog(context));
+                            } else if (response == 0) {
+                              // Wrong network
+                              Navigator.pop(context);
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      wrongNetworkDialog(context));
+                            } else {
+                              Navigator.pop(context);
+                              walletController.getTokenMetrics();
+                              walletController.getYourAxBalance();
+                            }
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Container(
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("assets/images/fox.png"),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
                             ),
-                          ),
+                            Text(
+                              "Metamask",
+                              style: textStyle(Colors.white, 16, false),
+                            ),
+                            //empty container
+                            Container(
+                              margin: EdgeInsets.only(left: 20),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "Metamask",
-                          style: textStyle(Colors.white, 16, false),
-                        ),
-                        //empty container
-                        Container(
-                          margin: EdgeInsets.only(left: 20),
-                        ),
-                      ],
+                      ),
+                    ),
+                  ],
+                ),
+                Visibility(
+                  visible: (!kIsWeb),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 4),
+                    width: constraints.maxWidth < 450
+                        ? constraints.maxWidth * 0.62
+                        : constraints.maxWidth * 0.22,
+                    height: 45,
+                    decoration: boxDecoration(
+                        Colors.transparent, 100, 2, Colors.grey[400]!),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MobileLoginPage()));
+                      },
+                      child: Text(
+                        "Add/Create wallet",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-        Visibility(
-          visible: (!kIsWeb),
-          child:Container(
-              margin: EdgeInsets.symmetric(vertical: 4),
-              width: constraints.maxWidth < 450 ? constraints.maxWidth * 0.62 : constraints.maxWidth * 0.22,
-              height: 45,
-              decoration:
-                  boxDecoration(Colors.transparent, 100, 2, Colors.grey[400]!),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MobileLoginPage()));
-                },
-                child: Text(
-                  "Add/Create wallet",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              ),
-            ),
-          ],
-        ),
-      )),
+          )),
     ),
   );
 }
