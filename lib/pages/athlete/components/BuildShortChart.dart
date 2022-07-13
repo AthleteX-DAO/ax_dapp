@@ -8,7 +8,7 @@ SfCartesianChart buildShortChart(List<GraphData> chartStats, TooltipBehavior _sh
       tooltipBehavior: _shortToolTipBehavior,
       zoomPanBehavior: _zoomPanBehavior,
       enableSideBySideSeriesPlacement: true,
-      legend: Legend(isVisible: true),
+      legend: Legend(isVisible: false),
       series: <FastLineSeries>[
         FastLineSeries<GraphData, DateTime>(
           name: 'Price',
