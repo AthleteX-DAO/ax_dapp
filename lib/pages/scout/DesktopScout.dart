@@ -127,13 +127,9 @@ class _DesktopScoutState extends State<DesktopScout> {
     return Stack(                     
       alignment: Alignment.center,
       children: [
-        if (state.status == BlocStatus.loading) ...[
-          ScoutLoading()
-        ] else if (state.status == BlocStatus.error) ...[
-          ScoutLoadingError()
-        ] else if (state.status == BlocStatus.no_data) ...[
-          FilterMenuError()
-        ],
+        if (state.status == BlocStatus.loading) ScoutLoading(),
+        if (state.status == BlocStatus.error) ScoutLoadingError(),
+        if (state.status == BlocStatus.no_data) FilterMenuError(),
         buildListview(state, filteredAthletes)
       ],                      
     );
