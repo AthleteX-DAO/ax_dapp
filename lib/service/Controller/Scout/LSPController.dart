@@ -4,7 +4,6 @@ import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';
-import '../../../bloc/redeemBloc/redeem_bloc.dart';
 import '../../../contracts/LongShortPair.g.dart';
 import 'package:erc20/erc20.dart';
 import 'package:http/http.dart';
@@ -59,19 +58,17 @@ class LSPController extends GetxController {
     }
   }
 
-  Future<void> redeem() async {
+  Future<bool> redeem() async {
     EthereumAddress address = EthereumAddress.fromHex(aptAddress.value);
     genericLSP = LongShortPair(address: address, client: tokenClient);
     final theCredentials = controller.credentials;
     BigInt tokensToRedeem = normalizeInput(redeemAmt.value);
-    var bloc;
-    bloc = RedeemBloc();
 
     try {
       await genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
-      bloc.add(RedeemSuccessEvent());
-    } catch (e) {
-      bloc.add(RedeemSuccessEvent());
+      return true;
+    } catch (_) {
+      return false;
     }
   }
 

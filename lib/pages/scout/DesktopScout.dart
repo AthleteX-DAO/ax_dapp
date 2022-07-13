@@ -1,14 +1,11 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
+
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/pages/athlete/AthletePage.dart';
-import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
-import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
-import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/PercentHelper.dart';
@@ -19,6 +16,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 
+import '../../bloc/athelete/athelete_bloc.dart';
+import '../../bloc/scout bloc/scout_bloc.dart';
 import 'models/AthleteScoutModel.dart';
 
 class DesktopScout extends StatefulWidget {
@@ -81,8 +80,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               create: (context) => AthletePageBloc(
                   repo: RepositoryProvider.of<MLBRepo>(context)),
               child: AthletePage(
-                athlete: curAthlete!, goToTradePage: widget.goToTradePage
-              ),
+                  athlete: curAthlete!, goToTradePage: widget.goToTradePage),
             );
           return SingleChildScrollView(
             physics: ClampingScrollPhysics(),

@@ -1,14 +1,14 @@
-import 'package:equatable/equatable.dart';
+part of 'athelete_bloc.dart';
 
 class AthletePageEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class OnPageRefresh extends AthletePageEvent {
+class OnRefresh extends AthletePageEvent {
   final int playerId;
 
-  OnPageRefresh({required this.playerId});
+  OnRefresh({required this.playerId});
 
   @override
   List<Object?> get props => [];

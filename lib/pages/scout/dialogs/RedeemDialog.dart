@@ -8,11 +8,8 @@ import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
-import '../../../bloc/redeemBloc/redeem_bloc.dart';
-import '../../../custom widgets/confirm_transaction_dialog.dart';
+import 'package:get/get.dart';
 
 class RedeemDialog extends StatefulWidget {
   final AthleteScoutModel athlete;
@@ -44,16 +41,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
     lspController.updateAptAddress(widget.athlete.id);
 
     updateStats();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    setState(() {
-      show = context.watch<RedeemBloc>().state.sucessful;
-    });
-
-    print(show.toString() + ' show');
   }
 
   Future<void> updateStats() async {
@@ -151,7 +138,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              ConfirmtransactionDialog(),
               Container(
                   width: wid,
                   child: Row(
@@ -406,7 +392,14 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           Colors.transparent),
                       child: TextButton(
                         onPressed: () async {
-                          await lspController.redeem();
+                          final result = await lspController.redeem();
+
+                          if (result) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    confirmTransaction(context, true, ""));
+                          }
                         },
                         child: Text(
                           "Confirm",
@@ -422,13 +415,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
         ),
       ),
     );
-  }
-
-  void approvedDialog(BuildContext context) async {
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) =>
-            confirmTransaction(context, true, ""));
   }
 
   @override

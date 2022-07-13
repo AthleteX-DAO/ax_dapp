@@ -2,7 +2,6 @@ import 'package:ax_dapp/pages/farm/DesktopFarm.dart';
 import 'package:ax_dapp/pages/pool/AddLiquidity/bloc/PoolBloc.dart';
 import 'package:ax_dapp/pages/pool/DesktopPool.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
-import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/usecases/GetScoutAthletesDataUseCase.dart';
 import 'package:ax_dapp/pages/trade/DesktopTrade.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
@@ -29,6 +28,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../bloc/scout bloc/scout_bloc.dart';
 
 enum PAGES { SCOUT, TRADE, POOL, FARM }
 

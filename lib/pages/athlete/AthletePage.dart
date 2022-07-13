@@ -1,10 +1,7 @@
-import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
 import 'package:ax_dapp/pages/athlete/components/AthletePageTooltip.dart';
 import 'package:ax_dapp/pages/athlete/components/BuildLongChart.dart';
 import 'package:ax_dapp/pages/athlete/components/BuildShortChart.dart';
 import 'package:ax_dapp/pages/athlete/components/Buttons.dart';
-import 'package:ax_dapp/pages/athlete/models/AthletePageEvent.dart';
-import 'package:ax_dapp/pages/athlete/models/AthletePageState.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
@@ -22,8 +19,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../bloc/athelete/athelete_bloc.dart';
 import '../../util/AthletePageFormatHelper.dart';
-import '../scout/Widget Factories/AthleteDetailsWidget.dart';
 
 class AthletePage extends StatefulWidget {
   final AthleteScoutModel athlete;
@@ -79,7 +76,7 @@ class _AthletePageState extends State<AthletePage> {
               final bloc = context.read<AthletePageBloc>();
               final chartStats = state.stats;
               if (state.status == BlocStatus.initial) {
-                bloc.add(OnPageRefresh(playerId: athlete.id));
+                bloc.add(OnRefresh(playerId: athlete.id));
               }
               return buildWebView(athlete, chartStats);
             },

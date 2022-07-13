@@ -1,6 +1,4 @@
-import 'package:ax_dapp/util/chart/extensions/graphData.dart';
-import 'package:equatable/equatable.dart';
-import 'package:ax_dapp/util/BlocStatus.dart';
+part of 'athelete_bloc.dart';
 
 class AthletePageState extends Equatable {
   final List<GraphData> stats;
