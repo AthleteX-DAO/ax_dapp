@@ -6,7 +6,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 SfCartesianChart buildLongChart(List<GraphData> chartStats, TooltipBehavior _longToolTipBehavior, ZoomPanBehavior _zoomPanBehavior) {
     return SfCartesianChart(
       tooltipBehavior: _longToolTipBehavior,
-      legend: Legend(isVisible: true),
+      legend: Legend(isVisible: false),
       zoomPanBehavior: _zoomPanBehavior,
       enableSideBySideSeriesPlacement: true,
       series: <FastLineSeries>[

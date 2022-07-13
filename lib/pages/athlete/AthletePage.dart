@@ -59,10 +59,7 @@ class _AthletePageState extends State<AthletePage> {
     final LSPController lspController = Get.find();
     lspController.updateAptAddress(athlete.id);
     print(athlete.id);
-    _zoomPanBehavior = ZoomPanBehavior(
-      enableMouseWheelZooming: true,
-      enablePanning: true,
-    );
+    _zoomPanBehavior = ZoomPanBehavior(enableMouseWheelZooming: true, enablePanning: true, enablePinching: true);
     _longToolTipBehavior = TooltipBehavior(enable: true);
     _shortToolTipBehavior = TooltipBehavior(enable: true);
   }
