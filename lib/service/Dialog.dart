@@ -1364,6 +1364,7 @@ Dialog accountDialog(BuildContext context) {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                // TODO: https://athletex.atlassian.net/browse/AX-734
                                 // There's only MetaMask currently supported,
                                 // so there's no point in having a change
                                 // wallet button yet.
