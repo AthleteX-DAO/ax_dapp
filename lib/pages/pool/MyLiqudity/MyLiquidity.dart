@@ -43,15 +43,6 @@ class BadgeToken extends StatelessWidget {
   }
 }
 
-// Widget simpleToken(String symbol) {
-//   return Container(
-//     alignment: Alignment.centerLeft,
-//     child: Text(
-//       symbol,
-//       style: textStyle(Colors.white, 24, true),
-//     ),
-//   );
-// }
 class SimpleToken extends StatelessWidget {
   final String symbol;
   const SimpleToken(this.symbol);
