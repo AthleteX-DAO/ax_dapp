@@ -122,6 +122,17 @@ class _DesktopTradeState extends State<DesktopTrade> {
           }
         }
 
+        void _addEventForFromInputValue(String value, TradePageBloc bloc) {
+          if (value == '') {
+            value = '0';
+          }
+          bloc.add(
+            NewTokenFromInputEvent(
+              tokenInputFromAmount: double.parse(value),
+            ),
+          );
+        }
+
         Widget createTokenElement(Token token, int tknNum) {
           //Creates a token item for AthleteTokenList widget
           double _width = MediaQuery.of(context).size.width;
@@ -150,6 +161,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           bloc.add(SetTokenTo(tokenTo: token));
                         }
                       }
+                      _addEventForFromInputValue(
+                        _tokenFromInputController.text,
+                        bloc,
+                      );
+
                       bloc.add(PageRefreshEvent());
                       setState(() {
                         Navigator.pop(context);
@@ -273,13 +289,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               child: IntrinsicWidth(
                 child: TextFormField(
                   controller: _tokenFromInputController,
-                  onChanged: (value) {
-                    if (value == '') {
-                      value = '0';
-                    }
-                    bloc.add(NewTokenFromInputEvent(
-                        tokenInputFromAmount: double.parse(value)));
-                  },
+                  onChanged: (value) => _addEventForFromInputValue(value, bloc),
                   style: textStyle(Colors.grey[400]!, 22, false),
                   decoration: InputDecoration(
                     hintText: '0.00',
@@ -539,7 +549,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         child: TextButton(
                             onPressed: () {
                               bloc.add(SwapTokens());
-                              bloc.add(PageRefreshEvent());
+                              _addEventForFromInputValue(
+                                _tokenFromInputController.text,
+                                bloc,
+                              );
                             },
                             child: Icon(
                               Icons.arrow_downward,
