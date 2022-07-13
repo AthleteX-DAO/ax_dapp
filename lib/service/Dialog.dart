@@ -1364,22 +1364,26 @@ Dialog accountDialog(BuildContext context) {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  width: 75,
-                                  height: 25,
-                                  decoration: boxDecoration(Colors.transparent,
-                                      100, 0, Colors.blue[800]!),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      controller.changeAddress();
-                                    },
-                                    child: Text(
-                                      "Change",
-                                      style: textStyle(
-                                          Colors.blue[300]!, 10, true),
-                                    ),
-                                  ),
-                                ),
+                                // There's only MetaMask currently supported,
+                                // so there's no point in having a change
+                                // wallet button yet.
+
+                                // Container(
+                                //   width: 75,
+                                //   height: 25,
+                                //   decoration: boxDecoration(Colors.transparent,
+                                //       100, 0, Colors.blue[800]!),
+                                //   child: TextButton(
+                                //     onPressed: () {
+                                //       controller.changeAddress();
+                                //     },
+                                //     child: Text(
+                                //       "Change",
+                                //       style: textStyle(
+                                //           Colors.blue[300]!, 10, true),
+                                //     ),
+                                //   ),
+                                // ),
                                 Container(
                                   width: 75,
                                   height: 25,
