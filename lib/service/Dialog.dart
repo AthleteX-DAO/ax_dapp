@@ -266,7 +266,7 @@ Dialog walletDialog(BuildContext context) {
             ],
           ),
           Visibility(
-            visible: (kIsWeb)? false : true,
+            visible: (!kIsWeb),
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 4),
               width: _width * 0.15,
