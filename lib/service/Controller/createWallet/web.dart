@@ -1,12 +1,14 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:html';
+
 import 'package:erc20/erc20.dart';
-import 'package:http/http.dart';
-import 'package:web3dart/web3dart.dart' as Web3Dart;
-import 'abstractWallet.dart';
 import 'package:flutter_web3/flutter_web3.dart' as FlutterWeb3;
+import 'package:http/http.dart';
 import 'package:web3_browser/web3_browser.dart';
+import 'package:web3dart/web3dart.dart' as Web3Dart;
+
+import 'abstractWallet.dart';
 
 DappWallet newWallet() => WebWallet();
 
@@ -31,6 +33,7 @@ class WebWallet extends DappWallet {
           "[Console] This is the credentials type: ${this.credentials.toString()}");
     } else {
       print("[Console] Ethereum is not supproted. Please install MetaMask.");
+      throw const MetaMaskUnavailableFailure();
     }
   }
 

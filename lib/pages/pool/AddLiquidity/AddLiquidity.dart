@@ -208,13 +208,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
               final tokenTwoAmount = double.parse(tokenInput) / poolInfo.ratio;
               _tokenAmountTwoController.text =
                   tokenTwoAmount.toStringAsFixed(6);
-              bloc.add(Token1InputChanged(tokenTwoAmount.toString()));
-            } else {
-              bloc.add(Token1InputChanged(tokenInput.toString()));
-              final tokenOneAmount = double.parse(tokenInput) * poolInfo.ratio;
-              _tokenAmountOneController.text =
-                  tokenOneAmount.toStringAsFixed(6);
-              bloc.add(Token0InputChanged(tokenOneAmount.toString()));
             }
           } else {
             if (tokenNumber == 1) {
@@ -365,10 +358,10 @@ class _AddLiquidityState extends State<AddLiquidity> {
 
         Widget addLiquidityToolTip(double elementWdt) {
           return Tooltip(
+            triggerMode: TooltipTriggerMode.tap,
             height: 50,
             padding: EdgeInsets.all(10),
             verticalOffset: -100,
-            // preferBelow: false,
             decoration: BoxDecoration(
                 color: Colors.grey[800],
                 borderRadius: BorderRadius.circular(25)),
@@ -383,6 +376,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
 
         Widget youWillReceiveToolTip() {
           return Tooltip(
+            triggerMode: TooltipTriggerMode.tap,
             height: 50,
             padding: EdgeInsets.all(10),
             verticalOffset: -60,
