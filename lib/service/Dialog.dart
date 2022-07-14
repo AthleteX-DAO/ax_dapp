@@ -972,7 +972,10 @@ Dialog removalConfirmed(BuildContext context) {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Controller.viewTx();
+                          Navigator.pop(context);
+                        },
                         child: Text(
                           "View on Polygonscan",
                           style: TextStyle(
@@ -1060,7 +1063,10 @@ Dialog transactionConfirmed(BuildContext context) {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Controller.viewTx();
+                          Navigator.pop(context);
+                        },
                         child: Text(
                           "View on Polygonscan",
                           style: TextStyle(
