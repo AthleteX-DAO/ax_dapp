@@ -1,5 +1,4 @@
 import 'package:ax_dapp/pages/V1App.dart';
-import 'package:ax_dapp/util/AthletePageFormatHelper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
@@ -151,39 +150,6 @@ class _LandingPageState extends State<LandingPage> {
     return Container();
   }
 
-  Widget reloadPageButton(double tradingTextSize) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          child: Text(
-            'Could not load Athlete\'s information',
-            style: TextStyle(
-                fontSize: 14,
-                color: Colors.red,
-                decoration: TextDecoration.none),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(15),
-          decoration: isWeb
-              ? boxDecoration(Colors.transparent, 100, 1, Colors.red[400]!)
-              : boxDecoration(Colors.red[300]!.withOpacity(0.15), 100, 1,
-                  Colors.transparent),
-          child: TextButton(
-            onPressed: () {
-              setState(() {});
-            },
-            child: Text(
-              "Reload the App",
-              style: textStyle(Colors.red[400]!, tradingTextSize, true, false),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget startTradingButton(double tradingTextSize) {
     return isWeb
         ? TextButton(
@@ -202,8 +168,7 @@ class _LandingPageState extends State<LandingPage> {
           },
           child: Text(
             "Start Trading",
-            style:
-                textStyle(Colors.amber[400]!, tradingTextSize, true, false),
+            style: TextStyle(color: Colors.amber[400]!, fontSize: tradingTextSize, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
           ),
         )         
         : TextButton(
@@ -222,8 +187,7 @@ class _LandingPageState extends State<LandingPage> {
           },
           child: Text(
             "Start",
-            style:
-                textStyle(Colors.amber[400]!, tradingTextSize, true, false),
+            style: TextStyle(color: Colors.amber[400]!, fontSize: tradingTextSize, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
           ),
         );      
   }
