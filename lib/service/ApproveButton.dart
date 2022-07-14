@@ -100,22 +100,22 @@ class _ApproveButtonState extends State<ApproveButton> {
   }
 }
 
-class ApproveButton2 extends StatefulWidget {
+class ApproveButtonBuyDialog extends StatefulWidget {
   final String text;
   final double width;
   final double height;
   final Future<void> Function() approveCallback;
   final Future<bool> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
-  const ApproveButton2(this.width, this.height, this.text, this.approveCallback,
-      this.confirmCallback, this.confirmDialog);
+  const ApproveButtonBuyDialog(this.width, this.height, this.text,
+      this.approveCallback, this.confirmCallback, this.confirmDialog);
   //const ApproveButton(double width, double height, String text, {Key? key}) : super(key: key);
 
   @override
-  _ApproveButton2State createState() => _ApproveButton2State();
+  _ApproveButtonBuyDialogState createState() => _ApproveButtonBuyDialogState();
 }
 
-class _ApproveButton2State extends State<ApproveButton2> {
+class _ApproveButtonBuyDialogState extends State<ApproveButtonBuyDialog> {
   double width = 0;
   double height = 0;
   String text = "";
