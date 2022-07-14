@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> testFunction() async {
-  print("[Console] hello world");
+  print("[Console] hello world" );
   return;
 }
 
