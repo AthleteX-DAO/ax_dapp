@@ -1333,74 +1333,81 @@ Dialog accountDialog(BuildContext context) {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
+                        children: [
                           Container(
-                              height: 65,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                // crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text("Connected With Metamask",
+                            height: 65,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Connected With Metamask",
+                                    style: textStyle(
+                                        Colors.grey[600]!, 13, false)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    const Icon(
+                                      Icons.account_balance_wallet,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      "$retStr",
+                                      style: textStyle(Colors.white, 20, false),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 65,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // TODO: https://athletex.atlassian.net/browse/AX-734
+                                // There's only MetaMask currently supported,
+                                // so there's no point in having a change
+                                // wallet button yet.
+
+                                // Container(
+                                //   width: 75,
+                                //   height: 25,
+                                //   decoration: boxDecoration(Colors.transparent,
+                                //       100, 0, Colors.blue[800]!),
+                                //   child: TextButton(
+                                //     onPressed: () {
+                                //       controller.changeAddress();
+                                //     },
+                                //     child: Text(
+                                //       "Change",
+                                //       style: textStyle(
+                                //           Colors.blue[300]!, 10, true),
+                                //     ),
+                                //   ),
+                                // ),
+                                Container(
+                                  width: 75,
+                                  height: 25,
+                                  decoration: boxDecoration(Colors.transparent,
+                                      100, 0, Colors.red[900]!),
+                                  child: TextButton(
+                                    onPressed: () {
+                                      controller.disconnect();
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      "Disconnect",
                                       style: textStyle(
-                                          Colors.grey[600]!, 13, false)),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      const Icon(
-                                        Icons.account_balance_wallet,
-                                        color: Colors.white,
+                                        Colors.red[900]!,
+                                        10,
+                                        true,
                                       ),
-                                      Text(
-                                        "$retStr",
-                                        style:
-                                            textStyle(Colors.white, 20, false),
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ],
-                              )),
-                          Container(
-                              height: 65,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                      width: 75,
-                                      height: 25,
-                                      decoration: boxDecoration(
-                                          Colors.transparent,
-                                          100,
-                                          0,
-                                          Colors.blue[800]!),
-                                      child: TextButton(
-                                          onPressed: () {
-                                            controller.changeAddress();
-                                          },
-                                          child: Text("Change",
-                                              style: textStyle(
-                                                  Colors.blue[300]!,
-                                                  10,
-                                                  true)))),
-                                  Container(
-                                      width: 75,
-                                      height: 25,
-                                      decoration: boxDecoration(
-                                          Colors.transparent,
-                                          100,
-                                          0,
-                                          Colors.red[900]!),
-                                      child: TextButton(
-                                          onPressed: () {
-                                            controller.disconnect();
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text("Disconnect",
-                                              style: textStyle(Colors.red[900]!,
-                                                  10, true)))),
-                                ],
-                              ))
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       )),
                   Row(
