@@ -62,8 +62,6 @@ class LSPController extends GetxController {
     genericLSP = LongShortPair(address: address, client: tokenClient);
     final theCredentials = controller.credentials;
     BigInt tokensToRedeem = normalizeInput(redeemAmt.value);
-    genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
-
     try {
       await genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
       return true;
