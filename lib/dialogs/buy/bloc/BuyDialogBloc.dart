@@ -49,7 +49,6 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
                 receiveAmount: pairInfo.receiveAmount,
                 totalFee: pairInfo.totalFee)));
       } else {
-        final errorMsg = response.getRight().toNullable()!.errorMsg;
         //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
 
         emit(state.copyWith(
