@@ -25,20 +25,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
   bool isWeb = true;
   TextEditingController _tokenFromInputController = TextEditingController();
   TextEditingController _tokenToInputController = TextEditingController();
-  bool canTrade = true;
 
   @override
   void dispose() {
     super.dispose();
     _tokenFromInputController.dispose();
     _tokenToInputController.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    print(canTrade.toString() + 'this is canTrade');
   }
 
   @override
@@ -610,15 +602,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       ],
                     ),
                   ),
-                  ApproveButton(
-                      175,
-                      40,
-                      "Approve",
-                      swapController.approve,
-                      swapController.swap,
-                      canTrade == true
-                          ? transactionConfirmed
-                          : transactionConfirmed2),
+                  ApproveButton(175, 40, "Approve", swapController.approve,
+                      swapController.swap, transactionConfirmed),
                 ],
               ),
             ),

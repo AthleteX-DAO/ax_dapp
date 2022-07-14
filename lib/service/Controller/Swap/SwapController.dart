@@ -1,6 +1,5 @@
 import 'package:ax_dapp/contracts/APTRouter.g.dart';
 import 'package:ax_dapp/contracts/Dex.g.dart';
-import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/util/UserInputNorm.dart';
@@ -86,16 +85,12 @@ class SwapController extends GetxController {
     List<EthereumAddress> path = [tokenAAddress, tokenBAddress];
     EthereumAddress to = await controller.credentials.extractAddress();
     String txString = "";
-    var bloc;
-    bloc = BuyDialogBloc;
 
     try {
       txString = await _aptRouter.swapExactTokensForTokens(
           tokenAAmount, amountOutMin, path, to, deadline.value,
           credentials: controller.credentials);
     } catch (e) {
-      bloc.add(OnErrorEvent());
-
       print(
           "[Console] Unable to swap [$tokenAAddress, $tokenBAddress] tokens \n $e");
     }

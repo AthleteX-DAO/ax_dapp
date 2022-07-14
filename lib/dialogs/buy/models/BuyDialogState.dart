@@ -41,7 +41,6 @@ class BuyDialogState extends Equatable {
     BlocStatus? status,
     String? tokenAddress,
     AptBuyInfo? aptBuyInfo,
-    bool? canTrade,
   }) {
     return BuyDialogState(
       balance: balance ?? this.balance,
