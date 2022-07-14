@@ -49,8 +49,6 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
                 receiveAmount: pairInfo.receiveAmount,
                 totalFee: pairInfo.totalFee)));
       } else {
-        //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-
         emit(state.copyWith(
             status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
       }
@@ -68,8 +66,6 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       emit(state.copyWith(axInputAmount: maxInput, status: BlocStatus.success));
       add(OnNewAxInput(axInputAmount: maxInput));
     } catch (e) {
-      //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-
       emit(state.copyWith(
         status: BlocStatus.error,
       ));
@@ -107,8 +103,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
                 totalFee: pairInfo.totalFee)));
       } else {
         print("On New Apt Input: Failure");
-        final errorMsg = response.getRight().toNullable()!.errorMsg;
-        //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
+
         emit(state.copyWith(
             status: BlocStatus.error, aptBuyInfo: AptBuyInfo.empty()));
       }
