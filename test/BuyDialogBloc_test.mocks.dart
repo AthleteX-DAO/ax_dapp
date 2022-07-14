@@ -248,9 +248,9 @@ class MockSwapController extends _i1.Mock implements _i10.SwapController {
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
   @override
-  _i8.Future<void> swap() => (super.noSuchMethod(Invocation.method(#swap, []),
+  _i8.Future<bool> swap() => (super.noSuchMethod(Invocation.method(#swap, []),
       returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
+      returnValueForMissingStub: Future<void>.value()) as _i8.Future<bool>);
   @override
   _i8.Future<void> createPair() =>
       (super.noSuchMethod(Invocation.method(#createPair, []),

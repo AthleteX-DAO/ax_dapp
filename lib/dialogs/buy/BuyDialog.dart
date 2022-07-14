@@ -492,7 +492,7 @@ class _BuyDialogState extends State<BuyDialog> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        ApproveButton(
+                        ApproveButton2(
                             175,
                             40,
                             "Approve",

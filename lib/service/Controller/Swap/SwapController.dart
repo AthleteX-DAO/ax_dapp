@@ -74,7 +74,7 @@ class SwapController extends GetxController {
   }
 
   // Actionables
-  Future<void> swap() async {
+  Future<bool> swap() async {
     print(
         "Before the actual swap - print EVERYTHING: \n tknAAddr - $address1.value | tknBAddr = $address2.value \n tknAAmount - $amount1.value | tknBAmount - $amount2.value");
 
@@ -90,11 +90,13 @@ class SwapController extends GetxController {
       txString = await _aptRouter.swapExactTokensForTokens(
           tokenAAmount, amountOutMin, path, to, deadline.value,
           credentials: controller.credentials);
+      controller.updateTxString(txString);
+      return true;
     } catch (e) {
       print(
           "[Console] Unable to swap [$tokenAAddress, $tokenBAddress] tokens \n $e");
+      return false;
     }
-    controller.updateTxString(txString);
   }
 
   Future<void> createPair() async {
@@ -104,6 +106,7 @@ class SwapController extends GetxController {
     try {
       txString = await _dex.createPair(tknA, tknB,
           credentials: controller.credentials);
+      return;
     } catch (e) {
       print("[Console] Unable to create pair /n $e");
       txString = await _dex.createPair(tknA, tknB,
