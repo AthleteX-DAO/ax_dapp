@@ -386,13 +386,15 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           1,
                           Colors.transparent),
                       child: TextButton(
-                        onPressed: () {
-                          lspController.redeem();
-                          Navigator.pop(context);
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  confirmTransaction(context, true, ""));
+                        onPressed: () async {
+                          final result = await lspController.redeem();
+
+                          if (result) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    confirmTransaction(context, true, ""));
+                          }
                         },
                         child: Text(
                           "Confirm",

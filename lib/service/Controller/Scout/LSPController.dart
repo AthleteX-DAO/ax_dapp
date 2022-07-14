@@ -57,12 +57,17 @@ class LSPController extends GetxController {
     }
   }
 
-  Future<void> redeem() async {
+  Future<bool> redeem() async {
     EthereumAddress address = EthereumAddress.fromHex(aptAddress.value);
     genericLSP = LongShortPair(address: address, client: tokenClient);
     final theCredentials = controller.credentials;
     BigInt tokensToRedeem = normalizeInput(redeemAmt.value);
-    genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
+    try {
+      await genericLSP.redeem(tokensToRedeem, credentials: theCredentials);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   void updateAptAddress(int athleteId) {
