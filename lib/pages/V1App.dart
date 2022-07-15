@@ -402,8 +402,8 @@ class _V1AppState extends State<V1App> {
                   SimpleToolTip(
                       "Invest in what you know best at AthleteX Markets. Click here to learn more!",
                       IconButton(
-                          onPressed: () =>
-                              launchUrl(Uri.parse('https://www.athletex.io/')),
+                          onPressed: () => launchUrl(Uri.parse(
+                              'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper')),
                           icon: FaIcon(
                             FontAwesomeIcons.circleQuestion,
                             size: 25,
