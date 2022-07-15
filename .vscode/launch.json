@@ -5,28 +5,43 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "ax_dapp",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-d",
+                "web-server",
+            ],
+        },
+        {
+            "name": "ax_dapp (profile mode)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "-d",
+                "web-server",
+            ],
+        },
+        {
+            "name": "ax_dapp (release mode)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "-d",
+                "web-server",
+            ],
+        },
+        {
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Flutter: chrome",
             "url": "http://localhost:4001",
             "webRoot": "${workspaceFolder}"
-        },
-        {
-            "name": "ax_dapp",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "ax_dapp (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "ax_dapp (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
         }
     ]
 }
