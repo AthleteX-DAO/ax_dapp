@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../../service/ApproveButton.dart';
+
 class RedeemDialog extends StatefulWidget {
   final AthleteScoutModel athlete;
   RedeemDialog(this.athlete, {Key? key}) : super(key: key);
@@ -376,32 +378,13 @@ class _RedeemDialogState extends State<RedeemDialog> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 30.0),
-                      width: 175,
-                      height: 45,
-                      decoration: boxDecoration(
-                          Colors.amber[500]!.withOpacity(0.20),
-                          500,
-                          1,
-                          Colors.transparent),
-                      child: TextButton(
-                        onPressed: () async {
-                          final result = await lspController.redeem();
-
-                          if (result) {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    confirmTransaction(context, true, ""));
-                          }
-                        },
-                        child: Text(
-                          "Confirm",
-                          style: textStyle(Colors.amber[500]!, 16, false),
-                        ),
-                      ),
-                    ),
+                    ApproveButtonBuyDialog(
+                        175,
+                        40,
+                        "Approve",
+                        lspController.approve,
+                        lspController.redeem,
+                        transactionConfirmed),
                   ],
                 ),
               )
