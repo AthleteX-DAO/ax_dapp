@@ -1,4 +1,5 @@
 import 'package:ax_dapp/pages/farm/DesktopFarm.dart';
+import 'package:ax_dapp/pages/footer/SimpleToolTip.dart';
 import 'package:ax_dapp/pages/pool/AddLiquidity/bloc/PoolBloc.dart';
 import 'package:ax_dapp/pages/pool/DesktopPool.dart';
 import 'package:ax_dapp/pages/scout/DesktopScout.dart';
@@ -398,13 +399,16 @@ class _V1AppState extends State<V1App> {
                         color: Colors.grey[400],
                       )),
                   Container(width: _width - 320),
-                  IconButton(
-                      onPressed: () => {},
-                      icon: FaIcon(
-                        FontAwesomeIcons.circleQuestion,
-                        size: 25,
-                        color: Colors.grey[400],
-                      )),
+                  SimpleToolTip(
+                      "Invest in what you know best at AthleteX Markets. Click here to learn more!",
+                      IconButton(
+                          onPressed: () =>
+                              launchUrl(Uri.parse('https://www.athletex.io/')),
+                          icon: FaIcon(
+                            FontAwesomeIcons.circleQuestion,
+                            size: 25,
+                            color: Colors.grey[400],
+                          ))),
                 ],
               ),
             ),
