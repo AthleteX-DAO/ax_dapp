@@ -349,13 +349,15 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget bottomNavBarDesktop(BuildContext context) {
+    double _width = MediaQuery.of(context).size.width;
     return Container(
       height: MediaQuery.of(context).size.height * 0.1,
+      width: _width,
       color: Colors.transparent,
       padding: const EdgeInsets.only(left: 40.0, right: 40),
       child: Center(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
               child: Row(
@@ -380,8 +382,8 @@ class _V1AppState extends State<V1App> {
                         color: Colors.grey[400],
                       )),
                   IconButton(
-                      onPressed: () => launchUrl(Uri.parse(
-                          'https://twitter.com/athletex_dao?s=20')),
+                      onPressed: () => launchUrl(
+                          Uri.parse('https://twitter.com/athletex_dao?s=20')),
                       icon: FaIcon(
                         FontAwesomeIcons.twitter,
                         size: 25,
@@ -392,6 +394,14 @@ class _V1AppState extends State<V1App> {
                           Uri.parse('https://github.com/SportsToken')),
                       icon: FaIcon(
                         FontAwesomeIcons.github,
+                        size: 25,
+                        color: Colors.grey[400],
+                      )),
+                  Container(width: _width - 320),
+                  IconButton(
+                      onPressed: () => {},
+                      icon: FaIcon(
+                        FontAwesomeIcons.circleQuestion,
                         size: 25,
                         color: Colors.grey[400],
                       )),
