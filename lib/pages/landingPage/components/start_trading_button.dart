@@ -24,8 +24,7 @@ class StartTradingButton extends StatelessWidget {
           )
         ),
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => V1App()));
+          navigateToV1App(context);
         },
         child: Text(
           "Start Trading",
@@ -43,13 +42,17 @@ class StartTradingButton extends StatelessWidget {
           )
         ),
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => V1App()));
+          navigateToV1App(context);
         },
         child: Text(
           "Start",
           style: TextStyle(color: Colors.amber[400]!, fontSize: tradingTextSize, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
         ),
       );      
+  }
+
+  void navigateToV1App(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => V1App()));
   }
 }

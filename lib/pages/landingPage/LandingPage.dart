@@ -33,37 +33,39 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ),
       child: isWeb
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                //AX Markets Image
-                AthleteXLogo(height: _height),
-                DesktopLandingPage(textSize: textSize),
-                //Button load athletes
-                Container(
-                    width: _width * 0.20,
-                    height: _height * 0.1,
-                    margin: EdgeInsets.only(bottom: 130.0),
-                    child: StartTradingButton(
-                        isWeb: isWeb, tradingTextSize: tradingTextSize)),
-              ],
-            )
-          :
-          //Mobile landing page
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                //AX Markets Image
-                AthleteXLogo(height: _height),
-                AndroidLandingPage(),
-                //Button load athletes
-                Container(
-                    width: _width * 0.6,
-                    height: _height * 0.07,
-                    child: StartTradingButton(
-                        isWeb: isWeb, tradingTextSize: tradingTextSize)),
-              ],
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              //AX Markets Image
+              AthleteXLogo(height: _height),
+              DesktopLandingPage(textSize: textSize),
+              //Button load athletes
+              Container(
+                width: _width * 0.20,
+                height: _height * 0.1,
+                margin: EdgeInsets.only(bottom: 130.0),
+                child: StartTradingButton(
+                    isWeb: isWeb, tradingTextSize: tradingTextSize),
+              ),
+            ],
+          )
+        :
+        //Mobile landing page
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            //AX Markets Image
+            AthleteXLogo(height: _height),
+            MobileLandingPage(),
+            //Button load athletes
+            Container(
+                width: _width * 0.6,
+                height: _height * 0.07,
+                child: StartTradingButton(
+                    isWeb: isWeb, tradingTextSize: tradingTextSize),
             ),
+          ],
+        ),
     );
   }
 }

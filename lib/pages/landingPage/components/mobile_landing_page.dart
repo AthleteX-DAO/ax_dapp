@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AndroidLandingPage extends StatelessWidget {
-  const AndroidLandingPage({
+class MobileLandingPage extends StatelessWidget {
+  const MobileLandingPage({
     Key? key,
   }) : super(key: key);
 
