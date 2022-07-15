@@ -106,6 +106,7 @@ class _V1AppState extends State<V1App> {
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: isWeb ? topNavBar(context) : topNavBarAndroid(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
