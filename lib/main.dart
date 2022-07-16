@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ax_dapp/pages/landingPage/LandingPage.dart';
 import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
@@ -28,53 +30,62 @@ void main() async {
   final _subGraphRepo = SubGraphRepo(_gQLClient.value);
   final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
   final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
-  print("Graph QL CLient initialized}");
-  runApp(GraphQLProvider(
-    client: _gQLClient,
-    child: MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(create: (context) => _subGraphRepo),
-        RepositoryProvider(
-          create: (context) => MLBRepo(_mlbApi),
-        ),
-        RepositoryProvider(
-          create: (context) => NFLRepo(),
-        ),
-        RepositoryProvider(
-          create: (context) => CoinGeckoRepo(_coinGeckoApi),
-        ),
-        RepositoryProvider(create: (context) => _getPairInfoUseCase),
-        RepositoryProvider(create: (context) => _getSwapInfoUseCase),
-        RepositoryProvider(
-            create: (context) => GetBuyInfoUseCase(_getSwapInfoUseCase)),
-        RepositoryProvider(
-            create: (context) => GetSellInfoUseCase(_getSwapInfoUseCase)),
-        RepositoryProvider(
-            create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase)),
-        RepositoryProvider(
-            create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo)),
-      ],
-      child: MyApp(),
+  log('GraphQL Client initialized}');
+  runApp(
+    GraphQLProvider(
+      client: _gQLClient,
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(create: (context) => _subGraphRepo),
+          RepositoryProvider(
+            create: (context) => MLBRepo(_mlbApi),
+          ),
+          RepositoryProvider(
+            create: (context) => NFLRepo(),
+          ),
+          RepositoryProvider(
+            create: (context) => CoinGeckoRepo(_coinGeckoApi),
+          ),
+          RepositoryProvider(create: (context) => _getPairInfoUseCase),
+          RepositoryProvider(create: (context) => _getSwapInfoUseCase),
+          RepositoryProvider(
+            create: (context) => GetBuyInfoUseCase(_getSwapInfoUseCase),
+          ),
+          RepositoryProvider(
+            create: (context) => GetSellInfoUseCase(_getSwapInfoUseCase),
+          ),
+          RepositoryProvider(
+            create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase),
+          ),
+          RepositoryProvider(
+            create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo),
+          ),
+        ],
+        child: const MyApp(),
+      ),
     ),
-  ));
+  );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     // Returns anything!
     return MaterialApp(
-      title: "AthleteX",
+      title: 'AthleteX',
       debugShowCheckedModeBanner: false,
-      initialRoute: "/",
+      initialRoute: '/',
       theme: ThemeData(
-          canvasColor: Colors.transparent,
-          brightness: Brightness.dark,
-          primaryColor: Colors.yellow[700],
-          colorScheme: ColorScheme.fromSwatch(brightness: Brightness.dark)
-              .copyWith(secondary: Colors.black)),
-      home: LandingPage(),
+        canvasColor: Colors.transparent,
+        brightness: Brightness.dark,
+        primaryColor: Colors.yellow[700],
+        colorScheme: ColorScheme.fromSwatch(brightness: Brightness.dark)
+            .copyWith(secondary: Colors.black),
+      ),
+      home: const LandingPage(),
       // home: V1App(),
       // home: HomePage()
     );
