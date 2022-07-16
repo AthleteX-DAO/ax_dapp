@@ -6,33 +6,34 @@ class DesktopLandingPage extends StatelessWidget {
     required this.textSize,
   }) : super(key: key);
 
-  final textSize;
+  final double textSize;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 225,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           RichText(
             text: TextSpan(
               children: <TextSpan>[
                 TextSpan(
-                    text: "TRADE",
-                    style: TextStyle(
-                      color: Colors.amber[400]!,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
+                  text: 'TRADE',
+                  style: TextStyle(
+                    color: Colors.amber[400],
+                    fontFamily: 'BebasNeuePro',
+                    fontSize: textSize,
+                  ),
+                ),
                 TextSpan(
-                    text: " ATHLETES",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    ))
+                  text: ' ATHLETES',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'BebasNeuePro',
+                    fontSize: textSize,
+                  ),
+                )
               ],
             ),
           ),
@@ -40,19 +41,21 @@ class DesktopLandingPage extends StatelessWidget {
             text: TextSpan(
               children: <TextSpan>[
                 TextSpan(
-                    text: "BUILD",
-                    style: TextStyle(
-                      color: Colors.amber[400]!,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
+                  text: 'BUILD',
+                  style: TextStyle(
+                    color: Colors.amber[400],
+                    fontFamily: 'BebasNeuePro',
+                    fontSize: textSize,
+                  ),
+                ),
                 TextSpan(
-                    text: " YOUR ROSTER",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
+                  text: ' YOUR ROSTER',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'BebasNeuePro',
+                    fontSize: textSize,
+                  ),
+                ),
               ],
             ),
           ),
@@ -60,19 +63,21 @@ class DesktopLandingPage extends StatelessWidget {
             text: TextSpan(
               children: <TextSpan>[
                 TextSpan(
-                    text: "EARN",
-                    style: TextStyle(
-                      color: Colors.amber[400]!,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
+                  text: 'EARN',
+                  style: TextStyle(
+                    color: Colors.amber[400],
+                    fontFamily: 'BebasNeuePro',
+                    fontSize: textSize,
+                  ),
+                ),
                 TextSpan(
-                    text: " REWARDS",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'BebasNeuePro',
-                      fontSize: textSize,
-                    )),
+                  text: ' REWARDS',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'BebasNeuePro',
+                    fontSize: textSize,
+                  ),
+                ),
               ],
             ),
           ),
