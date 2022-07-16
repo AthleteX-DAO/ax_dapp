@@ -1,27 +1,10 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'NFLAthlete.g.dart';
 
 @JsonSerializable()
 class NFLAthlete extends SportAthlete {
-  @JsonKey(name: "passingYards")
-  final double passingYards;
-  @JsonKey(name: "passingTouchDowns")
-  final double passingTouchDowns;
-  @JsonKey(name: "reception")
-  final double reception;
-  @JsonKey(name: "receiveYards")
-  final double receiveYards;
-  @JsonKey(name: "receiveTouch")
-  final double receiveTouch;
-  @JsonKey(name: "rushingYards")
-  final double rushingYards;
-  @JsonKey(name: "OffensiveSnapsPlayed")
-  final double offensiveSnapsPlayed;
-  @JsonKey(name: "DefensiveSnapsPlayed")
-  final double defensiveSnapsPlayed;
-
   const NFLAthlete({
     required int id,
     required String name,
@@ -41,6 +24,23 @@ class NFLAthlete extends SportAthlete {
 
   factory NFLAthlete.fromJson(Map<String, dynamic> json) =>
       _$NFLAthleteFromJson(json);
+
+  @JsonKey(name: 'passingYards')
+  final double passingYards;
+  @JsonKey(name: 'passingTouchDowns')
+  final double passingTouchDowns;
+  @JsonKey(name: 'reception')
+  final double reception;
+  @JsonKey(name: 'receiveYards')
+  final double receiveYards;
+  @JsonKey(name: 'receiveTouch')
+  final double receiveTouch;
+  @JsonKey(name: 'rushingYards')
+  final double rushingYards;
+  @JsonKey(name: 'OffensiveSnapsPlayed')
+  final double offensiveSnapsPlayed;
+  @JsonKey(name: 'DefensiveSnapsPlayed')
+  final double defensiveSnapsPlayed;
 
   Map<String, dynamic> toJson() => _$NFLAthleteToJson(this);
 }

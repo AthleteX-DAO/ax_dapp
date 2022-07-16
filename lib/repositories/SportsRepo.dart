@@ -1,8 +1,9 @@
 import 'package:ax_dapp/util/SupportedSports.dart';
 
 abstract class SportsRepo<SportAthlete> {
-  final SupportedSport sport;
   SportsRepo(this.sport);
+
+  final SupportedSport sport;
 
   Future<List<SportAthlete>> getAllPlayers();
 
@@ -17,9 +18,11 @@ abstract class SportsRepo<SportAthlete> {
   Future<List<SportAthlete>> getPlayersByPosition(String position);
 
   Future<List<SportAthlete>> getPlayersByTeamAtPosition(
-      String team, String position);
+    String team,
+    String position,
+  );
 
-  Future getPlayerStatsHistory(int id, String from, String until);
+  Future<dynamic> getPlayerStatsHistory(int id, String from, String until);
 
-  Future getPlayersStatsHistory();
+  Future<dynamic> getPlayersStatsHistory();
 }
