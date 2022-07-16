@@ -1723,7 +1723,6 @@ Dialog poolAddLiquidity(BuildContext context, String name) {
 
 Dialog poolRemoveLiquidity(BuildContext context, String name) {
   final poolController = Get.find<PoolController>();
-  var amount = 0.0;
   final _height = MediaQuery.of(context).size.height;
   final _width = MediaQuery.of(context).size.width;
   var wid = 390.0;
@@ -1901,9 +1900,7 @@ Dialog poolRemoveLiquidity(BuildContext context, String name) {
                         SizedBox(
                           width: 70,
                           child: TextFormField(
-                            onChanged: (value) {
-                              amount = double.parse(value);
-                            },
+                            onChanged: (_) {},
                             style: textStyle(
                               Colors.grey[400]!,
                               22,
