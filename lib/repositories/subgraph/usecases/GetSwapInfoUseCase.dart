@@ -2,26 +2,32 @@ import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
 import 'package:fpdart/fpdart.dart';
 
-const String _no_swap_info_error_msg = "No swap info found";
+const String _noSwapInfoErrorMessage = 'No swap info found';
 
 /// This is an abstraction on GetPairInfoUseCase that encapsulates
-/// the logic for fetching the swap transaction information needed for a swap between
-/// any two given tokens.
+/// the logic for fetching the swap transaction information needed for a swap
+/// betweenany two given tokens.
 class GetSwapInfoUseCase {
+  GetSwapInfoUseCase(this._repo);
   final GetPairInfoUseCase _repo;
 
-  GetSwapInfoUseCase(this._repo);
-
-  Future<Either<Success, Error>> fetchSwapInfo(
-      {required String tokenFrom, required String tokenTo, double? fromInput, double? slippage}) async {
+  Future<Either<Success, Error>> fetchSwapInfo({
+    required String tokenFrom,
+    required String tokenTo,
+    double? fromInput,
+    double? slippage,
+  }) async {
     try {
       final tokenFromAddress = tokenFrom.toLowerCase();
       final tokenToAddress = tokenTo.toLowerCase();
       final tokenFromInput = fromInput ?? 0.0;
-      final double slippageTolerance = slippage ?? 0.01;
+      final slippageTolerance = slippage ?? 0.01;
 
       final response = await _repo.fetchPairInfo(
-          tokenA: tokenFromAddress, tokenB: tokenToAddress, fromTokenInput: tokenFromInput);
+        tokenA: tokenFromAddress,
+        tokenB: tokenToAddress,
+        fromTokenInput: tokenFromInput,
+      );
 
       final isSuccess = response.isLeft();
       if (isSuccess) {
@@ -48,7 +54,7 @@ class GetSwapInfoUseCase {
         final protocolFee = tokenFromInput * 0.0005;
         final totalFees = lpFee + protocolFee;
         final tokenFromInputAfterFee = tokenFromInput - totalFees;
-        final receiveAmount = (tokenFromInputAfterFee) *
+        final receiveAmount = tokenFromInputAfterFee *
             (toReserve / (fromReserve + tokenFromInputAfterFee));
         final priceImpact = 100 *
             (1 -
@@ -58,30 +64,32 @@ class GetSwapInfoUseCase {
         final minimumReceiveAmt = receiveAmount * (1 - slippageTolerance);
 
         final swapInfo = TokenSwapInfo(
-            toPrice: toPrice,
-            fromPrice: fromPrice,
-            minimumReceived: minimumReceiveAmt,
-            priceImpact: priceImpact,
-            receiveAmount: receiveAmount,
-            totalFee: totalFees);
+          toPrice: toPrice,
+          fromPrice: fromPrice,
+          minimumReceived: minimumReceiveAmt,
+          priceImpact: priceImpact,
+          receiveAmount: receiveAmount,
+          totalFee: totalFees,
+        );
 
         return Either.left(Success(swapInfo));
       } else {
-        return Either.right(Error(_no_swap_info_error_msg));
+        return Either.right(const Error(_noSwapInfoErrorMessage));
       }
     } catch (e) {
-      return Either.right(Error("Error occurred: ${e.toString()}"));
+      return Either.right(Error('Error occurred: ${e.toString()}'));
     }
   }
 }
 
 class Success {
+  const Success(this.swapInfo);
+
   final TokenSwapInfo swapInfo;
-  Success(this.swapInfo);
 }
 
 class Error {
-  final String errorMsg;
+  const Error(this.errorMsg);
 
-  Error(this.errorMsg);
+  final String errorMsg;
 }

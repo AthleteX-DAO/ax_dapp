@@ -1,5 +1,5 @@
 class SubgraphError {
-  final String errorMsg;
+  const SubgraphError(this.errorMsg);
 
-  SubgraphError(this.errorMsg);
+  final String errorMsg;
 }

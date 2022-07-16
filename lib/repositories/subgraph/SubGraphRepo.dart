@@ -7,18 +7,20 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 /// to define the specific functionality needed
 
 class SubGraphRepo {
-  final GraphQLClient _client;
-
   SubGraphRepo(this._client);
+
+  final GraphQLClient _client;
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryPairDataForTokenAddress(String token0, String token1) async {
     final result = await _client.query(
-        QueryOptions(document: gql(_getPairInfoForTokenId(token0, token1))));
-    if (result.hasException)
+      QueryOptions(document: gql(_getPairInfoForTokenId(token0, token1))),
+    );
+    if (result.hasException) {
       return Either.right(result.exception!);
-    else
+    } else {
       return Either.left(result.data);
+    }
   }
 
   Future<Either<Map<String, dynamic>?, OperationException>>
@@ -26,42 +28,45 @@ class SubGraphRepo {
     final result = await _client.query(
       QueryOptions(document: parseString(_getAllPairs())),
     );
-    if (result.hasException)
+    if (result.hasException) {
       return Either.right(result.exception!);
-    else
+    } else {
       return Either.left(result.data);
+    }
   }
 
   Future<Either<Map<String, dynamic>?, OperationException>> querySpecificPairs(
-      String token) async {
+    String token,
+  ) async {
     // calculating the first time of 24 hours ago as secondsSinceEpoch
-    final int startTime = (DateTime.now()
+    final startTime = (DateTime.now()
                 .subtract(const Duration(days: 1))
                 .millisecondsSinceEpoch /
             1000)
         .round();
 
-    print("[StartTime] $startTime");
-
     final result = await _client.query(
-      QueryOptions(document: parseString(_getSpecificPairs(token, startTime))));
-    if (result.hasException)
+      QueryOptions(document: parseString(_getSpecificPairs(token, startTime))),
+    );
+    if (result.hasException) {
       return Either.right(result.exception!);
-    else
+    } else {
       return Either.left(result.data);
+    }
   }
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairsForWalletId(String walletId) async {
     final result = await _client.query(
       QueryOptions(
-          document:
-              parseString(_getAllLiquidityPositionsForWalletId(walletId))),
+        document: parseString(_getAllLiquidityPositionsForWalletId(walletId)),
+      ),
     );
-    if (result.hasException)
+    if (result.hasException) {
       return Either.right(result.exception!);
-    else
+    } else {
       return Either.left(result.data);
+    }
   }
 }
 
@@ -69,7 +74,7 @@ class SubGraphRepo {
 ///blockchain address respectively
 ///This is set by the first add liquidity transaction
 ///and therefore important to fetch the pair data for the APT first
-String _getPairInfoForTokenId(String token0, String token1) => """
+String _getPairInfoForTokenId(String token0, String token1) => '''
 query {
   pairs(where: {token0_in:["$token0", "$token1"], token1_in:["$token0", "$token1"]}) {
     id
@@ -89,10 +94,10 @@ query {
     totalSupply
   }
 }
-""";
+''';
 
 ///This returns all available pairs in the AthleteX Subgraph
-String _getAllPairs() => """
+String _getAllPairs() => '''
 query {
  pairs {
   	id
@@ -106,9 +111,9 @@ query {
   	totalSupply
   }
 }
-""";
+''';
 
-String _getSpecificPairs(String token, int startTime) => """
+String _getSpecificPairs(String token, int startTime) => '''
 query {
   prefix: pairs(where: {name_starts_with: "$token-"}) {
   	id
@@ -163,9 +168,9 @@ query {
     }
   }
 }
-""";
+''';
 
-String _getAllLiquidityPositionsForWalletId(String walletId) => """
+String _getAllLiquidityPositionsForWalletId(String walletId) => '''
   query {
     user(id: "$walletId") {
       liquidityPositions {
@@ -192,4 +197,4 @@ String _getAllLiquidityPositionsForWalletId(String walletId) => """
       }
     }
   }
-""";
+''';
