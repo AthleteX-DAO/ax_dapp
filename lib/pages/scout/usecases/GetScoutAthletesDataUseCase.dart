@@ -48,7 +48,7 @@ class GetScoutAthletesDataUseCase {
     final axPrice = await fetchAxPrice();
 
     /// If specific sport is selected return athletes from that specific repo
-    if (sportSelection != SupportedSport.ALL) {
+    if (sportSelection != SupportedSport.all) {
       final repo = _repos[sportSelection]!;
       final response = await repo.getSupportedPlayers();
       return _mapAthleteToScoutModel(response, repo, axPrice);

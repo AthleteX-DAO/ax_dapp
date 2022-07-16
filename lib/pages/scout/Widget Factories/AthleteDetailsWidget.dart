@@ -1,9 +1,10 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
+import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidgetExports.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/pages/scout/models/SportsModel/AthleteScoutModelExports.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/material.dart';
-
-import 'AthleteDetailsWidgetExports.dart';
 
 abstract class AthleteDetailsWidget {
   factory AthleteDetailsWidget(AthleteScoutModel athlete) {
@@ -12,42 +13,54 @@ abstract class AthleteDetailsWidget {
         return MLBAthleteDetailsWidget(athlete as MLBAthleteScoutModel);
       case SupportedSport.NFL:
         return NFLAthleteDetailsWidget(athlete as NFLAthleteScoutModel);
-      default:
+      case SupportedSport.NBA:
+      case SupportedSport.all:
         return NoStatsShownWidget();
     }
   }
 
   Widget athletePageDetails();
   Widget athletePageKeyStatistics();
-  Widget athleteDetailsCardsForWeb(team, _width, athNameBx);
-  Widget athleteDetailsCardsForMobile(team, _width, athNameBx);
+  Widget athleteDetailsCardsForWeb(
+    bool team,
+    double _width,
+    double athNameBx,
+  );
+
+  Widget athleteDetailsCardsForMobile(
+    bool team,
+    double _width,
+    double athNameBx,
+  );
 }
 
 class NoStatsShownWidget implements AthleteDetailsWidget {
   @override
   Widget athletePageDetails() {
-    return Center(
+    return const Center(
       child: Text('No details for selected athlete'),
     );
   }
 
   @override
   Widget athletePageKeyStatistics() {
-    return Center(
+    return const Center(
       child: Text('No statistics shown for selected athlete'),
     );
   }
 
   @override
-  Widget athleteDetailsCardsForWeb(team, _width, athNameBx){
-    return Center(
+  Widget athleteDetailsCardsForWeb(
+      bool team, double? _width, double? athNameBx) {
+    return const Center(
       child: Text('No data shown for Athlete Card'),
     );
   }
 
   @override
-  Widget athleteDetailsCardsForMobile(team, _width, athNameBx){
-    return Center(
+  Widget athleteDetailsCardsForMobile(
+      bool team, double _width, double athNameBx) {
+    return const Center(
       child: Text('No data shown for Athlete Card'),
     );
   }

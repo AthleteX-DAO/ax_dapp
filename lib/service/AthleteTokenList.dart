@@ -1,10 +1,10 @@
+import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
+import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
-import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
-import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AthleteTokenList extends StatefulWidget {
   final BuildContext context;
@@ -24,7 +24,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   bool isWeb = true;
 
   String keyword = "";
-  SupportedSport selectedSport = SupportedSport.ALL;
+  SupportedSport selectedSport = SupportedSport.all;
   List<Token> tokenListFilter = [];
 
   @override
@@ -48,7 +48,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
             token.ticker.toUpperCase().contains(keyword.toUpperCase()) ||
                 token.name.toUpperCase().contains(keyword.toUpperCase());
         bool flagSport =
-            selectedSport == SupportedSport.ALL || token.sport == selectedSport;
+            selectedSport == SupportedSport.all || token.sport == selectedSport;
         return flagKeyword && flagSport;
       }).toList();
     });
@@ -179,11 +179,11 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
       Container(
           child: TextButton(
         onPressed: () {
-          setSelectedSport(SupportedSport.ALL);
+          setSelectedSport(SupportedSport.all);
         },
         child: Text("ALL",
             style: textSwapState(
-                selectedSport == SupportedSport.ALL,
+                selectedSport == SupportedSport.all,
                 textStyle(Colors.white, 14, false),
                 textStyle(Colors.amber[400]!, 14, false))),
       )),

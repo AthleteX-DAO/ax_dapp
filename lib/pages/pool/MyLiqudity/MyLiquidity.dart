@@ -37,7 +37,7 @@ class BadgeToken extends StatelessWidget {
       shape: BadgeShape.square,
       borderRadius: BorderRadius.circular(8),
       badgeContent: Text(
-        SupportedSportName[sport]!,
+        sport.name.toUpperCase(),
         style: textStyle(Colors.white, 12, true),
       ),
       position: BadgePosition.topEnd(top: -14, end: -14),
@@ -51,7 +51,8 @@ class BadgeToken extends StatelessWidget {
 }
 
 class SimpleToken extends StatelessWidget {
-  const SimpleToken(this.symbol);
+  const SimpleToken({super.key, required this.symbol});
+
   final String symbol;
 
   @override
@@ -78,7 +79,7 @@ class SportToken extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (sport == SupportedSport.ALL) return SimpleToken(symbol);
+    if (sport == SupportedSport.all) return SimpleToken(symbol: symbol);
     return BadgeToken(sport: sport, symbol: symbol);
   }
 }

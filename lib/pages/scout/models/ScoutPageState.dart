@@ -4,20 +4,23 @@ import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:equatable/equatable.dart';
 
 class ScoutPageState extends Equatable {
+  factory ScoutPageState.initial() {
+    return ScoutPageState(
+        athletes: [],
+        filteredAthletes: [],
+        status: BlocStatus.initial,
+        selectedSport: SupportedSport.all);
+  }
   final List<AthleteScoutModel> athletes;
   final List<AthleteScoutModel> filteredAthletes;
   final SupportedSport selectedSport;
   final BlocStatus status;
-  ScoutPageState({
+  const ScoutPageState({
     required this.athletes,
     required this.filteredAthletes,
     required this.selectedSport,
     required this.status,
   });
-
-  factory ScoutPageState.initial() {
-    return ScoutPageState(athletes: [], filteredAthletes: [], status: BlocStatus.initial, selectedSport: SupportedSport.ALL);
-  }
 
   ScoutPageState copyWith({
     List<AthleteScoutModel>? filteredAthletes,
@@ -37,5 +40,6 @@ class ScoutPageState extends Equatable {
   List<Object> get props => [athletes, filteredAthletes, selectedSport, status];
 
   @override
-  String toString() => 'ScoutPageState(cards: $athletes, status: $status, filteredAthletes: $filteredAthletes, selectedSport: $selectedSport)';
+  String toString() =>
+      'ScoutPageState(cards: $athletes, status: $status, filteredAthletes: $filteredAthletes, selectedSport: $selectedSport)';
 }

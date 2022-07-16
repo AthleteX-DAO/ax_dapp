@@ -43,7 +43,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   bool athletePage = false;
   static bool isLongToken = true;
   static int sportState = 0;
-  static SupportedSport supportedSport = SupportedSport.ALL;
+  static SupportedSport supportedSport = SupportedSport.all;
   String allSportsTitle = 'All Sports';
   String longTitle = 'Long';
   AthleteScoutModel? curAthlete;
@@ -167,14 +167,14 @@ class _DesktopScoutState extends State<DesktopScout> {
           onPressed: () {
             myController.clear();
             setState(() {
-              supportedSport = SupportedSport.ALL;
+              supportedSport = SupportedSport.all;
             });
-            bloc.add(SelectSport(selectedSport: SupportedSport.ALL));
+            bloc.add(SelectSport(selectedSport: SupportedSport.all));
           },
           child: Text(
             'ALL',
             style: textSwapState(
-              supportedSport == SupportedSport.ALL,
+              supportedSport == SupportedSport.all,
               textStyle(Colors.white, sportFilterTxSz, false, false),
               textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
@@ -632,7 +632,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Row(
-              children: <Widget>[
+              children: [
                 AthleteDetailsWidget(athlete)
                     .athleteDetailsCardsForMobile(team, _width, athNameBx),
                 // Market Price / Change

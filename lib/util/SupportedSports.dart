@@ -1,8 +1,2 @@
-enum SupportedSport { ALL, NFL, MLB, NBA }
-
-const Map<SupportedSport, String> SupportedSportName = {
-  SupportedSport.ALL: "ALL",
-  SupportedSport.NFL: "NFL",
-  SupportedSport.MLB: "MLB",
-  SupportedSport.NBA: "NBA"
-};
+// ignore: constant_identifier_names
+enum SupportedSport { all, NFL, MLB, NBA }
