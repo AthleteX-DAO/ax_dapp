@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
+// ignore_for_file: avoid_web_libraries_in_flutter, avoid_dynamic_calls
 
 import 'dart:developer';
 import 'dart:html';

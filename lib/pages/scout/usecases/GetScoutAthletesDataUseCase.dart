@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/pages/scout/models/MarketModel.dart';
 import 'package:ax_dapp/pages/scout/models/SportsModel/MLBAthleteScoutModel.dart';

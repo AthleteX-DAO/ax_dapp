@@ -1,3 +1,5 @@
+// ignore_for_file: only_throw_errors, avoid_dynamic_calls
+
 import 'package:ax_dapp/pages/farm/models/FarmModel.dart';
 import 'package:ax_dapp/service/GraphQL/GysrApi.dart';
 

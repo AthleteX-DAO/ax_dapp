@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'dart:developer';
 
 import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';

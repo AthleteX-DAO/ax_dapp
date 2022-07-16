@@ -4,8 +4,6 @@ linter:
   rules:
     file_names: false
     public_member_api_docs: false
-    only_throw_errors: false
-    avoid_dynamic_calls: false
 
 analyzer:
   exclude: [lib/**.g.dart]
