@@ -20,12 +20,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-final _dio = Dio();
-final _mlbApi = MLBAthleteAPI(_dio);
-final _coinGeckoApi = CoinGeckoApi();
-final _graphQLClientHelper =
-    GraphQLClientHelper(GraphQLConfiguration.athleteDexApiLink);
 void main() async {
+  final _dio = Dio();
+  final _mlbApi = MLBAthleteAPI(_dio);
+  final _coinGeckoApi = CoinGeckoApi();
+  final _graphQLClientHelper =
+      GraphQLClientHelper(GraphQLConfiguration.athleteDexApiLink);
   final _gQLClient = await _graphQLClientHelper.initializeClient();
   final _subGraphRepo = SubGraphRepo(_gQLClient.value);
   final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
