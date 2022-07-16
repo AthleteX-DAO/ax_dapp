@@ -51,7 +51,10 @@ class NoStatsShownWidget implements AthleteDetailsWidget {
 
   @override
   Widget athleteDetailsCardsForWeb(
-      bool team, double? _width, double? athNameBx) {
+    bool team,
+    double? _width,
+    double? athNameBx,
+  ) {
     return const Center(
       child: Text('No data shown for Athlete Card'),
     );
@@ -59,7 +62,10 @@ class NoStatsShownWidget implements AthleteDetailsWidget {
 
   @override
   Widget athleteDetailsCardsForMobile(
-      bool team, double _width, double athNameBx) {
+    bool team,
+    double _width,
+    double athNameBx,
+  ) {
     return const Center(
       child: Text('No data shown for Athlete Card'),
     );

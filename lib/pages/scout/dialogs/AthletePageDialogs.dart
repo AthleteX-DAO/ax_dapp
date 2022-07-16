@@ -1,2 +1,2 @@
-export "MintDialog.dart";
-export "RedeemDialog.dart";
+export 'MintDialog.dart';
+export 'RedeemDialog.dart';

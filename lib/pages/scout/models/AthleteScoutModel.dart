@@ -1,6 +1,25 @@
 import 'package:ax_dapp/util/SupportedSports.dart';
 
 class AthleteScoutModel {
+  AthleteScoutModel({
+    required this.id,
+    required this.name,
+    required this.position,
+    required this.team,
+    required this.longTokenBookPrice,
+    required this.longTokenBookPriceUsd,
+    required this.shortTokenBookPrice,
+    required this.shortTokenBookPriceUsd,
+    required this.sport,
+    required this.time,
+    required this.longTokenPrice,
+    required this.shortTokenPrice,
+    required this.longTokenPercentage,
+    required this.shortTokenPercentage,
+    required this.longTokenPriceUsd,
+    required this.shortTokenPriceUsd,
+  });
+
   final int id;
   final String name;
   final String position;
@@ -17,22 +36,4 @@ class AthleteScoutModel {
   final double? longTokenPercentage;
   final double? shortTokenPercentage;
   final double? shortTokenPriceUsd;
-
-  AthleteScoutModel(
-      {required this.id,
-      required this.name,
-      required this.position,
-      required this.team,
-      required this.longTokenBookPrice,
-      required this.longTokenBookPriceUsd,
-      required this.shortTokenBookPrice,
-      required this.shortTokenBookPriceUsd,
-      required this.sport,
-      required this.time,
-      required this.longTokenPrice,
-      required this.shortTokenPrice,
-      required this.longTokenPercentage,
-      required this.shortTokenPercentage,
-      required this.longTokenPriceUsd,
-      required this.shortTokenPriceUsd});
 }

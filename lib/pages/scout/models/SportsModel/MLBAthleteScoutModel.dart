@@ -1,32 +1,23 @@
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
-import 'package:ax_dapp/util/SupportedSports.dart';
 
 class MLBAthleteScoutModel extends AthleteScoutModel {
-  final double homeRuns;
-  final double strikeOuts;
-  final double saves;
-  final double stolenBases;
-  final double atBats;
-  final double weightedOnBasePercentage;
-  final double errors;
-  final double inningsPlayed;
   MLBAthleteScoutModel({
-    required int id,
-    required String name,
-    required String position,
-    required String team,
-    required double longTokenBookPrice,
-    required double longTokenBookPriceUsd,
-    required double shortTokenBookPrice,
-    required double shortTokenBookPriceUsd,
-    required SupportedSport sport,
-    required String time,
-    required double longTokenPrice,
-    required double shortTokenPrice,
-    required double longTokenPercentage,
-    required double shortTokenPercentage,
-    required double longTokenPriceUsd,
-    required double shortTokenPriceUsd,
+    required super.id,
+    required super.name,
+    required super.position,
+    required super.team,
+    required double super.longTokenBookPrice,
+    required double super.longTokenBookPriceUsd,
+    required double super.shortTokenBookPrice,
+    required double super.shortTokenBookPriceUsd,
+    required super.sport,
+    required super.time,
+    required double super.longTokenPrice,
+    required double super.shortTokenPrice,
+    required double super.longTokenPercentage,
+    required double super.shortTokenPercentage,
+    required double super.longTokenPriceUsd,
+    required double super.shortTokenPriceUsd,
     required this.homeRuns,
     required this.strikeOuts,
     required this.saves,
@@ -35,21 +26,14 @@ class MLBAthleteScoutModel extends AthleteScoutModel {
     required this.weightedOnBasePercentage,
     required this.errors,
     required this.inningsPlayed,
-  }) : super(
-            id: id,
-            name: name,
-            position: position,
-            team: team,
-            longTokenBookPrice: longTokenBookPrice,
-            longTokenBookPriceUsd: longTokenBookPriceUsd,
-            shortTokenBookPrice: shortTokenBookPrice,
-            shortTokenBookPriceUsd: shortTokenBookPriceUsd,
-            sport: sport,
-            time: time,
-            longTokenPrice: longTokenPrice,
-            shortTokenPrice: shortTokenPrice,
-            longTokenPercentage: longTokenPercentage,
-            shortTokenPercentage: shortTokenPercentage,
-            longTokenPriceUsd: longTokenPriceUsd,
-            shortTokenPriceUsd: shortTokenPriceUsd);
+  });
+
+  final double homeRuns;
+  final double strikeOuts;
+  final double saves;
+  final double stolenBases;
+  final double atBats;
+  final double weightedOnBasePercentage;
+  final double errors;
+  final double inningsPlayed;
 }

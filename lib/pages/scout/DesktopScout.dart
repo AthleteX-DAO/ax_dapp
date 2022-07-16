@@ -3,7 +3,8 @@
 import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 import 'package:ax_dapp/pages/athlete/AthletePage.dart';
-import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart';
+import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart'
+    hide OnPageRefresh;
 import 'package:ax_dapp/pages/scout/Widget%20Factories/AthleteDetailsWidget.dart';
 import 'package:ax_dapp/pages/scout/bloc/ScoutPageBloc.dart';
 import 'package:ax_dapp/pages/scout/components/filter_menu_error.dart';
@@ -11,8 +12,6 @@ import 'package:ax_dapp/pages/scout/components/scout_loading.dart';
 import 'package:ax_dapp/pages/scout/components/scout_loading_error.dart';
 import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
-import 'package:ax_dapp/pages/scout/models/ScoutPageEvent.dart';
-import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
@@ -145,9 +144,9 @@ class _DesktopScoutState extends State<DesktopScout> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        if (state.status == BlocStatus.loading) ScoutLoading(),
-        if (state.status == BlocStatus.error) ScoutLoadingError(),
-        if (state.status == BlocStatus.no_data) FilterMenuError(),
+        if (state.status == BlocStatus.loading) const ScoutLoading(),
+        if (state.status == BlocStatus.error) const ScoutLoadingError(),
+        if (state.status == BlocStatus.no_data) const FilterMenuError(),
         buildListview(state, filteredAthletes)
       ],
     );
@@ -169,7 +168,7 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               supportedSport = SupportedSport.all;
             });
-            bloc.add(SelectSport(selectedSport: SupportedSport.all));
+            bloc.add(const SelectSport(selectedSport: SupportedSport.all));
           },
           child: Text(
             'ALL',
@@ -186,7 +185,7 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               supportedSport = SupportedSport.MLB;
             });
-            bloc.add(SelectSport(selectedSport: SupportedSport.MLB));
+            bloc.add(const SelectSport(selectedSport: SupportedSport.MLB));
           },
           child: Text(
             'MLB',

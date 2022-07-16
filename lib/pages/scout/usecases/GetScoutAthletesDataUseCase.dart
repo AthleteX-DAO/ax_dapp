@@ -219,7 +219,7 @@ class GetScoutAthletesDataUseCase {
               longTokenBookPriceUsd: longToken.bookPrice * axPrice,
               shortTokenBookPrice: shortToken.bookPrice,
               shortTokenBookPriceUsd: shortToken.bookPrice * axPrice,
-              //TODO: check for sport
+              // TODO(anyone): check for sport
               sport: repo.sport,
               time: athlete.timeStamp,
               longTokenPrice: longToken.marketPrice,
