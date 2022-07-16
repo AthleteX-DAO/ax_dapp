@@ -6,94 +6,95 @@ import 'package:decimal/decimal.dart';
 import 'package:fpdart/fpdart.dart';
 
 class GetAllLiquidityInfoUseCase {
+  GetAllLiquidityInfoUseCase(this._graphRepo);
   final SubGraphRepo _graphRepo;
 
-  GetAllLiquidityInfoUseCase(this._graphRepo);
-
-  Future<Either<Success, SubgraphError>> fetchAllLiquidityPositions(
-      {required String walletAddress}) async {
+  Future<Either<Success, SubgraphError>> fetchAllLiquidityPositions({
+    required String walletAddress,
+  }) async {
     final walletId = walletAddress.toLowerCase();
     try {
-      print("wallet address: $walletId");
-      print("fetching liquidity pairs info");
       final tokenPairData = await _graphRepo.queryAllPairsForWalletId(walletId);
 
       if (tokenPairData.isLeft()) {
         final data = tokenPairData.getLeft().toNullable();
-        print("data retrieved: ${data.toString()}");
-        final user = data!["user"];
+        final user = data!['user'];
         if (user != null) {
-          print("user retrieved: ${user.toString()}");
-          final liquidityPositions = user["liquidityPositions"];
-          print("liquidityPositions =  ${liquidityPositions.toString()}");
-          List<LiquidityPosition> liquidityPositionsParsed = liquidityPositions
-              .map<LiquidityPosition>((liquidityPosition) =>
-                  LiquidityPosition.fromJson(liquidityPosition))
-              .toList();
-          final List<LiquidityPositionInfo> liquidityPositionsWithZeroBalance =
-              liquidityPositionsParsed
-                  .map((liquidityPosition) =>
-                      getMyLiquidityItemInfoFromLiquidityPosition(
-                          liquidityPosition))
+          final liquidityPositions =
+              user['liquidityPositions'] as List<dynamic>;
+          final liquidityPositionsParsed =
+              List<Map<String, dynamic>>.from(liquidityPositions)
+                  .map<LiquidityPosition>(LiquidityPosition.fromJson)
                   .toList();
-          final List<LiquidityPositionInfo> liquidityPositionsNoZeroBalance =
+          final liquidityPositionsWithZeroBalance = liquidityPositionsParsed
+              .map(getMyLiquidityItemInfoFromLiquidityPosition)
+              .toList();
+          final liquidityPositionsNoZeroBalance =
               liquidityPositionsWithZeroBalance
-                  .where((lpPosition) => lpPosition.lpTokenPairBalance != '0.000000').toList();
-          print(liquidityPositionsNoZeroBalance);
+                  .where(
+                    (lpPosition) => lpPosition.lpTokenPairBalance != '0.000000',
+                  )
+                  .toList();
           return Either.left(Success(liquidityPositionsNoZeroBalance));
         } else {
-          return Either.left(Success(null));
+          return Either.left(const Success(null));
         }
       } else {
-        return Either.right(SubgraphError(
-            "Failed to fetch allLiquidityPairsInfo from Subgraph"));
+        return Either.right(
+          const SubgraphError(
+            'Failed to fetch allLiquidityPairsInfo from Subgraph',
+          ),
+        );
       }
     } catch (e) {
-      var errorMsg = "Error occurred fetching allLiquidityPairsInfo: $e";
-      print(errorMsg);
+      final errorMsg = 'Error occurred fetching allLiquidityPairsInfo: $e';
       return Either.right(SubgraphError(errorMsg));
     }
   }
 
   LiquidityPositionInfo getMyLiquidityItemInfoFromLiquidityPosition(
-      LiquidityPosition liquidityPosition) {
-    final String token0Name = liquidityPosition.pair.token0.name;
-    final String token1Name = liquidityPosition.pair.token1.name;
-    final String token0Symbol = liquidityPosition.pair.token0.symbol!;
-    final String token1Symbol = liquidityPosition.pair.token1.symbol!;
-    final String token0Address = liquidityPosition.pair.token0.id;
-    final String token1Address = liquidityPosition.pair.token1.id;
-    final String lpTokenPairAddress = liquidityPosition.pair.id;
-    final Decimal reserve0 = Decimal.parse(liquidityPosition.pair.reserve0);
-    final Decimal reserve1 = Decimal.parse(liquidityPosition.pair.reserve1);
-    final Decimal lpTokenPairBalance =
+    LiquidityPosition liquidityPosition,
+  ) {
+    final token0Name = liquidityPosition.pair.token0.name;
+    final token1Name = liquidityPosition.pair.token1.name;
+    final token0Symbol = liquidityPosition.pair.token0.symbol!;
+    final token1Symbol = liquidityPosition.pair.token1.symbol!;
+    final token0Address = liquidityPosition.pair.token0.id;
+    final token1Address = liquidityPosition.pair.token1.id;
+    final lpTokenPairAddress = liquidityPosition.pair.id;
+    final reserve0 = Decimal.parse(liquidityPosition.pair.reserve0);
+    final reserve1 = Decimal.parse(liquidityPosition.pair.reserve1);
+    final lpTokenPairBalance =
         Decimal.parse(liquidityPosition.liquidityTokenBalance);
-    final Decimal lpTokenTotalSupply =
+    final lpTokenTotalSupply =
         Decimal.parse(liquidityPosition.pair.totalSupply!);
-    final Decimal shareOfPool = (lpTokenPairBalance / lpTokenTotalSupply)
-        .toDecimal(
-            scaleOnInfinitePrecision:
-                37); //TODO: How to round irrational numbers? https://athletex.atlassian.net/browse/AX-519
-    final Decimal token0LpAmount = (shareOfPool * reserve0);
-    final Decimal token1LpAmount = (shareOfPool * reserve1);
-    final String apy = '0'; // TODO: Implement APY calculation. https://athletex.atlassian.net/browse/AX-509
+    final shareOfPool = (lpTokenPairBalance / lpTokenTotalSupply).toDecimal(
+      scaleOnInfinitePrecision: 37,
+    );
+    // TODO(Jak): How to round irrational numbers? https://athletex.atlassian.net/browse/AX-519
+    final token0LpAmount = shareOfPool * reserve0;
+    final token1LpAmount = shareOfPool * reserve1;
+    const apy = '0';
+    // TODO(Jak): Implement APY calculation. https://athletex.atlassian.net/browse/AX-509
     return LiquidityPositionInfo(
-        token0Name: token0Name,
-        token1Name: token1Name,
-        token0Symbol: token0Symbol,
-        token1Symbol: token1Symbol,
-        token0Address: token0Address,
-        token1Address: token1Address,
-        lpTokenPairAddress: lpTokenPairAddress,
-        lpTokenPairBalance: lpTokenPairBalance.toStringAsFixed(6),
-        token0LpAmount: token0LpAmount.toStringAsFixed(6),
-        token1LpAmount: token1LpAmount.toStringAsFixed(6),
-        shareOfPool: (shareOfPool * Decimal.fromInt(100)).toStringAsFixed(6),
-        apy: apy);
+      token0Name: token0Name,
+      token1Name: token1Name,
+      token0Symbol: token0Symbol,
+      token1Symbol: token1Symbol,
+      token0Address: token0Address,
+      token1Address: token1Address,
+      lpTokenPairAddress: lpTokenPairAddress,
+      lpTokenPairBalance: lpTokenPairBalance.toStringAsFixed(6),
+      token0LpAmount: token0LpAmount.toStringAsFixed(6),
+      token1LpAmount: token1LpAmount.toStringAsFixed(6),
+      shareOfPool: (shareOfPool * Decimal.fromInt(100)).toStringAsFixed(6),
+      apy: apy,
+    );
   }
 }
 
 class Success {
+  const Success(this.liquidityPositionsList);
+
   final List<LiquidityPositionInfo>? liquidityPositionsList;
-  Success(this.liquidityPositionsList);
 }
