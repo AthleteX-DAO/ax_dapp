@@ -1,16 +1,7 @@
-part of 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
+part of 'TradePageBloc.dart';
 
 class TradePageState extends Equatable {
-  final double tokenToBalance;
-  final double tokenFromBalance;
-  final double tokenInputFromAmount;
-  final double tokenInputToAmount;
-  final BlocStatus status;
-  final Token tokenFrom;
-  final Token tokenTo;
-  final TokenSwapInfo swapInfo;
-
-  TradePageState({
+  const TradePageState({
     required this.tokenToBalance,
     required this.tokenFromBalance,
     required this.tokenInputFromAmount,
@@ -21,10 +12,11 @@ class TradePageState extends Equatable {
     required this.swapInfo,
   });
 
+  // ignore: avoid_positional_boolean_parameters
   factory TradePageState.initial(Controller controller, bool isBuyAX) {
-    final int networkID = controller.networkID.value;
-    Token tokenFrom = TokenList.tokenList[TokenIndex.ax];
-    Token tokenTo = TokenList.tokenList[TokenIndex.weth];
+    final networkID = controller.networkID.value;
+    var tokenFrom = TokenList.tokenList[TokenIndex.ax];
+    var tokenTo = TokenList.tokenList[TokenIndex.weth];
     if (isBuyAX) {
       if (networkID == Controller.mainnetChainId) {
         tokenFrom = TokenList.tokenList[TokenIndex.matic];
@@ -35,15 +27,25 @@ class TradePageState extends Equatable {
       }
     }
     return TradePageState(
-        tokenToBalance: 0,
-        tokenFromBalance: 0,
-        tokenInputFromAmount: 0,
-        tokenInputToAmount: 0,
-        status: BlocStatus.initial,
-        tokenFrom: tokenFrom,
-        tokenTo: tokenTo,
-        swapInfo: TokenSwapInfo.empty());
+      tokenToBalance: 0,
+      tokenFromBalance: 0,
+      tokenInputFromAmount: 0,
+      tokenInputToAmount: 0,
+      status: BlocStatus.initial,
+      tokenFrom: tokenFrom,
+      tokenTo: tokenTo,
+      swapInfo: TokenSwapInfo.empty(),
+    );
   }
+
+  final double tokenToBalance;
+  final double tokenFromBalance;
+  final double tokenInputFromAmount;
+  final double tokenInputToAmount;
+  final BlocStatus status;
+  final Token tokenFrom;
+  final Token tokenTo;
+  final TokenSwapInfo swapInfo;
 
   @override
   List<Object> get props {

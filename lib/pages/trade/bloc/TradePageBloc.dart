@@ -9,24 +9,17 @@ import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'package:ax_dapp/pages/trade/models/TradePageEvent.dart';
-part 'package:ax_dapp/pages/trade/models/TradePageState.dart';
+part 'TradePageEvent.dart';
+part 'TradePageState.dart';
 
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
-  GetSwapInfoUseCase repo;
-  Controller controller;
-  SwapController swapController;
-  WalletController walletController;
-  bool isBuyAX;
-
-  TradePageBloc(
-      {required this.repo,
-      required this.controller,
-      required this.swapController,
-      required this.walletController,
-      required this.isBuyAX})
-      : super(TradePageState.initial(controller, isBuyAX)) {
-    print("Active Chain ${this.controller.networkID.value}");
+  TradePageBloc({
+    required this.repo,
+    required this.controller,
+    required this.swapController,
+    required this.walletController,
+    required this.isBuyAX,
+  }) : super(TradePageState.initial(controller, isBuyAX)) {
     on<PageRefreshEvent>(_mapRefreshEventToState);
     on<MaxSwapTapEvent>(_mapMaxSwapTapEventToState);
     on<NewTokenFromInputEvent>(_mapNewTokenFromInputEventToState);
@@ -36,56 +29,69 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     on<SwapTokens>(_mapSwapTokensEventToState);
   }
 
-  void _mapRefreshEventToState(
-      PageRefreshEvent event, Emitter<TradePageState> emit) async {
+  final GetSwapInfoUseCase repo;
+  final Controller controller;
+  final SwapController swapController;
+  final WalletController walletController;
+  final bool isBuyAX;
+
+  Future<void> _mapRefreshEventToState(
+    PageRefreshEvent event,
+    Emitter<TradePageState> emit,
+  ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final tokenFromBalance =
           await walletController.getTokenBalance(state.tokenFrom.address.value);
       final tokenToBalance =
           await walletController.getTokenBalance(state.tokenTo.address.value);
-      emit(state.copyWith(
+      emit(
+        state.copyWith(
           tokenFromBalance: double.parse(tokenFromBalance),
-          tokenToBalance: double.parse(tokenToBalance)));
+          tokenToBalance: double.parse(tokenToBalance),
+        ),
+      );
       final response = await repo.fetchSwapInfo(
-          tokenFrom: state.tokenFrom.address.value,
-          tokenTo: state.tokenTo.address.value);
+        tokenFrom: state.tokenFrom.address.value,
+        tokenTo: state.tokenTo.address.value,
+      );
       final isSuccess = response.isLeft();
-      print("isSuccess - $isSuccess");
       if (isSuccess) {
-        swapController.updateFromAddress(state.tokenFrom.address.value);
-        swapController.updateToAddress(state.tokenTo.address.value);
+        swapController
+          ..updateFromAddress(state.tokenFrom.address.value)
+          ..updateToAddress(state.tokenTo.address.value);
         final swapInfo = response.getLeft().toNullable()!.swapInfo;
 
         //do some math
-        emit(state.copyWith(
-          status: BlocStatus.success,
-          swapInfo: swapInfo,
-        ));
+        emit(
+          state.copyWith(
+            status: BlocStatus.success,
+            swapInfo: swapInfo,
+          ),
+        );
       } else {
-        final errorMsg = response.getRight().toNullable()!.errorMsg;
-        //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        print(errorMsg);
+        // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(state.copyWith(status: BlocStatus.error));
       }
-    } catch (e) {
+    } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
     }
   }
 
-  void _mapNewTokenFromInputEventToState(
-      NewTokenFromInputEvent event, Emitter<TradePageState> emit) async {
+  Future<void> _mapNewTokenFromInputEventToState(
+    NewTokenFromInputEvent event,
+    Emitter<TradePageState> emit,
+  ) async {
     final tokenInputFromAmount = event.tokenInputFromAmount;
-    print("On New Apt Input: $tokenInputFromAmount");
     try {
       final response = await repo.fetchSwapInfo(
-          tokenFrom: state.tokenFrom.address.value,
-          tokenTo: state.tokenTo.address.value,
-          fromInput: tokenInputFromAmount);
+        tokenFrom: state.tokenFrom.address.value,
+        tokenTo: state.tokenTo.address.value,
+        fromInput: tokenInputFromAmount,
+      );
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
-        print("On New Apt Input: Success");
         if (swapController.amount1.value != tokenInputFromAmount) {
           swapController.updateFromAmount(tokenInputFromAmount);
         }
@@ -93,59 +99,71 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         //do some math
         emit(state.copyWith(status: BlocStatus.success, swapInfo: swapInfo));
       } else {
-        print("On New Apt Input: Failure");
-        final errorMsg = response.getRight().toNullable()!.errorMsg;
-        //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        print(errorMsg);
+        // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(state.copyWith(status: BlocStatus.error));
       }
-    } catch (e) {
+    } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
     }
   }
 
-  void _mapNewTokenToInputEventToState(
-      NewTokenToInputEvent event, Emitter<TradePageState> emit) async {}
+  Future<void> _mapNewTokenToInputEventToState(
+    NewTokenToInputEvent event,
+    Emitter<TradePageState> emit,
+  ) async {}
 
-  void _mapMaxSwapTapEventToState(
-      MaxSwapTapEvent event, Emitter<TradePageState> emit) async {
+  Future<void> _mapMaxSwapTapEventToState(
+    MaxSwapTapEvent event,
+    Emitter<TradePageState> emit,
+  ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final tokenFromBalance =
           await walletController.getTokenBalance(state.tokenFrom.address.value);
       final maxInput = double.parse(tokenFromBalance);
-      emit(state.copyWith(
-          tokenInputFromAmount: maxInput, tokenFromBalance: maxInput));
-    } catch (e) {
-      //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-      print(e);
+      emit(
+        state.copyWith(
+          tokenInputFromAmount: maxInput,
+          tokenFromBalance: maxInput,
+        ),
+      );
+    } catch (_) {
+      // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
       emit(state.copyWith(status: BlocStatus.error));
     }
   }
 
   void _mapSetTokenFromEventToState(
-      SetTokenFrom event, Emitter<TradePageState> emit) {
-    print("Updating tokenFrom: ${event.tokenFrom.address.value}");
+    SetTokenFrom event,
+    Emitter<TradePageState> emit,
+  ) {
     swapController.updateFromAddress(event.tokenFrom.address.value);
     emit(state.copyWith(tokenFrom: event.tokenFrom));
   }
 
   void _mapSetTokenToEventToState(
-      SetTokenTo event, Emitter<TradePageState> emit) {
+    SetTokenTo event,
+    Emitter<TradePageState> emit,
+  ) {
     swapController.updateToAddress(event.tokenTo.address.value);
     emit(state.copyWith(tokenTo: event.tokenTo));
   }
 
   void _mapSwapTokensEventToState(
-      SwapTokens event, Emitter<TradePageState> emit) {
-    final Token? tokenFrom = state.tokenTo;
-    final Token? tokenTo = state.tokenFrom;
+    SwapTokens event,
+    Emitter<TradePageState> emit,
+  ) {
+    final tokenFrom = state.tokenTo;
+    final tokenTo = state.tokenFrom;
     final tokenInputFromAmount = state.tokenInputToAmount;
     final tokenInputToAmount = state.tokenInputFromAmount;
-    emit(state.copyWith(
+    emit(
+      state.copyWith(
         tokenFrom: tokenFrom,
         tokenTo: tokenTo,
         tokenInputFromAmount: tokenInputFromAmount,
-        tokenInputToAmount: tokenInputToAmount));
+        tokenInputToAmount: tokenInputToAmount,
+      ),
+    );
   }
 }

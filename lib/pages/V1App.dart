@@ -35,7 +35,7 @@ import 'package:url_launcher/url_launcher.dart';
 enum Pages { scout, trade, pool, farm }
 
 class V1App extends StatefulWidget {
-  const V1App({Key? key}) : super(key: key);
+  const V1App({super.key});
 
   @override
   State<V1App> createState() => _V1AppState();
@@ -643,7 +643,6 @@ class _V1AppState extends State<V1App> {
     );
   }
 
-  // ignore: avoid_positional_boolean_parameters
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
     // ignore: curly_braces_in_flow_control_structures
     if (isBold) if (isUline) {
