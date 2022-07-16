@@ -26,10 +26,10 @@ class TradePageState extends Equatable {
     Token tokenFrom = TokenList.tokenList[TokenIndex.ax];
     Token tokenTo = TokenList.tokenList[TokenIndex.weth];
     if (isBuyAX) {
-      if (networkID == Controller.MAINNET_CHAIN_ID) {
+      if (networkID == Controller.mainnetChainId) {
         tokenFrom = TokenList.tokenList[TokenIndex.matic];
         tokenTo = TokenList.tokenList[TokenIndex.ax];
-      } else if (networkID == Controller.MAINNET_SX_CHAIN_ID) {
+      } else if (networkID == Controller.mainnetSXChainId) {
         tokenFrom = TokenList.tokenList[TokenIndex.sx];
         tokenTo = TokenList.tokenList[TokenIndex.ax];
       }

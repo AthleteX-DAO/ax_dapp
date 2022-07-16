@@ -1,4 +1,6 @@
-// ignore_for_file: implementation_imports, avoid_web_libraries_in_flutter, unused_local_variable
+// ignore_for_file: implementation_imports
+// ignore_for_file: avoid_web_libraries_in_flutter
+// ignore_for_file: unused_local_variable
 
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
@@ -10,8 +12,13 @@ import 'package:web3dart/web3dart.dart';
 // Token must be swappable
 class Token extends GetxController {
   // All ' token ' classes inherit the SAME controller ( super important!!!)
-  Token(this.name, this.ticker, tokenAddress,
-      [this.icon, this.sport = SupportedSport.all]) {
+  Token(
+    this.name,
+    this.ticker,
+    String tokenAddress, [
+    this.icon,
+    this.sport = SupportedSport.all,
+  ]) {
     updateAddress(tokenAddress);
     ethAddress = EthereumAddress.fromHex(address.value);
     erc20 = ERC20(address: ethAddress, client: controller.client.value);
@@ -28,7 +35,7 @@ class Token extends GetxController {
   Rx<BigInt> totalSupply = BigInt.zero.obs;
   SupportedSport sport = SupportedSport.all;
 
-  updateAddress(String newAddress) {
+  void updateAddress(String newAddress) {
     address.value = newAddress;
     update();
   }
