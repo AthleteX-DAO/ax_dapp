@@ -2,26 +2,27 @@ import 'package:ax_dapp/pages/pool/MyLiqudity/models/MyLiquidityItemInfo.dart';
 import 'package:ax_dapp/repositories/usecases/GetAllLiquidityInfoUseCase.dart';
 import 'package:ax_dapp/service/Controller/usecases/GetWalletAddressUseCase.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'MyLiquidityEvent.dart';
 part 'MyLiquidityState.dart';
 
 class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
-  final GetWalletAddressUseCase controller;
-  final GetAllLiquidityInfoUseCase repo;
-
   MyLiquidityBloc({required this.repo, required this.controller})
       : super(MyLiquidityState.initial()) {
     on<LoadEvent>(_mapLoadEventToState);
     on<SearchBarInputEvent>(_mapSearchBarInputEventToState);
   }
+  final GetWalletAddressUseCase controller;
+  final GetAllLiquidityInfoUseCase repo;
 
   Future<void> _mapLoadEventToState(
-      LoadEvent event, Emitter<MyLiquidityState> emit) async {
+    LoadEvent event,
+    Emitter<MyLiquidityState> emit,
+  ) async {
     emit(state.copyWith(status: BlocStatus.loading));
-    final String? walletAddress = controller.getWalletAddress();
+    final walletAddress = controller.getWalletAddress();
     try {
       if (walletAddress != null) {
         final response =
@@ -31,17 +32,18 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
           final liquidityPositionsList =
               response.getLeft().toNullable()!.liquidityPositionsList;
           if (liquidityPositionsList != null) {
-            emit(state.copyWith(
+            emit(
+              state.copyWith(
                 cards: liquidityPositionsList,
                 filteredCards: liquidityPositionsList,
-                status: BlocStatus.success));
+                status: BlocStatus.success,
+              ),
+            );
           } else {
             emit(state.copyWith(status: BlocStatus.no_data));
           }
         } else {
-          final errorMsg = response.getRight().toNullable()!.errorMsg;
-          //TODO Create User facing error messages
-          print(errorMsg);
+          // TODO(anyone): Create User facing error messages
           emit(state.copyWith(status: BlocStatus.error));
         }
       } else {
@@ -53,21 +55,33 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
   }
 
   Future<void> _mapSearchBarInputEventToState(
-      SearchBarInputEvent event, Emitter<MyLiquidityState> emit) async {
+    SearchBarInputEvent event,
+    Emitter<MyLiquidityState> emit,
+  ) async {
     emit(state.copyWith(status: BlocStatus.loading));
-    String parsedInput = event.searchBarInput.trim().toLowerCase();
-    final List<LiquidityPositionInfo> filteredList = state.cards
-        .where((liquidityPosition) =>
-            liquidityPosition.token0Name.toLowerCase().contains(parsedInput) ||
-            liquidityPosition.token1Name.toLowerCase().contains(parsedInput) ||
-            liquidityPosition.token0Symbol
-                .toLowerCase()
-                .contains(parsedInput) ||
-            liquidityPosition.token1Symbol.toLowerCase().contains(parsedInput))
+    final parsedInput = event.searchBarInput.trim().toLowerCase();
+    final filteredList = state.cards
+        .where(
+          (liquidityPosition) =>
+              liquidityPosition.token0Name
+                  .toLowerCase()
+                  .contains(parsedInput) ||
+              liquidityPosition.token1Name
+                  .toLowerCase()
+                  .contains(parsedInput) ||
+              liquidityPosition.token0Symbol
+                  .toLowerCase()
+                  .contains(parsedInput) ||
+              liquidityPosition.token1Symbol
+                  .toLowerCase()
+                  .contains(parsedInput),
+        )
         .toList();
-    emit(state.copyWith(
-      status: BlocStatus.success,
-      filteredCards: filteredList,
-    ));
+    emit(
+      state.copyWith(
+        status: BlocStatus.success,
+        filteredCards: filteredList,
+      ),
+    );
   }
 }

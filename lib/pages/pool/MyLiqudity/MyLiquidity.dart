@@ -126,7 +126,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
               Colors.grey[400]!,
             ),
             child: Column(
-              children: <Widget>[
+              children: [
                 //Item's title with icons
                 Row(
                   children: [
@@ -174,7 +174,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                        children: [
                           Text(
                             'Your Pool Tokens:',
                             style: TextStyle(
@@ -193,7 +193,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                        children: [
                           Text(
                             'Pooled ${liquidityPositionInfo.token0Symbol}',
                             style: TextStyle(
@@ -212,7 +212,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                        children: [
                           Text(
                             'Pooled ${liquidityPositionInfo.token1Symbol}',
                             style: TextStyle(
@@ -231,7 +231,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                        children: [
                           Text(
                             'Your Pool Share:',
                             style: TextStyle(
@@ -250,7 +250,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                        children: [
                           Text(
                             'APY:',
                             style: TextStyle(
@@ -273,7 +273,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                 //Item's Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
+                  children: [
                     // add button
                     Container(
                       width: _isWeb ? 155 : (layoutWdt / 2) - 30,
@@ -368,7 +368,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
         height: _isWeb ? 40 : layoutHgt * 0.05,
         decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
         child: Row(
-          children: <Widget>[
+          children: [
             Container(width: 8),
             const Icon(Icons.search, color: Colors.white),
             Container(width: 10),
@@ -479,10 +479,10 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         physics: const BouncingScrollPhysics(),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
+                          children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
+                              children: [
                                 Text(
                                   'Remove Liquidity',
                                   style: textStyle(Colors.white, 20, false),
@@ -638,11 +638,11 @@ class _MyLiquidityState extends State<MyLiquidity> {
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
+                                children: [
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
+                                    children: [
                                       Text(
                                         '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}'
                                         ' LP Tokens:',
@@ -665,7 +665,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
+                                    children: [
                                       Text(
                                         'Share of pool:',
                                         style: textStyle(
@@ -687,7 +687,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
+                                    children: [
                                       Text(
                                         '''${infoOfSelectedCard.token0Symbol} deposited:''',
                                         style: textStyle(
@@ -709,7 +709,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
+                                    children: [
                                       Text(
                                         '''${infoOfSelectedCard.token1Symbol} deposited:''',
                                         style: textStyle(
@@ -761,7 +761,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
+                                      children: [
                                         Container(
                                           margin:
                                               const EdgeInsets.only(left: 30),
@@ -794,7 +794,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
-                                            children: <Widget>[
+                                            children: [
                                               SizedBox(
                                                 width: 100,
                                                 child: Text(
@@ -818,7 +818,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
+                                      children: [
                                         Container(
                                           margin:
                                               const EdgeInsets.only(left: 30),
@@ -851,7 +851,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
-                                            children: <Widget>[
+                                            children: [
                                               SizedBox(
                                                 width: 100,
                                                 child: Text(

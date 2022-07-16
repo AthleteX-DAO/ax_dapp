@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
 class AddLiquidity extends StatefulWidget {
-  AddLiquidity({Key? key, this.token0, this.token1}) : super(key: key);
+  AddLiquidity({super.key, this.token0, this.token1});
 
   Token? token0;
   Token? token1;
@@ -27,11 +27,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
       TextEditingController();
   final TextEditingController _tokenAmountTwoController =
       TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -148,7 +143,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                       });
                     },
               child: Row(
-                children: <Widget>[
+                children: [
                   Container(
                     height: 30,
                     width: 60,
@@ -171,7 +166,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     // ticker/name column "AX/AthleteX"
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
+                      children: [
                         Container(
                           width: 125,
                           alignment: Alignment.centerLeft,
@@ -262,7 +257,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
+                  children: [
                     // left-half of token box
                     // (dropdown menu button containing token)
                     Container(
@@ -280,7 +275,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
+                          children: [
                             Container(
                               width: 30,
                               height: 30,
@@ -310,7 +305,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     ),
                     // right-half of token box (max button and input box)
                     Row(
-                      children: <Widget>[
+                      children: [
                         //Max Button
                         if (tknNum == 1) ...[
                           Container(
@@ -500,7 +495,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                     mainAxisAlignment: isWeb
                         ? MainAxisAlignment.spaceAround
                         : MainAxisAlignment.center,
-                    children: <Widget>[
+                    children: [
                       Container(
                         margin: const EdgeInsets.only(right: 15),
                         child: Text(
@@ -511,7 +506,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                        children: [
                           Text(
                             '${token0.ticker}/${token1.ticker}',
                             style: textStyle(Colors.white, 15, false),
@@ -538,13 +533,13 @@ class _AddLiquidityState extends State<AddLiquidity> {
             padding: const EdgeInsets.only(top: 20, bottom: 20, right: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
+              children: [
                 poolShareDetailsHeader(_elementWdt, isAdvDetails),
                 SizedBox(
                   width: _elementWdt,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
+                    children: [
                       SizedBox(
                         width: _elementWdt / 4,
                         child: Text(
@@ -581,7 +576,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   width: _elementWdt,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
+                    children: [
                       SizedBox(
                         width: _elementWdt / 4,
                         child: Text(
@@ -637,7 +632,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
           final elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
           final tokensSectionHgt = isWeb ? 280.0 : allLiquidityCardHgt * 0.55;
           // Returns the contents of all liquidity pool card
-          return <Widget>[
+          return [
             // Tokens side add liq. -left side of all liquidity pool card in
             // desktop, top of card in mobile-
             SizedBox(
@@ -645,7 +640,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
               width: elementWdt,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
+                children: [
                   // Top Token container
                   createTokenButton(1, elementWdt, _tokenAmountOneController),
                   Text(

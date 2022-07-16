@@ -1,20 +1,23 @@
 part of 'MyLiquidityBloc.dart';
 
 class MyLiquidityState extends Equatable {
-  final List<LiquidityPositionInfo> cards;
-  final List<LiquidityPositionInfo> filteredCards;
-  final BlocStatus status;
-
-  MyLiquidityState({
+  const MyLiquidityState({
     required this.cards,
     required this.filteredCards,
     required this.status,
   });
 
   factory MyLiquidityState.initial() {
-    return MyLiquidityState(
-        cards: [], filteredCards: [], status: BlocStatus.initial);
+    return const MyLiquidityState(
+      cards: [],
+      filteredCards: [],
+      status: BlocStatus.initial,
+    );
   }
+
+  final List<LiquidityPositionInfo> cards;
+  final List<LiquidityPositionInfo> filteredCards;
+  final BlocStatus status;
 
   MyLiquidityState copyWith({
     List<LiquidityPositionInfo>? cards,

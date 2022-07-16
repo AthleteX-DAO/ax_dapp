@@ -7,16 +7,15 @@ abstract class MyLiquidityEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadEvent extends MyLiquidityEvent {
-  @override
-  List<Object> get props => [];
-}
+class LoadEvent extends MyLiquidityEvent {}
 
 class SearchBarInputEvent extends MyLiquidityEvent {
-  final String searchBarInput;
-  SearchBarInputEvent({
+  const SearchBarInputEvent({
     required this.searchBarInput,
   });
+
+  final String searchBarInput;
+
   @override
-  List<Object> get props => [this.searchBarInput];
+  List<Object> get props => [searchBarInput];
 }
