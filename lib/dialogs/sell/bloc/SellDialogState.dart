@@ -1,13 +1,7 @@
 part of 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
 
-
 class SellDialogState extends Equatable {
-  final double balance;
-  final double aptInputAmount;
-  final BlocStatus status;
-  final String tokenAddress;
-  final AptSellInfo aptSellInfo;
-  SellDialogState({
+  const SellDialogState({
     required this.balance,
     required this.aptInputAmount,
     required this.status,
@@ -17,12 +11,19 @@ class SellDialogState extends Equatable {
 
   factory SellDialogState.initial() {
     return SellDialogState(
-        balance: 0,
-        aptInputAmount: 0,
-        status: BlocStatus.initial,
-        tokenAddress: '',
-        aptSellInfo: AptSellInfo.empty());
+      balance: 0,
+      aptInputAmount: 0,
+      status: BlocStatus.initial,
+      tokenAddress: '',
+      aptSellInfo: AptSellInfo.empty(),
+    );
   }
+
+  final double balance;
+  final double aptInputAmount;
+  final BlocStatus status;
+  final String tokenAddress;
+  final AptSellInfo aptSellInfo;
 
   @override
   List<Object> get props {

@@ -1,5 +1,3 @@
-
-
 part of 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
 
 abstract class SellDialogEvent extends Equatable {
@@ -8,28 +6,29 @@ abstract class SellDialogEvent extends Equatable {
 }
 
 class LoadDialog extends SellDialogEvent {
+  LoadDialog({required this.currentTokenAddress});
+
   final String currentTokenAddress;
+
   @override
   List<Object?> get props => [currentTokenAddress];
-  LoadDialog({required this.currentTokenAddress});
 }
 
 class NewAptInput extends SellDialogEvent {
+  NewAptInput({required this.aptInputAmount});
+
   final double aptInputAmount;
+
   @override
   List<Object?> get props => [aptInputAmount];
-  NewAptInput({required this.aptInputAmount});
 }
 
-class MaxSellTap extends SellDialogEvent {
-  @override
-  List<Object?> get props => [];
-}
+class MaxSellTap extends SellDialogEvent {}
 
 class ConfirmSell extends SellDialogEvent {
-  final double sellPrice;
-
   ConfirmSell({required this.sellPrice});
+
+  final double sellPrice;
 
   @override
   List<Object?> get props => [sellPrice];
