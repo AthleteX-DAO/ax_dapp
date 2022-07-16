@@ -1,4 +1,5 @@
-// File for getting the price of any APT  from the DEX using Postgres instead of http
+// File for getting the price of any APT  from the DEX using Postgres instead
+// of http
 
 import 'dart:developer';
 
@@ -9,10 +10,9 @@ class Prices {
   Prices() {
     confirmConnection();
   }
+
   late Athlete athlete;
   late PostgreSQLConnection connection;
-  var databaseUrl;
-  var firstPrice, lastPrice;
 
   void getBookPrice() {
     //
@@ -60,7 +60,8 @@ class Prices {
       log('[Postgres]: query results: \n$a \n$b');
     }
 
-    // List<List<dynamic>> results = await connection.query("SELECT a, b FROM table WHERE a = @aValue", substitutionValues: {
+    // List<List<dynamic>> results = await connection.query("SELECT a, b FROM
+    // table WHERE a = @aValue", substitutionValues: {
     //     "aValue" : 3
     // });
   }
