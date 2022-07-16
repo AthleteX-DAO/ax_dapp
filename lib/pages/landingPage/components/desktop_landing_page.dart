@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class DesktopLandingPage extends StatelessWidget {
   const DesktopLandingPage({
-    Key? key,
+    super.key,
     required this.textSize,
-  }) : super(key: key);
+  });
 
   final double textSize;
 
@@ -14,7 +14,7 @@ class DesktopLandingPage extends StatelessWidget {
       height: 225,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           RichText(
             text: TextSpan(
               children: <TextSpan>[
