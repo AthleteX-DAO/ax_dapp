@@ -7,11 +7,11 @@ import 'package:ax_dapp/service/athleteModels/mlb/MLBPAthleteStats.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 
 class MLBRepo extends SportsRepo<MLBAthlete> {
-  final MLBAthleteAPI _api;
+  MLBRepo(MLBAthleteAPI api)
+      : _api = api,
+        super(SupportedSport.MLB);
 
-  MLBRepo(
-    this._api,
-  ) : super(SupportedSport.MLB);
+  final MLBAthleteAPI _api;
 
   @override
   Future<List<MLBAthlete>> getAllPlayers() async {
@@ -26,7 +26,8 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
   @override
   Future<List<MLBAthlete>> getSupportedPlayers() async {
     return _api.getPlayersById(
-        PlayerIds(SupportedMLBAthletes().getSupportedAthletesList()));
+      PlayerIds(SupportedMLBAthletes().getSupportedAthletesList()),
+    );
   }
 
   @override
@@ -46,18 +47,24 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
 
   @override
   Future<List<MLBAthlete>> getPlayersByTeamAtPosition(
-      String team, String position) async {
+    String team,
+    String position,
+  ) async {
     return _api.getPlayersByTeamAtPosition(team, position);
   }
 
   @override
-  Future<MLBAthleteStats> getPlayerStatsHistory(int id, String from,String until) async {
+  Future<MLBAthleteStats> getPlayerStatsHistory(
+    int id,
+    String from,
+    String until,
+  ) async {
     return _api.getPlayerHistory(id, from, until);
   }
 
   @override
   Future<List<MLBAthleteStats>> getPlayersStatsHistory() async {
-    List<MLBAthleteStats> list = List.empty();
+    final list = List<MLBAthleteStats>.empty();
     return list;
   }
 }

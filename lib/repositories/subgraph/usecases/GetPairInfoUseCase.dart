@@ -9,7 +9,7 @@ import 'package:fpdart/fpdart.dart';
 const String _noSwapInfoErrorMessage = 'No pair info found';
 
 class GetPairInfoUseCase {
-  GetPairInfoUseCase(this._graphRepo);
+  GetPairInfoUseCase(SubGraphRepo graphRepo) : _graphRepo = graphRepo;
 
   final SubGraphRepo _graphRepo;
 

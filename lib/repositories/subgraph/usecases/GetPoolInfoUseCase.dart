@@ -6,7 +6,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/SubgraphError.dart';
 import 'package:fpdart/fpdart.dart';
 
 class GetPoolInfoUseCase {
-  GetPoolInfoUseCase(this._repo);
+  GetPoolInfoUseCase(GetPairInfoUseCase repo) : _repo = repo;
 
   final GetPairInfoUseCase _repo;
 

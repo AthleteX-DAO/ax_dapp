@@ -11,7 +11,8 @@ import 'package:fpdart/fpdart.dart';
 const String _noSellInfoErrorMessage = 'No sell info found';
 
 class GetSellInfoUseCase {
-  GetSellInfoUseCase(this._repo);
+  GetSellInfoUseCase(GetSwapInfoUseCase repo) : _repo = repo;
+
   final GetSwapInfoUseCase _repo;
 
   Future<Either<Success, Error>> fetchAptSellInfo({

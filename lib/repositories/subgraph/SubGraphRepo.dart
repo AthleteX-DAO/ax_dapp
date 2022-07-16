@@ -7,7 +7,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 /// to define the specific functionality needed
 
 class SubGraphRepo {
-  SubGraphRepo(this._client);
+  SubGraphRepo(GraphQLClient client) : _client = client;
 
   final GraphQLClient _client;
 

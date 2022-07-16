@@ -8,7 +8,8 @@ const String _noSwapInfoErrorMessage = 'No swap info found';
 /// the logic for fetching the swap transaction information needed for a swap
 /// betweenany two given tokens.
 class GetSwapInfoUseCase {
-  GetSwapInfoUseCase(this._repo);
+  GetSwapInfoUseCase(GetPairInfoUseCase repo) : _repo = repo;
+
   final GetPairInfoUseCase _repo;
 
   Future<Either<Success, Error>> fetchSwapInfo({

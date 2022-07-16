@@ -11,7 +11,7 @@ const String _noBuyInfoErrorMessage = 'No buy info found';
 /// This is simply accomplished by hardcoding the tokenFrom value
 /// to the AX Token address
 class GetBuyInfoUseCase {
-  GetBuyInfoUseCase(this._repo);
+  GetBuyInfoUseCase(GetSwapInfoUseCase repo) : _repo = repo;
 
   final GetSwapInfoUseCase _repo;
 

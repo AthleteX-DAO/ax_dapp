@@ -6,7 +6,8 @@ import 'package:decimal/decimal.dart';
 import 'package:fpdart/fpdart.dart';
 
 class GetAllLiquidityInfoUseCase {
-  GetAllLiquidityInfoUseCase(this._graphRepo);
+  GetAllLiquidityInfoUseCase(SubGraphRepo graphRepo) : _graphRepo = graphRepo;
+
   final SubGraphRepo _graphRepo;
 
   Future<Either<Success, SubgraphError>> fetchAllLiquidityPositions({

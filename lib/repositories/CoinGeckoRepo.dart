@@ -1,14 +1,19 @@
 import 'package:coingecko_api/coingecko_api.dart';
 import 'package:coingecko_api/coingecko_result.dart';
+import 'package:coingecko_api/data/coin.dart';
 
 class CoinGeckoRepo {
-  final CoinGeckoApi _api;
+  CoinGeckoRepo(CoinGeckoApi coinGeckoApi) : _coinGeckoApi = coinGeckoApi;
 
-  CoinGeckoRepo(
-    this._api
-  );
+  final CoinGeckoApi _coinGeckoApi;
 
-  Future<CoinGeckoResult> getAxPrice() async {
-    return await _api.coins.getCoinData(id: 'athletex', marketData: true, localization: false, communityData: false, tickers: false, developerData: false);
+  Future<CoinGeckoResult<Coin?>> getAxPrice() {
+    return _coinGeckoApi.coins.getCoinData(
+      id: 'athletex',
+      localization: false,
+      communityData: false,
+      tickers: false,
+      developerData: false,
+    );
   }
 }
