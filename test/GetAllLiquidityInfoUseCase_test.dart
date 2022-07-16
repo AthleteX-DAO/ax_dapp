@@ -38,7 +38,7 @@ void main() {
         result.getLeft().toNullable()!.liquidityPositionsList;
     assert(
       myLiquidityItemInfos![0] ==
-          LiquidityPositionInfo(
+          const LiquidityPositionInfo(
             token0Name: 'AthleteX',
             token1Name: 'Juan Soto Linear Short Token',
             token0Symbol: 'AX',
@@ -55,7 +55,7 @@ void main() {
     );
     assert(
       myLiquidityItemInfos![1] ==
-          LiquidityPositionInfo(
+          const LiquidityPositionInfo(
             token0Name: 'Vladimir Guerrero Jr Linear Short Token',
             token1Name: 'AthleteX',
             token0Symbol: 'VGJST1010',
@@ -72,7 +72,7 @@ void main() {
     );
     assert(
       myLiquidityItemInfos![2] ==
-          LiquidityPositionInfo(
+          const LiquidityPositionInfo(
             token0Name: 'AthleteX',
             token1Name: 'Marcus Semien Linear Long Token',
             token0Symbol: 'AX',

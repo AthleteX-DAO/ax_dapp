@@ -19,7 +19,7 @@ void main() {
   );
   const testWalletAddress = 'testWalletAddress';
   final testMyLiquidityItemInfo = <LiquidityPositionInfo>[
-    LiquidityPositionInfo(
+    const LiquidityPositionInfo(
       token0Name: 'testToken0Name',
       token1Name: 'testToken1Name',
       token0Symbol: 'testToken0Symbol',

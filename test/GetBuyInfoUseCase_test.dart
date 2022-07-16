@@ -32,7 +32,7 @@ void main() {
     const testReceivedAmount = 1.01;
     const testTotalFee = 4.01;
 
-    final targetTokenSwapInfo = TokenSwapInfo(
+    const targetTokenSwapInfo = TokenSwapInfo(
       toPrice: toPrice,
       fromPrice: fromPrice,
       minimumReceived: testMinimumReceived,
@@ -40,7 +40,7 @@ void main() {
       receiveAmount: testReceivedAmount,
       totalFee: testTotalFee,
     );
-    final testSuccessResponse = Success(targetTokenSwapInfo);
+    const testSuccessResponse = Success(targetTokenSwapInfo);
     when(
       mockRepo.fetchSwapInfo(
         tokenFrom: captureAnyNamed('tokenFrom'),

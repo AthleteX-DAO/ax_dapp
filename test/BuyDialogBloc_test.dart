@@ -37,7 +37,7 @@ void main() {
       () async {
     const testAxInput = 30.0;
     const testWalletBalance = 100.0;
-    final testSwapInfo = TokenSwapInfo(
+    const testSwapInfo = TokenSwapInfo(
       toPrice: 1.09,
       fromPrice: 3.90,
       minimumReceived: 1.34,
@@ -101,7 +101,7 @@ void main() {
       () async {
     const testTokenAddress = 'testTokenAddress';
     const testWalletBalance = 100.0;
-    final testSwapInfo = TokenSwapInfo(
+    const testSwapInfo = TokenSwapInfo(
       toPrice: 1.09,
       fromPrice: 3.90,
       minimumReceived: 1.34,
