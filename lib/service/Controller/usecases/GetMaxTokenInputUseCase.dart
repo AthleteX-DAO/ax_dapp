@@ -6,6 +6,7 @@ import 'package:ax_dapp/service/Controller/WalletController.dart';
 /// the total balance for AX or any other given token address
 class GetTotalTokenBalanceUseCase {
   GetTotalTokenBalanceUseCase(this.walletController);
+
   final WalletController walletController;
 
   Future<double> getTotalAxBalance() async {

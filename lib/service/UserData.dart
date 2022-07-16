@@ -1,19 +1,19 @@
 import 'package:ax_dapp/service/Athlete.dart';
 
 class UserData {
-  List<Athlete> boughtAthletes = [];
-
   UserData();
 
-  void addAthlete(Athlete _athlete) {
-    if (!boughtAthletes.contains(_athlete)) boughtAthletes.add(_athlete);
+  List<Athlete> boughtAthletes = [];
+
+  void addAthlete(Athlete athlete) {
+    if (!boughtAthletes.contains(athlete)) boughtAthletes.add(athlete);
   }
 
-  void removeAthlete(Athlete _athlete) {
-    if (boughtAthletes.contains(_athlete)) boughtAthletes.remove(_athlete);
+  void removeAthlete(Athlete athlete) {
+    if (boughtAthletes.contains(athlete)) boughtAthletes.remove(athlete);
   }
 
-  bool containsAthlete(Athlete _athlete) {
-    return boughtAthletes.contains(_athlete);
+  bool containsAthlete(Athlete athlete) {
+    return boughtAthletes.contains(athlete);
   }
 }

@@ -3,30 +3,33 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DropdownMenuMobile extends StatefulWidget {
-  const DropdownMenuMobile();
+  const DropdownMenuMobile({super.key});
 
   @override
-  _DropdownMenuMobileState createState() => _DropdownMenuMobileState();
+  State<DropdownMenuMobile> createState() => _DropdownMenuMobileState();
 }
 
 class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
-  String? dropdownValue = "";
+  String? dropdownValue = '';
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
       itemBuilder: (context) => [
         PopupMenuItem(
           value: 1,
-          child: ListTile(
+          child: const ListTile(
             leading: Icon(Icons.help_outline),
             title: Text('Help'),
           ),
-          onTap: () => launchUrl(Uri.parse(
-              'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper')),
+          onTap: () => launchUrl(
+            Uri.parse(
+              'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper',
+            ),
+          ),
         ),
         PopupMenuItem(
           value: 2,
-          child: ListTile(
+          child: const ListTile(
             leading: FaIcon(
               FontAwesomeIcons.earthAmericas,
             ),
@@ -36,7 +39,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
         ),
         PopupMenuItem(
           value: 4,
-          child: ListTile(
+          child: const ListTile(
             leading: FaIcon(
               FontAwesomeIcons.github,
             ),
@@ -46,7 +49,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
         ),
         PopupMenuItem(
           value: 5,
-          child: ListTile(
+          child: const ListTile(
             leading: FaIcon(
               FontAwesomeIcons.discord,
             ),
@@ -57,7 +60,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
         ),
         PopupMenuItem(
           value: 6,
-          child: ListTile(
+          child: const ListTile(
             leading: FaIcon(
               FontAwesomeIcons.twitter,
               // size: 25,
@@ -69,17 +72,18 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
         ),
         PopupMenuItem(
           value: 7,
-          child: ListTile(
+          child: const ListTile(
             leading: Icon(Icons.share),
             title: Text('Share'),
           ),
           onTap: () => {},
         ),
       ],
-      icon: Icon(Icons.more_horiz),
-      offset: Offset(0, 45),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10))),
+      icon: const Icon(Icons.more_horiz),
+      offset: const Offset(0, 45),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
     );
   }
 }

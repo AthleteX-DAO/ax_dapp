@@ -1,90 +1,83 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
+import 'dart:developer';
 import 'dart:html';
 
+import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';
 import 'package:erc20/erc20.dart';
-import 'package:flutter_web3/flutter_web3.dart' as FlutterWeb3;
+import 'package:flutter_web3/flutter_web3.dart' as flutter_web3;
 import 'package:http/http.dart';
 import 'package:web3_browser/web3_browser.dart';
-import 'package:web3dart/web3dart.dart' as Web3Dart;
-
-import 'abstractWallet.dart';
+import 'package:web3dart/web3dart.dart' as web3_dart;
 
 DappWallet newWallet() => WebWallet();
 
 class WebWallet extends DappWallet {
-  String mainRPCUrl = "https://polygon-rpc.com";
-  String testRPCUrl = "https://matic-mumbai.chainstacklabs.com/";
+  String mainRPCUrl = 'https://polygon-rpc.com';
+  String testRPCUrl = 'https://matic-mumbai.chainstacklabs.com/';
 
   @override
   Future<void> connect() async {
-    if (FlutterWeb3.Ethereum.isSupported) {
-      await this.switchNetwork();
+    if (flutter_web3.Ethereum.isSupported) {
+      await switchNetwork();
 
-      this.client = Web3Dart.Web3Client.custom(window.ethereum!.asRpcService());
-      this.credentials = await window.ethereum!.requestAccount();
-      this.publicAddress = credentials.address;
-      this.networkID =
-          await Web3Dart.Web3Client.custom(window.ethereum!.asRpcService())
+      client = web3_dart.Web3Client.custom(window.ethereum!.asRpcService());
+      credentials = await window.ethereum!.requestAccount();
+      publicAddress = credentials.address;
+      networkID =
+          await web3_dart.Web3Client.custom(window.ethereum!.asRpcService())
               .getNetworkId();
-      print(
-          "[Console] This is the public address: ${this.publicAddress}, and network: ${this.networkID}");
-      print(
-          "[Console] This is the credentials type: ${this.credentials.toString()}");
     } else {
-      print("[Console] Ethereum is not supproted. Please install MetaMask.");
+      log('Ethereum is not supproted. Please install MetaMask.');
       throw const MetaMaskUnavailableFailure();
     }
   }
 
-  //Comment this for Android
+  // Comment this for Android
   Future<bool> addTokenToWallet(String tokenAddress, String tokenImage) async {
-    print("[Console] - Current Address: $tokenAddress");
     // get the ticker and get the decimals
-    Web3Dart.EthereumAddress tokenEthAddress =
-        Web3Dart.EthereumAddress.fromHex(tokenAddress);
-    Web3Dart.Web3Client rpcClient = Web3Dart.Web3Client(mainRPCUrl, Client());
-    ERC20 token = ERC20(address: tokenEthAddress, client: rpcClient);
-    String symbol = await token.symbol();
-    print('[Console] - $symbol');
-    int decimals = (await token.decimals()).toInt();
-    print('[Console] - $decimals');
-    bool result = await FlutterWeb3.ethereum!.walletWatchAssets(
-        address: tokenAddress,
-        symbol: symbol,
-        decimals: decimals,
-        image: tokenImage);
-    print("[Console] Result of adding AX token to MetaMask. {$result}");
+    final tokenEthAddress = web3_dart.EthereumAddress.fromHex(tokenAddress);
+    final rpcClient = web3_dart.Web3Client(mainRPCUrl, Client());
+    final token = ERC20(address: tokenEthAddress, client: rpcClient);
+    final symbol = await token.symbol();
+    final decimals = (await token.decimals()).toInt();
+    final result = await flutter_web3.ethereum!.walletWatchAssets(
+      address: tokenAddress,
+      symbol: symbol,
+      decimals: decimals,
+      image: tokenImage,
+    );
     return result;
   }
 
   Future<int> getTokenDecimal(String tokenAddress) async {
-    Web3Dart.EthereumAddress tokenEthAddress =
-        Web3Dart.EthereumAddress.fromHex(tokenAddress);
-    Web3Dart.Web3Client rpcClient = Web3Dart.Web3Client(mainRPCUrl, Client());
-    ERC20 token = ERC20(address: tokenEthAddress, client: rpcClient);
-    int decimals = (await token.decimals()).toInt();
+    final tokenEthAddress = web3_dart.EthereumAddress.fromHex(tokenAddress);
+    final rpcClient = web3_dart.Web3Client(mainRPCUrl, Client());
+    final token = ERC20(address: tokenEthAddress, client: rpcClient);
+    final decimals = (await token.decimals()).toInt();
     return decimals;
   }
 
   Future<void> switchNetwork() async {
-    print("Inside switchNetwork()");
-
     try {
       // switching the chain
-      await FlutterWeb3.ethereum!.walletSwitchChain(137);
-      print("[Console] MetaMask swtiched the chain to Polygon mainnet");
-    } catch (err) {
+      await flutter_web3.ethereum!.walletSwitchChain(137);
+      log('MetaMask switched the chain to Polygon mainnet');
+    } catch (_) {
       // adding chain to the metamask
-      print("[Console] The Polygon mainnet is not added on the MetaMask");
-      await FlutterWeb3.ethereum!.walletAddChain(
-          chainId: 137,
-          chainName: 'Polygon Mainnet',
-          nativeCurrency: FlutterWeb3.CurrencyParams(
-              name: 'MATIC Token', symbol: 'MATIC', decimals: 18),
-          rpcUrls: ['https://rpc-mainnet.matic.quiknode.pro'],
-          blockExplorerUrls: ['https://polygonscan.com/']);
-      print("[Console] The Polygon mainnet is added and also switched");
+      log('The Polygon mainnet is not added on the MetaMask, adding it now...');
+      await flutter_web3.ethereum!.walletAddChain(
+        chainId: 137,
+        chainName: 'Polygon Mainnet',
+        nativeCurrency: flutter_web3.CurrencyParams(
+          name: 'MATIC Token',
+          symbol: 'MATIC',
+          decimals: 18,
+        ),
+        rpcUrls: ['https://rpc-mainnet.matic.quiknode.pro'],
+        blockExplorerUrls: ['https://polygonscan.com/'],
+      );
+      log('The Polygon mainnet has been added and also switched');
     }
   }
 }

@@ -6,30 +6,37 @@ import 'package:retrofit/http.dart';
 
 part 'MLBAthleteAPI.g.dart';
 
-@RestApi(baseUrl: "https://db.athletex.io/mlb")
+@RestApi(baseUrl: 'https://db.athletex.io/mlb')
 abstract class MLBAthleteAPI {
   factory MLBAthleteAPI(Dio dio, {String baseUrl}) = _MLBAthleteAPI;
 
-  @GET("/players")
+  @GET('/players')
   Future<List<MLBAthlete>> getAllPlayers();
 
-  @POST("/players")
+  @POST('/players')
   Future<List<MLBAthlete>> getPlayersById(@Body() PlayerIds playerIds);
 
-  @GET("/players/{id}")
+  @GET('/players/{id}')
   Future<MLBAthlete> getPlayer(@Path() int id);
 
-  @GET("/players")
-  Future<List<MLBAthlete>> getPlayersByTeam(@Query("team") String team);
+  @GET('/players')
+  Future<List<MLBAthlete>> getPlayersByTeam(@Query('team') String team);
 
-  @GET("/players")
+  @GET('/players')
   Future<List<MLBAthlete>> getPlayersByPosition(
-      @Query("position") String position);
+    @Query('position') String position,
+  );
 
-  @GET("/players")
+  @GET('/players')
   Future<List<MLBAthlete>> getPlayersByTeamAtPosition(
-      @Query("team") String team, @Query("position") String position);
+    @Query('team') String team,
+    @Query('position') String position,
+  );
 
-  @GET("/players/{id}/history")
-  Future<MLBAthleteStats> getPlayerHistory(@Path() int id, @Query("from") String from, @Query("until") String until);
+  @GET('/players/{id}/history')
+  Future<MLBAthleteStats> getPlayerHistory(
+    @Path() int id,
+    @Query('from') String from,
+    @Query('until') String until,
+  );
 }

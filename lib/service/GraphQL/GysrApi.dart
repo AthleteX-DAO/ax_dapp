@@ -4,8 +4,19 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 /// This class is used to call gysr api
 class GysrApi {
+  // factory function for singleton pattern
+  factory GysrApi() {
+    return _instance;
+  }
+  // constructor for singleton pattern
+  GysrApi._internal() {
+    _gysrApiClientHelper =
+        GraphQLClientHelper(GraphQLConfiguration.gysrApiLink);
+    _gysrApiClient = _gysrApiClientHelper.initializeClientWithoutCache();
+  }
   // declaration fo member variables
   static final GysrApi _instance = GysrApi._internal();
+
   late GraphQLClientHelper _gysrApiClientHelper;
   late GraphQLClient _gysrApiClient;
 
@@ -75,18 +86,6 @@ class GysrApi {
     }
   ''';
 
-  // factory function for singleton pattern
-  factory GysrApi() {
-    return _instance;
-  }
-
-  // constructor for singleton pattern
-  GysrApi._internal() {
-    _gysrApiClientHelper =
-        GraphQLClientHelper(GraphQLConfiguration.gysrApiLink);
-    _gysrApiClient = _gysrApiClientHelper.initializeClientWithoutCache();
-  }
-
   /// @title  fetchAllFarms
   /// @desc   fetch all farms list from gysr api
   ///
@@ -94,8 +93,10 @@ class GysrApi {
   /// @return {Future<QueryResult>} the list of farms
   Future<QueryResult> fetchAllFarms(String owner) async {
     final result = await _gysrApiClientHelper.performQuery(
-        _gysrApiClient, getAllFarmsQuery,
-        variables: <String, dynamic>{"owner": owner});
+      _gysrApiClient,
+      getAllFarmsQuery,
+      variables: <String, dynamic>{'owner': owner},
+    );
     return result;
   }
 
@@ -106,8 +107,10 @@ class GysrApi {
   /// @return {Future<QueryResult>} the list of farms
   Future<QueryResult> fetchStakedFarms(String account) async {
     final result = await _gysrApiClientHelper.performQuery(
-        _gysrApiClient, getStakedFarmsQuery,
-        variables: <String, dynamic>{"account": account});
+      _gysrApiClient,
+      getStakedFarmsQuery,
+      variables: <String, dynamic>{'account': account},
+    );
     return result;
   }
 }

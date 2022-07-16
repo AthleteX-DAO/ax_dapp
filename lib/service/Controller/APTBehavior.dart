@@ -48,8 +48,8 @@ mixin APTBehavior on Token {
         credentials: controller.credentials,
       );
     } catch (e) {
+      // You are not the token sponsor
       txString = 'unable to redeem';
-      print('You are not the token sponsor');
     }
 
     return txString;

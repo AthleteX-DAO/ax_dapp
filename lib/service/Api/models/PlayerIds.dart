@@ -4,13 +4,13 @@ part 'PlayerIds.g.dart';
 
 @JsonSerializable()
 class PlayerIds {
-  @JsonKey(name: "ids")
-  final List<int> playerIds;
+  PlayerIds(this.playerIds);
 
   factory PlayerIds.fromJson(Map<String, dynamic> json) =>
       _$PlayerIdsFromJson(json);
 
-  PlayerIds(this.playerIds);
+  @JsonKey(name: 'ids')
+  final List<int> playerIds;
 
   Map<String, dynamic> toJson() => _$PlayerIdsToJson(this);
 }

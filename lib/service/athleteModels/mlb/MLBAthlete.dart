@@ -5,41 +5,6 @@ part 'MLBAthlete.g.dart';
 
 @JsonSerializable()
 class MLBAthlete extends SportAthlete {
-  @JsonKey(name: "started")
-  final double started;
-  @JsonKey(name: "games")
-  final double games;
-  @JsonKey(name: "atBats")
-  final double atBats;
-  @JsonKey(name: "runs")
-  final double runs;
-  @JsonKey(name: "singles")
-  final double singles;
-  @JsonKey(name: "triples")
-  final double triples;
-  @JsonKey(name: "homeRuns")
-  final double homeRuns;
-  @JsonKey(name: "inningsPlayed")
-  final double inningsPlayed;
-  @JsonKey(name: "battingAverage")
-  final double battingAverage;
-  @JsonKey(name: "outs")
-  final double outs;
-  @JsonKey(name: "walks")
-  final double walks;
-  @JsonKey(name: "errors")
-  final double errors;
-  @JsonKey(name: "saves")
-  final double saves;
-  @JsonKey(name: "strikeOuts")
-  final double strikeOuts;
-  @JsonKey(name: "stolenBases")
-  final double stolenBases;
-  @JsonKey(name: "plateAppearances")
-  final double plateAppearances;
-  @JsonKey(name: "weightedOnBasePercentage")
-  final double weightedOnBasePercentage;
-
   const MLBAthlete({
     required int id,
     required String name,
@@ -68,6 +33,41 @@ class MLBAthlete extends SportAthlete {
 
   factory MLBAthlete.fromJson(Map<String, dynamic> json) =>
       _$MLBAthleteFromJson(json);
+
+  @JsonKey(name: 'started')
+  final double started;
+  @JsonKey(name: 'games')
+  final double games;
+  @JsonKey(name: 'atBats')
+  final double atBats;
+  @JsonKey(name: 'runs')
+  final double runs;
+  @JsonKey(name: 'singles')
+  final double singles;
+  @JsonKey(name: 'triples')
+  final double triples;
+  @JsonKey(name: 'homeRuns')
+  final double homeRuns;
+  @JsonKey(name: 'inningsPlayed')
+  final double inningsPlayed;
+  @JsonKey(name: 'battingAverage')
+  final double battingAverage;
+  @JsonKey(name: 'outs')
+  final double outs;
+  @JsonKey(name: 'walks')
+  final double walks;
+  @JsonKey(name: 'errors')
+  final double errors;
+  @JsonKey(name: 'saves')
+  final double saves;
+  @JsonKey(name: 'strikeOuts')
+  final double strikeOuts;
+  @JsonKey(name: 'stolenBases')
+  final double stolenBases;
+  @JsonKey(name: 'plateAppearances')
+  final double plateAppearances;
+  @JsonKey(name: 'weightedOnBasePercentage')
+  final double weightedOnBasePercentage;
 
   Map<String, dynamic> toJson() => _$MLBAthleteToJson(this);
 }

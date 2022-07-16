@@ -268,7 +268,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         onPressed: () => showDialog<void>(
                           context: context,
                           builder: (BuildContext context) => AthleteTokenList(
-                            context,
                             tknNum,
                             createTokenElement,
                           ),

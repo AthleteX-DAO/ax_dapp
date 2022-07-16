@@ -265,7 +265,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
               onPressed: () => showDialog<void>(
                 context: context,
                 builder: (BuildContext context) => AthleteTokenList(
-                  context,
                   tknNum,
                   createTokenElement,
                 ),

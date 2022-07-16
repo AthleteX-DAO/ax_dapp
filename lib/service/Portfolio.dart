@@ -2,10 +2,10 @@ import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:flutter/material.dart';
 
 class Portfolio extends StatefulWidget {
-  const Portfolio({Key? key}) : super(key: key);
+  const Portfolio({super.key});
 
   @override
-  _PortfolioState createState() => _PortfolioState();
+  State<Portfolio> createState() => _PortfolioState();
 }
 
 class _PortfolioState extends State<Portfolio> {
@@ -18,17 +18,19 @@ class _PortfolioState extends State<Portfolio> {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         border: Border.all(
-            color: Colors.black45, width: 4.0, style: BorderStyle.solid),
+          color: Colors.black45,
+          width: 4,
+        ),
       ),
       child: Sparkline(
         //Data must be replaced by individual's portfolio history
-        data: [-2, -1.5, -1, 0, 0.5, 1.0, 2.0, 4.0, 8.0, 25.0],
+        data: const [-2, -1.5, -1, 0, 0.5, 1.0, 2.0, 4.0, 8.0, 25.0],
         averageLine: true,
         lineColor: Colors.green.shade900,
-        lineWidth: 3.0,
+        lineWidth: 3,
         fillColor: Colors.green.shade300,
         fillMode: FillMode.below,
-        gridLinelabelPrefix: '\$',
+        gridLinelabelPrefix: r'$',
         gridLineLabelPrecision: 2,
         enableGridLines: true,
       ),

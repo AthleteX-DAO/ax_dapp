@@ -1,9 +1,14 @@
 // File for getting the price of any APT  from the DEX using Postgres instead of http
 
+import 'dart:developer';
+
 import 'package:ax_dapp/service/Athlete.dart';
 import 'package:postgres/postgres.dart';
 
 class Prices {
+  Prices() {
+    confirmConnection();
+  }
   late Athlete athlete;
   late PostgreSQLConnection connection;
   var databaseUrl;
@@ -13,41 +18,46 @@ class Prices {
     //
   }
 
-  Prices() {
-    confirmConnection();
+  Future<void> connect() async {
+    connection = PostgreSQLConnection(
+      '139.99.74.201',
+      8812,
+      'qdb',
+      username: 'admin',
+      password: 'quest',
+    );
+    log('[Postgres] attempting connection to database...');
   }
 
-  void connect() async {
-    connection = PostgreSQLConnection("139.99.74.201", 8812, "qdb",
-        username: "admin", password: "quest");
-    print('[Postgres] Attempting Connection to Database');
-  }
-
-  void confirmConnection() async {
-    connection = PostgreSQLConnection("139.99.74.201", 8812, "qdb",
-        username: "admin", password: "quest");
+  Future<void> confirmConnection() async {
+    connection = PostgreSQLConnection(
+      '139.99.74.201',
+      8812,
+      'qdb',
+      username: 'admin',
+      password: 'quest',
+    );
     try {
       await connection
           .open()
-          .then((value) => {print('Connection confirmed /n $value')});
+          .then((value) => log('[Postgres] connection confirmed /n $value'));
     } catch (e) {
-      print('[Postgres] Error attempting to open connection : \n $e');
+      log('[Postgres] error attempting to open connection : \n $e');
     }
   }
 
   void getMarketPrice() {}
 
-  void query(String name) async {
-    print("QUERY: this came in: $name");
-
-    List<List<dynamic>> results = await connection.query(
-        "SELECT @name, first(price) as StartingPrice, last(price) as LatestPrice from nfl",
-        substitutionValues: {"name": name});
+  Future<void> query(String name) async {
+    final List<List<dynamic>> results = await connection.query(
+      '''SELECT @name, first(price) as StartingPrice, last(price) as LatestPrice from nfl''',
+      substitutionValues: {'name': name},
+    );
 
     for (final row in results) {
-      var a = row[0];
-      var b = row[0];
-      print("results: $a \n $b");
+      final a = row[0];
+      final b = row[0];
+      log('[Postgres]: query results: \n$a \n$b');
     }
 
     // List<List<dynamic>> results = await connection.query("SELECT a, b FROM table WHERE a = @aValue", substitutionValues: {
@@ -55,8 +65,9 @@ class Prices {
     // });
   }
 
-  void close() async {
+  Future<void> close() async {
     // close the Postgresql connection
-    connection.close();
+    await connection.close();
+    log('[Postgres]: connection closed');
   }
 }
