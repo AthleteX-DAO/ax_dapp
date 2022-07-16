@@ -53,8 +53,6 @@ class _V1AppState extends State<V1App> {
   Token matic = MATIC("Polygon", "MATIC");
   late PageController _pageController;
   var _selectedIndex = 0;
-  List<String> dropDownMenuItems = ["Matic Network", "SX Network"];
-  String selectVal = "Matic Network";
   String axText = "Ax";
 
   setPageNumber(PAGES page) {
@@ -380,8 +378,8 @@ class _V1AppState extends State<V1App> {
                         color: Colors.grey[400],
                       )),
                   IconButton(
-                      onPressed: () => launchUrl(Uri.parse(
-                          'https://twitter.com/athletex_dao?s=20')),
+                      onPressed: () => launchUrl(
+                          Uri.parse('https://twitter.com/athletex_dao?s=20')),
                       icon: FaIcon(
                         FontAwesomeIcons.twitter,
                         size: 25,
@@ -485,17 +483,15 @@ class _V1AppState extends State<V1App> {
 
   Widget buildAccountBox() {
     double _width = MediaQuery.of(context).size.width;
-    double wid = 500;
-    bool network = true;
+    double wid = 350;
     bool matic = true;
 
     if (_width < 835) {
       matic = false;
-      wid = 350;
+      wid = 200;
     }
     if (_width < 665) {
-      network = false;
-      wid = 210;
+      wid = 100;
     }
 
     String accNum = controller.publicAddress.value.toString();
@@ -512,34 +508,6 @@ class _V1AppState extends State<V1App> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            if (network)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  const Icon(
-                    Icons.link,
-                    color: Colors.grey,
-                  ),
-                  DropdownButtonHideUnderline(
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButton(
-                        dropdownColor: Colors.black,
-                        borderRadius: BorderRadius.circular(10),
-                        elevation: 1,
-                        value: selectVal,
-                        items: dropDownMenuItems.map((itemOne) {
-                          return DropdownMenuItem(
-                              enabled: false,
-                              value: itemOne,
-                              child: Text(itemOne));
-                        }).toList(),
-                        onChanged: (value) {},
-                      ),
-                    ),
-                  )
-                ],
-              ),
             if (matic)
               TextButton(
                 onPressed: () {
