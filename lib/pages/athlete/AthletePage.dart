@@ -886,7 +886,7 @@ class _AthletePageState extends State<AthletePage> {
                             });
                           },
                           child: Icon(Icons.arrow_back,
-                              size: 20, color: Colors.white))),
+                              size: 50, color: Colors.white))),
                   // APT Icon
                   SizedBox(
                     width: 10,
@@ -987,7 +987,6 @@ class _AthletePageState extends State<AthletePage> {
                       ),
                     ],
                   ),
-                 
                   Wrap(
                   children:[
                   Container(
@@ -1011,9 +1010,9 @@ class _AthletePageState extends State<AthletePage> {
                       ),
                     ),
                   ),
-                  ]
-                  )
-                ])),
+                ],
+              ),
+            ])),
             // graph side
             Container(
                 width: wid,
