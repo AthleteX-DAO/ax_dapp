@@ -12,7 +12,6 @@ import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/nfl/NFLAthlete.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
-import 'package:coingecko_api/data/market_data.dart';
 
 class GetScoutAthletesDataUseCase {
   GetScoutAthletesDataUseCase({
@@ -32,12 +31,11 @@ class GetScoutAthletesDataUseCase {
   List<TokenPair> allPairs = [];
 
   Future<double> fetchAxPrice() async {
-    final MarketData axPrice;
     final axMarketData = await coinGeckoRepo.getAxPrice();
-    final axDataByCurrency =
-        axMarketData.data.marketData.dataByCurrency as List<MarketData>;
-    axPrice = axDataByCurrency.firstWhere((axPrice) => axPrice.coinId == 'usd');
-    return axPrice.currentPrice ?? 0.0;
+    final axDataByCurrency = axMarketData.data?.marketData?.dataByCurrency;
+    final axPrice =
+        axDataByCurrency?.firstWhere((axPrice) => axPrice.coinId == 'usd');
+    return axPrice?.currentPrice ?? 0.0;
   }
 
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
