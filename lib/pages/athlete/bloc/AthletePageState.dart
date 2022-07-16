@@ -1,18 +1,17 @@
-import 'package:ax_dapp/util/chart/extensions/graphData.dart';
-import 'package:equatable/equatable.dart';
-import 'package:ax_dapp/util/BlocStatus.dart';
+part of 'AthletePageBloc.dart';
 
 class AthletePageState extends Equatable {
-  final List<GraphData> stats;
-  final BlocStatus status;
-  AthletePageState({
+  const AthletePageState({
     required this.stats,
     required this.status,
   });
 
   factory AthletePageState.initial() {
-    return AthletePageState(stats: [], status: BlocStatus.initial);
+    return const AthletePageState(stats: [], status: BlocStatus.initial);
   }
+
+  final List<GraphData> stats;
+  final BlocStatus status;
 
   AthletePageState copyWith({
     List<GraphData>? stats,
