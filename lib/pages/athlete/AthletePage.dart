@@ -888,7 +888,7 @@ class _AthletePageState extends State<AthletePage> {
                           child: Icon(Icons.arrow_back,
                               size: 20, color: Colors.white))),
                   // APT Icon
-                  Container(
+                  SizedBox(
                     width: 10,
                   ),
                   // Player Name
@@ -897,7 +897,7 @@ class _AthletePageState extends State<AthletePage> {
                           style: textStyle(Colors.white, 28, false, false))),
                   // '|' Symbol
                   Container(
-                      width: 10,
+                      width: 20,
                       alignment: Alignment.center,
                       child: Text("|",
                           style: textStyle(Color.fromRGBO(100, 100, 100, 1), 24,
@@ -987,10 +987,10 @@ class _AthletePageState extends State<AthletePage> {
                       ),
                     ],
                   ),
-                  //SizedBox(width: 0),
-                  Expanded(
-                  child:Container(
-                    width: 0,
+                 
+                  Wrap(
+                  children:[
+                  Container(
                     child: Container(
                       height: 20,
                       decoration: boxDecoration(
@@ -998,7 +998,6 @@ class _AthletePageState extends State<AthletePage> {
                           500,
                           1,
                           Colors.transparent),
-                      
                       child: TextButton(
                         onPressed: () {
                           webWallet.addTokenToWallet(
@@ -1006,14 +1005,13 @@ class _AthletePageState extends State<AthletePage> {
                         },
                         child: Text(
                           "+ Add to Wallet",
-                          
                           style:
                               textStyle(Colors.amber[500]!, 10, false, false),
-                              overflow: TextOverflow.ellipsis
                         ),
                       ),
                     ),
                   ),
+                  ]
                   )
                 ])),
             // graph side
