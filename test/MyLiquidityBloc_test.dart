@@ -14,45 +14,54 @@ void main() {
   var mockRepoUseCase = MockGetAllLiquidityInfoUseCase();
   var mockWalletAddressUseCase = MockGetWalletAddressUseCase();
   var myLiquidityBloc = MyLiquidityBloc(
-      repo: mockRepoUseCase, controller: mockWalletAddressUseCase);
-  final testWalletAddress = "testWalletAddress";
-  final List<LiquidityPositionInfo> testMyLiquidityItemInfo = [
+    repo: mockRepoUseCase,
+    controller: mockWalletAddressUseCase,
+  );
+  const testWalletAddress = 'testWalletAddress';
+  final testMyLiquidityItemInfo = <LiquidityPositionInfo>[
     LiquidityPositionInfo(
-        token0Name: "testToken0Name",
-        token1Name: "testToken1Name",
-        token0Symbol: "testToken0Symbol",
-        token1Symbol: "testToken1Symbol",
-        token0Address: "testToken0Address",
-        token1Address: "testToken1Address",
-        lpTokenPairAddress: "testLpTokenPairAddress",
-        lpTokenPairBalance: "testLpTokenPairBalance",
-        token0LpAmount: "testToken0LpAmount",
-        token1LpAmount: "testToken1LpAmount",
-        shareOfPool: "testShareOfPool",
-        apy: "testApy")
+      token0Name: 'testToken0Name',
+      token1Name: 'testToken1Name',
+      token0Symbol: 'testToken0Symbol',
+      token1Symbol: 'testToken1Symbol',
+      token0Address: 'testToken0Address',
+      token1Address: 'testToken1Address',
+      lpTokenPairAddress: 'testLpTokenPairAddress',
+      lpTokenPairBalance: 'testLpTokenPairBalance',
+      token0LpAmount: 'testToken0LpAmount',
+      token1LpAmount: 'testToken1LpAmount',
+      shareOfPool: 'testShareOfPool',
+      apy: 'testApy',
+    )
   ];
 
   setUp(() {
     mockRepoUseCase = MockGetAllLiquidityInfoUseCase();
     mockWalletAddressUseCase = MockGetWalletAddressUseCase();
     myLiquidityBloc = MyLiquidityBloc(
-        repo: mockRepoUseCase, controller: mockWalletAddressUseCase);
+      repo: mockRepoUseCase,
+      controller: mockWalletAddressUseCase,
+    );
 
-    when(mockRepoUseCase.fetchAllLiquidityPositions(
-            walletAddress: testWalletAddress))
-        .thenAnswer((_) async => Either.left(Success(testMyLiquidityItemInfo)));
+    when(
+      mockRepoUseCase.fetchAllLiquidityPositions(
+        walletAddress: testWalletAddress,
+      ),
+    ).thenAnswer((_) async => Either.left(Success(testMyLiquidityItemInfo)));
   });
 
-  test("Should updata MyLiquidity State successfully ", () async {
+  test('Should updata MyLiquidity State successfully ', () async {
     when(mockWalletAddressUseCase.getWalletAddress())
         .thenReturn(testWalletAddress);
     myLiquidityBloc.add(LoadEvent());
-    expectLater(
-        myLiquidityBloc.stream,
-        emitsInOrder([
-          isA<MyLiquidityState>(),
-          predicate<MyLiquidityState>(
-              (state) => state.cards == testMyLiquidityItemInfo)
-        ]));
+    await expectLater(
+      myLiquidityBloc.stream,
+      emitsInOrder([
+        isA<MyLiquidityState>(),
+        predicate<MyLiquidityState>(
+          (state) => state.cards == testMyLiquidityItemInfo,
+        )
+      ]),
+    );
   });
 }
