@@ -1,22 +1,8 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: avoid_positional_boolean_parameters
 
-const COLLATERALIZATION_MULTIPLIER = 1000;
+const kCollateralizationMultiplier = 1000;
 
 class Athlete {
-  final String name;
-  final int id;
-  final String team;
-  final String position;
-  final double passingYards;
-  final double passingTouchDowns;
-  final double reception;
-  final double receiveYards;
-  final double receiveTouch;
-  final double rushingYards;
-  final double war;
-  final double scaledPrice;
-  final String time;
-
   const Athlete({
     required this.name,
     required this.id,
@@ -33,55 +19,33 @@ class Athlete {
     required this.time,
   });
 
-  static Athlete fromJson(json) => Athlete(
-      name: json['name'],
-      id: json['id'],
-      team: json['team'],
-      position: json['position'],
-      passingYards: json['passingYards'],
-      passingTouchDowns: json['passingTouchDowns'],
-      reception: json['reception'],
-      receiveYards: json['receiveYards'],
-      receiveTouch: json['receiveTouch'],
-      rushingYards: json['rushingYards'],
-      time: json['timestamp'],
-      war: json['price'],
-      scaledPrice: json['price'] * COLLATERALIZATION_MULTIPLIER);
-
-  TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    if (isBold) if (isUline)
-      return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-          fontWeight: FontWeight.w400,
-          decoration: TextDecoration.underline);
-    else
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
+  factory Athlete.fromJson(Map<String, dynamic> json) => Athlete(
+        name: json['name'] as String,
+        id: json['id'] as int,
+        team: json['team'] as String,
+        position: json['position'] as String,
+        passingYards: json['passingYards'] as double,
+        passingTouchDowns: json['passingTouchDowns'] as double,
+        reception: json['reception'] as double,
+        receiveYards: json['receiveYards'] as double,
+        receiveTouch: json['receiveTouch'] as double,
+        rushingYards: json['rushingYards'] as double,
+        time: json['timestamp'] as String,
+        war: json['price'] as double,
+        scaledPrice: (json['price'] as double) * kCollateralizationMultiplier,
       );
-    else if (isUline)
-      return TextStyle(
-          color: color,
-          fontFamily: 'OpenSans',
-          fontSize: size,
-          decoration: TextDecoration.underline);
-    else
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
-  }
 
-  BoxDecoration boxDecoration(
-      Color col, double rad, double borWid, Color borCol) {
-    return BoxDecoration(
-        color: col,
-        borderRadius: BorderRadius.circular(rad),
-        border: Border.all(color: borCol, width: borWid));
-  }
+  final String name;
+  final int id;
+  final String team;
+  final String position;
+  final double passingYards;
+  final double passingTouchDowns;
+  final double reception;
+  final double receiveYards;
+  final double receiveTouch;
+  final double rushingYards;
+  final double war;
+  final double scaledPrice;
+  final String time;
 }
