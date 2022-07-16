@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 /*NEEDS TO BE UPDATED
 import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
