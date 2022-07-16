@@ -1,58 +1,64 @@
-import 'package:get/get.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:ax_dapp/pages/farm/dialogs/TrxConfirmedDialog.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 import 'package:ax_dapp/pages/farm/modules/DialogTextStyle.dart';
-
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
-import 'package:ax_dapp/pages/farm/dialogs/TrxConfirmedDialog.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 Dialog stakeDialog(
-    BuildContext context, FarmController farm, double layoutWdt, bool isWeb) {
-  double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 390 : layoutWdt;
-  double hgt = _height < 455 ? _height : 450;
-  double dialogHorPadding = 30;
+  BuildContext context,
+  FarmController farm,
+  double layoutWdt,
+  bool isWeb,
+) {
+  final _height = MediaQuery.of(context).size.height;
+  final wid = isWeb ? 390.0 : layoutWdt;
+  final hgt = _height < 455.0 ? _height : 450.0;
+  const dialogHorPadding = 30.0;
 
-  FarmController selectedFarm = FarmController.fromFarm(farm);
-  TextEditingController stakeAxInput = TextEditingController();
-  RxDouble totalStakedBalance = 0.0.obs;
+  final selectedFarm = FarmController.fromFarm(farm);
+  final stakeAxInput = TextEditingController();
+  final totalStakedBalance = 0.0.obs;
 
   return Dialog(
     //remove inset padding to increase width of child widget
     insetPadding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.0),
+      borderRadius: BorderRadius.circular(12),
     ),
     child: Container(
       height: hgt,
       width: wid,
-      padding: EdgeInsets.symmetric(vertical: 22, horizontal: dialogHorPadding),
+      padding: const EdgeInsets.symmetric(
+        vertical: 22,
+        horizontal: dialogHorPadding,
+      ),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Stake Liquidity",
+                'Stake Liquidity',
                 style: textStyle(Colors.white, 20, false),
               ),
-              Container(
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        size: 30,
-                        color: Colors.white,
-                      )))
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(
+                  Icons.close,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              )
             ],
           ),
           Row(
@@ -62,12 +68,13 @@ Dialog stakeDialog(
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 // padding: const EdgeInsets.all(10),
-                // Amount box was overflowing by 30px after using dialogHorPadding
+                // Amount box was overflowing by 30px after using
+                // dialogHorPadding
                 width: wid - dialogHorPadding - 30,
                 height: 55,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(14.0),
+                  borderRadius: BorderRadius.circular(14),
                   border: Border.all(
                     color: Colors.grey[400]!,
                     width: 0.5,
@@ -81,10 +88,10 @@ Dialog stakeDialog(
                     Container(
                       width: 35,
                       height: 35,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage("assets/images/x.jpg"),
+                          image: AssetImage('assets/images/x.jpg'),
                         ),
                       ),
                     ),
@@ -92,7 +99,7 @@ Dialog stakeDialog(
                     Container(width: 15),
                     Expanded(
                       child: Text(
-                        "${selectedFarm.strStakedAlias.value.length > 0 ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}",
+                        '''${selectedFarm.strStakedAlias.value.isNotEmpty ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}''',
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ),
@@ -101,18 +108,23 @@ Dialog stakeDialog(
                       height: 28,
                       width: 48,
                       decoration: boxDecoration(
-                          Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                        Colors.transparent,
+                        100,
+                        0.5,
+                        Colors.grey[400]!,
+                      ),
                       child: TextButton(
                         onPressed: () {
                           stakeAxInput.text =
                               selectedFarm.stakingInfo.value.viewAmount;
                           selectedFarm.strStakeInput.value = stakeAxInput.text;
                           totalStakedBalance.value = double.parse(
-                                  selectedFarm.stakedInfo.value.viewAmount) +
+                                selectedFarm.stakedInfo.value.viewAmount,
+                              ) +
                               double.parse(selectedFarm.strStakeInput.value);
                         },
                         child: Text(
-                          "Max",
+                          'Max',
                           style: textStyle(Colors.grey[400]!, 9, false),
                         ),
                       ),
@@ -124,7 +136,8 @@ Dialog stakeDialog(
                         onChanged: (value) {
                           selectedFarm.strStakeInput.value = value;
                           totalStakedBalance.value = double.parse(
-                                  selectedFarm.stakedInfo.value.viewAmount) +
+                                selectedFarm.stakedInfo.value.viewAmount,
+                              ) +
                               double.parse(selectedFarm.strStakeInput.value);
                         },
                         style: textStyle(Colors.grey[400]!, 22, false),
@@ -136,7 +149,8 @@ Dialog stakeDialog(
                         ),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                              (RegExp(r'^(\d+)?\.?\d{0,6}'))),
+                            RegExp(r'^(\d+)?\.?\d{0,6}'),
+                          ),
                         ],
                       ),
                     ),
@@ -149,34 +163,38 @@ Dialog stakeDialog(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Current ${selectedFarm.strStakedSymbol} Balance",
+                'Current ${selectedFarm.strStakedSymbol} Balance',
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
-              Obx(() => Text(
-                    "${selectedFarm.stakingInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
+              Obx(
+                () => Text(
+                  '''${selectedFarm.stakingInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}''',
+                  style: textStyle(Colors.grey[400]!, 14, false),
+                ),
+              ),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Current ${selectedFarm.strStakedSymbol} Staked",
+                'Current ${selectedFarm.strStakedSymbol} Staked',
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
-              Obx(() => Text(
-                    "${selectedFarm.stakedInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
+              Obx(
+                () => Text(
+                  '''${selectedFarm.stakedInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}''',
+                  style: textStyle(Colors.grey[400]!, 14, false),
+                ),
+              ),
             ],
           ),
           Row(
             children: [
               Container(
-                padding: EdgeInsets.only(left: 55),
+                padding: const EdgeInsets.only(left: 55),
                 child: Text(
-                  "+",
+                  '+',
                   style: textStyle(Colors.grey[400]!, 14, false),
                 ),
               )
@@ -186,13 +204,15 @@ Dialog stakeDialog(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Funds Added",
+                'Funds Added',
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
-              Obx(() => Text(
-                    "${selectedFarm.strStakeInput.value} ${selectedFarm.strStakedSymbol}",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
+              Obx(
+                () => Text(
+                  '''${selectedFarm.strStakeInput.value} ${selectedFarm.strStakedSymbol}''',
+                  style: textStyle(Colors.grey[400]!, 14, false),
+                ),
+              ),
             ],
           ),
           Container(
@@ -205,16 +225,25 @@ Dialog stakeDialog(
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("New Staked Balance"),
-              Obx(() => Text(
-                  "${totalStakedBalance.value.toString()} ${selectedFarm.strStakedSymbol}")),
+              const Text('New Staked Balance'),
+              Obx(
+                () => Text(
+                  '''${totalStakedBalance.value.toString()} ${selectedFarm.strStakedSymbol}''',
+                ),
+              ),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ApproveButton(175, 45, 'Approve', selectedFarm.approve,
-                  selectedFarm.stake, transactionConfirmed)
+              ApproveButton(
+                175,
+                45,
+                'Approve',
+                selectedFarm.approve,
+                selectedFarm.stake,
+                transactionConfirmed,
+              )
             ],
           )
         ],

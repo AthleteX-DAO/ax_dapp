@@ -1,37 +1,31 @@
-import 'package:equatable/equatable.dart';
+part of 'FarmBloc.dart';
 
 class FarmEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class OnLoadFarms extends FarmEvent {
-  @override
-  List<Object?> get props => [];
-}
+class OnLoadFarms extends FarmEvent {}
 
-class OnLoadStakedFarms extends FarmEvent {
-  @override
-  List<Object?> get props => [];
-}
+class OnLoadStakedFarms extends FarmEvent {}
 
 class OnSearchFarms extends FarmEvent {
-  final String searchedName;
-
   OnSearchFarms({
     required this.searchedName,
   });
+
+  final String searchedName;
 
   @override
   List<Object?> get props => [searchedName];
 }
 
 class OnChangeFarmTab extends FarmEvent {
-  final bool isAllFarms;
-
   OnChangeFarmTab({
     required this.isAllFarms,
   });
+
+  final bool isAllFarms;
 
   @override
   List<Object?> get props => [isAllFarms];

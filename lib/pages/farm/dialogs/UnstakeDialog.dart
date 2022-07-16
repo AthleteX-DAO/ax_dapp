@@ -1,66 +1,75 @@
-import 'package:get/get.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: avoid_positional_boolean_parameters
+
+import 'dart:developer';
 
 import 'package:ax_dapp/pages/farm/dialogs/UnstakeConfirmedDialog.dart';
 import 'package:ax_dapp/pages/farm/modules/BoxDecoration.dart';
 import 'package:ax_dapp/pages/farm/modules/DialogTextStyle.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 Future<void> testFunction() async {
-  print("[Console] hello world");
+  log('Test function executed!');
   return;
 }
 
 Dialog unstakeDialog(
-    BuildContext context, FarmController farm, double layoutWdt, bool isWeb) {
-  double _height = MediaQuery.of(context).size.height;
-  double wid = isWeb ? 390 : layoutWdt;
-  double hgt = _height < 455 ? _height : 450;
-  double dialogHorPadding = 30;
+  BuildContext context,
+  FarmController farm,
+  double layoutWdt,
+  bool isWeb,
+) {
+  final _height = MediaQuery.of(context).size.height;
+  final wid = isWeb ? 390.0 : layoutWdt;
+  final hgt = _height < 455.0 ? _height : 450.0;
+  const dialogHorPadding = 30.0;
 
-  FarmController selectedFarm = FarmController.fromFarm(farm);
-  RxDouble totalStakedBalance = 0.0.obs;
-  TextEditingController unStakeAxInput = TextEditingController();
+  final selectedFarm = FarmController.fromFarm(farm);
+  final totalStakedBalance = 0.0.obs;
+  final unStakeAxInput = TextEditingController();
 
   return Dialog(
     insetPadding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.0),
+      borderRadius: BorderRadius.circular(12),
     ),
     child: Container(
       height: hgt,
       width: wid,
-      padding: EdgeInsets.symmetric(vertical: 22, horizontal: dialogHorPadding),
+      padding: const EdgeInsets.symmetric(
+        vertical: 22,
+        horizontal: dialogHorPadding,
+      ),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
+        children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
+            children: [
               Text(
-                "Unstake Liquidity",
+                'Unstake Liquidity',
                 style: textStyle(Colors.white, 20, false),
               ),
-              Container(
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        size: 30,
-                        color: Colors.white,
-                      )))
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(
+                  Icons.close,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              )
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+            children: [
               //Amount Box
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 30),
@@ -68,7 +77,7 @@ Dialog unstakeDialog(
                 height: 55,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(14.0),
+                  borderRadius: BorderRadius.circular(14),
                   border: Border.all(
                     color: Colors.grey[400]!,
                     width: 0.5,
@@ -76,13 +85,13 @@ Dialog unstakeDialog(
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
+                  children: [
                     Container(
                       height: 35,
                       width: 35,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
-                          scale: 2.0,
+                          scale: 2,
                           image: AssetImage('assets/images/x.jpg'),
                         ),
                         shape: BoxShape.circle,
@@ -91,7 +100,7 @@ Dialog unstakeDialog(
                     Container(width: 15),
                     Expanded(
                       child: Text(
-                        "${selectedFarm.strStakedAlias.value.length > 0 ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}",
+                        '''${selectedFarm.strStakedAlias.value.isNotEmpty ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}''',
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ),
@@ -99,7 +108,11 @@ Dialog unstakeDialog(
                       height: 28,
                       width: 48,
                       decoration: boxDecoration(
-                          Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                        Colors.transparent,
+                        100,
+                        0.5,
+                        Colors.grey[400]!,
+                      ),
                       child: TextButton(
                         onPressed: () {
                           unStakeAxInput.text =
@@ -107,11 +120,12 @@ Dialog unstakeDialog(
                           selectedFarm.strUnStakeInput.value =
                               unStakeAxInput.text;
                           totalStakedBalance.value = double.parse(
-                                  selectedFarm.stakedInfo.value.viewAmount) -
+                                selectedFarm.stakedInfo.value.viewAmount,
+                              ) -
                               double.parse(selectedFarm.strUnStakeInput.value);
                         },
                         child: Text(
-                          "Max",
+                          'Max',
                           style: textStyle(Colors.grey[400]!, 9, false),
                         ),
                       ),
@@ -123,7 +137,8 @@ Dialog unstakeDialog(
                         onChanged: (value) {
                           selectedFarm.strUnStakeInput.value = value;
                           totalStakedBalance.value = double.parse(
-                                  selectedFarm.stakedInfo.value.viewAmount) -
+                                selectedFarm.stakedInfo.value.viewAmount,
+                              ) -
                               double.parse(selectedFarm.strUnStakeInput.value);
                         },
                         style: textStyle(Colors.grey[400]!, 22, false),
@@ -135,7 +150,8 @@ Dialog unstakeDialog(
                         ),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                              (RegExp(r'^(\d+)?\.?\d{0,6}'))),
+                            RegExp(r'^(\d+)?\.?\d{0,6}'),
+                          ),
                         ],
                       ),
                     ),
@@ -148,21 +164,23 @@ Dialog unstakeDialog(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Current ${selectedFarm.strStakedSymbol} Staked",
+                'Current ${selectedFarm.strStakedSymbol} Staked',
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
-              Obx(() => Text(
-                    "${selectedFarm.stakedInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
+              Obx(
+                () => Text(
+                  '''${selectedFarm.stakedInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}''',
+                  style: textStyle(Colors.grey[400]!, 14, false),
+                ),
+              ),
             ],
           ),
           Row(
             children: [
               Container(
-                padding: EdgeInsets.only(left: 55),
+                padding: const EdgeInsets.only(left: 55),
                 child: Text(
-                  "-",
+                  '-',
                   style: textStyle(Colors.grey[400]!, 14, false),
                 ),
               )
@@ -172,13 +190,15 @@ Dialog unstakeDialog(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Funds Removed",
+                'Funds Removed',
                 style: textStyle(Colors.grey[400]!, 14, false),
               ),
-              Obx(() => Text(
-                    "${selectedFarm.strUnStakeInput.value} ${selectedFarm.strStakedSymbol}",
-                    style: textStyle(Colors.grey[400]!, 14, false),
-                  )),
+              Obx(
+                () => Text(
+                  '''${selectedFarm.strUnStakeInput.value} ${selectedFarm.strStakedSymbol}''',
+                  style: textStyle(Colors.grey[400]!, 14, false),
+                ),
+              ),
             ],
           ),
           Container(
@@ -191,9 +211,11 @@ Dialog unstakeDialog(
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("New Staked Balance"),
-              Obx(() =>
-                  Text("$totalStakedBalance ${selectedFarm.strStakedSymbol}")),
+              const Text('New Staked Balance'),
+              Obx(
+                () =>
+                    Text('$totalStakedBalance ${selectedFarm.strStakedSymbol}'),
+              ),
             ],
           ),
           Row(
@@ -225,8 +247,14 @@ Dialog unstakeDialog(
                 ),
               ), */
               //ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
-              ApproveButton(175, 45, 'Approve', testFunction,
-                  selectedFarm.unstake, unstakeConfirmedDialog),
+              ApproveButton(
+                175,
+                45,
+                'Approve',
+                testFunction,
+                selectedFarm.unstake,
+                unstakeConfirmedDialog,
+              ),
             ],
           )
         ],
