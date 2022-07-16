@@ -1,6 +1,5 @@
 part of 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
 
-
 class BuyDialogState extends Equatable {
   final double balance;
   final double axInputAmount;
