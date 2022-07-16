@@ -77,12 +77,16 @@ class GetScoutAthletesDataUseCase {
   Future<List<TokenPair>> fetchSpecificPairs(String token) async {
     final response = await graphRepo.querySpecificPairs(token);
     if (!response.isLeft()) return List.empty();
-    final prefixInfos = response.getLeft().toNullable()!['prefix'];
-    final suffixInfos = response.getLeft().toNullable()!['suffix'];
-    final prefixPairs = prefixInfos.map<TokenPair>(TokenPair.fromJson).toList()
-        as List<TokenPair>;
-    final suffixPairs = suffixInfos.map<TokenPair>(TokenPair.fromJson).toList()
-        as List<TokenPair>;
+    final prefixInfos =
+        response.getLeft().toNullable()!['prefix'] as List<dynamic>;
+    final suffixInfos =
+        response.getLeft().toNullable()!['suffix'] as List<dynamic>;
+    final prefixPairs = List<Map<String, dynamic>>.from(prefixInfos)
+        .map<TokenPair>(TokenPair.fromJson)
+        .toList();
+    final suffixPairs = List<Map<String, dynamic>>.from(suffixInfos)
+        .map<TokenPair>(TokenPair.fromJson)
+        .toList();
     final pairs = [...prefixPairs, ...suffixPairs];
     return pairs;
   }
