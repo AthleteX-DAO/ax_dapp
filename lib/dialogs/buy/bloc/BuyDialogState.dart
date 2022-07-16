@@ -1,12 +1,7 @@
-part of 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+part of 'BuyDialogBloc.dart';
 
 class BuyDialogState extends Equatable {
-  final double balance;
-  final double axInputAmount;
-  final BlocStatus status;
-  final String tokenAddress;
-  final AptBuyInfo aptBuyInfo;
-  BuyDialogState({
+  const BuyDialogState({
     required this.balance,
     required this.axInputAmount,
     required this.status,
@@ -16,12 +11,18 @@ class BuyDialogState extends Equatable {
 
   factory BuyDialogState.initial() {
     return BuyDialogState(
-        balance: 0,
-        axInputAmount: 0,
-        status: BlocStatus.initial,
-        tokenAddress: '',
-        aptBuyInfo: AptBuyInfo.empty());
+      balance: 0,
+      axInputAmount: 0,
+      status: BlocStatus.initial,
+      tokenAddress: '',
+      aptBuyInfo: AptBuyInfo.empty(),
+    );
   }
+  final double balance;
+  final double axInputAmount;
+  final BlocStatus status;
+  final String tokenAddress;
+  final AptBuyInfo aptBuyInfo;
 
   @override
   List<Object> get props {
