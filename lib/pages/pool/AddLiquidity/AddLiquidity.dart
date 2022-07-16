@@ -648,7 +648,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   ),
                   // Bottom Token container
                   createTokenButton(2, elementWdt, _tokenAmountTwoController),
-                  if (state.status == BlocStatus.no_data) ...[
+                  if (state.status == BlocStatus.noData) ...[
                     const Text('Not Created - Please input both token amounts'),
                   ]
                 ],

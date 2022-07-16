@@ -40,14 +40,14 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
               ),
             );
           } else {
-            emit(state.copyWith(status: BlocStatus.no_data));
+            emit(state.copyWith(status: BlocStatus.noData));
           }
         } else {
           // TODO(anyone): Create User facing error messages
           emit(state.copyWith(status: BlocStatus.error));
         }
       } else {
-        emit(state.copyWith(status: BlocStatus.no_wallet));
+        emit(state.copyWith(status: BlocStatus.noWallet));
       }
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));

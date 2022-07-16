@@ -29,7 +29,7 @@ class _SellDialogState extends State<SellDialog> {
   double hgt = 500;
   final TextEditingController _aptAmountController = TextEditingController();
 
-  TokenType _currentTokenTypeSelection = TokenType.Long;
+  TokenType _currentTokenTypeSelection = TokenType.long;
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
@@ -57,19 +57,19 @@ class _SellDialogState extends State<SellDialog> {
                 ),
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == TokenType.Long)
+                primary: (_currentTokenTypeSelection == TokenType.long)
                     ? Colors.amber
                     : Colors.transparent,
               ),
               onPressed: () {
                 setState(() {
-                  _currentTokenTypeSelection = TokenType.Long;
+                  _currentTokenTypeSelection = TokenType.long;
                 });
               },
               child: Text(
                 'Long',
                 style: TextStyle(
-                  color: (_currentTokenTypeSelection == TokenType.Long)
+                  color: (_currentTokenTypeSelection == TokenType.long)
                       ? Colors.black
                       : const Color.fromRGBO(154, 154, 154, 1),
                   fontSize: 11,
@@ -86,19 +86,19 @@ class _SellDialogState extends State<SellDialog> {
                 ),
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == TokenType.Long)
+                primary: (_currentTokenTypeSelection == TokenType.long)
                     ? Colors.transparent
                     : Colors.black,
               ),
               onPressed: () {
                 setState(() {
-                  _currentTokenTypeSelection = TokenType.Short;
+                  _currentTokenTypeSelection = TokenType.short;
                 });
               },
               child: Text(
                 'Short',
                 style: TextStyle(
-                  color: (_currentTokenTypeSelection == TokenType.Long)
+                  color: (_currentTokenTypeSelection == TokenType.long)
                       ? const Color.fromRGBO(154, 154, 154, 1)
                       : Colors.amber,
                   fontSize: 11,
@@ -117,7 +117,7 @@ class _SellDialogState extends State<SellDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Price:', style: textStyle(Colors.white, 15, false)),
-          if (_currentTokenTypeSelection == TokenType.Long)
+          if (_currentTokenTypeSelection == TokenType.long)
             Text(
               '$price AX per ${getLongAthleteSymbol(widget.athleteId)} APT',
               style: textStyle(Colors.white, 15, false),
@@ -363,7 +363,7 @@ class _SellDialogState extends State<SellDialog> {
                               image: DecorationImage(
                                 scale: 0.5,
                                 image:
-                                    _currentTokenTypeSelection == TokenType.Long
+                                    _currentTokenTypeSelection == TokenType.long
                                         ? const AssetImage(
                                             'assets/images/apt_noninverted.png',
                                           )
@@ -376,7 +376,7 @@ class _SellDialogState extends State<SellDialog> {
                           Container(width: 15),
                           Expanded(
                             child: Text(
-                              _currentTokenTypeSelection == TokenType.Long
+                              _currentTokenTypeSelection == TokenType.long
                                   ? '''${getLongAthleteSymbol(widget.athleteId)} APT'''
                                   : '''${getShortAthleteSymbol(widget.athleteId)} APT''',
                               style: textStyle(Colors.white, 15, false),
@@ -523,7 +523,7 @@ class _SellDialogState extends State<SellDialog> {
   }
 
   String _getCurrentTokenAddress() {
-    return (_currentTokenTypeSelection == TokenType.Long)
+    return (_currentTokenTypeSelection == TokenType.long)
         ? getLongAptAddress(widget.athleteId)
         : getShortAptAddress(widget.athleteId);
   }

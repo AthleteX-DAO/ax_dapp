@@ -1,1 +1,8 @@
-enum BlocStatus { initial, success, error, loading, no_data, no_wallet}
+enum BlocStatus {
+  initial,
+  success,
+  error,
+  loading,
+  noData,
+  noWallet,
+}

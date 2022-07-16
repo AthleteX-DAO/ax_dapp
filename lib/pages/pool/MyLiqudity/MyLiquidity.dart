@@ -401,14 +401,14 @@ class _MyLiquidityState extends State<MyLiquidity> {
         if (state.status == BlocStatus.loading) {
           return loading();
         }
-        if (state.status == BlocStatus.no_data ||
+        if (state.status == BlocStatus.noData ||
             (state.status == BlocStatus.success && state.cards.isEmpty)) {
           return EmptyWallet(
             width: _layoutWdt,
             height: _layoutHgt,
           );
         }
-        if (state.status == BlocStatus.no_wallet) {
+        if (state.status == BlocStatus.noWallet) {
           return const NoWallet();
         }
         if (state.status == BlocStatus.error) {

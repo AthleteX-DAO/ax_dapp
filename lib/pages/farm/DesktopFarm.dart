@@ -86,10 +86,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
         }
 
         if (state.status == BlocStatus.error ||
-            state.status == BlocStatus.no_data) {
+            state.status == BlocStatus.noData) {
           widget = noData();
         }
-        if (!state.isAllFarms && state.status == BlocStatus.no_wallet) {
+        if (!state.isAllFarms && state.status == BlocStatus.noWallet) {
           widget = noWallet();
         }
         final Widget toggle = toggleFarmButton(bloc, layoutWdt, layoutHgt);

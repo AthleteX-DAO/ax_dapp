@@ -43,7 +43,7 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
           ),
         );
       } else {
-        emit(state.copy(status: BlocStatus.no_data));
+        emit(state.copy(status: BlocStatus.noData));
       }
     } catch (_) {
       emit(state.copy(status: BlocStatus.error));
@@ -74,10 +74,10 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
             ),
           );
         } else {
-          emit(state.copy(status: BlocStatus.no_data));
+          emit(state.copy(status: BlocStatus.noData));
         }
       } else {
-        emit(state.copy(status: BlocStatus.no_wallet));
+        emit(state.copy(status: BlocStatus.noWallet));
       }
     } catch (_) {
       emit(state.copy(status: BlocStatus.error));

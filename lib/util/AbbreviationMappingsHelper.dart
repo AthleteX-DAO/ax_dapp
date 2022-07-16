@@ -15,12 +15,12 @@ Map<String, String> _MLBAthleteMappingPosition = {
 };
 
 Map<String, String> _NFLAthleteMappingPosition = {
-  'C' : 'Center',
-  'RB' : 'Running Back',
-  'QB' : 'Quarterback',
-  'HB' : 'Halfback',
-  'WR' : 'Wide Receiver',
-  'DE' : 'Defensive End'
+  'C': 'Center',
+  'RB': 'Running Back',
+  'QB': 'Quarterback',
+  'HB': 'Halfback',
+  'WR': 'Wide Receiver',
+  'DE': 'Defensive End'
 };
 
 Map<String, String> _MLBAthleteMappingTeamNickname = {
@@ -90,56 +90,56 @@ Map<String, String> _MLBAthleteMappingTeamCity = {
 };
 
 Map<String, String> _NFLAthleteMappingTeamNickName = {
-  'TB' : 'Buccaneers',
-  'KC' : 'Chiefs',
-  'JAX' : 'Jaguars',
-  'GB' : 'Packers',
-  'BUF' : 'Bills',
-  'ATL' : 'Falcons'
+  'TB': 'Buccaneers',
+  'KC': 'Chiefs',
+  'JAX': 'Jaguars',
+  'GB': 'Packers',
+  'BUF': 'Bills',
+  'ATL': 'Falcons'
 };
 
 Map<String, String> _NFLAthleteMappingTeamCity = {
-  'TB' : 'Tampa Bay',
-  'KC' : 'Kansas City',
-  'JAX' : 'Jacksonville',
-  'GB' : 'Green Bay',
-  'BUF' : 'Buffalo',
-  'ATL' : 'Atlanta'
+  'TB': 'Tampa Bay',
+  'KC': 'Kansas City',
+  'JAX': 'Jacksonville',
+  'GB': 'Green Bay',
+  'BUF': 'Buffalo',
+  'ATL': 'Atlanta'
 };
 
 String retrieveFullMLBAthletePosition(String currentMLBAthletePositon) {
   if (_MLBAthleteMappingPosition.containsKey(currentMLBAthletePositon)) {
     return _MLBAthleteMappingPosition[currentMLBAthletePositon]!;
   }
-  return "No Position Found";
+  return 'No Position Found';
 }
 
 String retrieveFullNFLAthletePosition(String currentNFLAthletePosition) {
   if (_NFLAthleteMappingPosition.containsKey(currentNFLAthletePosition)) {
     return _NFLAthleteMappingPosition[currentNFLAthletePosition]!;
   }
-  return "No Position Found";
+  return 'No Position Found';
 }
 
 String retrieveNFLTeamNickName(String currentNFLAthleteShortName) {
-  if(_NFLAthleteMappingTeamNickName.containsKey(currentNFLAthleteShortName)) {
+  if (_NFLAthleteMappingTeamNickName.containsKey(currentNFLAthleteShortName)) {
     return _NFLAthleteMappingTeamNickName[currentNFLAthleteShortName]!;
   }
-  return "N/A";
+  return 'N/A';
 }
 
 String retrieveNFLTeamCityName(String currentNFLAthleteTeamShortName) {
-  if(_NFLAthleteMappingTeamCity.containsKey(currentNFLAthleteTeamShortName)) {
+  if (_NFLAthleteMappingTeamCity.containsKey(currentNFLAthleteTeamShortName)) {
     return _NFLAthleteMappingTeamCity[currentNFLAthleteTeamShortName]!;
   }
-  return "N/A";
+  return 'N/A';
 }
 
 String retrieveTeamNickname(String curMLBAthleteTeamShortname) {
   if (_MLBAthleteMappingTeamNickname.containsKey(curMLBAthleteTeamShortname)) {
     return _MLBAthleteMappingTeamNickname[curMLBAthleteTeamShortname]!;
   } else {
-    return "N/A";
+    return 'N/A';
   }
 }
 
@@ -147,6 +147,6 @@ String retrieveTeamCityName(String curMLBAthleteTeamShortname) {
   if (_MLBAthleteMappingTeamCity.containsKey(curMLBAthleteTeamShortname)) {
     return _MLBAthleteMappingTeamCity[curMLBAthleteTeamShortname]!;
   } else {
-    return "N/A";
+    return 'N/A';
   }
 }

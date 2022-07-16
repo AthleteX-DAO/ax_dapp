@@ -73,7 +73,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
-            status: BlocStatus.no_data,
+            status: BlocStatus.noData,
             poolPairInfo: PoolPairInfo.empty(),
           ),
         );
@@ -194,7 +194,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
         add(Token1InputChanged(token1InputAmount.toString()));
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.no_data));
+        emit(state.copyWith(status: BlocStatus.noData));
       }
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
@@ -229,7 +229,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
         );
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.no_data));
+        emit(state.copyWith(status: BlocStatus.noData));
       }
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
