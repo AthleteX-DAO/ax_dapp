@@ -1,12 +1,15 @@
 import 'dart:async';
+
+import 'package:ax_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import '../V1App.dart';
 
 class DeviceAuthentication extends StatefulWidget {
+  const DeviceAuthentication({super.key});
+
   @override
-  _DeviceAuthenticationState createState() => _DeviceAuthenticationState();
+  State<DeviceAuthentication> createState() => _DeviceAuthenticationState();
 }
 
 class _DeviceAuthenticationState extends State<DeviceAuthentication> {
@@ -14,11 +17,11 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
 
-  Color primaryWhiteColor = Color.fromRGBO(255, 255, 255, 1);
-  Color primaryOrangeColor = Color.fromRGBO(254, 197, 0, 1);
-  Color secondaryGreyColor = Color.fromRGBO(56, 56, 56, 1);
-  Color greyTextColor = Color.fromRGBO(160, 160, 160, 1);
-  Color secondaryOrangeColor = Color.fromRGBO(254, 197, 0, 0.2);
+  Color primaryWhiteColor = const Color.fromRGBO(255, 255, 255, 1);
+  Color primaryOrangeColor = const Color.fromRGBO(254, 197, 0, 1);
+  Color secondaryGreyColor = const Color.fromRGBO(56, 56, 56, 1);
+  Color greyTextColor = const Color.fromRGBO(160, 160, 160, 1);
+  Color secondaryOrangeColor = const Color.fromRGBO(254, 197, 0, 0.2);
 
   @override
   void initState() {
@@ -26,13 +29,15 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
     if (_authorized == 'Authorized') {
       setState(() {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => V1App()));
+          context,
+          MaterialPageRoute<void>(builder: (context) => const V1App()),
+        );
       });
     }
   }
 
   Future<void> _authenticate(BuildContext context) async {
-    bool authenticated = false;
+    var authenticated = false;
     try {
       setState(() {
         _isAuthenticating = true;
@@ -41,7 +46,6 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
       authenticated = await auth.authenticate(
         localizedReason: 'Let OS determine authentication method',
         options: const AuthenticationOptions(
-          useErrorDialogs: true,
           stickyAuth: true,
         ),
       );
@@ -49,7 +53,6 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
         _isAuthenticating = false;
       });
     } on PlatformException catch (e) {
-      print(e);
       setState(() {
         _isAuthenticating = false;
         _authorized = 'Error - ${e.message}';
@@ -64,13 +67,15 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
       _authorized = authenticated ? 'Authorized' : 'Not Authorized';
       if (authenticated) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => V1App()));
+          context,
+          MaterialPageRoute<void>(builder: (context) => const V1App()),
+        );
       }
     });
   }
 
   Future<void> _authenticateWithBiometrics() async {
-    bool authenticated = false;
+    var authenticated = false;
     try {
       setState(() {
         _isAuthenticating = true;
@@ -80,7 +85,6 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
         localizedReason:
             'Scan your fingerprint (or face or whatever) to authenticate',
         options: const AuthenticationOptions(
-          useErrorDialogs: true,
           stickyAuth: true,
           biometricOnly: true,
         ),
@@ -90,7 +94,6 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
         _authorized = 'Authenticating';
       });
     } on PlatformException catch (e) {
-      print(e);
       setState(() {
         _isAuthenticating = false;
         _authorized = 'Error - ${e.message}';
@@ -101,7 +104,7 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
       return;
     }
 
-    final String message = authenticated ? 'Authorized' : 'Not Authorized';
+    final message = authenticated ? 'Authorized' : 'Not Authorized';
     setState(() {
       _authorized = message;
     });
@@ -110,7 +113,9 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
       _authorized = authenticated ? 'Authorized' : 'Not Authorized';
       if (authenticated) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => V1App()));
+          context,
+          MaterialPageRoute<void>(builder: (context) => const V1App()),
+        );
       }
     });
   }
@@ -124,17 +129,17 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
           width: _width,
           height: _height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/axBackground.jpeg"),
+              image: AssetImage('assets/images/axBackground.jpeg'),
               fit: BoxFit.fill,
             ),
           ),
@@ -142,11 +147,10 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
             child: ListView(
               shrinkWrap: true,
               padding: const EdgeInsets.only(top: 30),
-              children: <Widget>[
+              children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
+                  children: [
                     Container(
                       color: Colors.transparent,
                       width: _width,
@@ -154,51 +158,58 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
                       child: Stack(
                         children: [
                           Positioned(
-                              left: 20,
-                              bottom: 0,
-                              height: 40,
-                              width: 40,
-                              child: IconButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  icon: Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white,
-                                  ))),
+                            left: 20,
+                            bottom: 0,
+                            height: 40,
+                            width: 40,
+                            child: IconButton(
+                              onPressed: () => Navigator.pop(context),
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                           Positioned(
-                              right: _width * .25,
-                              bottom: 0,
-                              height: 40,
-                              width: _width * .5,
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Center(
-                                  child: Text(
-                                    'Current State: $_authorized\n',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
+                            right: _width * .25,
+                            bottom: 0,
+                            height: 40,
+                            width: _width * .5,
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Center(
+                                child: Text(
+                                  'Current State: $_authorized\n',
+                                  style: const TextStyle(color: Colors.white),
                                 ),
-                              )),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     if (_isAuthenticating)
-                      Container(
+                      DecoratedBox(
                         decoration: boxDecoration(
-                            Colors.grey[300]!.withOpacity(0.15),
-                            20,
-                            1,
-                            Colors.transparent),
+                          Colors.grey[300]!.withOpacity(0.15),
+                          20,
+                          1,
+                          Colors.transparent,
+                        ),
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.transparent),
+                              Colors.transparent,
+                            ),
                           ),
                           onPressed: _cancelAuthentication,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: const <Widget>[
-                              Text('Cancel Authentication',
-                                  style: TextStyle(color: Colors.white)),
+                            children: const [
+                              Text(
+                                'Cancel Authentication',
+                                style: TextStyle(color: Colors.white),
+                              ),
                               Icon(Icons.cancel),
                             ],
                           ),
@@ -206,20 +217,25 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
                       )
                     else
                       Column(
-                        children: <Widget>[
+                        children: [
                           Container(
                             height: 40,
-                            decoration: boxDecoration(secondaryOrangeColor, 10,
-                                1, Colors.transparent),
+                            decoration: boxDecoration(
+                              secondaryOrangeColor,
+                              10,
+                              1,
+                              Colors.transparent,
+                            ),
                             child: ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Colors.transparent),
+                                  Colors.transparent,
+                                ),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
+                                children: [
                                   Text(
                                     'Authenticate',
                                     style: TextStyle(
@@ -236,22 +252,25 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 10),
+                            margin: const EdgeInsets.only(top: 10),
                             height: 40,
                             decoration: boxDecoration(
-                                Colors.grey[300]!.withOpacity(0.15),
-                                10,
-                                1,
-                                Colors.transparent),
+                              Colors.grey[300]!.withOpacity(0.15),
+                              10,
+                              1,
+                              Colors.transparent,
+                            ),
                             child: ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Colors.transparent),
+                                  Colors.transparent,
+                                ),
                               ),
+                              onPressed: _authenticateWithBiometrics,
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
+                                children: [
                                   Text(
                                     _isAuthenticating
                                         ? 'Cancel'
@@ -264,7 +283,6 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
                                   ),
                                 ],
                               ),
-                              onPressed: _authenticateWithBiometrics,
                             ),
                           ),
                         ],
@@ -280,10 +298,15 @@ class _DeviceAuthenticationState extends State<DeviceAuthentication> {
   }
 
   BoxDecoration boxDecoration(
-      Color col, double rad, double borWid, Color borCol) {
+    Color col,
+    double rad,
+    double borWid,
+    Color borCol,
+  ) {
     return BoxDecoration(
-        color: col,
-        borderRadius: BorderRadius.circular(rad),
-        border: Border.all(color: secondaryGreyColor, width: borWid));
+      color: col,
+      borderRadius: BorderRadius.circular(rad),
+      border: Border.all(color: secondaryGreyColor, width: borWid),
+    );
   }
 }
