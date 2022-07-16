@@ -1,4 +1,5 @@
-// ignore_for_file: non_constant_identifier_names, avoid_positional_boolean_parameters
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: avoid_positional_boolean_parameters
 import 'dart:developer';
 
 import 'package:ax_dapp/pages/connectWallet/MobileLoginPage.dart';
