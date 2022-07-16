@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CustomSliderThumbCircle extends SliderComponentShape {
-  final double? thumbRadius;
-  final int min;
-  final int max;
-
   const CustomSliderThumbCircle({
     @required this.thumbRadius,
     this.min = 0,
     this.max = 10,
   });
+
+  final double? thumbRadius;
+  final int min;
+  final int max;
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
@@ -31,14 +31,14 @@ class CustomSliderThumbCircle extends SliderComponentShape {
     double? textScaleFactor,
     Size? sizeWithOverflow,
   }) {
-    final Canvas canvas = context.canvas;
+    final canvas = context.canvas;
 
     final paint = Paint()
       ..color = Colors.white //Thumb Background Color
       ..style = PaintingStyle.fill;
 
-    TextSpan span = new TextSpan(
-      style: new TextStyle(
+    final span = TextSpan(
+      style: TextStyle(
         fontSize: (thumbRadius ?? 0) * .8,
         fontWeight: FontWeight.w700,
         color: sliderTheme?.thumbColor, //Text Color of Value on Thumb
@@ -46,12 +46,13 @@ class CustomSliderThumbCircle extends SliderComponentShape {
       text: getValue(value ?? 0),
     );
 
-    TextPainter tp = new TextPainter(
-        text: span,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr);
-    tp.layout();
-    Offset textCenter =
+    final tp = TextPainter(
+      text: span,
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    final textCenter =
         Offset(center.dx - (tp.width / 2), center.dy - (tp.height / 2));
 
     canvas.drawCircle(center, (thumbRadius ?? 0) * .9, paint);
