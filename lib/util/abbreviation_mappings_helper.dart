@@ -1,6 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
-
-Map<String, String> _mlbAthleteMappingPosition = {
+const Map<String, String> _mlbAthleteMappingPosition = {
   'RF': 'Right Fielder',
   'SS': 'Short Stop',
   '1B': 'First Baseman',
@@ -14,7 +12,7 @@ Map<String, String> _mlbAthleteMappingPosition = {
   'DH': 'Designated Hitter',
 };
 
-Map<String, String> _nflAthleteMappingPosition = {
+const Map<String, String> _nflAthleteMappingPosition = {
   'C': 'Center',
   'RB': 'Running Back',
   'QB': 'Quarterback',
@@ -23,7 +21,7 @@ Map<String, String> _nflAthleteMappingPosition = {
   'DE': 'Defensive End'
 };
 
-Map<String, String> _mlbAthleteMappingTeamNickname = {
+const Map<String, String> _mlbAthleteMappingTeamNickname = {
   'ARI': 'Diamondbacks',
   'ATL': 'Braves',
   'BAL': 'Orioles',
@@ -56,7 +54,7 @@ Map<String, String> _mlbAthleteMappingTeamNickname = {
   'WSH': 'Nationals',
 };
 
-Map<String, String> _mlbAthleteMappingTeamCity = {
+const Map<String, String> _mlbAthleteMappingTeamCity = {
   'ARI': 'Arizona',
   'ATL': 'Atlanta',
   'BAL': 'Baltimore',
@@ -89,7 +87,7 @@ Map<String, String> _mlbAthleteMappingTeamCity = {
   'WSH': 'Washington',
 };
 
-Map<String, String> _nflAthleteMappingTeamNickName = {
+const Map<String, String> _nflAthleteMappingTeamNickName = {
   'TB': 'Buccaneers',
   'KC': 'Chiefs',
   'JAX': 'Jaguars',
@@ -98,7 +96,7 @@ Map<String, String> _nflAthleteMappingTeamNickName = {
   'ATL': 'Falcons'
 };
 
-Map<String, String> _nflAthleteMappingTeamCity = {
+const Map<String, String> _nflAthleteMappingTeamCity = {
   'TB': 'Tampa Bay',
   'KC': 'Kansas City',
   'JAX': 'Jacksonville',
