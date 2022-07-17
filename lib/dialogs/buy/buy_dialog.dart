@@ -1,30 +1,34 @@
-import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
+import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:ax_dapp/util/TokenType.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class SellDialog extends StatefulWidget {
-  const SellDialog(
+class BuyDialog extends StatefulWidget {
+  const BuyDialog(
     this.athleteName,
     this.aptPrice,
-    this.athleteId, {
+    this.athleteId,
+    this.goToTradePage, {
     super.key,
   });
 
   final String athleteName;
   final double aptPrice;
   final int athleteId;
+  final void Function() goToTradePage;
 
   @override
-  State<StatefulWidget> createState() => _SellDialogState();
+  State<StatefulWidget> createState() => _BuyDialogState();
 }
 
-class _SellDialogState extends State<SellDialog> {
+class _BuyDialogState extends State<BuyDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
   final TextEditingController _aptAmountController = TextEditingController();
@@ -139,7 +143,7 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text('Total Fees:', style: textStyle(Colors.grey[600]!, 15, false)),
           Text(
-            '$totalFee APT(0.3%)',
+            '$totalFee AX(0.3%)',
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -189,7 +193,7 @@ class _SellDialogState extends State<SellDialog> {
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
           Text(
-            '$minimumReceived AX',
+            '$minimumReceived APT',
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -224,10 +228,18 @@ class _SellDialogState extends State<SellDialog> {
             'You Receive:',
             style: textStyle(Colors.white, 15, false),
           ),
-          Text(
-            '$amountToReceive AX',
-            style: textStyle(Colors.white, 15, false),
-          ),
+          if (_currentTokenTypeSelection == TokenType.long)
+            Text(
+              '$amountToReceive '
+              '${getLongAthleteSymbol(widget.athleteId)}'
+              ' APT',
+              style: textStyle(Colors.white, 15, false),
+            )
+          else
+            Text(
+              '$amountToReceive ${getShortAthleteSymbol(widget.athleteId)} APT',
+              style: textStyle(Colors.white, 15, false),
+            )
         ],
       ),
     );
@@ -243,23 +255,20 @@ class _SellDialogState extends State<SellDialog> {
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
 
-    return BlocBuilder<SellDialogBloc, SellDialogState>(
+    return BlocBuilder<BuyDialogBloc, BuyDialogState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
-        final bloc = context.read<SellDialogBloc>();
-        final price = state.aptSellInfo.axPrice.toStringAsFixed(6);
+        final bloc = context.read<BuyDialogBloc>();
+        final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
         final balance = state.balance;
-        final minReceived =
-            state.aptSellInfo.minimumReceived.toStringAsFixed(6);
-        final priceImpact = state.aptSellInfo.priceImpact.toStringAsFixed(6);
-        final receiveAmount =
-            state.aptSellInfo.receiveAmount.toStringAsFixed(6);
-        final totalFee = state.aptSellInfo.totalFee;
+        final minReceived = state.aptBuyInfo.minimumReceived.toStringAsFixed(6);
+        final priceImpact = state.aptBuyInfo.priceImpact.toStringAsFixed(6);
+        final receiveAmount = state.aptBuyInfo.receiveAmount.toStringAsFixed(6);
+        final totalFee = state.aptBuyInfo.totalFee;
         if (state.tokenAddress.isEmpty ||
             state.tokenAddress != _getCurrentTokenAddress()) {
-          reloadSellDialog(bloc);
+          reloadBuyDialog(bloc);
         }
-
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(
@@ -276,7 +285,7 @@ class _SellDialogState extends State<SellDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Sell ${widget.athleteName} APT',
+                        'Buy ${widget.athleteName} APT',
                         style: textStyle(Colors.white, 20, false),
                       ),
                       IconButton(
@@ -296,28 +305,49 @@ class _SellDialogState extends State<SellDialog> {
                     text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: "You can sell APT's at Market Price for AX.",
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: isWeb ? 14 : 12,
-                          ),
-                        ),
-                        TextSpan(
                           text:
-                              ''' You can access other funds with AX on the Matic network through''',
+                              '''You can purchase APTs at Market Price with AX.\n''',
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12,
                           ),
                         ),
                         TextSpan(
-                          text: ' SushiSwap',
+                          text: 'Click here to',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: isWeb ? 14 : 12,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' Buy AX',
                           style: TextStyle(
                             color: Colors.amber[400],
                             fontSize: isWeb ? 14 : 12,
                           ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pop(context);
+                              widget.goToTradePage();
+                            },
                         ),
                       ],
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  height: 50,
+                  width: wid,
+                  child: GestureDetector(
+                    onTap: () {
+                      const urlString =
+                          'https://athletex-markets.gitbook.io/athletex-huddle/how-to.../buy-ax-coin';
+                      launchUrl(Uri.parse(urlString));
+                    },
+                    child: Text(
+                      'Learn How to buy AX',
+                      style: TextStyle(color: Colors.amber[400], fontSize: 14),
                     ),
                   ),
                 ),
@@ -327,8 +357,8 @@ class _SellDialogState extends State<SellDialog> {
                   children: [
                     Text(
                       isWeb
-                          ? 'Input APT:'
-                          : 'Input APT amount you want to sell:',
+                          ? 'Input AX:'
+                          : 'Input AX amount you want to spend:',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -358,27 +388,20 @@ class _SellDialogState extends State<SellDialog> {
                           Container(
                             width: 35,
                             height: 35,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 scale: 0.5,
-                                image:
-                                    _currentTokenTypeSelection == TokenType.long
-                                        ? const AssetImage(
-                                            'assets/images/apt_noninverted.png',
-                                          )
-                                        : const AssetImage(
-                                            'assets/images/apt_inverted.png',
-                                          ),
+                                image: AssetImage(
+                                  'assets/images/X_Logo_Black_BR.png',
+                                ),
                               ),
                             ),
                           ),
                           Container(width: 15),
                           Expanded(
                             child: Text(
-                              _currentTokenTypeSelection == TokenType.long
-                                  ? '''${getLongAthleteSymbol(widget.athleteId)} APT'''
-                                  : '''${getShortAthleteSymbol(widget.athleteId)} APT''',
+                              'AX',
                               style: textStyle(Colors.white, 15, false),
                             ),
                           ),
@@ -393,7 +416,7 @@ class _SellDialogState extends State<SellDialog> {
                             ),
                             child: TextButton(
                               onPressed: () {
-                                bloc.add(MaxSellTap());
+                                bloc.add(OnMaxBuyTap());
                                 _aptAmountController.text =
                                     state.balance.toStringAsFixed(6);
                               },
@@ -417,11 +440,11 @@ class _SellDialogState extends State<SellDialog> {
                                       const EdgeInsets.only(left: 3),
                                   border: InputBorder.none,
                                 ),
-                                onChanged: (newAptInput) {
-                                  if (newAptInput.isEmpty) newAptInput = '0';
+                                onChanged: (value) {
+                                  if (value.isEmpty) value = '0';
                                   bloc.add(
-                                    NewAptInput(
-                                      aptInputAmount: double.parse(newAptInput),
+                                    OnNewAxInput(
+                                      axInputAmount: double.parse(value),
                                     ),
                                   );
                                 },
@@ -518,8 +541,8 @@ class _SellDialogState extends State<SellDialog> {
     );
   }
 
-  void reloadSellDialog(SellDialogBloc bloc) {
-    bloc.add(LoadDialog(currentTokenAddress: _getCurrentTokenAddress()));
+  void reloadBuyDialog(BuyDialogBloc bloc) {
+    bloc.add(OnLoadDialog(currentTokenAddress: _getCurrentTokenAddress()));
   }
 
   String _getCurrentTokenAddress() {

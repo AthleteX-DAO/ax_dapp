@@ -7,8 +7,8 @@ import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'BuyDialogEvent.dart';
-part 'BuyDialogState.dart';
+part 'buy_dialog_event.dart';
+part 'buy_dialog_state.dart';
 
 class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   BuyDialogBloc({

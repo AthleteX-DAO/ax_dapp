@@ -1,4 +1,4 @@
-part of 'BuyDialogBloc.dart';
+part of 'buy_dialog_bloc.dart';
 
 class BuyDialogState extends Equatable {
   const BuyDialogState({

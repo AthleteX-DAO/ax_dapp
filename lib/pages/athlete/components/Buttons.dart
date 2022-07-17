@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
-import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
-import 'package:ax_dapp/dialogs/sell/SellDialog.dart';
-import 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
+import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
+import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/sell/sell_dialog.dart';
 import 'package:ax_dapp/pages/scout/dialogs/AthletePageDialogs.dart';
 import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';

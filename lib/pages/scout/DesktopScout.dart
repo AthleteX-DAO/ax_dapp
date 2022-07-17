@@ -1,7 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/dialogs/buy/BuyDialog.dart';
-import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/pages/athlete/AthletePage.dart';
 import 'package:ax_dapp/pages/athlete/bloc/AthletePageBloc.dart'
     hide OnPageRefresh;

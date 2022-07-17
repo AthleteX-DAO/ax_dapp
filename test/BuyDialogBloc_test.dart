@@ -1,4 +1,4 @@
-import 'package:ax_dapp/dialogs/buy/bloc/BuyDialogBloc.dart';
+import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptBuyInfo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';

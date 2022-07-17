@@ -7,8 +7,8 @@ import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'package:ax_dapp/dialogs/sell/bloc/SellDialogEvent.dart';
-part 'package:ax_dapp/dialogs/sell/bloc/SellDialogState.dart';
+part 'sell_dialog_event.dart';
+part 'sell_dialog_state.dart';
 
 class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   SellDialogBloc({

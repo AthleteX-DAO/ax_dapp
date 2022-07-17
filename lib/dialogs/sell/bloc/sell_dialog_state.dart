@@ -1,4 +1,4 @@
-part of 'package:ax_dapp/dialogs/sell/bloc/SellDialogBloc.dart';
+part of 'sell_dialog_bloc.dart';
 
 class SellDialogState extends Equatable {
   const SellDialogState({
