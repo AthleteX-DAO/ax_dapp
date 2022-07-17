@@ -3,7 +3,7 @@
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/token_list.dart';
-import 'package:ax_dapp/util/SupportedSports.dart';
+import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

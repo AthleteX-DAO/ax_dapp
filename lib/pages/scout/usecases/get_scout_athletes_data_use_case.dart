@@ -13,7 +13,7 @@ import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/service/token_list.dart';
-import 'package:ax_dapp/util/SupportedSports.dart';
+import 'package:ax_dapp/util/supported_sports.dart';
 
 class GetScoutAthletesDataUseCase {
   GetScoutAthletesDataUseCase({

@@ -4,7 +4,7 @@ import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
-import 'package:ax_dapp/util/BlocStatus.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:mockito/annotations.dart';

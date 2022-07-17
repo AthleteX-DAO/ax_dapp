@@ -1,4 +1,4 @@
-import 'package:ax_dapp/util/UserInputNorm.dart';
+import 'package:ax_dapp/util/user_input_norm.dart';
 
 class UserInputInfo {
   UserInputInfo(this.rawAmount, this.viewAmount);

@@ -1,4 +1,4 @@
-import 'package:ax_dapp/util/chart/extensions/graphData.dart';
+import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';

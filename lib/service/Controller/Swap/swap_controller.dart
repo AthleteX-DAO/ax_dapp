@@ -4,7 +4,7 @@ import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/service/controller/token.dart';
-import 'package:ax_dapp/util/UserInputNorm.dart';
+import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';
 

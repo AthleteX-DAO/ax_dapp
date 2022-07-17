@@ -1,4 +1,4 @@
-import 'package:ax_dapp/util/SupportedSports.dart';
+import 'package:ax_dapp/util/supported_sports.dart';
 
 abstract class SportsRepo<SportAthlete> {
   SportsRepo(this.sport);

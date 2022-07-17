@@ -1,6 +1,6 @@
 import 'package:ax_dapp/repositories/mlb_repo.dart';
-import 'package:ax_dapp/util/BlocStatus.dart';
-import 'package:ax_dapp/util/chart/extensions/graphData.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';

@@ -15,9 +15,9 @@ import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget.dart
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
-import 'package:ax_dapp/util/BlocStatus.dart';
-import 'package:ax_dapp/util/PercentHelper.dart';
-import 'package:ax_dapp/util/SupportedSports.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/percent_helper.dart';
+import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

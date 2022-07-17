@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-Map<String, String> _MLBAthleteMappingPosition = {
+Map<String, String> _mlbAthleteMappingPosition = {
   'RF': 'Right Fielder',
   'SS': 'Short Stop',
   '1B': 'First Baseman',
@@ -14,7 +14,7 @@ Map<String, String> _MLBAthleteMappingPosition = {
   'DH': 'Designated Hitter',
 };
 
-Map<String, String> _NFLAthleteMappingPosition = {
+Map<String, String> _nflAthleteMappingPosition = {
   'C': 'Center',
   'RB': 'Running Back',
   'QB': 'Quarterback',
@@ -23,7 +23,7 @@ Map<String, String> _NFLAthleteMappingPosition = {
   'DE': 'Defensive End'
 };
 
-Map<String, String> _MLBAthleteMappingTeamNickname = {
+Map<String, String> _mlbAthleteMappingTeamNickname = {
   'ARI': 'Diamondbacks',
   'ATL': 'Braves',
   'BAL': 'Orioles',
@@ -56,7 +56,7 @@ Map<String, String> _MLBAthleteMappingTeamNickname = {
   'WSH': 'Nationals',
 };
 
-Map<String, String> _MLBAthleteMappingTeamCity = {
+Map<String, String> _mlbAthleteMappingTeamCity = {
   'ARI': 'Arizona',
   'ATL': 'Atlanta',
   'BAL': 'Baltimore',
@@ -89,7 +89,7 @@ Map<String, String> _MLBAthleteMappingTeamCity = {
   'WSH': 'Washington',
 };
 
-Map<String, String> _NFLAthleteMappingTeamNickName = {
+Map<String, String> _nflAthleteMappingTeamNickName = {
   'TB': 'Buccaneers',
   'KC': 'Chiefs',
   'JAX': 'Jaguars',
@@ -98,7 +98,7 @@ Map<String, String> _NFLAthleteMappingTeamNickName = {
   'ATL': 'Falcons'
 };
 
-Map<String, String> _NFLAthleteMappingTeamCity = {
+Map<String, String> _nflAthleteMappingTeamCity = {
   'TB': 'Tampa Bay',
   'KC': 'Kansas City',
   'JAX': 'Jacksonville',
@@ -108,44 +108,44 @@ Map<String, String> _NFLAthleteMappingTeamCity = {
 };
 
 String retrieveFullMLBAthletePosition(String currentMLBAthletePositon) {
-  if (_MLBAthleteMappingPosition.containsKey(currentMLBAthletePositon)) {
-    return _MLBAthleteMappingPosition[currentMLBAthletePositon]!;
+  if (_mlbAthleteMappingPosition.containsKey(currentMLBAthletePositon)) {
+    return _mlbAthleteMappingPosition[currentMLBAthletePositon]!;
   }
   return 'No Position Found';
 }
 
 String retrieveFullNFLAthletePosition(String currentNFLAthletePosition) {
-  if (_NFLAthleteMappingPosition.containsKey(currentNFLAthletePosition)) {
-    return _NFLAthleteMappingPosition[currentNFLAthletePosition]!;
+  if (_nflAthleteMappingPosition.containsKey(currentNFLAthletePosition)) {
+    return _nflAthleteMappingPosition[currentNFLAthletePosition]!;
   }
   return 'No Position Found';
 }
 
 String retrieveNFLTeamNickName(String currentNFLAthleteShortName) {
-  if (_NFLAthleteMappingTeamNickName.containsKey(currentNFLAthleteShortName)) {
-    return _NFLAthleteMappingTeamNickName[currentNFLAthleteShortName]!;
+  if (_nflAthleteMappingTeamNickName.containsKey(currentNFLAthleteShortName)) {
+    return _nflAthleteMappingTeamNickName[currentNFLAthleteShortName]!;
   }
   return 'N/A';
 }
 
 String retrieveNFLTeamCityName(String currentNFLAthleteTeamShortName) {
-  if (_NFLAthleteMappingTeamCity.containsKey(currentNFLAthleteTeamShortName)) {
-    return _NFLAthleteMappingTeamCity[currentNFLAthleteTeamShortName]!;
+  if (_nflAthleteMappingTeamCity.containsKey(currentNFLAthleteTeamShortName)) {
+    return _nflAthleteMappingTeamCity[currentNFLAthleteTeamShortName]!;
   }
   return 'N/A';
 }
 
 String retrieveTeamNickname(String curMLBAthleteTeamShortname) {
-  if (_MLBAthleteMappingTeamNickname.containsKey(curMLBAthleteTeamShortname)) {
-    return _MLBAthleteMappingTeamNickname[curMLBAthleteTeamShortname]!;
+  if (_mlbAthleteMappingTeamNickname.containsKey(curMLBAthleteTeamShortname)) {
+    return _mlbAthleteMappingTeamNickname[curMLBAthleteTeamShortname]!;
   } else {
     return 'N/A';
   }
 }
 
 String retrieveTeamCityName(String curMLBAthleteTeamShortname) {
-  if (_MLBAthleteMappingTeamCity.containsKey(curMLBAthleteTeamShortname)) {
-    return _MLBAthleteMappingTeamCity[curMLBAthleteTeamShortname]!;
+  if (_mlbAthleteMappingTeamCity.containsKey(curMLBAthleteTeamShortname)) {
+    return _mlbAthleteMappingTeamCity[curMLBAthleteTeamShortname]!;
   } else {
     return 'N/A';
   }

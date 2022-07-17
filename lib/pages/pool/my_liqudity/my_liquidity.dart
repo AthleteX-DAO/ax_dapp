@@ -6,8 +6,8 @@ import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dar
 import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/util/BlocStatus.dart';
-import 'package:ax_dapp/util/SupportedSports.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';

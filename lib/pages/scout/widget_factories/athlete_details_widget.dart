@@ -3,7 +3,7 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/pages/scout/models/sports_model/athlete_scout_model_exports.dart';
 import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget_exports.dart';
-import 'package:ax_dapp/util/SupportedSports.dart';
+import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:flutter/material.dart';
 
 abstract class AthleteDetailsWidget {

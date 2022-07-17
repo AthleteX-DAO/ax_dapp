@@ -5,7 +5,7 @@ import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/util/BlocStatus.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

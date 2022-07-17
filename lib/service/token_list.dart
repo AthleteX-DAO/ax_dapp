@@ -5,7 +5,7 @@ import 'package:ax_dapp/service/controller/swap/sxt.dart';
 import 'package:ax_dapp/service/controller/swap/usdc.dart';
 import 'package:ax_dapp/service/controller/swap/weth.dart';
 import 'package:ax_dapp/service/controller/token.dart';
-import 'package:ax_dapp/util/SupportedSports.dart';
+import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:flutter/material.dart';
 
 class TokenList {

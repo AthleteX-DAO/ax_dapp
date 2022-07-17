@@ -3,7 +3,7 @@ import 'package:ax_dapp/contracts/LongShortPair.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/service/token_list.dart';
-import 'package:ax_dapp/util/UserInputNorm.dart';
+import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:erc20/erc20.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';

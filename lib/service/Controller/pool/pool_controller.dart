@@ -3,7 +3,7 @@ import 'package:ax_dapp/contracts/Dex.g.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/util/UserInputNorm.dart';
+import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';

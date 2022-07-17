@@ -4,7 +4,7 @@ import 'package:ax_dapp/service/api/models/player_ids.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete_stats.dart';
 import 'package:ax_dapp/service/supported_athletes/supported_mlb_athletes.dart';
-import 'package:ax_dapp/util/SupportedSports.dart';
+import 'package:ax_dapp/util/supported_sports.dart';
 
 class MLBRepo extends SportsRepo<MLBAthlete> {
   MLBRepo(MLBAthleteAPI api)
