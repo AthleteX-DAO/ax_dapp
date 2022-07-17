@@ -30,7 +30,7 @@ class GetPairInfoUseCase {
       if (tokenPairData.isLeft()) {
         final data = tokenPairData.getLeft().toNullable();
         if (data != null) {
-          final pairs = data['pairs'] as List;
+          final pairs = data['pairs'] as List<dynamic>;
           final tokenPairs = List<Map<String, dynamic>>.from(pairs)
               .map(TokenPair.fromJson)
               .toList();

@@ -82,10 +82,10 @@ class GetScoutAthletesDataUseCase {
     final suffixInfos =
         response.getLeft().toNullable()!['suffix'] as List<dynamic>;
     final prefixPairs = List<Map<String, dynamic>>.from(prefixInfos)
-        .map<TokenPair>(TokenPair.fromJson)
+        .map(TokenPair.fromJson)
         .toList();
     final suffixPairs = List<Map<String, dynamic>>.from(suffixInfos)
-        .map<TokenPair>(TokenPair.fromJson)
+        .map(TokenPair.fromJson)
         .toList();
     final pairs = [...prefixPairs, ...suffixPairs];
     return pairs;

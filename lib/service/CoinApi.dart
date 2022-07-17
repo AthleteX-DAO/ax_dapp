@@ -18,9 +18,8 @@ class CoinApi {
 
     final tickerList = ['ETH', 'WBTC', 'AX', 'USDC', 'DAI'];
 
-    final coins = List<Map<String, dynamic>>.from(coinsJson)
-        .map<Coin>(Coin.fromJson)
-        .toList();
+    final coins =
+        List<Map<String, dynamic>>.from(coinsJson).map(Coin.fromJson).toList();
     return coins.where((coin) => tickerList.contains(coin.ticker)).toList();
   }
 }

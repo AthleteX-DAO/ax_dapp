@@ -27,7 +27,7 @@ class GetAllLiquidityInfoUseCase {
               user['liquidityPositions'] as List<dynamic>;
           final liquidityPositionsParsed =
               List<Map<String, dynamic>>.from(liquidityPositions)
-                  .map<LiquidityPosition>(LiquidityPosition.fromJson)
+                  .map(LiquidityPosition.fromJson)
                   .toList();
           final liquidityPositionsWithZeroBalance = liquidityPositionsParsed
               .map(getMyLiquidityItemInfoFromLiquidityPosition)
