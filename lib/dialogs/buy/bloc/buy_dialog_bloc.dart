@@ -1,4 +1,4 @@
-import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptBuyInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';

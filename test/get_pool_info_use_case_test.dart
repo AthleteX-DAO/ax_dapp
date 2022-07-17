@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_asserts_with_message
 
-import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart'
+import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart'
     as usecase;
 import 'package:ax_dapp/service/BlockchainModels/Token.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
@@ -10,7 +10,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'GetPoolInfoUseCase_test.mocks.dart';
+import 'get_pool_info_use_case_test.mocks.dart';
 
 @GenerateMocks([GetPairInfoUseCase])
 void main() {

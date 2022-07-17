@@ -3,14 +3,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'GetPairInfoUseCase_test.mocks.dart';
+import 'get_pair_info_use_case_test.mocks.dart';
 
 @GenerateMocks([SubGraphRepo])
 void main() {

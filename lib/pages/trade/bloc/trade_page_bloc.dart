@@ -1,4 +1,4 @@
-import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';

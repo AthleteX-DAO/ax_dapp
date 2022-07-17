@@ -1,5 +1,5 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/BlockchainModels/AptBuyInfo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
@@ -11,7 +11,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'BuyDialogBloc_test.mocks.dart';
+import 'buy_dialog_bloc_test.mocks.dart';
 
 @GenerateMocks([GetBuyInfoUseCase, GetTotalTokenBalanceUseCase, SwapController])
 void main() {

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:ax_dapp/repositories/SportsRepo.dart';
+import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/service/athleteModels/nfl/NFLAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/nfl/NFLAthleteStats.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';

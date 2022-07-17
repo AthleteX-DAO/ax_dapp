@@ -1,16 +1,16 @@
 import 'dart:developer';
 
 import 'package:ax_dapp/pages/landing_page/landing_page.dart';
-import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
-import 'package:ax_dapp/repositories/MlbRepo.dart';
-import 'package:ax_dapp/repositories/NFLRepo.dart';
-import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetBuyInfoUseCase.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
-import 'package:ax_dapp/repositories/usecases/GetAllLiquidityInfoUseCase.dart';
+import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
+import 'package:ax_dapp/repositories/mlb_repo.dart';
+import 'package:ax_dapp/repositories/nfl_repo.dart';
+import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
+import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/Api/MLBAthleteAPI.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLClientHelper.dart';
 import 'package:ax_dapp/service/GraphQL/GraphQLConfiguration.dart';

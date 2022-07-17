@@ -1,4 +1,4 @@
-import 'package:ax_dapp/repositories/subgraph/SubGraphRepo.dart';
+import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
 import 'package:fpdart/fpdart.dart';
 

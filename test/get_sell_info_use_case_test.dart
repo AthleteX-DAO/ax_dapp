@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_asserts_with_message
 
-import 'package:ax_dapp/repositories/subgraph/usecases/GetSellInfoUseCase.dart'
+import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart'
     as usecase;
-import 'package:ax_dapp/repositories/subgraph/usecases/GetSwapInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
 import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
 import 'package:fpdart/fpdart.dart';
@@ -10,7 +10,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'GetBuyInfoUseCase_test.mocks.dart';
+import 'get_sell_info_use_case_test.mocks.dart';
 
 @GenerateMocks([GetSwapInfoUseCase])
 void main() {

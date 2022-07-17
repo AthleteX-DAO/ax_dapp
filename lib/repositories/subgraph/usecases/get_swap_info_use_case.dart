@@ -1,4 +1,4 @@
-import 'package:ax_dapp/repositories/subgraph/usecases/GetPairInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
 import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
 import 'package:fpdart/fpdart.dart';
 

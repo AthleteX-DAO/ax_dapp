@@ -1,5 +1,5 @@
 import 'package:ax_dapp/pages/pool/add_liquidity/models/pool_pair_info.dart';
-import 'package:ax_dapp/repositories/subgraph/usecases/GetPoolInfoUseCase.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';

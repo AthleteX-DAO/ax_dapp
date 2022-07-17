@@ -1,4 +1,4 @@
-import 'package:ax_dapp/repositories/SportsRepo.dart';
+import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/service/Api/MLBAthleteAPI.dart';
 import 'package:ax_dapp/service/Api/models/PlayerIds.dart';
 import 'package:ax_dapp/service/SupportedAthletes/SupportedMLBAthletes.dart';
