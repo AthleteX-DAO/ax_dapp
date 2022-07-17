@@ -4,7 +4,7 @@ import 'package:ax_dapp/pages/farm/dialogs/dual_stake_dialog.dart';
 import 'package:ax_dapp/pages/farm/dialogs/stake_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
-import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
+import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:flutter/material.dart';
 
 Widget doubleLogoFarmTitle(

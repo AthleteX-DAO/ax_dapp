@@ -1,12 +1,12 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
-import 'package:ax_dapp/service/ApproveButton.dart';
-import 'package:ax_dapp/service/AthleteTokenList.dart';
-import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/service/athlete_token_list.dart';
+import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/token.dart';
+import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';

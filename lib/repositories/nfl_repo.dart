@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:ax_dapp/repositories/sports_repo.dart';
-import 'package:ax_dapp/service/athleteModels/nfl/NFLAthlete.dart';
-import 'package:ax_dapp/service/athleteModels/nfl/NFLAthleteStats.dart';
+import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
+import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/services.dart' show rootBundle;
 

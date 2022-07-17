@@ -8,7 +8,7 @@ import 'package:ax_dapp/pages/scout/dialogs/athlete_page_dialogs.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
-import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
+import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/AthletePageFormatHelper.dart';
 import 'package:ax_dapp/util/Colors.dart';
 import 'package:flutter/material.dart';

@@ -2,7 +2,7 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 // ignore_for_file: unused_local_variable
 
-import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:erc20/erc20.dart';
 import 'package:flutter/material.dart';

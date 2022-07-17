@@ -1,9 +1,9 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/ApproveButton.dart';
-import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/controller/swap/axt.dart';
+import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

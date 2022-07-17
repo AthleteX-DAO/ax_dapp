@@ -1,6 +1,6 @@
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
-import 'package:ax_dapp/service/Controller/usecases/GetWalletAddressUseCase.dart';
+import 'package:ax_dapp/service/controller/usecases/get_wallet_address_use_case.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

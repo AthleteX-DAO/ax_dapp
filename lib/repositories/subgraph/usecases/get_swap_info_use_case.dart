@@ -1,5 +1,5 @@
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
-import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
+import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
 import 'package:fpdart/fpdart.dart';
 
 const String _noSwapInfoErrorMessage = 'No swap info found';

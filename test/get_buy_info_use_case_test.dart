@@ -3,8 +3,8 @@
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart'
     as usecase;
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
-import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
+import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

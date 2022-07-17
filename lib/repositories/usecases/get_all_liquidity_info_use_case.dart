@@ -3,7 +3,7 @@
 import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/subgraph_error.dart';
-import 'package:ax_dapp/service/BlockchainModels/LiquidityPosition.dart';
+import 'package:ax_dapp/service/blockchain_models/liquidity_position.dart';
 import 'package:decimal/decimal.dart';
 import 'package:fpdart/fpdart.dart';
 

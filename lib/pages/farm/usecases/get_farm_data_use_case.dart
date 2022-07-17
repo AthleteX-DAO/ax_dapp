@@ -1,7 +1,7 @@
 // ignore_for_file: only_throw_errors, avoid_dynamic_calls
 
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
-import 'package:ax_dapp/service/GraphQL/GysrApi.dart';
+import 'package:ax_dapp/service/graphql/gysr_api.dart';
 
 class GetFarmDataUseCase {
   final GysrApi gysrApi = GysrApi();

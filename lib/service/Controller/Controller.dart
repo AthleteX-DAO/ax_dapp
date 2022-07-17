@@ -2,10 +2,10 @@
 
 import 'dart:developer';
 
-import 'package:ax_dapp/service/Controller/createWallet/abstractWallet.dart';
-import 'package:ax_dapp/service/Controller/createWallet/createWallet.dart'
-    if (dart.library.io) './createWallet/mobile.dart'
-    if (dart.library.js) './createWallet/web.dart';
+import 'package:ax_dapp/service/controller/create_wallet/abstract_wallet.dart';
+import 'package:ax_dapp/service/controller/create_wallet/create_wallet.dart'
+    if (dart.library.io) './create_wallet/mobile.dart'
+    if (dart.library.js) './create_wallet/web.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';

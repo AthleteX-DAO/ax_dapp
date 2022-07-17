@@ -1,6 +1,6 @@
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
-import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
+import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:fpdart/fpdart.dart';
 
 /// This is an abstraction on the GetSwapInfoUseCase to request

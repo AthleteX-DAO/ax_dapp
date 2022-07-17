@@ -1,5 +1,5 @@
-import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/service/controller/token.dart';
+import 'package:ax_dapp/service/token_list.dart';
 
 class AddLiquidityTokenPair {
   AddLiquidityTokenPair({

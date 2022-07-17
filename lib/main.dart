@@ -11,9 +11,9 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.da
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
-import 'package:ax_dapp/service/Api/MLBAthleteAPI.dart';
-import 'package:ax_dapp/service/GraphQL/GraphQLClientHelper.dart';
-import 'package:ax_dapp/service/GraphQL/GraphQLConfiguration.dart';
+import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
+import 'package:ax_dapp/service/graphql/graphql_client_helper.dart';
+import 'package:ax_dapp/service/graphql/graphql_configuration.dart';
 import 'package:coingecko_api/coingecko_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

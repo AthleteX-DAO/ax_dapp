@@ -1,9 +1,9 @@
 import 'package:ax_dapp/pages/pool/add_liquidity/models/pool_pair_info.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
-import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/service/TokenList.dart' show TokenList;
+import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/controller/token.dart';
+import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/token_list.dart' show TokenList;
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

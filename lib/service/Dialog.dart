@@ -4,11 +4,11 @@ import 'dart:developer';
 
 import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/ApproveButton.dart';
-import 'package:ax_dapp/service/Controller/Controller.dart';
-import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
-import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

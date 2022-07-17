@@ -10,9 +10,10 @@ import 'package:ax_dapp/repositories/subgraph/usecases/subgraph_error.dart'
     as _i7;
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart'
     as _i5;
-import 'package:ax_dapp/service/BlockchainModels/LiquidityPosition.dart' as _i8;
-import 'package:ax_dapp/service/Controller/Controller.dart' as _i4;
-import 'package:ax_dapp/service/Controller/usecases/GetWalletAddressUseCase.dart'
+import 'package:ax_dapp/service/blockchain_models/liquidity_position.dart'
+    as _i8;
+import 'package:ax_dapp/service/controller/controller.dart' as _i4;
+import 'package:ax_dapp/service/controller/usecases/get_wallet_address_use_case.dart'
     as _i9;
 import 'package:fpdart/fpdart.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;

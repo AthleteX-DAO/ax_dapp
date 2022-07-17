@@ -1,10 +1,10 @@
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
-import 'package:ax_dapp/service/BlockchainModels/TokenPairInfo.dart';
-import 'package:ax_dapp/service/Controller/Controller.dart';
-import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
-import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/token.dart';
+import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

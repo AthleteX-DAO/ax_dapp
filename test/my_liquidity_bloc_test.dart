@@ -1,7 +1,7 @@
 import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
-import 'package:ax_dapp/service/Controller/usecases/GetWalletAddressUseCase.dart';
+import 'package:ax_dapp/service/controller/usecases/get_wallet_address_use_case.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

@@ -1,5 +1,5 @@
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
-import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
+import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
 import 'package:fpdart/fpdart.dart';
 
 /// This is an abstraction on the SubgraphRepo that defines

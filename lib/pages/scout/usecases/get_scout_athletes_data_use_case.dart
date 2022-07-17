@@ -7,12 +7,12 @@ import 'package:ax_dapp/pages/scout/models/sports_model/nfl_athlete_scout_model.
 import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
-import 'package:ax_dapp/service/BlockchainModels/TokenPair.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:ax_dapp/service/TokenList.dart';
-import 'package:ax_dapp/service/athleteModels/SportAthlete.dart';
-import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
-import 'package:ax_dapp/service/athleteModels/nfl/NFLAthlete.dart';
+import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
+import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
+import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
+import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
+import 'package:ax_dapp/service/controller/swap/axt.dart';
+import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 
 class GetScoutAthletesDataUseCase {

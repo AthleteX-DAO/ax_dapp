@@ -1,5 +1,5 @@
-import 'package:ax_dapp/service/Controller/ERC20Behavior.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:ax_dapp/service/controller/erc20_behavior.dart';
+import 'package:ax_dapp/service/controller/token.dart';
 import 'package:flutter/material.dart';
 
 class SXT extends Token with ERC20Behavior {

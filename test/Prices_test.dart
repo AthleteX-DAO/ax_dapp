@@ -1,5 +1,5 @@
 @TestOn('browser')
-import 'package:ax_dapp/service/Controller/Scout/Prices.dart';
+import 'package:ax_dapp/service/controller/scout/prices.dart';
 import 'package:test/test.dart';
 
 void main() {

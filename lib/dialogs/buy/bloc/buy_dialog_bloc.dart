@@ -1,8 +1,8 @@
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
-import 'package:ax_dapp/service/BlockchainModels/AptBuyInfo.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
-import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
-import 'package:ax_dapp/service/Controller/usecases/GetMaxTokenInputUseCase.dart';
+import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
+import 'package:ax_dapp/service/controller/swap/axt.dart';
+import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,6 +1,6 @@
-import 'package:ax_dapp/service/Controller/APTBehavior.dart';
-import 'package:ax_dapp/service/Controller/ERC20Behavior.dart';
-import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:ax_dapp/service/controller/apt_behavior.dart';
+import 'package:ax_dapp/service/controller/erc20_behavior.dart';
+import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:flutter/material.dart';
 import 'package:web3dart/credentials.dart';

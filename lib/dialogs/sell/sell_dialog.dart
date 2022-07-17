@@ -1,7 +1,7 @@
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
-import 'package:ax_dapp/service/ApproveButton.dart';
-import 'package:ax_dapp/service/Dialog.dart';
-import 'package:ax_dapp/service/TokenList.dart';
+import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/TokenType.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

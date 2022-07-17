@@ -3,7 +3,7 @@
 
 import 'dart:developer';
 
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/athlete.dart';
 import 'package:postgres/postgres.dart';
 
 class Prices {

@@ -1,6 +1,6 @@
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
-import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:flutter/material.dart';
 
 // dynamic

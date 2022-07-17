@@ -3,9 +3,9 @@
 import 'package:ax_dapp/pages/pool/my_liqudity/add_liquidity_token_pair.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
-import 'package:ax_dapp/service/ApproveButton.dart';
-import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
-import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/BlocStatus.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
 import 'package:badges/badges.dart';
