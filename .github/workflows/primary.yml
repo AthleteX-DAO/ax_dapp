@@ -25,6 +25,6 @@ jobs:
       - run: flutter upgrade
       - run: flutter pub upgrade
       - run: flutter pub get
-      - run: flutter analyze lib test
+      - run: flutter analyze lib
       - run: flutter test
       - run: flutter build web --web-renderer auto
