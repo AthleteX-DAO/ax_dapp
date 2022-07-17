@@ -6,4 +6,4 @@ linter:
     public_member_api_docs: false
 
 analyzer:
-  exclude: [lib/**.g.dart]
+  exclude: [lib/**.g.dart, test/**.mocks.dart, test_resources/**]
