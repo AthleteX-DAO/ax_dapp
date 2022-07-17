@@ -2,8 +2,8 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 import 'dart:developer';
 
-import 'package:ax_dapp/pages/connectWallet/MobileLoginPage.dart';
-import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
+import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
+import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';

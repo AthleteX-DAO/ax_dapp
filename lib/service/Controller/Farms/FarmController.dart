@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/contracts/Pool.g.dart';
-import 'package:ax_dapp/pages/farm/models/FarmModel.dart';
+import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/util/UserInputInfo.dart';

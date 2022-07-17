@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:ax_dapp/pages/landingPage/LandingPage.dart';
+import 'package:ax_dapp/pages/landing_page/landing_page.dart';
 import 'package:ax_dapp/repositories/CoinGeckoRepo.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
 import 'package:ax_dapp/repositories/NFLRepo.dart';
