@@ -1,8 +1,7 @@
+const kDecimals = 18;
 
-const DECIMALS = 18;
-
-BigInt days(x) {
-  return new BigInt.from(60 * 60 * 24 * x);
+BigInt days(int x) {
+  return BigInt.from(60 * 60 * 24 * x);
 }
 
 Future<DateTime> now() async {

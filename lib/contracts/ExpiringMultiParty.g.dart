@@ -1,7 +1,5 @@
 // Generated code, do not modify. Run `build_runner build` to re-generate!
 // @dart=2.12
-// ignore_for_file: unused_element
-
 import 'package:web3dart/web3dart.dart' as _i1;
 import 'dart:typed_data' as _i2;
 
@@ -21,7 +19,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<BigInt> _getSyntheticDecimals(_i1.EthereumAddress _collateralAddress,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('_getSyntheticDecimals');
+    final function = self.abi.functions[1];
+    assert(checkSignature(function, '4ead6e51'));
     final params = [_collateralAddress];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -33,7 +32,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> cancelTransferPosition(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('cancelTransferPosition');
+    final function = self.abi.functions[2];
+    assert(checkSignature(function, 'b795f0d4'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -44,7 +44,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> cancelWithdrawal(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('cancelWithdrawal');
+    final function = self.abi.functions[3];
+    assert(checkSignature(function, '22611280'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -54,7 +55,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> collateralCurrency(
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('collateralCurrency');
+    final function = self.abi.functions[4];
+    assert(checkSignature(function, '0de15fd9'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -64,7 +66,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> collateralRequirement({_i1.BlockNum? atBlock}) async {
-    final function = self.function('collateralRequirement');
+    final function = self.abi.functions[5];
+    assert(checkSignature(function, '48e30c3f'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -74,7 +77,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> contractState({_i1.BlockNum? atBlock}) async {
-    final function = self.function('contractState');
+    final function = self.abi.functions[6];
+    assert(checkSignature(function, '85209ee0'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -88,7 +92,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> create(dynamic collateralAmount, dynamic numTokens,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('create');
+    final function = self.abi.functions[7];
+    assert(checkSignature(function, '6ba2f992'));
     final params = [collateralAmount, numTokens];
     return write(credentials, transaction, function, params);
   }
@@ -106,7 +111,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
       BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('createLiquidation');
+    final function = self.abi.functions[8];
+    assert(checkSignature(function, '25ed4dd8'));
     final params = [
       sponsor,
       minCollateralPerToken,
@@ -121,7 +127,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> cumulativeFeeMultiplier({_i1.BlockNum? atBlock}) async {
-    final function = self.function('cumulativeFeeMultiplier');
+    final function = self.abi.functions[9];
+    assert(checkSignature(function, 'dd0eef3d'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -135,7 +142,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> deposit(dynamic collateralAmount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('deposit');
+    final function = self.abi.functions[10];
+    assert(checkSignature(function, 'd1e92c11'));
     final params = [collateralAmount];
     return write(credentials, transaction, function, params);
   }
@@ -149,7 +157,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
       _i1.EthereumAddress sponsor, dynamic collateralAmount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('depositTo');
+    final function = self.abi.functions[11];
+    assert(checkSignature(function, '18928a0c'));
     final params = [sponsor, collateralAmount];
     return write(credentials, transaction, function, params);
   }
@@ -162,7 +171,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> dispute(BigInt liquidationId, _i1.EthereumAddress sponsor,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('dispute');
+    final function = self.abi.functions[12];
+    assert(checkSignature(function, 'a765fbea'));
     final params = [liquidationId, sponsor];
     return write(credentials, transaction, function, params);
   }
@@ -171,7 +181,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> disputeBondPercentage({_i1.BlockNum? atBlock}) async {
-    final function = self.function('disputeBondPercentage');
+    final function = self.abi.functions[13];
+    assert(checkSignature(function, '2e154f2e'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -182,7 +193,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<BigInt> disputerDisputeRewardPercentage(
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('disputerDisputeRewardPercentage');
+    final function = self.abi.functions[14];
+    assert(checkSignature(function, '7e398c22'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -196,7 +208,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> emergencyShutdown(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('emergencyShutdown');
+    final function = self.abi.functions[15];
+    assert(checkSignature(function, '3403c2fc'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -205,7 +218,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> expirationTimestamp({_i1.BlockNum? atBlock}) async {
-    final function = self.function('expirationTimestamp');
+    final function = self.abi.functions[16];
+    assert(checkSignature(function, '9f43ddd2'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -219,7 +233,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> expire(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('expire');
+    final function = self.abi.functions[17];
+    assert(checkSignature(function, '79599f96'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -228,7 +243,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> expiryPrice({_i1.BlockNum? atBlock}) async {
-    final function = self.function('expiryPrice');
+    final function = self.abi.functions[18];
+    assert(checkSignature(function, 'edfa9a9b'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -239,7 +255,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> financialProductLibrary(
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('financialProductLibrary');
+    final function = self.abi.functions[19];
+    assert(checkSignature(function, '9375f0e9'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -249,7 +266,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> finder({_i1.BlockNum? atBlock}) async {
-    final function = self.function('finder');
+    final function = self.abi.functions[20];
+    assert(checkSignature(function, 'b9a3c84c'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -262,7 +280,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<dynamic> getCollateral(_i1.EthereumAddress sponsor,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('getCollateral');
+    final function = self.abi.functions[21];
+    assert(checkSignature(function, '9b56d6c9'));
     final params = [sponsor];
     final response = await read(function, params, atBlock);
     return (response[0] as dynamic);
@@ -272,7 +291,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> getCurrentTime({_i1.BlockNum? atBlock}) async {
-    final function = self.function('getCurrentTime');
+    final function = self.abi.functions[22];
+    assert(checkSignature(function, '29cb924d'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -283,7 +303,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<List<dynamic>> getLiquidations(_i1.EthereumAddress sponsor,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('getLiquidations');
+    final function = self.abi.functions[23];
+    assert(checkSignature(function, 'a1c4d1e7'));
     final params = [sponsor];
     final response = await read(function, params, atBlock);
     return (response[0] as List<dynamic>).cast<dynamic>();
@@ -296,7 +317,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<GetOutstandingRegularFees> getOutstandingRegularFees(BigInt time,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('getOutstandingRegularFees');
+    final function = self.abi.functions[24];
+    assert(checkSignature(function, '9e4efaa0'));
     final params = [time];
     final response = await read(function, params, atBlock);
     return GetOutstandingRegularFees(response);
@@ -310,7 +332,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> gulp(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('gulp');
+    final function = self.abi.functions[25];
+    assert(checkSignature(function, '94909e62'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -319,7 +342,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> liquidationLiveness({_i1.BlockNum? atBlock}) async {
-    final function = self.function('liquidationLiveness');
+    final function = self.abi.functions[26];
+    assert(checkSignature(function, '2d5436cf'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -328,10 +352,12 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// The optional [atBlock] parameter can be used to view historical data. When
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
-  Future<Liquidations> liquidations(_i1.EthereumAddress address, BigInt liqAmnt,
+  Future<Liquidations> liquidations(
+      _i1.EthereumAddress $param16, BigInt $param17,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('liquidations');
-    final params = [address, liqAmnt];
+    final function = self.abi.functions[27];
+    assert(checkSignature(function, '4f8c4847'));
+    final params = [$param16, $param17];
     final response = await read(function, params, atBlock);
     return Liquidations(response);
   }
@@ -340,7 +366,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> minSponsorTokens({_i1.BlockNum? atBlock}) async {
-    final function = self.function('minSponsorTokens');
+    final function = self.abi.functions[28];
+    assert(checkSignature(function, '92120aec'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -354,7 +381,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> payRegularFees(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('payRegularFees');
+    final function = self.abi.functions[29];
+    assert(checkSignature(function, '3cb6ce83'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -365,7 +393,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<dynamic> pfc({_i1.BlockNum? atBlock}) async {
-    final function = self.function('pfc');
+    final function = self.abi.functions[30];
+    assert(checkSignature(function, '81a10ae1'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as dynamic);
@@ -374,10 +403,11 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// The optional [atBlock] parameter can be used to view historical data. When
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
-  Future<Positions> positions(_i1.EthereumAddress address,
+  Future<Positions> positions(_i1.EthereumAddress $param18,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('positions');
-    final params = [address];
+    final function = self.abi.functions[31];
+    assert(checkSignature(function, '55f57510'));
+    final params = [$param18];
     final response = await read(function, params, atBlock);
     return Positions(response);
   }
@@ -386,7 +416,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i2.Uint8List> priceIdentifier({_i1.BlockNum? atBlock}) async {
-    final function = self.function('priceIdentifier');
+    final function = self.abi.functions[32];
+    assert(checkSignature(function, '97523661'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i2.Uint8List);
@@ -396,7 +427,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> rawLiquidationCollateral({_i1.BlockNum? atBlock}) async {
-    final function = self.function('rawLiquidationCollateral');
+    final function = self.abi.functions[33];
+    assert(checkSignature(function, '50f49846'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -406,7 +438,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> rawTotalPositionCollateral({_i1.BlockNum? atBlock}) async {
-    final function = self.function('rawTotalPositionCollateral');
+    final function = self.abi.functions[34];
+    assert(checkSignature(function, '8c382eb2'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -420,7 +453,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> redeem(dynamic numTokens,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('redeem');
+    final function = self.abi.functions[35];
+    assert(checkSignature(function, '5f1af1ca'));
     final params = [numTokens];
     return write(credentials, transaction, function, params);
   }
@@ -433,7 +467,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> remargin(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('remargin');
+    final function = self.abi.functions[36];
+    assert(checkSignature(function, 'bda02e77'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -446,7 +481,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> repay(dynamic numTokens,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('repay');
+    final function = self.abi.functions[37];
+    assert(checkSignature(function, '5aa266c9'));
     final params = [numTokens];
     return write(credentials, transaction, function, params);
   }
@@ -459,7 +495,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> requestTransferPosition(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('requestTransferPosition');
+    final function = self.abi.functions[38];
+    assert(checkSignature(function, '36980f58'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -472,7 +509,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> requestWithdrawal(dynamic collateralAmount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('requestWithdrawal');
+    final function = self.abi.functions[39];
+    assert(checkSignature(function, 'bc121630'));
     final params = [collateralAmount];
     return write(credentials, transaction, function, params);
   }
@@ -485,7 +523,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> setCurrentTime(BigInt time,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('setCurrentTime');
+    final function = self.abi.functions[40];
+    assert(checkSignature(function, '22f8e566'));
     final params = [time];
     return write(credentials, transaction, function, params);
   }
@@ -498,7 +537,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> settleExpired(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('settleExpired');
+    final function = self.abi.functions[41];
+    assert(checkSignature(function, 'fcccedc7'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -507,7 +547,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> sponsorDisputeRewardPercentage({_i1.BlockNum? atBlock}) async {
-    final function = self.function('sponsorDisputeRewardPercentage');
+    final function = self.abi.functions[42];
+    assert(checkSignature(function, '081b314e'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -517,7 +558,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> timerAddress({_i1.BlockNum? atBlock}) async {
-    final function = self.function('timerAddress');
+    final function = self.abi.functions[43];
+    assert(checkSignature(function, '1c39c38d'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -527,7 +569,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> tokenCurrency({_i1.BlockNum? atBlock}) async {
-    final function = self.function('tokenCurrency');
+    final function = self.abi.functions[44];
+    assert(checkSignature(function, '7048594b'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -539,7 +582,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<dynamic> totalPositionCollateral({_i1.BlockNum? atBlock}) async {
-    final function = self.function('totalPositionCollateral');
+    final function = self.abi.functions[45];
+    assert(checkSignature(function, '43e4771b'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as dynamic);
@@ -549,7 +593,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> totalTokensOutstanding({_i1.BlockNum? atBlock}) async {
-    final function = self.function('totalTokensOutstanding');
+    final function = self.abi.functions[46];
+    assert(checkSignature(function, '0c9229ca'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -564,7 +609,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
       _i1.EthereumAddress newSponsorAddress,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('transferPositionPassedRequest');
+    final function = self.abi.functions[47];
+    assert(checkSignature(function, '5617151c'));
     final params = [newSponsorAddress];
     return write(credentials, transaction, function, params);
   }
@@ -576,7 +622,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<dynamic> transformCollateralRequirement(dynamic price,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('transformCollateralRequirement');
+    final function = self.abi.functions[48];
+    assert(checkSignature(function, '197f7848'));
     final params = [price];
     final response = await read(function, params, atBlock);
     return (response[0] as dynamic);
@@ -589,7 +636,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<dynamic> transformPrice(dynamic price, BigInt requestTime,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('transformPrice');
+    final function = self.abi.functions[49];
+    assert(checkSignature(function, '0ff49b90'));
     final params = [price, requestTime];
     final response = await read(function, params, atBlock);
     return (response[0] as dynamic);
@@ -602,7 +650,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<_i2.Uint8List> transformPriceIdentifier(BigInt requestTime,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('transformPriceIdentifier');
+    final function = self.abi.functions[50];
+    assert(checkSignature(function, '62b5f7f5'));
     final params = [requestTime];
     final response = await read(function, params, atBlock);
     return (response[0] as _i2.Uint8List);
@@ -616,7 +665,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> withdraw(dynamic collateralAmount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('withdraw');
+    final function = self.abi.functions[51];
+    assert(checkSignature(function, '3ee7a5ce'));
     final params = [collateralAmount];
     return write(credentials, transaction, function, params);
   }
@@ -630,7 +680,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
       BigInt liquidationId, _i1.EthereumAddress sponsor,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('withdrawLiquidation');
+    final function = self.abi.functions[52];
+    assert(checkSignature(function, '360598e1'));
     final params = [liquidationId, sponsor];
     return write(credentials, transaction, function, params);
   }
@@ -643,7 +694,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   Future<String> withdrawPassedRequest(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('withdrawPassedRequest');
+    final function = self.abi.functions[53];
+    assert(checkSignature(function, '33a46ca2'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -652,7 +704,8 @@ class ExpiringMultiParty extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> withdrawalLiveness({_i1.BlockNum? atBlock}) async {
-    final function = self.function('withdrawalLiveness');
+    final function = self.abi.functions[54];
+    assert(checkSignature(function, '9ff4dea8'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);

@@ -1,10 +1,12 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 /*NEEDS TO BE UPDATED
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:ax_dapp/repositories/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/repositories/SubGraphRepo.dart';
-import 'package:ax_dapp/service/Controller/Swap/AXT.dart';
+import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
