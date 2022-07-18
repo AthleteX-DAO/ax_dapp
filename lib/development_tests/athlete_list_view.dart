@@ -126,7 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
   // Athlete Cards
   Widget createAthleteCards(String athName) {
     return SizedBox(
-//       color: Colors.grey[100],
       height: 50,
       child: OutlinedButton(
         onPressed: () {},

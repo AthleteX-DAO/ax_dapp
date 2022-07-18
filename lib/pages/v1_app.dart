@@ -370,9 +370,7 @@ class _V1AppState extends State<V1App> {
     // include a dropdown menu for the ellipses and add links to them
     // include the divider line
     return SizedBox(
-      // color: Colors.grey,
       width: MediaQuery.of(context).size.width,
-      //height: 30,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

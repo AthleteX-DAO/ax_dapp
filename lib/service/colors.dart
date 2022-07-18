@@ -13,7 +13,6 @@ Map<int, Color> color = {
   800: const Color.fromRGBO(136, 14, 79, .9),
   900: const Color.fromRGBO(136, 14, 79, 1),
 };
-// Color temp = Colors.amber[400]
 // Custom Colors for our app. In this case I'm going for a terminal look.
 MaterialColor colorHackerHeading = MaterialColor(0xffe0e0e0, color);
 MaterialColor colorHackerBorder = MaterialColor(0xff13690c, color);

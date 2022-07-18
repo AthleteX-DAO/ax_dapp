@@ -21,7 +21,6 @@ class MintDialog extends StatefulWidget {
 class _MintDialogState extends State<MintDialog> {
   double paddingHorizontal = 20;
   double hgt = 450;
-  // bool _isLongApt = true;
   double input = 0;
   RxDouble maxAmount = 0.0.obs;
   RxString balance = '---'.obs;

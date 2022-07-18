@@ -22,7 +22,6 @@ class RedeemDialog extends StatefulWidget {
 class _RedeemDialogState extends State<RedeemDialog> {
   double paddingHorizontal = 40;
   double hgt = 450;
-  // bool _isLongApt = true;
   RxDouble maxAmount = 0.0.obs;
   RxString longBalance = '---'.obs;
   RxString shortBalance = '---'.obs;

@@ -12,10 +12,6 @@ class CoinApi {
     );
     final coinsJson = json.decode(data.body) as List<dynamic>;
 
-    // final assetBundle = DefaultAssetBundle.of(context);
-    // final ourData = await assetBundle.loadString('assets/coins.json');
-    // final ourBody = json.decode(ourData);
-
     final tickerList = ['ETH', 'WBTC', 'AX', 'USDC', 'DAI'];
 
     final coins =

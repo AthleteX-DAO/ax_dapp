@@ -18,8 +18,6 @@ class ApproveButton extends StatefulWidget {
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
-  //const ApproveButton(double width, double height, String text, {Key? key}) :
-  //super(key: key);
 
   @override
   State<ApproveButton> createState() => _ApproveButtonState();

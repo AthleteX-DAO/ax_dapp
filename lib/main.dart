@@ -86,8 +86,6 @@ class MyApp extends StatelessWidget {
             .copyWith(secondary: Colors.black),
       ),
       home: const LandingPage(),
-      // home: V1App(),
-      // home: HomePage()
     );
   }
 }

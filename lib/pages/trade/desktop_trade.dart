@@ -61,12 +61,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
         final receiveAmount = state.swapInfo.receiveAmount.toStringAsFixed(6);
         final totalFee = state.swapInfo.totalFee.toStringAsFixed(6);
         const slippageTolerance = 1;
-        // print("TradePage tokenFrom: ${state.tokenFrom!.address.value}");
         final tokenFrom = state.tokenFrom;
         final tokenTo = state.tokenTo;
         // TODO(mretana1999): add autofill feature
-        // final tokenInputFromAmount = state.tokenInputFromAmount;
-        // final tokenInputToAmount = state.tokenInputToAmount;
 
         if (state.status == BlocStatus.initial) {
           bloc.add(PageRefreshEvent());
@@ -489,7 +486,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
               'Balance: $balance',
               style: textStyle(Colors.grey[400]!, 14, false),
             ),
-            // padding: EdgeInsets.only(right: 14),
           );
         }
 
