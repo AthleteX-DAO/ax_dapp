@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/pages/farm/desktop_farm.dart';
+import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
 import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
 import 'package:ax_dapp/pages/pool/desktop_pool.dart';
 import 'package:ax_dapp/pages/scout/bloc/scout_page_bloc.dart';
@@ -404,13 +405,13 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget bottomNavBarDesktop(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
     return Container(
       height: MediaQuery.of(context).size.height * 0.1,
       color: Colors.transparent,
       padding: const EdgeInsets.only(left: 40, right: 40),
       child: Center(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: <Widget>[
@@ -455,6 +456,22 @@ class _V1AppState extends State<V1App> {
                     FontAwesomeIcons.github,
                     size: 25,
                     color: Colors.grey[400],
+                  ),
+                ),
+                Container(width: _width - 320),
+                AppToolTip(
+                  'Invest in what you know best at AthleteX Markets.',
+                  IconButton(
+                    onPressed: () => launchUrl(
+                      Uri.parse(
+                        'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper',
+                      ),
+                    ),
+                    icon: FaIcon(
+                      FontAwesomeIcons.circleQuestion,
+                      size: 25,
+                      color: Colors.grey[400],
+                    ),
                   ),
                 ),
               ],
