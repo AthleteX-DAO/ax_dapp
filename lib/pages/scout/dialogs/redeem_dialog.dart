@@ -407,7 +407,10 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             context: context,
                             builder: (BuildContext context) =>
                                 confirmTransaction(context, true, ''),
-                          ).then((value) => Navigator.pop(context));
+                          );
+                          if(mounted){
+                            Navigator.pop(context);
+                          }
                         }
                       },
                       child: Text(
