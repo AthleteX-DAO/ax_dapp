@@ -22,6 +22,6 @@ jobs:
           channel: 'stable'
 
       - run: flutter packages get
-      - run: flutter analyze
+      - run: flutter analyze lib test
       - run: flutter test --test-randomize-ordering-seed random
       - run: flutter build web --web-renderer auto
