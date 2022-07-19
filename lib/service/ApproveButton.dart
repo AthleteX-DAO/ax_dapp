@@ -180,7 +180,7 @@ class _ApproveButtonBuyDialogState extends State<ApproveButtonBuyDialog> {
               showDialog(
                   context: context,
                   builder: (BuildContext context) =>
-                      widget.confirmDialog(context));
+                      widget.confirmDialog(context)).then((value) => Navigator.pop(context));
             }
           } else {
             //Approve button was pressed
