@@ -408,7 +408,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             builder: (BuildContext context) =>
                                 confirmTransaction(context, true, ''),
                           );
-                          if(mounted){
+                          if (mounted) {
                             Navigator.pop(context);
                           }
                         }
