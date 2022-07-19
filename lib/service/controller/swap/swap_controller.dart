@@ -95,8 +95,12 @@ class SwapController extends GetxController {
         deadline.value,
         credentials: controller.credentials,
       );
-    } catch (_) {}
-    controller.updateTxString(txString);
+      controller.updateTxString(txString);
+    } catch (e) {
+      txString = '';
+      controller.updateTxString(txString);
+      return Future.error(e);
+    }
   }
 
   Future<void> createPair() async {
