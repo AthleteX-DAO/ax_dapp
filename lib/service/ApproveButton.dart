@@ -1,3 +1,4 @@
+import 'package:ax_dapp/service/dialog.dart';
 import 'package:flutter/material.dart';
 
 // This code changes the state of the button
@@ -79,7 +80,13 @@ class _ApproveButtonState extends State<ApproveButton> {
               showDialog(
                   context: context,
                   builder: (BuildContext context) =>
-                      widget.confirmDialog(context));
+                    widget.confirmDialog(context),
+              );
+            }).catchError((error) {
+              showDialog(
+                context: context,
+                builder: (context) => FailedDialog(),
+              );
             });
           } else {
             //Approve button was pressed

@@ -51,7 +51,7 @@ class Controller extends GetxController {
 
   Future<int> connect() async {
     //Setting up Client & Credentials for connecting to dApp from a client
-    DappWallet web3 = newWallet();
+    DappWallet web3 = newWallet() as DappWallet;
     try {
       //Connect and setup credentials
       await web3.connect();

@@ -90,11 +90,14 @@ class SwapController extends GetxController {
       txString = await _aptRouter.swapExactTokensForTokens(
           tokenAAmount, amountOutMin, path, to, deadline.value,
           credentials: controller.credentials);
+      controller.updateTxString(txString);
     } catch (e) {
+      txString = "";
+      controller.updateTxString(txString);
       print(
           "[Console] Unable to swap [$tokenAAddress, $tokenBAddress] tokens \n $e");
+      return Future.error(e);
     }
-    controller.updateTxString(txString);
   }
 
   Future<void> createPair() async {
