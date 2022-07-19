@@ -18,7 +18,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> collateralPerPair({_i1.BlockNum? atBlock}) async {
-    final function = self.function('collateralPerPair');
+    final function = self.abi.functions[1];
+    assert(checkSignature(function, 'e964ae02'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -28,7 +29,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> collateralToken({_i1.BlockNum? atBlock}) async {
-    final function = self.function('collateralToken');
+    final function = self.abi.functions[2];
+    assert(checkSignature(function, 'b2016bd4'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -38,7 +40,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> contractState({_i1.BlockNum? atBlock}) async {
-    final function = self.function('contractState');
+    final function = self.abi.functions[3];
+    assert(checkSignature(function, '85209ee0'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -48,7 +51,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i2.Uint8List> customAncillaryData({_i1.BlockNum? atBlock}) async {
-    final function = self.function('customAncillaryData');
+    final function = self.abi.functions[4];
+    assert(checkSignature(function, '8150fd3d'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i2.Uint8List);
@@ -58,7 +62,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> expirationTimestamp({_i1.BlockNum? atBlock}) async {
-    final function = self.function('expirationTimestamp');
+    final function = self.abi.functions[5];
+    assert(checkSignature(function, '9f43ddd2'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -68,7 +73,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> expiryPercentLong({_i1.BlockNum? atBlock}) async {
-    final function = self.function('expiryPercentLong');
+    final function = self.abi.functions[6];
+    assert(checkSignature(function, 'a9ae29df'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -78,7 +84,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> expiryPrice({_i1.BlockNum? atBlock}) async {
-    final function = self.function('expiryPrice');
+    final function = self.abi.functions[7];
+    assert(checkSignature(function, 'edfa9a9b'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -89,7 +96,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> financialProductLibrary(
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('financialProductLibrary');
+    final function = self.abi.functions[8];
+    assert(checkSignature(function, '9375f0e9'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -99,7 +107,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> finder({_i1.BlockNum? atBlock}) async {
-    final function = self.function('finder');
+    final function = self.abi.functions[9];
+    assert(checkSignature(function, 'b9a3c84c'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -109,7 +118,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> getCurrentTime({_i1.BlockNum? atBlock}) async {
-    final function = self.function('getCurrentTime');
+    final function = self.abi.functions[10];
+    assert(checkSignature(function, '29cb924d'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -119,7 +129,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> longToken({_i1.BlockNum? atBlock}) async {
-    final function = self.function('longToken');
+    final function = self.abi.functions[11];
+    assert(checkSignature(function, 'b66333cd'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -129,7 +140,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> prepaidProposerReward({_i1.BlockNum? atBlock}) async {
-    final function = self.function('prepaidProposerReward');
+    final function = self.abi.functions[12];
+    assert(checkSignature(function, 'b9fd36c8'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -139,7 +151,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i2.Uint8List> priceIdentifier({_i1.BlockNum? atBlock}) async {
-    final function = self.function('priceIdentifier');
+    final function = self.abi.functions[13];
+    assert(checkSignature(function, '97523661'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i2.Uint8List);
@@ -153,7 +166,8 @@ class LongShortPair extends _i1.GeneratedContract {
   Future<String> setCurrentTime(BigInt time,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('setCurrentTime');
+    final function = self.abi.functions[14];
+    assert(checkSignature(function, '22f8e566'));
     final params = [time];
     return write(credentials, transaction, function, params);
   }
@@ -162,7 +176,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> shortToken({_i1.BlockNum? atBlock}) async {
-    final function = self.function('shortToken');
+    final function = self.abi.functions[15];
+    assert(checkSignature(function, 'e3065da7'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -172,7 +187,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> timerAddress({_i1.BlockNum? atBlock}) async {
-    final function = self.function('timerAddress');
+    final function = self.abi.functions[16];
+    assert(checkSignature(function, '1c39c38d'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -184,7 +200,8 @@ class LongShortPair extends _i1.GeneratedContract {
   Future<String> create(BigInt tokensToCreate,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('create');
+    final function = self.abi.functions[17];
+    assert(checkSignature(function, '780900dc'));
     final params = [tokensToCreate];
     return write(credentials, transaction, function, params);
   }
@@ -195,7 +212,8 @@ class LongShortPair extends _i1.GeneratedContract {
   Future<String> redeem(BigInt tokensToRedeem,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('redeem');
+    final function = self.abi.functions[18];
+    assert(checkSignature(function, 'db006a75'));
     final params = [tokensToRedeem];
     return write(credentials, transaction, function, params);
   }
@@ -208,7 +226,8 @@ class LongShortPair extends _i1.GeneratedContract {
   Future<String> settle(BigInt longTokensToRedeem, BigInt shortTokensToRedeem,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('settle');
+    final function = self.abi.functions[19];
+    assert(checkSignature(function, '9a9c29f6'));
     final params = [longTokensToRedeem, shortTokensToRedeem];
     return write(credentials, transaction, function, params);
   }
@@ -219,7 +238,8 @@ class LongShortPair extends _i1.GeneratedContract {
   Future<String> expire(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('expire');
+    final function = self.abi.functions[20];
+    assert(checkSignature(function, '79599f96'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -229,7 +249,8 @@ class LongShortPair extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<GetPositionTokens> getPositionTokens(_i1.EthereumAddress sponsor,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('getPositionTokens');
+    final function = self.abi.functions[21];
+    assert(checkSignature(function, '4eef4a73'));
     final params = [sponsor];
     final response = await read(function, params, atBlock);
     return GetPositionTokens(response);

@@ -18,75 +18,71 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.8.0
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
+  badges: ^2.0.3
+  big_decimal: ^0.3.1
+  bip39: ^1.0.6
+  chart_sparkline: ^1.0.11
+  charts_flutter: ^0.12.0
+  coingecko_api: ^1.0.2+2
+  cupertino_icons: ^1.0.5
+  decimal: ^2.2.0
+  dio: ^4.0.6
+  equatable: ^2.0.3
+  erc20: ^1.0.0
+  fl_chart: ^0.55.0
   flutter:
     sdk: flutter
-  provider: ^6.0.2
-  http: ^0.13.4
-  web_socket_channel: ^2.2.0
-  flutter_sparkline: ^0.1.0
-  velocity_x: ^3.4.0
-  url_launcher: ^6.1.0
-  fl_chart: ^0.51.0
-  toggle_switch: ^2.0.1
-  syncfusion_flutter_charts: ^20.1.61
-  coingecko_api: ^1.0.2+2
-  font_awesome_flutter: ^10.1.0
-  retrofit: ^3.0.1+1
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.4
-  bip39: ^1.0.6
-  shared_preferences: ^2.0.13
-  flutter_device_type: ^0.4.0
-  search_page: ^2.0.0+1
-  webfeed: ^0.7.0
-  chart_sparkline: ^1.0.10
-  flutter_web3: ^2.1.9
-  get: ^4.6.1
-  postgres: ^2.4.3
-  intl: ^0.17.0
-  flutter_launcher_icons: "^0.9.2"
   flutter_bloc: ^8.0.1
-  equatable: ^2.0.3
-  decimal: ^2.2.0
-  graphql_flutter: ^5.1.0
+  flutter_device_type: ^0.4.0
+  flutter_launcher_icons: ^0.9.3
+  flutter_sparkline: ^0.1.0
+  flutter_web3: ^2.1.9
+  font_awesome_flutter: ^10.1.0
+  fpdart: ^0.2.0
+  get: ^4.6.5
   gql: '>=0.12.3 <1.0.0'
-  fpdart: ^0.0.14
-  json_annotation: ^4.5.0
-  local_auth: ^2.0.0
-  charts_flutter: ^0.12.0
-  url_launcher_web: ^2.0.9
-  web3dart: ^2.3.5
+  graphql_flutter: ^5.1.0
+  http: ^0.13.4
+  intl: ^0.17.0
+  json_annotation: ^4.6.0
+  local_auth: ^2.1.0
+  postgres: ^2.4.5
+  provider: ^6.0.3
+  retrofit: ^3.0.1+1
+  search_page: ^2.0.0+1
+  shared_preferences: ^2.0.15
+  syncfusion_flutter_charts: ^20.2.38
+  toggle_switch: ^2.0.1
+  url_launcher: ^6.1.5
+  url_launcher_web: ^2.0.12
+  velocity_x: ^3.5.1
   web3_browser: ^0.0.1
-  erc20: ^1.0.0
-  big_decimal: ^0.3.1
-  badges: ^2.0.3
+  web3dart: ^2.4.1
+  web_socket_channel: ^2.2.0
+  webfeed: ^0.7.0
 
-dependency_overrides:
-
+dependency_overrides: null
 
 dev_dependencies:
-  test: ^1.21.1
-  mockito: ^5.1.0
-  build_runner: ^2.1.10
-  retrofit_generator: ^4.0.1
-  json_serializable: ^6.2.0
-  
+  build_runner: ^2.2.0
+  json_serializable: ^6.3.1
+  mockito: ^5.2.0
+  retrofit_generator: ^4.0.2
+  test: ^1.21.4
+  very_good_analysis: ^3.0.1
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
-  
   fonts:
     - family: OpenSans
       fonts:
@@ -129,6 +125,6 @@ flutter:
     - assets/images/USDC_small.png
 
 flutter_icons:
-  android: "launcher_icon"
+  android: 'launcher_icon'
   ios: true
-  image_path: "assets/images/athletex_favicon.png"
+  image_path: 'assets/images/athletex_favicon.png'

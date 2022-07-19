@@ -5,9 +5,9 @@ targets:
         enabled: true
         generate_for:
           include:
-            - lib/service/Api/models/**.dart
-            - lib/service/athleteModels/**.dart
-            - lib/service/BlockchainModels/**.dart
+            - lib/service/api/models/**.dart
+            - lib/service/athlete_models/**.dart
+            - lib/service/blockchain_models/**.dart
             - test/**.dart
         options:
           explicit_to_json: true
