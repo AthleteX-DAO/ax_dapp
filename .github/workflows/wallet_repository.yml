@@ -1,0 +1,10 @@
+name: wallet_repository
+
+on: pull_request
+
+jobs:
+  build:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    with:
+      working_directory: "packages/wallet_repository"
+      min_coverage: 0
