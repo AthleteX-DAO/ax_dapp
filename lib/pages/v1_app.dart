@@ -459,7 +459,7 @@ class _V1AppState extends State<V1App> {
                   ),
                 ),
                 Container(width: _width - 320),
-                SimpleToolTip(
+                AppToolTip(
                   'Invest in what you know best at AthleteX Markets.',
                   IconButton(
                     onPressed: () => launchUrl(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class SimpleToolTip extends StatelessWidget {
-  const SimpleToolTip(this.message, this.widget, {super.key});
+class AppToolTip extends StatelessWidget {
+  const AppToolTip(this.message, this.child, {super.key});
   final String message;
-  final Widget widget;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class SimpleToolTip extends StatelessWidget {
               style: TextStyle(color: Colors.grey[400], fontSize: 16),),
         ],
       ),
-      child: widget,
+      child: child,
     );
   }
 }
