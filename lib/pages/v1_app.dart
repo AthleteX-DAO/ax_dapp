@@ -405,14 +405,13 @@ class _V1AppState extends State<V1App> {
   }
 
   Widget bottomNavBarDesktop(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
+    final _width = MediaQuery.of(context).size.width;
     return Container(
       height: MediaQuery.of(context).size.height * 0.1,
       color: Colors.transparent,
       padding: const EdgeInsets.only(left: 40, right: 40),
       child: Center(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               children: <Widget>[
@@ -461,15 +460,20 @@ class _V1AppState extends State<V1App> {
                 ),
                 Container(width: _width - 320),
                 SimpleToolTip(
-                    "Invest in what you know best at AthleteX Markets. Click here to learn more!",
-                    IconButton(
-                        onPressed: () => launchUrl(Uri.parse(
-                            'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper')),
-                        icon: FaIcon(
-                          FontAwesomeIcons.circleQuestion,
-                          size: 25,
-                          color: Colors.grey[400],
-                        ))),
+                  'Invest in what you know best at AthleteX Markets.',
+                  IconButton(
+                    onPressed: () => launchUrl(
+                      Uri.parse(
+                        'https://athletex-markets.gitbook.io/athletex-huddle/start-here/litepaper',
+                      ),
+                    ),
+                    icon: FaIcon(
+                      FontAwesomeIcons.circleQuestion,
+                      size: 25,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
