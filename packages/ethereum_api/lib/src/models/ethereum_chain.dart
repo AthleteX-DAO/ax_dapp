@@ -12,7 +12,6 @@ enum EthereumChain {
   sxMainnet(416),
 
   /// SX test network.
-
   sxTestnet(647);
 
   /// {@macro ethereum_chain}
