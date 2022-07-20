@@ -51,14 +51,14 @@ packages:
     source: hosted
     version: "2.0.3"
   big_decimal:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: big_decimal
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.1"
   bip39:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: bip39
       url: "https://pub.dartlang.org"
@@ -289,14 +289,14 @@ packages:
     source: hosted
     version: "0.5.4"
   decimal:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: decimal
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
   dio:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio
       url: "https://pub.dartlang.org"
@@ -310,14 +310,14 @@ packages:
     source: hosted
     version: "1.0.2"
   equatable:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
   erc20:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: erc20
       url: "https://pub.dartlang.org"
@@ -418,7 +418,7 @@ packages:
     source: hosted
     version: "10.1.0"
   fpdart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: fpdart
       url: "https://pub.dartlang.org"
@@ -446,7 +446,7 @@ packages:
     source: hosted
     version: "2.1.0"
   gql:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: gql
       url: "https://pub.dartlang.org"
@@ -530,7 +530,7 @@ packages:
     source: hosted
     version: "2.2.3"
   http:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -579,7 +579,7 @@ packages:
     source: hosted
     version: "0.6.4"
   json_annotation:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: json_annotation
       url: "https://pub.dartlang.org"
@@ -801,7 +801,7 @@ packages:
       name: pointycastle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.6.0"
+    version: "3.6.1"
   pool:
     dependency: transitive
     description:
@@ -824,7 +824,7 @@ packages:
     source: hosted
     version: "4.2.4"
   provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: provider
       url: "https://pub.dartlang.org"
@@ -900,6 +900,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0+1"
+  shared:
+    dependency: "direct main"
+    description:
+      path: "packages/shared"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1235,21 +1242,21 @@ packages:
     source: hosted
     version: "1.0.1"
   web3_browser:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: web3_browser
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.1"
   web3dart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: web3dart
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.1"
   web_socket_channel:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: web_socket_channel
       url: "https://pub.dartlang.org"
