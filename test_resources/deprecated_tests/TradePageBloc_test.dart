@@ -1,10 +1,12 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 /*NEEDS TO BE UPDATED
 import 'package:ax_dapp/dialogs/buy/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/pages/trade/bloc/TradePageBloc.dart';
 import 'package:ax_dapp/repositories/usecases/GetSwapInfoUseCase.dart';
 import 'package:ax_dapp/service/BlockchainModels/SwapInfo.dart';
-import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:mockito/annotations.dart';
 import 'package:test/test.dart';
 

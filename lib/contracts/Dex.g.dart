@@ -1,7 +1,5 @@
 // Generated code, do not modify. Run `build_runner build` to re-generate!
 // @dart=2.12
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:web3dart/web3dart.dart' as _i1;
 import 'dart:typed_data' as _i2;
 
@@ -20,7 +18,8 @@ class Dex extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i2.Uint8List> INIT_CODE_PAIR_HASH({_i1.BlockNum? atBlock}) async {
-    final function = self.function('INIT_CODE_PAIR_HASH');
+    final function = self.abi.functions[1];
+    assert(checkSignature(function, '5855a25a'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i2.Uint8List);
@@ -29,9 +28,11 @@ class Dex extends _i1.GeneratedContract {
   /// The optional [atBlock] parameter can be used to view historical data. When
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
-  Future<_i1.EthereumAddress> allPairs(BigInt, {_i1.BlockNum? atBlock}) async {
-    final function = self.function('allPairs');
-    final params = [];
+  Future<_i1.EthereumAddress> allPairs(BigInt $param0,
+      {_i1.BlockNum? atBlock}) async {
+    final function = self.abi.functions[2];
+    assert(checkSignature(function, '1e3dd18b'));
+    final params = [$param0];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
   }
@@ -40,7 +41,8 @@ class Dex extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> allPairsLength({_i1.BlockNum? atBlock}) async {
-    final function = self.function('allPairsLength');
+    final function = self.abi.functions[3];
+    assert(checkSignature(function, '574f2ba3'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -53,7 +55,8 @@ class Dex extends _i1.GeneratedContract {
       _i1.EthereumAddress tokenA, _i1.EthereumAddress tokenB,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('createPair');
+    final function = self.abi.functions[4];
+    assert(checkSignature(function, 'c9c65396'));
     final params = [tokenA, tokenB];
     return write(credentials, transaction, function, params);
   }
@@ -62,7 +65,8 @@ class Dex extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> feeTo({_i1.BlockNum? atBlock}) async {
-    final function = self.function('feeTo');
+    final function = self.abi.functions[5];
+    assert(checkSignature(function, '017e7e58'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -72,7 +76,8 @@ class Dex extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> feeToSetter({_i1.BlockNum? atBlock}) async {
-    final function = self.function('feeToSetter');
+    final function = self.abi.functions[6];
+    assert(checkSignature(function, '094b7415'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -82,10 +87,11 @@ class Dex extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> getPair(
-      _i1.EthereumAddress tknA, _i1.EthereumAddress tknB,
+      _i1.EthereumAddress $param3, _i1.EthereumAddress $param4,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('getPair');
-    final params = [tknA, tknB];
+    final function = self.abi.functions[7];
+    assert(checkSignature(function, 'e6a43905'));
+    final params = [$param3, $param4];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
   }
@@ -96,7 +102,8 @@ class Dex extends _i1.GeneratedContract {
   Future<String> setFeeTo(_i1.EthereumAddress _feeTo,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('setFeeTo');
+    final function = self.abi.functions[8];
+    assert(checkSignature(function, 'f46901ed'));
     final params = [_feeTo];
     return write(credentials, transaction, function, params);
   }
@@ -107,7 +114,8 @@ class Dex extends _i1.GeneratedContract {
   Future<String> setFeeToSetter(_i1.EthereumAddress _feeToSetter,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('setFeeToSetter');
+    final function = self.abi.functions[9];
+    assert(checkSignature(function, 'a2e74af6'));
     final params = [_feeToSetter];
     return write(credentials, transaction, function, params);
   }

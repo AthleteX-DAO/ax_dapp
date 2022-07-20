@@ -7,10 +7,10 @@ import 'dart:async' as _i7;
 import 'dart:ui' as _i10;
 
 import 'package:ax_dapp/repositories/usecases/GetSwapInfoUseCase.dart' as _i6;
-import 'package:ax_dapp/service/Controller/Controller.dart' as _i4;
-import 'package:ax_dapp/service/Controller/Swap/SwapController.dart' as _i11;
-import 'package:ax_dapp/service/Controller/Token.dart' as _i12;
-import 'package:ax_dapp/service/Controller/WalletController.dart' as _i8;
+import 'package:ax_dapp/service/controller/controller.dart' as _i4;
+import 'package:ax_dapp/service/controller/swap/swap_controller.dart' as _i11;
+import 'package:ax_dapp/service/controller/token.dart' as _i12;
+import 'package:ax_dapp/service/controller/wallet_controller.dart' as _i8;
 import 'package:fpdart/fpdart.dart' as _i2;
 import 'package:get/get.dart' as _i3;
 import 'package:get/get_state_manager/src/simple/list_notifier.dart' as _i9;

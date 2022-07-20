@@ -19,7 +19,8 @@ class StakingRewards extends _i1.GeneratedContract {
   Future<String> acceptOwnership(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('acceptOwnership');
+    final function = self.abi.functions[1];
+    assert(checkSignature(function, '79ba5097'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -28,7 +29,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> lastUpdateTime({_i1.BlockNum? atBlock}) async {
-    final function = self.function('lastUpdateTime');
+    final function = self.abi.functions[2];
+    assert(checkSignature(function, 'c8f33c91'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -40,7 +42,8 @@ class StakingRewards extends _i1.GeneratedContract {
   Future<String> nominateNewOwner(_i1.EthereumAddress _owner,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('nominateNewOwner');
+    final function = self.abi.functions[3];
+    assert(checkSignature(function, '1627540c'));
     final params = [_owner];
     return write(credentials, transaction, function, params);
   }
@@ -49,7 +52,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> nominatedOwner({_i1.BlockNum? atBlock}) async {
-    final function = self.function('nominatedOwner');
+    final function = self.abi.functions[4];
+    assert(checkSignature(function, '53a47bb7'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -59,7 +63,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> owner({_i1.BlockNum? atBlock}) async {
-    final function = self.function('owner');
+    final function = self.abi.functions[5];
+    assert(checkSignature(function, '8da5cb5b'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -69,7 +74,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> periodFinish({_i1.BlockNum? atBlock}) async {
-    final function = self.function('periodFinish');
+    final function = self.abi.functions[6];
+    assert(checkSignature(function, 'ebe2b12b'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -79,7 +85,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> rewardPerTokenStored({_i1.BlockNum? atBlock}) async {
-    final function = self.function('rewardPerTokenStored');
+    final function = self.abi.functions[7];
+    assert(checkSignature(function, 'df136d65'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -89,7 +96,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> rewardRate({_i1.BlockNum? atBlock}) async {
-    final function = self.function('rewardRate');
+    final function = self.abi.functions[8];
+    assert(checkSignature(function, '7b0a47ee'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -98,10 +106,11 @@ class StakingRewards extends _i1.GeneratedContract {
   /// The optional [atBlock] parameter can be used to view historical data. When
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
-  Future<BigInt> rewards(_i1.EthereumAddress account,
+  Future<BigInt> rewards(_i1.EthereumAddress $param1,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('rewards');
-    final params = [account];
+    final function = self.abi.functions[9];
+    assert(checkSignature(function, '0700037d'));
+    final params = [$param1];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
   }
@@ -111,7 +120,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> rewardsDistribution(
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('rewardsDistribution');
+    final function = self.abi.functions[10];
+    assert(checkSignature(function, '3fc6df6e'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -121,7 +131,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> rewardsDuration({_i1.BlockNum? atBlock}) async {
-    final function = self.function('rewardsDuration');
+    final function = self.abi.functions[11];
+    assert(checkSignature(function, '386a9525'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -131,7 +142,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> rewardsToken({_i1.BlockNum? atBlock}) async {
-    final function = self.function('rewardsToken');
+    final function = self.abi.functions[12];
+    assert(checkSignature(function, 'd1af0c7d'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -141,7 +153,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> stakingToken({_i1.BlockNum? atBlock}) async {
-    final function = self.function('stakingToken');
+    final function = self.abi.functions[13];
+    assert(checkSignature(function, '72f702f3'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -150,10 +163,11 @@ class StakingRewards extends _i1.GeneratedContract {
   /// The optional [atBlock] parameter can be used to view historical data. When
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
-  Future<BigInt> userRewardPerTokenPaid(_i1.EthereumAddress account,
+  Future<BigInt> userRewardPerTokenPaid(_i1.EthereumAddress $param2,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('userRewardPerTokenPaid');
-    final params = [account];
+    final function = self.abi.functions[14];
+    assert(checkSignature(function, '8b876347'));
+    final params = [$param2];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
   }
@@ -162,7 +176,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> totalSupply({_i1.BlockNum? atBlock}) async {
-    final function = self.function('totalSupply');
+    final function = self.abi.functions[15];
+    assert(checkSignature(function, '18160ddd'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -173,7 +188,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<BigInt> balanceOf(_i1.EthereumAddress account,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('balanceOf');
+    final function = self.abi.functions[16];
+    assert(checkSignature(function, '70a08231'));
     final params = [account];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -183,7 +199,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> lastTimeRewardApplicable({_i1.BlockNum? atBlock}) async {
-    final function = self.function('lastTimeRewardApplicable');
+    final function = self.abi.functions[17];
+    assert(checkSignature(function, '80faa57d'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -193,7 +210,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> rewardPerToken({_i1.BlockNum? atBlock}) async {
-    final function = self.function('rewardPerToken');
+    final function = self.abi.functions[18];
+    assert(checkSignature(function, 'cd3daf9d'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -204,7 +222,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<BigInt> earned(_i1.EthereumAddress account,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('earned');
+    final function = self.abi.functions[19];
+    assert(checkSignature(function, '008cc262'));
     final params = [account];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -214,7 +233,8 @@ class StakingRewards extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<BigInt> getRewardForDuration({_i1.BlockNum? atBlock}) async {
-    final function = self.function('getRewardForDuration');
+    final function = self.abi.functions[20];
+    assert(checkSignature(function, '1c1f78eb'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -226,7 +246,8 @@ class StakingRewards extends _i1.GeneratedContract {
   Future<String> stake(BigInt amount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('stake');
+    final function = self.abi.functions[21];
+    assert(checkSignature(function, 'a694fc3a'));
     final params = [amount];
     return write(credentials, transaction, function, params);
   }
@@ -237,7 +258,8 @@ class StakingRewards extends _i1.GeneratedContract {
   Future<String> withdraw(BigInt amount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('withdraw');
+    final function = self.abi.functions[22];
+    assert(checkSignature(function, '2e1a7d4d'));
     final params = [amount];
     return write(credentials, transaction, function, params);
   }
@@ -248,7 +270,8 @@ class StakingRewards extends _i1.GeneratedContract {
   Future<String> getReward(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('getReward');
+    final function = self.abi.functions[23];
+    assert(checkSignature(function, '3d18b912'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -259,7 +282,8 @@ class StakingRewards extends _i1.GeneratedContract {
   Future<String> exit(
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('exit');
+    final function = self.abi.functions[24];
+    assert(checkSignature(function, 'e9fad8ee'));
     final params = [];
     return write(credentials, transaction, function, params);
   }
@@ -270,7 +294,8 @@ class StakingRewards extends _i1.GeneratedContract {
   Future<String> notifyRewardAmount(BigInt reward, BigInt duration,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('notifyRewardAmount');
+    final function = self.abi.functions[25];
+    assert(checkSignature(function, '246132f9'));
     final params = [reward, duration];
     return write(credentials, transaction, function, params);
   }
@@ -281,7 +306,8 @@ class StakingRewards extends _i1.GeneratedContract {
   Future<String> updatePeriodFinish(BigInt timestamp,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('updatePeriodFinish');
+    final function = self.abi.functions[26];
+    assert(checkSignature(function, '556f6e6b'));
     final params = [timestamp];
     return write(credentials, transaction, function, params);
   }
@@ -293,7 +319,8 @@ class StakingRewards extends _i1.GeneratedContract {
       _i1.EthereumAddress tokenAddress, BigInt tokenAmount,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('recoverERC20');
+    final function = self.abi.functions[27];
+    assert(checkSignature(function, '8980f11f'));
     final params = [tokenAddress, tokenAmount];
     return write(credentials, transaction, function, params);
   }
@@ -304,7 +331,8 @@ class StakingRewards extends _i1.GeneratedContract {
   Future<String> setRewardsDuration(BigInt _rewardsDuration,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('setRewardsDuration');
+    final function = self.abi.functions[28];
+    assert(checkSignature(function, 'cc1a378f'));
     final params = [_rewardsDuration];
     return write(credentials, transaction, function, params);
   }

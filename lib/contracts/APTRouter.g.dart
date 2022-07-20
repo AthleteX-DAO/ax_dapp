@@ -1,7 +1,5 @@
 // Generated code, do not modify. Run `build_runner build` to re-generate!
 // @dart=2.12
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:web3dart/web3dart.dart' as _i1;
 import 'dart:typed_data' as _i2;
 
@@ -20,7 +18,8 @@ class APTRouter extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> WAVAX({_i1.BlockNum? atBlock}) async {
-    final function = self.function('WAVAX');
+    final function = self.abi.functions[1];
+    assert(checkSignature(function, '73b295c2'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -40,7 +39,8 @@ class APTRouter extends _i1.GeneratedContract {
       BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('addLiquidity');
+    final function = self.abi.functions[2];
+    assert(checkSignature(function, 'e8e33700'));
     final params = [
       tokenA,
       tokenB,
@@ -66,7 +66,8 @@ class APTRouter extends _i1.GeneratedContract {
       BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('addLiquidityAVAX');
+    final function = self.abi.functions[3];
+    assert(checkSignature(function, 'f91b3f72'));
     final params = [
       token,
       amountTokenDesired,
@@ -82,7 +83,8 @@ class APTRouter extends _i1.GeneratedContract {
   /// set, the function will be evaluated in the specified block. By default, the
   /// latest on-chain block will be used.
   Future<_i1.EthereumAddress> factory({_i1.BlockNum? atBlock}) async {
-    final function = self.function('factory');
+    final function = self.abi.functions[4];
+    assert(checkSignature(function, 'c45a0155'));
     final params = [];
     final response = await read(function, params, atBlock);
     return (response[0] as _i1.EthereumAddress);
@@ -94,7 +96,8 @@ class APTRouter extends _i1.GeneratedContract {
   Future<BigInt> getAmountIn(
       BigInt amountOut, BigInt reserveIn, BigInt reserveOut,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('getAmountIn');
+    final function = self.abi.functions[5];
+    assert(checkSignature(function, '85f8c259'));
     final params = [amountOut, reserveIn, reserveOut];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -106,7 +109,8 @@ class APTRouter extends _i1.GeneratedContract {
   Future<BigInt> getAmountOut(
       BigInt amountIn, BigInt reserveIn, BigInt reserveOut,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('getAmountOut');
+    final function = self.abi.functions[6];
+    assert(checkSignature(function, '054d50d4'));
     final params = [amountIn, reserveIn, reserveOut];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -118,7 +122,8 @@ class APTRouter extends _i1.GeneratedContract {
   Future<List<BigInt>> getAmountsIn(
       BigInt amountOut, List<_i1.EthereumAddress> path,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('getAmountsIn');
+    final function = self.abi.functions[7];
+    assert(checkSignature(function, '1f00ca74'));
     final params = [amountOut, path];
     final response = await read(function, params, atBlock);
     return (response[0] as List<dynamic>).cast<BigInt>();
@@ -130,7 +135,8 @@ class APTRouter extends _i1.GeneratedContract {
   Future<List<BigInt>> getAmountsOut(
       BigInt amountIn, List<_i1.EthereumAddress> path,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('getAmountsOut');
+    final function = self.abi.functions[8];
+    assert(checkSignature(function, 'd06ca61f'));
     final params = [amountIn, path];
     final response = await read(function, params, atBlock);
     return (response[0] as List<dynamic>).cast<BigInt>();
@@ -141,7 +147,8 @@ class APTRouter extends _i1.GeneratedContract {
   /// latest on-chain block will be used.
   Future<BigInt> quote(BigInt amountA, BigInt reserveA, BigInt reserveB,
       {_i1.BlockNum? atBlock}) async {
-    final function = self.function('quote');
+    final function = self.abi.functions[9];
+    assert(checkSignature(function, 'ad615dec'));
     final params = [amountA, reserveA, reserveB];
     final response = await read(function, params, atBlock);
     return (response[0] as BigInt);
@@ -160,7 +167,8 @@ class APTRouter extends _i1.GeneratedContract {
       BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('removeLiquidity');
+    final function = self.abi.functions[10];
+    assert(checkSignature(function, 'baa2abde'));
     final params = [
       tokenA,
       tokenB,
@@ -185,7 +193,8 @@ class APTRouter extends _i1.GeneratedContract {
       BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('removeLiquidityAVAX');
+    final function = self.abi.functions[11];
+    assert(checkSignature(function, '33c6b725'));
     final params = [
       token,
       liquidity,
@@ -209,8 +218,8 @@ class APTRouter extends _i1.GeneratedContract {
       BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function =
-        self.function('removeLiquidityAVAXSupportingFeeOnTransferTokens');
+    final function = self.abi.functions[12];
+    assert(checkSignature(function, '73bc79cf'));
     final params = [
       token,
       liquidity,
@@ -238,7 +247,8 @@ class APTRouter extends _i1.GeneratedContract {
       _i2.Uint8List s,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('removeLiquidityAVAXWithPermit');
+    final function = self.abi.functions[13];
+    assert(checkSignature(function, '2c407024'));
     final params = [
       token,
       liquidity,
@@ -270,8 +280,8 @@ class APTRouter extends _i1.GeneratedContract {
       _i2.Uint8List s,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self
-        .function('removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens');
+    final function = self.abi.functions[14];
+    assert(checkSignature(function, '9fc27226'));
     final params = [
       token,
       liquidity,
@@ -304,7 +314,8 @@ class APTRouter extends _i1.GeneratedContract {
       _i2.Uint8List s,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('removeLiquidityWithPermit');
+    final function = self.abi.functions[15];
+    assert(checkSignature(function, '2195995c'));
     final params = [
       tokenA,
       tokenB,
@@ -328,7 +339,8 @@ class APTRouter extends _i1.GeneratedContract {
       List<_i1.EthereumAddress> path, _i1.EthereumAddress to, BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('swapAVAXForExactTokens');
+    final function = self.abi.functions[16];
+    assert(checkSignature(function, '8a657e67'));
     final params = [amountOut, path, to, deadline];
     return write(credentials, transaction, function, params);
   }
@@ -340,7 +352,8 @@ class APTRouter extends _i1.GeneratedContract {
       List<_i1.EthereumAddress> path, _i1.EthereumAddress to, BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('swapExactAVAXForTokens');
+    final function = self.abi.functions[17];
+    assert(checkSignature(function, 'a2a1623d'));
     final params = [amountOutMin, path, to, deadline];
     return write(credentials, transaction, function, params);
   }
@@ -355,8 +368,8 @@ class APTRouter extends _i1.GeneratedContract {
       BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function =
-        self.function('swapExactAVAXForTokensSupportingFeeOnTransferTokens');
+    final function = self.abi.functions[18];
+    assert(checkSignature(function, 'c57559dd'));
     final params = [amountOutMin, path, to, deadline];
     return write(credentials, transaction, function, params);
   }
@@ -368,7 +381,8 @@ class APTRouter extends _i1.GeneratedContract {
       List<_i1.EthereumAddress> path, _i1.EthereumAddress to, BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('swapExactTokensForAVAX');
+    final function = self.abi.functions[19];
+    assert(checkSignature(function, '676528d1'));
     final params = [amountIn, amountOutMin, path, to, deadline];
     return write(credentials, transaction, function, params);
   }
@@ -384,8 +398,8 @@ class APTRouter extends _i1.GeneratedContract {
       BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function =
-        self.function('swapExactTokensForAVAXSupportingFeeOnTransferTokens');
+    final function = self.abi.functions[20];
+    assert(checkSignature(function, '762b1562'));
     final params = [amountIn, amountOutMin, path, to, deadline];
     return write(credentials, transaction, function, params);
   }
@@ -397,7 +411,8 @@ class APTRouter extends _i1.GeneratedContract {
       List<_i1.EthereumAddress> path, _i1.EthereumAddress to, BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('swapExactTokensForTokens');
+    final function = self.abi.functions[21];
+    assert(checkSignature(function, '38ed1739'));
     final params = [amountIn, amountOutMin, path, to, deadline];
     return write(credentials, transaction, function, params);
   }
@@ -413,8 +428,8 @@ class APTRouter extends _i1.GeneratedContract {
       BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function =
-        self.function('swapExactTokensForTokensSupportingFeeOnTransferTokens');
+    final function = self.abi.functions[22];
+    assert(checkSignature(function, '5c11d795'));
     final params = [amountIn, amountOutMin, path, to, deadline];
     return write(credentials, transaction, function, params);
   }
@@ -426,7 +441,8 @@ class APTRouter extends _i1.GeneratedContract {
       List<_i1.EthereumAddress> path, _i1.EthereumAddress to, BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('swapTokensForExactAVAX');
+    final function = self.abi.functions[23];
+    assert(checkSignature(function, '7a42416a'));
     final params = [amountOut, amountInMax, path, to, deadline];
     return write(credentials, transaction, function, params);
   }
@@ -438,7 +454,8 @@ class APTRouter extends _i1.GeneratedContract {
       List<_i1.EthereumAddress> path, _i1.EthereumAddress to, BigInt deadline,
       {required _i1.Credentials credentials,
       _i1.Transaction? transaction}) async {
-    final function = self.function('swapTokensForExactTokens');
+    final function = self.abi.functions[24];
+    assert(checkSignature(function, '8803dbee'));
     final params = [amountOut, amountInMax, path, to, deadline];
     return write(credentials, transaction, function, params);
   }
