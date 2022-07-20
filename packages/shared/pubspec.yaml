@@ -1,0 +1,12 @@
+name: shared
+description: A package that contains pure dart utilities and exports common dart libraries.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=2.17.0 <3.0.0'
+
+dev_dependencies:
+  mocktail: ^0.3.0
+  test: ^1.21.4
+  very_good_analysis: ^3.0.1
