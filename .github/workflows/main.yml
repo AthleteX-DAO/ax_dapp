@@ -1,0 +1,11 @@
+name: ax_dapp
+
+on: pull_request
+
+jobs:
+  build:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+    with:
+      flutter_version: "3.0.5"
+      min_coverage: 0
+      test_optimization: false
