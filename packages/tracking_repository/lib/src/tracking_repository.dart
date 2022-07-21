@@ -1,3 +1,5 @@
+import 'package:tracking_repository/src/event.dart';
+
 /// Used to interface tracking services
 class TrackingRepository {
   /// final Tracker? tracker;
