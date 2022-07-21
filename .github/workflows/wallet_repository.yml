@@ -4,7 +4,9 @@ on: pull_request
 
 jobs:
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
+      flutter_version: "3.0.5"
+      coverage_excludes: "*.g.dart"
       working_directory: "packages/wallet_repository"
       min_coverage: 0
