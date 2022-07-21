@@ -21,7 +21,7 @@ abstract class Failure implements Exception {
 }
 
 /// {@template no_failure}
-/// Represents no failure.
+/// Represents no failure. Useful as default value on a bloc's state class.
 /// {@endtemplate}
 class NoFailure extends Failure {
   /// {@macro no_failure}
