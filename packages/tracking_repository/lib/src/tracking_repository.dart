@@ -1,14 +1,13 @@
-import 'package:ax_dapp/repositories/tracking/event.dart';
-
-/// 
+/// Used to interface tracking services
 class TrackingRepository {
-  /// final Tracker? trakingService;
+  /// final Tracker? tracker;
   /// Loads trackers
   /// void configureWith(
   ///   // firebase
-  ///   // aplitude
-  ///   // trakingService
-  ///   // ....
+  ///   // GA
+  ///   // amplitude
+  ///   // mixpanel
+  ///   // ...
   /// ) {
   ///    this.trakingService = trakingService
   /// }
@@ -22,7 +21,7 @@ class TrackingRepository {
   void track(Event event) {
     // firebase
     // GA
-    // trackingService
+    // tracker?.track...
   }
 }
 
