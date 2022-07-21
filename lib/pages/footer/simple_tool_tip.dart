@@ -20,8 +20,9 @@ class AppToolTip extends StatelessWidget {
       richMessage: TextSpan(
         children: <TextSpan>[
           TextSpan(
-              text: message,
-              style: TextStyle(color: Colors.grey[400], fontSize: 16),),
+            text: message,
+            style: TextStyle(color: Colors.grey[400], fontSize: 16),
+          ),
         ],
       ),
       child: child,
