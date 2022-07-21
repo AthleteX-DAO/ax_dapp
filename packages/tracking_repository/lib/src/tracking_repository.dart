@@ -27,13 +27,10 @@ class TrackingRepository {
   }
 }
 
-/// Only for demo
-// class TrackingCubit extends Cubit<void> {
-//   //// Setup
-//   /// ...
-//   /// 
-// 
-//   /// Will notify analytics trackes of ...
-//   void trackBlueScreen(Map<String, dynamic> params) =>
-//       instanceOfTrackingRepository.track(SomeFeature.blueScreen(params..));
+/// Should be deleted after first events are implemented.
+/// Only for demo.
+// class FeatureExample {
+//   void blueScreen() {
+//     TrackingRepository.instance.track(SomeFeature.screenA({'param': value}));
+//   }
 // }
