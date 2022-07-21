@@ -6,19 +6,19 @@ import 'package:flutter_web3/ethereum.dart';
 /// {@endtemplate}
 enum EthereumCurrency {
   /// Currency used with Polygon.
-  matic(name: 'MATIC Token', symbol: 'MATIC'),
+  matic(currencyName: 'MATIC Token', symbol: 'MATIC'),
 
   /// Currency used with SX.
-  sx(name: 'SportX Token', symbol: 'SX');
+  sx(currencyName: 'SportX Token', symbol: 'SX');
 
   /// {@macro ethereum_currency}
   const EthereumCurrency({
-    required this.name,
+    required this.currencyName,
     required this.symbol,
   });
 
   /// The name of the currency.
-  final String name;
+  final String currencyName;
 
   /// The symbol for the currency.
   final String symbol;
@@ -31,7 +31,7 @@ enum EthereumCurrency {
 extension EthereumCurrencyX on EthereumCurrency {
   /// Converts an `EthereumCurrency` to native `CurrencyParams`.
   CurrencyParams get toCurrencyParams => CurrencyParams(
-        name: name,
+        name: currencyName,
         symbol: symbol,
         decimals: decimals,
       );
