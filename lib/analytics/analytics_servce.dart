@@ -1,5 +1,6 @@
 import 'package:ax_dapp/analytics/event.dart';
 
+/// 
 class AnalyticsService {
   AnalyticsService._();
 
@@ -19,7 +20,7 @@ class AnalyticsService {
 
   ///
   /// Packages/trackers may have additional lifecycle requirements.
-  /// These methods like reset and other ones should be handled here.
+  /// These methods like id/reset/consent and other ones should be handled here.
   ///
 
   /// Updates tracking services accordingly
