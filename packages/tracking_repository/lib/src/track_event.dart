@@ -1,7 +1,7 @@
 /// Used to identify and track events
-class Event {
+class TrackEvent {
   /// Constructor
-  Event({
+  TrackEvent({
     required this.name,
   });
 

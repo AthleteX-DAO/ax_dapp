@@ -1,4 +1,4 @@
-import 'package:tracking_repository/src/event.dart';
+import 'package:tracking_repository/src/track_event.dart';
 
 /// Used to interface tracking services
 class TrackingRepository {
@@ -10,7 +10,7 @@ class TrackingRepository {
   ///   // amplitude
   ///   // mixpanel
   ///   // ...
-  /// ) {
+  /// ) {dart analyze
   ///    this.trakingService = trakingService
   /// }
 
@@ -20,7 +20,7 @@ class TrackingRepository {
   ///
 
   /// Updates tracking services accordingly
-  void track(Event event) {
+  void track(TrackEvent event) {
     // firebase
     // GA
     // tracker?.track...
