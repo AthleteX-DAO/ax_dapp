@@ -1,12 +1,7 @@
-import 'package:ax_dapp/analytics/event.dart';
+import 'package:ax_dapp/repositories/tracking/event.dart';
 
 /// 
-class AnalyticsService {
-  AnalyticsService._();
-
-  /// Default instance of the analytics
-  static final instance = AnalyticsService._();
-
+class TrackingRepository {
   /// final Tracker? trakingService;
   /// Loads trackers
   /// void configureWith(
@@ -24,13 +19,17 @@ class AnalyticsService {
   ///
 
   /// Updates tracking services accordingly
-  void track(Event event) {}
+  void track(Event event) {
+    // firebase
+    // GA
+    // trackingService
+  }
 }
 
 /// Should be deleted after first events are implemented.
 /// Only for demo.
 // class FeatureExample {
 //   void blueScreen() {
-//     AnalyticsService.instance.track(SomeFeature.screenA({'param': value}));
+//     TrackingRepository.instance.track(SomeFeature.screenA({'param': value}));
 //   }
 // }
