@@ -50,8 +50,8 @@ Widget doubleLogoFarmTitle(
         Container(width: 5),
         Expanded(
           child: Text(
-            farm.strName,
-            style: textStyle(Colors.white, 20, false, false),
+            '${farm.athlete!} Farm',
+            style: textStyle(Colors.white, 16, false, false),
           ),
         ),
         Container(
