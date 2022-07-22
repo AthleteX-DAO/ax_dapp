@@ -139,6 +139,8 @@ Dialog stakeDialog(
                                 selectedFarm.stakedInfo.value.viewAmount,
                               ) +
                               double.parse(selectedFarm.strStakeInput.value);
+                          selectedFarm.strStakeInput.value =
+                              double.parse(value).toString();
                         },
                         style: textStyle(Colors.grey[400]!, 22, false),
                         decoration: InputDecoration(
