@@ -8,9 +8,9 @@ services:
       - FIREBASE_API_KEY=$FIREBASE_API_KEY
     restart: always
     ports:
-      - 5000:5000
+      - "5000:5000"
     expose:
-      - 5000
+      - "5000"
     build:
       context: ./
     volumes:
