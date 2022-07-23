@@ -1064,8 +1064,8 @@ class _AthletePageState extends State<AthletePage> {
                   ),
                 ),
                 // APT Icon
-                Container(
-                  width: 30,
+                SizedBox(
+                  width: 10,
                 ),
                 // Player Name
                 Text(
@@ -1074,7 +1074,7 @@ class _AthletePageState extends State<AthletePage> {
                 ),
                 // '|' Symbol
                 Container(
-                  width: 50,
+                  width: 20,
                   alignment: Alignment.center,
                   child: Text(
                     '|',
@@ -1190,10 +1190,9 @@ class _AthletePageState extends State<AthletePage> {
                     ),
                   ],
                 ),
-                const SizedBox(width: 30),
-                SizedBox(
-                  width: 100,
-                  child: Container(
+                Wrap(
+                  children:[
+                  Container(
                     height: 20,
                     decoration: boxDecoration(
                       Colors.amber[500]!.withOpacity(0.20),
@@ -1214,6 +1213,7 @@ class _AthletePageState extends State<AthletePage> {
                       ),
                     ),
                   ),
+                 ],
                 ),
               ],
             ),
