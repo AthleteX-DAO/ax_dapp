@@ -1191,29 +1191,30 @@ class _AthletePageState extends State<AthletePage> {
                   ],
                 ),
                 Wrap(
-                  children:[
-                  Container(
-                    height: 20,
-                    decoration: boxDecoration(
-                      Colors.amber[500]!.withOpacity(0.20),
-                      500,
-                      1,
-                      Colors.transparent,
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        webWallet.addTokenToWallet(
-                          _getCurrentTokenAddress(),
-                          _getTokenImage(),
-                        );
-                      },
-                      child: Text(
-                        '+ Add to Wallet',
-                        style: textStyle(Colors.amber[500]!, 10, false, false),
+                  children: [
+                    Container(
+                      height: 20,
+                      decoration: boxDecoration(
+                        Colors.amber[500]!.withOpacity(0.20),
+                        500,
+                        1,
+                        Colors.transparent,
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          webWallet.addTokenToWallet(
+                            _getCurrentTokenAddress(),
+                            _getTokenImage(),
+                          );
+                        },
+                        child: Text(
+                          '+ Add to Wallet',
+                          style:
+                              textStyle(Colors.amber[500]!, 10, false, false),
+                        ),
                       ),
                     ),
-                  ),
-                 ],
+                  ],
                 ),
               ],
             ),
