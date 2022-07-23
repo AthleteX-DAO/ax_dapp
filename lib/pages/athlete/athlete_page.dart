@@ -1064,7 +1064,7 @@ class _AthletePageState extends State<AthletePage> {
                   ),
                 ),
                 // APT Icon
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 // Player Name
