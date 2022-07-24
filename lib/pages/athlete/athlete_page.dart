@@ -1191,6 +1191,9 @@ class _AthletePageState extends State<AthletePage> {
                   ],
                 ),
                 Wrap(
+                  alignment: WrapAlignment.spaceEvenly,
+                  spacing: 4,
+                  runSpacing: 64,
                   children: [
                     Container(
                       height: 20,
