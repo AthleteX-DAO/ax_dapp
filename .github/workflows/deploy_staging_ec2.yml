@@ -1,0 +1,31 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Deploy Staging EC2
+
+on:
+  push:
+    branches:
+      - 'develop'
+jobs:
+  deploy:
+    name: Deploy Staging Build to EC2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the files
+        uses: actions/checkout@v2
+      - name: Deploy to US-East-1 (NVirginia) EC2
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST_DNS }}
+          user: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          command: |
+            cd /home/ubuntu/ax_dapp_staging
+            git reset --hard
+            git fetch
+            git checkout develop
+            git reset --hard origin/develop
+            bash ./launch_staging_container.sh
