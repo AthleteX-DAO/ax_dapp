@@ -1,0 +1,36 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Deploy Release EC2
+
+on:
+  push:
+    branches:
+      - 'release/**'
+      - 'main'
+jobs:
+  deploy:
+    name: Deploy Release Build to EC2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: Checkout the files
+        uses: actions/checkout@v2
+      - name: Deploy to US-East-1 (NVirginia) EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST_DNS }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.AWS_EC2_SSH_PORT }}
+          script: 'cd /home/ax_dapp &&
+          git reset --hard &&
+          git fetch &&
+          git checkout ${{ steps.extract_branch.outputs.branch }} &&
+          git reset --hard origin/${{ steps.extract_branch.outputs.branch }} &&
+          ./launch_container.sh'
