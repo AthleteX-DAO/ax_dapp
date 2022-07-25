@@ -72,7 +72,7 @@ class FarmController {
   }
 
   String? _getAthleteTokenNameFromAlias(String stakingAlias) {
-    // returns athlete token name given an alias, returns null if stakingAlias is empty
+    // returns athlete token name, returns null if stakingAlias is empty
     // stakingToken alias example: 'AJLT1010-AX' or 'AX-CCST1010' or ''
     if (stakingAlias.isEmpty) return null;
     final tickers = stakingAlias.split('-');
