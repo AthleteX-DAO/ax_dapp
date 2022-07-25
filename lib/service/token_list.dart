@@ -130,6 +130,17 @@ class TokenList {
       );
     }),
   ];
+
+  static String mapTickerToName(String ticker) {
+    return tokenList.firstWhere((token) => token.ticker == ticker).name;
+  }
+
+  //Ask about this
+  static AssetImage mapAptTypeToImage(String longOrShort) {
+    return longOrShort.toLowerCase() == 'long'
+        ? const AssetImage('assets/images/apt_noninverted.png')
+        : const AssetImage('assets/images/apt_inverted.png');
+  }
 }
 
 class TokenIndex {

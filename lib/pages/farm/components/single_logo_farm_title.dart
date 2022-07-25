@@ -34,7 +34,9 @@ Widget singleLogoFarmTitle(
         Container(width: 15),
         Expanded(
           child: Text(
-            farm.athlete == null ? farm.strName : '${farm.athlete!} + Farm',
+            farm.athlete == null
+                ? '${farm.strName} Farm'
+                : '${farm.athlete!} Farm',
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
