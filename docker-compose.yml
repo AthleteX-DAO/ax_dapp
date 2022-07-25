@@ -6,15 +6,15 @@ services:
     environment:
       - DISABLE_TESTS=$DISABLE_TESTS
       - FIREBASE_API_KEY=$FIREBASE_API_KEY
+      - PORT=$PORT
+      - BUID_TYPE=$BUILD_TYPE
     restart: always
     ports:
-      - "5000:5000"
-      - "6000:6000"
+      - ${PORT}:${PORT}
     expose:
-      - "5000"
-      - "6000"
+      - $PORT
     build:
       context: ./
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: ["flutter", "pub", "global", "run", "webdev", "serve", "0.0.0.0:5000"]
+    command: ["flutter", "pub", "global", "run", "webdev", "serve", "0.0.0.0:${PORT}"]
