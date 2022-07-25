@@ -1,5 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'farm_model.g.dart';
+
+@JsonSerializable()
 class FarmModel {
-  const FarmModel(
+  FarmModel(
     this.strName,
     this.strAddress,
     this.strStakedAlias,
@@ -17,6 +21,8 @@ class FarmModel {
     this.nStakeTokenDecimals,
     this.nRewardTokenDecimals,
   );
+  factory FarmModel.fromJson(Map<String, dynamic> json) =>
+      _$FarmModelFromJson(json);
 
   final String strName;
   final String strAddress;
@@ -34,6 +40,8 @@ class FarmModel {
   final String strRewardTokenPrice;
   final int nStakeTokenDecimals;
   final int nRewardTokenDecimals;
+
+  Map<String, dynamic> toJson() => _$FarmModelToJson(this);
 
   @override
   String toString() {

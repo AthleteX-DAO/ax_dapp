@@ -9,7 +9,10 @@ class GetFarmDataUseCase {
   Future<List<FarmModel>> fetchAllFarms(String owner) async {
     final response = await gysrApi.fetchAllFarms(owner);
     if (response.hasException) throw response.exception.toString();
-    return _mapQueryResultToFarmModel(response.data!['pools'], false);
+    return _mapQueryResultToFarmModel(
+      response.data!['pools'] as List<dynamic>,
+      false,
+    );
   }
 
   Future<List<FarmModel>> fetchStakedFarms(String account) async {
@@ -18,36 +21,23 @@ class GetFarmDataUseCase {
       throw response.exception.toString();
     }
     return _mapQueryResultToFarmModel(
-      response.data!['user']!['positions'],
+      response.data!['user']!['positions'] as List<dynamic>,
       true,
     );
   }
 
-  List<FarmModel> _mapQueryResultToFarmModel(dynamic response, bool isStaked) {
-    return response.map((dynamic pool) {
+  List<FarmModel> _mapQueryResultToFarmModel(
+    List<dynamic> response,
+    bool isStaked,
+  ) {
+    return response.map((pool) {
       final dynamic farm = isStaked ? pool['pool'] : pool;
       final stakingTokenAlias = farm['stakingToken']['alias'];
-      final name = stakingTokenAlias!.length as int > 0
-          ? '$stakingTokenAlias'
-          : "${farm['stakingToken']['symbol']} APT";
-      return FarmModel(
-        name,
-        farm['id'].toString(),
-        farm['stakingToken']['alias'].toString(),
-        farm['stakingToken']['symbol'].toString(),
-        farm['rewardToken']['symbol'].toString(),
-        farm['stakingToken']['id'].toString(),
-        farm['rewardToken']['id'].toString(),
-        farm['stakingModule'].toString(),
-        farm['apr'].toString(),
-        farm['tvl'].toString(),
-        farm['staked'].toString(),
-        farm['rewards'].toString(),
-        farm['stakingToken']['price'].toString(),
-        farm['rewardToken']['price'].toString(),
-        int.parse(farm['stakingToken']['decimals'] as String),
-        int.parse(farm['rewardToken']['decimals'] as String),
-      );
-    }) as List<FarmModel>;
+      final stakingTokenSymbol = farm['stakingToken']['symbol'];
+      farm['stakingToken']['symbol'] = stakingTokenAlias!.length as int > 0
+          ? stakingTokenAlias
+          : stakingTokenSymbol;
+      return FarmModel.fromJson(farm as Map<String, dynamic>);
+    }).toList();
   }
 }
