@@ -1070,7 +1070,7 @@ class _AthletePageState extends State<AthletePage> {
                 // Player Name
                 Text(
                   athlete.name,
-                  style: textStyle(Colors.white, 28, false, false),
+                  style: textStyle(Colors.white, 26, false, false),
                 ),
                 // '|' Symbol
                 Container(
