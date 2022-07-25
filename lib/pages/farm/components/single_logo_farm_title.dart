@@ -35,7 +35,11 @@ Widget singleLogoFarmTitle(
         Expanded(
           child: Text(
             farm.athlete == null ? farm.strName : '${farm.athlete!} + Farm',
-            style: textStyle(Colors.white, 20, false, false),
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+              fontSize: 20,
+            ),
           ),
         ),
         Container(
