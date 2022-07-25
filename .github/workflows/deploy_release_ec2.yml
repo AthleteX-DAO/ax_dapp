@@ -33,4 +33,4 @@ jobs:
             git fetch
             git checkout ${{ steps.extract_branch.outputs.branch }}
             git reset --hard origin/${{ steps.extract_branch.outputs.branch }}
-            ./launch_container.sh
+            bash ./launch_release_container.sh

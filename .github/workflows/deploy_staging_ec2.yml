@@ -28,4 +28,4 @@ jobs:
             git fetch
             git checkout develop
             git reset --hard origin/develop
-            ./launch_container.sh
+            bash ./launch_staging_container.sh

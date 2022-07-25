@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Container launch sequence..."
+echo "Container launch staging app sequence..."
 echo " * FETCHING LATEST CHANGES"
 git fetch
 echo " * PULL LATEST RELEASE"
@@ -9,6 +9,8 @@ docker-compose stop
 echo " * CLEANING OLD IMAGES"
 docker-compose rm -f
 echo " * RESTART CONTAINER WITH LATEST IMAGE"
-sudo docker-compose up -d
+export BUILD_TYPE=staging
+export PORT=6000
+docker-compose up -d
 echo " * PRUNE OLD IMAGES"
 docker image prune -af

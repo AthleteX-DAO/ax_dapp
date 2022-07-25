@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   api:
-    container_name: ax_dapp
+    container_name: "ax_dapp_${BUILD_TYPE}"
     env_file: .env
     environment:
       - DISABLE_TESTS=$DISABLE_TESTS
@@ -9,8 +9,10 @@ services:
     restart: always
     ports:
       - "5000:5000"
+      - "6000:6000"
     expose:
       - "5000"
+      - "6000"
     build:
       context: ./
     volumes:

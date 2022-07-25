@@ -1,4 +1,6 @@
 # Install Operating system and dependencies
+ARG PORT
+ARG BUILD_TYPE
 FROM ubuntu:20.04
 # To prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
@@ -28,7 +30,8 @@ WORKDIR /app/
 RUN flutter build web --web-renderer auto
 
 # Record the exposed port
-EXPOSE 5000
+EXPOSE $PORT
+RUN echo "Launching ${BUILD_TYPE} App on Port: ${PORT}"
 
 # make server startup script executable and start the web server
 RUN ["chmod", "+x", "/app/server/server.sh"]
