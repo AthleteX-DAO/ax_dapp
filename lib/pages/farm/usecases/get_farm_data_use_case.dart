@@ -24,34 +24,30 @@ class GetFarmDataUseCase {
   }
 
   List<FarmModel> _mapQueryResultToFarmModel(dynamic response, bool isStaked) {
-    final farms = <FarmModel>[];
-    response.forEach((dynamic pool) {
+    return response.map((dynamic pool) {
       final dynamic farm = isStaked ? pool['pool'] : pool;
       final stakingTokenAlias = farm['stakingToken']['alias'];
       final name = stakingTokenAlias!.length as int > 0
           ? '$stakingTokenAlias'
           : "${farm['stakingToken']['symbol']} APT";
-      farms.add(
-        FarmModel(
-          name,
-          farm['id'].toString(),
-          farm['stakingToken']['alias'].toString(),
-          farm['stakingToken']['symbol'].toString(),
-          farm['rewardToken']['symbol'].toString(),
-          farm['stakingToken']['id'].toString(),
-          farm['rewardToken']['id'].toString(),
-          farm['stakingModule'].toString(),
-          farm['apr'].toString(),
-          farm['tvl'].toString(),
-          farm['staked'].toString(),
-          farm['rewards'].toString(),
-          farm['stakingToken']['price'].toString(),
-          farm['rewardToken']['price'].toString(),
-          int.parse(farm['stakingToken']['decimals'] as String),
-          int.parse(farm['rewardToken']['decimals'] as String),
-        ),
+      return FarmModel(
+        name,
+        farm['id'].toString(),
+        farm['stakingToken']['alias'].toString(),
+        farm['stakingToken']['symbol'].toString(),
+        farm['rewardToken']['symbol'].toString(),
+        farm['stakingToken']['id'].toString(),
+        farm['rewardToken']['id'].toString(),
+        farm['stakingModule'].toString(),
+        farm['apr'].toString(),
+        farm['tvl'].toString(),
+        farm['staked'].toString(),
+        farm['rewards'].toString(),
+        farm['stakingToken']['price'].toString(),
+        farm['rewardToken']['price'].toString(),
+        int.parse(farm['stakingToken']['decimals'] as String),
+        int.parse(farm['rewardToken']['decimals'] as String),
       );
-    });
-    return farms;
+    }) as List<FarmModel>;
   }
 }
