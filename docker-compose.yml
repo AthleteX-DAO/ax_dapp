@@ -6,11 +6,13 @@ services:
     environment:
       - DISABLE_TESTS=$DISABLE_TESTS
       - FIREBASE_API_KEY=$FIREBASE_API_KEY
+      - PORT=$PORT
+      - BUILD_TYPE=$BUILD_TYPE
     restart: always
     ports:
-      - ${PORT}:${PORT}
+      - "${PORT}:${PORT}"
     expose:
-      - ${PORT}
+      - "${PORT}"
     build:
       context: ./
     volumes:
