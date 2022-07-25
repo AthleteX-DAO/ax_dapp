@@ -132,7 +132,12 @@ class TokenList {
   ];
 
   static String mapTickerToName(String ticker) {
-    return tokenList.firstWhere((token) => token.ticker == ticker).name;
+    try {
+      final name = tokenList.firstWhere((token) => token.ticker == ticker).name;
+      return name;
+    } catch (e) {
+      return '';
+    }
   }
 }
 

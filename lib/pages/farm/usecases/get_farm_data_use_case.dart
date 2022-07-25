@@ -32,11 +32,6 @@ class GetFarmDataUseCase {
   ) {
     return response.map((pool) {
       final dynamic farm = isStaked ? pool['pool'] : pool;
-      final stakingTokenAlias = farm['stakingToken']['alias'];
-      final stakingTokenSymbol = farm['stakingToken']['symbol'];
-      farm['stakingToken']['symbol'] = stakingTokenAlias!.length as int > 0
-          ? stakingTokenAlias
-          : stakingTokenSymbol;
       return FarmModel.fromJson(farm as Map<String, dynamic>);
     }).toList();
   }
