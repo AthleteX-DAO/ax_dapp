@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Deploy Release EC2
+name: Deploy Staging EC2
 
 on:
   push:
@@ -20,9 +20,9 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AWS_HOST_DNS }}
+          port: ${{ secrets.AWS_EC2_SSH_PORT }}
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          port: ${{ secrets.AWS_EC2_SSH_PORT }}
           script: 'cd /home/ax_dapp_staging &&
           git fetch &&
           git reset --hard origin/develop &&
