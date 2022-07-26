@@ -1,10 +1,7 @@
 //dynamic
 import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:ax_dapp/wallet/widgets/dialogs/connect_metamask_dialog.dart';
-import 'package:ax_dapp/wallet/widgets/dialogs/wrong_network_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,29 +14,12 @@ class WalletDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final controller = Get.find<Controller>();
-    final walletController = Get.find<WalletController>();
     return BlocListener<WalletBloc, WalletState>(
       listener: (_, state) {
-        final failure = state.failure;
-        if (failure is WalletUnavailableFailure) {
+        if (state.isWalletUnavailable ||
+            state.isWalletUnsupported ||
+            state.isWalletConnected) {
           Navigator.pop(context);
-          showDialog<void>(
-            context: context,
-            builder: (_) => const ConnectMetaMaskDialog(),
-          );
-        }
-        if (state.status == WalletStatus.unsupported) {
-          Navigator.pop(context);
-          showDialog<void>(
-            context: context,
-            builder: (_) => const WrongNetworkDialog(),
-          );
-        }
-        if (state.isWalletConnected) {
-          Navigator.pop(context);
-          walletController
-            ..getTokenMetrics()
-            ..getYourAxBalance();
         }
       },
       child: Dialog(
