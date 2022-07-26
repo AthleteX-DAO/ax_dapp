@@ -58,7 +58,6 @@ class EthereumWalletApiClient implements WalletApiClient {
   Future<void> addChain(EthereumChain chain) async {
     _checkWalletAvailability();
     try {
-      print('adding ethereumChain: $chain');
       await _ethereum!.walletAddChain(
         chainId: chain.chainId,
         chainName: chain.chainName,
@@ -87,7 +86,6 @@ class EthereumWalletApiClient implements WalletApiClient {
   Future<void> switchChain(EthereumChain chain) async {
     _checkWalletAvailability();
     try {
-      print('switching to ethereumChain: $chain');
       await _ethereum!.walletSwitchChain(chain.chainId);
       await _syncChainId();
     } on EthereumUnrecognizedChainException catch (exception, stackTrace) {
@@ -108,7 +106,6 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// explicitly sync up the chain.
   Future<void> _syncChainId() async {
     final chainId = await _ethereum!.getChainId();
-    print('synced chainId=$chainId');
     _chainController.add(EthereumChain.fromChainId(chainId));
   }
 
@@ -137,7 +134,6 @@ class EthereumWalletApiClient implements WalletApiClient {
   @override
   void addChainChangedListener() => _ethereum?.onChainChanged(_onChainChanged);
   Future<void> _onChainChanged(int newChainId) async {
-    print('_onChainChanged: $newChainId');
     final newChain = EthereumChain.fromChainId(newChainId);
     _chainController.add(newChain);
   }
@@ -151,7 +147,6 @@ class EthereumWalletApiClient implements WalletApiClient {
   void removeChainChangedListener() {
     _ethereum?.removeAllListeners('chainChanged');
     _chainController.add(EthereumChain.none);
-    print('wallet disconnected');
   }
 
   void _checkWalletAvailability() {
