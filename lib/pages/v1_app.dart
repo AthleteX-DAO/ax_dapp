@@ -350,7 +350,10 @@ class _V1AppState extends State<V1App> {
               ],
             ),
           ),
-          WalletView(controller: controller),
+          WalletView(
+            controller: controller,
+            walletController: Get.find<WalletController>(),
+          ),
         ],
       ),
     );
@@ -377,7 +380,10 @@ class _V1AppState extends State<V1App> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              WalletView(controller: controller),
+              WalletView(
+                controller: controller,
+                walletController: Get.find<WalletController>(),
+              ),
               const DropdownMenuMobile(),
             ],
           ),
