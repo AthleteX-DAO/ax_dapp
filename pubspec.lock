@@ -337,6 +337,29 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.2"
+  firebase_analytics:
+    dependency: "direct main"
+    description:
+      name: firebase_analytics
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.1.11"
+  firebase_analytics_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_analytics_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.3.0"
+  firebase_analytics_web:
+    dependency: "direct overridden"
+    description:
+      path: "packages/firebase_analytics/firebase_analytics_web"
+      ref: "firebase_analytics_web-0.4.0+16-fix-for-web"
+      resolved-ref: "56e16a3076a3b74246071bb3cb05b5933fd522df"
+      url: "https://github.com/durduman/flutterfire.git"
+    source: git
+    version: "0.4.0+16"
   firebase_core:
     dependency: "direct main"
     description:
