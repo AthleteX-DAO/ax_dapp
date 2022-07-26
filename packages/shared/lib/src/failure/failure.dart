@@ -18,6 +18,11 @@ abstract class Failure implements Exception {
 
   /// Stores the original `StackTrace`.
   final StackTrace stackTrace;
+
+  /// When `true` it will result in user's wallet being disconnected.
+  ///
+  /// Defaults to `false`.
+  bool get needsReconnecting => false;
 }
 
 /// {@template no_failure}
