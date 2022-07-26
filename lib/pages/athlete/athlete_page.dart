@@ -1064,17 +1064,17 @@ class _AthletePageState extends State<AthletePage> {
                   ),
                 ),
                 // APT Icon
-                Container(
-                  width: 30,
+                const SizedBox(
+                  width: 10,
                 ),
                 // Player Name
                 Text(
                   athlete.name,
-                  style: textStyle(Colors.white, 28, false, false),
+                  style: textStyle(Colors.white, 26, false, false),
                 ),
                 // '|' Symbol
                 Container(
-                  width: 50,
+                  width: 20,
                   alignment: Alignment.center,
                   child: Text(
                     '|',
@@ -1190,30 +1190,34 @@ class _AthletePageState extends State<AthletePage> {
                     ),
                   ],
                 ),
-                const SizedBox(width: 30),
-                SizedBox(
-                  width: 100,
-                  child: Container(
-                    height: 20,
-                    decoration: boxDecoration(
-                      Colors.amber[500]!.withOpacity(0.20),
-                      500,
-                      1,
-                      Colors.transparent,
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        webWallet.addTokenToWallet(
-                          _getCurrentTokenAddress(),
-                          _getTokenImage(),
-                        );
-                      },
-                      child: Text(
-                        '+ Add to Wallet',
-                        style: textStyle(Colors.amber[500]!, 10, false, false),
+                Wrap(
+                  alignment: WrapAlignment.spaceEvenly,
+                  spacing: 4,
+                  runSpacing: 64,
+                  children: [
+                    Container(
+                      height: 20,
+                      decoration: boxDecoration(
+                        Colors.amber[500]!.withOpacity(0.20),
+                        500,
+                        1,
+                        Colors.transparent,
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          webWallet.addTokenToWallet(
+                            _getCurrentTokenAddress(),
+                            _getTokenImage(),
+                          );
+                        },
+                        child: Text(
+                          '+ Add to Wallet',
+                          style:
+                              textStyle(Colors.amber[500]!, 10, false, false),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
