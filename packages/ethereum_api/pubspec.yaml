@@ -9,8 +9,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web3: ^2.1.9
+  shared:
+    path: ../shared
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mocktail: ^0.3.0
   very_good_analysis: ^3.0.1
+
+dependency_overrides:
+  async: 2.8.2
