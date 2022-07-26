@@ -2,318 +2,23 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 import 'dart:developer';
 
-import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> testFunction() async {
   log('Test function invoked');
   return;
-}
-
-Dialog connectMetamaskDialog(BuildContext context) {
-  final _height = MediaQuery.of(context).size.height;
-  final _width = MediaQuery.of(context).size.width;
-  var wid = 450.0;
-  var hgt = 200.0;
-  const edge = 75.0;
-  if (_width < 405) wid = _width;
-  if (_height < 505) hgt = _height * 0.45;
-  final wid_child = wid - edge;
-  return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Container(
-      height: hgt,
-      width: wid,
-      padding: const EdgeInsets.all(20),
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Metamask wallet',
-                style: textStyle(Colors.white, 18, true),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.close,
-                  size: 30,
-                  color: Colors.white,
-                ),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Text(
-                "Couldn't find MetaMask extension",
-                style: TextStyle(color: Colors.grey[400]),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 40),
-                width: wid_child,
-                height: 45,
-                decoration: boxDecoration(
-                  Colors.transparent,
-                  100,
-                  2,
-                  Colors.purple[900]!,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    launchUrl(Uri.parse('https://metamask.io/download/'));
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Install MetaMask extension',
-                    style: textStyle(Colors.white, 16, false),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-//dynamic
-Dialog wrongNetworkDialog(BuildContext context) {
-  final _height = MediaQuery.of(context).size.height;
-  final _width = MediaQuery.of(context).size.width;
-  var wid = 450.0;
-  var hgt = 200.0;
-  const edge = 75.0;
-  if (_width < 405) wid = _width;
-  if (_height < 505) hgt = _height * 0.45;
-  final wid_child = wid - edge;
-  return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Container(
-      height: hgt,
-      width: wid,
-      padding: const EdgeInsets.all(20),
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Wrong Network',
-                style: textStyle(Colors.white, 18, true),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.close,
-                  size: 30,
-                  color: Colors.white,
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 40),
-                width: wid_child,
-                height: 45,
-                decoration: boxDecoration(
-                  Colors.transparent,
-                  100,
-                  2,
-                  Colors.purple[900]!,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    // controller.switchNetwork();
-                  },
-                  child: Text(
-                    'Switch to Matic Network',
-                    style: textStyle(Colors.white, 16, false),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-//dynamic
-Dialog walletDialog(BuildContext context) {
-  final controller = Get.find<Controller>();
-  final walletController = Get.find<WalletController>();
-
-  return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: LayoutBuilder(
-      builder: (context, constraints) => Container(
-        constraints: const BoxConstraints(minHeight: 235, maxHeight: 250),
-        height: constraints.maxHeight * 0.26,
-        width: constraints.maxWidth * 0.27,
-        padding: const EdgeInsets.all(20),
-        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Choose Wallet',
-                  style: textStyle(Colors.white, 18, true),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    Icons.close,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30),
-                  width: constraints.maxWidth < 450
-                      ? constraints.maxWidth * 0.62
-                      : constraints.maxWidth * 0.22,
-                  height: 45,
-                  decoration: boxDecoration(
-                    Colors.transparent,
-                    100,
-                    2,
-                    Colors.grey[400]!,
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      controller.connect().then((response) {
-                        if (response == -1) {
-                          // No MetaMask
-                          Navigator.pop(context);
-                          showDialog<void>(
-                            context: context,
-                            builder: connectMetamaskDialog,
-                          );
-                        } else if (response == 0) {
-                          // Wrong network
-                          Navigator.pop(context);
-                          showDialog<void>(
-                            context: context,
-                            builder: wrongNetworkDialog,
-                          );
-                        } else {
-                          Navigator.pop(context);
-                          walletController
-                            ..getTokenMetrics()
-                            ..getYourAxBalance();
-                        }
-                      });
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: 30,
-                          width: 30,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/fox.png'),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'Metamask',
-                          style: textStyle(Colors.white, 16, false),
-                        ),
-                        //empty container
-                        Container(
-                          margin: const EdgeInsets.only(left: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Visibility(
-              visible: !kIsWeb,
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 4),
-                width: constraints.maxWidth < 450
-                    ? constraints.maxWidth * 0.62
-                    : constraints.maxWidth * 0.22,
-                height: 45,
-                decoration: boxDecoration(
-                  Colors.transparent,
-                  100,
-                  2,
-                  Colors.grey[400]!,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (context) => const MobileLoginPage(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Add/Create wallet',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
 }
 
 // dynamic
@@ -1485,6 +1190,9 @@ Dialog accountDialog(BuildContext context) {
                                 ),
                                 child: TextButton(
                                   onPressed: () {
+                                    context
+                                        .read<WalletBloc>()
+                                        .add(const DisconnectWalletRequested());
                                     controller.disconnect();
                                     Navigator.pop(context);
                                   },

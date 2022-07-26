@@ -24,8 +24,8 @@ import 'package:ax_dapp/service/controller/swap/matic.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -350,16 +350,7 @@ class _V1AppState extends State<V1App> {
               ],
             ),
           ),
-          if (!controller.walletConnected ||
-              (controller.walletConnected &&
-                  !Controller.supportedChains
-                      .containsKey(controller.networkID.value))) ...[
-            // top Connect Wallet Button
-            buildConnectWalletButton(),
-          ] else ...[
-            //top right corner wallet information
-            buildAccountBox()
-          ]
+          WalletView(controller: controller),
         ],
       ),
     );
@@ -374,7 +365,7 @@ class _V1AppState extends State<V1App> {
       width: MediaQuery.of(context).size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           IconButton(
             icon: Image.asset('assets/images/x.png'),
             iconSize: 40,
@@ -385,17 +376,8 @@ class _V1AppState extends State<V1App> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              if (!controller.walletConnected ||
-                  (controller.walletConnected &&
-                      !Controller.supportedChains
-                          .containsKey(controller.networkID.value))) ...[
-                // top Connect Wallet Button
-                buildConnectWalletButton(),
-              ] else ...[
-                //top right corner wallet information
-                buildAccountBox()
-              ],
+            children: [
+              WalletView(controller: controller),
               const DropdownMenuMobile(),
             ],
           ),
@@ -534,127 +516,6 @@ class _V1AppState extends State<V1App> {
         // build mobile UI
         animateToPage(index);
       },
-    );
-  }
-
-  Widget buildConnectWalletButton() {
-    final _width = MediaQuery.of(context).size.width;
-    var width = 180.0;
-    var text = 'Connect Wallet';
-    if (_width < 565) {
-      width = 110;
-      text = 'Connect';
-    }
-
-    return Container(
-      height: 37.5,
-      width: width,
-      decoration: boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
-      child: TextButton(
-        onPressed: () => showDialog<void>(
-          context: context,
-          builder: walletDialog,
-        ).then((value) => setState(() {})),
-        child: Text(
-          text,
-          style: textStyle(Colors.amber[400]!, 16, true, false),
-        ),
-      ),
-    );
-  }
-
-  Widget buildAccountBox() {
-    final _width = MediaQuery.of(context).size.width;
-    var width = 350.0;
-    var matic = true;
-
-    if (_width < 835) {
-      matic = false;
-      width = 200;
-    }
-    if (_width < 665) {
-      width = 100;
-    }
-
-    final accNum = controller.publicAddress.value.toString();
-    var retStr = accNum;
-    if (accNum.length > 15) {
-      retStr =
-          '''${accNum.substring(0, 7)}...${accNum.substring(accNum.length - 5, accNum.length)}''';
-    }
-
-    return Container(
-      height: isWeb ? 30 : 40,
-      width: width,
-      decoration: boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          if (matic)
-            TextButton(
-              onPressed: () {
-                controller.getCurrentGas();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  const Icon(
-                    Icons.local_gas_station,
-                    color: Colors.grey,
-                  ),
-                  Obx(
-                    () => Text(
-                      '${controller.gasString} gwei',
-                      style: textStyle(Colors.grey[400]!, 11, false, false),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          TextButton(
-            onPressed: () => showDialog<void>(
-              context: context,
-              builder: yourAXDialog,
-            ).then((value) => setState(() {})),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const DecoratedBox(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('../assets/images/X_white.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                Text(
-                  axText,
-                  style: textStyle(Colors.grey[400]!, 11, false, false),
-                ),
-              ],
-            ),
-          ),
-          TextButton(
-            onPressed: () => showDialog<void>(
-              context: context,
-              builder: accountDialog,
-            ).then((value) => setState(() {})),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Icon(
-                  Icons.account_balance_wallet,
-                  color: Colors.grey,
-                ),
-                Text(
-                  retStr,
-                  style: textStyle(Colors.grey[400]!, 11, false, false),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 
