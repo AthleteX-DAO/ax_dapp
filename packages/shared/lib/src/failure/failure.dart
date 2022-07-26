@@ -10,14 +10,14 @@ abstract class Failure implements Exception {
     this.stackTrace,
   );
 
-  /// {@macro no_failure}
-  static const none = NoFailure();
-
   /// Stores the original exception.
   final Object exception;
 
   /// Stores the original `StackTrace`.
   final StackTrace stackTrace;
+
+  /// {@macro no_failure}
+  static const none = NoFailure();
 
   /// When `true` it will result in user's wallet being disconnected.
   ///
