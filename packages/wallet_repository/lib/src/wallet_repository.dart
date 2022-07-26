@@ -12,16 +12,16 @@ class WalletRepository {
   WalletRepository({
     WalletApiClient? walletApiClient,
     CacheClient? cache,
-    required EthereumChain seedChain,
+    required EthereumChain defaultChain,
   })  : _walletApiClient = walletApiClient ?? EthereumWalletApiClient(),
         _cache = cache ?? CacheClient(),
-        _seedChain = seedChain;
+        _defaultChain = defaultChain;
 
   final WalletApiClient _walletApiClient;
   final CacheClient _cache;
 
   /// The initial `EthereumChain` that the wallet will be switched to.
-  final EthereumChain _seedChain;
+  final EthereumChain _defaultChain;
 
   /// [Credentials] cache key.
   /// Should only be used for testing purposes.
@@ -38,7 +38,7 @@ class WalletRepository {
   /// Allows the user to connect to a `MetaMask` wallet.
   Future<void> connectWallet() async {
     _walletApiClient.addChainChangedListener();
-    await switchChain(_seedChain);
+    await switchChain(_defaultChain);
     await _getWalletCredentials();
   }
 

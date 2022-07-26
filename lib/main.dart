@@ -42,7 +42,7 @@ void main() async {
           providers: [
             RepositoryProvider(
               create: (_) => WalletRepository(
-                seedChain: EthereumChain.polygonMainnet,
+                defaultChain: EthereumChain.polygonMainnet,
               ),
             ),
             RepositoryProvider(create: (context) => _subGraphRepo),

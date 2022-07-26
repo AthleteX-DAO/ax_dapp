@@ -101,7 +101,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
-  /// When the `seedChain` is the same with the last known chain on
+  /// When the `defaultChain` is the same with the last known chain on
   /// `MetaMask`, [Ethereum.onChainChanged] doesn't get triggered, so we
   /// explicitly sync up the chain.
   Future<void> _syncChainId() async {

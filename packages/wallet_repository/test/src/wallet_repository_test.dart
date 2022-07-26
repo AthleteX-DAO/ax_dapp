@@ -25,7 +25,7 @@ void main() {
       subject = WalletRepository(
         walletApiClient: walletApiClient,
         cache: cache,
-        seedChain: EthereumChain.polygonMainnet,
+        defaultChain: EthereumChain.polygonMainnet,
       );
     });
 
