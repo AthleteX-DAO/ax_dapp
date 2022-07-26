@@ -1,10 +1,28 @@
-import 'package:wallet_repository/src/models/ethereum_currency.dart';
+import 'package:ethereum_api/src/wallet/models/ethereum_currency.dart';
 
 // TODO(Pearlson): confirm info
 /// {@template ethereum_chain}
 /// Represents an `Ethereum` blockchain network.
 /// {@endtemplate}
 enum EthereumChain {
+  /// Represents no network.
+  none(
+    chainId: 0,
+    chainName: '__none__',
+    currency: EthereumCurrency.none,
+    rpcUrls: [],
+    blockExplorerUrls: [],
+  ),
+
+  /// Represents an unsupported network.
+  unsupported(
+    chainId: -1,
+    chainName: '__unsupported__',
+    currency: EthereumCurrency.none,
+    rpcUrls: [],
+    blockExplorerUrls: [],
+  ),
+
   /// Polygon main network.
   polygonMainnet(
     chainId: 137,
@@ -50,6 +68,15 @@ enum EthereumChain {
     this.blockExplorerUrls,
   });
 
+  /// Factory constructor that allows creating an `EthereumChain` from a given
+  /// [chainId]. If the [chainId] is not supported then it will return an
+  /// [EthereumChain.unsupported].
+  factory EthereumChain.fromChainId(int chainId) =>
+      EthereumChain.values.firstWhere(
+        (chain) => chain.chainId == chainId,
+        orElse: () => EthereumChain.unsupported,
+      );
+
   /// Uniquely identifies an `Ethereum` chain.
   final int chainId;
 
@@ -64,4 +91,12 @@ enum EthereumChain {
 
   /// List of block explorer urls used by this [chainId].
   final List<String>? blockExplorerUrls;
+
+  /// Returns whether this [EthereumChain] is supported.
+  bool get isSupported =>
+      this != EthereumChain.none && this != EthereumChain.unsupported;
+
+  /// Returns a list of supported [EthereumChain]s.
+  static List<EthereumChain> get supportedValues =>
+      values.where((chain) => chain.isSupported).toList();
 }

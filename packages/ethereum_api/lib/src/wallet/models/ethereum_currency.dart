@@ -5,6 +5,9 @@ import 'package:flutter_web3/ethereum.dart';
 /// Holds data about an `Ethereum` currency.
 /// {@endtemplate}
 enum EthereumCurrency {
+  /// Represents no currency.
+  none(currencyName: '', symbol: ''),
+
   /// Currency used with Polygon.
   matic(currencyName: 'MATIC Token', symbol: 'MATIC'),
 
