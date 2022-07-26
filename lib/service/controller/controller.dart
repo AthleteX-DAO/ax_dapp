@@ -20,11 +20,8 @@ class Controller extends GetxController {
   }
 
   /// VARIABLES
-  String seedHex = '';
   late Credentials credentials;
-  String mnemonic = '';
   RxInt networkID = 0.obs;
-  bool activeChain = false;
   static String latestTx = '';
   bool walletConnected = false;
   Rx<EtherAmount> gas = EtherAmount.zero().obs;
@@ -32,7 +29,6 @@ class Controller extends GetxController {
   static const mainnetChainId = 137;
   static const testnetChainId = 80001;
   static const mainnetSXChainId = 416;
-  int activeChainId = testnetChainId;
   static const supportedChains = {
     137: 'https://polygon-rpc.com',
     80001: 'https://matic-mumbai.chainstacklabs.com'
@@ -120,8 +116,6 @@ class Controller extends GetxController {
   Future<void> disconnect() async {
     walletConnected = false;
     await client.value.dispose();
-
-    // client.value.getChainId();
     update();
   }
 
