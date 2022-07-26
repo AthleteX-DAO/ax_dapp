@@ -129,8 +129,8 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   /// Starts reacting to [Ethereum.onChainChanged].
   ///
-  /// It will result in updates [ethereumChainChanges] stream whenever the user
-  /// changes the chain on `MetaMask`.
+  /// It will result in updates to [ethereumChainChanges] stream whenever the
+  /// user changes the chain on `MetaMask`.
   @override
   void addChainChangedListener() => _ethereum?.onChainChanged(_onChainChanged);
   Future<void> _onChainChanged(int newChainId) async {
