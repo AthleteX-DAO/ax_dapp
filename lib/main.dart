@@ -20,6 +20,7 @@ import 'package:coingecko_api/coingecko_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 void main() async {
   final _dio = Dio();
@@ -32,12 +33,18 @@ void main() async {
   final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
   final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
   log('GraphQL Client initialized}');
+
   unawaited(
     bootstrap(
       () => GraphQLProvider(
         client: _gQLClient,
         child: MultiRepositoryProvider(
           providers: [
+            RepositoryProvider(
+              create: (_) => WalletRepository(
+                seedChain: EthereumChain.polygonMainnet,
+              ),
+            ),
             RepositoryProvider(create: (context) => _subGraphRepo),
             RepositoryProvider(
               create: (context) => MLBRepo(_mlbApi),
