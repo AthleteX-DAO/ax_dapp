@@ -133,7 +133,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// user changes the chain on `MetaMask`.
   @override
   void addChainChangedListener() => _ethereum?.onChainChanged(_onChainChanged);
-  Future<void> _onChainChanged(int newChainId) async {
+  void _onChainChanged(int newChainId) {
     final newChain = EthereumChain.fromChainId(newChainId);
     _chainController.add(newChain);
   }
