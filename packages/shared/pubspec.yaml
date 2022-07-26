@@ -19,6 +19,7 @@ dependencies:
   gql: '>=0.12.3 <1.0.0'
   http: ^0.13.4
   json_annotation: ^4.6.0
+  meta: 1.7.0
   rxdart: ^0.27.5
   web3_browser: ^0.0.1
   web3dart: ^2.4.1

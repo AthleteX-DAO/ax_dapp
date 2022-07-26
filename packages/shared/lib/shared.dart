@@ -11,6 +11,7 @@ export 'package:erc20/erc20.dart';
 export 'package:fpdart/fpdart.dart';
 export 'package:gql/language.dart';
 export 'package:json_annotation/json_annotation.dart';
+export 'package:meta/meta.dart';
 export 'package:rxdart/rxdart.dart';
 export 'package:web3dart/web3dart.dart';
 export 'package:web_socket_channel/web_socket_channel.dart';
