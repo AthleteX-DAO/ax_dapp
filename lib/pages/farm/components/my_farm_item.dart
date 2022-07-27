@@ -142,8 +142,10 @@ Widget myFarmItem(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total AX available (Staked + Earned)',
-                  style: customTextStyle),
+              Text(
+                'Total AX available (Staked + Earned)',
+                style: customTextStyle,
+              ),
               Obx(
                 () => Text(
                   '${parsedTotal.toStringAsFixed(2)} $rewardSymbol',
