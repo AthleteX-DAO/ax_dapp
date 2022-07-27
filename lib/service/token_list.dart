@@ -6,6 +6,7 @@ import 'package:ax_dapp/service/controller/swap/usdc.dart';
 import 'package:ax_dapp/service/controller/swap/weth.dart';
 import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/util/supported_sports.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class TokenList {
@@ -132,12 +133,10 @@ class TokenList {
   ];
 
   static String mapTickerToName(String ticker) {
-    try {
-      final name = tokenList.firstWhere((token) => token.ticker == ticker).name;
-      return name;
-    } catch (e) {
-      return '';
-    }
+    final name =
+        tokenList.firstWhereOrNull((token) => token.ticker == ticker)?.name ??
+            '';
+    return name;
   }
 }
 

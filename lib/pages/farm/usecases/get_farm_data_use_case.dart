@@ -7,23 +7,31 @@ class GetFarmDataUseCase {
   final GysrApi gysrApi = GysrApi();
 
   Future<List<FarmModel>> fetchAllFarms(String owner) async {
-    final response = await gysrApi.fetchAllFarms(owner);
-    if (response.hasException) throw response.exception.toString();
-    return _mapQueryResultToFarmModel(
-      response.data!['pools'] as List<dynamic>,
-      false,
-    );
+    try {
+      final response = await gysrApi.fetchAllFarms(owner);
+      if (response.hasException) throw response.exception.toString();
+      return _mapQueryResultToFarmModel(
+        response.data!['pools'] as List<dynamic>,
+        false,
+      );
+    } catch (e) {
+      return List.empty();
+    }
   }
 
   Future<List<FarmModel>> fetchStakedFarms(String account) async {
-    final response = await gysrApi.fetchStakedFarms(account);
-    if (response.hasException) {
-      throw response.exception.toString();
+    try {
+      final response = await gysrApi.fetchStakedFarms(account);
+      if (response.hasException) {
+        throw response.exception.toString();
+      }
+      return _mapQueryResultToFarmModel(
+        response.data!['user']!['positions'] as List<dynamic>,
+        true,
+      );
+    } catch (e) {
+      return List.empty();
     }
-    return _mapQueryResultToFarmModel(
-      response.data!['user']!['positions'] as List<dynamic>,
-      true,
-    );
   }
 
   List<FarmModel> _mapQueryResultToFarmModel(

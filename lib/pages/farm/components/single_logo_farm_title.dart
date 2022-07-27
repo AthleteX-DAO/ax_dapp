@@ -13,8 +13,7 @@ Widget singleLogoFarmTitle(
   double cardWidth,
 ) {
   //Dialog that appears when stake button is pressed
-  Dialog participatingDialog;
-  participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
+  final participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
 
   return SizedBox(
     width: cardWidth,
