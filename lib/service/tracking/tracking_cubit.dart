@@ -8,10 +8,10 @@ class _TrackingState {
 class TrackingCubit extends Cubit<_TrackingState> {
   TrackingCubit(this.trackingRepository) : super(const _TrackingState());
 
-  final TrackingRepository trackingRepository;  
+  final TrackingRepository trackingRepository;
 }
 
-extension LandingPageTracking on TrackingCubit { 
+extension LandingPageTracking on TrackingCubit {
   void onPressedStartTrading() {
     trackingRepository.track(LandingPageEvent.onPressedStartTrading());
   }
