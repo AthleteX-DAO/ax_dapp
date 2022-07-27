@@ -1,6 +1,8 @@
 import 'package:ax_dapp/pages/v1_app.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+
 class StartTradingButton extends StatelessWidget {
   const StartTradingButton({
     super.key,
@@ -24,7 +26,10 @@ class StartTradingButton extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              navigateToV1App(context);
+              FirebaseAnalytics.instance.logEvent(
+                name: 'start_trading',
+              );
+              navigateToV1App(context);      
             },
             child: Text(
               'Start Trading',
