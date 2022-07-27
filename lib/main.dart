@@ -21,9 +21,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import 'package:tracking_repository/tracking_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
 
 void main() async {
   final _dio = Dio();
@@ -35,11 +35,13 @@ void main() async {
   final _subGraphRepo = SubGraphRepo(_gQLClient.value);
   final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
   final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
-  // final _trackingRepository = 
+
+  /// TODO QQQ configure
+  final _trackingRepository = TrackingRepository();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+
   log('GraphQL Client initialized}');
   unawaited(
     bootstrap(
@@ -71,9 +73,9 @@ void main() async {
             RepositoryProvider(
               create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo),
             ),
-            // RepositoryProvider(
-            //   create: (context) => (_subGraphRepo),
-            // ),
+            RepositoryProvider(
+              create: (context) => _trackingRepository,
+            ),
           ],
           child: const App(),
         ),

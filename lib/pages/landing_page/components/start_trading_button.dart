@@ -1,7 +1,9 @@
 import 'package:ax_dapp/pages/v1_app.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StartTradingButton extends StatelessWidget {
   const StartTradingButton({
@@ -26,9 +28,7 @@ class StartTradingButton extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              FirebaseAnalytics.instance.logEvent(
-                name: 'start_trading',
-              );
+              context.read<TrackingCubit>().onPressedStartTrading();
               navigateToV1App(context);      
             },
             child: Text(

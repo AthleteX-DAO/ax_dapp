@@ -21,18 +21,14 @@ class TrackingRepository {
 
   /// Updates tracking services accordingly
   void track(TrackEvent event) {
+
+    // FirebaseAnalytics.instance.logEvent(
+    //   name: 'start_trading',
+    // );
+
     // firebase
     // GA
     // tracker?.track...
   }
 }
 
-/// Only for demo
-// class TrackingCubit extends Cubit<void> {
-//   //// Setup
-//   /// ...
-//   /// 
-// 
-//   /// Will notify analytics trackes of ...
-//   void trackBlueScreen(Map<String, dynamic> params) =>
-//       instanceOfTrackingRepository.track(SomeFeature.blueScreen(params..));
