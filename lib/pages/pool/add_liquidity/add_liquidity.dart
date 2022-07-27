@@ -28,7 +28,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
       TextEditingController();
   final TextEditingController _tokenAmountTwoController =
       TextEditingController();
-  final Debouncer _debouncer = Debouncer(milliseconds: 100);
+  final Debouncer _debouncer = Debouncer(milliseconds: 200);
 
   @override
   void dispose() {
