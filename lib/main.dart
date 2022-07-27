@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:ax_dapp/app/app.dart';
 import 'package:ax_dapp/bootstrap.dart';
+import 'package:ax_dapp/firebase_options.dart';
 import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -18,12 +19,11 @@ import 'package:ax_dapp/service/graphql/graphql_client_helper.dart';
 import 'package:ax_dapp/service/graphql/graphql_configuration.dart';
 import 'package:coingecko_api/coingecko_api.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
 import 'package:tracking_repository/tracking_repository.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 void main() async {
   final _dio = Dio();
@@ -36,10 +36,11 @@ void main() async {
   final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
   final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
 
-  /// TODO QQQ configure
-  final _trackingRepository = TrackingRepository();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final _trackingRepository = TrackingRepository(
+    firebase: FirebaseAnalytics.instance,
   );
 
   log('GraphQL Client initialized}');

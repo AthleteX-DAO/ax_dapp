@@ -58,6 +58,8 @@ dependencies:
   shared_preferences: ^2.0.15
   syncfusion_flutter_charts: ^20.2.38
   toggle_switch: ^2.0.1
+  tracking_repository:
+    path: packages/tracking_repository
   url_launcher: ^6.1.5
   url_launcher_web: ^2.0.12
   velocity_x: ^3.5.1

@@ -1,18 +1,16 @@
+import 'dart:developer' as dev;
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:tracking_repository/src/track_event.dart';
 
 /// Used to interface tracking services
 class TrackingRepository {
-  /// final Tracker? tracker;
-  /// Loads trackers
-  /// void configureWith(
-  ///   // firebase
-  ///   // GA
-  ///   // amplitude
-  ///   // mixpanel
-  ///   // ...
-  /// ) {dart analyze
-  ///    this.trakingService = trakingService
-  /// }
+  /// Default construcot
+  TrackingRepository({
+    required this.firebase,
+  });
+
+  /// Update to configure with relevant trackers
+  final FirebaseAnalytics firebase;
 
   ///
   /// Packages/trackers may have additional lifecycle requirements.
@@ -21,14 +19,10 @@ class TrackingRepository {
 
   /// Updates tracking services accordingly
   void track(TrackEvent event) {
-
-    // FirebaseAnalytics.instance.logEvent(
-    //   name: 'start_trading',
-    // );
-
+    firebase.logEvent(name: event.name);
+    dev.log(event.name);
     // firebase
     // GA
     // tracker?.track...
   }
 }
-
