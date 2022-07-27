@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/farm/dialogs/dual_stake_dialog.dart';
 import 'package:ax_dapp/pages/farm/dialogs/stake_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
@@ -14,13 +13,8 @@ Widget singleLogoFarmTitle(
   double cardWidth,
 ) {
   //Dialog that appears when stake button is pressed
-  Dialog participatingDialog;
-  if (farm.athlete == null) {
-    participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
-  } else {
-    participatingDialog =
-        dualStakeDialog(context, farm, farm.athlete!, cardWidth, isWeb);
-  }
+  final participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
+
   return SizedBox(
     width: cardWidth,
     child: Row(
@@ -39,8 +33,14 @@ Widget singleLogoFarmTitle(
         Container(width: 15),
         Expanded(
           child: Text(
-            farm.strName,
-            style: textStyle(Colors.white, 20, false, false),
+            farm.athlete == null
+                ? '${farm.strName} Farm'
+                : '${farm.athlete!} Farm',
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+              fontSize: 20,
+            ),
           ),
         ),
         Container(
