@@ -16,3 +16,31 @@ extension LandingPageTracking on TrackingCubit {
     trackingRepository.track(LandingPageEvent.onPressedStartTrading());
   }
 }
+
+extension AthleteBuyTracking on TrackingCubit {
+  void onPressedAthleteBuy() {
+    trackingRepository.track(AthletePageTrackingEvent.onPressedAthleteBuy());
+  }
+}
+
+extension AthleteSellTracking on TrackingCubit {
+  void onPressedAthleteSell() {
+    trackingRepository.track(AthletePageTrackingEvent.onPressedAthleteSell());
+  }
+}
+
+extension AthleteMintPairTracking on TrackingCubit {
+  void onPressedAthleteMintPair() {
+    trackingRepository.track(
+      AthletePageTrackingEvent.onPressedAthleteMintPair(),
+    );
+  }
+}
+
+extension AthleteRedeemPairTracking on TrackingCubit {
+  void onPressedAthleteRedeemPair() {
+    trackingRepository.track(
+      AthletePageTrackingEvent.onPressedAthleteRedeemPair(),
+    );
+  }
+}

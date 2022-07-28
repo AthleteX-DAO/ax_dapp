@@ -15,6 +15,7 @@ import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget.dart
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
 import 'package:ax_dapp/util/supported_sports.dart';
@@ -23,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:tracking_repository/tracking_repository.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -80,10 +82,19 @@ class _DesktopScoutState extends State<DesktopScout> {
           bloc.add(OnPageRefresh());
         }
         if (athletePage && curAthlete != null) {
-          return BlocProvider(
-            create: (context) => AthletePageBloc(
-              repo: RepositoryProvider.of<MLBRepo>(context),
-            ),
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => AthletePageBloc(
+                  repo: RepositoryProvider.of<MLBRepo>(context),
+                ),
+              ),
+              BlocProvider(
+                create: (BuildContext context) => TrackingCubit(
+                  context.read<TrackingRepository>(),
+                ),
+              )
+            ],
             child: AthletePage(
               athlete: curAthlete!,
               goToTradePage: widget.goToTradePage,

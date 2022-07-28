@@ -27,6 +27,7 @@ class AthletePage extends StatefulWidget {
     required this.athlete,
     required this.goToTradePage,
   });
+
   final AthleteScoutModel athlete;
   final void Function() goToTradePage;
 
