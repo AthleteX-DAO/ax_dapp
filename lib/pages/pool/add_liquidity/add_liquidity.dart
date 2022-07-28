@@ -6,6 +6,7 @@ import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/debouncer.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,11 +28,13 @@ class _AddLiquidityState extends State<AddLiquidity> {
       TextEditingController();
   final TextEditingController _tokenAmountTwoController =
       TextEditingController();
+  final Debouncer _debouncer = Debouncer(milliseconds: 200);
 
   @override
   void dispose() {
     _tokenAmountOneController.dispose();
     _tokenAmountTwoController.dispose();
+    _debouncer.dispose();
     super.dispose();
   }
 
@@ -209,20 +212,23 @@ class _AddLiquidityState extends State<AddLiquidity> {
           bool hasData,
         ) {
           final _tokenInput = tokenInput.isEmpty ? '0' : tokenInput;
-          if (hasData) {
-            if (tokenNumber == 1) {
-              bloc.add(Token0InputChanged(_tokenInput));
-              final tokenTwoAmount = double.parse(_tokenInput) / poolInfo.ratio;
-              _tokenAmountTwoController.text =
-                  tokenTwoAmount.toStringAsFixed(6);
-            }
-          } else {
-            if (tokenNumber == 1) {
-              bloc.add(Token0InputChanged(_tokenInput));
+          _debouncer.run(() {
+            if (hasData) {
+              if (tokenNumber == 1) {
+                bloc.add(Token0InputChanged(_tokenInput));
+                final tokenTwoAmount =
+                    double.parse(_tokenInput) / poolInfo.ratio;
+                _tokenAmountTwoController.text =
+                    tokenTwoAmount.toStringAsFixed(6);
+              }
             } else {
-              bloc.add(Token1InputChanged(_tokenInput));
+              if (tokenNumber == 1) {
+                bloc.add(Token0InputChanged(_tokenInput));
+              } else {
+                bloc.add(Token1InputChanged(_tokenInput));
+              }
             }
-          }
+          });
         }
 
         Widget createTokenButton(
