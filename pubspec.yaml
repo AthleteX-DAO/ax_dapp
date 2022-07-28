@@ -32,6 +32,8 @@ dependencies:
   dio: ^4.0.6
   equatable: ^2.0.3
   erc20: ^1.0.0
+  firebase_analytics: ^9.1.11
+  firebase_core: ^1.19.0
   fl_chart: ^0.55.0
   flutter:
     sdk: flutter
@@ -56,6 +58,8 @@ dependencies:
   shared_preferences: ^2.0.15
   syncfusion_flutter_charts: ^20.2.38
   toggle_switch: ^2.0.1
+  tracking_repository:
+    path: packages/tracking_repository
   url_launcher: ^6.1.5
   url_launcher_web: ^2.0.12
   velocity_x: ^3.5.1
@@ -64,7 +68,12 @@ dependencies:
   web_socket_channel: ^2.2.0
   webfeed: ^0.7.0
 
-dependency_overrides: null
+dependency_overrides:
+  firebase_analytics_web:
+    git: 
+      url: https://github.com/durduman/flutterfire.git
+      path: packages/firebase_analytics/firebase_analytics_web
+      ref: firebase_analytics_web-0.4.0+16-fix-for-web
 
 dev_dependencies:
   build_runner: ^2.2.0
