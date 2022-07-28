@@ -71,9 +71,7 @@ void main() async {
               create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo),
             ),
             RepositoryProvider(
-              create: (context) => TrackingRepository(
-                firebase: FirebaseAnalytics.instance,
-              ),
+              create: (context) => TrackingRepository(),
             ),
           ],
           child: const App(),

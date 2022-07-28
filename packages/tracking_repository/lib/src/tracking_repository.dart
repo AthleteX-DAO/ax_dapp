@@ -6,8 +6,8 @@ import 'package:tracking_repository/src/track_event.dart';
 class TrackingRepository {
   /// Default construcot
   TrackingRepository({
-    required FirebaseAnalytics firebase,
-  }) : _firebase = firebase;
+    FirebaseAnalytics? firebase,
+  }) : _firebase = firebase ?? FirebaseAnalytics.instance ;
 
   /// Update to configure with relevant trackers
   final FirebaseAnalytics _firebase;
@@ -19,7 +19,7 @@ class TrackingRepository {
 
   /// Updates tracking services accordingly
   void track(TrackEvent event) {
-    _firebase.logEvent(name: event.name);
+    _firebase.logEvent(name: event.name);    
     dev.log(event.name);
     // firebase
     // GA
