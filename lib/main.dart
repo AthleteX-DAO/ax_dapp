@@ -36,17 +36,13 @@ void main() async {
   final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
   final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  final _trackingRepository = TrackingRepository(
-    firebase: FirebaseAnalytics.instance,
-  );
-
   log('GraphQL Client initialized}');
   unawaited(
-    bootstrap(
-      () => GraphQLProvider(
+    bootstrap(() async {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      return GraphQLProvider(
         client: _gQLClient,
         child: MultiRepositoryProvider(
           providers: [
@@ -75,12 +71,14 @@ void main() async {
               create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo),
             ),
             RepositoryProvider(
-              create: (context) => _trackingRepository,
+              create: (context) => TrackingRepository(
+                firebase: FirebaseAnalytics.instance,
+              ),
             ),
           ],
           child: const App(),
         ),
-      ),
-    ),
+      );
+    }),
   );
 }

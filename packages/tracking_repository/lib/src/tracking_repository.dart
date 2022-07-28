@@ -6,11 +6,11 @@ import 'package:tracking_repository/src/track_event.dart';
 class TrackingRepository {
   /// Default construcot
   TrackingRepository({
-    required this.firebase,
-  });
+    required FirebaseAnalytics firebase,
+  }) : _firebase = firebase;
 
   /// Update to configure with relevant trackers
-  final FirebaseAnalytics firebase;
+  final FirebaseAnalytics _firebase;
 
   ///
   /// Packages/trackers may have additional lifecycle requirements.
@@ -19,7 +19,7 @@ class TrackingRepository {
 
   /// Updates tracking services accordingly
   void track(TrackEvent event) {
-    firebase.logEvent(name: event.name);
+    _firebase.logEvent(name: event.name);
     dev.log(event.name);
     // firebase
     // GA

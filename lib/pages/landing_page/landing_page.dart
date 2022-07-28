@@ -28,7 +28,7 @@ class _LandingPageState extends State<LandingPage> {
 
     return BlocProvider(
       create: (BuildContext context) => TrackingCubit(
-        RepositoryProvider.of<TrackingRepository>(context),
+        context.read<TrackingRepository>(),
       ),
       child: Container(
         width: _width,
