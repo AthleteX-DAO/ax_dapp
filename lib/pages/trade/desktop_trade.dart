@@ -660,6 +660,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     tokenFrom.ticker,
                     tokenTo.ticker,
                     double.parse(totalFee),
+                    walletController.controller.publicAddress.value.hex,
                   ),
                 ],
               ),

@@ -24,7 +24,7 @@ extension TradePageTracking on TrackingCubit {
     String fromUnits,
     String toUnits,
     double totalFee,
-    //String walletID,
+    String walletID,
   ) {
     trackingRepository.track(TradePageUserEvent.onSwapConfirmedTransaction());
   }

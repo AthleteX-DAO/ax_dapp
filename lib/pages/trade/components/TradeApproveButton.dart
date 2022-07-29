@@ -18,7 +18,8 @@ class TradeApproveButton extends StatefulWidget {
     this.toCurrency,
     this.fromUnits,
     this.toUnits,
-    this.totalFee, {
+    this.totalFee, 
+    this.walletAddress, {
     super.key,
   });
 
@@ -30,6 +31,7 @@ class TradeApproveButton extends StatefulWidget {
   final String fromUnits;
   final String toUnits;
   final double totalFee;
+  final String walletAddress;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -94,15 +96,16 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
         onPressed: () {
           // Testing to see how the popup will work when the state is changed
           if (isApproved) {
-            context.read<TrackingCubit>().onSwapConfirmedTransaction(
+            //Confirm button pressed
+            widget.confirmCallback().then((value) {
+              context.read<TrackingCubit>().onSwapConfirmedTransaction(
                   widget.fromCurrency,
                   widget.toCurrency,
                   widget.fromUnits,
                   widget.toUnits,
                   widget.totalFee,
+                  widget.walletAddress,
                 );
-            //Confirm button pressed
-            widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
