@@ -1,4 +1,3 @@
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_repository/tracking_repository.dart';
 
@@ -20,12 +19,12 @@ extension LandingPageTracking on TrackingCubit {
 
 extension TradePageTracking on TrackingCubit {
   void onSwapConfirmedTransaction(
-    Token fromCurrency,
-    Token toCurrency,
-    double fromInput,
-    double toInput,
+    String fromCurrency,
+    String toCurrency,
+    String fromUnits,
+    String toUnits,
     double totalFee,
-    String walletID,
+    //String walletID,
   ) {
     trackingRepository.track(TradePageUserEvent.onSwapConfirmedTransaction());
   }
