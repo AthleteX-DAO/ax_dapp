@@ -30,7 +30,6 @@ Container buyButton(
     decoration: boxDecoration(primaryOrangeColor, 100, 0, primaryOrangeColor),
     child: TextButton(
       onPressed: () {
-        context.read<TrackingCubit>().onPressedAthleteBuy();
         showDialog<void>(
           context: context,
           builder: (BuildContext context) => BlocProvider(

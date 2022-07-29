@@ -17,8 +17,28 @@ extension LandingPageTracking on TrackingCubit {
   }
 }
 
+extension ConnectWalletTracking on TrackingCubit {
+  void onPressedConnectWallet() {
+    trackingRepository.track(ScoutPageTrackingEvent.onPressedConnectWallet());
+  }
+}
+
+extension ScoutPageTracking on TrackingCubit {
+  void onPressedAthleteView(
+      String aptName,
+      ) {
+    trackingRepository.track(ScoutPageTrackingEvent.onPressedAthleteView());
+  }
+}
+
 extension AthleteBuyTracking on TrackingCubit {
-  void onPressedAthleteBuy() {
+  void onPressedAthleteBuy(
+      // String aptName,
+      // String aptId,
+      // String longOrShort,
+      // String aptUnits,
+      // String curre,
+  ) {
     trackingRepository.track(AthletePageTrackingEvent.onPressedAthleteBuy());
   }
 }

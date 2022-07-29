@@ -82,19 +82,10 @@ class _DesktopScoutState extends State<DesktopScout> {
           bloc.add(OnPageRefresh());
         }
         if (athletePage && curAthlete != null) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (context) => AthletePageBloc(
-                  repo: RepositoryProvider.of<MLBRepo>(context),
-                ),
+          return BlocProvider(
+              create: (context) => AthletePageBloc(
+                repo: RepositoryProvider.of<MLBRepo>(context),
               ),
-              BlocProvider(
-                create: (BuildContext context) => TrackingCubit(
-                  context.read<TrackingRepository>(),
-                ),
-              )
-            ],
             child: AthletePage(
               athlete: curAthlete!,
               goToTradePage: widget.goToTradePage,
@@ -1017,6 +1008,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         setState(() {
                           curAthlete = athlete;
                           athletePage = true;
+                          context.read<TrackingCubit>().onPressedAthleteView(athlete.name);
                         });
                       },
                       child: SizedBox(
