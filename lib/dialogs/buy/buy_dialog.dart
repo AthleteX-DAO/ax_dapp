@@ -1,5 +1,5 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
-import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/pages/athlete/components/athlete_approve_button.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/token_type.dart';
@@ -522,10 +522,13 @@ class _BuyDialogState extends State<BuyDialog> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ApproveButton(
+                      AthleteBuyApproveButton(
+
                         175,
                         40,
                         'Approve',
+                        widget.athleteName,
+                        widget.athleteId,
                         bloc.swapController.approve,
                         bloc.swapController.swap,
                         transactionConfirmed,

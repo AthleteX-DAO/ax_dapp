@@ -33,13 +33,11 @@ extension ScoutPageTracking on TrackingCubit {
 
 extension AthleteBuyTracking on TrackingCubit {
   void onPressedAthleteBuy(
-      // String aptName,
-      // String aptId,
-      // String longOrShort,
-      // String aptUnits,
-      // String curre,
+      String aptName,
+      int aptId,
   ) {
-    trackingRepository.track(AthletePageTrackingEvent.onPressedAthleteBuy());
+    trackingRepository.trackAthleteBuy(
+      AthletePageTrackingEvent.onPressedAthleteBuy(), aptName, aptId,);
   }
 }
 
