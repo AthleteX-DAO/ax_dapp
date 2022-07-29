@@ -63,7 +63,11 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
   }
 
   @override
-  Future<List<MLBAthleteStats>> getPlayersStatsHistory() async {
+  Future<List<MLBAthleteStats>> getPlayersStatsHistory(
+    List<int> ids,
+    String? from,
+    String? until,
+  ) async {
     final list = List<MLBAthleteStats>.empty();
     return list;
   }

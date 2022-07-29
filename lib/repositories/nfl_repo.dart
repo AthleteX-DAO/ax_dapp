@@ -58,7 +58,11 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
   }
 
   @override
-  Future<List<NFLAthleteStats>> getPlayersStatsHistory() async {
+  Future<List<NFLAthleteStats>> getPlayersStatsHistory(
+    List<int> ids,
+    String? from,
+    String? until,
+  ) async {
     final list = List<NFLAthleteStats>.empty();
     return list;
   }

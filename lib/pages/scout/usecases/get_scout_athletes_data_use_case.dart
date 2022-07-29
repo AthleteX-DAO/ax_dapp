@@ -14,6 +14,7 @@ import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/supported_sports.dart';
+import 'package:intl/intl.dart';
 
 class GetScoutAthletesDataUseCase {
   GetScoutAthletesDataUseCase({
@@ -50,8 +51,19 @@ class GetScoutAthletesDataUseCase {
     /// If specific sport is selected return athletes from that specific repo
     if (sportSelection != SupportedSport.all) {
       final repo = _repos[sportSelection]!;
-      final response = await repo.getSupportedPlayers();
-      return _mapAthleteToScoutModel(response, repo, axPrice);
+      // fetch supported players list
+      final players = await repo.getSupportedPlayers();
+
+      // make the ids list to fetch batch stats history of players
+      final ids = players.map((player) => player.id).toList();
+      final now = DateTime.now();
+      final startDate = DateTime(now.year, now.month, now.day - 1);
+      final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
+      final formattedEndDate = DateFormat('yyyy-MM-dd').format(now);
+      final history = await repo.getPlayersStatsHistory(
+          ids, formattedStartDate, formattedEndDate);
+      print(history);
+      return _mapAthleteToScoutModel(players, repo, axPrice);
     } else {
       /// if ALL sports is selected fetch for each sport and add athletes to a
       /// combined list
