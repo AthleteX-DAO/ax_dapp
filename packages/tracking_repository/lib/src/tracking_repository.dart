@@ -33,7 +33,7 @@ class TrackingRepository {
       String toCurrency,
       String fromUnits,
       String toUnits,
-      double totalFee,
+      String totalFee,
       String walletID,) {
     _firebase.logEvent(name: event.name,
       parameters: {

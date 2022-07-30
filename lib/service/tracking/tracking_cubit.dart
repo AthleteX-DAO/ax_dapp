@@ -23,7 +23,7 @@ extension TradePageTracking on TrackingCubit {
     String toCurrency,
     String fromUnits,
     String toUnits,
-    double totalFee,
+    String totalFee,
     String walletID,
   ) {
     trackingRepository.trackTradeApproval(

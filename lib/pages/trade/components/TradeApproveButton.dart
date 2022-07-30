@@ -30,7 +30,7 @@ class TradeApproveButton extends StatefulWidget {
   final String toCurrency;
   final String fromUnits;
   final String toUnits;
-  final double totalFee;
+  final String totalFee;
   final String walletAddress;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
