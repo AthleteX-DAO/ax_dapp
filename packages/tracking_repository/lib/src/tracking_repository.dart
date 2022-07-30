@@ -29,20 +29,46 @@ class TrackingRepository {
   /// Updates tracking services when the user has approved a swap
   void trackTradeApproval(
       TrackEvent event,
-      String fromCurrency,
-      String toCurrency,
       String fromUnits,
       String toUnits,
       String totalFee,
       String walletID,) {
     _firebase.logEvent(name: event.name,
       parameters: {
-        'from_currency': fromCurrency,
-        'to_currency': toCurrency,
         'from_units': fromUnits,
         'to_units': toUnits,
         'total_fee': totalFee,
         'wallet_id': walletID,
+      },
+    );    
+    dev.log(event.name);
+    // firebase
+    // GA
+    // tracker?.track...
+  }
+
+  /// Updates tracking services when the user has clicked the approve button
+  void trackTradeApproveClick(
+      TrackEvent event,
+      String fromCurrency,) {
+    _firebase.logEvent(name: event.name,
+      parameters: {
+        'from_currency': fromCurrency
+      },
+    );    
+    dev.log(event.name);
+    // firebase
+    // GA
+    // tracker?.track...
+  }
+  
+  /// Updates tracking services when the user has clicked the approve button
+  void trackTradeConfirmClick(
+      TrackEvent event,
+      String toCurrency,) {
+    _firebase.logEvent(name: event.name,
+      parameters: {
+        'to_currency': toCurrency
       },
     );    
     dev.log(event.name);

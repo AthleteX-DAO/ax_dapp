@@ -98,9 +98,10 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
           if (isApproved) {
             //Confirm button pressed
             widget.confirmCallback().then((value) {
+              context
+                  .read<TrackingCubit>()
+                  .onSwapConfirmClick(widget.toCurrency);
               context.read<TrackingCubit>().onSwapConfirmedTransaction(
-                  widget.fromCurrency,
-                  widget.toCurrency,
                   widget.fromUnits,
                   widget.toUnits,
                   widget.totalFee,
@@ -119,6 +120,9 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
             });
           } else {
             //Approve button was pressed
+            context
+                .read<TrackingCubit>()
+                .onSwapApproveClick(widget.fromCurrency);
             changeButton();
           }
         },
