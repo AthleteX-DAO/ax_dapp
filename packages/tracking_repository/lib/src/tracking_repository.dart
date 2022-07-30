@@ -25,4 +25,22 @@ class TrackingRepository {
     // GA
     // tracker?.track...
   }
+
+  /// Updates tracking services accordingly
+  void trackPoolCreation(TrackEvent event, String currencyOne,
+      String currencyTwo, String valueOne, String valueTwo, String lpTokens,) {
+    _firebase.logEvent(name: event.name,
+      parameters: {
+        'currency_one' : currencyOne,
+        'currency_two' : currencyTwo,
+        'value_one' : valueOne,
+        'value_two' : valueTwo,
+        'lp_tokens' : lpTokens,
+      },
+    );
+    dev.log(event.name);
+    // firebase
+    // GA
+    // tracker?.track...
+  }
 }

@@ -25,6 +25,7 @@ extension PoolPageTracking on TrackingCubit {
     String valueTwo,
     String lpTokens,
   ) {
-    trackingRepository.track(PoolPageUserEvent.onPoolCreate());
+    trackingRepository.trackPoolCreation(PoolPageUserEvent.onPoolCreate(),
+        currencyOne, currencyTwo, valueOne, valueTwo, lpTokens,);
   }
 }
