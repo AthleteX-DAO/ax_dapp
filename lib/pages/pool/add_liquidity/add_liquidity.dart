@@ -1,9 +1,10 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
-import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/pages/pool/add_liquidity/components/pool_approve_button.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/token.dart';
+import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/debouncer.dart';
@@ -614,13 +615,18 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   ),
                 ),
                 showYouReceived(poolInfo.recieveAmount),
-                ApproveButton(
+                PoolApproveButton(
                   _elementWdt * 0.95,
                   40,
                   'Approve',
                   bloc.poolController.approve,
                   bloc.poolController.addLiquidity,
                   transactionConfirmed,
+                  token0.name,
+                  token1.name,
+                  poolInfo.recieveAmount,
+                  _tokenAmountOneController.text,
+                  _tokenAmountTwoController.text,
                 )
               ],
             ),

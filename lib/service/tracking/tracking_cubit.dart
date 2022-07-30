@@ -16,3 +16,15 @@ extension LandingPageTracking on TrackingCubit {
     trackingRepository.track(LandingPageEvent.onPressedStartTrading());
   }
 }
+
+extension PoolPageTracking on TrackingCubit {
+  void onPoolCreated(
+    String currencyOne,
+    String currencyTwo,
+    String valueOne,
+    String valueTwo,
+    String lpTokens,
+  ) {
+    trackingRepository.track(PoolPageUserEvent.onPoolCreate());
+  }
+}
