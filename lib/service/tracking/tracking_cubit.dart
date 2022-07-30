@@ -27,7 +27,8 @@ extension ScoutPageTracking on TrackingCubit {
   void onPressedAthleteView(
       String aptName,
       ) {
-    trackingRepository.track(ScoutPageTrackingEvent.onPressedAthleteView());
+    trackingRepository.trackAthleteView(
+      ScoutPageTrackingEvent.onPressedAthleteView(), aptName,);
   }
 }
 

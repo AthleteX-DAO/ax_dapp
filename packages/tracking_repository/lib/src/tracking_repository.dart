@@ -25,12 +25,27 @@ class TrackingRepository {
     // GA
     // tracker?.track...
   }
+
+  /// Get athlete buy information for analytics
   void trackAthleteBuy(TrackEvent event, String athleteName, int id ) {
     _firebase.logEvent(name: event.name,
       parameters: {
         'athlete_name': athleteName,
         'athlete_id': id
         },
+    );
+    dev.log(event.name);
+    // firebase
+    // GA
+    // tracker?.track...
+  }
+
+  /// Get athlete buy information for analytics
+  void trackAthleteView(TrackEvent event, String athleteName) {
+    _firebase.logEvent(name: event.name,
+      parameters: {
+        'athlete_name': athleteName,
+      },
     );
     dev.log(event.name);
     // firebase
