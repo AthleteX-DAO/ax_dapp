@@ -25,4 +25,29 @@ class TrackingRepository {
     // GA
     // tracker?.track...
   }
+
+  /// Updates tracking services when the user has approved a swap
+  void trackTradeApproval(
+      TrackEvent event,
+      String fromCurrency,
+      String toCurrency,
+      String fromUnits,
+      String toUnits,
+      double totalFee,
+      String walletID,) {
+    _firebase.logEvent(name: event.name,
+      parameters: {
+        'from_currency': fromCurrency,
+        'to_currency': toCurrency,
+        'from_units': fromUnits,
+        'to_units': toUnits,
+        'total_fee': totalFee,
+        'wallet_id': walletID,
+      },
+    );    
+    dev.log(event.name);
+    // firebase
+    // GA
+    // tracker?.track...
+  }
 }

@@ -26,6 +26,13 @@ extension TradePageTracking on TrackingCubit {
     double totalFee,
     String walletID,
   ) {
-    trackingRepository.track(TradePageUserEvent.onSwapConfirmedTransaction());
+    trackingRepository.trackTradeApproval(
+        TradePageUserEvent.onSwapConfirmedTransaction(),
+        fromCurrency,
+        toCurrency,
+        fromUnits,
+        toUnits,
+        totalFee,
+        walletID,);
   }
 }
