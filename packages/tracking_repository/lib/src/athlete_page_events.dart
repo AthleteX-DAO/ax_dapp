@@ -15,7 +15,17 @@ class AthletePageTrackingEvent extends TrackEvent {
         super('buy_success');
 
   /// Informs tracking services that sell athlete button was pressed
-  AthletePageTrackingEvent.onPressedAthleteSell() : super('athlete_Sell');
+  AthletePageTrackingEvent.onPressedAthleteSell() :
+  super('athlete_sell');
+
+  /// Informs tracking services that sell athlete button was pressed
+  AthletePageTrackingEvent.onPressedConfirmSell() :
+  super('confirm_sell');
+
+  /// Informs tracking services that sell athlete was successful
+  AthletePageTrackingEvent.onAthleteSellSuccess() :
+  super('sell_success');
+
 
   /// Informs tracking services that mint pair button was pressed
   AthletePageTrackingEvent.onPressedAthleteMintPair() : super('mint_pair');

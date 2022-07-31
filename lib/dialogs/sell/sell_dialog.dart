@@ -1,5 +1,6 @@
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
-import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/pages/athlete/components/athlete_sell_button.dart';
+import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/token_type.dart';
@@ -10,12 +11,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SellDialog extends StatefulWidget {
   const SellDialog(
+    this.athlete,
     this.athleteName,
     this.aptPrice,
     this.athleteId, {
     super.key,
   });
-
+  final AthleteScoutModel athlete;
   final String athleteName;
   final double aptPrice;
   final int athleteId;
@@ -247,6 +249,7 @@ class _SellDialogState extends State<SellDialog> {
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<SellDialogBloc>();
+        final aptSellInfo = state.aptSellInfo;
         final price = state.aptSellInfo.axPrice.toStringAsFixed(6);
         final balance = state.balance;
         final minReceived =
@@ -258,6 +261,13 @@ class _SellDialogState extends State<SellDialog> {
         if (state.tokenAddress.isEmpty ||
             state.tokenAddress != _getCurrentTokenAddress()) {
           reloadSellDialog(bloc);
+        }
+        var aptLongOrShort = 'Long Apt';
+        if (_currentTokenTypeSelection == TokenType.long) {
+          aptLongOrShort = 'Long Aot';
+        }
+        if (_currentTokenTypeSelection == TokenType.short) {
+          aptLongOrShort = 'Short Apt';
         }
 
         return Dialog(
@@ -499,10 +509,16 @@ class _SellDialogState extends State<SellDialog> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ApproveButton(
+                      AthleteSellApproveButton(
                         175,
                         40,
                         'Approve',
+                        _aptAmountController.text,
+                        aptSellInfo,
+                        widget.athlete,
+                        widget.athleteName,
+                        widget.athleteId,
+                        aptLongOrShort,
                         bloc.swapController.approve,
                         bloc.swapController.swap,
                         transactionConfirmed,

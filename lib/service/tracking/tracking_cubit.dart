@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:tracking_repository/tracking_repository.dart';
-import 'package:web3dart/src/credentials/address.dart';
+import 'package:web3dart/web3dart.dart';
 
 class _TrackingState {
   const _TrackingState();
@@ -76,9 +76,45 @@ extension TrackAthleteBuySuccess on TrackingCubit {
   }
 }
 
-extension AthleteSellTracking on TrackingCubit {
-  void onPressedAthleteSell() {
-    trackingRepository.track(AthletePageTrackingEvent.onPressedAthleteSell());
+extension TrackAthleteSellApproveButtonClicked on TrackingCubit {
+  void onPressedAthleteSell(
+      String aptName,
+      ) {
+    trackingRepository.trackAthleteSellApproveButtonClicked(
+      AthletePageTrackingEvent.onPressedAthleteSell(),
+      aptName,);
+  }
+}
+
+extension TrackAthleteSellConfirmButtonClicked on TrackingCubit {
+  void onPressedConfirmSell(
+      int aptId,
+      ) {
+    trackingRepository.trackAthleteSellConfirmButtonClicked(
+      AthletePageTrackingEvent.onPressedConfirmSell(),
+      aptId,);
+  }
+}
+
+extension TrackAthleteSellSuccess on TrackingCubit {
+  void onAthleteSellSuccess(
+      String sellPosition,
+      int unit,
+      String currencySpent,
+      String currency,
+      double totalFee,
+      String sport,
+      Rx<EthereumAddress> publicAddress,) {
+    trackingRepository.trackAthleteSellSuccess(
+      AthletePageTrackingEvent.onAthleteSellSuccess(),
+      sellPosition,
+      unit,
+      currencySpent,
+      currency,
+      totalFee,
+      sport,
+      publicAddress.toString(),
+    );
   }
 }
 

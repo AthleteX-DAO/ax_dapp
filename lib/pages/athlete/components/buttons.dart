@@ -66,7 +66,6 @@ Container sellButton(
     decoration: boxDecoration(Colors.white, 100, 0, Colors.white),
     child: TextButton(
       onPressed: () {
-        context.read<TrackingCubit>().onPressedAthleteSell();
         showDialog<void>(
           context: context,
           builder: (BuildContext context) => BlocProvider(
@@ -76,6 +75,7 @@ Container sellButton(
               swapController: Get.find(),
             ),
             child: SellDialog(
+              athlete,
               athlete.name,
               athlete.longTokenBookPrice!,
               athlete.id,

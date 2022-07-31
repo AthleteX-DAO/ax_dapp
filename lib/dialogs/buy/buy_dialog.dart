@@ -257,6 +257,14 @@ class _BuyDialogState extends State<BuyDialog> {
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
 
+    var aptLongOrShort = 'Long Apt';
+    if (_currentTokenTypeSelection == TokenType.long) {
+      aptLongOrShort = 'Long Aot';
+    }
+    if (_currentTokenTypeSelection == TokenType.short) {
+      aptLongOrShort = 'Short Apt';
+    }
+
     return BlocBuilder<BuyDialogBloc, BuyDialogState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
@@ -535,6 +543,7 @@ class _BuyDialogState extends State<BuyDialog> {
                         widget.athlete,
                         widget.athleteName,
                         widget.athleteId,
+                        aptLongOrShort,
                         bloc.swapController.approve,
                         bloc.swapController.swap,
                         transactionConfirmed,

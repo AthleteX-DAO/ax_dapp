@@ -1,5 +1,5 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
+import 'package:ax_dapp/service/blockchain_models/apt_sell_info.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
@@ -8,13 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 // This code changes the state of the button
-class AthleteBuyApproveButton extends StatefulWidget {
-  const AthleteBuyApproveButton(
+class AthleteSellApproveButton extends StatefulWidget {
+  const AthleteSellApproveButton(
     this.width,
     this.height,
     this.text,
     this.amountImputed,
-    this.aptBuyInfo,
+    this.aptSellInfo,
     this.athlete,
     this.aptName,
     this.aptId,
@@ -29,7 +29,7 @@ class AthleteBuyApproveButton extends StatefulWidget {
   final double width;
   final double height;
   final String amountImputed;
-  final AptBuyInfo aptBuyInfo;
+  final AptSellInfo aptSellInfo;
   final AthleteScoutModel athlete;
   final String aptName;
   final int aptId;
@@ -39,11 +39,11 @@ class AthleteBuyApproveButton extends StatefulWidget {
   final Dialog Function(BuildContext) confirmDialog;
 
   @override
-  State<AthleteBuyApproveButton> createState() =>
-      _AthleteBuyApproveButtonState();
+  State<AthleteSellApproveButton> createState() =>
+      _AthleteSellApproveButtonState();
 }
 
-class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
+class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
   double width = 0;
   double height = 0;
   String text = '';
@@ -99,12 +99,12 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
       child: TextButton(
         onPressed: () {
           // Testing to see how the popup will work when the state is changed
-          context.read<TrackingCubit>().onPressedAthleteBuy(
+          context.read<TrackingCubit>().onPressedAthleteSell(
             widget.aptName,
           );
           if (isApproved) {
             //Confirm button pressed
-            context.read<TrackingCubit>().onPressedConfirmBuy(
+            context.read<TrackingCubit>().onPressedConfirmSell(
               widget.aptId,
             );
             widget.confirmCallback().then((value) {
@@ -113,12 +113,12 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
               );
-              context.read<TrackingCubit>().onAthleteBuySuccess(
+              context.read<TrackingCubit>().onAthleteSellSuccess(
                 widget.longOrShort,
-                widget.athlete.team,
+                widget.athlete.id,
                 widget.amountImputed,
                 'AX',
-                widget.aptBuyInfo.totalFee,
+                widget.aptSellInfo.totalFee,
                 widget.athlete.sport.toString(),
                 controller.publicAddress,
               );

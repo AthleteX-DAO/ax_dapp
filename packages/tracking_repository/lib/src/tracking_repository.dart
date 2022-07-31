@@ -8,7 +8,7 @@ class TrackingRepository {
   /// Default construcot
   TrackingRepository({
     FirebaseAnalytics? firebase,
-  }) : _firebase = firebase ?? FirebaseAnalytics.instance ;
+  }) : _firebase = firebase ?? FirebaseAnalytics.instance;
 
   /// Update to configure with relevant trackers
   final FirebaseAnalytics _firebase;
@@ -20,7 +20,7 @@ class TrackingRepository {
 
   /// Updates tracking services accordingly
   void track(TrackEvent event) {
-    _firebase.logEvent(name: event.name);    
+    _firebase.logEvent(name: event.name);
     dev.log(event.name);
     // firebase
     // GA
@@ -29,24 +29,29 @@ class TrackingRepository {
 
   /// Get athlete info when buy button clicked for analytics
   void trackAthleteBuyApproveButtonClicked(
-      TrackEvent event, String athleteName, ) {
-    _firebase.logEvent(name: event.name,
+    TrackEvent event,
+    String athleteName,
+  ) {
+    _firebase.logEvent(
+      name: event.name,
       parameters: {
         'athlete_name': athleteName,
-        },
+      },
     );
     dev.log(event.name);
     // firebase
     // GA
     // tracker?.track...
   }
+
   /// Get athlete info when buy button clicked for analytics
   void trackAthleteBuyConfirmButtonClicked(
-      TrackEvent event,int id, ) {
-    _firebase.logEvent(name: event.name,
-      parameters: {
-        'athlete_id': id
-      },
+    TrackEvent event,
+    int id,
+  ) {
+    _firebase.logEvent(
+      name: event.name,
+      parameters: {'athlete_id': id},
     );
     dev.log(event.name);
     // firebase
@@ -83,9 +88,71 @@ class TrackingRepository {
     // tracker?.track...
   }
 
+  /// Get athlete info when sell button clicked for analytics
+  void trackAthleteSellApproveButtonClicked(
+    TrackEvent event,
+    String athleteName,
+  ) {
+    _firebase.logEvent(
+      name: event.name,
+      parameters: {
+        'athlete_name': athleteName,
+      },
+    );
+    dev.log(event.name);
+    // firebase
+    // GA
+    // tracker?.track...
+  }
+
+  /// Get athlete info when sell button clicked for analytics
+  void trackAthleteSellConfirmButtonClicked(
+    TrackEvent event,
+    int id,
+  ) {
+    _firebase.logEvent(
+      name: event.name,
+      parameters: {'athlete_id': id},
+    );
+    dev.log(event.name);
+    // firebase
+    // GA
+    // tracker?.track...
+  }
+
+  /// Get athlete info when sell button clicked for analytics
+  void trackAthleteSellSuccess(
+    TrackEvent event,
+    String sellPosition,
+    int unit,
+    String currencySpent,
+    String currency,
+    double totalFee,
+    String sport,
+    String walletId,
+  ) {
+    _firebase.logEvent(
+      name: event.name,
+      parameters: {
+        'athlete_sell_position': sellPosition,
+        'apt_unit': unit,
+        'currency_spent': currencySpent,
+        'currency': currency,
+        'total_fee': totalFee,
+        'sport': sport,
+        'wallet_id': walletId
+      },
+    );
+    dev.log(event.name);
+    // firebase
+    // GA
+    // tracker?.track...
+  }
+
   /// Get athlete view information for analytics
   void trackAthleteView(TrackEvent event, String athleteName) {
-    _firebase.logEvent(name: event.name,
+    _firebase.logEvent(
+      name: event.name,
       parameters: {
         'athlete_name': athleteName,
       },
