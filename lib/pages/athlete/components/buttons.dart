@@ -39,6 +39,7 @@ Container buyButton(
               swapController: Get.find(),
             ),
             child: BuyDialog(
+              athlete,
               athlete.name,
               athlete.longTokenBookPrice!,
               athlete.id,

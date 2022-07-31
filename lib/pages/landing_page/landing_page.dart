@@ -1,9 +1,6 @@
 import 'package:ax_dapp/pages/landing_page/components/landing_page_widgets.dart';
-import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tracking_repository/tracking_repository.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});

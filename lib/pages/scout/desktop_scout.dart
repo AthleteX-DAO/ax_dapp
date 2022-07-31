@@ -24,7 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
-import 'package:tracking_repository/tracking_repository.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -744,6 +743,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               swapController: Get.find(),
                             ),
                             child: BuyDialog(
+                              athlete,
                               athlete.name,
                               athlete.longTokenBookPrice!,
                               athlete.id,
@@ -972,6 +972,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               swapController: Get.find(),
                             ),
                             child: BuyDialog(
+                              athlete,
                               athlete.name,
                               athlete.longTokenBookPrice!,
                               athlete.id,

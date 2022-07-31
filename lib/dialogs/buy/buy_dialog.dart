@@ -1,5 +1,6 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/pages/athlete/components/athlete_approve_button.dart';
+import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/token_type.dart';
@@ -12,13 +13,14 @@ import 'package:url_launcher/url_launcher.dart';
 
 class BuyDialog extends StatefulWidget {
   const BuyDialog(
+    this.athlete,
     this.athleteName,
     this.aptPrice,
     this.athleteId,
     this.goToTradePage, {
     super.key,
   });
-
+  final AthleteScoutModel athlete;
   final String athleteName;
   final double aptPrice;
   final int athleteId;
@@ -259,6 +261,7 @@ class _BuyDialogState extends State<BuyDialog> {
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<BuyDialogBloc>();
+        final aptBuyInfo = state.aptBuyInfo;
         final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
         final balance = state.balance;
         final minReceived = state.aptBuyInfo.minimumReceived.toStringAsFixed(6);
@@ -527,6 +530,9 @@ class _BuyDialogState extends State<BuyDialog> {
                         175,
                         40,
                         'Approve',
+                        _aptAmountController.text,
+                        aptBuyInfo,
+                        widget.athlete,
                         widget.athleteName,
                         widget.athleteId,
                         bloc.swapController.approve,
