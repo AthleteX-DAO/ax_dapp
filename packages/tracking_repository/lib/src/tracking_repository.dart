@@ -37,7 +37,7 @@ class TrackingRepository {
       parameters: {
         'from_units': fromUnits,
         'to_units': toUnits,
-        'total_fee': totalFee,
+        'fee': totalFee,
         'wallet_id': walletID,
       },
     );    

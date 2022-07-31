@@ -7,19 +7,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // This code changes the state of the button
 class TradeApproveButton extends StatefulWidget {
-  const TradeApproveButton(
-    this.width,
-    this.height,
-    this.text,
-    this.approveCallback,
-    this.confirmCallback,
-    this.confirmDialog,
-    this.fromCurrency,
-    this.toCurrency,
-    this.fromUnits,
-    this.toUnits,
-    this.totalFee, 
-    this.walletAddress, {
+  const TradeApproveButton({
+    required this.width,
+    required this.height,
+    required this.text,
+    required this.approveCallback,
+    required this.confirmCallback,
+    required this.confirmDialog,
+    required this.fromCurrency,
+    required this.toCurrency,
+    required this.fromUnits,
+    required this.toUnits,
+    required this.totalFee, 
+    required this.walletAddress, 
     super.key,
   });
 
