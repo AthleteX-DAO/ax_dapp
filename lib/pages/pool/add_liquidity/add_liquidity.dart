@@ -627,6 +627,8 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   poolInfo.recieveAmount,
                   _tokenAmountOneController.text,
                   _tokenAmountTwoController.text,
+                  poolInfo.shareOfPool,
+                  '${token0.ticker}/${token1.ticker}',
                 )
               ],
             ),

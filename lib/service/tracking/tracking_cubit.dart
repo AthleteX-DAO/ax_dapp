@@ -19,13 +19,27 @@ extension LandingPageTracking on TrackingCubit {
 
 extension PoolPageTracking on TrackingCubit {
   void onPoolCreated(
-    String currencyOne,
-    String currencyTwo,
     String valueOne,
     String valueTwo,
     String lpTokens,
+    String shareOfPool,
+    String lpTokenName,
   ) {
     trackingRepository.trackPoolCreation(PoolPageUserEvent.onPoolCreate(),
-        currencyOne, currencyTwo, valueOne, valueTwo, lpTokens,);
+      valueOne, valueTwo, lpTokens, shareOfPool, lpTokenName,);
+  }
+}
+
+extension PoolPageApproveClicked on TrackingCubit {
+  void onPoolApproveClick(String currencyOne) {
+    trackingRepository.trackPoolApproveClick(
+        PoolPageUserEvent.onApprovePoolClick(), currencyOne,);
+  }
+}
+
+extension PoolPageConfirmClicked on TrackingCubit {
+  void onPoolConfirmClick(String currencyTwo) {
+    trackingRepository.trackPoolConfirmClick(
+        PoolPageUserEvent.onConfirmPoolClick(), currencyTwo,);
   }
 }

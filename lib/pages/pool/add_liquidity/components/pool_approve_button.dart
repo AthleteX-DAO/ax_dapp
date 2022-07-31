@@ -16,7 +16,9 @@ class PoolApproveButton extends StatefulWidget {
     this.currencyTwo,
     this.lpTokens,
     this.valueOne,
-    this.valueTwo, {
+    this.valueTwo, 
+    this.shareOfPool,
+    this.lpTokenName, {
     super.key,
   });
 
@@ -28,6 +30,8 @@ class PoolApproveButton extends StatefulWidget {
   final String valueOne;
   final String valueTwo;
   final String lpTokens;
+  final String shareOfPool;
+  final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -94,12 +98,15 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
           if (isApproved) {
             //Confirm button pressed
             widget.confirmCallback().then((value) {
+              context
+                  .read<TrackingCubit>()
+                  .onPoolConfirmClick(widget.currencyTwo);
               context.read<TrackingCubit>().onPoolCreated(
-                  widget.currencyOne,
-                  widget.currencyTwo,
                   widget.valueOne,
                   widget.valueTwo,
-                  widget.lpTokens,);
+                  widget.lpTokens,
+                  widget.shareOfPool,
+                  widget.lpTokenName,);
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
@@ -113,6 +120,9 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
             });
           } else {
             //Approve button was pressed
+            context
+                .read<TrackingCubit>()
+                .onPoolApproveClick(widget.currencyOne);
             changeButton();
           }
         },
