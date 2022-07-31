@@ -879,19 +879,21 @@ class _MyLiquidityState extends State<MyLiquidity> {
                             Row(
                               children: [
                                 PoolRemoveApproveButton(
-                                  175,
-                                  40,
-                                  'Approve',
-                                  poolController.approveRemove,
-                                  poolController.removeLiquidity,
-                                  removalConfirmed,
-                                  infoOfSelectedCard.token0Symbol,
-                                  infoOfSelectedCard.token1Symbol,
-                                  infoOfSelectedCard.token0LpAmount,
-                                  infoOfSelectedCard.token1LpAmount,
-                                  infoOfSelectedCard.lpTokenPairBalance,
-                                  infoOfSelectedCard.shareOfPool,
-                                  value,
+                                  width: 175,
+                                  height: 40,
+                                  text: 'Approve',
+                                  approveCallback: poolController.approveRemove,
+                                  confirmCallback:
+                                      poolController.removeLiquidity,
+                                  confirmDialog: removalConfirmed,
+                                  currencyOne: infoOfSelectedCard.token0Symbol,
+                                  currencyTwo: infoOfSelectedCard.token1Symbol,
+                                  valueOne: infoOfSelectedCard.token0LpAmount,
+                                  valueTwo: infoOfSelectedCard.token1LpAmount,
+                                  lpTokens:
+                                      infoOfSelectedCard.lpTokenPairBalance,
+                                  shareOfPool: infoOfSelectedCard.shareOfPool,
+                                  percentRemoval: value,
                                 ),
                                 const Spacer(),
                                 Container(

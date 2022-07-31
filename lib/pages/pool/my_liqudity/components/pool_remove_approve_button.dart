@@ -5,20 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // This code changes the state of the button
 class PoolRemoveApproveButton extends StatefulWidget {
-  const PoolRemoveApproveButton(
-    this.width,
-    this.height,
-    this.text,
-    this.approveCallback,
-    this.confirmCallback,
-    this.confirmDialog,
-    this.currencyOne,
-    this.currencyTwo, 
-    this.valueOne,
-    this.valueTwo,
-    this.lpTokens,
-    this.shareOfPool,
-    this.percentRemoval, {
+  const PoolRemoveApproveButton({
+    required this.width,
+    required this.height,
+    required this.text,
+    required this.approveCallback,
+    required this.confirmCallback,
+    required this.confirmDialog,
+    required this.currencyOne,
+    required this.currencyTwo, 
+    required this.valueOne,
+    required this.valueTwo,
+    required this.lpTokens,
+    required this.shareOfPool,
+    required this.percentRemoval, 
     super.key,
   });
 
