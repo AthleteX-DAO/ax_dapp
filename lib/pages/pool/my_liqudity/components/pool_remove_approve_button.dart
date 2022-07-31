@@ -18,7 +18,8 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.valueTwo,
     required this.lpTokens,
     required this.shareOfPool,
-    required this.percentRemoval, 
+    required this.percentRemoval,
+    required this.walletId, 
     super.key,
   });
 
@@ -32,6 +33,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final String lpTokens;
   final String shareOfPool;
   final double percentRemoval;
+  final String walletId;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -108,6 +110,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                 widget.lpTokens,
                 widget.shareOfPool,
                 widget.percentRemoval,
+                widget.walletId,
               );
               showDialog<void>(
                 context: context,

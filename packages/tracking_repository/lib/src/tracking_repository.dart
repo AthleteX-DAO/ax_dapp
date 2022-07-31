@@ -21,9 +21,6 @@ class TrackingRepository {
   void track(TrackEvent event) {
     _firebase.logEvent(name: event.name);    
     dev.log(event.name);
-    // firebase
-    // GA
-    // tracker?.track...
   }
 
   /// Updates tracking services accordingly
@@ -33,6 +30,7 @@ class TrackingRepository {
     String lpTokens,
     String shareOfPool,
     String lpTokenName,
+    String walletId,
   ) {
     _firebase.logEvent(name: event.name,
       parameters: {
@@ -41,12 +39,10 @@ class TrackingRepository {
         'lp_tokens' : lpTokens,
         'share_of_pool': shareOfPool,
         'lp_token_name': lpTokenName,
+        'wallet_id': walletId,
       },
     );
     dev.log(event.name);
-    // firebase
-    // GA
-    // tracker?.track...
   }
 
   /// Updates tracking services when approve button clicked
@@ -74,6 +70,7 @@ class TrackingRepository {
     String lpTokens,
     String shareOfPool,
     double percentRemoval,
+    String walletId,
   ) {
     _firebase.logEvent(name: event.name,
       parameters: {
@@ -82,12 +79,10 @@ class TrackingRepository {
         'lp_tokens' : lpTokens,
         'share_of_pool': shareOfPool,
         'percent_removal': percentRemoval,
+        'wallet_id': walletId
       },
     );
     dev.log(event.name);
-    // firebase
-    // GA
-    // tracker?.track...
   }
 
   /// Updates tracking services when approve button clicked

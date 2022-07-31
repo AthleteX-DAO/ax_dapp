@@ -3,15 +3,18 @@
 import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
 import 'package:ax_dapp/pages/pool/add_liquidity/components/pool_approve_button.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/token.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/debouncer.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
 
 // ignore: must_be_immutable
 class AddLiquidity extends StatefulWidget {
@@ -30,6 +33,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
   final TextEditingController _tokenAmountTwoController =
       TextEditingController();
   final Debouncer _debouncer = Debouncer(milliseconds: 200);
+  Controller controller = Get.find();
 
   @override
   void dispose() {
@@ -50,6 +54,8 @@ class _AddLiquidityState extends State<AddLiquidity> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final layoutHgt = _height * 0.8;
     final layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+        controller.publicAddress.toString(),);
 
     return BlocBuilder<PoolBloc, PoolState>(
       buildWhen: (previous, current) => current != previous,
@@ -629,6 +635,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   valueTwo: _tokenAmountTwoController.text,
                   shareOfPool: poolInfo.shareOfPool,
                   lpTokenName: '${token0.ticker}/${token1.ticker}',
+                  walletId: userWalletAddress.walletAddress,
                 )
               ],
             ),

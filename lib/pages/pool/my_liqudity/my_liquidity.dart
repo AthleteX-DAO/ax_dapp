@@ -4,9 +4,11 @@ import 'package:ax_dapp/pages/pool/my_liqudity/add_liquidity_token_pair.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/components/pool_remove_approve_button.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -92,6 +94,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
   double _layoutHgt = 0;
   int currentTabIndex = 0;
   PoolController poolController = Get.find();
+  Controller controller = Get.find();
   double value = 0;
   LiquidityPositionInfo infoOfSelectedCard = LiquidityPositionInfo.empty();
   AssetImage? token0Icon = const AssetImage('assets/images/apt.png');
@@ -107,7 +110,9 @@ class _MyLiquidityState extends State<MyLiquidity> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final _layoutWdt = _isWeb ? _width * 0.8 : _width * 0.9;
     final gridHgt = _layoutHgt * 0.75;
-
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+        controller.publicAddress.toString(),);
+        
     Widget myLiquidityPoolGridItem(
       LiquidityPositionInfo liquidityPositionInfo,
       double layoutWdt,
@@ -894,6 +899,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                       infoOfSelectedCard.lpTokenPairBalance,
                                   shareOfPool: infoOfSelectedCard.shareOfPool,
                                   percentRemoval: value,
+                                  walletId: userWalletAddress.walletAddress,
                                 ),
                                 const Spacer(),
                                 Container(

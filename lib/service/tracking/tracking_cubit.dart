@@ -24,9 +24,10 @@ extension PoolPageTracking on TrackingCubit {
     String lpTokens,
     String shareOfPool,
     String lpTokenName,
+    String walletId,
   ) {
     trackingRepository.trackPoolCreation(PoolPageUserEvent.onPoolCreate(),
-      valueOne, valueTwo, lpTokens, shareOfPool, lpTokenName,);
+      valueOne, valueTwo, lpTokens, shareOfPool, lpTokenName, walletId,);
   }
 }
 
@@ -51,9 +52,10 @@ extension PoolPageRemoval on TrackingCubit {
     String lpTokens,
     String shareOfPool,
     double percentRemoval,
+    String walletId
   ) {
     trackingRepository.trackPoolRemoval(PoolPageUserEvent.onPoolRemove(),
-      valueOne, valueTwo, lpTokens, shareOfPool, percentRemoval,);
+      valueOne, valueTwo, lpTokens, shareOfPool, percentRemoval, walletId,);
   }
 }
 
