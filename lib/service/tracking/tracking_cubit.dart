@@ -43,3 +43,30 @@ extension PoolPageConfirmClicked on TrackingCubit {
         PoolPageUserEvent.onConfirmPoolClick(), currencyTwo,);
   }
 }
+
+extension PoolPageRemoval on TrackingCubit {
+  void onPoolRemoval(
+    String valueOne,
+    String valueTwo,
+    String lpTokens,
+    String shareOfPool,
+    double percentRemoval,
+  ) {
+    trackingRepository.trackPoolRemoval(PoolPageUserEvent.onPoolRemove(),
+      valueOne, valueTwo, lpTokens, shareOfPool, percentRemoval,);
+  }
+}
+
+extension PoolPageRemovalApproveClicked on TrackingCubit {
+  void onPoolRemovalApproveClick(String currencyOne) {
+    trackingRepository.trackPoolRemovalApproveClick(
+        PoolPageUserEvent.onRemoveApproveClick(), currencyOne,);
+  }
+}
+
+extension PoolPageRemovalConfirmClicked on TrackingCubit {
+  void onPoolRemovalConfirmClick(String currencyTwo) {
+    trackingRepository.trackPoolRemovalConfirmClick(
+        PoolPageUserEvent.onRemoveConfirmClick(), currencyTwo,);
+  }
+}

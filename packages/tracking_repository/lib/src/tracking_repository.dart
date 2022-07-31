@@ -36,8 +36,8 @@ class TrackingRepository {
   ) {
     _firebase.logEvent(name: event.name,
       parameters: {
-        'value_one' : valueOne,
-        'value_two' : valueTwo,
+        'value_1' : valueOne,
+        'value_2' : valueTwo,
         'lp_tokens' : lpTokens,
         'share_of_pool': shareOfPool,
         'lp_token_name': lpTokenName,
@@ -53,7 +53,7 @@ class TrackingRepository {
   void trackPoolApproveClick(TrackEvent event, String currencyOne) {
     _firebase.logEvent(name: event.name,
       parameters: {
-        'currency_one': currencyOne,
+        'currency_1': currencyOne,
       },
     );
   }
@@ -62,7 +62,48 @@ class TrackingRepository {
   void trackPoolConfirmClick(TrackEvent event, String currencyTwo) {
     _firebase.logEvent(name: event.name,
       parameters: {
-        'currency_two': currencyTwo,
+        'currency_2': currencyTwo,
+      },
+    );
+  }
+
+  /// Updates tracking services when liquidity is removed from pool
+  void trackPoolRemoval(TrackEvent event, 
+    String valueOne,
+    String valueTwo,
+    String lpTokens,
+    String shareOfPool,
+    double percentRemoval,
+  ) {
+    _firebase.logEvent(name: event.name,
+      parameters: {
+        'value_1' : valueOne,
+        'value_2' : valueTwo,
+        'lp_tokens' : lpTokens,
+        'share_of_pool': shareOfPool,
+        'percent_removal': percentRemoval,
+      },
+    );
+    dev.log(event.name);
+    // firebase
+    // GA
+    // tracker?.track...
+  }
+
+  /// Updates tracking services when approve button clicked
+  void trackPoolRemovalApproveClick(TrackEvent event, String currencyOne) {
+    _firebase.logEvent(name: event.name,
+      parameters: {
+        'currency_1': currencyOne,
+      },
+    );
+  }
+
+  /// Updates tracking services when confirm button clicked
+  void trackPoolRemovalConfirmClick(TrackEvent event, String currencyTwo) {
+    _firebase.logEvent(name: event.name,
+      parameters: {
+        'currency_2': currencyTwo,
       },
     );
   }

@@ -2,8 +2,8 @@
 
 import 'package:ax_dapp/pages/pool/my_liqudity/add_liquidity_token_pair.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
+import 'package:ax_dapp/pages/pool/my_liqudity/components/pool_remove_approve_button.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
-import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -878,13 +878,20 @@ class _MyLiquidityState extends State<MyLiquidity> {
                             SizedBox(height: _height * 0.03),
                             Row(
                               children: [
-                                ApproveButton(
+                                PoolRemoveApproveButton(
                                   175,
                                   40,
                                   'Approve',
                                   poolController.approveRemove,
                                   poolController.removeLiquidity,
                                   removalConfirmed,
+                                  infoOfSelectedCard.token0Symbol,
+                                  infoOfSelectedCard.token1Symbol,
+                                  infoOfSelectedCard.token0LpAmount,
+                                  infoOfSelectedCard.token1LpAmount,
+                                  infoOfSelectedCard.lpTokenPairBalance,
+                                  infoOfSelectedCard.shareOfPool,
+                                  value,
                                 ),
                                 const Spacer(),
                                 Container(
