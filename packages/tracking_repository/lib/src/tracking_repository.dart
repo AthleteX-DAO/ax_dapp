@@ -65,8 +65,8 @@ class TrackingRepository {
 
   /// Updates tracking services when liquidity is removed from pool
   void trackPoolRemoval(TrackEvent event, 
-    String valueOne,
-    String valueTwo,
+    double valueOne,
+    double valueTwo,
     String lpTokens,
     String shareOfPool,
     double percentRemoval,

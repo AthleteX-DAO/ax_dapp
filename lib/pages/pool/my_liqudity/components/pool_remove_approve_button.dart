@@ -28,8 +28,8 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final double height;
   final String currencyOne;
   final String currencyTwo;
-  final String valueOne;
-  final String valueTwo;
+  final double valueOne;
+  final double valueTwo;
   final String lpTokens;
   final String shareOfPool;
   final double percentRemoval;

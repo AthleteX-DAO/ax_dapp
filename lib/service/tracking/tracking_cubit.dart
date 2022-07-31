@@ -47,12 +47,12 @@ extension PoolPageConfirmClicked on TrackingCubit {
 
 extension PoolPageRemoval on TrackingCubit {
   void onPoolRemoval(
-    String valueOne,
-    String valueTwo,
+    double valueOne,
+    double valueTwo,
     String lpTokens,
     String shareOfPool,
     double percentRemoval,
-    String walletId
+    String walletId,
   ) {
     trackingRepository.trackPoolRemoval(PoolPageUserEvent.onPoolRemove(),
       valueOne, valueTwo, lpTokens, shareOfPool, percentRemoval, walletId,);

@@ -112,6 +112,10 @@ class _MyLiquidityState extends State<MyLiquidity> {
     final gridHgt = _layoutHgt * 0.75;
     final userWalletAddress = FormatWalletAddress.getWalletAddress(
         controller.publicAddress.toString(),);
+    final tokenOneRemoveAmount =
+        double.parse(infoOfSelectedCard.token0LpAmount) * (value / 100);
+    final tokenTwoRemoveAmount =
+        double.parse(infoOfSelectedCard.token1LpAmount) * (value / 100);
         
     Widget myLiquidityPoolGridItem(
       LiquidityPositionInfo liquidityPositionInfo,
@@ -805,11 +809,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               SizedBox(
                                                 width: 100,
                                                 child: Text(
-                                                  (double.parse(
-                                                            infoOfSelectedCard
-                                                                .token0LpAmount,
-                                                          ) *
-                                                          (value / 100))
+                                                  tokenOneRemoveAmount
                                                       .toStringAsFixed(6),
                                                   textAlign: TextAlign.end,
                                                 ),
@@ -862,11 +862,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               SizedBox(
                                                 width: 100,
                                                 child: Text(
-                                                  (double.parse(
-                                                            infoOfSelectedCard
-                                                                .token1LpAmount,
-                                                          ) *
-                                                          (value / 100))
+                                                  tokenTwoRemoveAmount
                                                       .toStringAsFixed(6),
                                                   textAlign: TextAlign.end,
                                                 ),
@@ -893,8 +889,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                   confirmDialog: removalConfirmed,
                                   currencyOne: infoOfSelectedCard.token0Symbol,
                                   currencyTwo: infoOfSelectedCard.token1Symbol,
-                                  valueOne: infoOfSelectedCard.token0LpAmount,
-                                  valueTwo: infoOfSelectedCard.token1LpAmount,
+                                  valueOne: tokenOneRemoveAmount,
+                                  valueTwo: tokenTwoRemoveAmount,
                                   lpTokens:
                                       infoOfSelectedCard.lpTokenPairBalance,
                                   shareOfPool: infoOfSelectedCard.shareOfPool,
