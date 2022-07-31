@@ -8,6 +8,7 @@ import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,6 +49,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
     // input box
     final tokenContainerWid = wid * 0.95;
     final amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+        walletController.controller.publicAddress.toString(),);
 
     return BlocBuilder<TradePageBloc, TradePageState>(
       buildWhen: (previous, current) => current.status.name.isNotEmpty,
@@ -661,7 +664,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     toUnits: receiveAmount,
                     totalFee: totalFee,
                     walletAddress:
-                        walletController.controller.publicAddress.toString(),
+                        userWalletAddress.walletAddress,
                   ),
                 ],
               ),

@@ -21,9 +21,6 @@ class TrackingRepository {
   void track(TrackEvent event) {
     _firebase.logEvent(name: event.name);    
     dev.log(event.name);
-    // firebase
-    // GA
-    // tracker?.track...
   }
 
   /// Updates tracking services when the user has approved a swap
@@ -42,9 +39,6 @@ class TrackingRepository {
       },
     );    
     dev.log(event.name);
-    // firebase
-    // GA
-    // tracker?.track...
   }
 
   /// Updates tracking services when the user has clicked the approve button
@@ -57,9 +51,6 @@ class TrackingRepository {
       },
     );    
     dev.log(event.name);
-    // firebase
-    // GA
-    // tracker?.track...
   }
   
   /// Updates tracking services when the user has clicked the approve button
@@ -72,8 +63,5 @@ class TrackingRepository {
       },
     );    
     dev.log(event.name);
-    // firebase
-    // GA
-    // tracker?.track...
   }
 }
