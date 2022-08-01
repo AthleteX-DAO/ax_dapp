@@ -1,9 +1,6 @@
 import 'package:ax_dapp/pages/landing_page/components/landing_page_widgets.dart';
-import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tracking_repository/tracking_repository.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -26,58 +23,53 @@ class _LandingPageState extends State<LandingPage> {
     if (_width < _height) textSize = _width * 0.05;
     if (!isWeb) tradingTextSize = textSize * 1.25;
 
-    return BlocProvider(
-      create: (BuildContext context) => TrackingCubit(
-        context.read<TrackingRepository>(),
-      ),
-      child: Container(
-        width: _width,
-        height: _height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/axBackground.jpeg'),
-            fit: BoxFit.fill,
-          ),
+    return Container(
+      width: _width,
+      height: _height,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/axBackground.jpeg'),
+          fit: BoxFit.fill,
         ),
-        child: isWeb
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  //AX Markets Image
-                  AthleteXLogo(height: _height),
-                  DesktopLandingPage(textSize: textSize),
-                  //Button load athletes
-                  Container(
-                    width: _width * 0.20,
-                    height: _height * 0.1,
-                    margin: const EdgeInsets.only(bottom: 130),
-                    child: StartTradingButton(
-                      isWeb: isWeb,
-                      tradingTextSize: tradingTextSize,
-                    ),
-                  ),
-                ],
-              )
-            :
-            //Mobile landing page
-            Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  //AX Markets Image
-                  AthleteXLogo(height: _height),
-                  const MobileLandingPage(),
-                  //Button load athletes
-                  SizedBox(
-                    width: _width * 0.6,
-                    height: _height * 0.07,
-                    child: StartTradingButton(
-                      isWeb: isWeb,
-                      tradingTextSize: tradingTextSize,
-                    ),
-                  ),
-                ],
-              ),
       ),
+      child: isWeb
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                //AX Markets Image
+                AthleteXLogo(height: _height),
+                DesktopLandingPage(textSize: textSize),
+                //Button load athletes
+                Container(
+                  width: _width * 0.20,
+                  height: _height * 0.1,
+                  margin: const EdgeInsets.only(bottom: 130),
+                  child: StartTradingButton(
+                    isWeb: isWeb,
+                    tradingTextSize: tradingTextSize,
+                  ),
+                ),
+              ],
+            )
+          :
+          //Mobile landing page
+          Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                //AX Markets Image
+                AthleteXLogo(height: _height),
+                const MobileLandingPage(),
+                //Button load athletes
+                SizedBox(
+                  width: _width * 0.6,
+                  height: _height * 0.07,
+                  child: StartTradingButton(
+                    isWeb: isWeb,
+                    tradingTextSize: tradingTextSize,
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
