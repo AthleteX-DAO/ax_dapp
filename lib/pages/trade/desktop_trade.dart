@@ -50,7 +50,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
     final tokenContainerWid = wid * 0.95;
     final amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
     final userWalletAddress = FormatWalletAddress.getWalletAddress(
-        walletController.controller.publicAddress.toString(),);
+      walletController.controller.publicAddress.toString(),
+    );
 
     return BlocBuilder<TradePageBloc, TradePageState>(
       buildWhen: (previous, current) => current.status.name.isNotEmpty,
@@ -663,8 +664,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     fromUnits: _tokenFromInputController.text,
                     toUnits: receiveAmount,
                     totalFee: totalFee,
-                    walletAddress:
-                        userWalletAddress.walletAddress,
+                    walletAddress: userWalletAddress.walletAddress,
                   ),
                 ],
               ),

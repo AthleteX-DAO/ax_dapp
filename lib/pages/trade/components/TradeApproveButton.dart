@@ -18,8 +18,8 @@ class TradeApproveButton extends StatefulWidget {
     required this.toCurrency,
     required this.fromUnits,
     required this.toUnits,
-    required this.totalFee, 
-    required this.walletAddress, 
+    required this.totalFee,
+    required this.walletAddress,
     super.key,
   });
 
@@ -47,7 +47,6 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
   bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
-  int currentState = 0;
   Widget? dialog;
 
   @override
@@ -58,7 +57,6 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;
-    currentState = 0;
   }
 
   void changeButton() {
@@ -78,8 +76,6 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
         textcolor = Colors.amber;
       });
     });
-    // Keep track of how many times the state has changed
-    currentState += 1;
   }
 
   @override
@@ -94,7 +90,6 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
-          // Testing to see how the popup will work when the state is changed
           if (isApproved) {
             //Confirm button pressed
             widget.confirmCallback().then((value) {
@@ -102,11 +97,11 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
                   .read<TrackingCubit>()
                   .onSwapConfirmClick(widget.toCurrency);
               context.read<TrackingCubit>().onSwapConfirmedTransaction(
-                  widget.fromUnits,
-                  widget.toUnits,
-                  widget.totalFee,
-                  widget.walletAddress,
-                );
+                    widget.fromUnits,
+                    widget.toUnits,
+                    widget.totalFee,
+                    widget.walletAddress,
+                  );
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
