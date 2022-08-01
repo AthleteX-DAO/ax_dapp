@@ -26,22 +26,33 @@ extension PoolPageTracking on TrackingCubit {
     String lpTokenName,
     String walletId,
   ) {
-    trackingRepository.trackPoolCreation(PoolPageUserEvent.onPoolCreate(),
-      valueOne, valueTwo, lpTokens, shareOfPool, lpTokenName, walletId,);
+    trackingRepository.trackPoolCreation(
+      PoolPageUserEvent.onPoolCreate(),
+      valueOne,
+      valueTwo,
+      lpTokens,
+      shareOfPool,
+      lpTokenName,
+      walletId,
+    );
   }
 }
 
 extension PoolPageApproveClicked on TrackingCubit {
   void onPoolApproveClick(String currencyOne) {
     trackingRepository.trackPoolApproveClick(
-        PoolPageUserEvent.onApprovePoolClick(), currencyOne,);
+      PoolPageUserEvent.onApprovePoolClick(),
+      currencyOne,
+    );
   }
 }
 
 extension PoolPageConfirmClicked on TrackingCubit {
   void onPoolConfirmClick(String currencyTwo) {
     trackingRepository.trackPoolConfirmClick(
-        PoolPageUserEvent.onConfirmPoolClick(), currencyTwo,);
+      PoolPageUserEvent.onConfirmPoolClick(),
+      currencyTwo,
+    );
   }
 }
 
@@ -54,21 +65,32 @@ extension PoolPageRemoval on TrackingCubit {
     double percentRemoval,
     String walletId,
   ) {
-    trackingRepository.trackPoolRemoval(PoolPageUserEvent.onPoolRemove(),
-      valueOne, valueTwo, lpTokens, shareOfPool, percentRemoval, walletId,);
+    trackingRepository.trackPoolRemoval(
+      PoolPageUserEvent.onPoolRemove(),
+      valueOne,
+      valueTwo,
+      lpTokens,
+      shareOfPool,
+      percentRemoval,
+      walletId,
+    );
   }
 }
 
 extension PoolPageRemovalApproveClicked on TrackingCubit {
   void onPoolRemovalApproveClick(String currencyOne) {
     trackingRepository.trackPoolRemovalApproveClick(
-        PoolPageUserEvent.onRemoveApproveClick(), currencyOne,);
+      PoolPageUserEvent.onRemoveApproveClick(),
+      currencyOne,
+    );
   }
 }
 
 extension PoolPageRemovalConfirmClicked on TrackingCubit {
   void onPoolRemovalConfirmClick(String currencyTwo) {
     trackingRepository.trackPoolRemovalConfirmClick(
-        PoolPageUserEvent.onRemoveConfirmClick(), currencyTwo,);
+      PoolPageUserEvent.onRemoveConfirmClick(),
+      currencyTwo,
+    );
   }
 }

@@ -111,12 +111,13 @@ class _MyLiquidityState extends State<MyLiquidity> {
     final _layoutWdt = _isWeb ? _width * 0.8 : _width * 0.9;
     final gridHgt = _layoutHgt * 0.75;
     final userWalletAddress = FormatWalletAddress.getWalletAddress(
-        controller.publicAddress.toString(),);
+      controller.publicAddress.toString(),
+    );
     final tokenOneRemoveAmount =
         double.parse(infoOfSelectedCard.token0LpAmount) * (value / 100);
     final tokenTwoRemoveAmount =
         double.parse(infoOfSelectedCard.token1LpAmount) * (value / 100);
-        
+
     Widget myLiquidityPoolGridItem(
       LiquidityPositionInfo liquidityPositionInfo,
       double layoutWdt,

@@ -55,7 +55,8 @@ class _AddLiquidityState extends State<AddLiquidity> {
     final layoutHgt = _height * 0.8;
     final layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
     final userWalletAddress = FormatWalletAddress.getWalletAddress(
-        controller.publicAddress.toString(),);
+      controller.publicAddress.toString(),
+    );
 
     return BlocBuilder<PoolBloc, PoolState>(
       buildWhen: (previous, current) => current != previous,

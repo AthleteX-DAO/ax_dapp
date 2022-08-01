@@ -13,13 +13,13 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.confirmCallback,
     required this.confirmDialog,
     required this.currencyOne,
-    required this.currencyTwo, 
+    required this.currencyTwo,
     required this.valueOne,
     required this.valueTwo,
     required this.lpTokens,
     required this.shareOfPool,
     required this.percentRemoval,
-    required this.walletId, 
+    required this.walletId,
     super.key,
   });
 
@@ -50,7 +50,6 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
   bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
-  int currentState = 0;
   Widget? dialog;
 
   @override
@@ -61,7 +60,6 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;
-    currentState = 0;
   }
 
   void changeButton() {
@@ -81,8 +79,6 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
         textcolor = Colors.amber;
       });
     });
-    // Keep track of how many times the state has changed
-    currentState += 1;
   }
 
   @override
@@ -97,7 +93,6 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
-          // Testing to see how the popup will work when the state is changed
           if (isApproved) {
             //Confirm button pressed
             widget.confirmCallback().then((value) {
@@ -105,13 +100,13 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                   .read<TrackingCubit>()
                   .onPoolRemovalConfirmClick(widget.currencyTwo);
               context.read<TrackingCubit>().onPoolRemoval(
-                widget.valueOne,
-                widget.valueTwo,
-                widget.lpTokens,
-                widget.shareOfPool,
-                widget.percentRemoval,
-                widget.walletId,
-              );
+                    widget.valueOne,
+                    widget.valueTwo,
+                    widget.lpTokens,
+                    widget.shareOfPool,
+                    widget.percentRemoval,
+                    widget.walletId,
+                  );
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>

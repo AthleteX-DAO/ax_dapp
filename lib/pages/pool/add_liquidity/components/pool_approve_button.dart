@@ -11,15 +11,15 @@ class PoolApproveButton extends StatefulWidget {
     required this.text,
     required this.approveCallback,
     required this.confirmCallback,
-    required this.confirmDialog, 
+    required this.confirmDialog,
     required this.currencyOne,
     required this.currencyTwo,
     required this.lpTokens,
     required this.valueOne,
-    required this.valueTwo, 
+    required this.valueTwo,
     required this.shareOfPool,
     required this.lpTokenName,
-    required this.walletId, 
+    required this.walletId,
     super.key,
   });
 
@@ -49,7 +49,6 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
   bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
-  int currentState = 0;
   Widget? dialog;
 
   @override
@@ -60,7 +59,6 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;
-    currentState = 0;
   }
 
   void changeButton() {
@@ -80,8 +78,6 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
         textcolor = Colors.amber;
       });
     });
-    // Keep track of how many times the state has changed
-    currentState += 1;
   }
 
   @override
@@ -96,7 +92,6 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
-          // Testing to see how the popup will work when the state is changed
           if (isApproved) {
             //Confirm button pressed
             widget.confirmCallback().then((value) {
@@ -104,12 +99,13 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                   .read<TrackingCubit>()
                   .onPoolConfirmClick(widget.currencyTwo);
               context.read<TrackingCubit>().onPoolCreated(
-                  widget.valueOne,
-                  widget.valueTwo,
-                  widget.lpTokens,
-                  widget.shareOfPool,
-                  widget.lpTokenName,
-                  widget.walletId,);
+                    widget.valueOne,
+                    widget.valueTwo,
+                    widget.lpTokens,
+                    widget.shareOfPool,
+                    widget.lpTokenName,
+                    widget.walletId,
+                  );
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
