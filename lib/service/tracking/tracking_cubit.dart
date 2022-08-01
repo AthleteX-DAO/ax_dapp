@@ -38,7 +38,7 @@ extension TradePageTracking on TrackingCubit {
   ) {
     trackingRepository.track(
       TradePageUserEvent.onSwapConfirmedTransaction(
-        params: {
+        {
           'from_units': fromUnits,
           'to_units': toUnits,
           'fee': totalFee,
@@ -51,7 +51,7 @@ extension TradePageTracking on TrackingCubit {
   void onSwapApproveClick(String fromCurrency) {
     trackingRepository.track(
       TradePageUserEvent.onApproveClick(
-        params: {
+        {
           'from_currency': fromCurrency,
         },
       ),
@@ -61,7 +61,7 @@ extension TradePageTracking on TrackingCubit {
   void onSwapConfirmClick(String toCurrency) {
     trackingRepository.track(
       TradePageUserEvent.onConfirmClick(
-        params = {
+        {
           'to_currency': toCurrency,
         },
       ),
