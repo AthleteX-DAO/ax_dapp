@@ -1,31 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracking_repository/tracking_repository.dart';
 
-class TrackingState {
-  const TrackingState(
-    this.loggedEvents,
-  );
-
-  final List<TrackEvent> loggedEvents;
+class _TrackingState {
+  const _TrackingState();
 }
 
-class TrackingCubit extends Cubit<TrackingState> {
-  TrackingCubit(this.trackingRepository) : super(const TrackingState([]));
+class TrackingCubit extends Cubit<_TrackingState> {
+  TrackingCubit(this.trackingRepository) : super(const _TrackingState());
 
   final TrackingRepository trackingRepository;
-
-  void setup() {
-    trackingRepository.loggedEventsStream.listen((loggedEvents) {
-      emit(TrackingState(loggedEvents));
-    });
-  }
 }
 
 extension LandingPageTracking on TrackingCubit {
   void onPressedStartTrading() {
-    trackingRepository.track(
-      LandingPageEvent.onPressedStartTrading(),
-    );
+    trackingRepository.track(LandingPageEvent.onPressedStartTrading());
   }
 }
 
@@ -39,8 +27,8 @@ extension PoolPageTracking on TrackingCubit {
     String walletId,
   ) {
     trackingRepository.track(
-      PoolPageUserEvent.onPoolCreate()
-        ..params = {
+      PoolPageUserEvent.onPoolCreate(
+        {
           'value_1': valueOne,
           'value_2': valueTwo,
           'lp_tokens': lpTokens,
@@ -48,24 +36,27 @@ extension PoolPageTracking on TrackingCubit {
           'lp_token_name': lpTokenName,
           'wallet_id': walletId,
         },
+      ),
     );
   }
 
   void onPoolApproveClick(String currencyOne) {
     trackingRepository.track(
-      PoolPageUserEvent.onApprovePoolClick()
-        ..params = {
+      PoolPageUserEvent.onApprovePoolClick(
+        {
           'currency_1': currencyOne,
         },
+      ),
     );
   }
 
   void onPoolConfirmClick(String currencyTwo) {
     trackingRepository.track(
-      PoolPageUserEvent.onConfirmPoolClick()
-        ..params = {
+      PoolPageUserEvent.onConfirmPoolClick(
+        {
           'currency_2': currencyTwo,
         },
+      ),
     );
   }
 
@@ -78,8 +69,8 @@ extension PoolPageTracking on TrackingCubit {
     String walletId,
   ) {
     trackingRepository.track(
-      PoolPageUserEvent.onPoolRemove()
-        ..params = {
+      PoolPageUserEvent.onPoolRemove(
+        {
           'value_1': valueOne,
           'value_2': valueTwo,
           'lp_tokens': lpTokens,
@@ -87,24 +78,27 @@ extension PoolPageTracking on TrackingCubit {
           'percent_removal': percentRemoval,
           'wallet_id': walletId
         },
+      ),
     );
   }
 
   void onPoolRemovalApproveClick(String currencyOne) {
     trackingRepository.track(
-      PoolPageUserEvent.onRemoveApproveClick()
-        ..params = {
+      PoolPageUserEvent.onRemoveApproveClick(
+        {
           'currency_1': currencyOne,
         },
+      ),
     );
   }
 
   void onPoolRemovalConfirmClick(String currencyTwo) {
     trackingRepository.track(
-      PoolPageUserEvent.onRemoveConfirmClick()
-        ..params = {
+      PoolPageUserEvent.onRemoveConfirmClick(
+        {
           'currency_2': currencyTwo,
         },
+      ),
     );
   }
 }
