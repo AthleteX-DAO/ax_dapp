@@ -18,7 +18,7 @@ class TrackingRepository {
   ///
 
   /// Updates tracking services accordingly
-  void track(TrackEvent event){
+  void track(TrackEvent event) {
     _firebase.logEvent(
       name: event.name,
       parameters: event.params,
