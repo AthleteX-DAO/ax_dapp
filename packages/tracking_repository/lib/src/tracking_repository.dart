@@ -19,10 +19,10 @@ class TrackingRepository {
 
   /// Updates tracking services accordingly
   void track(TrackEvent event) {
-    _firebase.logEvent(name: event.name);    
+    _firebase.logEvent(
+      name: event.name,
+      parameters: event.params,
+    );    
     dev.log(event.name);
-    // firebase
-    // GA
-    // tracker?.track...
   }
 }
