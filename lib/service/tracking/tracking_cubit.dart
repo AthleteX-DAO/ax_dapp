@@ -26,37 +26,37 @@ extension PoolPageTracking on TrackingCubit {
     String lpTokenName,
     String walletId,
   ) {
-    trackingRepository.trackPoolCreation(
-      PoolPageUserEvent.onPoolCreate(),
-      valueOne,
-      valueTwo,
-      lpTokens,
-      shareOfPool,
-      lpTokenName,
-      walletId,
+    trackingRepository.track(
+      PoolPageUserEvent.onPoolCreate()
+        ..params = {
+          'value_1': valueOne,
+          'value_2': valueTwo,
+          'lp_tokens': lpTokens,
+          'share_of_pool': shareOfPool,
+          'lp_token_name': lpTokenName,
+          'wallet_id': walletId,
+        },
     );
   }
-}
 
-extension PoolPageApproveClicked on TrackingCubit {
   void onPoolApproveClick(String currencyOne) {
-    trackingRepository.trackPoolApproveClick(
-      PoolPageUserEvent.onApprovePoolClick(),
-      currencyOne,
+    trackingRepository.track(
+      PoolPageUserEvent.onApprovePoolClick()
+        ..params = {
+          'currency_1': currencyOne,
+        },
     );
   }
-}
 
-extension PoolPageConfirmClicked on TrackingCubit {
   void onPoolConfirmClick(String currencyTwo) {
-    trackingRepository.trackPoolConfirmClick(
-      PoolPageUserEvent.onConfirmPoolClick(),
-      currencyTwo,
+    trackingRepository.track(
+      PoolPageUserEvent.onConfirmPoolClick()
+        ..params = {
+          'currency_2': currencyTwo,
+        },
     );
   }
-}
 
-extension PoolPageRemoval on TrackingCubit {
   void onPoolRemoval(
     double valueOne,
     double valueTwo,
@@ -65,32 +65,34 @@ extension PoolPageRemoval on TrackingCubit {
     double percentRemoval,
     String walletId,
   ) {
-    trackingRepository.trackPoolRemoval(
-      PoolPageUserEvent.onPoolRemove(),
-      valueOne,
-      valueTwo,
-      lpTokens,
-      shareOfPool,
-      percentRemoval,
-      walletId,
+    trackingRepository.track(
+      PoolPageUserEvent.onPoolRemove()
+        ..params = {
+          'value_1': valueOne,
+          'value_2': valueTwo,
+          'lp_tokens': lpTokens,
+          'share_of_pool': shareOfPool,
+          'percent_removal': percentRemoval,
+          'wallet_id': walletId
+        },
     );
   }
-}
 
-extension PoolPageRemovalApproveClicked on TrackingCubit {
   void onPoolRemovalApproveClick(String currencyOne) {
-    trackingRepository.trackPoolRemovalApproveClick(
-      PoolPageUserEvent.onRemoveApproveClick(),
-      currencyOne,
+    trackingRepository.track(
+      PoolPageUserEvent.onRemoveApproveClick()
+        ..params = {
+          'currency_1': currencyOne,
+        },
     );
   }
-}
 
-extension PoolPageRemovalConfirmClicked on TrackingCubit {
   void onPoolRemovalConfirmClick(String currencyTwo) {
-    trackingRepository.trackPoolRemovalConfirmClick(
-      PoolPageUserEvent.onRemoveConfirmClick(),
-      currencyTwo,
+    trackingRepository.track(
+      PoolPageUserEvent.onRemoveConfirmClick()
+        ..params = {
+          'currency_2': currencyTwo,
+        },
     );
   }
 }
