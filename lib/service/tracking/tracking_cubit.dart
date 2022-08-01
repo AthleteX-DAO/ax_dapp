@@ -23,7 +23,9 @@ class TrackingCubit extends Cubit<TrackingState> {
 
 extension LandingPageTracking on TrackingCubit {
   void onPressedStartTrading() {
-    trackingRepository.track(LandingPageEvent.onPressedStartTrading());
+    trackingRepository.track(
+      LandingPageEvent.onPressedStartTrading(),
+    );
   }
 }
 
@@ -35,26 +37,34 @@ extension TradePageTracking on TrackingCubit {
     String walletID,
   ) {
     trackingRepository.track(
-      TradePageUserEvent.onSwapConfirmedTransaction()
-        ..params = {
+      TradePageUserEvent.onSwapConfirmedTransaction(
+        params: {
           'from_units': fromUnits,
           'to_units': toUnits,
           'fee': totalFee,
           'wallet_id': walletID,
         },
+      ),
     );
   }
 
   void onSwapApproveClick(String fromCurrency) {
     trackingRepository.track(
-      TradePageUserEvent.onApproveClick()
-        ..params = {'from_currency': fromCurrency},
+      TradePageUserEvent.onApproveClick(
+        params: {
+          'from_currency': fromCurrency,
+        },
+      ),
     );
   }
 
   void onSwapConfirmClick(String toCurrency) {
     trackingRepository.track(
-      TradePageUserEvent.onConfirmClick()..params = {'to_currency': toCurrency},
+      TradePageUserEvent.onConfirmClick(
+        params = {
+          'to_currency': toCurrency,
+        },
+      ),
     );
   }
 }

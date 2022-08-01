@@ -74,10 +74,7 @@ class _TrackEvents extends StatelessWidget {
                         child: Text(state.loggedEvents[index].name),
                       )
                     ] +
-                    {
-                      'param1': 'value 1',
-                      'param2': 'value 2',
-                    }
+                    state.loggedEvents[index].params
                         .entries
                         .map(
                           (entry) => Padding(
@@ -103,7 +100,7 @@ class _TrackEvents extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                   ),
                                   child: Text(
-                                    entry.value,
+                                    entry.value.toString(),
                                   ),
                                 ),
                               ],
