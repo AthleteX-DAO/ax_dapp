@@ -8,12 +8,12 @@ class TrackingRepository {
   /// Default construcot
   TrackingRepository({
     FirebaseAnalytics? firebase,
-  }) : _firebase = firebase ?? FirebaseAnalytics.instance;
+  }) : _firebase = firebase ?? FirebaseAnalytics.instance ;
 
   /// Update to configure with relevant trackers
   final FirebaseAnalytics _firebase;
 
-  /// Will add events containg the complet updated list of events
+    /// Will add events containg the complet updated list of events
   Stream<List<TrackEvent>> get loggedEventsStream =>
       _loggedEventsController.stream.asBroadcastStream();
   final _loggedEventsController = StreamController<List<TrackEvent>>();
@@ -31,11 +31,11 @@ class TrackingRepository {
 
   /// Updates tracking services accordingly
   void track(TrackEvent event) {
-    _firebase.logEvent(name: event.name);
-    _updateLoggedEvents(event);
+    _firebase.logEvent(
+      name: event.name,
+      parameters: event.params,
+    );    
     dev.log(event.name);
-    // firebase
-    // GA
-    // tracker?.track...
+    _updateLoggedEvents(event);    
   }
 }
