@@ -19,48 +19,9 @@ class TrackingRepository {
 
   /// Updates tracking services accordingly
   void track(TrackEvent event) {
-    _firebase.logEvent(name: event.name);    
-    dev.log(event.name);
-  }
-
-  /// Updates tracking services when the user has approved a swap
-  void trackTradeApproval(
-      TrackEvent event,
-      String fromUnits,
-      String toUnits,
-      String totalFee,
-      String walletID,) {
-    _firebase.logEvent(name: event.name,
-      parameters: {
-        'from_units': fromUnits,
-        'to_units': toUnits,
-        'fee': totalFee,
-        'wallet_id': walletID,
-      },
-    );    
-    dev.log(event.name);
-  }
-
-  /// Updates tracking services when the user has clicked the approve button
-  void trackTradeApproveClick(
-      TrackEvent event,
-      String fromCurrency,) {
-    _firebase.logEvent(name: event.name,
-      parameters: {
-        'from_currency': fromCurrency
-      },
-    );    
-    dev.log(event.name);
-  }
-  
-  /// Updates tracking services when the user has clicked the approve button
-  void trackTradeConfirmClick(
-      TrackEvent event,
-      String toCurrency,) {
-    _firebase.logEvent(name: event.name,
-      parameters: {
-        'to_currency': toCurrency
-      },
+    _firebase.logEvent(
+      name: event.name,
+      parameters: event.params,
     );    
     dev.log(event.name);
   }

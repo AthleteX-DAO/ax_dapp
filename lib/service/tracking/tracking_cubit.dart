@@ -24,30 +24,27 @@ extension TradePageTracking on TrackingCubit {
     String totalFee,
     String walletID,
   ) {
-    trackingRepository.trackTradeApproval(
-      TradePageUserEvent.onSwapConfirmedTransaction(),
-      fromUnits,
-      toUnits,
-      totalFee,
-      walletID,
+    trackingRepository.track(
+      TradePageUserEvent.onSwapConfirmedTransaction()
+        ..params = {
+          'from_units': fromUnits,
+          'to_units': toUnits,
+          'fee': totalFee,
+          'wallet_id': walletID,
+        },
     );
   }
-}
 
-extension TradePageApproveClicked on TrackingCubit {
   void onSwapApproveClick(String fromCurrency) {
-    trackingRepository.trackTradeApproveClick(
-      TradePageUserEvent.onApproveClick(),
-      fromCurrency,
+    trackingRepository.track(
+      TradePageUserEvent.onApproveClick()
+        ..params = {'from_currency': fromCurrency},
     );
   }
-}
 
-extension TradePageConfirmClicked on TrackingCubit {
   void onSwapConfirmClick(String toCurrency) {
-    trackingRepository.trackTradeConfirmClick(
-      TradePageUserEvent.onConfirmClick(),
-      toCurrency,
+    trackingRepository.track(
+      TradePageUserEvent.onConfirmClick()..params = {'to_currency': toCurrency},
     );
   }
 }
