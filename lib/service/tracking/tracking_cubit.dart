@@ -17,6 +17,86 @@ extension LandingPageTracking on TrackingCubit {
   }
 }
 
+extension PoolPageTracking on TrackingCubit {
+  void onPoolCreated(
+    String valueOne,
+    String valueTwo,
+    String lpTokens,
+    String shareOfPool,
+    String lpTokenName,
+    String walletId,
+  ) {
+    trackingRepository.track(
+      PoolPageUserEvent.onPoolCreate()
+        ..params = {
+          'value_1': valueOne,
+          'value_2': valueTwo,
+          'lp_tokens': lpTokens,
+          'share_of_pool': shareOfPool,
+          'lp_token_name': lpTokenName,
+          'wallet_id': walletId,
+        },
+    );
+  }
+
+  void onPoolApproveClick(String currencyOne) {
+    trackingRepository.track(
+      PoolPageUserEvent.onApprovePoolClick()
+        ..params = {
+          'currency_1': currencyOne,
+        },
+    );
+  }
+
+  void onPoolConfirmClick(String currencyTwo) {
+    trackingRepository.track(
+      PoolPageUserEvent.onConfirmPoolClick()
+        ..params = {
+          'currency_2': currencyTwo,
+        },
+    );
+  }
+
+  void onPoolRemoval(
+    double valueOne,
+    double valueTwo,
+    String lpTokens,
+    String shareOfPool,
+    double percentRemoval,
+    String walletId,
+  ) {
+    trackingRepository.track(
+      PoolPageUserEvent.onPoolRemove()
+        ..params = {
+          'value_1': valueOne,
+          'value_2': valueTwo,
+          'lp_tokens': lpTokens,
+          'share_of_pool': shareOfPool,
+          'percent_removal': percentRemoval,
+          'wallet_id': walletId
+        },
+    );
+  }
+
+  void onPoolRemovalApproveClick(String currencyOne) {
+    trackingRepository.track(
+      PoolPageUserEvent.onRemoveApproveClick()
+        ..params = {
+          'currency_1': currencyOne,
+        },
+    );
+  }
+
+  void onPoolRemovalConfirmClick(String currencyTwo) {
+    trackingRepository.track(
+      PoolPageUserEvent.onRemoveConfirmClick()
+        ..params = {
+          'currency_2': currencyTwo,
+        },
+    );
+  }
+}
+
 extension TradePageTracking on TrackingCubit {
   void onSwapConfirmedTransaction(
     String fromUnits,
