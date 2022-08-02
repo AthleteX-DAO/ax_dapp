@@ -10,8 +10,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => TrackingCubit(
-        context.read<TrackingRepository>(),),
+      create: (context) => TrackingCubit(
+        context.read<TrackingRepository>(),
+      ),
       child: MaterialApp(
         title: 'AthleteX',
         debugShowCheckedModeBanner: false,

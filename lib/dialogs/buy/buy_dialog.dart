@@ -534,7 +534,6 @@ class _BuyDialogState extends State<BuyDialog> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AthleteBuyApproveButton(
-
                         175,
                         40,
                         'Approve',

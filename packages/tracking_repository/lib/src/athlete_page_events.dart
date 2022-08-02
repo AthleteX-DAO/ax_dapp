@@ -5,12 +5,12 @@ class AthletePageTrackingEvent extends TrackEvent {
   /// Informs tracking services that buy athlete button was pressed
   AthletePageTrackingEvent.onPressedAthleteBuy(
       Map<String, dynamic> params,
-      ) :super(name: 'athlete_buy', params: params);
+      ) :super(name: 'buy_approve_button_click', params: params);
 
   /// Informs tracking services that buy athlete button was pressed
   AthletePageTrackingEvent.onPressedConfirmBuy(
       Map<String, dynamic> params,
-      ) :super(name: 'confirm_buy', params: params);
+      ) :super(name: 'buy_confirm_button_click', params: params);
 
   /// Informs tracking services that buy athlete was successful
   AthletePageTrackingEvent.onAthleteBuySuccess(
@@ -22,13 +22,13 @@ class AthletePageTrackingEvent extends TrackEvent {
   AthletePageTrackingEvent.onPressedAthleteSell(
       Map<String, dynamic> params,
       ) :
-  super(name: 'athlete_sell', params: params);
+  super(name: 'sell_approve_button_click', params: params);
 
   /// Informs tracking services that sell athlete button was pressed
   AthletePageTrackingEvent.onPressedConfirmSell(
       Map<String, dynamic> params,
       ) :
-  super(name: 'confirm_sell', params: params);
+  super(name: 'sell_confirm_button_click', params: params);
 
   /// Informs tracking services that sell athlete was successful
   AthletePageTrackingEvent.onAthleteSellSuccess(

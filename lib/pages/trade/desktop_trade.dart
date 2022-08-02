@@ -1,13 +1,14 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
-import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/pages/trade/components/TradeApproveButton.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,6 +49,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
     // input box
     final tokenContainerWid = wid * 0.95;
     final amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      walletController.controller.publicAddress.toString(),
+    );
 
     return BlocBuilder<TradePageBloc, TradePageState>(
       buildWhen: (previous, current) => current.status.name.isNotEmpty,
@@ -648,13 +652,19 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       ],
                     ),
                   ),
-                  ApproveButton(
-                    175,
-                    40,
-                    'Approve',
-                    swapController.approve,
-                    swapController.swap,
-                    transactionConfirmed,
+                  TradeApproveButton(
+                    width: 175,
+                    height: 40,
+                    text: 'Approve',
+                    approveCallback: swapController.approve,
+                    confirmCallback: swapController.swap,
+                    confirmDialog: transactionConfirmed,
+                    fromCurrency: tokenFrom.name,
+                    toCurrency: tokenTo.name,
+                    fromUnits: _tokenFromInputController.text,
+                    toUnits: receiveAmount,
+                    totalFee: totalFee,
+                    walletAddress: userWalletAddress.walletAddress,
                   ),
                 ],
               ),
