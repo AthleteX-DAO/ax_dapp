@@ -74,8 +74,7 @@ class _TrackEvents extends StatelessWidget {
                         child: Text(state.loggedEvents[index].name),
                       )
                     ] +
-                    state.loggedEvents[index].params
-                        .entries
+                    state.loggedEvents[index].params.entries
                         .map(
                           (entry) => Padding(
                             padding: const EdgeInsets.only(left: 15),
