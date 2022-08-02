@@ -12,13 +12,9 @@ class TrackingCubit extends Cubit<_TrackingState> {
 }
 
 extension LandingPageTracking on TrackingCubit {
-  void onPressedStartTrading(
-    String publicAddress,
-  ) {
+  void onPressedStartTrading() {
     trackingRepository.track(
-      LandingPageEvent.onPressedStartTrading({
-        'public_address': publicAddress,
-      }),
+      LandingPageEvent.onPressedStartTrading({}),
     );
   }
 }
