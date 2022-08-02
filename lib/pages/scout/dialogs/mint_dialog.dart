@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/athlete/components/athlete_mint_button.dart';
+import 'package:ax_dapp/pages/athlete/components/athlete_mint_approve_button.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
@@ -357,16 +357,16 @@ class _MintDialogState extends State<MintDialog> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AthleteMintApproveButton(
-                    175,
-                    40,
-                    'Approve',
-                    widget.athlete,
-                    widget.athlete.name,
-                    _aptAmountController.text,
-                    '$youSpend AX',
-                    lspController.approve,
-                    lspController.mint,
-                    transactionConfirmed,
+                    width: 175,
+                    height: 40,
+                    text: 'Approve',
+                    athlete: widget.athlete,
+                    aptName: widget.athlete.name,
+                    inputApt: _aptAmountController.text,
+                    valueInAX: '$youSpend AX',
+                    approveCallback: lspController.approve,
+                    confirmCallback: lspController.mint,
+                    confirmDialog: transactionConfirmed,
                   ),
                 ],
               ),

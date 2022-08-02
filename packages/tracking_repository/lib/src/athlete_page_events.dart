@@ -54,18 +54,6 @@ class AthletePageTrackingEvent extends TrackEvent {
       ) :
         super(name: 'mint_success', params: params);
 
-
-  /// Informs tracking services that redeem pair athlete button was pressed
-  AthletePageTrackingEvent.onPressedAthleteRedeemPair(
-      Map<String, dynamic> params,
-      ) : super(name: 'redeem_pair', params: params);
-
-  /// Informs tracking services that redeem athlete button was pressed
-  AthletePageTrackingEvent.onPressedConfirmRedeem(
-      Map<String, dynamic> params,
-      ) :
-        super(name: 'mint_confirm_button_click', params: params);
-
   /// Informs tracking services that redeem athlete was successful
   AthletePageTrackingEvent.onAthleteRedeemSuccess(
       Map<String, dynamic> params,

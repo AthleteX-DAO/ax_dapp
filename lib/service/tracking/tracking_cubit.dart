@@ -56,7 +56,7 @@ extension AthleteBuyTracking on TrackingCubit {
       ){
     trackingRepository.track(
         AthletePageTrackingEvent.onPressedAthleteBuy(
-            {'athlete_name': aptName,},
+            {'apt_name': aptName,},
         ),
     );
   }
@@ -68,7 +68,7 @@ extension AthleteBuyTracking on TrackingCubit {
     trackingRepository.track(
         AthletePageTrackingEvent.onPressedConfirmBuy(
           {
-            'athlete_id': id,
+            'apt_id': id,
           },
         ),
     );
@@ -89,8 +89,8 @@ extension AthleteBuyTracking on TrackingCubit {
     trackingRepository.track(
         AthletePageTrackingEvent.onAthleteBuySuccess(
           {
-            'athlete_buy_position': buyPosition,
-            'apt_unit': unit,
+            'long_short': buyPosition,
+            'apt_units': unit,
             'currency_spent': currencySpent,
             'currency': currency,
             'total_fee': totalFee,
@@ -111,7 +111,7 @@ extension AthleteSellTracking on TrackingCubit {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedAthleteSell(
         {
-          'athlete_name': athleteName,
+          'apt_name': athleteName,
         },
       ),
     );
@@ -125,7 +125,7 @@ extension AthleteSellTracking on TrackingCubit {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedConfirmSell(
         {
-          'athlete_id': id,
+          'apt_id': id,
         },
       ),
     );
@@ -145,8 +145,8 @@ extension AthleteSellTracking on TrackingCubit {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteSellSuccess(
           {
-            'athlete_sell_position': sellPosition,
-            'apt_unit': unit,
+            'long_short': sellPosition,
+            'apt_units': unit,
             'currency_spent': currencySpent,
             'currency': currency,
             'total_fee': totalFee,
@@ -221,7 +221,7 @@ extension AthleteRedeemTracking on TrackingCubit{
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteRedeemSuccess(
           {
-            'name': name,
+            'apt_name': name,
             'sport': sport,
             'input_long_apt': inputLongApt,
             'input_short_apt': inputShortApt,

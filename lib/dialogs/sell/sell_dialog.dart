@@ -1,5 +1,5 @@
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
-import 'package:ax_dapp/pages/athlete/components/athlete_sell_button.dart';
+import 'package:ax_dapp/pages/athlete/components/athlete_sell_approve_button.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
@@ -510,18 +510,18 @@ class _SellDialogState extends State<SellDialog> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AthleteSellApproveButton(
-                        175,
-                        40,
-                        'Approve',
-                        _aptAmountController.text,
-                        aptSellInfo,
-                        widget.athlete,
-                        widget.athleteName,
-                        widget.athleteId,
-                        aptLongOrShort,
-                        bloc.swapController.approve,
-                        bloc.swapController.swap,
-                        transactionConfirmed,
+                        width: 175,
+                        height: 40,
+                        text: 'Approve',
+                        amountInputted: _aptAmountController.text,
+                        aptSellInfo: aptSellInfo,
+                        athlete: widget.athlete,
+                        aptName: widget.athleteName,
+                        aptId: widget.athleteId,
+                        longOrShort: aptLongOrShort,
+                        approveCallback: bloc.swapController.approve,
+                        confirmCallback: bloc.swapController.swap,
+                        confirmDialog: transactionConfirmed,
                       ),
                     ],
                   ),

@@ -9,26 +9,26 @@ import 'package:get/get.dart';
 
 // This code changes the state of the button
 class AthleteBuyApproveButton extends StatefulWidget {
-  const AthleteBuyApproveButton(
-    this.width,
-    this.height,
-    this.text,
-    this.amountImputed,
-    this.aptBuyInfo,
-    this.athlete,
-    this.aptName,
-    this.aptId,
-    this.longOrShort,
-    this.approveCallback,
-    this.confirmCallback,
-    this.confirmDialog, {
+  const AthleteBuyApproveButton({
+    required this.width,
+    required this.height,
+    required this.text,
+    required this.amountInputted,
+    required this.aptBuyInfo,
+    required this.athlete,
+    required this.aptName,
+    required this.aptId,
+    required this.longOrShort,
+    required this.approveCallback,
+    required this.confirmCallback,
+    required this.confirmDialog, 
     super.key,
   });
 
   final String text;
   final double width;
   final double height;
-  final String amountImputed;
+  final String amountInputted;
   final AptBuyInfo aptBuyInfo;
   final AthleteScoutModel athlete;
   final String aptName;
@@ -120,7 +120,7 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
               context.read<TrackingCubit>().trackAthleteBuySuccess(
                 widget.longOrShort,
                 widget.aptBuyInfo.receiveAmount,
-                widget.amountImputed,
+                widget.amountInputted,
                 'AX',
                 widget.aptBuyInfo.totalFee,
                 widget.athlete.sport.toString(),
