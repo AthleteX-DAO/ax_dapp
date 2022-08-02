@@ -28,22 +28,25 @@ Container buyButton(
     //if app is in portrait, buyButton will use 1/4 of the total width
     decoration: boxDecoration(primaryOrangeColor, 100, 0, primaryOrangeColor),
     child: TextButton(
-      onPressed: () => showDialog<void>(
-        context: context,
-        builder: (BuildContext context) => BlocProvider(
-          create: (BuildContext context) => BuyDialogBloc(
-            repo: RepositoryProvider.of<GetBuyInfoUseCase>(context),
-            wallet: GetTotalTokenBalanceUseCase(Get.find()),
-            swapController: Get.find(),
+      onPressed: () {
+        showDialog<void>(
+          context: context,
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) => BuyDialogBloc(
+              repo: RepositoryProvider.of<GetBuyInfoUseCase>(context),
+              wallet: GetTotalTokenBalanceUseCase(Get.find()),
+              swapController: Get.find(),
+            ),
+            child: BuyDialog(
+              athlete,
+              athlete.name,
+              athlete.longTokenBookPrice!,
+              athlete.id,
+              goToTradePage,
+            ),
           ),
-          child: BuyDialog(
-            athlete.name,
-            athlete.longTokenBookPrice!,
-            athlete.id,
-            goToTradePage,
-          ),
-        ),
-      ),
+        );
+      },
       child: Text('Buy', style: textStyle(Colors.black, 20, false, false)),
     ),
   );
@@ -61,21 +64,24 @@ Container sellButton(
     // if portrait mode, use 1/3 of container width
     decoration: boxDecoration(Colors.white, 100, 0, Colors.white),
     child: TextButton(
-      onPressed: () => showDialog<void>(
-        context: context,
-        builder: (BuildContext context) => BlocProvider(
-          create: (BuildContext context) => SellDialogBloc(
-            repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
-            wallet: GetTotalTokenBalanceUseCase(Get.find()),
-            swapController: Get.find(),
+      onPressed: () {
+        showDialog<void>(
+          context: context,
+          builder: (BuildContext context) => BlocProvider(
+            create: (BuildContext context) => SellDialogBloc(
+              repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
+              wallet: GetTotalTokenBalanceUseCase(Get.find()),
+              swapController: Get.find(),
+            ),
+            child: SellDialog(
+              athlete,
+              athlete.name,
+              athlete.longTokenBookPrice!,
+              athlete.id,
+            ),
           ),
-          child: SellDialog(
-            athlete.name,
-            athlete.longTokenBookPrice!,
-            athlete.id,
-          ),
-        ),
-      ),
+        );
+      },
       child: Text('Sell', style: textStyle(Colors.black, 20, false, false)),
     ),
   );
@@ -92,10 +98,12 @@ Container mintButton(
     height: 50,
     decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
     child: TextButton(
-      onPressed: () => showDialog<void>(
-        context: context,
-        builder: (BuildContext context) => MintDialog(athlete),
-      ),
+      onPressed: () {
+        showDialog<void>(
+          context: context,
+          builder: (BuildContext context) => MintDialog(athlete),
+        );
+      },
       child:
           Text('Mint Pair', style: textStyle(Colors.white, 20, false, false)),
     ),
@@ -105,6 +113,9 @@ Container mintButton(
 Container redeemButton(
   BuildContext context,
   AthleteScoutModel athlete,
+  String inputLongApt,
+  String inputShortApt,
+  String valueInAX,
   bool isPortraitMode,
   double containerWdt,
 ) {
@@ -113,10 +124,18 @@ Container redeemButton(
     height: 50,
     decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
     child: TextButton(
-      onPressed: () => showDialog<void>(
-        context: context,
-        builder: (BuildContext context) => RedeemDialog(athlete),
-      ),
+      onPressed: () {
+        showDialog<void>(
+          context: context,
+          builder: (BuildContext context) => RedeemDialog(
+            athlete,
+            athlete.sport.toString(),
+            inputLongApt,
+            inputShortApt,
+            valueInAX,
+          ),
+        );
+      },
       child: Text(
         'Redeem Pair',
         style: textStyle(Colors.white, 20, false, false),
