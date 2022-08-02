@@ -1,5 +1,5 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
-import 'package:ax_dapp/pages/athlete/components/athlete_approve_button.dart';
+import 'package:ax_dapp/pages/athlete/components/athlete_buy_approve_button.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
@@ -259,7 +259,7 @@ class _BuyDialogState extends State<BuyDialog> {
 
     var aptLongOrShort = 'Long Apt';
     if (_currentTokenTypeSelection == TokenType.long) {
-      aptLongOrShort = 'Long Aot';
+      aptLongOrShort = 'Long Apt';
     }
     if (_currentTokenTypeSelection == TokenType.short) {
       aptLongOrShort = 'Short Apt';

@@ -1009,7 +1009,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         setState(() {
                           curAthlete = athlete;
                           athletePage = true;
-                          context.read<TrackingCubit>().onPressedAthleteView(athlete.name);
+                          context.read<TrackingCubit>().trackAthleteView(athlete.name);
                         });
                       },
                       child: SizedBox(

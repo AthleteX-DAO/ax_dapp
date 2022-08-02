@@ -1,6 +1,5 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
@@ -8,17 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 // This code changes the state of the button
-class AthleteBuyApproveButton extends StatefulWidget {
-  const AthleteBuyApproveButton(
+class AthleteMintApproveButton extends StatefulWidget {
+  const AthleteMintApproveButton(
     this.width,
     this.height,
     this.text,
-    this.amountImputed,
-    this.aptBuyInfo,
     this.athlete,
     this.aptName,
-    this.aptId,
-    this.longOrShort,
+    this.inputApt,
+    this.valueInAX,
     this.approveCallback,
     this.confirmCallback,
     this.confirmDialog, {
@@ -28,22 +25,20 @@ class AthleteBuyApproveButton extends StatefulWidget {
   final String text;
   final double width;
   final double height;
-  final String amountImputed;
-  final AptBuyInfo aptBuyInfo;
   final AthleteScoutModel athlete;
   final String aptName;
-  final int aptId;
-  final String longOrShort;
+  final String inputApt;
+  final String valueInAX;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
 
   @override
-  State<AthleteBuyApproveButton> createState() =>
-      _AthleteBuyApproveButtonState();
+  State<AthleteMintApproveButton> createState() =>
+      _AthleteMintApproveButtonState();
 }
 
-class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
+class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
   double width = 0;
   double height = 0;
   String text = '';
@@ -52,7 +47,7 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
   Color? textcolor;
   int currentState = 0;
   Widget? dialog;
-  final controller = Get.find<Controller>();
+  final walletController = Get.find<WalletController>();
 
   @override
   void initState() {
@@ -88,6 +83,10 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
 
   @override
   Widget build(BuildContext context) {
+    final userWalletAddress =
+    walletController.controller.publicAddress.toString();
+    final walletInt = BigInt.parse(userWalletAddress);
+    final walletAddress = walletInt.toRadixString(16);
     return Container(
       width: width,
       height: height,
@@ -99,13 +98,13 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
       child: TextButton(
         onPressed: () {
           // Testing to see how the popup will work when the state is changed
-          context.read<TrackingCubit>().onPressedAthleteBuy(
+          context.read<TrackingCubit>().trackAthleteMintApproveButtonClicked(
             widget.aptName,
           );
           if (isApproved) {
             //Confirm button pressed
-            context.read<TrackingCubit>().onPressedConfirmBuy(
-              widget.aptId,
+            context.read<TrackingCubit>().trackAthleteMintConfirmButtonClicked(
+              widget.athlete.sport.toString(),
             );
             widget.confirmCallback().then((value) {
               showDialog<void>(
@@ -113,14 +112,10 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
               );
-              context.read<TrackingCubit>().onAthleteBuySuccess(
-                widget.longOrShort,
-                widget.athlete.team,
-                widget.amountImputed,
-                'AX',
-                widget.aptBuyInfo.totalFee,
-                widget.athlete.sport.toString(),
-                controller.publicAddress,
+              context.read<TrackingCubit>().trackAthleteMintSuccess(
+                widget.inputApt,
+                widget.valueInAX,
+                walletAddress,
               );
             }).catchError((error) {
               showDialog<void>(

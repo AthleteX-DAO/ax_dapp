@@ -1,7 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:tracking_repository/tracking_repository.dart';
-import 'package:web3dart/web3dart.dart';
 
 class _TrackingState {
   const _TrackingState();
@@ -14,122 +12,223 @@ class TrackingCubit extends Cubit<_TrackingState> {
 }
 
 extension LandingPageTracking on TrackingCubit {
-  void onPressedStartTrading() {
-    trackingRepository.track(LandingPageEvent.onPressedStartTrading());
+  void onPressedStartTrading(
+      String publicAddress,
+      ) {
+    trackingRepository.track(LandingPageEvent.onPressedStartTrading({
+      'public_address': publicAddress,
+    }),);
   }
 }
 
 extension ConnectWalletTracking on TrackingCubit {
-  void onPressedConnectWallet() {
-    trackingRepository.track(ScoutPageTrackingEvent.onPressedConnectWallet());
+  void onPressedConnectWallet(
+      String publicAddress,
+      ) {
+    trackingRepository.track(ScoutPageTrackingEvent.onPressedConnectWallet(
+      {
+        'public_address': publicAddress,
+      }
+    ),);
   }
 }
 
 extension ScoutPageTracking on TrackingCubit {
-  void onPressedAthleteView(
+  /// Get athlete view information for analytics
+  void trackAthleteView(
+      String athleteName,
+      ){
+    trackingRepository.track(
+      AthletePageTrackingEvent.onPressedAthleteMint(
+        {
+          'athlete_name': athleteName,
+        },
+      ),
+    );
+
+  }
+}
+
+extension AthleteBuyTracking on TrackingCubit {
+  /// Get athlete info when buy approve button clicked for analytics
+  void trackAthleteBuyApproveButtonClicked(
       String aptName,
-      ) {
-    trackingRepository.trackAthleteView(
-      ScoutPageTrackingEvent.onPressedAthleteView(), aptName,);
+      ){
+    trackingRepository.track(
+        AthletePageTrackingEvent.onPressedAthleteBuy(
+            {'athlete_name': aptName,},
+        ),
+    );
   }
-}
 
-extension TrackAthleteBuyApproveButtonClicked on TrackingCubit {
-  void onPressedAthleteBuy(
-      String aptName,
-  ) {
-    trackingRepository.trackAthleteBuyApproveButtonClicked(
-      AthletePageTrackingEvent.onPressedAthleteBuy(),
-      aptName,);
+/// Get athlete info when buy confirm button clicked for analytics
+  void trackAthleteBuyConfirmButtonClicked(
+      int id,
+      ){
+    trackingRepository.track(
+        AthletePageTrackingEvent.onPressedConfirmBuy(
+          {
+            'athlete_id': id,
+          },
+        ),
+    );
+
   }
-}
 
-extension TrackAthleteBuyConfirmButtonClicked on TrackingCubit {
-  void onPressedConfirmBuy(
-      int aptId,
-      ) {
-    trackingRepository.trackAthleteBuyConfirmButtonClicked(
-      AthletePageTrackingEvent.onPressedConfirmBuy(),
-      aptId,);
-  }
-}
-
-extension TrackAthleteBuySuccess on TrackingCubit {
-  void onAthleteBuySuccess(
+/// Get athlete info when buy success for analytics
+  void trackAthleteBuySuccess(
       String buyPosition,
-      String unit,
+      double unit,
       String currencySpent,
       String currency,
       double totalFee,
       String sport,
-      Rx<EthereumAddress> publicAddress,) {
-    trackingRepository.trackAthleteBuySuccess(
-      AthletePageTrackingEvent.onAthleteBuySuccess(),
-      buyPosition,
-      unit,
-      currencySpent,
-      currency,
-      totalFee,
-      sport,
-      publicAddress.toString(),
+      String walletId,
+      ){
+
+    trackingRepository.track(
+        AthletePageTrackingEvent.onAthleteBuySuccess(
+          {
+            'athlete_buy_position': buyPosition,
+            'apt_unit': unit,
+            'currency_spent': currencySpent,
+            'currency': currency,
+            'total_fee': totalFee,
+            'sport': sport,
+            'wallet_id': walletId
+          }
+        ),
+    );
+
+  }
+}
+
+extension AthleteSellTracking on TrackingCubit {
+  /// Get athlete info when sell button clicked for analytics
+  void trackAthleteSellApproveButtonClicked(
+      String athleteName,
+      ){
+    trackingRepository.track(
+      AthletePageTrackingEvent.onPressedAthleteSell(
+        {
+          'athlete_name': athleteName,
+        },
+      ),
+    );
+
+  }
+
+  /// Get athlete info when sell confirm button clicked for analytics
+  void trackAthleteSellConfirmButtonClicked(
+      int id,
+      ){
+    trackingRepository.track(
+      AthletePageTrackingEvent.onPressedConfirmSell(
+        {
+          'athlete_id': id,
+        },
+      ),
     );
   }
-}
 
-extension TrackAthleteSellApproveButtonClicked on TrackingCubit {
-  void onPressedAthleteSell(
-      String aptName,
-      ) {
-    trackingRepository.trackAthleteSellApproveButtonClicked(
-      AthletePageTrackingEvent.onPressedAthleteSell(),
-      aptName,);
-  }
-}
-
-extension TrackAthleteSellConfirmButtonClicked on TrackingCubit {
-  void onPressedConfirmSell(
-      int aptId,
-      ) {
-    trackingRepository.trackAthleteSellConfirmButtonClicked(
-      AthletePageTrackingEvent.onPressedConfirmSell(),
-      aptId,);
-  }
-}
-
-extension TrackAthleteSellSuccess on TrackingCubit {
-  void onAthleteSellSuccess(
+  /// Get athlete info when sell successful for analytics
+  void trackAthleteSellSuccess(
       String sellPosition,
-      int unit,
+      double unit,
       String currencySpent,
       String currency,
       double totalFee,
       String sport,
-      Rx<EthereumAddress> publicAddress,) {
-    trackingRepository.trackAthleteSellSuccess(
-      AthletePageTrackingEvent.onAthleteSellSuccess(),
-      sellPosition,
-      unit,
-      currencySpent,
-      currency,
-      totalFee,
-      sport,
-      publicAddress.toString(),
+      String walletId,
+      ){
+
+    trackingRepository.track(
+      AthletePageTrackingEvent.onAthleteSellSuccess(
+          {
+            'athlete_sell_position': sellPosition,
+            'apt_unit': unit,
+            'currency_spent': currencySpent,
+            'currency': currency,
+            'total_fee': totalFee,
+            'sport': sport,
+            'wallet_id': walletId
+          }
+      ),
     );
+
   }
 }
 
-extension AthleteMintPairTracking on TrackingCubit {
-  void onPressedAthleteMintPair() {
+extension AthleteMintTracking on TrackingCubit{
+  /// Get athlete info when mint button clicked for analytics
+  void trackAthleteMintApproveButtonClicked(
+      String aptName,
+      ){
     trackingRepository.track(
-      AthletePageTrackingEvent.onPressedAthleteMintPair(),
+      AthletePageTrackingEvent.onPressedAthleteMint(
+        {
+          'apt_name': aptName,
+        },
+      ),
     );
+
+  }
+
+  /// Get athlete info when mint confirmed button clicked for analytics
+  void trackAthleteMintConfirmButtonClicked(
+      String sport,
+      ){
+    trackingRepository.track(
+      AthletePageTrackingEvent.onPressedConfirmMint(
+        {
+          'sport': sport,
+        },
+      ),
+    );
+  }
+
+  /// Get athlete info when mint successful for analytics
+  void trackAthleteMintSuccess(
+      String inputApt,
+      String valueInAx,
+      String walletId,
+      ){
+
+    trackingRepository.track(
+      AthletePageTrackingEvent.onAthleteMintSuccess(
+          {
+            'input_apt': inputApt,
+            'value_in_ax': valueInAx,
+            'wallet_id': walletId
+          }
+      ),
+    );
+
   }
 }
 
-extension AthleteRedeemPairTracking on TrackingCubit {
-  void onPressedAthleteRedeemPair() {
+extension AthleteRedeemTracking on TrackingCubit{
+  /// Get athlete info when redeem successful for analytics
+  void trackAthleteRedeemSuccess(
+      String name,
+      String sport,
+      String inputLongApt,
+      String inputShortApt,
+      String valueInAx,
+      String walletId,
+      ){
+
     trackingRepository.track(
-      AthletePageTrackingEvent.onPressedAthleteRedeemPair(),
+      AthletePageTrackingEvent.onAthleteRedeemSuccess(
+          {
+            'name': name,
+            'sport': sport,
+            'input_long_apt': inputLongApt,
+            'input_short_apt': inputShortApt,
+            'value_in_ax': valueInAx,
+            'wallet_id': walletId
+          }
+      ),
     );
   }
 }

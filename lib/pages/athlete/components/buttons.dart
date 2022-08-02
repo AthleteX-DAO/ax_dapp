@@ -9,7 +9,6 @@ import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
-import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +99,6 @@ Container mintButton(
     decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
     child: TextButton(
       onPressed: () {
-        context.read<TrackingCubit>().onPressedAthleteMintPair();
         showDialog<void>(
           context: context,
           builder: (BuildContext context) => MintDialog(athlete),
@@ -115,6 +113,9 @@ Container mintButton(
 Container redeemButton(
   BuildContext context,
   AthleteScoutModel athlete,
+  String inputLongApt,
+  String inputShortApt,
+  String valueInAX,
   bool isPortraitMode,
   double containerWdt,
 ) {
@@ -124,10 +125,15 @@ Container redeemButton(
     decoration: boxDecoration(Colors.transparent, 100, 2, Colors.white),
     child: TextButton(
       onPressed: () {
-        context.read<TrackingCubit>().onPressedAthleteRedeemPair();
         showDialog<void>(
           context: context,
-          builder: (BuildContext context) => RedeemDialog(athlete),
+          builder: (BuildContext context) => RedeemDialog(
+            athlete,
+            athlete.sport.toString(),
+            inputLongApt,
+            inputShortApt,
+            valueInAX,
+          ),
         );
       },
       child: Text(

@@ -1004,6 +1004,9 @@ class _AthletePageState extends State<AthletePage> {
                       redeemButton(
                         context,
                         athlete,
+                        '',
+                        '',
+                        '',
                         _isPortraitMode,
                         _width,
                       )
@@ -1311,6 +1314,9 @@ class _AthletePageState extends State<AthletePage> {
                           redeemButton(
                             context,
                             athlete,
+                            '',
+                            '',
+                            '',
                             _isPortraitMode,
                             containerWdt,
                           )
