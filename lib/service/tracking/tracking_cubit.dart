@@ -48,6 +48,20 @@ extension ScoutPageTracking on TrackingCubit {
   }
 }
 
+extension AthletePageTracking on TrackingCubit {
+  void trackAddToWallet(
+    String athleteName,
+    String walletId,
+  ) {
+    trackingRepository.track(
+      AthletePageTrackingEvent.onPressedAddToWallet({
+        'apt_player_name': athleteName,
+        'wallet_id': walletId,
+      }),
+    );
+  }
+}
+
 extension AthleteBuyTracking on TrackingCubit {
   /// Get athlete info when buy approve button clicked for analytics
   void trackAthleteBuyApproveButtonClicked(

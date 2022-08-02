@@ -59,5 +59,10 @@ class AthletePageTrackingEvent extends TrackEvent {
       Map<String, dynamic> params,
       ) :
         super(name: 'redeem_success', params: params);
+        
+  /// Informs tracking services that redeem athlete was successful
+  AthletePageTrackingEvent.onPressedAddToWallet(
+    Map<String, dynamic> params,
+  ) : super(name: 'add_to_wallet', params: params);
 
 }
