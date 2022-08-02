@@ -21,7 +21,7 @@ class AthleteBuyApproveButton extends StatefulWidget {
     required this.longOrShort,
     required this.approveCallback,
     required this.confirmCallback,
-    required this.confirmDialog, 
+    required this.confirmDialog,
     super.key,
   });
 
@@ -50,7 +50,6 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
   bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
-  int currentState = 0;
   Widget? dialog;
   final walletController = Get.find<WalletController>();
 
@@ -62,7 +61,6 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;
-    currentState = 0;
   }
 
   void changeButton() {
@@ -82,14 +80,12 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
         textcolor = Colors.amber;
       });
     });
-    // Keep track of how many times the state has changed
-    currentState += 1;
   }
 
   @override
   Widget build(BuildContext context) {
     final userWalletAddress =
-    walletController.controller.publicAddress.toString();
+        walletController.controller.publicAddress.toString();
     final walletInt = BigInt.parse(userWalletAddress);
     final walletAddress = walletInt.toRadixString(16);
     return Container(
@@ -102,15 +98,11 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
-          // Testing to see how the popup will work when the state is changed
-          context.read<TrackingCubit>().trackAthleteBuyApproveButtonClicked(
-            widget.aptName,
-          );
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteBuyConfirmButtonClicked(
-              widget.aptId,
-            );
+                  widget.aptId,
+                );
             widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
@@ -118,14 +110,14 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
                     widget.confirmDialog(context),
               );
               context.read<TrackingCubit>().trackAthleteBuySuccess(
-                widget.longOrShort,
-                widget.aptBuyInfo.receiveAmount,
-                widget.amountInputted,
-                'AX',
-                widget.aptBuyInfo.totalFee,
-                widget.athlete.sport.toString(),
-                  walletAddress,
-              );
+                    widget.longOrShort,
+                    widget.aptBuyInfo.receiveAmount,
+                    widget.amountInputted,
+                    'AX',
+                    widget.aptBuyInfo.totalFee,
+                    widget.athlete.sport.toString(),
+                    walletAddress,
+                  );
             }).catchError((error) {
               showDialog<void>(
                 context: context,
@@ -134,6 +126,9 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
             });
           } else {
             //Approve button was pressed
+            context.read<TrackingCubit>().trackAthleteBuyApproveButtonClicked(
+                  widget.aptName,
+                );
             changeButton();
           }
         },

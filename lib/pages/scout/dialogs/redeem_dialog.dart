@@ -420,21 +420,22 @@ class _RedeemDialogState extends State<RedeemDialog> {
                         final result = await lspController.redeem();
 
                         if (result) {
-
                           await showDialog<void>(
                             context: context,
                             builder: (BuildContext context) =>
                                 confirmTransaction(context, true, ''),
-
-                          ).then((value) => context.read<TrackingCubit>()
-                              .trackAthleteRedeemSuccess(
-                            widget.athlete.name,
-                            widget.athlete.sport.toString(),
-                            _longInputController.text,
-                            _shortInputController.text,
-                            widget.valueInAX,
-                            walletAddress,
-                          ),);
+                          ).then(
+                            (value) => context
+                                .read<TrackingCubit>()
+                                .trackAthleteRedeemSuccess(
+                                  widget.athlete.name,
+                                  widget.athlete.sport.toString(),
+                                  _longInputController.text,
+                                  _shortInputController.text,
+                                  widget.valueInAX,
+                                  walletAddress,
+                                ),
+                          );
 
                           if (mounted) {
                             Navigator.pop(context);

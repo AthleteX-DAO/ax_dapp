@@ -82,9 +82,9 @@ class _DesktopScoutState extends State<DesktopScout> {
         }
         if (athletePage && curAthlete != null) {
           return BlocProvider(
-              create: (context) => AthletePageBloc(
-                repo: RepositoryProvider.of<MLBRepo>(context),
-              ),
+            create: (context) => AthletePageBloc(
+              repo: RepositoryProvider.of<MLBRepo>(context),
+            ),
             child: AthletePage(
               athlete: curAthlete!,
               goToTradePage: widget.goToTradePage,
@@ -1009,7 +1009,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                         setState(() {
                           curAthlete = athlete;
                           athletePage = true;
-                          context.read<TrackingCubit>().trackAthleteView(athlete.name);
+                          context
+                              .read<TrackingCubit>()
+                              .trackAthleteView(athlete.name);
                         });
                       },
                       child: SizedBox(

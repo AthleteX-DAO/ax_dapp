@@ -21,7 +21,7 @@ class AthleteSellApproveButton extends StatefulWidget {
     required this.longOrShort,
     required this.approveCallback,
     required this.confirmCallback,
-    required this.confirmDialog, 
+    required this.confirmDialog,
     super.key,
   });
 
@@ -50,7 +50,6 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
   bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
-  int currentState = 0;
   Widget? dialog;
   final walletController = Get.find<WalletController>();
 
@@ -62,7 +61,6 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;
-    currentState = 0;
   }
 
   void changeButton() {
@@ -82,8 +80,6 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
         textcolor = Colors.amber;
       });
     });
-    // Keep track of how many times the state has changed
-    currentState += 1;
   }
 
   @override
@@ -102,10 +98,6 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
-          // Testing to see how the popup will work when the state is changed
-          context.read<TrackingCubit>().trackAthleteSellApproveButtonClicked(
-                widget.aptName,
-              );
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteSellConfirmButtonClicked(
@@ -134,6 +126,9 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
             });
           } else {
             //Approve button was pressed
+            context.read<TrackingCubit>().trackAthleteSellApproveButtonClicked(
+                  widget.aptName,
+                );
             changeButton();
           }
         },
