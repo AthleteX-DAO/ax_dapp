@@ -337,6 +337,50 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.2"
+  firebase_analytics:
+    dependency: "direct main"
+    description:
+      name: firebase_analytics
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.1.11"
+  firebase_analytics_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_analytics_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.3.0"
+  firebase_analytics_web:
+    dependency: "direct overridden"
+    description:
+      path: "packages/firebase_analytics/firebase_analytics_web"
+      ref: "firebase_analytics_web-0.4.0+16-fix-for-web"
+      resolved-ref: "56e16a3076a3b74246071bb3cb05b5933fd522df"
+      url: "https://github.com/durduman/flutterfire.git"
+    source: git
+    version: "0.4.0+16"
+  firebase_core:
+    dependency: "direct main"
+    description:
+      name: firebase_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.19.0"
+  firebase_core_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_core_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.4.1"
+  firebase_core_web:
+    dependency: transitive
+    description:
+      name: firebase_core_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.5"
   fixnum:
     dependency: transitive
     description:
@@ -1108,6 +1152,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  tracking_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/tracking_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   tuple:
     dependency: transitive
     description:
