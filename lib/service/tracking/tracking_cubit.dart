@@ -41,10 +41,8 @@ extension ScoutPageTracking on TrackingCubit {
     String athleteName,
   ) {
     trackingRepository.track(
-      AthletePageTrackingEvent.onPressedAthleteMint(
-        {
-          'athlete_name': athleteName,
-        },
+      ScoutPageTrackingEvent.onPressedAthleteView(
+        {'apt_player_name': athleteName},
       ),
     );
   }

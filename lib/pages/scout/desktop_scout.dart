@@ -1006,12 +1006,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                     ),
                     child: TextButton(
                       onPressed: () {
+                        context
+                            .read<TrackingCubit>()
+                            .trackAthleteView(athlete.name);
                         setState(() {
                           curAthlete = athlete;
                           athletePage = true;
-                          context
-                              .read<TrackingCubit>()
-                              .trackAthleteView(athlete.name);
                         });
                       },
                       child: SizedBox(
