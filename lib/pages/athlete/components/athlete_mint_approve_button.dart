@@ -91,7 +91,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteMintConfirmButtonClicked(
-                  widget.athlete.sport.toString(),
+                  sport: widget.athlete.sport.toString(),
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
@@ -100,9 +100,9 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                     widget.confirmDialog(context),
               );
               context.read<TrackingCubit>().trackAthleteMintSuccess(
-                    widget.inputApt,
-                    widget.valueInAX,
-                    widget.walletAddress,
+                    inputApt: widget.inputApt,
+                    valueInAx: widget.valueInAX,
+                    walletId: widget.walletAddress,
                   );
             }).catchError((error) {
               showDialog<void>(
@@ -113,7 +113,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
           } else {
             //Approve button was pressed
             context.read<TrackingCubit>().trackAthleteMintApproveButtonClicked(
-                  '${widget.aptName} pair',
+                  aptName: '${widget.aptName} pair',
                 );
             changeButton();
           }

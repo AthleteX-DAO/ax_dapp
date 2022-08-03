@@ -1217,8 +1217,8 @@ class _AthletePageState extends State<AthletePage> {
                       child: TextButton(
                         onPressed: () {
                           context.read<TrackingCubit>().trackAddToWallet(
-                                athlete.name,
-                                userWalletAddress.walletAddress,
+                                athleteName: athlete.name,
+                                walletId: userWalletAddress.walletAddress,
                               );
                           webWallet.addTokenToWallet(
                             _getCurrentTokenAddress(),

@@ -428,13 +428,13 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             (value) => context
                                 .read<TrackingCubit>()
                                 .trackAthleteRedeemSuccess(
-                                  '${widget.athlete.name} pair',
-                                  widget.athlete.sport.toString(),
-                                  _longInputController.text,
-                                  _shortInputController.text,
-                              (lspController.redeemAmt * 15000).
-                              toStringAsFixed(6),
-                                userWalletAddress.walletAddress,
+                                  name: '${widget.athlete.name} pair',
+                                  sport: widget.athlete.sport.toString(),
+                                  inputLongApt: _longInputController.text,
+                                  inputShortApt: _shortInputController.text,
+                                  valueInAx: (lspController.redeemAmt * 15000)
+                                      .toStringAsFixed(6),
+                                  walletId: userWalletAddress.walletAddress,
                                 ),
                           );
 

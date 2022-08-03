@@ -273,7 +273,6 @@ class _BuyDialogState extends State<BuyDialog> {
       controller.publicAddress.toString(),
     );
 
-
     return BlocBuilder<BuyDialogBloc, BuyDialogState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
