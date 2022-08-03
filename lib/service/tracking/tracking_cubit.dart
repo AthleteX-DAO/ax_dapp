@@ -276,6 +276,7 @@ extension PoolPageTracking on TrackingCubit {
     String shareOfPool,
     double percentRemoval,
     String walletId,
+    String lpTokenName,
   ) {
     trackingRepository.track(
       PoolPageUserEvent.onPoolRemove(
@@ -285,7 +286,8 @@ extension PoolPageTracking on TrackingCubit {
           'lp_tokens': lpTokens,
           'share_of_pool': shareOfPool,
           'percent_removal': percentRemoval,
-          'wallet_id': walletId
+          'wallet_id': walletId,
+          'lp_token_name': lpTokenName
         },
       ),
     );
