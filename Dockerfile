@@ -27,6 +27,7 @@ RUN flutter config --enable-web
 RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
+RUN flutter pub get
 RUN flutter build web --web-renderer auto
 
 # Record the exposed port

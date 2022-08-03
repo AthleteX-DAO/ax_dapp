@@ -10,6 +10,6 @@ echo " * CLEANING OLD IMAGES"
 docker-compose rm -f
 echo " * RESTART CONTAINER WITH LATEST IMAGE"
 export BUILD_TYPE=staging
-docker-compose up -d
+docker-compose up -d --build --force-recreate
 echo " * PRUNE OLD IMAGES"
 docker image prune -af
