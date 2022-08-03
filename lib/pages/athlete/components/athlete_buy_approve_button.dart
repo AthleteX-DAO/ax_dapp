@@ -1,11 +1,9 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 // This code changes the state of the button
 class AthleteBuyApproveButton extends StatefulWidget {
@@ -22,6 +20,7 @@ class AthleteBuyApproveButton extends StatefulWidget {
     required this.approveCallback,
     required this.confirmCallback,
     required this.confirmDialog,
+    required this.walletAddress,
     super.key,
   });
 
@@ -34,6 +33,7 @@ class AthleteBuyApproveButton extends StatefulWidget {
   final String aptName;
   final int aptId;
   final String longOrShort;
+  final String walletAddress;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -51,7 +51,6 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
   Color? fillcolor;
   Color? textcolor;
   Widget? dialog;
-  final walletController = Get.find<WalletController>();
 
   @override
   void initState() {
@@ -84,10 +83,6 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
 
   @override
   Widget build(BuildContext context) {
-    final userWalletAddress =
-        walletController.controller.publicAddress.toString();
-    final walletInt = BigInt.parse(userWalletAddress);
-    final walletAddress = walletInt.toRadixString(16);
     return Container(
       width: width,
       height: height,
@@ -116,7 +111,7 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
                     'AX',
                     widget.aptBuyInfo.totalFee,
                     widget.athlete.sport.toString(),
-                    walletAddress,
+                    widget.walletAddress,
                   );
             }).catchError((error) {
               showDialog<void>(
