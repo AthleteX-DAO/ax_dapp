@@ -272,7 +272,7 @@ class _SellDialogState extends State<SellDialog> {
         }
         var aptLongOrShort = 'Long Apt';
         if (_currentTokenTypeSelection == TokenType.long) {
-          aptLongOrShort = 'Long Aot';
+          aptLongOrShort = 'Long Apt';
         }
         if (_currentTokenTypeSelection == TokenType.short) {
           aptLongOrShort = 'Short Apt';
