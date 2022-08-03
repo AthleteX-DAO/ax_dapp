@@ -118,7 +118,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
           } else {
             //Approve button was pressed
             context.read<TrackingCubit>().trackAthleteMintApproveButtonClicked(
-                  widget.aptName,
+                  '${widget.aptName} pair',
                 );
             changeButton();
           }

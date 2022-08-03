@@ -428,7 +428,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             (value) => context
                                 .read<TrackingCubit>()
                                 .trackAthleteRedeemSuccess(
-                                  widget.athlete.name,
+                                  '${widget.athlete.name} pair',
                                   widget.athlete.sport.toString(),
                                   _longInputController.text,
                                   _shortInputController.text,
