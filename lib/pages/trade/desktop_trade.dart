@@ -146,7 +146,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
           );
         }
 
-        Widget createTokenElement(Token token, int tknNum) {
+        Widget createTokenElement(
+          Token token,
+          int tknNum,
+          BuildContext builderContext,
+        ) {
           //Creates a token item for AthleteTokenList widget
           final _width = MediaQuery.of(context).size.width;
           return SizedBox(
@@ -183,7 +187,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
                       bloc.add(PageRefreshEvent());
                       setState(() {
-                        Navigator.pop(context);
+                        Navigator.pop(builderContext);
                       });
                     },
               child: Row(
@@ -265,9 +269,13 @@ class _DesktopTradeState extends State<DesktopTrade> {
             child: TextButton(
               onPressed: () => showDialog<void>(
                 context: context,
-                builder: (BuildContext context) => AthleteTokenList(
+                builder: (BuildContext builderContext) => AthleteTokenList(
                   tknNum,
-                  createTokenElement,
+                  (token, tknNumber) => createTokenElement(
+                    token,
+                    tknNumber,
+                    builderContext,
+                  ),
                 ),
               ),
               child: Row(

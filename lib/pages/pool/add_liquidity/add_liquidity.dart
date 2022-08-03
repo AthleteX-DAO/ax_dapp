@@ -120,7 +120,11 @@ class _AddLiquidityState extends State<AddLiquidity> {
           }
         }
 
-        Widget createTokenElement(Token token, int tknNum) {
+        Widget createTokenElement(
+          Token token,
+          int tknNum,
+          BuildContext builderContext,
+        ) {
           //Each element of listview is a tokenElement
           return SizedBox(
             height: 50,
@@ -150,7 +154,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                       _tokenAmountOneController.clear();
                       _tokenAmountTwoController.clear();
                       setState(() {
-                        Navigator.pop(context);
+                        Navigator.pop(builderContext);
                       });
                     },
               child: Row(
@@ -281,9 +285,14 @@ class _AddLiquidityState extends State<AddLiquidity> {
                       child: TextButton(
                         onPressed: () => showDialog<void>(
                           context: context,
-                          builder: (BuildContext context) => AthleteTokenList(
+                          builder: (BuildContext builderContext) =>
+                              AthleteTokenList(
                             tknNum,
-                            createTokenElement,
+                            (token, tknNumber) => createTokenElement(
+                              token,
+                              tknNumber,
+                              builderContext,
+                            ),
                           ),
                         ),
                         child: Row(
