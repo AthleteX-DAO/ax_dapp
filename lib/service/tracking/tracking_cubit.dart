@@ -150,7 +150,7 @@ extension AthleteSellTracking on TrackingCubit {
       AthletePageTrackingEvent.onAthleteSellSuccess({
         'long_short': sellPosition,
         'apt_units': unit,
-        'currency_spent': currencyReceive,
+        'currency_received': currencyReceive,
         'currency': currency,
         'total_fee': totalFee,
         'sport': sport,
