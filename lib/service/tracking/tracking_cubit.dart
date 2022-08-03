@@ -139,8 +139,8 @@ extension AthleteSellTracking on TrackingCubit {
   /// Get athlete info when sell successful for analytics
   void trackAthleteSellSuccess(
     String sellPosition,
-    double unit,
-    String currencySpent,
+    String unit,
+    double currencyReceive,
     String currency,
     double totalFee,
     String sport,
@@ -150,7 +150,7 @@ extension AthleteSellTracking on TrackingCubit {
       AthletePageTrackingEvent.onAthleteSellSuccess({
         'long_short': sellPosition,
         'apt_units': unit,
-        'currency_spent': currencySpent,
+        'currency_spent': currencyReceive,
         'currency': currency,
         'total_fee': totalFee,
         'sport': sport,

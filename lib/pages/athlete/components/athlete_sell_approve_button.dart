@@ -106,8 +106,8 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
               );
               context.read<TrackingCubit>().trackAthleteSellSuccess(
                     widget.longOrShort,
-                    widget.aptSellInfo.receiveAmount,
                     widget.amountInputted,
+                    widget.aptSellInfo.receiveAmount,
                     'AX',
                     widget.aptSellInfo.totalFee,
                     widget.athlete.sport.toString(),
