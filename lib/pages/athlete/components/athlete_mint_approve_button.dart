@@ -1,48 +1,44 @@
+import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 // This code changes the state of the button
-class PoolApproveButton extends StatefulWidget {
-  const PoolApproveButton({
+class AthleteMintApproveButton extends StatefulWidget {
+  const AthleteMintApproveButton({
     required this.width,
     required this.height,
     required this.text,
+    required this.athlete,
+    required this.aptName,
+    required this.inputApt,
+    required this.valueInAX,
     required this.approveCallback,
     required this.confirmCallback,
     required this.confirmDialog,
-    required this.currencyOne,
-    required this.currencyTwo,
-    required this.lpTokens,
-    required this.valueOne,
-    required this.valueTwo,
-    required this.shareOfPool,
-    required this.lpTokenName,
-    required this.walletId,
     super.key,
   });
 
   final String text;
   final double width;
   final double height;
-  final String currencyOne;
-  final String currencyTwo;
-  final String valueOne;
-  final String valueTwo;
-  final String lpTokens;
-  final String shareOfPool;
-  final String lpTokenName;
-  final String walletId;
+  final AthleteScoutModel athlete;
+  final String aptName;
+  final String inputApt;
+  final String valueInAX;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
 
   @override
-  State<PoolApproveButton> createState() => _PoolApproveButtonState();
+  State<AthleteMintApproveButton> createState() =>
+      _AthleteMintApproveButtonState();
 }
 
-class _PoolApproveButtonState extends State<PoolApproveButton> {
+class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
   double width = 0;
   double height = 0;
   String text = '';
@@ -50,6 +46,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
   Color? fillcolor;
   Color? textcolor;
   Widget? dialog;
+  final walletController = Get.find<WalletController>();
 
   @override
   void initState() {
@@ -82,6 +79,10 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
 
   @override
   Widget build(BuildContext context) {
+    final userWalletAddress =
+        walletController.controller.publicAddress.toString();
+    final walletInt = BigInt.parse(userWalletAddress);
+    final walletAddress = walletInt.toRadixString(16);
     return Container(
       width: width,
       height: height,
@@ -93,24 +94,21 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
-            context
-                .read<TrackingCubit>()
-                .onPoolConfirmClick(widget.currencyTwo);
             //Confirm button pressed
+            context.read<TrackingCubit>().trackAthleteMintConfirmButtonClicked(
+                  widget.athlete.sport.toString(),
+                );
             widget.confirmCallback().then((value) {
-              context.read<TrackingCubit>().onPoolCreated(
-                    widget.valueOne,
-                    widget.valueTwo,
-                    widget.lpTokens,
-                    widget.shareOfPool,
-                    widget.lpTokenName,
-                    widget.walletId,
-                  );
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
               );
+              context.read<TrackingCubit>().trackAthleteMintSuccess(
+                    widget.inputApt,
+                    widget.valueInAX,
+                    walletAddress,
+                  );
             }).catchError((error) {
               showDialog<void>(
                 context: context,
@@ -119,9 +117,9 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
             });
           } else {
             //Approve button was pressed
-            context
-                .read<TrackingCubit>()
-                .onPoolApproveClick(widget.currencyOne);
+            context.read<TrackingCubit>().trackAthleteMintApproveButtonClicked(
+                  widget.aptName,
+                );
             changeButton();
           }
         },
