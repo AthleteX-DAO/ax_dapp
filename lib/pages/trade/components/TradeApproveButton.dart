@@ -91,14 +91,16 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
-            context.read<TrackingCubit>().onSwapConfirmClick(widget.toCurrency);
+            context
+                .read<TrackingCubit>()
+                .onSwapConfirmClick(toCurrency: widget.toCurrency);
             //Confirm button pressed
             widget.confirmCallback().then((value) {
               context.read<TrackingCubit>().onSwapConfirmedTransaction(
-                    widget.fromUnits,
-                    widget.toUnits,
-                    widget.totalFee,
-                    widget.walletAddress,
+                    fromUnits: widget.fromUnits,
+                    toUnits: widget.toUnits,
+                    totalFee: widget.totalFee,
+                    walletId: widget.walletAddress,
                   );
               showDialog<void>(
                 context: context,
@@ -115,7 +117,7 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
             //Approve button was pressed
             context
                 .read<TrackingCubit>()
-                .onSwapApproveClick(widget.fromCurrency);
+                .onSwapApproveClick(fromCurrency: widget.fromCurrency);
             changeButton();
           }
         },

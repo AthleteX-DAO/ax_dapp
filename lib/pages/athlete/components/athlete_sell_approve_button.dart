@@ -1,11 +1,9 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_sell_info.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 // This code changes the state of the button
 class AthleteSellApproveButton extends StatefulWidget {
@@ -22,6 +20,7 @@ class AthleteSellApproveButton extends StatefulWidget {
     required this.approveCallback,
     required this.confirmCallback,
     required this.confirmDialog,
+    required this.walletAddress,
     super.key,
   });
 
@@ -34,6 +33,7 @@ class AthleteSellApproveButton extends StatefulWidget {
   final String aptName;
   final int aptId;
   final String longOrShort;
+  final String walletAddress;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -51,7 +51,6 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
   Color? fillcolor;
   Color? textcolor;
   Widget? dialog;
-  final walletController = Get.find<WalletController>();
 
   @override
   void initState() {
@@ -84,10 +83,6 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
 
   @override
   Widget build(BuildContext context) {
-    final userWalletAddress =
-        walletController.controller.publicAddress.toString();
-    final walletInt = BigInt.parse(userWalletAddress);
-    final walletAddress = walletInt.toRadixString(16);
     return Container(
       width: width,
       height: height,
@@ -101,7 +96,7 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteSellConfirmButtonClicked(
-                  widget.aptId,
+                  id: widget.aptId,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
@@ -110,13 +105,13 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
                     widget.confirmDialog(context),
               );
               context.read<TrackingCubit>().trackAthleteSellSuccess(
-                    widget.longOrShort,
-                    widget.aptSellInfo.receiveAmount,
-                    widget.amountInputted,
-                    'AX',
-                    widget.aptSellInfo.totalFee,
-                    widget.athlete.sport.toString(),
-                    walletAddress,
+                    sellPosition: widget.longOrShort,
+                    unit: widget.amountInputted,
+                    currencyReceive: widget.aptSellInfo.receiveAmount,
+                    currency: 'AX',
+                    totalFee: widget.aptSellInfo.totalFee,
+                    sport: widget.athlete.sport.toString(),
+                    walletId: widget.walletAddress,
                   );
             }).catchError((error) {
               showDialog<void>(
@@ -127,7 +122,7 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
           } else {
             //Approve button was pressed
             context.read<TrackingCubit>().trackAthleteSellApproveButtonClicked(
-                  widget.aptName,
+                  athleteName: widget.aptName,
                 );
             changeButton();
           }
