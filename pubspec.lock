@@ -1129,6 +1129,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  tokens_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/tokens_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   tuple:
     dependency: transitive
     description:
@@ -1270,11 +1277,13 @@ packages:
     source: hosted
     version: "0.0.1"
   web3dart:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: web3dart
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "4991b5819c45dedc68a0d2ffc32e279817b6f7c0"
+      url: "https://github.com/narcodico/web3dart.git"
+    source: git
     version: "2.4.1"
   web_socket_channel:
     dependency: transitive

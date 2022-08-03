@@ -1,18 +1,18 @@
 // ignore_for_file: avoid_dynamic_calls
 
-import 'package:ax_dapp/pages/pool/my_liqudity/add_liquidity_token_pair.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
 import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/util/assets/assets.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class MyLiquidity extends StatefulWidget {
   const MyLiquidity({super.key, required this.togglePool});
@@ -112,10 +112,10 @@ class _MyLiquidityState extends State<MyLiquidity> {
       LiquidityPositionInfo liquidityPositionInfo,
       double layoutWdt,
     ) {
-      final tokenPair = AddLiquidityTokenPair.fromTokenPairAddresses(
-        liquidityPositionInfo.token0Address,
-        liquidityPositionInfo.token1Address,
-      );
+      final tokensRepository = context.read<TokensRepository>();
+      final tokens = tokensRepository.tokens;
+      final token0 = tokens.byAddress(liquidityPositionInfo.token0Address);
+      final token1 = tokens.byAddress(liquidityPositionInfo.token1Address);
       return ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: GridTile(
@@ -139,7 +139,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           scale: 0.5,
-                          image: tokenPair.token0.icon!,
+                          image: tokenImage(token0),
                         ),
                       ),
                     ),
@@ -150,12 +150,12 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           scale: 0.5,
-                          image: tokenPair.token1.icon!,
+                          image: tokenImage(token1),
                         ),
                       ),
                     ),
                     SportToken(
-                      sport: tokenPair.token0.sport,
+                      sport: token0.sport,
                       symbol: liquidityPositionInfo.token0Symbol,
                     ),
                     Container(
@@ -163,7 +163,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                       child: const Text(' - '),
                     ),
                     SportToken(
-                      sport: tokenPair.token1.sport,
+                      sport: token1.sport,
                       symbol: liquidityPositionInfo.token1Symbol,
                     ),
                   ],
@@ -288,14 +288,9 @@ class _MyLiquidityState extends State<MyLiquidity> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          final tokenPair =
-                              AddLiquidityTokenPair.fromTokenPairAddresses(
-                            liquidityPositionInfo.token0Address,
-                            liquidityPositionInfo.token1Address,
-                          );
                           widget.togglePool(
-                            token0: tokenPair.token0,
-                            token1: tokenPair.token1,
+                            token0: token0,
+                            token1: token1,
                           );
                         },
                         child: Text(
@@ -318,8 +313,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                         onPressed: () {
                           setState(() {
                             currentTabIndex = 1;
-                            token0Icon = tokenPair.token0.icon;
-                            token1Icon = tokenPair.token1.icon;
+                            token0Icon = tokenImage(token0);
+                            token1Icon = tokenImage(token1);
                             infoOfSelectedCard = liquidityPositionInfo;
                             poolController
                               ..lpTokenAAddress =

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:tokens_repository/tokens_repository.dart';
 
 class NFLRepo extends SportsRepo<NFLAthlete> {
   NFLRepo() : super(SupportedSport.NFL);

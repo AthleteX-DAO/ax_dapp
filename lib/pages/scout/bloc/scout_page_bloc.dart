@@ -1,24 +1,44 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/pages/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'scout_page_event.dart';
 part 'scout_page_state.dart';
 
 class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
-  ScoutPageBloc({required this.repo}) : super(ScoutPageState.initial()) {
-    on<OnPageRefresh>(_mapRefreshEventToState);
+  ScoutPageBloc({
+    required WalletRepository walletRepository,
+    required this.repo,
+  })  : _walletRepository = walletRepository,
+        super(const ScoutPageState()) {
+    on<WatchEthereumChainChangesStarted>(_onWatchEthereumChainChangesStarted);
+    on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
     on<SelectSport>(_mapSelectSportToState);
     on<OnAthleteSearch>(_mapSearchAthleteEventToState);
+
+    add(const WatchEthereumChainChangesStarted());
+    add(FetchScoutInfoRequested());
   }
 
+  final WalletRepository _walletRepository;
   final GetScoutAthletesDataUseCase repo;
 
-  Future<void> _mapRefreshEventToState(
-    OnPageRefresh event,
+  Future<void> _onWatchEthereumChainChangesStarted(
+    WatchEthereumChainChangesStarted _,
+    Emitter<ScoutPageState> emit,
+  ) async {
+    await emit.onEach<EthereumChain>(
+      _walletRepository.ethereumChainChanges,
+      onData: (_) => add(FetchScoutInfoRequested()),
+    );
+  }
+
+  Future<void> _onFetchScoutInfoRequested(
+    FetchScoutInfoRequested event,
     Emitter<ScoutPageState> emit,
   ) async {
     try {

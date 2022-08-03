@@ -7,6 +7,10 @@ abstract class ScoutPageEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class WatchEthereumChainChangesStarted extends ScoutPageEvent {
+  const WatchEthereumChainChangesStarted();
+}
+
 class SelectSport extends ScoutPageEvent {
   const SelectSport({
     required this.selectedSport,
@@ -18,7 +22,7 @@ class SelectSport extends ScoutPageEvent {
   List<Object?> get props => [selectedSport];
 }
 
-class OnPageRefresh extends ScoutPageEvent {}
+class FetchScoutInfoRequested extends ScoutPageEvent {}
 
 class OnAthleteSearch extends ScoutPageEvent {
   const OnAthleteSearch({

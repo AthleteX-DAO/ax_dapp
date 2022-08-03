@@ -19,10 +19,7 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/create_wallet/web.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
-import 'package:ax_dapp/service/controller/swap/matic.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
@@ -31,7 +28,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 enum Pages { scout, trade, pool, farm }
 
@@ -54,8 +53,6 @@ class _V1AppState extends State<V1App> {
   List<Athlete> athleteList = [];
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
-  AXT axt = AXT('AthleteX', 'AX');
-  Token matic = MATIC('Polygon', 'MATIC');
   late PageController _pageController;
   var _selectedIndex = 0;
   String axText = 'Ax';
@@ -148,7 +145,9 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == Pages.scout)
             BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
+                walletRepository: context.read<WalletRepository>(),
                 repo: GetScoutAthletesDataUseCase(
+                  tokensRepository: context.read<TokensRepository>(),
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                   sportsRepos: [
                     RepositoryProvider.of<MLBRepo>(context),
@@ -161,8 +160,8 @@ class _V1AppState extends State<V1App> {
           else if (pageNumber == Pages.trade)
             BlocProvider(
               create: (BuildContext context) => TradePageBloc(
+                walletRepository: context.read<WalletRepository>(),
                 repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                controller: Get.find(),
                 swapController: Get.find(),
                 walletController: Get.find(),
                 isBuyAX: isBuyAX,
@@ -182,7 +181,9 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
             create: (BuildContext context) => ScoutPageBloc(
+              walletRepository: context.read<WalletRepository>(),
               repo: GetScoutAthletesDataUseCase(
+                tokensRepository: context.read<TokensRepository>(),
                 graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                 sportsRepos: [
                   RepositoryProvider.of<MLBRepo>(context),
@@ -194,8 +195,8 @@ class _V1AppState extends State<V1App> {
           ),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
+              walletRepository: context.read<WalletRepository>(),
               repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-              controller: Get.find(),
               swapController: Get.find(),
               walletController: Get.find(),
               isBuyAX: isBuyAX,
@@ -204,6 +205,7 @@ class _V1AppState extends State<V1App> {
           ),
           BlocProvider(
             create: (BuildContext context) => PoolBloc(
+              tokensRepository: context.read<TokensRepository>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
               walletController: Get.find(),
               poolController: Get.find(),

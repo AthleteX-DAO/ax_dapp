@@ -3,7 +3,6 @@
 import 'dart:convert';
 
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
 import 'package:erc20/erc20.dart';
 import 'package:get/get.dart';
@@ -21,14 +20,9 @@ class WalletController extends GetxController {
   RxDouble tokenPrice = 0.0.obs;
   Controller controller = Get.find();
 
-  Future<void> getYourAxBalance() async {
+  Future<void> getYourAxBalance(String chainTokenAddress) async {
     if (!_isWalletConnected()) return;
-    if (controller.networkID.value == Controller.mainnetChainId) {
-      axAddress = AXT.polygonAddress;
-    } else {
-      axAddress = AXT.mumbaiAddress;
-    }
-    yourBalance.value = await getTokenBalance(axAddress);
+    yourBalance.value = await getTokenBalance(chainTokenAddress);
     update();
   }
 

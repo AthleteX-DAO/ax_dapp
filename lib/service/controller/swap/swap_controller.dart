@@ -2,10 +2,9 @@ import 'package:ax_dapp/contracts/APTRouter.g.dart';
 import 'package:ax_dapp/contracts/Dex.g.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:web3dart/web3dart.dart';
 
 class SwapController extends GetxController {
@@ -17,16 +16,7 @@ class SwapController extends GetxController {
     );
   }
   Controller controller = Get.find();
-  Rx<Token> activeTkn1 = Token(
-        'Empty Token',
-        'ET',
-        '0x0000000000000000000000000000000000000000',
-      ).obs,
-      activeTkn2 = Token(
-        'Empty Token',
-        'ET',
-        '0x0000000000000000000000000000000000000000',
-      ).obs;
+  Rx<Token> activeTkn1 = Token.empty.obs, activeTkn2 = Token.empty.obs;
   RxString address1 = ''.obs, address2 = ''.obs;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
   RxDouble price = 0.0.obs;
@@ -40,7 +30,6 @@ class SwapController extends GetxController {
   final EthereumAddress dexMainnetAddress =
       EthereumAddress.fromHex('0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B');
 
-  final axtAddress = EthereumAddress.fromHex(AXT.polygonAddress);
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
     DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch,
@@ -124,11 +113,14 @@ class SwapController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  Future<void> swapforAX() async {
+  Future<void> swapforAX(String chainTokenAddress) async {
     final tknA = EthereumAddress.fromHex(address1.value);
     final amountIn = normalizeInput(amount1.value);
     final to = await controller.credentials.extractAddress();
-    final path = <EthereumAddress>[tknA, axtAddress];
+    final path = <EthereumAddress>[
+      tknA,
+      EthereumAddress.fromHex(chainTokenAddress),
+    ];
     final txString = await _aptRouter.swapExactTokensForAVAX(
       amountIn,
       BigInt.zero,
@@ -140,10 +132,13 @@ class SwapController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  Future<void> swapFromAX() async {
+  Future<void> swapFromAX(String chainTokenAddress) async {
     final tknA = EthereumAddress.fromHex('$address1.value');
 
-    final path = <EthereumAddress>[tknA, axtAddress];
+    final path = <EthereumAddress>[
+      tknA,
+      EthereumAddress.fromHex(chainTokenAddress),
+    ];
     final to = await controller.credentials.extractAddress();
     final txString = await _aptRouter.swapExactAVAXForTokens(
       amountOutMin,

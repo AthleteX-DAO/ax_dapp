@@ -3,13 +3,14 @@
 import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
 import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 // ignore: must_be_immutable
 class AddLiquidity extends StatefulWidget {
@@ -155,7 +156,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           scale: 0.5,
-                          image: token.icon!,
+                          image: tokenImage(token),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -236,15 +237,15 @@ class _AddLiquidityState extends State<AddLiquidity> {
           // (for desktop only
           final tokenContainerWdt = elementWdt * 0.9;
           var tkr = 'Select a Token';
-          AssetImage? tokenImage = const AssetImage('assets/images/apt.png');
+          AssetImage? _tokenImage = const AssetImage('assets/images/apt.png');
           final decor =
               boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
           if (tknNum == 1) {
             tkr = token0.ticker;
-            tokenImage = token0.icon;
+            _tokenImage = tokenImage(token0);
           } else {
             tkr = token1.ticker;
-            tokenImage = token1.icon;
+            _tokenImage = tokenImage(token1);
           }
 
           return Container(
@@ -281,7 +282,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
-                                  image: tokenImage!,
+                                  image: _tokenImage,
                                   fit: BoxFit.fill,
                                 ),
                               ),

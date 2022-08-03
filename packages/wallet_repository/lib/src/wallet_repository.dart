@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cache/cache.dart';
-import 'package:ethereum_api/ethereum_api.dart';
+import 'package:ethereum_api/wallet_api.dart';
 import 'package:shared/shared.dart';
 
 /// {@template wallet_repository}

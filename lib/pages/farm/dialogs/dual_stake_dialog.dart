@@ -7,7 +7,9 @@ import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 Dialog dualStakeDialog(
   BuildContext context,
@@ -114,7 +116,11 @@ Dialog dualStakeDialog(
                     ),
                     child: TextButton(
                       onPressed: () {
-                        walletController.getYourAxBalance().then((value) {
+                        final chainToken =
+                            context.read<TokensRepository>().chainToken;
+                        walletController
+                            .getYourAxBalance(chainToken.address)
+                            .then((value) {
                           stakeAxInput.text =
                               walletController.yourBalance.value;
                         });

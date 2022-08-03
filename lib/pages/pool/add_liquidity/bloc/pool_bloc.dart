@@ -1,22 +1,27 @@
 import 'package:ax_dapp/pages/pool/add_liquidity/models/pool_pair_info.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/token_list.dart' show TokenList;
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 part 'pool_event.dart';
 part 'pool_state.dart';
 
 class PoolBloc extends Bloc<PoolEvent, PoolState> {
   PoolBloc({
+    required TokensRepository tokensRepository,
     required this.repo,
     required this.walletController,
     required this.poolController,
-  }) : super(PoolState.initial()) {
+  }) : super(
+          PoolState(
+            token0: tokensRepository.tokens.first,
+            token1: tokensRepository.tokens[1],
+          ),
+        ) {
     on<PageRefreshEvent>(_mapRefreshEventToState);
     on<Token0SelectionChanged>(_mapToken0SelectionChangedEventToState);
     on<Token1SelectionChanged>(_mapToken1SelectionChangedEventToState);
@@ -42,13 +47,13 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     poolController
-      ..updateTknAddress1(state.token0.address.value)
-      ..updateTknAddress2(state.token1.address.value);
+      ..updateTknAddress1(state.token0.address)
+      ..updateTknAddress2(state.token1.address);
     try {
       final balance0 =
-          await walletController.getTokenBalance(state.token0.address.value);
+          await walletController.getTokenBalance(state.token0.address);
       final balance1 =
-          await walletController.getTokenBalance(state.token1.address.value);
+          await walletController.getTokenBalance(state.token1.address);
       emit(
         state.copyWith(
           balance0: balance0,
@@ -56,8 +61,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
         ),
       );
       final response = await repo.fetchPairInfo(
-        tokenA: state.token0.address.value,
-        tokenB: state.token1.address.value,
+        tokenA: state.token0.address,
+        tokenB: state.token1.address,
       );
       final isSuccess = response.isLeft();
 
@@ -74,7 +79,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
         emit(
           state.copyWith(
             status: BlocStatus.noData,
-            poolPairInfo: PoolPairInfo.empty(),
+            poolPairInfo: PoolPairInfo.empty,
           ),
         );
       }
@@ -91,14 +96,14 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     final token0 = event.token0;
     emit(state.copyWith(token0: token0));
     final balance0 = double.parse(
-      await walletController.getTokenBalance(token0.address.value),
+      await walletController.getTokenBalance(token0.address),
     );
-    poolController.updateTknAddress1(token0.address.value);
+    poolController.updateTknAddress1(token0.address);
     emit(state.copyWith(token0: token0, balance0: balance0.toStringAsFixed(6)));
     try {
       final response = await repo.fetchPairInfo(
-        tokenA: state.token0.address.value,
-        tokenB: state.token1.address.value,
+        tokenA: state.token0.address,
+        tokenB: state.token1.address,
       );
       final isSuccess = response.isLeft();
 
@@ -127,14 +132,14 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     final token1 = event.token1;
     emit(state.copyWith(token1: token1));
     final balance1 = double.parse(
-      await walletController.getTokenBalance(token1.address.value),
+      await walletController.getTokenBalance(token1.address),
     );
-    poolController.updateTknAddress2(token1.address.value);
+    poolController.updateTknAddress2(token1.address);
     emit(state.copyWith(token1: token1, balance1: balance1.toStringAsFixed(6)));
     try {
       final response = await repo.fetchPairInfo(
-        tokenA: state.token0.address.value,
-        tokenB: state.token1.address.value,
+        tokenA: state.token0.address,
+        tokenB: state.token1.address,
       );
       final isSuccess = response.isLeft();
 
@@ -175,8 +180,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     }
     try {
       final response = await repo.fetchPairInfo(
-        tokenA: state.token0.address.value,
-        tokenB: state.token1.address.value,
+        tokenA: state.token0.address,
+        tokenB: state.token1.address,
         tokenAInput: token0InputAmount,
         tokenBInput: state.token1AmountInput,
       );
@@ -211,8 +216,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     }
     try {
       final response = await repo.fetchPairInfo(
-        tokenA: state.token0.address.value,
-        tokenB: state.token1.address.value,
+        tokenA: state.token0.address,
+        tokenB: state.token1.address,
         tokenAInput: state.token0AmountInput,
         tokenBInput: token1InputAmount,
       );

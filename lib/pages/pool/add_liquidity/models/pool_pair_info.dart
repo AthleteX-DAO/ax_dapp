@@ -1,5 +1,5 @@
 class PoolPairInfo {
-  PoolPairInfo({
+  const PoolPairInfo({
     required this.token0Price,
     required this.token1Price,
     required this.apy,
@@ -10,18 +10,16 @@ class PoolPairInfo {
     required this.reserve1,
   });
 
-  factory PoolPairInfo.empty() {
-    return PoolPairInfo(
-      token0Price: '0',
-      token1Price: '0',
-      apy: '0',
-      shareOfPool: '0',
-      ratio: 0,
-      recieveAmount: '0',
-      reserve0: '0',
-      reserve1: '0',
-    );
-  }
+  static const empty = PoolPairInfo(
+    token0Price: '0',
+    token1Price: '0',
+    apy: '0',
+    shareOfPool: '0',
+    ratio: 0,
+    recieveAmount: '0',
+    reserve0: '0',
+    reserve1: '0',
+  );
 
   final String token0Price;
   final String token1Price;

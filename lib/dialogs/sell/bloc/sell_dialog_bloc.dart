@@ -1,53 +1,93 @@
+import 'dart:async';
+
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_sell_info.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 part 'sell_dialog_event.dart';
 part 'sell_dialog_state.dart';
 
 class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   SellDialogBloc({
+    required TokensRepository tokensRepository,
     required this.repo,
     required this.wallet,
     required this.swapController,
-  }) : super(SellDialogState.initial()) {
-    on<LoadDialog>(_mapLoadDialogEventToState);
+    required int athleteId,
+  })  : _tokensRepository = tokensRepository,
+        super(
+          // setting the apt corresponding to the default aptType which is long
+          SellDialogState(
+            longApt: tokensRepository.aptPair(athleteId).longApt,
+          ),
+        ) {
+    on<WatchAptPairStarted>(_onWatchAptPairStarted);
+    on<AptTypeSelectionChanged>(_onAptTypeSelectionChanged);
+    on<FetchAptSellInfoRequested>(_onFetchAptSellInfoRequested);
     on<MaxSellTap>(_mapMaxSellTapEventToState);
     on<ConfirmSell>(_mapConfirmSellEventToState);
     on<NewAptInput>(_mapNewAptInputEventToState);
-  }
-  GetSellInfoUseCase repo;
-  GetTotalTokenBalanceUseCase wallet;
-  SwapController swapController;
 
-  Future<void> _mapLoadDialogEventToState(
-    LoadDialog event,
+    add(WatchAptPairStarted(athleteId));
+    add(const FetchAptSellInfoRequested());
+  }
+
+  final TokensRepository _tokensRepository;
+  final GetSellInfoUseCase repo;
+  final GetTotalTokenBalanceUseCase wallet;
+  final SwapController swapController;
+
+  Future<void> _onWatchAptPairStarted(
+    WatchAptPairStarted event,
+    Emitter<SellDialogState> emit,
+  ) async {
+    await emit.onEach<AptPair>(
+      _tokensRepository.aptPairChanges(event.athleteId),
+      onData: (aptPair) {
+        emit(
+          state.copyWith(longApt: aptPair.longApt, shortApt: aptPair.shortApt),
+        );
+        add(const FetchAptSellInfoRequested());
+      },
+    );
+  }
+
+  void _onAptTypeSelectionChanged(
+    AptTypeSelectionChanged event,
+    Emitter<SellDialogState> emit,
+  ) {
+    emit(state.copyWith(aptTypeSelection: event.aptType));
+    add(const FetchAptSellInfoRequested());
+  }
+
+  Future<void> _onFetchAptSellInfoRequested(
+    FetchAptSellInfoRequested event,
     Emitter<SellDialogState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
+      final selectedTokenAddress = state.selectedAptAddress;
       final response =
-          await repo.fetchAptSellInfo(aptAddress: event.currentTokenAddress);
+          await repo.fetchAptSellInfo(aptAddress: selectedTokenAddress);
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
         swapController
-          ..updateFromAddress(event.currentTokenAddress)
-          ..updateToAddress(AXT.polygonAddress);
+          ..updateFromAddress(selectedTokenAddress)
+          ..updateToAddress(_tokensRepository.tokens.axt.address);
         final swapInfo = response.getLeft().toNullable()!.sellInfo;
         final balance =
-            await wallet.getTotalBalanceForToken(event.currentTokenAddress);
+            await wallet.getTotalBalanceForToken(selectedTokenAddress);
         //do some math
         emit(
           state.copyWith(
             balance: balance,
             status: BlocStatus.success,
-            tokenAddress: event.currentTokenAddress,
             aptSellInfo: AptSellInfo(
               axPrice: swapInfo.toPrice,
               minimumReceived: swapInfo.minimumReceived,
@@ -62,7 +102,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         emit(
           state.copyWith(
             status: BlocStatus.error,
-            aptSellInfo: AptSellInfo.empty(),
+            aptSellInfo: AptSellInfo.empty,
           ),
         );
       }
@@ -70,7 +110,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          aptSellInfo: AptSellInfo.empty(),
+          aptSellInfo: AptSellInfo.empty,
         ),
       );
     }
@@ -82,7 +122,8 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
-      final maxInput = await wallet.getTotalBalanceForToken(state.tokenAddress);
+      final maxInput =
+          await wallet.getTotalBalanceForToken(state.selectedAptAddress);
       emit(
         state.copyWith(aptInputAmount: maxInput, status: BlocStatus.success),
       );
@@ -104,9 +145,11 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   ) async {
     final aptInputAmount = event.aptInputAmount;
     try {
-      final balance = await wallet.getTotalBalanceForToken(state.tokenAddress);
+      final selectedTokenAddress = state.selectedAptAddress;
+      final balance =
+          await wallet.getTotalBalanceForToken(selectedTokenAddress);
       final response = await repo.fetchAptSellInfo(
-        aptAddress: state.tokenAddress,
+        aptAddress: selectedTokenAddress,
         aptInput: aptInputAmount,
       );
       final isSuccess = response.isLeft();
@@ -135,7 +178,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         emit(
           state.copyWith(
             status: BlocStatus.error,
-            aptSellInfo: AptSellInfo.empty(),
+            aptSellInfo: AptSellInfo.empty,
           ),
         );
       }
@@ -143,7 +186,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          aptSellInfo: AptSellInfo.empty(),
+          aptSellInfo: AptSellInfo.empty,
         ),
       );
     }

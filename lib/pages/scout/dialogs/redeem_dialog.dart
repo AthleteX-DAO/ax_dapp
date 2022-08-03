@@ -4,11 +4,12 @@ import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/service/token_list.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class RedeemDialog extends StatefulWidget {
   const RedeemDialog(this.athlete, {super.key});
@@ -34,16 +35,19 @@ class _RedeemDialogState extends State<RedeemDialog> {
   @override
   void initState() {
     super.initState();
-    lspController.updateAptAddress(widget.athlete.id);
+    final aptPair = context.read<TokensRepository>().aptPair(widget.athlete.id);
+    lspController.updateAptAddress(aptPair.address);
     updateStats();
   }
 
   Future<void> updateStats() async {
     try {
-      longBalance.value = await walletController
-          .getTokenBalance(getLongAptAddress(widget.athlete.id));
-      shortBalance.value = await walletController
-          .getTokenBalance(getShortAptAddress(widget.athlete.id));
+      final tokensRepository = context.read<TokensRepository>();
+      final aptPair = tokensRepository.aptPair(widget.athlete.id);
+      longBalance.value =
+          await walletController.getTokenBalance(aptPair.longApt.address);
+      shortBalance.value =
+          await walletController.getTokenBalance(aptPair.shortApt.address);
       maxAmount.value = min(
         double.parse(longBalance.value),
         double.parse(shortBalance.value),

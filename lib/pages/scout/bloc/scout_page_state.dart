@@ -2,20 +2,11 @@ part of 'scout_page_bloc.dart';
 
 class ScoutPageState extends Equatable {
   const ScoutPageState({
-    required this.athletes,
-    required this.filteredAthletes,
-    required this.selectedSport,
-    required this.status,
+    this.status = BlocStatus.initial,
+    this.athletes = const [],
+    this.filteredAthletes = const [],
+    this.selectedSport = SupportedSport.all,
   });
-
-  factory ScoutPageState.initial() {
-    return const ScoutPageState(
-      athletes: [],
-      filteredAthletes: [],
-      status: BlocStatus.initial,
-      selectedSport: SupportedSport.all,
-    );
-  }
 
   final List<AthleteScoutModel> athletes;
   final List<AthleteScoutModel> filteredAthletes;

@@ -2,39 +2,24 @@ part of 'trade_page_bloc.dart';
 
 class TradePageState extends Equatable {
   const TradePageState({
-    required this.tokenToBalance,
-    required this.tokenFromBalance,
-    required this.tokenInputFromAmount,
-    required this.tokenInputToAmount,
-    required this.status,
+    this.status = BlocStatus.initial,
+    this.tokenToBalance = 0,
+    this.tokenFromBalance = 0,
+    this.tokenInputFromAmount = 0,
+    this.tokenInputToAmount = 0,
     required this.tokenFrom,
     required this.tokenTo,
-    required this.swapInfo,
+    this.swapInfo = TokenSwapInfo.empty,
   });
 
-  // ignore: avoid_positional_boolean_parameters
-  factory TradePageState.initial(Controller controller, bool isBuyAX) {
-    final networkID = controller.networkID.value;
-    var tokenFrom = TokenList.tokenList[TokenIndex.ax];
-    var tokenTo = TokenList.tokenList[TokenIndex.weth];
-    if (isBuyAX) {
-      if (networkID == Controller.mainnetChainId) {
-        tokenFrom = TokenList.tokenList[TokenIndex.matic];
-        tokenTo = TokenList.tokenList[TokenIndex.ax];
-      } else if (networkID == Controller.mainnetSXChainId) {
-        tokenFrom = TokenList.tokenList[TokenIndex.sx];
-        tokenTo = TokenList.tokenList[TokenIndex.ax];
-      }
-    }
+  factory TradePageState.initial({
+    required bool isBuyAX,
+    required EthereumChain chain,
+  }) {
+    final tradeTokens = chain.computeTradeTokens(isBuyAX: isBuyAX);
     return TradePageState(
-      tokenToBalance: 0,
-      tokenFromBalance: 0,
-      tokenInputFromAmount: 0,
-      tokenInputToAmount: 0,
-      status: BlocStatus.initial,
-      tokenFrom: tokenFrom,
-      tokenTo: tokenTo,
-      swapInfo: TokenSwapInfo.empty(),
+      tokenFrom: tradeTokens.tokenFrom,
+      tokenTo: tradeTokens.tokenTo,
     );
   }
 

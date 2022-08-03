@@ -4,17 +4,51 @@ import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 part 'athlete_page_event.dart';
 part 'athlete_page_state.dart';
 
 class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
-  AthletePageBloc({required this.repo}) : super(AthletePageState.initial()) {
+  AthletePageBloc({
+    required TokensRepository tokensRepository,
+    required this.repo,
+    required int athleteId,
+  })  : _tokensRepository = tokensRepository,
+        super(
+          // setting the apt corresponding to the default aptType which is long
+          AthletePageState(
+            longApt: tokensRepository.aptPair(athleteId).longApt,
+          ),
+        ) {
+    on<WatchAptPairStarted>(_onWatchAptPairStarted);
+    on<AptTypeSelectionChanged>(_onAptTypeSelectionChanged);
     on<OnPageRefresh>(_mapPageRefreshEventToState);
     on<OnGraphRefresh>(_mapGraphRefreshEventToState);
+
+    add(WatchAptPairStarted(athleteId));
   }
 
+  final TokensRepository _tokensRepository;
   final MLBRepo repo;
+
+  Future<void> _onWatchAptPairStarted(
+    WatchAptPairStarted event,
+    Emitter<AthletePageState> emit,
+  ) async {
+    await emit.forEach<AptPair>(
+      _tokensRepository.aptPairChanges(event.athleteId),
+      onData: (aptPair) =>
+          state.copyWith(longApt: aptPair.longApt, shortApt: aptPair.shortApt),
+    );
+  }
+
+  void _onAptTypeSelectionChanged(
+    AptTypeSelectionChanged event,
+    Emitter<AthletePageState> emit,
+  ) {
+    emit(state.copyWith(aptTypeSelection: event.aptType));
+  }
 
   Future<void> _mapPageRefreshEventToState(
     OnPageRefresh event,

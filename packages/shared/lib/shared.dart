@@ -17,3 +17,4 @@ export 'package:web3dart/web3dart.dart';
 export 'package:web_socket_channel/web_socket_channel.dart';
 
 export 'src/failure/failure.dart';
+export 'src/text/text.dart';

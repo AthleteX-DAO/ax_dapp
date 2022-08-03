@@ -9,7 +9,6 @@ import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget.dart
 import 'package:ax_dapp/service/controller/create_wallet/web.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
@@ -20,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class AthletePage extends StatefulWidget {
   const AthletePage({
@@ -39,9 +39,7 @@ class _AthletePageState extends State<AthletePage> {
   int listView = 0;
 
   int _widgetIndex = 0;
-  int _longAptIndex = 0;
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
-  bool _isLongApt = true;
   bool _isDisplayingChart = true;
   late ZoomPanBehavior _zoomPanBehavior;
   late TooltipBehavior _longToolTipBehavior;
@@ -52,7 +50,8 @@ class _AthletePageState extends State<AthletePage> {
   void initState() {
     super.initState();
     athlete = widget.athlete;
-    Get.find<LSPController>().updateAptAddress(athlete.id);
+    final aptPair = context.read<TokensRepository>().aptPair(athlete.id);
+    Get.find<LSPController>().updateAptAddress(aptPair.address);
     _zoomPanBehavior = ZoomPanBehavior(
       enableMouseWheelZooming: true,
       enablePanning: true,
@@ -80,17 +79,6 @@ class _AthletePageState extends State<AthletePage> {
             },
           )
         : buildMobileView(context);
-  }
-
-  IndexedStack buildWebViewContainer(BuildContext context) {
-    final chartStats = <GraphData>[];
-    return IndexedStack(
-      index: _longAptIndex,
-      children: [
-        buildWebView(athlete, chartStats),
-        buildWebView(athlete, chartStats)
-      ],
-    );
   }
 
   Widget buildWebView(AthleteScoutModel athlete, List<GraphData> chartStats) {
@@ -285,30 +273,35 @@ class _AthletePageState extends State<AthletePage> {
     final _height = MediaQuery.of(context).size.height;
     final _buttonHeight = MediaQuery.of(context).size.height * 0.045;
     return SafeArea(
-      child: IndexedStack(
-        index: _longAptIndex,
-        children: [
-          buildPage(
-            _width,
-            _height,
-            context,
-            _buttonHeight,
-            longMarketPrice,
-            longMarketPricePercent,
-            longBookValue,
-            longBookValuePercent,
-          ),
-          buildPage(
-            _width,
-            _height,
-            context,
-            _buttonHeight,
-            shortMarketPrice,
-            shortMarketPricePercent,
-            shortBookValue,
-            shortBookValuePercent,
-          ),
-        ],
+      child: BlocSelector<AthletePageBloc, AthletePageState, AptType>(
+        selector: (state) => state.aptTypeSelection,
+        builder: (context, aptTypeSelection) {
+          return IndexedStack(
+            index: aptTypeSelection.index - 1,
+            children: [
+              buildPage(
+                _width,
+                _height,
+                context,
+                _buttonHeight,
+                longMarketPrice,
+                longMarketPricePercent,
+                longBookValue,
+                longBookValuePercent,
+              ),
+              buildPage(
+                _width,
+                _height,
+                context,
+                _buttonHeight,
+                shortMarketPrice,
+                shortMarketPricePercent,
+                shortBookValue,
+                shortBookValuePercent,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -383,73 +376,81 @@ class _AthletePageState extends State<AthletePage> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: DecoratedBox(
-                        decoration: boxDecoration(
-                          _isLongApt
-                              ? secondaryGreyColor
-                              : indexUnselectedStackBackgroundColor,
-                          8,
-                          0,
-                          Colors.transparent,
-                        ),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            minimumSize: const Size(15, 8),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _longAptIndex = 0;
-                              if (_longAptIndex == 0) {
-                                _isLongApt = true;
-                              }
-                            });
-                          },
-                          child: Text(
-                            'Long',
-                            style: TextStyle(
-                              color: _isLongApt
-                                  ? primaryWhiteColor
-                                  : const Color.fromRGBO(154, 154, 154, 1),
-                              fontSize: 10,
+                      child: BlocSelector<AthletePageBloc, AthletePageState,
+                          AptType>(
+                        selector: (state) => state.aptTypeSelection,
+                        builder: (context, aptTypeSelection) {
+                          return DecoratedBox(
+                            decoration: boxDecoration(
+                              aptTypeSelection.isLong
+                                  ? secondaryGreyColor
+                                  : indexUnselectedStackBackgroundColor,
+                              8,
+                              0,
+                              Colors.transparent,
                             ),
-                          ),
-                        ),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(15, 8),
+                              ),
+                              onPressed: () =>
+                                  context.read<AthletePageBloc>().add(
+                                        const AptTypeSelectionChanged(
+                                          AptType.long,
+                                        ),
+                                      ),
+                              child: Text(
+                                'Long',
+                                style: TextStyle(
+                                  color: aptTypeSelection.isLong
+                                      ? primaryWhiteColor
+                                      : const Color.fromRGBO(154, 154, 154, 1),
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                     Expanded(
-                      child: DecoratedBox(
-                        decoration: boxDecoration(
-                          _isLongApt
-                              ? indexUnselectedStackBackgroundColor
-                              : secondaryGreyColor,
-                          8,
-                          0,
-                          Colors.transparent,
-                        ),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            minimumSize: const Size(50, 30),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _longAptIndex = 1;
-                              if (_longAptIndex == 1) {
-                                _isLongApt = false;
-                              }
-                            });
-                          },
-                          child: Text(
-                            'Short',
-                            style: TextStyle(
-                              color: _isLongApt
-                                  ? const Color.fromRGBO(154, 154, 154, 1)
-                                  : primaryWhiteColor,
-                              fontSize: 10,
+                      child: BlocSelector<AthletePageBloc, AthletePageState,
+                          AptType>(
+                        selector: (state) => state.aptTypeSelection,
+                        builder: (context, aptTypeSelection) {
+                          return DecoratedBox(
+                            decoration: boxDecoration(
+                              aptTypeSelection.isLong
+                                  ? indexUnselectedStackBackgroundColor
+                                  : secondaryGreyColor,
+                              8,
+                              0,
+                              Colors.transparent,
                             ),
-                          ),
-                        ),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(50, 30),
+                              ),
+                              onPressed: () =>
+                                  context.read<AthletePageBloc>().add(
+                                        const AptTypeSelectionChanged(
+                                          AptType.short,
+                                        ),
+                                      ),
+                              child: Text(
+                                'Short',
+                                style: TextStyle(
+                                  color: aptTypeSelection.isLong
+                                      ? const Color.fromRGBO(154, 154, 154, 1)
+                                      : primaryWhiteColor,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     )
                   ],
@@ -1111,78 +1112,93 @@ class _AthletePageState extends State<AthletePage> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: DecoratedBox(
-                              decoration: boxDecoration(
-                                _isLongApt
-                                    ? secondaryGreyColor
-                                    : indexUnselectedStackBackgroundColor,
-                                8,
-                                0,
-                                Colors.transparent,
-                              ),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  minimumSize: const Size(15, 8),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _longAptIndex = 0;
-                                    if (_longAptIndex == 0) {
-                                      _isLongApt = true;
-                                    }
-                                  });
-                                },
-                                child: Text(
-                                  'Long',
-                                  style: TextStyle(
-                                    color: _isLongApt
-                                        ? primaryWhiteColor
-                                        : const Color.fromRGBO(
-                                            154,
-                                            154,
-                                            154,
-                                            1,
-                                          ),
-                                    fontSize: 10,
+                            child: BlocSelector<AthletePageBloc,
+                                AthletePageState, AptType>(
+                              selector: (state) => state.aptTypeSelection,
+                              builder: (context, aptTypeSelection) {
+                                return DecoratedBox(
+                                  decoration: boxDecoration(
+                                    aptTypeSelection.isLong
+                                        ? secondaryGreyColor
+                                        : indexUnselectedStackBackgroundColor,
+                                    8,
+                                    0,
+                                    Colors.transparent,
                                   ),
-                                ),
-                              ),
+                                  child: TextButton(
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      minimumSize: const Size(15, 8),
+                                    ),
+                                    onPressed: () =>
+                                        context.read<AthletePageBloc>().add(
+                                              const AptTypeSelectionChanged(
+                                                AptType.long,
+                                              ),
+                                            ),
+                                    child: Text(
+                                      'Long',
+                                      style: TextStyle(
+                                        color: aptTypeSelection.isLong
+                                            ? primaryWhiteColor
+                                            : const Color.fromRGBO(
+                                                154,
+                                                154,
+                                                154,
+                                                1,
+                                              ),
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                           Expanded(
-                            child: DecoratedBox(
-                              decoration: boxDecoration(
-                                _isLongApt
-                                    ? indexUnselectedStackBackgroundColor
-                                    : secondaryGreyColor,
-                                8,
-                                0,
-                                Colors.transparent,
-                              ),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  minimumSize: const Size(50, 30),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _longAptIndex = 1;
-                                    if (_longAptIndex == 1) {
-                                      _isLongApt = false;
-                                    }
-                                  });
-                                },
-                                child: Text(
-                                  'Short',
-                                  style: TextStyle(
-                                    color: _isLongApt
-                                        ? const Color.fromRGBO(154, 154, 154, 1)
-                                        : primaryWhiteColor,
-                                    fontSize: 10,
+                            child: BlocSelector<AthletePageBloc,
+                                AthletePageState, AptType>(
+                              selector: (state) {
+                                return state.aptTypeSelection;
+                              },
+                              builder: (context, aptTypeSelection) {
+                                return DecoratedBox(
+                                  decoration: boxDecoration(
+                                    aptTypeSelection.isLong
+                                        ? indexUnselectedStackBackgroundColor
+                                        : secondaryGreyColor,
+                                    8,
+                                    0,
+                                    Colors.transparent,
                                   ),
-                                ),
-                              ),
+                                  child: TextButton(
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      minimumSize: const Size(50, 30),
+                                    ),
+                                    onPressed: () =>
+                                        context.read<AthletePageBloc>().add(
+                                              const AptTypeSelectionChanged(
+                                                AptType.short,
+                                              ),
+                                            ),
+                                    child: Text(
+                                      'Short',
+                                      style: TextStyle(
+                                        color: aptTypeSelection.isLong
+                                            ? const Color.fromRGBO(
+                                                154,
+                                                154,
+                                                154,
+                                                1,
+                                              )
+                                            : primaryWhiteColor,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           )
                         ],
@@ -1205,8 +1221,12 @@ class _AthletePageState extends State<AthletePage> {
                       ),
                       child: TextButton(
                         onPressed: () {
+                          final selectedAptAddress = context
+                              .read<AthletePageBloc>()
+                              .state
+                              .selectedAptAddress;
                           webWallet.addTokenToWallet(
-                            _getCurrentTokenAddress(),
+                            selectedAptAddress,
                             _getTokenImage(),
                           );
                         },
@@ -1249,20 +1269,26 @@ class _AthletePageState extends State<AthletePage> {
                         ),
                         child: (chartStats.isEmpty)
                             ? const Center(child: CircularProgressIndicator())
-                            : IndexedStack(
-                                index: _longAptIndex,
-                                children: [
-                                  buildLongChart(
-                                    chartStats,
-                                    _longToolTipBehavior,
-                                    _zoomPanBehavior,
-                                  ),
-                                  buildShortChart(
-                                    chartStats,
-                                    _shortToolTipBehavior,
-                                    _zoomPanBehavior,
-                                  )
-                                ],
+                            : BlocSelector<AthletePageBloc, AthletePageState,
+                                AptType>(
+                                selector: (state) => state.aptTypeSelection,
+                                builder: (context, aptTypeSelection) {
+                                  return IndexedStack(
+                                    index: aptTypeSelection.index - 1,
+                                    children: [
+                                      buildLongChart(
+                                        chartStats,
+                                        _longToolTipBehavior,
+                                        _zoomPanBehavior,
+                                      ),
+                                      buildShortChart(
+                                        chartStats,
+                                        _shortToolTipBehavior,
+                                        _zoomPanBehavior,
+                                      )
+                                    ],
+                                  );
+                                },
                               ),
                       ),
                       // Price
@@ -1384,34 +1410,36 @@ class _AthletePageState extends State<AthletePage> {
                     SizedBox(
                       width: 100,
                       height: 20,
-                      child: FutureBuilder<String>(
-                        future: _isLongApt
-                            ? walletController.getTokenSymbol(
-                                getLongAptAddress(athlete.id),
-                              )
-                            : walletController.getTokenSymbol(
-                                getShortAptAddress(athlete.id),
-                              ),
-                        builder: (context, snapshot) {
-                          //Check API response data
-                          if (snapshot.hasError) {
-                            // can't get symbol
-                            return showSymbol('---');
-                          } else if (snapshot.hasData) {
-                            // got the balance
-                            return showSymbol(snapshot.data!);
-                          } else {
-                            // loading
-                            return const Center(
-                              child: SizedBox(
-                                height: 10,
-                                width: 10,
-                                child: CircularProgressIndicator(
-                                  color: Colors.amber,
-                                ),
-                              ),
-                            );
-                          }
+                      child: BlocSelector<AthletePageBloc, AthletePageState,
+                          String>(
+                        selector: (state) => state.selectedAptAddress,
+                        builder: (context, selectedAptAddress) {
+                          return FutureBuilder<String>(
+                            future: walletController.getTokenSymbol(
+                              selectedAptAddress,
+                            ),
+                            builder: (context, snapshot) {
+                              //Check API response data
+                              if (snapshot.hasError) {
+                                // can't get symbol
+                                return showSymbol('---');
+                              } else if (snapshot.hasData) {
+                                // got the balance
+                                return showSymbol(snapshot.data!);
+                              } else {
+                                // loading
+                                return const Center(
+                                  child: SizedBox(
+                                    height: 10,
+                                    width: 10,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.amber,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          );
                         },
                       ),
                     ),
@@ -1452,55 +1480,62 @@ class _AthletePageState extends State<AthletePage> {
                     ),
                     SizedBox(
                       width: 200,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            (_longAptIndex == 0)
-                                ? '''${athlete.longTokenPrice!.toStringAsFixed(2)} AX'''
-                                : '''${athlete.shortTokenPrice!.toStringAsFixed(2)} AX''',
-                            style: textStyle(
-                              Colors.white,
-                              14,
-                              false,
-                              false,
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              (_longAptIndex == 0)
-                                  ? getPercentageDesc(
-                                      athlete.longTokenPercentage!,
-                                    )
-                                  : getPercentageDesc(
-                                      athlete.shortTokenPercentage!,
-                                    ),
-                              style: (_longAptIndex == 0)
-                                  ? textStyle(
-                                      getPercentageColor(
-                                        athlete.longTokenPercentage!,
-                                      ),
-                                      12,
-                                      false,
-                                      false,
-                                    )
-                                  : textStyle(
-                                      getPercentageColor(
-                                        athlete.shortTokenPercentage!,
-                                      ),
-                                      12,
-                                      false,
-                                      false,
-                                    ),
-                            ),
-                          ),
-                          // TODO(anyone): get the all time high book value and
-                          // market value prices
-                          // Text("4.24 AX",
-                          //     style: textStyle(greyTextColor, 14,
-                          //         false, false))
-                        ],
+                      child: BlocSelector<AthletePageBloc, AthletePageState,
+                          AptType>(
+                        selector: (state) => state.aptTypeSelection,
+                        builder: (context, aptTypeSelection) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                aptTypeSelection.isLong
+                                    ? '''${athlete.longTokenPrice!.toStringAsFixed(2)} AX'''
+                                    : '''${athlete.shortTokenPrice!.toStringAsFixed(2)} AX''',
+                                style: textStyle(
+                                  Colors.white,
+                                  14,
+                                  false,
+                                  false,
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 2),
+                                child: Text(
+                                  aptTypeSelection.isLong
+                                      ? getPercentageDesc(
+                                          athlete.longTokenPercentage!,
+                                        )
+                                      : getPercentageDesc(
+                                          athlete.shortTokenPercentage!,
+                                        ),
+                                  style: aptTypeSelection.isLong
+                                      ? textStyle(
+                                          getPercentageColor(
+                                            athlete.longTokenPercentage!,
+                                          ),
+                                          12,
+                                          false,
+                                          false,
+                                        )
+                                      : textStyle(
+                                          getPercentageColor(
+                                            athlete.shortTokenPercentage!,
+                                          ),
+                                          12,
+                                          false,
+                                          false,
+                                        ),
+                                ),
+                              ),
+                              // TODO(anyone): get the all time high book value
+                              // and
+                              // market value prices
+                              // Text("4.24 AX",
+                              //     style: textStyle(greyTextColor, 14,
+                              //         false, false))
+                            ],
+                          );
+                        },
                       ),
                     )
                   ],
@@ -1520,35 +1555,40 @@ class _AthletePageState extends State<AthletePage> {
                         ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          (_longAptIndex == 0)
-                              ? '''${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX'''
-                              : '''${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX''',
-                          style: textStyle(
-                            Colors.white,
-                            14,
-                            false,
-                            false,
-                          ),
-                        ),
-                        Text(
-                          (_longAptIndex == 0)
-                              ? longBookValuePercent
-                              : shortBookValuePercent,
-                          style: textStyle(
-                            Colors.green,
-                            12,
-                            false,
-                            false,
-                          ),
-                        ),
-                        // TODO(anyone): get the all time high book value and
-                        // market value prices
-                        // Text(shortBookValue, style: textStyle(greyTextColor,
-                        // 14, false, false))
-                      ],
+                    BlocSelector<AthletePageBloc, AthletePageState, AptType>(
+                      selector: (state) => state.aptTypeSelection,
+                      builder: (context, aptTypeSelection) {
+                        return Row(
+                          children: [
+                            Text(
+                              aptTypeSelection.isLong
+                                  ? '''${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX'''
+                                  : '''${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX''',
+                              style: textStyle(
+                                Colors.white,
+                                14,
+                                false,
+                                false,
+                              ),
+                            ),
+                            Text(
+                              aptTypeSelection.isLong
+                                  ? longBookValuePercent
+                                  : shortBookValuePercent,
+                              style: textStyle(
+                                Colors.green,
+                                12,
+                                false,
+                                false,
+                              ),
+                            ),
+                            // TODO(anyone): get the all time high book value
+                            // and market value prices
+                            // Text(shortBookValue, style: textStyle
+                            // (greyTextColor, 14, false, false))
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -1567,14 +1607,19 @@ class _AthletePageState extends State<AthletePage> {
                         ),
                       ),
                     ),
-                    Text(
-                      '''${_isLongApt ? longCurrentBookValueRatio.toStringAsFixed(2) : shortCurrentBookValueRatio.toStringAsFixed(2)}%''',
-                      style: textStyle(
-                        greyTextColor,
-                        16,
-                        false,
-                        false,
-                      ),
+                    BlocSelector<AthletePageBloc, AthletePageState, AptType>(
+                      selector: (state) => state.aptTypeSelection,
+                      builder: (context, aptTypeSelection) {
+                        return Text(
+                          '''${aptTypeSelection.isLong ? longCurrentBookValueRatio.toStringAsFixed(2) : shortCurrentBookValueRatio.toStringAsFixed(2)}%''',
+                          style: textStyle(
+                            greyTextColor,
+                            16,
+                            false,
+                            false,
+                          ),
+                        );
+                      },
                     ),
                     // TODO(anyone): get the all time high book value and
                     // market value prices
@@ -1605,14 +1650,10 @@ class _AthletePageState extends State<AthletePage> {
     );
   }
 
-  String _getCurrentTokenAddress() {
-    return _isLongApt
-        ? getLongAptAddress(athlete.id)
-        : getShortAptAddress(athlete.id);
-  }
-
   String _getTokenImage() {
-    return _isLongApt
+    final isLongApt =
+        context.read<AthletePageBloc>().state.aptTypeSelection.isLong;
+    return isLongApt
         ? 'https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_noninverted.png'
         : 'https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_inverted.png';
   }

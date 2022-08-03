@@ -1,12 +1,13 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'dart:async';
+
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/token.dart';
-import 'package:ax_dapp/service/token_list.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class AthleteTokenList extends StatefulWidget {
   const AthleteTokenList(
@@ -31,30 +32,51 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
 
   String keyword = '';
   SupportedSport selectedSport = SupportedSport.all;
-  List<Token> tokenListFilter = [];
+  late List<Apt> apts;
+  late List<Apt> filteredApts;
+
+  late StreamSubscription<List<Apt>> aptsSubscription;
 
   @override
   void initState() {
     super.initState();
     tokenNumber = widget.tknNum;
-    tokenListFilter = TokenList.tokenList;
+    filteredApts = [...context.read<TokensRepository>().apts];
+    aptsSubscription =
+        context.read<TokensRepository>().aptsChanges.listen(updateApts);
+  }
+
+  @override
+  void dispose() {
+    aptsSubscription.cancel();
+    super.dispose();
   }
 
   void setSelectedSport(SupportedSport sport) {
     setState(() {
       selectedSport = sport;
     });
-    updateTokenList();
+    updateFilteredApts();
   }
 
-  void updateTokenList() {
+  void updateApts(List<Apt> apts) {
+    if (mounted) {
+      this.apts = [...apts];
+      updateFilteredApts();
+    }
+  }
+
+  void updateFilteredApts() {
+    if (!mounted) {
+      return;
+    }
     setState(() {
-      tokenListFilter = TokenList.tokenList.where((token) {
+      filteredApts = apts.where((apt) {
         final flagKeyword =
-            token.ticker.toUpperCase().contains(keyword.toUpperCase()) ||
-                token.name.toUpperCase().contains(keyword.toUpperCase());
+            apt.ticker.toUpperCase().contains(keyword.toUpperCase()) ||
+                apt.athleteName.toUpperCase().contains(keyword.toUpperCase());
         final flagSport =
-            selectedSport == SupportedSport.all || token.sport == selectedSport;
+            selectedSport == SupportedSport.all || apt.sport == selectedSport;
         return flagKeyword && flagSport;
       }).toList();
     });
@@ -128,10 +150,10 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                       height: _height * .625 - 160,
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
-                        itemCount: tokenListFilter.length,
+                        itemCount: filteredApts.length,
                         itemBuilder: (context, index) {
                           return widget.createTokenElement(
-                            tokenListFilter[index],
+                            filteredApts[index],
                             tokenNumber,
                           );
                         },
@@ -167,7 +189,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                 setState(() {
                   keyword = value;
                 });
-                updateTokenList();
+                updateFilteredApts();
               },
               decoration: InputDecoration(
                 border: InputBorder.none,

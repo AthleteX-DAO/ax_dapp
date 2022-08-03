@@ -155,3 +155,13 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 }
+
+/// `EthereumCurrency` extensions.
+extension EthereumCurrencyX on EthereumCurrency {
+  /// Converts an `EthereumCurrency` to native `CurrencyParams`.
+  CurrencyParams get toCurrencyParams => CurrencyParams(
+        name: currencyName,
+        symbol: symbol,
+        decimals: decimals,
+      );
+}

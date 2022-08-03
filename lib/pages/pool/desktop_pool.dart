@@ -6,13 +6,13 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.da
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/athlete.dart';
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/usecases/get_wallet_address_use_case.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class DesktopPool extends StatefulWidget {
   const DesktopPool({super.key});
@@ -143,6 +143,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                   height: layoutHgt,
                   child: BlocProvider(
                     create: (BuildContext context) => PoolBloc(
+                      tokensRepository: context.read<TokensRepository>(),
                       repo: GetPoolInfoUseCase(
                         RepositoryProvider.of<GetPairInfoUseCase>(
                           context,

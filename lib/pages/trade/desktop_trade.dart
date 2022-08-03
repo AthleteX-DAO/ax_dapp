@@ -4,15 +4,15 @@ import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/assets/assets.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class DesktopTrade extends StatefulWidget {
   const DesktopTrade({super.key});
@@ -64,10 +64,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
         final tokenFrom = state.tokenFrom;
         final tokenTo = state.tokenTo;
         // TODO(mretana1999): add autofill feature
-
-        if (state.status == BlocStatus.initial) {
-          bloc.add(PageRefreshEvent());
-        }
 
         TextStyle textStyle(Color color, double size, bool isBold) {
           if (isBold) {
@@ -177,7 +173,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         bloc,
                       );
 
-                      bloc.add(PageRefreshEvent());
+                      bloc.add(FetchTradeInfoRequested());
                       setState(() {
                         Navigator.pop(context);
                       });
@@ -195,7 +191,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           scale: 0.5,
-                          image: token.icon!,
+                          image: tokenImage(token),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -239,16 +235,17 @@ class _DesktopTradeState extends State<DesktopTrade> {
           var tkrTextSize = textSize * 0.25;
           if (!isWeb) tkrTextSize = textSize * 0.35;
           var tkr = 'Select a Token';
-          AssetImage? tokenImage = const AssetImage('../assets/images/apt.png');
+          AssetImage? _tokenImage =
+              const AssetImage('../assets/images/apt.png');
           final decor =
               boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
           if (tknNum == 1) {
             tkr = tokenFrom.ticker;
-            tokenImage = tokenFrom.icon;
+            _tokenImage = tokenImage(tokenFrom);
           } else {
             //tknNum == 2
             tkr = tokenTo.ticker;
-            tokenImage = tokenTo.icon;
+            _tokenImage = tokenImage(tokenTo);
           }
 
           return Container(
@@ -275,7 +272,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: tokenImage!,
+                        image: _tokenImage,
                         fit: BoxFit.contain,
                       ),
                     ),

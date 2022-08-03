@@ -4,6 +4,7 @@ import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class WalletView extends StatelessWidget {
   const WalletView({
@@ -32,10 +33,11 @@ class WalletView extends StatelessWidget {
           );
         }
         if (state.isWalletConnected) {
+          final chainToken = context.read<TokensRepository>().chainToken;
           // TODO(Rolly): expose from wallet repository
           walletController
             ..getTokenMetrics()
-            ..getYourAxBalance();
+            ..getYourAxBalance(chainToken.address);
         }
       },
       buildWhen: (previous, current) => previous.status != current.status,

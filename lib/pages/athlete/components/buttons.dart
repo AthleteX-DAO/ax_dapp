@@ -14,6 +14,7 @@ import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 Container buyButton(
   BuildContext context,
@@ -32,9 +33,14 @@ Container buyButton(
         context: context,
         builder: (BuildContext context) => BlocProvider(
           create: (BuildContext context) => BuyDialogBloc(
+            tokensRepository: context.read<TokensRepository>(),
             repo: RepositoryProvider.of<GetBuyInfoUseCase>(context),
-            wallet: GetTotalTokenBalanceUseCase(Get.find()),
+            wallet: GetTotalTokenBalanceUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              walletController: Get.find(),
+            ),
             swapController: Get.find(),
+            athleteId: athlete.id,
           ),
           child: BuyDialog(
             athlete.name,
@@ -65,9 +71,14 @@ Container sellButton(
         context: context,
         builder: (BuildContext context) => BlocProvider(
           create: (BuildContext context) => SellDialogBloc(
+            tokensRepository: context.read<TokensRepository>(),
             repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
-            wallet: GetTotalTokenBalanceUseCase(Get.find()),
+            wallet: GetTotalTokenBalanceUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              walletController: Get.find(),
+            ),
             swapController: Get.find(),
+            athleteId: athlete.id,
           ),
           child: SellDialog(
             athlete.name,

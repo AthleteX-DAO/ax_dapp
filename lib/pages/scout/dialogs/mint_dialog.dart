@@ -1,13 +1,14 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class MintDialog extends StatefulWidget {
   const MintDialog(this.athlete, {super.key});
@@ -34,14 +35,16 @@ class _MintDialogState extends State<MintDialog> {
   @override
   void initState() {
     super.initState();
-    lspController.updateAptAddress(widget.athlete.id);
+    final aptPair = context.read<TokensRepository>().aptPair(widget.athlete.id);
+    lspController.updateAptAddress(aptPair.address);
     updateStats();
   }
 
   Future<void> updateStats() async {
     try {
+      final chainToken = context.read<TokensRepository>().chainToken;
       balance.value =
-          await walletController.getTokenBalance(AXT.polygonAddress);
+          await walletController.getTokenBalance(chainToken.address);
       maxAmount.value = double.parse(balance.value) /
           15000; // 15000 is collateral per pair for the APTs
     } catch (_) {}
@@ -360,7 +363,11 @@ class _MintDialogState extends State<MintDialog> {
                     175,
                     40,
                     'Approve',
-                    lspController.approve,
+                    () {
+                      final chainToken =
+                          context.read<TokensRepository>().chainToken;
+                      return lspController.approve(chainToken.address);
+                    },
                     lspController.mint,
                     transactionConfirmed,
                   ),

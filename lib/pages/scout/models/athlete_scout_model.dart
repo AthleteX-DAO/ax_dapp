@@ -1,4 +1,4 @@
-import 'package:ax_dapp/util/supported_sports.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class AthleteScoutModel {
   AthleteScoutModel({

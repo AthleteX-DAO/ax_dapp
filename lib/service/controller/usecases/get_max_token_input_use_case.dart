@@ -1,16 +1,22 @@
 import 'dart:developer';
 
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 /// This WalletController usecase encapsulates functions for returning
 /// the total balance for AX or any other given token address
 class GetTotalTokenBalanceUseCase {
-  GetTotalTokenBalanceUseCase(this.walletController);
+  GetTotalTokenBalanceUseCase({
+    required TokensRepository tokensRepository,
+    required this.walletController,
+  }) : _tokensRepository = tokensRepository;
 
+  final TokensRepository _tokensRepository;
   final WalletController walletController;
 
   Future<double> getTotalAxBalance() async {
-    await walletController.getYourAxBalance();
+    final chainToken = _tokensRepository.chainToken;
+    await walletController.getYourAxBalance(chainToken.address);
     final maxInput = double.parse(walletController.yourBalance.value);
     log('Max Possible Ax Input: $maxInput');
     return maxInput;

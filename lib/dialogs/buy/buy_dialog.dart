@@ -1,13 +1,12 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/service/token_list.dart';
-import 'package:ax_dapp/util/token_type.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BuyDialog extends StatefulWidget {
@@ -33,7 +32,6 @@ class _BuyDialogState extends State<BuyDialog> {
   double hgt = 500;
   final TextEditingController _aptAmountController = TextEditingController();
 
-  TokenType _currentTokenTypeSelection = TokenType.long;
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
@@ -51,86 +49,13 @@ class _BuyDialogState extends State<BuyDialog> {
       height: hgt * 0.05,
       decoration: boxDecoration(Colors.transparent, 20, 1, Colors.grey[800]!),
       child: Row(
-        children: [
+        children: const [
           Expanded(
-            //Long apt toggle button
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == TokenType.long)
-                    ? Colors.amber
-                    : Colors.transparent,
-              ),
-              onPressed: () {
-                setState(() {
-                  _currentTokenTypeSelection = TokenType.long;
-                });
-              },
-              child: Text(
-                'Long',
-                style: TextStyle(
-                  color: (_currentTokenTypeSelection == TokenType.long)
-                      ? Colors.black
-                      : const Color.fromRGBO(154, 154, 154, 1),
-                  fontSize: 11,
-                ),
-              ),
-            ),
+            child: LongAptButton(),
           ),
           Expanded(
-            //short apt toggle button
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == TokenType.long)
-                    ? Colors.transparent
-                    : Colors.black,
-              ),
-              onPressed: () {
-                setState(() {
-                  _currentTokenTypeSelection = TokenType.short;
-                });
-              },
-              child: Text(
-                'Short',
-                style: TextStyle(
-                  color: (_currentTokenTypeSelection == TokenType.long)
-                      ? const Color.fromRGBO(154, 154, 154, 1)
-                      : Colors.amber,
-                  fontSize: 11,
-                ),
-              ),
-            ),
+            child: ShortAptButton(),
           )
-        ],
-      ),
-    );
-  }
-
-  Widget showPrice(String price) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Price:', style: textStyle(Colors.white, 15, false)),
-          if (_currentTokenTypeSelection == TokenType.long)
-            Text(
-              '$price AX per ${getLongAthleteSymbol(widget.athleteId)} APT',
-              style: textStyle(Colors.white, 15, false),
-            )
-          else
-            Text(
-              '$price AX per ${getShortAthleteSymbol(widget.athleteId)} APT',
-              style: textStyle(Colors.white, 15, false),
-            )
         ],
       ),
     );
@@ -219,32 +144,6 @@ class _BuyDialogState extends State<BuyDialog> {
     );
   }
 
-  Widget showYouReceived(String amountToReceive) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'You Receive:',
-            style: textStyle(Colors.white, 15, false),
-          ),
-          if (_currentTokenTypeSelection == TokenType.long)
-            Text(
-              '$amountToReceive '
-              '${getLongAthleteSymbol(widget.athleteId)}'
-              ' APT',
-              style: textStyle(Colors.white, 15, false),
-            )
-          else
-            Text(
-              '$amountToReceive ${getShortAthleteSymbol(widget.athleteId)} APT',
-              style: textStyle(Colors.white, 15, false),
-            )
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var isWeb = true;
@@ -256,19 +155,12 @@ class _BuyDialogState extends State<BuyDialog> {
     if (_height < 505) hgt = _height;
 
     return BlocBuilder<BuyDialogBloc, BuyDialogState>(
-      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<BuyDialogBloc>();
-        final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
         final balance = state.balance;
         final minReceived = state.aptBuyInfo.minimumReceived.toStringAsFixed(6);
         final priceImpact = state.aptBuyInfo.priceImpact.toStringAsFixed(6);
-        final receiveAmount = state.aptBuyInfo.receiveAmount.toStringAsFixed(6);
         final totalFee = state.aptBuyInfo.totalFee;
-        if (state.tokenAddress.isEmpty ||
-            state.tokenAddress != _getCurrentTokenAddress()) {
-          reloadBuyDialog(bloc);
-        }
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(
@@ -479,9 +371,7 @@ class _BuyDialogState extends State<BuyDialog> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          showPrice(price),
-                        ],
+                        children: const [Flexible(child: Price())],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -512,8 +402,8 @@ class _BuyDialogState extends State<BuyDialog> {
                   width: wid,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      showYouReceived(receiveAmount),
+                    children: const [
+                      Flexible(child: AbountToReceive()),
                     ],
                   ),
                 ),
@@ -540,14 +430,132 @@ class _BuyDialogState extends State<BuyDialog> {
       },
     );
   }
+}
 
-  void reloadBuyDialog(BuyDialogBloc bloc) {
-    bloc.add(OnLoadDialog(currentTokenAddress: _getCurrentTokenAddress()));
+class LongAptButton extends StatelessWidget {
+  const LongAptButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final aptTypeSelection =
+        context.select((BuyDialogBloc bloc) => bloc.state.aptTypeSelection);
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: EdgeInsets.zero,
+        minimumSize: const Size(50, 30),
+        primary: (aptTypeSelection.isLong) ? Colors.amber : Colors.transparent,
+      ),
+      onPressed: () => context
+          .read<BuyDialogBloc>()
+          .add(const AptTypeSelectionChanged(AptType.long)),
+      child: Text(
+        'Long',
+        style: TextStyle(
+          color: (aptTypeSelection.isLong)
+              ? Colors.black
+              : const Color.fromRGBO(154, 154, 154, 1),
+          fontSize: 11,
+        ),
+      ),
+    );
   }
+}
 
-  String _getCurrentTokenAddress() {
-    return (_currentTokenTypeSelection == TokenType.long)
-        ? getLongAptAddress(widget.athleteId)
-        : getShortAptAddress(widget.athleteId);
+class ShortAptButton extends StatelessWidget {
+  const ShortAptButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final aptTypeSelection =
+        context.select((BuyDialogBloc bloc) => bloc.state.aptTypeSelection);
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: EdgeInsets.zero,
+        minimumSize: const Size(50, 30),
+        primary: (aptTypeSelection.isLong) ? Colors.transparent : Colors.black,
+      ),
+      onPressed: () => context
+          .read<BuyDialogBloc>()
+          .add(const AptTypeSelectionChanged(AptType.short)),
+      child: Text(
+        'Short',
+        style: TextStyle(
+          color: (aptTypeSelection.isLong)
+              ? const Color.fromRGBO(154, 154, 154, 1)
+              : Colors.amber,
+          fontSize: 11,
+        ),
+      ),
+    );
+  }
+}
+
+class Price extends StatelessWidget {
+  const Price({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('Price:', style: textStyle(Colors.white, 15, false)),
+        BlocBuilder<BuyDialogBloc, BuyDialogState>(
+          buildWhen: (previous, current) =>
+              previous.aptTypeSelection != current.aptTypeSelection ||
+              previous.aptBuyInfo != current.aptBuyInfo ||
+              previous.longApt != current.longApt ||
+              previous.shortApt != current.shortApt,
+          builder: (context, state) {
+            final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
+            final _textStyle = textStyle(Colors.white, 15, false);
+            return state.aptTypeSelection.isLong
+                ? Text(
+                    '$price AX per ${state.longApt.ticker} APT',
+                    style: _textStyle,
+                  )
+                : Text(
+                    '$price AX per ${state.shortApt.ticker} APT',
+                    style: _textStyle,
+                  );
+          },
+        )
+      ],
+    );
+  }
+}
+
+class AbountToReceive extends StatelessWidget {
+  const AbountToReceive({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final _textStyle = textStyle(Colors.white, 15, false);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('You Receive:', style: _textStyle),
+        BlocBuilder<BuyDialogBloc, BuyDialogState>(
+          builder: (context, state) {
+            final amountToReceive =
+                state.aptBuyInfo.receiveAmount.toStringAsFixed(6);
+            return state.aptTypeSelection.isLong
+                ? Text(
+                    '$amountToReceive ${state.longApt.ticker} APT',
+                    style: _textStyle,
+                  )
+                : Text(
+                    '$amountToReceive ${state.shortApt.ticker} APT',
+                    style: _textStyle,
+                  );
+          },
+        )
+      ],
+    );
   }
 }

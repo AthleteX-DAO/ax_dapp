@@ -1,50 +1,81 @@
+import 'package:ax_dapp/pages/trade/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'trade_page_event.dart';
 part 'trade_page_state.dart';
 
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   TradePageBloc({
+    required WalletRepository walletRepository,
     required this.repo,
-    required this.controller,
     required this.swapController,
     required this.walletController,
     required this.isBuyAX,
-  }) : super(TradePageState.initial(controller, isBuyAX)) {
-    on<PageRefreshEvent>(_mapRefreshEventToState);
+  })  : _walletRepository = walletRepository,
+        super(
+          TradePageState.initial(
+            isBuyAX: isBuyAX,
+            chain: walletRepository.ethereumChain,
+          ),
+        ) {
+    on<WatchEthereumChainChangesStarted>(_onWatchEthereumChainChangesStarted);
+    on<FetchTradeInfoRequested>(_onFetchTradeInfoRequested);
     on<MaxSwapTapEvent>(_mapMaxSwapTapEventToState);
     on<NewTokenFromInputEvent>(_mapNewTokenFromInputEventToState);
     on<NewTokenToInputEvent>(_mapNewTokenToInputEventToState);
     on<SetTokenFrom>(_mapSetTokenFromEventToState);
     on<SetTokenTo>(_mapSetTokenToEventToState);
     on<SwapTokens>(_mapSwapTokensEventToState);
+
+    add(WatchEthereumChainChangesStarted());
+    add(FetchTradeInfoRequested());
   }
 
+  final WalletRepository _walletRepository;
   final GetSwapInfoUseCase repo;
-  final Controller controller;
   final SwapController swapController;
   final WalletController walletController;
   final bool isBuyAX;
 
-  Future<void> _mapRefreshEventToState(
-    PageRefreshEvent event,
+  Future<void> _onWatchEthereumChainChangesStarted(
+    WatchEthereumChainChangesStarted _,
+    Emitter<TradePageState> emit,
+  ) async {
+    await emit.onEach<EthereumChain>(
+      _walletRepository.ethereumChainChanges,
+      onData: (chain) {
+        final tradeTokens = chain.computeTradeTokens(
+          isBuyAX: isBuyAX,
+        );
+        emit(
+          state.copyWith(
+            tokenFrom: tradeTokens.tokenFrom,
+            tokenTo: tradeTokens.tokenTo,
+          ),
+        );
+        add(FetchTradeInfoRequested());
+      },
+    );
+  }
+
+  Future<void> _onFetchTradeInfoRequested(
+    FetchTradeInfoRequested event,
     Emitter<TradePageState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final tokenFromBalance =
-          await walletController.getTokenBalance(state.tokenFrom.address.value);
+          await walletController.getTokenBalance(state.tokenFrom.address);
       final tokenToBalance =
-          await walletController.getTokenBalance(state.tokenTo.address.value);
+          await walletController.getTokenBalance(state.tokenTo.address);
       emit(
         state.copyWith(
           tokenFromBalance: double.parse(tokenFromBalance),
@@ -52,14 +83,14 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         ),
       );
       final response = await repo.fetchSwapInfo(
-        tokenFrom: state.tokenFrom.address.value,
-        tokenTo: state.tokenTo.address.value,
+        tokenFrom: state.tokenFrom.address,
+        tokenTo: state.tokenTo.address,
       );
       final isSuccess = response.isLeft();
       if (isSuccess) {
         swapController
-          ..updateFromAddress(state.tokenFrom.address.value)
-          ..updateToAddress(state.tokenTo.address.value);
+          ..updateFromAddress(state.tokenFrom.address)
+          ..updateToAddress(state.tokenTo.address);
         final swapInfo = response.getLeft().toNullable()!.swapInfo;
 
         //do some math
@@ -85,8 +116,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     final tokenInputFromAmount = event.tokenInputFromAmount;
     try {
       final response = await repo.fetchSwapInfo(
-        tokenFrom: state.tokenFrom.address.value,
-        tokenTo: state.tokenTo.address.value,
+        tokenFrom: state.tokenFrom.address,
+        tokenTo: state.tokenTo.address,
         fromInput: tokenInputFromAmount,
       );
       final isSuccess = response.isLeft();
@@ -119,7 +150,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final tokenFromBalance =
-          await walletController.getTokenBalance(state.tokenFrom.address.value);
+          await walletController.getTokenBalance(state.tokenFrom.address);
       final maxInput = double.parse(tokenFromBalance);
       emit(
         state.copyWith(
@@ -137,7 +168,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     SetTokenFrom event,
     Emitter<TradePageState> emit,
   ) {
-    swapController.updateFromAddress(event.tokenFrom.address.value);
+    swapController.updateFromAddress(event.tokenFrom.address);
     emit(state.copyWith(tokenFrom: event.tokenFrom));
   }
 
@@ -145,7 +176,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     SetTokenTo event,
     Emitter<TradePageState> emit,
   ) {
-    swapController.updateToAddress(event.tokenTo.address.value);
+    swapController.updateToAddress(event.tokenTo.address);
     emit(state.copyWith(tokenTo: event.tokenTo));
   }
 

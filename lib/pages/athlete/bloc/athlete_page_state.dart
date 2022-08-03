@@ -2,30 +2,46 @@ part of 'athlete_page_bloc.dart';
 
 class AthletePageState extends Equatable {
   const AthletePageState({
-    required this.stats,
-    required this.status,
+    this.status = BlocStatus.initial,
+    this.aptTypeSelection = AptType.long,
+    this.longApt = const Apt.empty(),
+    this.shortApt = const Apt.empty(),
+    this.stats = const [],
   });
 
-  factory AthletePageState.initial() {
-    return const AthletePageState(stats: [], status: BlocStatus.initial);
-  }
-
-  final List<GraphData> stats;
   final BlocStatus status;
+  final AptType aptTypeSelection;
+  final Apt longApt;
+  final Apt shortApt;
+  final List<GraphData> stats;
 
   AthletePageState copyWith({
-    List<GraphData>? stats,
     BlocStatus? status,
+    AptType? aptTypeSelection,
+    Apt? longApt,
+    Apt? shortApt,
+    List<GraphData>? stats,
   }) {
     return AthletePageState(
-      stats: stats ?? this.stats,
       status: status ?? this.status,
+      aptTypeSelection: aptTypeSelection ?? this.aptTypeSelection,
+      longApt: longApt ?? this.longApt,
+      shortApt: shortApt ?? this.shortApt,
+      stats: stats ?? this.stats,
     );
   }
 
   @override
-  List<Object?> get props => [status, stats];
+  List<Object?> get props => [
+        status,
+        aptTypeSelection,
+        longApt,
+        shortApt,
+        stats,
+      ];
+}
 
-  @override
-  String toString() => 'AthletePageState(stats: $stats, status: $status)';
+extension BuyDialogStateX on AthletePageState {
+  String get selectedAptAddress =>
+      aptTypeSelection.isLong ? longApt.address : shortApt.address;
 }

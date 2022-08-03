@@ -17,12 +17,12 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dar
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -76,13 +76,12 @@ class _DesktopScoutState extends State<DesktopScout> {
       builder: (context, state) {
         final bloc = context.read<ScoutPageBloc>();
         final filteredAthletes = state.filteredAthletes;
-        if (state.status == BlocStatus.initial) {
-          bloc.add(OnPageRefresh());
-        }
         if (athletePage && curAthlete != null) {
           return BlocProvider(
             create: (context) => AthletePageBloc(
+              tokensRepository: context.read<TokensRepository>(),
               repo: RepositoryProvider.of<MLBRepo>(context),
+              athleteId: curAthlete!.id,
             ),
             child: AthletePage(
               athlete: curAthlete!,
@@ -733,13 +732,18 @@ class _DesktopScoutState extends State<DesktopScout> {
                           context: context,
                           builder: (BuildContext context) => BlocProvider(
                             create: (BuildContext context) => BuyDialogBloc(
+                              tokensRepository:
+                                  context.read<TokensRepository>(),
                               repo: RepositoryProvider.of<GetBuyInfoUseCase>(
                                 context,
                               ),
                               wallet: GetTotalTokenBalanceUseCase(
-                                Get.find(),
+                                tokensRepository:
+                                    context.read<TokensRepository>(),
+                                walletController: Get.find(),
                               ),
                               swapController: Get.find(),
+                              athleteId: athlete.id,
                             ),
                             child: BuyDialog(
                               athlete.name,
@@ -961,13 +965,18 @@ class _DesktopScoutState extends State<DesktopScout> {
                           context: context,
                           builder: (BuildContext context) => BlocProvider(
                             create: (BuildContext context) => BuyDialogBloc(
+                              tokensRepository:
+                                  context.read<TokensRepository>(),
                               repo: RepositoryProvider.of<GetBuyInfoUseCase>(
                                 context,
                               ),
                               wallet: GetTotalTokenBalanceUseCase(
-                                Get.find(),
+                                tokensRepository:
+                                    context.read<TokensRepository>(),
+                                walletController: Get.find(),
                               ),
                               swapController: Get.find(),
+                              athleteId: athlete.id,
                             ),
                             child: BuyDialog(
                               athlete.name,

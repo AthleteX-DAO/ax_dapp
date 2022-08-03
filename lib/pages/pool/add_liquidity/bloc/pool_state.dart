@@ -2,32 +2,18 @@ part of 'pool_bloc.dart';
 
 class PoolState extends Equatable {
   const PoolState({
-    required this.shareOfPool,
-    required this.apy,
-    required this.balance0,
-    required this.balance1,
-    required this.token0AmountInput,
-    required this.token1AmountInput,
+    this.shareOfPool = '0.0',
+    this.apy = '0.0',
+    this.balance0 = '0.0',
+    this.balance1 = '0.0',
+    this.token0AmountInput = 0,
+    this.token1AmountInput = 0,
     required this.token0,
     required this.token1,
-    required this.status,
-    required this.poolPairInfo,
+    this.status = BlocStatus.initial,
+    this.poolPairInfo = PoolPairInfo.empty,
   });
 
-  factory PoolState.initial() {
-    return PoolState(
-      shareOfPool: '0.0',
-      apy: '0.0',
-      balance0: '0.0',
-      balance1: '0.0',
-      token0AmountInput: 0,
-      token1AmountInput: 0,
-      token0: TokenList.tokenList[0],
-      token1: TokenList.tokenList[1],
-      status: BlocStatus.initial,
-      poolPairInfo: PoolPairInfo.empty(),
-    );
-  }
   final String shareOfPool;
   final String apy;
   final String balance0;
