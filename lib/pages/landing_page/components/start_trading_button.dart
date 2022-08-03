@@ -52,6 +52,7 @@ class StartTradingButton extends StatelessWidget {
               ),
             ),
             onPressed: () {
+              context.read<TrackingCubit>().onPressedStartTrading();
               navigateToV1App(context);
             },
             child: Text(

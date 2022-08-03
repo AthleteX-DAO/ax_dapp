@@ -16,7 +16,6 @@ class AptSellInfo {
       totalFee: 0,
     );
   }
-
   final double axPrice;
   final double minimumReceived;
   final double priceImpact;

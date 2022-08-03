@@ -20,6 +20,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.shareOfPool,
     required this.percentRemoval,
     required this.walletId,
+    required this.lpTokenName,
     super.key,
   });
 
@@ -34,6 +35,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final String shareOfPool;
   final double percentRemoval;
   final String walletId;
+  final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -94,11 +96,11 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
+            context
+                .read<TrackingCubit>()
+                .onPoolRemovalConfirmClick(widget.currencyTwo);
             //Confirm button pressed
             widget.confirmCallback().then((value) {
-              context
-                  .read<TrackingCubit>()
-                  .onPoolRemovalConfirmClick(widget.currencyTwo);
               context.read<TrackingCubit>().onPoolRemoval(
                     widget.valueOne,
                     widget.valueTwo,
@@ -106,6 +108,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                     widget.shareOfPool,
                     widget.percentRemoval,
                     widget.walletId,
+                    widget.lpTokenName,
                   );
               showDialog<void>(
                 context: context,
