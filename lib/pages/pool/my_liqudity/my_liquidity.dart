@@ -897,6 +897,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                   shareOfPool: infoOfSelectedCard.shareOfPool,
                                   percentRemoval: value,
                                   walletId: userWalletAddress.walletAddress,
+                                  lpTokenName:
+                                      '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}',
                                 ),
                                 const Spacer(),
                                 Container(
