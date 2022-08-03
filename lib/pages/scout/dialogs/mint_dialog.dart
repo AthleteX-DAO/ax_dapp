@@ -366,7 +366,7 @@ class _MintDialogState extends State<MintDialog> {
                     text: 'Approve',
                     athlete: widget.athlete,
                     aptName: widget.athlete.name,
-                    inputApt: _aptAmountController.text,
+                    inputApt: input.toString(),
                     valueInAX: '$youSpend AX',
                     approveCallback: lspController.approve,
                     confirmCallback: lspController.mint,
