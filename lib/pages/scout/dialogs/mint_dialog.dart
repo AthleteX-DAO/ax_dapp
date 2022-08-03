@@ -115,9 +115,9 @@ class _MintDialogState extends State<MintDialog> {
             'You Spend:',
             style: textStyle(Colors.white, 15, false),
           ),
-           Text(
-              '$youSpend AX',
-              style: textStyle(Colors.white, 15, false),
+          Text(
+            '$youSpend AX',
+            style: textStyle(Colors.white, 15, false),
           ),
         ],
       ),
@@ -313,7 +313,7 @@ class _MintDialogState extends State<MintDialog> {
                                   lspController.updateCreateAmt(input);
                                   setState(() {
                                     youSpend = input * 15000;
-                                  });                            
+                                  });
                                 },
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
