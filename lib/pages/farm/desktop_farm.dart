@@ -125,7 +125,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
             SizedBox(
               //contains list of allfarms cards
               width: layoutWdt,
-              height: layoutHgt,
+              height: layoutHgt - 120,
               child: ScrollConfiguration(
                 behavior: ScrollConfiguration.of(context).copyWith(
                   dragDevices: {

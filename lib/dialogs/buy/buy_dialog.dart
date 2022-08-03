@@ -1,24 +1,30 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
-import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/pages/athlete/components/athlete_buy_approve_button.dart';
+import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:ax_dapp/util/token_type.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BuyDialog extends StatefulWidget {
   const BuyDialog(
+    this.athlete,
     this.athleteName,
     this.aptPrice,
     this.athleteId,
     this.goToTradePage, {
     super.key,
   });
-
+  final AthleteScoutModel athlete;
   final String athleteName;
   final double aptPrice;
   final int athleteId;
@@ -37,6 +43,7 @@ class _BuyDialogState extends State<BuyDialog> {
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
+  Controller controller = Get.find();
 
   @override
   void dispose() {
@@ -255,10 +262,22 @@ class _BuyDialogState extends State<BuyDialog> {
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
 
+    var aptLongOrShort = 'Long Apt';
+    if (_currentTokenTypeSelection == TokenType.long) {
+      aptLongOrShort = 'Long Apt';
+    }
+    if (_currentTokenTypeSelection == TokenType.short) {
+      aptLongOrShort = 'Short Apt';
+    }
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      controller.publicAddress.toString(),
+    );
+
     return BlocBuilder<BuyDialogBloc, BuyDialogState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<BuyDialogBloc>();
+        final aptBuyInfo = state.aptBuyInfo;
         final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
         final balance = state.balance;
         final minReceived = state.aptBuyInfo.minimumReceived.toStringAsFixed(6);
@@ -522,13 +541,20 @@ class _BuyDialogState extends State<BuyDialog> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ApproveButton(
-                        175,
-                        40,
-                        'Approve',
-                        bloc.swapController.approve,
-                        bloc.swapController.swap,
-                        transactionConfirmed,
+                      AthleteBuyApproveButton(
+                        width: 175,
+                        height: 40,
+                        text: 'Approve',
+                        amountInputted: _aptAmountController.text,
+                        aptBuyInfo: aptBuyInfo,
+                        athlete: widget.athlete,
+                        aptName: widget.athleteName,
+                        aptId: widget.athleteId,
+                        longOrShort: aptLongOrShort,
+                        approveCallback: bloc.swapController.approve,
+                        confirmCallback: bloc.swapController.swap,
+                        confirmDialog: transactionConfirmed,
+                        walletAddress: userWalletAddress.walletAddress,
                       ),
                     ],
                   ),

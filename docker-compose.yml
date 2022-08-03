@@ -1,0 +1,23 @@
+version: '3.1'
+services:
+  api:
+    container_name: "ax_dapp_${BUILD_TYPE}"
+    env_file: .env
+    environment:
+      - DISABLE_TESTS=$DISABLE_TESTS
+      - FIREBASE_API_KEY=$FIREBASE_API_KEY
+      - PORT=$PORT
+      - BUILD_TYPE=$BUILD_TYPE
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    ports:
+      - "${PORT}:${PORT}"
+    expose:
+      - "${PORT}"
+    build:
+      context: ./
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["flutter", "pub", "global", "run", "webdev", "serve", "0.0.0.0:${PORT}"]

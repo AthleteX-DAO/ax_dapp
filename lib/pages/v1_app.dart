@@ -25,6 +25,7 @@ import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -551,10 +552,15 @@ class _V1AppState extends State<V1App> {
       width: width,
       decoration: boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
       child: TextButton(
-        onPressed: () => showDialog<void>(
-          context: context,
-          builder: walletDialog,
-        ).then((value) => setState(() {})),
+        onPressed: () {
+          context.read<TrackingCubit>().onPressedConnectWallet(
+                publicAddress: controller.publicAddress.toString(),
+              );
+          showDialog<void>(
+            context: context,
+            builder: walletDialog,
+          ).then((value) => setState(() {}));
+        },
         child: Text(
           text,
           style: textStyle(Colors.amber[400]!, 16, true, false),

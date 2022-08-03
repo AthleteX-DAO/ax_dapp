@@ -5,6 +5,7 @@ import 'package:ax_dapp/contracts/Pool.g.dart';
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
@@ -15,6 +16,7 @@ class FarmController {
   FarmController(FarmModel farm) {
     strAddress = farm.strAddress;
     strName = farm.strName;
+    athlete = _getAthleteTokenNameFromAlias(farm.strStakedAlias);
     strAPR = double.parse(farm.strAPR).toStringAsFixed(2);
     strTVL = double.parse(farm.strTVL).toStringAsFixed(2);
     strStaked = RxString(farm.strStaked);
@@ -44,6 +46,7 @@ class FarmController {
   FarmController.fromFarm(FarmController farm) {
     strAddress = farm.strAddress;
     strName = farm.strName;
+    athlete = farm.athlete;
     strAPR = farm.strAPR;
     strTVL = farm.strTVL;
     strStaked = farm.strStaked;
@@ -67,6 +70,17 @@ class FarmController {
     updateStakedBalance(account);
     updateCurrentBalance();
   }
+
+  String? _getAthleteTokenNameFromAlias(String stakingAlias) {
+    // returns athlete token name, returns null if stakingAlias is empty
+    // stakingToken alias example: 'AJLT1010-AX' or 'AX-CCST1010' or ''
+    if (stakingAlias.isEmpty) return null;
+    final tickers = stakingAlias.split('-');
+    //we want athlete ticker not 'AX'
+    final athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
+    return TokenList.mapTickerToName(athleteTicker);
+  }
+
   // decalaration of member varibles
   late Pool contract;
 
