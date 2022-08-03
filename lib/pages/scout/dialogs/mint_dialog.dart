@@ -23,9 +23,9 @@ class _MintDialogState extends State<MintDialog> {
   double paddingHorizontal = 20;
   double hgt = 450;
   double input = 0;
+  double youSpend = 0;
   RxDouble maxAmount = 0.0.obs;
   RxString balance = '---'.obs;
-  RxDouble youSpend = 0.0.obs;
   String aptAddress = '';
   final TextEditingController _aptAmountController = TextEditingController();
 
@@ -115,11 +115,9 @@ class _MintDialogState extends State<MintDialog> {
             'You Spend:',
             style: textStyle(Colors.white, 15, false),
           ),
-          Obx(
-            () => Text(
+           Text(
               '$youSpend AX',
               style: textStyle(Colors.white, 15, false),
-            ),
           ),
         ],
       ),
@@ -279,7 +277,7 @@ class _MintDialogState extends State<MintDialog> {
                                 updateStats();
                                 lspController.updateCreateAmt(maxAmount.value);
                                 input = maxAmount.value;
-                                youSpend.value = maxAmount.value * 15000;
+                                youSpend = maxAmount.value * 15000;
                                 //update controller text to max balance
                                 _aptAmountController.text =
                                     maxAmount.toStringAsFixed(6);
@@ -313,7 +311,9 @@ class _MintDialogState extends State<MintDialog> {
                                   }
                                   input = double.parse(value);
                                   lspController.updateCreateAmt(input);
-                                  youSpend.value = input * 15000;
+                                  setState(() {
+                                    youSpend = input * 15000;
+                                  });                            
                                 },
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
@@ -366,7 +366,7 @@ class _MintDialogState extends State<MintDialog> {
                     text: 'Approve',
                     athlete: widget.athlete,
                     aptName: widget.athlete.name,
-                    inputApt: input.toString(),
+                    inputApt: _aptAmountController.text,
                     valueInAX: '$youSpend AX',
                     approveCallback: lspController.approve,
                     confirmCallback: lspController.mint,
