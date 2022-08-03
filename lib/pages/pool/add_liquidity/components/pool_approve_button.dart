@@ -93,11 +93,11 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
+            context
+                .read<TrackingCubit>()
+                .onPoolConfirmClick(widget.currencyTwo);
             //Confirm button pressed
             widget.confirmCallback().then((value) {
-              context
-                  .read<TrackingCubit>()
-                  .onPoolConfirmClick(widget.currencyTwo);
               context.read<TrackingCubit>().onPoolCreated(
                     widget.valueOne,
                     widget.valueTwo,
