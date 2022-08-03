@@ -18,7 +18,6 @@ class SellDialogState extends Equatable {
       aptSellInfo: AptSellInfo.empty(),
     );
   }
-
   final double balance;
   final double aptInputAmount;
   final BlocStatus status;
