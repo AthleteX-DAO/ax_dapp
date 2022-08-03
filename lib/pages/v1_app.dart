@@ -554,7 +554,8 @@ class _V1AppState extends State<V1App> {
       child: TextButton(
         onPressed: () {
           context.read<TrackingCubit>().onPressedConnectWallet(
-              publicAddress: controller.publicAddress.toString());
+                publicAddress: controller.publicAddress.toString(),
+              );
           showDialog<void>(
             context: context,
             builder: walletDialog,
