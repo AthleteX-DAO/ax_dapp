@@ -5,15 +5,28 @@ import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class RedeemDialog extends StatefulWidget {
-  const RedeemDialog(this.athlete, {super.key});
+  const RedeemDialog(
+    this.athlete,
+    this.aptName,
+    this.inputLongApt,
+    this.inputShortApt,
+    this.valueInAX, {
+    super.key,
+  });
 
   final AthleteScoutModel athlete;
+  final String aptName;
+  final String inputLongApt;
+  final String inputShortApt;
+  final String valueInAX;
 
   @override
   State<RedeemDialog> createState() => _RedeemDialogState();
@@ -117,6 +130,10 @@ class _RedeemDialogState extends State<RedeemDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
+    final userWalletAddress =
+        walletController.controller.publicAddress.toString();
+    final walletInt = BigInt.parse(userWalletAddress);
+    final walletAddress = walletInt.toRadixString(16);
 
     return Dialog(
       insetPadding: EdgeInsets.zero,
@@ -407,7 +424,19 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             context: context,
                             builder: (BuildContext context) =>
                                 confirmTransaction(context, true, ''),
+                          ).then(
+                            (value) => context
+                                .read<TrackingCubit>()
+                                .trackAthleteRedeemSuccess(
+                                  widget.athlete.name,
+                                  widget.athlete.sport.toString(),
+                                  _longInputController.text,
+                                  _shortInputController.text,
+                                  widget.valueInAX,
+                                  walletAddress,
+                                ),
                           );
+
                           if (mounted) {
                             Navigator.pop(context);
                           }

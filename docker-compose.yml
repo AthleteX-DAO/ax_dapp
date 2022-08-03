@@ -8,7 +8,10 @@ services:
       - FIREBASE_API_KEY=$FIREBASE_API_KEY
       - PORT=$PORT
       - BUILD_TYPE=$BUILD_TYPE
-    restart: always
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
     ports:
       - "${PORT}:${PORT}"
     expose:
