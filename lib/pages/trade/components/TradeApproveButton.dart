@@ -91,11 +91,9 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
+            context.read<TrackingCubit>().onSwapConfirmClick(widget.toCurrency);
             //Confirm button pressed
             widget.confirmCallback().then((value) {
-              context
-                  .read<TrackingCubit>()
-                  .onSwapConfirmClick(widget.toCurrency);
               context.read<TrackingCubit>().onSwapConfirmedTransaction(
                     widget.fromUnits,
                     widget.toUnits,
