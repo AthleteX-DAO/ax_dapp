@@ -98,17 +98,17 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
           if (isApproved) {
             context
                 .read<TrackingCubit>()
-                .onPoolRemovalConfirmClick(widget.currencyTwo);
+                .onPoolRemovalConfirmClick(currencyTwo: widget.currencyTwo);
             //Confirm button pressed
             widget.confirmCallback().then((value) {
               context.read<TrackingCubit>().onPoolRemoval(
-                    widget.valueOne,
-                    widget.valueTwo,
-                    widget.lpTokens,
-                    widget.shareOfPool,
-                    widget.percentRemoval,
-                    widget.walletId,
-                    widget.lpTokenName,
+                    valueOne: widget.valueOne,
+                    valueTwo: widget.valueTwo,
+                    lpTokens: widget.lpTokens,
+                    shareOfPool: widget.shareOfPool,
+                    percentRemoval: widget.percentRemoval,
+                    walletId: widget.walletId,
+                    lpTokenName: widget.lpTokenName,
                   );
               showDialog<void>(
                 context: context,
@@ -125,7 +125,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
             //Approve button was pressed
             context
                 .read<TrackingCubit>()
-                .onPoolRemovalApproveClick(widget.currencyOne);
+                .onPoolRemovalApproveClick(currencyOne: widget.currencyOne);
             changeButton();
           }
         },

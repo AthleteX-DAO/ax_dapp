@@ -1,14 +1,18 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/pages/athlete/components/athlete_buy_approve_button.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:ax_dapp/util/token_type.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BuyDialog extends StatefulWidget {
@@ -39,6 +43,7 @@ class _BuyDialogState extends State<BuyDialog> {
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
+  Controller controller = Get.find();
 
   @override
   void dispose() {
@@ -264,6 +269,9 @@ class _BuyDialogState extends State<BuyDialog> {
     if (_currentTokenTypeSelection == TokenType.short) {
       aptLongOrShort = 'Short Apt';
     }
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      controller.publicAddress.toString(),
+    );
 
     return BlocBuilder<BuyDialogBloc, BuyDialogState>(
       buildWhen: (previous, current) => previous != current,
@@ -546,6 +554,7 @@ class _BuyDialogState extends State<BuyDialog> {
                         approveCallback: bloc.swapController.approve,
                         confirmCallback: bloc.swapController.swap,
                         confirmDialog: transactionConfirmed,
+                        walletAddress: userWalletAddress.walletAddress,
                       ),
                     ],
                   ),

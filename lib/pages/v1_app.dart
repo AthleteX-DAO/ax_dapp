@@ -553,9 +553,9 @@ class _V1AppState extends State<V1App> {
       decoration: boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
       child: TextButton(
         onPressed: () {
-          context
-              .read<TrackingCubit>()
-              .onPressedConnectWallet(controller.publicAddress.toString());
+          context.read<TrackingCubit>().onPressedConnectWallet(
+                publicAddress: controller.publicAddress.toString(),
+              );
           showDialog<void>(
             context: context,
             builder: walletDialog,
