@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DropdownMenuMobile extends StatefulWidget {
@@ -76,7 +77,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             leading: Icon(Icons.share),
             title: Text('Share'),
           ),
-          onTap: () => {},
+          onTap: () => shareApplication(context),
         ),
       ],
       icon: const Icon(Icons.more_horiz),
@@ -86,4 +87,11 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
       ),
     );
   }
+
+void shareApplication(BuildContext context) {
+    const text = 'AthleteX';
+    final box = context.findRenderObject() as RenderBox?;
+    Share.share(text,
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,);
+  } 
 }
