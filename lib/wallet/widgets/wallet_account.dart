@@ -1,6 +1,8 @@
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WalletAccount extends StatelessWidget {
   const WalletAccount({super.key, required this.controller});
@@ -9,16 +11,6 @@ class WalletAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final publicAddressHex = controller.publicAddress.value.toString();
-    final addressPrefix = publicAddressHex.substring(0, 7);
-    final addressSuffix = publicAddressHex.substring(
-      publicAddressHex.length - 5,
-      publicAddressHex.length,
-    );
-    final formattedAddressHex = publicAddressHex.length > 15
-        ? '$addressPrefix...$addressSuffix'
-        : publicAddressHex;
-
     return TextButton(
       onPressed: () => showDialog<void>(
         context: context,
@@ -31,13 +23,28 @@ class WalletAccount extends StatelessWidget {
             Icons.account_balance_wallet,
             color: Colors.grey,
           ),
-          Text(
-            formattedAddressHex,
-            style: TextStyle(
-              color: Colors.grey[400],
-              fontFamily: 'OpenSans',
-              fontSize: 11,
-            ),
+          BlocSelector<WalletBloc, WalletState, String>(
+            selector: (state) => state.walletAddress,
+            builder: (_, walletAddress) {
+              var formattedWalletAddress = '';
+              if (walletAddress.isNotEmpty) {
+                final walletAddressPrefix = walletAddress.substring(0, 7);
+                final walletAddressSuffix = walletAddress.substring(
+                  walletAddress.length - 5,
+                  walletAddress.length,
+                );
+                formattedWalletAddress =
+                    '$walletAddressPrefix...$walletAddressSuffix';
+              }
+              return Text(
+                formattedWalletAddress,
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontFamily: 'OpenSans',
+                  fontSize: 11,
+                ),
+              );
+            },
           )
         ],
       ),
