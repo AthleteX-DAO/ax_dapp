@@ -13,14 +13,7 @@ Widget doubleLogoFarmTitle(
   FarmController farm,
   double cardWidth,
 ) {
-  Dialog participatingDialog;
   final _cardWidth = isWeb ? 500.0 : cardWidth;
-  if (farm.athlete == null) {
-    participatingDialog = stakeDialog(context, farm, _cardWidth, isWeb);
-  } else {
-    participatingDialog =
-        dualStakeDialog(context, farm, farm.athlete!, _cardWidth, isWeb);
-  }
   return SizedBox(
     width: _cardWidth,
     child: Row(
@@ -50,8 +43,8 @@ Widget doubleLogoFarmTitle(
         Container(width: 5),
         Expanded(
           child: Text(
-            farm.strName,
-            style: textStyle(Colors.white, 20, false, false),
+            '${farm.athlete!} Farm',
+            style: textStyle(Colors.white, 16, false, false),
           ),
         ),
         Container(
@@ -66,7 +59,24 @@ Widget doubleLogoFarmTitle(
           child: TextButton(
             onPressed: () => showDialog<void>(
               context: context,
-              builder: (BuildContext context) => participatingDialog,
+              builder: (BuildContext builderContext) {
+                if (farm.athlete == null) {
+                  return stakeDialog(
+                    builderContext,
+                    farm,
+                    _cardWidth,
+                    isWeb,
+                  );
+                } else {
+                  return dualStakeDialog(
+                    builderContext,
+                    farm,
+                    farm.athlete!,
+                    _cardWidth,
+                    isWeb,
+                  );
+                }
+              },
             ),
             child: Text(
               'Stake',

@@ -6,13 +6,16 @@ import 'package:ax_dapp/pages/athlete/components/buttons.dart';
 import 'package:ax_dapp/pages/scout/desktop_scout.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/create_wallet/web.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:ax_dapp/util/colors.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -27,6 +30,7 @@ class AthletePage extends StatefulWidget {
     required this.athlete,
     required this.goToTradePage,
   });
+
   final AthleteScoutModel athlete;
   final void Function() goToTradePage;
 
@@ -45,6 +49,7 @@ class _AthletePageState extends State<AthletePage> {
   late TooltipBehavior _longToolTipBehavior;
   late TooltipBehavior _shortToolTipBehavior;
   bool _isPortraitMode = false;
+  Controller controller = Get.find();
 
   @override
   void initState() {
@@ -1004,6 +1009,9 @@ class _AthletePageState extends State<AthletePage> {
                       redeemButton(
                         context,
                         athlete,
+                        '',
+                        '',
+                        '',
                         _isPortraitMode,
                         _width,
                       )
@@ -1036,6 +1044,9 @@ class _AthletePageState extends State<AthletePage> {
     final _height = MediaQuery.of(context).size.height;
     var wid = _width * 0.4;
     final webWallet = Get.find<WebWallet>();
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      controller.publicAddress.toString(),
+    );
     if (_width < 1160) wid = containerWdt;
     return Container(
       height: _height / 1.5,
@@ -1225,6 +1236,10 @@ class _AthletePageState extends State<AthletePage> {
                               .read<AthletePageBloc>()
                               .state
                               .selectedAptAddress;
+                          context.read<TrackingCubit>().trackAddToWallet(
+                                athleteName: athlete.name,
+                                walletId: userWalletAddress.walletAddress,
+                              );
                           webWallet.addTokenToWallet(
                             selectedAptAddress,
                             _getTokenImage(),
@@ -1336,6 +1351,9 @@ class _AthletePageState extends State<AthletePage> {
                           redeemButton(
                             context,
                             athlete,
+                            '',
+                            '',
+                            '',
                             _isPortraitMode,
                             containerWdt,
                           )

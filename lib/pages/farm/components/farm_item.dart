@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/farm/components/double_logo_farm_title.dart';
 import 'package:ax_dapp/pages/farm/components/single_logo_farm_title.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
@@ -24,11 +23,7 @@ Widget farmItem(
 
   final txStyle = textStyle(Colors.grey[600]!, 14, false, false);
   Widget farmTitleWidget;
-  if (farm.athlete == null) {
-    farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
-  } else {
-    farmTitleWidget = doubleLogoFarmTitle(context, isWeb, farm, cardWidth);
-  }
+  farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
 
   return Container(
     height: cardHeight,

@@ -1,20 +1,26 @@
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
-import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/pages/athlete/components/athlete_sell_approve_button.dart';
+import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class SellDialog extends StatefulWidget {
   const SellDialog(
+    this.athlete,
     this.athleteName,
     this.aptPrice,
     this.athleteId, {
     super.key,
   });
-
+  final AthleteScoutModel athlete;
   final String athleteName;
   final double aptPrice;
   final int athleteId;
@@ -31,6 +37,7 @@ class _SellDialogState extends State<SellDialog> {
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
+  Controller controller = Get.find();
 
   @override
   void dispose() {
@@ -163,9 +170,11 @@ class _SellDialogState extends State<SellDialog> {
     final wid = isWeb ? 400.0 : 355.0;
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      controller.publicAddress.toString(),
+    );
 
     return BlocBuilder<SellDialogBloc, SellDialogState>(
-      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<SellDialogBloc>();
         final balance = state.balance;
@@ -389,13 +398,22 @@ class _SellDialogState extends State<SellDialog> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ApproveButton(
-                        175,
-                        40,
-                        'Approve',
-                        bloc.swapController.approve,
-                        bloc.swapController.swap,
-                        transactionConfirmed,
+                      AthleteSellApproveButton(
+                        width: 175,
+                        height: 40,
+                        text: 'Approve',
+                        amountInputted: _aptAmountController.text,
+                        aptSellInfo: state.aptSellInfo,
+                        athlete: widget.athlete,
+                        aptName: widget.athleteName,
+                        aptId: widget.athleteId,
+                        longOrShort: state.aptTypeSelection.isLong
+                            ? 'Long Apt'
+                            : 'Short Apt',
+                        approveCallback: bloc.swapController.approve,
+                        confirmCallback: bloc.swapController.swap,
+                        confirmDialog: transactionConfirmed,
+                        walletAddress: userWalletAddress.walletAddress,
                       ),
                     ],
                   ),

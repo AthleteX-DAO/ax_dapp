@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/farm/components/double_logo_farm_title.dart';
 import 'package:ax_dapp/pages/farm/components/single_logo_farm_title.dart';
 import 'package:ax_dapp/pages/farm/dialogs/reward_claim_dialog.dart';
 import 'package:ax_dapp/pages/farm/dialogs/unstake_dialog.dart';
@@ -10,6 +9,7 @@ import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// First card of the my farms page is unique
 // First card of the my farms page is unique
 Widget myFarmItem(
   BuildContext context,
@@ -25,14 +25,13 @@ Widget myFarmItem(
   if (cardHeight < minCardHeight) cardHeight = minCardHeight;
   if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
 
-  final txStyle = textStyle(Colors.grey[600]!, 14, false, false);
+  final customTextStyle = textStyle(Colors.grey[600]!, 14, false, false);
+  final farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
 
-  Widget farmTitleWidget;
-  if (farm.athlete == null) {
-    farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
-  } else {
-    farmTitleWidget = doubleLogoFarmTitle(context, isWeb, farm, cardWidth);
-  }
+  final parsedView = double.parse(farm.stakedInfo.value.viewAmount);
+  final parsedReward = double.parse(farm.strRewards.value);
+  final parsedTotal = parsedView + parsedReward;
+  final rewardSymbol = farm.strRewardSymbol;
 
   return Container(
     margin: isWeb
@@ -58,12 +57,12 @@ Widget myFarmItem(
           children: [
             Text(
               'Current Balance',
-              style: txStyle,
+              style: customTextStyle,
             ),
             Obx(
               () => Text(
                 '${farm.stakingInfo.value.viewAmount} ${farm.strStakedSymbol}',
-                style: txStyle,
+                style: customTextStyle,
               ),
             )
           ],
@@ -74,16 +73,16 @@ Widget myFarmItem(
           children: [
             Text(
               'Current APR',
-              style: txStyle,
+              style: customTextStyle,
             ),
-            Text('${farm.strAPR}%', style: txStyle)
+            Text('${farm.strAPR}%', style: customTextStyle)
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('TVL', style: txStyle),
-            Text('\$${farm.strTVL}', style: txStyle)
+            Text('TVL', style: customTextStyle),
+            Text('\$${farm.strTVL}', style: customTextStyle)
           ],
         ),
         //Divider line
@@ -102,88 +101,60 @@ Widget myFarmItem(
           ],
         ),
         //Show different information for AX item card and AX with APT card
-        if (farm.athlete == null) ...[
-          SizedBox(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Currently Staked',
-                  style: txStyle,
+        SizedBox(
+          width: cardWidth,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Currently Staked',
+                style: customTextStyle,
+              ),
+              Obx(
+                () => Text(
+                  '${parsedView.toStringAsFixed(4)} ${farm.strStakedSymbol}',
+                  style: customTextStyle,
                 ),
-                Obx(
-                  () => Text(
-                    '''${double.parse(farm.stakedInfo.value.viewAmount).toStringAsFixed(4)} ${farm.strStakedSymbol}''',
-                    style: txStyle,
-                  ),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
-          SizedBox(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Rewards Earned',
-                  style: txStyle,
+        ),
+        SizedBox(
+          width: cardWidth,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Rewards Earned',
+                style: customTextStyle,
+              ),
+              Obx(
+                () => Text(
+                  '${farm.strRewards} $rewardSymbol',
+                  style: customTextStyle,
                 ),
-                Obx(
-                  () => Text(
-                    '${farm.strRewards} ${farm.strRewardSymbol}',
-                    style: txStyle,
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
-          SizedBox(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Total AX available (Staked + Earned)', style: txStyle),
-                Obx(
-                  () => Text(
-                    '''${(double.parse(farm.stakedInfo.value.viewAmount) + double.parse(farm.strRewards.value)).toStringAsFixed(2)} ${farm.strRewardSymbol}''',
-                    style: txStyle,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ] else ...[
-          SizedBox(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'LP tokens provided',
-                  style: txStyle,
+        ),
+        SizedBox(
+          width: cardWidth,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total AX available (Staked + Earned)',
+                style: customTextStyle,
+              ),
+              Obx(
+                () => Text(
+                  '${parsedTotal.toStringAsFixed(2)} $rewardSymbol',
+                  style: customTextStyle,
                 ),
-                Text('100 LP', style: txStyle)
-              ],
-            ),
+              )
+            ],
           ),
-          SizedBox(
-            width: cardWidth,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Rewards Earned', style: txStyle),
-                Obx(
-                  () => Text(
-                    '{farmController.rewardsEarned} ${farm.strRewardSymbol}',
-                    style: txStyle,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
+        ),
         //Claim rewards and Unstake liquidity buttons
         SizedBox(
           width: cardWidth,
@@ -227,8 +198,8 @@ Widget myFarmItem(
                 child: TextButton(
                   onPressed: () => showDialog<void>(
                     context: context,
-                    builder: (BuildContext context) =>
-                        unstakeDialog(context, farm, cardWidth, isWeb),
+                    builder: (BuildContext builderContext) =>
+                        unstakeDialog(builderContext, farm, cardWidth, isWeb),
                   ),
                   child: Text(
                     'Unstake Liquidity',

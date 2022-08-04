@@ -1,8 +1,9 @@
+import 'package:ax_dapp/pages/athlete/components/athlete_mint_approve_button.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,9 +24,9 @@ class _MintDialogState extends State<MintDialog> {
   double paddingHorizontal = 20;
   double hgt = 450;
   double input = 0;
+  double youSpend = 0;
   RxDouble maxAmount = 0.0.obs;
   RxString balance = '---'.obs;
-  RxDouble youSpend = 0.0.obs;
   String aptAddress = '';
   final TextEditingController _aptAmountController = TextEditingController();
 
@@ -117,11 +118,9 @@ class _MintDialogState extends State<MintDialog> {
             'You Spend:',
             style: textStyle(Colors.white, 15, false),
           ),
-          Obx(
-            () => Text(
-              '$youSpend AX',
-              style: textStyle(Colors.white, 15, false),
-            ),
+          Text(
+            '$youSpend AX',
+            style: textStyle(Colors.white, 15, false),
           ),
         ],
       ),
@@ -135,6 +134,9 @@ class _MintDialogState extends State<MintDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      walletController.controller.publicAddress.toString(),
+    );
 
     return Dialog(
       insetPadding: EdgeInsets.zero,
@@ -278,7 +280,7 @@ class _MintDialogState extends State<MintDialog> {
                                 updateStats();
                                 lspController.updateCreateAmt(maxAmount.value);
                                 input = maxAmount.value;
-                                youSpend.value = maxAmount.value * 15000;
+                                youSpend = maxAmount.value * 15000;
                                 //update controller text to max balance
                                 _aptAmountController.text =
                                     maxAmount.toStringAsFixed(6);
@@ -312,7 +314,9 @@ class _MintDialogState extends State<MintDialog> {
                                   }
                                   input = double.parse(value);
                                   lspController.updateCreateAmt(input);
-                                  youSpend.value = input * 15000;
+                                  setState(() {
+                                    youSpend = input * 15000;
+                                  });
                                 },
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
@@ -359,17 +363,22 @@ class _MintDialogState extends State<MintDialog> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ApproveButton(
-                    175,
-                    40,
-                    'Approve',
-                    () {
+                  AthleteMintApproveButton(
+                    width: 175,
+                    height: 40,
+                    text: 'Approve',
+                    athlete: widget.athlete,
+                    aptName: widget.athlete.name,
+                    inputApt: _aptAmountController.text,
+                    valueInAX: '$youSpend AX',
+                    approveCallback: () {
                       final chainToken =
                           context.read<TokensRepository>().chainToken;
                       return lspController.approve(chainToken.address);
                     },
-                    lspController.mint,
-                    transactionConfirmed,
+                    confirmCallback: lspController.mint,
+                    confirmDialog: transactionConfirmed,
+                    walletAddress: userWalletAddress.walletAddress,
                   ),
                 ],
               ),

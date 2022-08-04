@@ -7,7 +7,9 @@ import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 Dialog stakeDialog(
   BuildContext context,
@@ -20,7 +22,10 @@ Dialog stakeDialog(
   final hgt = _height < 455.0 ? _height : 450.0;
   const dialogHorPadding = 30.0;
 
-  final selectedFarm = FarmController.fromFarm(farm);
+  final selectedFarm = FarmController.fromFarm(
+    farm: farm,
+    tokensRepository: context.read<TokensRepository>(),
+  );
   final stakeAxInput = TextEditingController();
   final totalStakedBalance = 0.0.obs;
 

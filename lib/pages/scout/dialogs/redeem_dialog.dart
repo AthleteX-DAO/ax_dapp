@@ -4,6 +4,8 @@ import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,9 +14,20 @@ import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class RedeemDialog extends StatefulWidget {
-  const RedeemDialog(this.athlete, {super.key});
+  const RedeemDialog(
+    this.athlete,
+    this.aptName,
+    this.inputLongApt,
+    this.inputShortApt,
+    this.valueInAX, {
+    super.key,
+  });
 
   final AthleteScoutModel athlete;
+  final String aptName;
+  final String inputLongApt;
+  final String inputShortApt;
+  final String valueInAX;
 
   @override
   State<RedeemDialog> createState() => _RedeemDialogState();
@@ -121,6 +134,9 @@ class _RedeemDialogState extends State<RedeemDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      walletController.controller.publicAddress.toString(),
+    );
 
     return Dialog(
       insetPadding: EdgeInsets.zero,
@@ -411,7 +427,20 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             context: context,
                             builder: (BuildContext context) =>
                                 confirmTransaction(context, true, ''),
+                          ).then(
+                            (value) => context
+                                .read<TrackingCubit>()
+                                .trackAthleteRedeemSuccess(
+                                  name: '${widget.athlete.name} pair',
+                                  sport: widget.athlete.sport.toString(),
+                                  inputLongApt: _longInputController.text,
+                                  inputShortApt: _shortInputController.text,
+                                  valueInAx: (lspController.redeemAmt * 15000)
+                                      .toStringAsFixed(6),
+                                  walletId: userWalletAddress.walletAddress,
+                                ),
                           );
+
                           if (mounted) {
                             Navigator.pop(context);
                           }

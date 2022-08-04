@@ -15,6 +15,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class DesktopFarm extends StatefulWidget {
   const DesktopFarm({super.key});
@@ -152,7 +153,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
                               ? farmItem(
                                   context,
                                   isWeb,
-                                  FarmController(state.filteredFarms[index]),
+                                  FarmController(
+                                    farm: state.filteredFarms[index],
+                                    tokensRepository:
+                                        context.read<TokensRepository>(),
+                                  ),
                                   listHeight,
                                   layoutWdt,
                                 )
@@ -160,7 +165,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                   context,
                                   isWeb,
                                   FarmController(
-                                    state.filteredStakedFarms[index],
+                                    farm: state.filteredStakedFarms[index],
+                                    tokensRepository:
+                                        context.read<TokensRepository>(),
                                   ),
                                   listHeight,
                                   layoutWdt,

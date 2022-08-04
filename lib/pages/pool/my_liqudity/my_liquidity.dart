@@ -1,12 +1,14 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
+import 'package:ax_dapp/pages/pool/my_liqudity/components/pool_remove_approve_button.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
-import 'package:ax_dapp/service/approve_button.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/assets/assets.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -92,6 +94,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
   double _layoutHgt = 0;
   int currentTabIndex = 0;
   PoolController poolController = Get.find();
+  Controller controller = Get.find();
   double value = 0;
   LiquidityPositionInfo infoOfSelectedCard = LiquidityPositionInfo.empty();
   AssetImage? token0Icon = const AssetImage('assets/images/apt.png');
@@ -107,6 +110,13 @@ class _MyLiquidityState extends State<MyLiquidity> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final _layoutWdt = _isWeb ? _width * 0.8 : _width * 0.9;
     final gridHgt = _layoutHgt * 0.75;
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      controller.publicAddress.toString(),
+    );
+    final tokenOneRemoveAmount =
+        double.parse(infoOfSelectedCard.token0LpAmount) * (value / 100);
+    final tokenTwoRemoveAmount =
+        double.parse(infoOfSelectedCard.token1LpAmount) * (value / 100);
 
     Widget myLiquidityPoolGridItem(
       LiquidityPositionInfo liquidityPositionInfo,
@@ -795,11 +805,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               SizedBox(
                                                 width: 100,
                                                 child: Text(
-                                                  (double.parse(
-                                                            infoOfSelectedCard
-                                                                .token0LpAmount,
-                                                          ) *
-                                                          (value / 100))
+                                                  tokenOneRemoveAmount
                                                       .toStringAsFixed(6),
                                                   textAlign: TextAlign.end,
                                                 ),
@@ -852,11 +858,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                               SizedBox(
                                                 width: 100,
                                                 child: Text(
-                                                  (double.parse(
-                                                            infoOfSelectedCard
-                                                                .token1LpAmount,
-                                                          ) *
-                                                          (value / 100))
+                                                  tokenTwoRemoveAmount
                                                       .toStringAsFixed(6),
                                                   textAlign: TextAlign.end,
                                                 ),
@@ -873,13 +875,25 @@ class _MyLiquidityState extends State<MyLiquidity> {
                             SizedBox(height: _height * 0.03),
                             Row(
                               children: [
-                                ApproveButton(
-                                  175,
-                                  40,
-                                  'Approve',
-                                  poolController.approveRemove,
-                                  poolController.removeLiquidity,
-                                  removalConfirmed,
+                                PoolRemoveApproveButton(
+                                  width: 175,
+                                  height: 40,
+                                  text: 'Approve',
+                                  approveCallback: poolController.approveRemove,
+                                  confirmCallback:
+                                      poolController.removeLiquidity,
+                                  confirmDialog: removalConfirmed,
+                                  currencyOne: infoOfSelectedCard.token0Symbol,
+                                  currencyTwo: infoOfSelectedCard.token1Symbol,
+                                  valueOne: tokenOneRemoveAmount,
+                                  valueTwo: tokenTwoRemoveAmount,
+                                  lpTokens:
+                                      infoOfSelectedCard.lpTokenPairBalance,
+                                  shareOfPool: infoOfSelectedCard.shareOfPool,
+                                  percentRemoval: value,
+                                  walletId: userWalletAddress.walletAddress,
+                                  lpTokenName:
+                                      '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}',
                                 ),
                                 const Spacer(),
                                 Container(
