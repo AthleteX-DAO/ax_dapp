@@ -418,14 +418,13 @@ class _RedeemDialogState extends State<RedeemDialog> {
                     child: TextButton(
                       onPressed: () async {
                         final result = await lspController.redeem();
-
                         if (result) {
                           await showDialog<void>(
                             context: context,
                             builder: (BuildContext context) =>
                                 confirmTransaction(context, true, ''),
-                          ).then(
-                            (value) => context
+                          ).then((value) {
+                            context
                                 .read<TrackingCubit>()
                                 .trackAthleteRedeemSuccess(
                                   name: '${widget.athlete.name} pair',
@@ -435,9 +434,13 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                   valueInAx: (lspController.redeemAmt * 15000)
                                       .toStringAsFixed(6),
                                   walletId: userWalletAddress.walletAddress,
-                                ),
-                          );
-
+                                );
+                          }).catchError((onError) {
+                            showDialog<void>(
+                              context: context,
+                              builder: (context) => const FailedDialog(),
+                            );
+                          });
                           if (mounted) {
                             Navigator.pop(context);
                           }
