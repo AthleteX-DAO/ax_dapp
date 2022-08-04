@@ -36,10 +36,12 @@ class WalletRepository {
   EthereumChain get ethereumChain => _walletApiClient.ethereumChain;
 
   /// Allows the user to connect to a `MetaMask` wallet.
-  Future<void> connectWallet() async {
+  ///
+  /// Returns the hexadecimal representation of the wallet address.
+  Future<String> connectWallet() async {
     _walletApiClient.addChainChangedListener();
     await switchChain(_defaultChain);
-    await _getWalletCredentials();
+    return _getWalletCredentials();
   }
 
   /// Switches the currently used chain.
@@ -51,9 +53,10 @@ class WalletRepository {
     }
   }
 
-  Future<void> _getWalletCredentials() async {
+  Future<String> _getWalletCredentials() async {
     final credentials = await _walletApiClient.getWalletCredentials();
     _cacheWalletCredentials(credentials);
+    return credentials.value.address.hex;
   }
 
   void _cacheWalletCredentials(WalletCredentials credentials) => _cache.write(
