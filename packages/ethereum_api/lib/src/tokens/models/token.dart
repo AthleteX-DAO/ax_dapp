@@ -154,8 +154,8 @@ extension TokenX on Token {
   /// Returns the correspondent [Token]'s address based on the current
   /// [EthereumChain].
   /// - for [EthereumChain.none] and [EthereumChain.unsupported] it will return
-  /// [kEmptyTokenAddress];
-  /// - for [Token.empty] it will also return [kEmptyTokenAddress].
+  /// [kEmptyAddress];
+  /// - for [Token.empty] it will also return [kEmptyAddress].
   String get address => _addressConfig.address(_chain);
 
   /// Returns the [EthereumChain] to which this [Token] is attached to.
