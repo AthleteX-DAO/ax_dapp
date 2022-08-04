@@ -35,7 +35,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     try {
-      await _walletRepository.connectWallet();
+      final walletAddress = await _walletRepository.connectWallet();
+      emit(state.copyWith(walletAddress: walletAddress));
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
     }
@@ -46,6 +47,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) {
     _walletRepository.disconnectWallet();
+    emit(state.copyWith(walletAddress: kEmptyAddress));
   }
 
   Future<void> _onWatchEthereumChainChangesStarted(

@@ -24,31 +24,30 @@ class WalletState extends Equatable {
   const WalletState({
     required this.status,
     required this.chain,
+    this.walletAddress = kEmptyAddress,
     this.failure = WalletFailure.none,
   });
 
   final WalletStatus status;
   final EthereumChain chain;
+  final String walletAddress;
   final WalletFailure failure;
 
   @override
-  List<Object> get props => [status, chain, failure];
+  List<Object> get props => [status, chain, walletAddress, failure];
 
   WalletState copyWith({
     WalletStatus? status,
     EthereumChain? chain,
+    String? walletAddress,
     WalletFailure? failure,
   }) {
     return WalletState(
       status: status ?? this.status,
       chain: chain ?? this.chain,
+      walletAddress: walletAddress ?? this.walletAddress,
       failure: failure ?? this.failure,
     );
-  }
-
-  @override
-  String toString() {
-    return 'status: $status, chain: $chain, failure: $failure';
   }
 }
 
