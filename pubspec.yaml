@@ -73,6 +73,7 @@ dependency_overrides:
   web3dart:
     git:
       url: https://github.com/narcodico/web3dart.git
+      ref: fix/build-runner
 
 dev_dependencies:
   build_runner: ^2.2.0
