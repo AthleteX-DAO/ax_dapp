@@ -435,11 +435,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                       .toStringAsFixed(6),
                                   walletId: userWalletAddress.walletAddress,
                                 );
-                          }).catchError((onError) {
-                            showDialog<void>(
-                              context: context,
-                              builder: (context) => const FailedDialog(),
-                            );
                           });
                           if (mounted) {
                             Navigator.pop(context);
