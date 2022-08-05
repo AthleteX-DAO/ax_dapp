@@ -88,10 +88,12 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
     );
   }
 
-void _shareApplication(BuildContext context) {
-    const text = 'https://app.athletex.io/#/';
+  void _shareApplication(BuildContext context) {
+    const applicationUrl = 'https://app.athletex.io/#/';
     final box = context.findRenderObject() as RenderBox?;
-    Share.share(text,
-        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,);
-  } 
+    Share.share(
+      applicationUrl,
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    );
+  }
 }
