@@ -63,8 +63,12 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
           final distinctPoints = graphStats
               .where((element) => seenDates.add(element.date))
               .toList();
-          emit(state.copyWith(
-              stats: distinctPoints, status: BlocStatus.success,),);
+          emit(
+            state.copyWith(
+              stats: distinctPoints,
+              status: BlocStatus.success,
+            ),
+          );
         } catch (_) {
           emit(state.copyWith(status: BlocStatus.error));
         }
@@ -97,8 +101,12 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
           final distinctPoints = graphStats
               .where((element) => seenDates.add(element.date))
               .toList();
-          emit(state.copyWith(
-              stats: distinctPoints, status: BlocStatus.success,),);
+          emit(
+            state.copyWith(
+              stats: distinctPoints,
+              status: BlocStatus.success,
+            ),
+          );
         } catch (_) {
           emit(state.copyWith(status: BlocStatus.error));
         }
