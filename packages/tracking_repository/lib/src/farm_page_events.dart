@@ -31,7 +31,7 @@ class FarmPageTrackingEvent extends TrackEvent {
         super(name: 'un_stake_approve_button_click', params: params);
 
   /// Informs tracking services that UnStake confirm button was pressed
-  FarmPageTrackingEvent.onUnStakeConfirm(
+  FarmPageTrackingEvent.onPressedUnStakeConfirm(
       Map<String, dynamic> params,
       ) :
   super(name: 'un_stake_confirm_button_click', params: params);

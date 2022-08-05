@@ -359,3 +359,102 @@ extension TradePageTracking on TrackingCubit {
     );
   }
 }
+
+extension FarmPageTracking on TrackingCubit {
+  void onPressedStake({
+    required String tokenName,
+    required String tokenAddress,
+    required double tokenAmount,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedStake({
+        'token_name': tokenName,
+        'token_address': tokenAddress,
+        'token_amount': tokenAmount,
+      }),
+    );
+  }
+
+  void onPressedStakeConfirm({
+    required String tokenName,
+    required String tokenAddress,
+    required double tokenAmount,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedStakeConfirm({
+        'token_name': tokenName,
+        'token_address': tokenAddress,
+        'token_amount': tokenAmount,
+      }),
+    );
+  }
+
+  void onStakeSuccess({
+    required String tokenName,
+    required String tokenAddress,
+    required double tokenAmount,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onStakeSuccess({
+        'token_name': tokenName,
+        'token_address': tokenAddress,
+        'token_amount': tokenAmount,
+      }),
+    );
+  }
+
+  void onPressedClaimRewards({
+    required String tokenName,
+    required String tokenAddress,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedClaimRewards({
+        'token_name': tokenName,
+        'token_address': tokenAddress,
+      }),
+    );
+  }
+
+  void onPressedUnStake({
+    required String tokenName,
+    required String tokenAddress,
+    required double tokenAmount,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedUnStake({
+        'token_name': tokenName,
+        'token_address': tokenAddress,
+        'token_amount': tokenAmount,
+      }),
+    );
+  }
+
+  void onPressedUnStakeConfirm({
+    required String tokenName,
+    required String tokenAddress,
+    required double tokenAmount,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedUnStakeConfirm({
+        'token_name': tokenName,
+        'token_address': tokenAddress,
+        'token_amount': tokenAmount,
+      }),
+    );
+  }
+
+  void onUnStakeSuccess({
+    required String tokenName,
+    required String tokenAddress,
+    required double tokenAmount,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onUnStakeSuccess({
+        'token_name': tokenName,
+        'token_address': tokenAddress,
+        'token_amount': tokenAmount,
+      }),
+    );
+  }
+}
+
