@@ -77,7 +77,7 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
             leading: Icon(Icons.share),
             title: Text('Share'),
           ),
-          onTap: () => shareApplication(context),
+          onTap: () => _shareApplication(context),
         ),
       ],
       icon: const Icon(Icons.more_horiz),
@@ -88,8 +88,8 @@ class _DropdownMenuMobileState extends State<DropdownMenuMobile> {
     );
   }
 
-void shareApplication(BuildContext context) {
-    const text = 'AthleteX';
+void _shareApplication(BuildContext context) {
+    const text = 'https://app.athletex.io/#/';
     final box = context.findRenderObject() as RenderBox?;
     Share.share(text,
         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,);
