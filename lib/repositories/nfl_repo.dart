@@ -1,60 +1,64 @@
-import 'dart:convert';
-
 import 'package:ax_dapp/repositories/sports_repo.dart';
+import 'package:ax_dapp/service/api/models/player_ids.dart';
+import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
+import 'package:ax_dapp/service/supported_athletes/supported_nfl_athletes.dart';
 import 'package:ax_dapp/util/supported_sports.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 class NFLRepo extends SportsRepo<NFLAthlete> {
-  NFLRepo() : super(SupportedSport.NFL);
+  NFLRepo(NFLAthleteAPI api)
+      : _api = api,
+        super(SupportedSport.NFL);
+  final NFLAthleteAPI _api;
 
   @override
   Future<List<NFLAthlete>> getAllPlayers() async {
-    // TODO(Ryan): Change this to query API
-    final jsonData = await rootBundle.loadString('assets/nfl_athletes.json');
-    final body = jsonDecode(jsonData) as List<dynamic>;
-    final response =
-        List<Map<String, dynamic>>.from(body).map(NFLAthlete.fromJson).toList();
-    return response;
+    return _api.getAllPlayers();
+  }
+
+  @override
+  Future<List<NFLAthlete>> getPlayersById(List<int> ids) async {
+    return _api.getPlayersById(PlayerIds(ids));
   }
 
   @override
   Future<List<NFLAthlete>> getSupportedPlayers() async {
-    return getAllPlayers();
+    return _api.getPlayersById(
+      PlayerIds(SupportedNFLAthletes().getSupportedAthletesList()),
+    );
   }
 
   @override
-  Future<NFLAthlete> getPlayer(int id) {
-    throw UnimplementedError();
+  Future<NFLAthlete> getPlayer(int id) async {
+    return _api.getPlayer(id);
   }
 
   @override
-  Future<dynamic> getPlayerStatsHistory(int id, String from, String until) {
-    throw UnimplementedError();
+  Future<List<NFLAthlete>> getPlayersByTeam(String team) async {
+    return _api.getPlayersByTeam(team);
   }
 
   @override
-  Future<List<NFLAthlete>> getPlayersById(List<int> ids) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<NFLAthlete>> getPlayersByPosition(String position) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<NFLAthlete>> getPlayersByTeam(String team) {
-    throw UnimplementedError();
+  Future<List<NFLAthlete>> getPlayersByPosition(String position) async {
+    return _api.getPlayersByPosition(position);
   }
 
   @override
   Future<List<NFLAthlete>> getPlayersByTeamAtPosition(
     String team,
     String position,
-  ) {
-    throw UnimplementedError();
+  ) async {
+    return _api.getPlayersByTeamAtPosition(team, position);
+  }
+
+  @override
+  Future<NFLAthleteStats> getPlayerStatsHistory(
+    int id,
+    String from,
+    String until,
+  ) async {
+    return _api.getPlayerHistory(id, from, until);
   }
 
   @override
