@@ -32,7 +32,6 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
   ) async {
     switch (athlete.sport) {
       case SupportedSport.all:
-        //TODO: Handle this case.
         break;
 
       case SupportedSport.NFL:
@@ -113,7 +112,6 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
         break;
 
       case SupportedSport.NBA:
-        // TODO: Handle this case.
         break;
     }
   }
