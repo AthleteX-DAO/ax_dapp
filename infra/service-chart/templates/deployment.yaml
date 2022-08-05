@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dapp.fullname" . }}
+  labels:
+    app: {{ include "dapp.name" . }}
+    environment: {{ .Values.environment_name }}
+{{ include "dapp.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      {{- include "dapp.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- with .Values.labels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- include "dapp.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    #securityContext:
+    #    runAsNonRoot: true
+    #    runAsUser: 1000
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml .Values.startupProbe | nindent 12 }}
+          {{- end }}          
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.containerPort }}
+              protocol: TCP
+          env:
+          {{- if .Values.sopsSecrets -}}
+          {{- range $key, $val := .Values.sopsSecrets}}
+          - name: {{ $val.name }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "dapp.fullname" $ }}      
+                key: {{ $val.name }}
+          {{- end}}
+          {{- end }}
+          {{- if .Values.env}}
+          {{- range $key, $value := .Values.env }}            
+          - name: {{ $key }}
+            value: {{ quote $value }}
+          {{- end }}     
+          {{- end }}            
+
+          #securityContext:
+          #  allowPrivilegeEscalation: false                         
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

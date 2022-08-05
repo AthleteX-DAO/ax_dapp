@@ -1,0 +1,22 @@
+helmDefaults:
+  createNamespace: false
+  timeout: 600
+  atomic: true
+  wait: true
+  
+environments:
+  stage:
+
+releases:
+- name: ax-dapp
+  chart: ./service-chart
+  namespace: test
+  values:
+    - ./service-chart/stage-service.yaml
+  secrets:
+    - ./service-chart/stage.secrets.yaml
+  set:
+    - name: image.repository
+      value: {{ requiredEnv "ECR_REPOSITORY_BASE_URL" }}/athletex-dapp
+    - name: image.tag
+      value: {{ requiredEnv "IMAGE_TAG" }}      

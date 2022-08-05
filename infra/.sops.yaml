@@ -1,0 +1,3 @@
+creation_rules:
+  - path_regex: stage.secrets.yaml$
+    kms: 'arn:aws:kms:us-east-1:510626941593:key/dd6aa1ba-f825-4a1f-87cf-df04ea26f86d'
