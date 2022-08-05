@@ -13,8 +13,6 @@ part 'athlete_page_event.dart';
 part 'athlete_page_state.dart';
 
 class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
-  final AthleteScoutModel athlete;
-
   AthletePageBloc({
     required this.mlbRepo,
     required this.nflRepo,
@@ -23,6 +21,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
     on<OnPageRefresh>(_mapPageRefreshEventToState);
     on<OnGraphRefresh>(_mapGraphRefreshEventToState);
   }
+  final AthleteScoutModel athlete;
 
   final MLBRepo mlbRepo;
   final NFLRepo nflRepo;
@@ -33,7 +32,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
   ) async {
     switch (athlete.sport) {
       case SupportedSport.all:
-        // TODO: Handle this case.
+        //TODO: Handle this case.
         break;
 
       case SupportedSport.NFL:
@@ -41,11 +40,12 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
           final playerId = event.playerId;
           emit(state.copyWith(status: BlocStatus.loading));
           final now = DateTime.now();
-          final startDate = DateTime(now.year, now.month - 10, now.day);
+          //final startDate = DateTime(now.year, now.month - 10, now.day);
           final formattedDate = DateFormat('yyyy-MM-dd').format(now);
-          final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
+          //final formattedStartDate =
+          // DateFormat('yyyy-MM-dd').format(startDate);
           final until = formattedDate;
-          final from = '2022-05-02';
+          const from = '2022-05-02';
           final stats = await nflRepo.getPlayerStatsHistory(
             playerId,
             from,
@@ -64,7 +64,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
               .where((element) => seenDates.add(element.date))
               .toList();
           emit(state.copyWith(
-              stats: distinctPoints, status: BlocStatus.success));
+              stats: distinctPoints, status: BlocStatus.success,),);
         } catch (_) {
           emit(state.copyWith(status: BlocStatus.error));
         }
@@ -98,7 +98,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
               .where((element) => seenDates.add(element.date))
               .toList();
           emit(state.copyWith(
-              stats: distinctPoints, status: BlocStatus.success));
+              stats: distinctPoints, status: BlocStatus.success,),);
         } catch (_) {
           emit(state.copyWith(status: BlocStatus.error));
         }
