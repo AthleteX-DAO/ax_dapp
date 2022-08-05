@@ -20,6 +20,6 @@ abstract class SportAthlete {
   final String position;
   @JsonKey(name: 'price')
   final double price;
-  @JsonKey(name: 'timeStamp')
+  @JsonKey(name: 'timestamp')
   final String timeStamp;
 }
