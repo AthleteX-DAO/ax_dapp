@@ -48,7 +48,7 @@ class WalletProfile extends StatelessWidget {
           if (showChain) const WalletChain(),
           if (showMatic) WalletMatic(controller: controller),
           const WalletAx(),
-          WalletAccount(controller: controller),
+          const WalletAccount(),
         ],
       ),
     );

@@ -1,13 +1,10 @@
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WalletAccount extends StatelessWidget {
-  const WalletAccount({super.key, required this.controller});
-
-  final Controller controller;
+  const WalletAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
