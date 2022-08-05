@@ -1760,7 +1760,7 @@ class FailedDialog extends StatelessWidget {
                     children: <Widget>[
                       Container(width: 5),
                       Text(
-                        'Something went wrong',
+                        'Transaction Rejected',
                         style: textStyle(Colors.white, 20, false),
                       ),
                       SizedBox(

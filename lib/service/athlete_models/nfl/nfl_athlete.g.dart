@@ -20,7 +20,7 @@ NFLAthlete _$NFLAthleteFromJson(Map<String, dynamic> json) => NFLAthlete(
       offensiveSnapsPlayed: (json['OffensiveSnapsPlayed'] as num).toDouble(),
       defensiveSnapsPlayed: (json['DefensiveSnapsPlayed'] as num).toDouble(),
       price: (json['price'] as num).toDouble(),
-      timeStamp: json['timeStamp'] as String,
+      timeStamp: json['timestamp'] as String,
     );
 
 Map<String, dynamic> _$NFLAthleteToJson(NFLAthlete instance) =>
