@@ -48,7 +48,9 @@ class LSPController extends GetxController {
     final axt = ERC20(address: axtaddress, client: tokenClient);
     try {
       await axt.approve(address, amount, credentials: controller.credentials);
-    } catch (_) {}
+    } catch (e) {
+      return Future.error(e);
+    }
   }
 
   Future<bool> redeem() async {

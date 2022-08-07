@@ -69,6 +69,10 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
         textcolor = Colors.black;
       });
     }).catchError((_) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const FailedDialog(),
+      );
       setState(() {
         isApproved = false;
         text = 'Approve';

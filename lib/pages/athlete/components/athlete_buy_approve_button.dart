@@ -72,6 +72,10 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
         textcolor = Colors.black;
       });
     }).catchError((_) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const FailedDialog(),
+      );
       setState(() {
         isApproved = false;
         text = 'Approve';

@@ -71,7 +71,11 @@ class SwapController extends GetxController {
       );
       //txString = await tokenB.approve(dexAddress, tokenBAmount,
       //  credentials: controller.credentials);
-    } catch (_) {}
+    } catch (e) {
+      txString = '';
+      controller.updateTxString(txString);
+      return Future.error(e);
+    }
 
     controller.updateTxString(txString);
   }
