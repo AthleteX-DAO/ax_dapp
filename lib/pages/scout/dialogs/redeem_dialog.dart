@@ -443,7 +443,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           );
                         }
                         if (mounted) {
-                            Navigator.pop(context);
+                          Navigator.pop(context);
                         }
                       },
                       child: Text(
