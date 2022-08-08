@@ -362,97 +362,109 @@ extension TradePageTracking on TrackingCubit {
 
 extension FarmPageTracking on TrackingCubit {
   void onPressedStake({
-    required String tokenName,
-    required String tokenAddress,
-    required double tokenAmount,
+    required String tickerPair,
+    required String tickerPairName,
+    required double axlInput,
+    required double axlBalance
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedStake({
-        'token_name': tokenName,
-        'token_address': tokenAddress,
-        'token_amount': tokenAmount,
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
       }),
     );
   }
 
   void onPressedStakeConfirm({
-    required String tokenName,
-    required String tokenAddress,
-    required double tokenAmount,
+    required String tickerPair,
+    required String tickerPairName,
+    required double axlInput,
+    required double axlBalance
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onPressedStakeConfirm({
-        'token_name': tokenName,
-        'token_address': tokenAddress,
-        'token_amount': tokenAmount,
+      FarmPageTrackingEvent.onPressedStake({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
       }),
     );
   }
 
   void onStakeSuccess({
-    required String tokenName,
-    required String tokenAddress,
-    required double tokenAmount,
+    required String tickerPair,
+    required String tickerPairName,
+    required double axlInput,
+    required double axlBalance
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onStakeSuccess({
-        'token_name': tokenName,
-        'token_address': tokenAddress,
-        'token_amount': tokenAmount,
+      FarmPageTrackingEvent.onPressedStake({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
       }),
     );
   }
 
   void onPressedClaimRewards({
-    required String tokenName,
-    required String tokenAddress,
+    required String tickerPair,
+    required String tickerPairName,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedClaimRewards({
-        'token_name': tokenName,
-        'token_address': tokenAddress,
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
       }),
     );
   }
 
   void onPressedUnStake({
-    required String tokenName,
-    required String tokenAddress,
-    required double tokenAmount,
+    required String tickerPair,
+    required String tickerPairName,
+    required double axlInput,
+    required double axlBalance
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onPressedUnStake({
-        'token_name': tokenName,
-        'token_address': tokenAddress,
-        'token_amount': tokenAmount,
+      FarmPageTrackingEvent.onPressedStake({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
       }),
     );
   }
 
   void onPressedUnStakeConfirm({
-    required String tokenName,
-    required String tokenAddress,
-    required double tokenAmount,
+    required String tickerPair,
+    required String tickerPairName,
+    required double axlInput,
+    required double axlBalance
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onPressedUnStakeConfirm({
-        'token_name': tokenName,
-        'token_address': tokenAddress,
-        'token_amount': tokenAmount,
+      FarmPageTrackingEvent.onPressedStake({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
       }),
     );
   }
 
   void onUnStakeSuccess({
-    required String tokenName,
-    required String tokenAddress,
-    required double tokenAmount,
+    required String tickerPair,
+    required String tickerPairName,
+    required double axlInput,
+    required double axlBalance
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onUnStakeSuccess({
-        'token_name': tokenName,
-        'token_address': tokenAddress,
-        'token_amount': tokenAmount,
+      FarmPageTrackingEvent.onPressedStake({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
       }),
     );
   }

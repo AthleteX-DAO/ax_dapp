@@ -1,6 +1,8 @@
+import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // This code changes the state of the button
 class StakeApproveButton extends StatefulWidget {
@@ -10,13 +12,15 @@ class StakeApproveButton extends StatefulWidget {
     this.text,
     this.approveCallback,
     this.confirmCallback,
-    this.confirmDialog, {
+    this.confirmDialog,
+    this.controller, {
     super.key,
   });
 
   final String text;
   final double width;
   final double height;
+  final FarmController controller;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -55,6 +59,11 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
         fillcolor = Colors.amber;
         textcolor = Colors.black;
       });
+
+      // context.read<TrackingCubit>().onPressedStake(
+      //     tokenName: tokenName,
+      //     tokenAddress: tokenAddress,
+      //     tokenAmount: tokenAmount);
     }).catchError((_) {
       setState(() {
         isApproved = false;
