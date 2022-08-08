@@ -86,6 +86,7 @@ Dialog unstakeDialog(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    const SizedBox(width: 5),
                     Container(
                       height: 35,
                       width: 35,
@@ -221,32 +222,6 @@ Dialog unstakeDialog(
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              /* Container(
-                margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
-                width: 175,
-                height: 45,
-                decoration: BoxDecoration(
-                  color: Colors.amber[400],
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            removalConfimed(context));
-                  },
-                  child: const Text(
-                    "Confirm",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ), */
-              //ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
               ApproveButton(
                 175,
                 45,
