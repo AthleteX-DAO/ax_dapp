@@ -421,6 +421,18 @@ extension FarmPageTracking on TrackingCubit {
     );
   }
 
+  void onClaimRewardsSuccess({
+    required String tickerPair,
+    required String tickerPairName,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onClaimRewardsSuccess({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+      }),
+    );
+  }
+
   void onPressedUnStake({
     required String tickerPair,
     required String tickerPairName,
