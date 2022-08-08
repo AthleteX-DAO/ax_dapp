@@ -47,6 +47,7 @@ dependencies:
   provider: ^6.0.3
   retrofit: ^3.0.1+1
   search_page: ^2.0.0+1
+  share_plus: ^4.0.10
   shared:
     path: packages/shared
   shared_preferences: ^2.0.15
