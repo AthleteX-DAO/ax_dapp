@@ -440,7 +440,7 @@ extension FarmPageTracking on TrackingCubit {
     required String axlBalance,
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onPressedStake({
+      FarmPageTrackingEvent.onPressedUnStake({
         'ticker_pair': tickerPair,
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
@@ -456,7 +456,7 @@ extension FarmPageTracking on TrackingCubit {
     required String axlBalance,
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onPressedStake({
+      FarmPageTrackingEvent.onPressedUnStakeConfirm({
         'ticker_pair': tickerPair,
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
@@ -472,7 +472,7 @@ extension FarmPageTracking on TrackingCubit {
     required String axlBalance,
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onPressedStake({
+      FarmPageTrackingEvent.onUnStakeSuccess({
         'ticker_pair': tickerPair,
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,

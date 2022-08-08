@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:ax_dapp/pages/farm/components/unstake_approve_button.dart';
 import 'package:ax_dapp/pages/farm/dialogs/unstake_confirmed_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
@@ -247,13 +248,12 @@ Dialog unstakeDialog(
                 ),
               ), */
               //ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
-              ApproveButton(
+              UnStakeApproveButton(
                 175,
                 45,
                 'Approve',
-                testFunction,
-                selectedFarm.unstake,
                 unstakeConfirmedDialog,
+                selectedFarm
               ),
             ],
           )
