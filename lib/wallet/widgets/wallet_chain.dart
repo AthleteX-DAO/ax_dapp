@@ -34,7 +34,7 @@ class WalletChain extends StatelessWidget {
                   ],
                   onChanged: (chain) => context
                       .read<WalletBloc>()
-                      .add(SwitchEthereumChainRequested(chain)),
+                      .add(SwitchChainRequested(chain)),
                 );
               },
             ),

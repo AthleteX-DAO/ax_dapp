@@ -13,6 +13,8 @@ import 'package:web3_browser/web3_browser.dart' as web3_browser;
 
 class MockEthereum extends Mock implements Ethereum {}
 
+class MockWeb3Client extends Mock implements Web3Client {}
+
 class MockWindow extends Mock implements html.Window {}
 
 class MockBrowserEthereum extends Mock implements web3_browser.Ethereum {}
@@ -26,21 +28,26 @@ class FakeCredentialsWithKnownAddress extends Fake
 void main() {
   group('EthereumWalletApiClient', () {
     late Ethereum ethereum;
+    late Web3Client web3client;
     late web3_browser.Ethereum browserEthereum;
 
     late EthereumWalletApiClient subject;
 
     EthereumWalletApiClient createSubject() =>
-        EthereumWalletApiClient(ethereum: ethereum)
+        EthereumWalletApiClient(ethereum: ethereum, web3Client: web3client)
           ..isEthereumSupported = true
           ..browserEthereum = browserEthereum;
 
     setUp(() {
       ethereum = MockEthereum();
+      web3client = MockWeb3Client();
     });
 
     test('can be instantiated', () {
-      expect(EthereumWalletApiClient(ethereum: ethereum), isNotNull);
+      expect(
+        EthereumWalletApiClient(ethereum: ethereum, web3Client: web3client),
+        isNotNull,
+      );
     });
 
     group('addChain', () {

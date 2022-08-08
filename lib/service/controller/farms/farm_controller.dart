@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:ax_dapp/contracts/ERC20.g.dart';
-import 'package:ax_dapp/contracts/Pool.g.dart';
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
+import 'package:ethereum_api/erc20_api.dart';
+import 'package:ethereum_api/pool_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:tokens_repository/tokens_repository.dart';

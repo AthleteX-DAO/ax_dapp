@@ -15,24 +15,24 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     required this.repo,
   })  : _walletRepository = walletRepository,
         super(const ScoutPageState()) {
-    on<WatchEthereumChainChangesStarted>(_onWatchEthereumChainChangesStarted);
+    on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
     on<SelectSport>(_mapSelectSportToState);
     on<OnAthleteSearch>(_mapSearchAthleteEventToState);
 
-    add(const WatchEthereumChainChangesStarted());
+    add(const WatchChainChangesStarted());
     add(FetchScoutInfoRequested());
   }
 
   final WalletRepository _walletRepository;
   final GetScoutAthletesDataUseCase repo;
 
-  Future<void> _onWatchEthereumChainChangesStarted(
-    WatchEthereumChainChangesStarted _,
+  Future<void> _onWatchChainChangesStarted(
+    WatchChainChangesStarted _,
     Emitter<ScoutPageState> emit,
   ) async {
     await emit.onEach<EthereumChain>(
-      _walletRepository.ethereumChainChanges,
+      _walletRepository.chainChanges,
       onData: (_) => add(FetchScoutInfoRequested()),
     );
   }

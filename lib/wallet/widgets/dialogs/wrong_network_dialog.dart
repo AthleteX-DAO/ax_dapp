@@ -71,7 +71,7 @@ class WrongNetworkDialog extends StatelessWidget {
                     onPressed: () {
                       Navigator.pop(context);
                       context.read<WalletBloc>().add(
-                            const SwitchEthereumChainRequested(
+                            const SwitchChainRequested(
                               EthereumChain.polygonMainnet,
                             ),
                           );

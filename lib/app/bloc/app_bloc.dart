@@ -13,20 +13,20 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
         super(const AppState()) {
-    on<WatchEthereumChainChangesStarted>(_onWatchEthereumChainChangesStarted);
+    on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
 
-    add(const WatchEthereumChainChangesStarted());
+    add(const WatchChainChangesStarted());
   }
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
 
-  Future<void> _onWatchEthereumChainChangesStarted(
-    WatchEthereumChainChangesStarted _,
+  Future<void> _onWatchChainChangesStarted(
+    WatchChainChangesStarted _,
     Emitter<AppState> emit,
   ) async {
     await emit.onEach<EthereumChain>(
-      _walletRepository.ethereumChainChanges,
+      _walletRepository.chainChanges,
       onData: _tokensRepository.switchTokens,
     );
   }

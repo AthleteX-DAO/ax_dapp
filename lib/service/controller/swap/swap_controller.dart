@@ -1,8 +1,8 @@
-import 'package:ax_dapp/contracts/APTRouter.g.dart';
-import 'package:ax_dapp/contracts/Dex.g.dart';
-import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
+import 'package:ethereum_api/apt_router_api.dart';
+import 'package:ethereum_api/dex_api.dart';
+import 'package:ethereum_api/erc20_api.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:web3dart/web3dart.dart';

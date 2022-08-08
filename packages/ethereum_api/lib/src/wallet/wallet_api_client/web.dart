@@ -17,20 +17,22 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// {@macro wallet_api_client}
   EthereumWalletApiClient({
     Ethereum? ethereum,
-  }) : _ethereum = ethereum ?? Ethereum.provider;
+    required Web3Client web3Client,
+  })  : _ethereum = ethereum ?? Ethereum.provider,
+        _web3Client = web3Client;
 
   final Ethereum? _ethereum;
+  final Web3Client _web3Client;
 
   final _chainController = BehaviorSubject<EthereumChain>();
 
   /// Allows listening to changes to the current [EthereumChain].
   @override
-  Stream<EthereumChain> get ethereumChainChanges =>
-      _chainController.stream.distinct();
+  Stream<EthereumChain> get chainChanges => _chainController.stream.distinct();
 
   /// Returns the current [EthereumChain] synchronously.
   @override
-  EthereumChain get ethereumChain =>
+  EthereumChain get currentChain =>
       _chainController.valueOrNull ?? EthereumChain.none;
 
   /// Returns whether [Ethereum] is currently supported. Can be overriden for
@@ -129,7 +131,7 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   /// Starts reacting to [Ethereum.onChainChanged].
   ///
-  /// It will result in updates to [ethereumChainChanges] stream whenever the
+  /// It will result in updates to [chainChanges] stream whenever the
   /// user changes the chain on `MetaMask`.
   @override
   void addChainChangedListener() => _ethereum?.onChainChanged(_onChainChanged);
@@ -140,13 +142,91 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   /// Stops reacting to [Ethereum.onChainChanged].
   ///
-  /// It will update the [ethereumChainChanges] stream with
+  /// It will update the [chainChanges] stream with
   /// [EthereumChain.none] to simulate that the wallet was disconnected.
   /// For security reasons an actual disconnect is not possible.
   @override
   void removeChainChangedListener() {
     _ethereum?.removeAllListeners('chainChanged');
     _chainController.add(EthereumChain.none);
+  }
+
+  /// Adds the token with the given [tokenAddress] and [tokenImageUrl] to
+  /// user's wallet.
+  ///
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletUnsuccessfulOperationFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
+  @override
+  Future<void> addToken({
+    required String tokenAddress,
+    required String tokenImageUrl,
+  }) async {
+    _checkWalletAvailability();
+    try {
+      final ethereumAddress = EthereumAddress.fromHex(tokenAddress);
+      final token = ERC20(address: ethereumAddress, client: _web3Client);
+      final symbol = await token.symbol();
+      final decimals = await token.decimals();
+      final result = await _ethereum!.walletWatchAssets(
+        address: tokenAddress,
+        symbol: symbol,
+        decimals: decimals.toInt(),
+        image: tokenImageUrl,
+      );
+      if (!result) {
+        throw WalletFailure.fromUnsuccessfulOperation();
+      }
+    } on EthereumUserRejected catch (exception, stackTrace) {
+      throw WalletFailure.fromOperationRejected(exception, stackTrace);
+    } on EthereumException catch (exception, stackTrace) {
+      throw WalletFailure.fromEthereum(exception, stackTrace);
+    } catch (error, stackTrace) {
+      throw WalletFailure.fromError(error, stackTrace);
+    }
+  }
+
+  /// Returns an aproximate balance for the token with the given [tokenAddress],
+  /// on the wallet identified by [walletAddress]. It returns a balance of
+  /// `0.0` when any error occurs.
+  ///
+  /// **WARNING**: Due to rounding errors, the returned balance is not
+  /// reliable, especially for larger amounts or smaller units. While it can be
+  /// used to display the amount of ether in a human-readable format, it should
+  /// not be used for anything else.
+  @override
+  Future<double> getTokenBalance({
+    required String tokenAddress,
+    required String walletAddress,
+  }) async {
+    try {
+      final tokenEthereumAddress = EthereumAddress.fromHex(tokenAddress);
+      final walletEthereumAddress = EthereumAddress.fromHex(walletAddress);
+      final token = ERC20(address: tokenEthereumAddress, client: _web3Client);
+      final rawBalance = await token.balanceOf(walletEthereumAddress);
+      final balanceInWei = EtherAmount.inWei(rawBalance);
+      final balance = balanceInWei.getValueInUnit(EtherUnit.ether);
+      final formattedBalance = balance.toStringAsFixed(2);
+      return double.parse(formattedBalance);
+    } catch (_) {
+      return 0.0;
+    }
+  }
+
+  /// Returns the amount typically needed to pay for one unit of gas(in gwei).
+  @override
+  Future<double> getGasPrice() async {
+    try {
+      final rawGasPrice = await _web3Client.getGasPrice();
+      final gasPriceInGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+      final formattedGasPriceInGwei = gasPriceInGwei.toStringAsFixed(2);
+      return double.parse(formattedGasPriceInGwei);
+    } catch (_) {
+      return 0.0;
+    }
   }
 
   void _checkWalletAvailability() {

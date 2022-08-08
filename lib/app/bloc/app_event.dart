@@ -7,6 +7,6 @@ abstract class AppEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class WatchEthereumChainChangesStarted extends AppEvent {
-  const WatchEthereumChainChangesStarted();
+class WatchChainChangesStarted extends AppEvent {
+  const WatchChainChangesStarted();
 }

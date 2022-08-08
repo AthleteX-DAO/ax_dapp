@@ -5,7 +5,7 @@ enum WalletStatus {
   connected,
   unsupported;
 
-  factory WalletStatus.fromEthereumChain(EthereumChain chain) {
+  factory WalletStatus.fromChain(EthereumChain chain) {
     switch (chain) {
       case EthereumChain.none:
         return WalletStatus.disconnected;

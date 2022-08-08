@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
-import 'package:ax_dapp/contracts/LongShortPair.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:erc20/erc20.dart';
+import 'package:ethereum_api/lsp_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';

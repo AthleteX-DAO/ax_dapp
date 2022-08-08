@@ -15,12 +15,12 @@ class DisconnectWalletRequested extends WalletEvent {
   const DisconnectWalletRequested();
 }
 
-class WatchEthereumChainChangesStarted extends WalletEvent {
-  const WatchEthereumChainChangesStarted();
+class WatchChainChangesStarted extends WalletEvent {
+  const WatchChainChangesStarted();
 }
 
-class SwitchEthereumChainRequested extends WalletEvent {
-  const SwitchEthereumChainRequested(this.chain);
+class SwitchChainRequested extends WalletEvent {
+  const SwitchChainRequested(this.chain);
 
   final EthereumChain? chain;
 

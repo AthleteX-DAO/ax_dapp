@@ -22,6 +22,12 @@ class WalletFailure extends Failure {
   ) =>
       WalletOperationRejectedFailure(exception, stackTrace);
 
+  /// {@template wallet_unsuccessful_operation_failure}
+  /// Failure thrown to signal an unsuccessful `MetaMask` operation.
+  /// {@endtemplate}
+  factory WalletFailure.fromUnsuccessfulOperation() =>
+      WalletUnsuccessfulOperationFailure();
+
   /// {@template wallet_unrecognized_chain_failure}
   /// Failure thrown when the [Ethereum.walletSwitchChain] is called for a
   /// `chainId` that is not yet present on the user's wallet; in such case

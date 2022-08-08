@@ -1,4 +1,5 @@
 import 'package:ethereum_api/ethereum_api.dart';
+import 'package:ethereum_api/lsp_api.dart';
 
 /// {@template tokens_repository}
 /// Repository that manages the token domain.
@@ -7,9 +8,12 @@ class TokensRepository {
   /// {@macro tokens_repository}
   TokensRepository({
     required EthereumApiClient ethereumApiClient,
-  }) : _ethereumApiClient = ethereumApiClient;
+    required LongShortPair lspClient,
+  })  : _ethereumApiClient = ethereumApiClient,
+        _lspClient = lspClient;
 
   final EthereumApiClient _ethereumApiClient;
+  final LongShortPair _lspClient;
 
   /// Allows listening to changes to the current [Token]s.
   Stream<List<Token>> get tokensChanges => _ethereumApiClient.tokensChanges;
@@ -59,6 +63,19 @@ class TokensRepository {
       case EthereumChain.sxMainnet:
       case EthereumChain.sxTestnet:
         return tokens.sxt;
+    }
+  }
+
+  /// Returns the collateral value per pair. In case of an error it returns
+  /// [BigInt.zero].
+  Future<BigInt> getCollateralPerPair() async {
+    try {
+      final collateralValue = await _lspClient.collateralPerPair();
+      final normalizedCollateralValue =
+          collateralValue ~/ BigInt.from(10).pow(18); // removes 18 zeros
+      return normalizedCollateralValue;
+    } catch (_) {
+      return BigInt.zero;
     }
   }
 }

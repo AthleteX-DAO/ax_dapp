@@ -10,47 +10,52 @@ import 'package:shared/shared.dart';
 class WalletRepository {
   /// {@macro wallet_repository}
   WalletRepository({
-    WalletApiClient? walletApiClient,
+    required WalletApiClient walletApiClient,
     CacheClient? cache,
     required EthereumChain defaultChain,
-  })  : _walletApiClient = walletApiClient ?? EthereumWalletApiClient(),
+  })  : _walletApiClient = walletApiClient,
         _cache = cache ?? CacheClient(),
         _defaultChain = defaultChain;
 
   final WalletApiClient _walletApiClient;
   final CacheClient _cache;
 
-  /// The initial `EthereumChain` that the wallet will be switched to.
+  /// The initial [EthereumChain] that the wallet will be switched to.
   final EthereumChain _defaultChain;
 
-  /// [Credentials] cache key.
+  /// [WalletCredentials] cache key.
   /// Should only be used for testing purposes.
   @visibleForTesting
   static const credentialsCacheKey = '__credentials_cache_key__';
 
   /// Allows listening to changes to the current [EthereumChain].
-  Stream<EthereumChain> get ethereumChainChanges =>
-      _walletApiClient.ethereumChainChanges;
+  Stream<EthereumChain> get chainChanges => _walletApiClient.chainChanges;
 
   /// Returns the current [EthereumChain] synchronously.
-  EthereumChain get ethereumChain => _walletApiClient.ethereumChain;
+  EthereumChain get currentChain => _walletApiClient.currentChain;
+
+  /// Returns the cached [WalletCredentials] for the connected wallet. This
+  /// doesn't return `null`, because when called, the wallet is asssumed to be
+  /// connected and thus have it's credentials cached.
+  WalletCredentials get credentials =>
+      _cache.read<WalletCredentials>(key: credentialsCacheKey)!;
+
+  /// Returns the connected wallet address.
+  String get walletAddress => credentials.value.address.hex;
 
   /// Allows the user to connect to a `MetaMask` wallet.
   ///
   /// Returns the hexadecimal representation of the wallet address.
+  ///
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
     _walletApiClient.addChainChangedListener();
     await switchChain(_defaultChain);
     return _getWalletCredentials();
-  }
-
-  /// Switches the currently used chain.
-  Future<void> switchChain(EthereumChain chain) async {
-    try {
-      await _walletApiClient.switchChain(chain);
-    } on WalletUnrecognizedChainFailure {
-      await _walletApiClient.addChain(chain);
-    }
   }
 
   Future<String> _getWalletCredentials() async {
@@ -64,16 +69,57 @@ class WalletRepository {
         value: credentials,
       );
 
-  /// Returns the cached [WalletCredentials] for the connected wallet. This
-  /// doesn't return `null`, because when called, the wallet is asssumed to be
-  /// connected and thus have it's credentials cached.
+  /// Switches the currently used [EthereumChain].
   ///
-  /// This can used in the BLoC layer to pass [WalletCredentials] to other calls
-  /// needing them.
-  WalletCredentials get credentials =>
-      _cache.read<WalletCredentials>(key: credentialsCacheKey)!;
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
+  Future<void> switchChain(EthereumChain chain) async {
+    try {
+      await _walletApiClient.switchChain(chain);
+    } on WalletUnrecognizedChainFailure {
+      await _walletApiClient.addChain(chain);
+    }
+  }
 
   /// Simulates disconnecting user's wallet. For security reasons an actual
   /// disconnect is not possible.
   void disconnectWallet() => _walletApiClient.removeChainChangedListener();
+
+  /// Adds the token with the given [tokenAddress] and [tokenImageUrl] to
+  /// user's wallet.
+  ///
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletUnsuccessfulOperationFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
+  Future<void> addToken({
+    required String tokenAddress,
+    required String tokenImageUrl,
+  }) =>
+      _walletApiClient.addToken(
+        tokenAddress: tokenAddress,
+        tokenImageUrl: tokenImageUrl,
+      );
+
+  /// Returns an aproximate balance for the token with the given [tokenAddress],
+  /// on the connected wallet. It returns a balance of `0.0` when any error
+  /// occurs.
+  ///
+  /// **WARNING**: Due to rounding errors, the returned balance is not
+  /// reliable, especially for larger amounts or smaller units. While it can be
+  /// used to display the amount of ether in a human-readable format, it should
+  /// not be used for anything else.
+  Future<double> getTokenBalance(String tokenAddress) =>
+      _walletApiClient.getTokenBalance(
+        tokenAddress: tokenAddress,
+        walletAddress: walletAddress,
+      );
+
+  /// Returns the amount typically needed to pay for one unit of gas(in gwei).
+  Future<double> getGasPrice() => _walletApiClient.getGasPrice();
 }

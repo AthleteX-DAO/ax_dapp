@@ -27,6 +27,16 @@ class WalletOperationRejectedFailure extends WalletFailure {
   ) : super._();
 }
 
+/// {@macro wallet_unsuccessful_operation_failure}
+class WalletUnsuccessfulOperationFailure extends WalletFailure {
+  /// {@macro wallet_unsuccessful_operation_failure}
+  WalletUnsuccessfulOperationFailure()
+      : super._(
+          Exception('wallet operation was unsuccessful'),
+          StackTrace.current,
+        );
+}
+
 /// {@macro wallet_unrecognized_chain_failure}
 class WalletUnrecognizedChainFailure extends WalletFailure {
   /// {@macro wallet_unrecognized_chain_failure}
