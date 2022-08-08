@@ -9,10 +9,12 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> testFunction() async {
@@ -244,6 +246,10 @@ Dialog walletDialog(BuildContext context) {
                             builder: wrongNetworkDialog,
                           );
                         } else {
+                          context.read<TrackingCubit>().onPressedConnectWallet(
+                                publicAddress:
+                                    controller.publicAddress.toString(),
+                              );
                           Navigator.pop(context);
                           walletController
                             ..getTokenMetrics()
