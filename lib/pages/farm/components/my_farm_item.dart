@@ -177,9 +177,9 @@ Widget myFarmItem(
                   onPressed: () async => {
                     context.read<TrackingCubit>().onPressedClaimRewards(
                           tickerPair: farm.strStakeTokenAddress,
-                          tickerPairName: farm.strStakedAlias.value.isNotEmpty
-                              ? farm.strStakedAlias.value
-                              : farm.strStakedSymbol.value,
+                          tickerPairName: farm.athlete == null
+                              ? farm.strName
+                              : farm.athlete!,
                         ),
                     await farm.claim(),
                     showDialog<void>(
@@ -188,9 +188,9 @@ Widget myFarmItem(
                     ),
                     context.read<TrackingCubit>().onClaimRewardsSuccess(
                           tickerPair: farm.strStakeTokenAddress,
-                          tickerPairName: farm.strStakedAlias.value.isNotEmpty
-                              ? farm.strStakedAlias.value
-                              : farm.strStakedSymbol.value,
+                          tickerPairName: farm.athlete == null
+                              ? farm.strName
+                              : farm.athlete!,
                         ),
                   },
                   child: Text(

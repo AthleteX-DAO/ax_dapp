@@ -48,9 +48,9 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
 
   AxlInfo getStakeInfo() {
     final tickerPair = widget.selectedFarm.strStakeTokenAddress;
-    final tickerPairName = widget.selectedFarm.strStakedAlias.value.isNotEmpty
-        ? widget.selectedFarm.strStakedAlias.value
-        : widget.selectedFarm.strStakedSymbol.value;
+    final tickerPairName = widget.selectedFarm.athlete == null
+        ? widget.selectedFarm.strName
+        : widget.selectedFarm.athlete!;
     final axlBalance =
         widget.selectedFarm.stakingInfo.value.rawAmount.toString();
 
