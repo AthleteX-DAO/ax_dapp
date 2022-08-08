@@ -50,21 +50,22 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
 
   AxlInfo getUnStakeInfo() {
     final tickerPair = widget.selectedFarm.strStakeTokenAddress;
-    final tickerPairName =
-      widget.selectedFarm.strStakedAlias.value.isNotEmpty ?
-      widget.selectedFarm.strStakedAlias.value :
-      widget.selectedFarm.strStakedSymbol.value;
+    final tickerPairName = widget.selectedFarm.strStakedAlias.value.isNotEmpty
+        ? widget.selectedFarm.strStakedAlias.value
+        : widget.selectedFarm.strStakedSymbol.value;
     final axlBalance =
-      widget.selectedFarm.stakingInfo.value.rawAmount.toString();
+        widget.selectedFarm.stakingInfo.value.rawAmount.toString();
 
     final inputInfo = UserInputInfo.fromInput(
       inputAmount: widget.selectedFarm.strUnStakeInput.value,
       decimals: widget.selectedFarm.nStakeTokenDecimals,
     );
-    final axlInput = widget.selectedFarm.getMaximumAmount(
-        widget.selectedFarm.stakingInfo.value,
-        inputInfo,
-    ).toString();
+    final axlInput = widget.selectedFarm
+        .getMaximumAmount(
+          widget.selectedFarm.stakingInfo.value,
+          inputInfo,
+        )
+        .toString();
     return AxlInfo(tickerPair, tickerPairName, axlBalance, axlInput);
   }
 
@@ -79,11 +80,11 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
 
     final info = getUnStakeInfo();
     context.read<TrackingCubit>().onPressedUnStake(
-      tickerPair: info.tickerPair,
-      tickerPairName: info.tickerPairName,
-      axlInput: info.axlInput,
-      axlBalance: info.axlBalance,
-    );
+          tickerPair: info.tickerPair,
+          tickerPairName: info.tickerPairName,
+          axlInput: info.axlInput,
+          axlBalance: info.axlBalance,
+        );
     // Keep track of how many times the state has changed
     currentState += 1;
   }
@@ -104,11 +105,11 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
           if (isApproved) {
             final info = getUnStakeInfo();
             context.read<TrackingCubit>().onPressedUnStakeConfirm(
-              tickerPair: info.tickerPair,
-              tickerPairName: info.tickerPairName,
-              axlInput: info.axlInput,
-              axlBalance: info.axlBalance,
-            );
+                  tickerPair: info.tickerPair,
+                  tickerPairName: info.tickerPairName,
+                  axlInput: info.axlInput,
+                  axlBalance: info.axlBalance,
+                );
             //Confirm button pressed
             widget.selectedFarm.unstake().then((value) {
               showDialog<void>(
@@ -119,11 +120,11 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
 
               final info = getUnStakeInfo();
               context.read<TrackingCubit>().onUnStakeSuccess(
-                tickerPair: info.tickerPair,
-                tickerPairName: info.tickerPairName,
-                axlInput: info.axlInput,
-                axlBalance: info.axlBalance,
-              );
+                    tickerPair: info.tickerPair,
+                    tickerPairName: info.tickerPairName,
+                    axlInput: info.axlInput,
+                    axlBalance: info.axlBalance,
+                  );
             }).catchError((error) {
               showDialog<void>(
                 context: context,

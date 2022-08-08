@@ -176,22 +176,22 @@ Widget myFarmItem(
                 child: TextButton(
                   onPressed: () async => {
                     context.read<TrackingCubit>().onPressedClaimRewards(
-                      tickerPair: farm.strStakeTokenAddress,
-                      tickerPairName: farm.strStakedAlias.value.isNotEmpty ?
-                      farm.strStakedAlias.value :
-                      farm.strStakedSymbol.value,
-                    ),
+                          tickerPair: farm.strStakeTokenAddress,
+                          tickerPairName: farm.strStakedAlias.value.isNotEmpty
+                              ? farm.strStakedAlias.value
+                              : farm.strStakedSymbol.value,
+                        ),
                     await farm.claim(),
                     showDialog<void>(
                       context: context,
                       builder: rewardClaimDialog,
                     ),
                     context.read<TrackingCubit>().onClaimRewardsSuccess(
-                      tickerPair: farm.strStakeTokenAddress,
-                      tickerPairName: farm.strStakedAlias.value.isNotEmpty ?
-                      farm.strStakedAlias.value :
-                      farm.strStakedSymbol.value,
-                    ),
+                          tickerPair: farm.strStakeTokenAddress,
+                          tickerPairName: farm.strStakedAlias.value.isNotEmpty
+                              ? farm.strStakedAlias.value
+                              : farm.strStakedSymbol.value,
+                        ),
                   },
                   child: Text(
                     'Claim Rewards',

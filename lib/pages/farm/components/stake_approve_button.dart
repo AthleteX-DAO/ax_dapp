@@ -50,21 +50,22 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
 
   AxlInfo getStakeInfo() {
     final tickerPair = widget.selectedFarm.strStakeTokenAddress;
-    final tickerPairName =
-      widget.selectedFarm.strStakedAlias.value.isNotEmpty ?
-      widget.selectedFarm.strStakedAlias.value :
-      widget.selectedFarm.strStakedSymbol.value;
+    final tickerPairName = widget.selectedFarm.strStakedAlias.value.isNotEmpty
+        ? widget.selectedFarm.strStakedAlias.value
+        : widget.selectedFarm.strStakedSymbol.value;
     final axlBalance =
-      widget.selectedFarm.stakingInfo.value.rawAmount.toString();
+        widget.selectedFarm.stakingInfo.value.rawAmount.toString();
 
     final inputInfo = UserInputInfo.fromInput(
       inputAmount: widget.selectedFarm.strStakeInput.value,
       decimals: widget.selectedFarm.nStakeTokenDecimals,
     );
-    final axlInput = widget.selectedFarm.getMaximumAmount(
-        widget.selectedFarm.stakingInfo.value,
-        inputInfo,
-    ).toString();
+    final axlInput = widget.selectedFarm
+        .getMaximumAmount(
+          widget.selectedFarm.stakingInfo.value,
+          inputInfo,
+        )
+        .toString();
     return AxlInfo(tickerPair, tickerPairName, axlBalance, axlInput);
   }
 
@@ -80,11 +81,11 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
 
       final info = getStakeInfo();
       context.read<TrackingCubit>().onPressedStake(
-        tickerPair: info.tickerPair,
-        tickerPairName: info.tickerPairName,
-        axlInput: info.axlInput,
-        axlBalance: info.axlBalance,
-      );
+            tickerPair: info.tickerPair,
+            tickerPairName: info.tickerPairName,
+            axlInput: info.axlInput,
+            axlBalance: info.axlBalance,
+          );
     }).catchError((_) {
       setState(() {
         isApproved = false;
@@ -113,11 +114,11 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
           if (isApproved) {
             final info = getStakeInfo();
             context.read<TrackingCubit>().onPressedStakeConfirm(
-              tickerPair: info.tickerPair,
-              tickerPairName: info.tickerPairName,
-              axlInput: info.axlInput,
-              axlBalance: info.axlBalance,
-            );
+                  tickerPair: info.tickerPair,
+                  tickerPairName: info.tickerPairName,
+                  axlInput: info.axlInput,
+                  axlBalance: info.axlBalance,
+                );
             //Confirm button pressed
             widget.selectedFarm.stake().then((value) {
               showDialog<void>(
@@ -128,11 +129,11 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
 
               final info = getStakeInfo();
               context.read<TrackingCubit>().onStakeSuccess(
-                tickerPair: info.tickerPair,
-                tickerPairName: info.tickerPairName,
-                axlInput: info.axlInput,
-                axlBalance: info.axlBalance,
-              );
+                    tickerPair: info.tickerPair,
+                    tickerPairName: info.tickerPairName,
+                    axlInput: info.axlInput,
+                    axlBalance: info.axlBalance,
+                  );
             }).catchError((error) {
               showDialog<void>(
                 context: context,
