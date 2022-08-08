@@ -364,8 +364,8 @@ extension FarmPageTracking on TrackingCubit {
   void onPressedStake({
     required String tickerPair,
     required String tickerPairName,
-    required double axlInput,
-    required double axlBalance
+    required String axlInput,
+    required String axlBalance,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedStake({
@@ -380,11 +380,11 @@ extension FarmPageTracking on TrackingCubit {
   void onPressedStakeConfirm({
     required String tickerPair,
     required String tickerPairName,
-    required double axlInput,
-    required double axlBalance
+    required String axlInput,
+    required String axlBalance,
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onPressedStake({
+      FarmPageTrackingEvent.onPressedStakeConfirm({
         'ticker_pair': tickerPair,
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
@@ -396,11 +396,11 @@ extension FarmPageTracking on TrackingCubit {
   void onStakeSuccess({
     required String tickerPair,
     required String tickerPairName,
-    required double axlInput,
-    required double axlBalance
+    required String axlInput,
+    required String axlBalance,
   }) {
     trackingRepository.track(
-      FarmPageTrackingEvent.onPressedStake({
+      FarmPageTrackingEvent.onStakeSuccess({
         'ticker_pair': tickerPair,
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
@@ -424,8 +424,8 @@ extension FarmPageTracking on TrackingCubit {
   void onPressedUnStake({
     required String tickerPair,
     required String tickerPairName,
-    required double axlInput,
-    required double axlBalance
+    required String axlInput,
+    required String axlBalance,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedStake({
@@ -440,8 +440,8 @@ extension FarmPageTracking on TrackingCubit {
   void onPressedUnStakeConfirm({
     required String tickerPair,
     required String tickerPairName,
-    required double axlInput,
-    required double axlBalance
+    required String axlInput,
+    required String axlBalance,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedStake({
@@ -456,8 +456,8 @@ extension FarmPageTracking on TrackingCubit {
   void onUnStakeSuccess({
     required String tickerPair,
     required String tickerPairName,
-    required double axlInput,
-    required double axlBalance
+    required String axlInput,
+    required String axlBalance,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedStake({
