@@ -90,6 +90,7 @@ Dialog stakeDialog(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     //Icon image
+                    const SizedBox(width: 5),
                     Container(
                       width: 35,
                       height: 35,
