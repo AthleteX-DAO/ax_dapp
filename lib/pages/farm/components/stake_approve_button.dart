@@ -10,19 +10,15 @@ class StakeApproveButton extends StatefulWidget {
     this.width,
     this.height,
     this.text,
-    this.approveCallback,
-    this.confirmCallback,
     this.confirmDialog,
-    this.controller, {
+    this.selectedFarm, {
     super.key,
   });
 
   final String text;
   final double width;
   final double height;
-  final FarmController controller;
-  final Future<void> Function() approveCallback;
-  final Future<void> Function() confirmCallback;
+  final FarmController selectedFarm;
   final Dialog Function(BuildContext) confirmDialog;
 
   @override
@@ -50,20 +46,34 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
     currentState = 0;
   }
 
+  String getStakeAmount() {
+    final inputInfo = UserInputInfo.fromInput(
+      inputAmount: strStakeInput.value,
+      decimals: nStakeTokenDecimals,
+    );
+    final amount = getMaximumAmount(stakingInfo.value, inputInfo);
+  }
+
   void changeButton() {
     //Changes from approve button to confirm
-    widget.approveCallback().then((_) {
+    widget.selectedFarm.approve().then((_) {
       setState(() {
         isApproved = true;
         text = 'Confirm';
         fillcolor = Colors.amber;
         textcolor = Colors.black;
       });
+      final tickerPairName = 
+        widget.selectedFarm.strStakedAlias.value.isNotEmpty ? 
+        widget.selectedFarm.strStakedAlias.value : 
+        widget.selectedFarm.strStakedSymbol.value;
 
-      // context.read<TrackingCubit>().onPressedStake(
-      //     tokenName: tokenName,
-      //     tokenAddress: tokenAddress,
-      //     tokenAmount: tokenAmount);
+      final axlBalance = 
+        widget.selectedFarm.stakingInfo.value.rawAmount.toString();
+
+      
+      context.read<TrackingCubit>().onPressedStake(
+        tickerPair: widget.selectedFarm.strStakeTokenAddress, tickerPairName: tickerPairName, axlInput: axlInput, axlBalance: axlBalance)
     }).catchError((_) {
       setState(() {
         isApproved = false;
@@ -91,7 +101,7 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
           // Testing to see how the popup will work when the state is changed
           if (isApproved) {
             //Confirm button pressed
-            widget.confirmCallback().then((value) {
+            widget.selectedFarm.stake().then((value) {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
