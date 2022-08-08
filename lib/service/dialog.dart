@@ -248,7 +248,7 @@ Dialog walletDialog(BuildContext context) {
                         } else {
                           context.read<TrackingCubit>().onPressedConnectWallet(
                                 publicAddress:
-                                    controller.publicAddress.toString(),
+                                    '"${controller.publicAddress.toString()}"',
                               );
                           Navigator.pop(context);
                           walletController
