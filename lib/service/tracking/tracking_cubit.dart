@@ -481,4 +481,3 @@ extension FarmPageTracking on TrackingCubit {
     );
   }
 }
-

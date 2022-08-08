@@ -6,7 +6,6 @@ import 'package:ax_dapp/pages/farm/components/unstake_approve_button.dart';
 import 'package:ax_dapp/pages/farm/dialogs/unstake_confirmed_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
-import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -253,7 +252,7 @@ Dialog unstakeDialog(
                 45,
                 'Approve',
                 unstakeConfirmedDialog,
-                selectedFarm
+                selectedFarm,
               ),
             ],
           )

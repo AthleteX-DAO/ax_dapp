@@ -6,11 +6,10 @@ import 'package:ax_dapp/pages/farm/dialogs/unstake_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
-import '../../../service/tracking/tracking_cubit.dart';
 
 // First card of the my farms page is unique
 // First card of the my farms page is unique
