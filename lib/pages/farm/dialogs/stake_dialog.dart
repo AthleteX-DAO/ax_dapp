@@ -240,11 +240,11 @@ Dialog stakeDialog(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               StakeApproveButton(
-                175,
-                45,
-                'Approve',
-                transactionConfirmed,
-                selectedFarm,
+                width: 175,
+                height: 45,
+                text: 'Approve',
+                confirmDialog: transactionConfirmed,
+                selectedFarm: selectedFarm,
               )
             ],
           )

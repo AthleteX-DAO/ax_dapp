@@ -223,11 +223,11 @@ Dialog unstakeDialog(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               UnStakeApproveButton(
-                175,
-                45,
-                'Approve',
-                unstakeConfirmedDialog,
-                selectedFarm,
+                width: 175,
+                height: 45,
+                text: 'Approve',
+                confirmDialog: unstakeConfirmedDialog,
+                selectedFarm: selectedFarm,
               ),
             ],
           )

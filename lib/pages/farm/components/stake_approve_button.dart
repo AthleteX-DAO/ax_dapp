@@ -8,12 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // This code changes the state of the button
 class StakeApproveButton extends StatefulWidget {
-  const StakeApproveButton(
-    this.width,
-    this.height,
-    this.text,
-    this.confirmDialog,
-    this.selectedFarm, {
+  const StakeApproveButton({
+    required this.width,
+    required this.height,
+    required this.text,
+    required this.confirmDialog,
+    required this.selectedFarm,
     super.key,
   });
 
@@ -34,7 +34,6 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
   bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
-  int currentState = 0;
   Widget? dialog;
 
   @override
@@ -45,7 +44,6 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;
-    currentState = 0;
   }
 
   AxlInfo getStakeInfo() {
@@ -94,8 +92,6 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
         textcolor = Colors.amber;
       });
     });
-    // Keep track of how many times the state has changed
-    currentState += 1;
   }
 
   @override
