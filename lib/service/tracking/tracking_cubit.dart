@@ -359,3 +359,125 @@ extension TradePageTracking on TrackingCubit {
     );
   }
 }
+
+extension FarmPageTracking on TrackingCubit {
+  void onPressedStake({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedStake({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onPressedStakeConfirm({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedStakeConfirm({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onStakeSuccess({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onStakeSuccess({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onPressedClaimRewards({
+    required String tickerPair,
+    required String tickerPairName,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedClaimRewards({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+      }),
+    );
+  }
+
+  void onClaimRewardsSuccess({
+    required String tickerPair,
+    required String tickerPairName,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onClaimRewardsSuccess({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+      }),
+    );
+  }
+
+  void onPressedUnStake({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedUnStake({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onPressedUnStakeConfirm({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedUnStakeConfirm({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onUnStakeSuccess({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onUnStakeSuccess({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+}

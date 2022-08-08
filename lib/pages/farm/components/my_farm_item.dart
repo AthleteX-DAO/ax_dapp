@@ -6,7 +6,9 @@ import 'package:ax_dapp/pages/farm/dialogs/unstake_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 // First card of the my farms page is unique
@@ -173,11 +175,27 @@ Widget myFarmItem(
                 ),
                 child: TextButton(
                   onPressed: () async => {
+                    context.read<TrackingCubit>().onPressedClaimRewards(
+                          tickerPair: farm.athlete == null
+                              ? farm.strName
+                              : farm.athlete!,
+                          tickerPairName: farm.strStakedAlias.value.isNotEmpty
+                              ? farm.strStakedAlias.value
+                              : farm.strStakedSymbol.value,
+                        ),
                     await farm.claim(),
                     showDialog<void>(
                       context: context,
                       builder: rewardClaimDialog,
-                    )
+                    ),
+                    context.read<TrackingCubit>().onClaimRewardsSuccess(
+                          tickerPair: farm.athlete == null
+                              ? farm.strName
+                              : farm.athlete!,
+                          tickerPairName: farm.strStakedAlias.value.isNotEmpty
+                              ? farm.strStakedAlias.value
+                              : farm.strStakedSymbol.value,
+                        ),
                   },
                   child: Text(
                     'Claim Rewards',
