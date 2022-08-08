@@ -86,6 +86,7 @@ Dialog unstakeDialog(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    const SizedBox(width: 5),
                     Container(
                       height: 35,
                       width: 35,
