@@ -135,7 +135,8 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                                   selectedFarm.stakedInfo.value.viewAmount,
                                 ) -
                                 double.parse(
-                                    selectedFarm.strUnStakeInput.value,);
+                                  selectedFarm.strUnStakeInput.value,
+                                );
                           },
                           child: Text(
                             'Max',
@@ -154,11 +155,9 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                                   selectedFarm.stakedInfo.value.viewAmount,
                                 ) -
                                 double.parse(
-                                    selectedFarm.strUnStakeInput.value,);
-                            if (totalStakedBalance.isNegative) {
-                              isValid.value = false;
-                              print('${isValid.value}');
-                            }
+                                  selectedFarm.strUnStakeInput.value,
+                                );
+                            isValid.value = !totalStakedBalance.isNegative;
                           },
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
@@ -233,25 +232,28 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                 const Text('New Staked Balance'),
                 Obx(
                   () => Text(
-                      '''${totalStakedBalance.value.toString()} ${selectedFarm.strStakedSymbol}''',),
+                    '''${totalStakedBalance.value.toString()} ${selectedFarm.strStakedSymbol}''',
+                  ),
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (isValid.value) ...[
-                  UnStakeApproveButton(
-                  width: 175,
-                  height: 45,
-                  text: 'Approve',
-                  confirmDialog: unstakeConfirmedDialog,
-                  selectedFarm: selectedFarm,
-                  ),
-                ] else ...[
-                  const Text('Insufficient Input'),
-                ]
-              ],
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (isValid.value) ...[
+                    UnStakeApproveButton(
+                      width: 175,
+                      height: 45,
+                      text: 'Approve',
+                      confirmDialog: unstakeConfirmedDialog,
+                      selectedFarm: selectedFarm,
+                    ),
+                  ] else ...[
+                    const Text('Insufficient Input'),
+                  ]
+                ],
+              ),
             )
           ],
         ),
