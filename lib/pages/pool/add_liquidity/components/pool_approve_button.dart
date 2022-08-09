@@ -93,12 +93,21 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
-            context
-                .read<TrackingCubit>()
-                .onPoolConfirmClick(currencyTwo: widget.currencyTwo);
+            context.read<TrackingCubit>().onPoolConfirmClick(
+                  currencyOne: widget.currencyOne,
+                  currencyTwo: widget.currencyTwo,
+                  valueOne: widget.valueOne,
+                  valueTwo: widget.valueTwo,
+                  lpTokens: widget.lpTokens,
+                  shareOfPool: widget.shareOfPool,
+                  lpTokenName: widget.lpTokenName,
+                  walletId: widget.walletId,
+                );
             //Confirm button pressed
             widget.confirmCallback().then((value) {
               context.read<TrackingCubit>().onPoolCreated(
+                    currencyOne: widget.currencyOne,
+                    currencyTwo: widget.currencyTwo,
                     valueOne: widget.valueOne,
                     valueTwo: widget.valueTwo,
                     lpTokens: widget.lpTokens,
@@ -119,9 +128,16 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
             });
           } else {
             //Approve button was pressed
-            context
-                .read<TrackingCubit>()
-                .onPoolApproveClick(currencyOne: widget.currencyOne);
+            context.read<TrackingCubit>().onPoolApproveClick(
+                  currencyOne: widget.currencyOne,
+                  currencyTwo: widget.currencyTwo,
+                  valueOne: widget.valueOne,
+                  valueTwo: widget.valueTwo,
+                  lpTokens: widget.lpTokens,
+                  shareOfPool: widget.shareOfPool,
+                  lpTokenName: widget.lpTokenName,
+                  walletId: widget.walletId,
+                );
             changeButton();
           }
         },
