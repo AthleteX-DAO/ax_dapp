@@ -1,6 +1,6 @@
 import 'package:ax_dapp/pages/farm/modules/axl_info.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,6 +75,10 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
             axlBalance: info.axlBalance,
           );
     }).catchError((_) {
+      showDialog<void>(
+                context: context,
+                builder: (context) => const FailedDialog(),
+              );
       setState(() {
         isApproved = false;
         text = 'Approve';
