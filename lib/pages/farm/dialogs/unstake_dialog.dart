@@ -27,6 +27,7 @@ class UnstakeDialog extends StatefulWidget {
 
 class _UnstakeDialogState extends State<UnstakeDialog> {
   final unStakeAxInput = TextEditingController();
+  RxBool isValid = true.obs;
   @override
   void dispose() {
     unStakeAxInput.dispose();
@@ -154,6 +155,10 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                                 ) -
                                 double.parse(
                                     selectedFarm.strUnStakeInput.value,);
+                            if (totalStakedBalance.isNegative) {
+                              isValid.value = false;
+                              print('${isValid.value}');
+                            }
                           },
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
@@ -235,13 +240,17 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                UnStakeApproveButton(
+                if (isValid.value) ...[
+                  UnStakeApproveButton(
                   width: 175,
                   height: 45,
                   text: 'Approve',
                   confirmDialog: unstakeConfirmedDialog,
                   selectedFarm: selectedFarm,
-                ),
+                  ),
+                ] else ...[
+                  const Text('Insufficient Input'),
+                ]
               ],
             )
           ],
