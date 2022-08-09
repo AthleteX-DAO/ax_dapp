@@ -32,13 +32,14 @@ class _StakeDialogState extends State<StakeDialog> {
     stakeAxInput.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
     final wid = widget.isWeb ? 390.0 : widget.layoutWdt;
     final hgt = _height < 455.0 ? _height : 450.0;
     const dialogHorPadding = 30.0;
-    final selectedFarm = FarmController.fromFarm(widget.farm); 
+    final selectedFarm = FarmController.fromFarm(widget.farm);
     final totalStakedBalance = 0.0.obs;
     return Dialog(
       //remove inset padding to increase width of child widget
