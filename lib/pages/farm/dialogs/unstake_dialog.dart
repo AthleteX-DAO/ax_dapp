@@ -151,7 +151,10 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                         child: TextFormField(
                           controller: unStakeAxInput,
                           onChanged: (value) {
-                            if (value.isEmpty) totalStakedBalance.value = 0.0;
+                            if (value.isEmpty) {
+                              totalStakedBalance.value = 0.0;
+                              isValid.value = true;
+                            }
                             selectedFarm.strUnStakeInput.value = value;
                             totalStakedBalance.value = double.parse(
                                   selectedFarm.stakedInfo.value.viewAmount,
