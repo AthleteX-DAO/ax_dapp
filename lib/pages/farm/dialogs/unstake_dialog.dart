@@ -239,27 +239,27 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                   () => Text(
                     '''${totalStakedBalance.value.toString()} ${selectedFarm.strStakedSymbol}''',
                   ),
-                ),
+                )
               ],
             ),
-            Obx(
-              () => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (isValid.value) ...[
-                    UnStakeApproveButton(
-                      width: 175,
-                      height: 45,
-                      text: 'Approve',
-                      confirmDialog: unstakeConfirmedDialog,
-                      selectedFarm: selectedFarm,
-                    ),
-                  ] else ...[
-                    const InsufficientBalance(),
-                  ]
-                ],
+          Obx(
+            () => Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isValid.value) ...[
+                UnStakeApproveButton(
+                width: 175,
+                height: 45,
+                text: 'Confirm',
+                confirmDialog: unstakeConfirmedDialog,
+                selectedFarm: selectedFarm,
               ),
-            )
+              ] else ...[
+                const InsufficientBalance(),
+              ]         
+            ],
+            ),
+          )
           ],
         ),
       ),

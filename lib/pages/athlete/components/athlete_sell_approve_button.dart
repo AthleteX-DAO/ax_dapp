@@ -96,7 +96,15 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteSellConfirmButtonClicked(
+                  athleteName: widget.aptName,
                   id: widget.aptId,
+                  sellPosition: widget.longOrShort,
+                  unit: widget.amountInputted,
+                  currencyReceive: widget.aptSellInfo.receiveAmount,
+                  currency: 'AX',
+                  totalFee: widget.aptSellInfo.totalFee,
+                  sport: widget.athlete.sport.toString(),
+                  walletId: widget.walletAddress,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
@@ -105,6 +113,8 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
                     widget.confirmDialog(context),
               );
               context.read<TrackingCubit>().trackAthleteSellSuccess(
+                    athleteName: widget.aptName,
+                    id: widget.aptId,
                     sellPosition: widget.longOrShort,
                     unit: widget.amountInputted,
                     currencyReceive: widget.aptSellInfo.receiveAmount,
@@ -123,6 +133,14 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
             //Approve button was pressed
             context.read<TrackingCubit>().trackAthleteSellApproveButtonClicked(
                   athleteName: widget.aptName,
+                  id: widget.aptId,
+                  sellPosition: widget.longOrShort,
+                  unit: widget.amountInputted,
+                  currencyReceive: widget.aptSellInfo.receiveAmount,
+                  currency: 'AX',
+                  totalFee: widget.aptSellInfo.totalFee,
+                  sport: widget.athlete.sport.toString(),
+                  walletId: widget.walletAddress,
                 );
             changeButton();
           }
