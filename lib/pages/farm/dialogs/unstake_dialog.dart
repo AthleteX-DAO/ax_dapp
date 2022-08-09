@@ -138,6 +138,7 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                                 double.parse(
                                   selectedFarm.strUnStakeInput.value,
                                 );
+                            isValid.value = !totalStakedBalance.isNegative;
                           },
                           child: Text(
                             'Max',
