@@ -1,6 +1,5 @@
-import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
-import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
 import 'package:flutter/material.dart';
+
 class FailedDialog extends StatelessWidget {
   const FailedDialog({
     super.key,
@@ -24,7 +23,10 @@ class FailedDialog extends StatelessWidget {
       child: Container(
         height: hgt,
         width: wid,
-        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+        decoration: BoxDecoration(
+          color: Colors.grey[900],
+          borderRadius: BorderRadius.circular(30),
+        ),
         child: Center(
           child: SizedBox(
             height: 275,
@@ -38,9 +40,13 @@ class FailedDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(width: 5),
-                      Text(
+                      const Text(
                         'Transaction Rejected',
-                        style: textStyle(Colors.white, 20, false),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'OpenSans',
+                        ),
                       ),
                       SizedBox(
                         width: 40,

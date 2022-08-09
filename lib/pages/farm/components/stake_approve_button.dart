@@ -76,9 +76,9 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
           );
     }).catchError((_) {
       showDialog<void>(
-                context: context,
-                builder: (context) => const FailedDialog(),
-              );
+        context: context,
+        builder: (context) => const FailedDialog(),
+      );
       setState(() {
         isApproved = false;
         text = 'Approve';
