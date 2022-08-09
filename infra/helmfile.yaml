@@ -10,7 +10,7 @@ environments:
 releases:
 - name: ax-dapp
   chart: ./service-chart
-  namespace: test
+  namespace: {{ .Environment.Name }}
   values:
     - ./service-chart/stage-service.yaml
   secrets:
