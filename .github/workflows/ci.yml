@@ -55,6 +55,7 @@ jobs:
     name: Deploy to EKS
     runs-on: ubuntu-latest
     #environment: stage
+    needs: build-image
     defaults:
       run:
         shell: bash
