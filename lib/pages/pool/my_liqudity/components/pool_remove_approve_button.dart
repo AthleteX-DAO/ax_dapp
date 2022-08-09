@@ -96,12 +96,22 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
-            context
-                .read<TrackingCubit>()
-                .onPoolRemovalConfirmClick(currencyTwo: widget.currencyTwo);
+            context.read<TrackingCubit>().onPoolRemovalConfirmClick(
+                  currencyOne: widget.currencyOne,
+                  currencyTwo: widget.currencyTwo,
+                  valueOne: widget.valueOne,
+                  valueTwo: widget.valueTwo,
+                  lpTokens: widget.lpTokens,
+                  shareOfPool: widget.shareOfPool,
+                  percentRemoval: widget.percentRemoval,
+                  walletId: widget.walletId,
+                  lpTokenName: widget.lpTokenName,
+                );
             //Confirm button pressed
             widget.confirmCallback().then((value) {
               context.read<TrackingCubit>().onPoolRemoval(
+                    currencyOne: widget.currencyOne,
+                    currencyTwo: widget.currencyTwo,
                     valueOne: widget.valueOne,
                     valueTwo: widget.valueTwo,
                     lpTokens: widget.lpTokens,
@@ -123,9 +133,17 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
             });
           } else {
             //Approve button was pressed
-            context
-                .read<TrackingCubit>()
-                .onPoolRemovalApproveClick(currencyOne: widget.currencyOne);
+            context.read<TrackingCubit>().onPoolRemovalApproveClick(
+                  currencyOne: widget.currencyOne,
+                  currencyTwo: widget.currencyTwo,
+                  valueOne: widget.valueOne,
+                  valueTwo: widget.valueTwo,
+                  lpTokens: widget.lpTokens,
+                  shareOfPool: widget.shareOfPool,
+                  percentRemoval: widget.percentRemoval,
+                  walletId: widget.walletId,
+                  lpTokenName: widget.lpTokenName,
+                );
             changeButton();
           }
         },
