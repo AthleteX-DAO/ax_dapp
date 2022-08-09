@@ -225,7 +225,7 @@ Dialog unstakeDialog(
               UnStakeApproveButton(
                 width: 175,
                 height: 45,
-                text: 'Approve',
+                text: 'Confirm',
                 confirmDialog: unstakeConfirmedDialog,
                 selectedFarm: selectedFarm,
               ),

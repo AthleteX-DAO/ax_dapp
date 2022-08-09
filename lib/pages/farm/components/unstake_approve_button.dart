@@ -57,24 +57,6 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
     return AxlInfo(tickerPair, tickerPairName, axlBalance, axlInput);
   }
 
-  void changeButton() {
-    //Changes from approve button to confirm
-    setState(() {
-      isApproved = true;
-      text = 'Confirm';
-      fillcolor = Colors.amber;
-      textcolor = Colors.black;
-    });
-
-    final info = getUnStakeInfo();
-    context.read<TrackingCubit>().onPressedUnStake(
-          tickerPair: info.tickerPair,
-          tickerPairName: info.tickerPairName,
-          axlInput: info.axlInput,
-          axlBalance: info.axlBalance,
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -87,40 +69,33 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
-          // Testing to see how the popup will work when the state is changed
-          if (isApproved) {
+          final info = getUnStakeInfo();
+          context.read<TrackingCubit>().onPressedUnStakeConfirm(
+                tickerPair: info.tickerPair,
+                tickerPairName: info.tickerPairName,
+                axlInput: info.axlInput,
+                axlBalance: info.axlBalance,
+              );
+          //Confirm button pressed
+          widget.selectedFarm.unstake().then((value) {
+            showDialog<void>(
+              context: context,
+              builder: (BuildContext context) => widget.confirmDialog(context),
+            );
+
             final info = getUnStakeInfo();
-            context.read<TrackingCubit>().onPressedUnStakeConfirm(
+            context.read<TrackingCubit>().onUnStakeSuccess(
                   tickerPair: info.tickerPair,
                   tickerPairName: info.tickerPairName,
                   axlInput: info.axlInput,
                   axlBalance: info.axlBalance,
                 );
-            //Confirm button pressed
-            widget.selectedFarm.unstake().then((value) {
-              showDialog<void>(
-                context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog(context),
-              );
-
-              final info = getUnStakeInfo();
-              context.read<TrackingCubit>().onUnStakeSuccess(
-                    tickerPair: info.tickerPair,
-                    tickerPairName: info.tickerPairName,
-                    axlInput: info.axlInput,
-                    axlBalance: info.axlBalance,
-                  );
-            }).catchError((error) {
-              showDialog<void>(
-                context: context,
-                builder: (context) => const FailedDialog(),
-              );
-            });
-          } else {
-            //Approve button was pressed
-            changeButton();
-          }
+          }).catchError((error) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => const FailedDialog(),
+            );
+          });
         },
         child: Text(
           text,
