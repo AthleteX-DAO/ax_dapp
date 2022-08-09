@@ -8,6 +8,7 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -890,6 +891,11 @@ Dialog yourAXDialog(BuildContext context) {
                       size: 30,
                     ),
                     onPressed: () {
+                      final walletAddress =
+                          context.read<WalletBloc>().state.walletAddress;
+                      context.read<TrackingCubit>().onPressedConnectWallet(
+                            publicAddress: '"$walletAddress"',
+                          );
                       final chainToken =
                           context.read<TokensRepository>().chainToken;
                       walletController

@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:ax_dapp/pages/farm/components/stake_approve_button.dart';
 import 'package:ax_dapp/pages/farm/dialogs/trx_confirmed_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
-import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -244,13 +244,12 @@ Dialog stakeDialog(
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ApproveButton(
-                175,
-                45,
-                'Approve',
-                selectedFarm.approve,
-                selectedFarm.stake,
-                transactionConfirmed,
+              StakeApproveButton(
+                width: 175,
+                height: 45,
+                text: 'Approve',
+                confirmDialog: transactionConfirmed,
+                selectedFarm: selectedFarm,
               )
             ],
           )
