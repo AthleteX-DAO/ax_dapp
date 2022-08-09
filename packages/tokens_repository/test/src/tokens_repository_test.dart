@@ -1,5 +1,3 @@
-@TestOn('chrome')
-
 // ignore_for_file: prefer_const_constructors
 import 'package:ethereum_api/ethereum_api.dart';
 import 'package:ethereum_api/lsp_api.dart';
