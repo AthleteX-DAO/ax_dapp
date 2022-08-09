@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,10 @@ class WalletView extends StatelessWidget {
           );
         }
         if (state.isWalletConnected) {
+          final walletAddress = context.read<WalletBloc>().state.walletAddress;
+          context.read<TrackingCubit>().onPressedConnectWallet(
+                publicAddress: '"$walletAddress"',
+              );
           final chainToken = context.read<TokensRepository>().chainToken;
           // TODO(Rolly): expose from wallet repository
           walletController
