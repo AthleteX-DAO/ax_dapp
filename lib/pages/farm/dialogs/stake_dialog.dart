@@ -83,9 +83,6 @@ class _StakeDialogState extends State<StakeDialog> {
                 //Amount Box
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
-                  // padding: const EdgeInsets.all(10),
-                  // Amount box was overflowing by 30px after using
-                  // dialogHorPadding
                   width: wid - dialogHorPadding - 30,
                   height: 55,
                   decoration: BoxDecoration(
