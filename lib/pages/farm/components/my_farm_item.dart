@@ -217,7 +217,11 @@ Widget myFarmItem(
                   onPressed: () => showDialog<void>(
                     context: context,
                     builder: (BuildContext builderContext) =>
-                        unstakeDialog(builderContext, farm, cardWidth, isWeb),
+                        UnstakeDialog(
+                        context: builderContext,
+                        farm: farm,
+                        layoutWdt: cardWidth,
+                        isWeb: isWeb,),
                   ),
                   child: Text(
                     'Unstake Liquidity',
