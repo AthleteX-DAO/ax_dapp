@@ -61,11 +61,11 @@ Widget doubleLogoFarmTitle(
               context: context,
               builder: (BuildContext builderContext) {
                 if (farm.athlete == null) {
-                  return stakeDialog(
-                    builderContext,
-                    farm,
-                    _cardWidth,
-                    isWeb,
+                  return StakeDialog(
+                    context: builderContext,
+                    farm: farm,
+                    layoutWdt: _cardWidth,
+                    isWeb: isWeb,
                   );
                 } else {
                   return dualStakeDialog(
