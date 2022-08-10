@@ -13,7 +13,7 @@ securityContext: {}
 service:
   annotations: {}
   type: ClusterIP
-  containerPort: 5000
+  containerPort: 5050
 
 ingress:
   enabled: false

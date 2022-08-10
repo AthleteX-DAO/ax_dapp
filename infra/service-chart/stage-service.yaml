@@ -27,7 +27,6 @@ resources:
     memory: 0.5Gi
 
 env:
-  FIREBASE_API_KEY: 'AIzaSyAXLczaG5purYtDjbDRbV_llu4H6M8Ghr0'
   DISABLE_TESTS: false
   PORT: 5050
   BUILD_TYPE: 'staging'
