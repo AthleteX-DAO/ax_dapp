@@ -1,4 +1,4 @@
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,6 +71,10 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
         textcolor = Colors.black;
       });
     }).catchError((_) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const FailedDialog(),
+      );
       setState(() {
         isApproved = false;
         text = 'Approve';
@@ -93,18 +97,27 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
-            context
-                .read<TrackingCubit>()
-                .onPoolConfirmClick(widget.currencyTwo);
+            context.read<TrackingCubit>().onPoolConfirmClick(
+                  currencyOne: widget.currencyOne,
+                  currencyTwo: widget.currencyTwo,
+                  valueOne: widget.valueOne,
+                  valueTwo: widget.valueTwo,
+                  lpTokens: widget.lpTokens,
+                  shareOfPool: widget.shareOfPool,
+                  lpTokenName: widget.lpTokenName,
+                  walletId: widget.walletId,
+                );
             //Confirm button pressed
             widget.confirmCallback().then((value) {
               context.read<TrackingCubit>().onPoolCreated(
-                    widget.valueOne,
-                    widget.valueTwo,
-                    widget.lpTokens,
-                    widget.shareOfPool,
-                    widget.lpTokenName,
-                    widget.walletId,
+                    currencyOne: widget.currencyOne,
+                    currencyTwo: widget.currencyTwo,
+                    valueOne: widget.valueOne,
+                    valueTwo: widget.valueTwo,
+                    lpTokens: widget.lpTokens,
+                    shareOfPool: widget.shareOfPool,
+                    lpTokenName: widget.lpTokenName,
+                    walletId: widget.walletId,
                   );
               showDialog<void>(
                 context: context,
@@ -119,9 +132,16 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
             });
           } else {
             //Approve button was pressed
-            context
-                .read<TrackingCubit>()
-                .onPoolApproveClick(widget.currencyOne);
+            context.read<TrackingCubit>().onPoolApproveClick(
+                  currencyOne: widget.currencyOne,
+                  currencyTwo: widget.currencyTwo,
+                  valueOne: widget.valueOne,
+                  valueTwo: widget.valueTwo,
+                  lpTokens: widget.lpTokens,
+                  shareOfPool: widget.shareOfPool,
+                  lpTokenName: widget.lpTokenName,
+                  walletId: widget.walletId,
+                );
             changeButton();
           }
         },

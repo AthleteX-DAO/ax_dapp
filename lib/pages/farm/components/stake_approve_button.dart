@@ -1,49 +1,32 @@
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
+import 'package:ax_dapp/pages/farm/modules/axl_info.dart';
+import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // This code changes the state of the button
-class AthleteBuyApproveButton extends StatefulWidget {
-  const AthleteBuyApproveButton({
+class StakeApproveButton extends StatefulWidget {
+  const StakeApproveButton({
     required this.width,
     required this.height,
     required this.text,
-    required this.amountInputted,
-    required this.aptBuyInfo,
-    required this.athlete,
-    required this.aptName,
-    required this.aptId,
-    required this.longOrShort,
-    required this.approveCallback,
-    required this.confirmCallback,
     required this.confirmDialog,
-    required this.walletAddress,
+    required this.selectedFarm,
     super.key,
   });
 
   final String text;
   final double width;
   final double height;
-  final String amountInputted;
-  final AptBuyInfo aptBuyInfo;
-  final AthleteScoutModel athlete;
-  final String aptName;
-  final int aptId;
-  final String longOrShort;
-  final String walletAddress;
-  final Future<void> Function() approveCallback;
-  final Future<void> Function() confirmCallback;
+  final FarmController selectedFarm;
   final Dialog Function(BuildContext) confirmDialog;
 
   @override
-  State<AthleteBuyApproveButton> createState() =>
-      _AthleteBuyApproveButtonState();
+  State<StakeApproveButton> createState() => _StakeApproveButtonState();
 }
 
-class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
+class _StakeApproveButtonState extends State<StakeApproveButton> {
   double width = 0;
   double height = 0;
   String text = '';
@@ -62,15 +45,35 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
     textcolor = Colors.amber;
   }
 
+  AxlInfo getStakeInfo() {
+    final tickerPair = widget.selectedFarm.athlete == null
+        ? widget.selectedFarm.strName
+        : widget.selectedFarm.athlete!;
+    final tickerPairName = widget.selectedFarm.strStakedAlias.value.isNotEmpty
+        ? widget.selectedFarm.strStakedAlias.value
+        : widget.selectedFarm.strStakedSymbol.value;
+    final axlInput = widget.selectedFarm.strStakeInput.value;
+    final axlBalance = widget.selectedFarm.stakingInfo.value.viewAmount;
+    return AxlInfo(tickerPair, tickerPairName, axlBalance, axlInput);
+  }
+
   void changeButton() {
     //Changes from approve button to confirm
-    widget.approveCallback().then((_) {
+    widget.selectedFarm.approve().then((_) {
       setState(() {
         isApproved = true;
         text = 'Confirm';
         fillcolor = Colors.amber;
         textcolor = Colors.black;
       });
+
+      final info = getStakeInfo();
+      context.read<TrackingCubit>().onPressedStake(
+            tickerPair: info.tickerPair,
+            tickerPairName: info.tickerPairName,
+            axlInput: info.axlInput,
+            axlBalance: info.axlBalance,
+          );
     }).catchError((_) {
       showDialog<void>(
         context: context,
@@ -101,20 +104,17 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
+          // Testing to see how the popup will work when the state is changed
           if (isApproved) {
-            //Confirm button pressed
-            context.read<TrackingCubit>().trackAthleteBuyConfirmButtonClicked(
-                  aptName: widget.aptName,
-                  id: widget.aptId,
-                  buyPosition: widget.longOrShort,
-                  unit: widget.aptBuyInfo.receiveAmount,
-                  currencySpent: widget.amountInputted,
-                  currency: 'AX',
-                  totalFee: widget.aptBuyInfo.totalFee,
-                  sport: widget.athlete.sport.toString(),
-                  walletId: widget.walletAddress,
+            final info = getStakeInfo();
+            context.read<TrackingCubit>().onPressedStakeConfirm(
+                  tickerPair: info.tickerPair,
+                  tickerPairName: info.tickerPairName,
+                  axlInput: info.axlInput,
+                  axlBalance: info.axlBalance,
                 );
-            widget.confirmCallback().then((value) {
+            //Confirm button pressed
+            widget.selectedFarm.stake().then((value) {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
@@ -124,16 +124,12 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
                   Navigator.pop(context);
                 }
               });
-              context.read<TrackingCubit>().trackAthleteBuySuccess(
-                    aptName: widget.aptName,
-                    id: widget.aptId,
-                    buyPosition: widget.longOrShort,
-                    unit: widget.aptBuyInfo.receiveAmount,
-                    currencySpent: widget.amountInputted,
-                    currency: 'AX',
-                    totalFee: widget.aptBuyInfo.totalFee,
-                    sport: widget.athlete.sport.toString(),
-                    walletId: widget.walletAddress,
+              final info = getStakeInfo();
+              context.read<TrackingCubit>().onStakeSuccess(
+                    tickerPair: info.tickerPair,
+                    tickerPairName: info.tickerPairName,
+                    axlInput: info.axlInput,
+                    axlBalance: info.axlBalance,
                   );
             }).catchError((error) {
               showDialog<void>(
@@ -147,17 +143,6 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
             });
           } else {
             //Approve button was pressed
-            context.read<TrackingCubit>().trackAthleteBuyApproveButtonClicked(
-                  aptName: widget.aptName,
-                  id: widget.aptId,
-                  buyPosition: widget.longOrShort,
-                  unit: widget.aptBuyInfo.receiveAmount,
-                  currencySpent: widget.amountInputted,
-                  currency: 'AX',
-                  totalFee: widget.aptBuyInfo.totalFee,
-                  sport: widget.athlete.sport.toString(),
-                  walletId: widget.walletAddress,
-                );
             changeButton();
           }
         },

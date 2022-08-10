@@ -9,10 +9,12 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> testFunction() async {
@@ -244,6 +246,10 @@ Dialog walletDialog(BuildContext context) {
                             builder: wrongNetworkDialog,
                           );
                         } else {
+                          context.read<TrackingCubit>().onPressedConnectWallet(
+                                publicAddress:
+                                    '"${controller.publicAddress.toString()}"',
+                              );
                           Navigator.pop(context);
                           walletController
                             ..getTokenMetrics()
@@ -2009,76 +2015,4 @@ BoxDecoration boxDecoration(
     borderRadius: BorderRadius.circular(rad),
     border: Border.all(color: borCol, width: borWid),
   );
-}
-
-class FailedDialog extends StatelessWidget {
-  const FailedDialog({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final _height = MediaQuery.of(context).size.height;
-    final _width = MediaQuery.of(context).size.width;
-    var wid = 500.0;
-    const edge = 40.0;
-    if (_width < 505) wid = _width;
-    var hgt = 335.0;
-    if (_height < 340) hgt = _height;
-
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Container(
-        height: hgt,
-        width: wid,
-        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-        child: Center(
-          child: SizedBox(
-            height: 275,
-            width: wid - edge,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                SizedBox(
-                  width: wid - edge,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(width: 5),
-                      Text(
-                        'Something went wrong',
-                        style: textStyle(Colors.white, 20, false),
-                      ),
-                      SizedBox(
-                        width: 40,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Icon(
-                      Icons.cancel_outlined,
-                      size: 150,
-                      color: Colors.amber[400],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }

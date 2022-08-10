@@ -38,7 +38,7 @@ class NFLStats {
   final double defensiveSnapsPlayed;
   @JsonKey(name: 'price')
   final double price;
-  @JsonKey(name: 'timeStamp')
+  @JsonKey(name: 'timestamp')
   final String timeStamp;
 
   Map<String, dynamic> toJson() => _$NFLStatsToJson(this);

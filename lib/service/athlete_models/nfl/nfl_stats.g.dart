@@ -16,7 +16,7 @@ NFLStats _$NFLStatsFromJson(Map<String, dynamic> json) => NFLStats(
       offensiveSnapsPlayed: (json['OffensiveSnapsPlayed'] as num).toDouble(),
       defensiveSnapsPlayed: (json['DefensiveSnapsPlayed'] as num).toDouble(),
       price: (json['price'] as num).toDouble(),
-      timeStamp: json['timeStamp'] as String,
+      timeStamp: json['timestamp'] as String,
     );
 
 Map<String, dynamic> _$NFLStatsToJson(NFLStats instance) => <String, dynamic>{
@@ -29,5 +29,5 @@ Map<String, dynamic> _$NFLStatsToJson(NFLStats instance) => <String, dynamic>{
       'OffensiveSnapsPlayed': instance.offensiveSnapsPlayed,
       'DefensiveSnapsPlayed': instance.defensiveSnapsPlayed,
       'price': instance.price,
-      'timeStamp': instance.timeStamp,
+      'timestamp': instance.timeStamp,
     };

@@ -1,6 +1,4 @@
-// ignore_for_file: file_names
-
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,6 +67,10 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
         textcolor = Colors.black;
       });
     }).catchError((_) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const FailedDialog(),
+      );
       setState(() {
         isApproved = false;
         text = 'Approve';
@@ -91,14 +93,23 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
-            context.read<TrackingCubit>().onSwapConfirmClick(widget.toCurrency);
+            context.read<TrackingCubit>().onSwapConfirmClick(
+                  fromCurrency: widget.fromCurrency,
+                  toCurrency: widget.toCurrency,
+                  fromUnits: widget.fromUnits,
+                  toUnits: widget.toUnits,
+                  totalFee: widget.totalFee,
+                  walletId: widget.walletAddress,
+                );
             //Confirm button pressed
             widget.confirmCallback().then((value) {
               context.read<TrackingCubit>().onSwapConfirmedTransaction(
-                    widget.fromUnits,
-                    widget.toUnits,
-                    widget.totalFee,
-                    widget.walletAddress,
+                    fromCurrency: widget.fromCurrency,
+                    toCurrency: widget.toCurrency,
+                    fromUnits: widget.fromUnits,
+                    toUnits: widget.toUnits,
+                    totalFee: widget.totalFee,
+                    walletId: widget.walletAddress,
                   );
               showDialog<void>(
                 context: context,
@@ -113,9 +124,14 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
             });
           } else {
             //Approve button was pressed
-            context
-                .read<TrackingCubit>()
-                .onSwapApproveClick(widget.fromCurrency);
+            context.read<TrackingCubit>().onSwapApproveClick(
+                  fromCurrency: widget.fromCurrency,
+                  toCurrency: widget.toCurrency,
+                  fromUnits: widget.fromUnits,
+                  toUnits: widget.toUnits,
+                  totalFee: widget.totalFee,
+                  walletId: widget.walletAddress,
+                );
             changeButton();
           }
         },

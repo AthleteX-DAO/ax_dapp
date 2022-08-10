@@ -2,10 +2,10 @@
 
 import 'dart:developer';
 
+import 'package:ax_dapp/pages/farm/components/unstake_approve_button.dart';
 import 'package:ax_dapp/pages/farm/dialogs/unstake_confirmed_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
-import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -86,6 +86,7 @@ Dialog unstakeDialog(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    const SizedBox(width: 5),
                     Container(
                       height: 35,
                       width: 35,
@@ -221,39 +222,12 @@ Dialog unstakeDialog(
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              /* Container(
-                margin: EdgeInsets.only(top: 30.0, bottom: 10.0),
+              UnStakeApproveButton(
                 width: 175,
                 height: 45,
-                decoration: BoxDecoration(
-                  color: Colors.amber[400],
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            removalConfimed(context));
-                  },
-                  child: const Text(
-                    "Confirm",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ), */
-              //ApproveButton(175, 45, 'confirm', false, () => {}, () => {}),
-              ApproveButton(
-                175,
-                45,
-                'Approve',
-                testFunction,
-                selectedFarm.unstake,
-                unstakeConfirmedDialog,
+                text: 'Confirm',
+                confirmDialog: unstakeConfirmedDialog,
+                selectedFarm: selectedFarm,
               ),
             ],
           )

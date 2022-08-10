@@ -13,7 +13,6 @@ Widget singleLogoFarmTitle(
   double cardWidth,
 ) {
   //Dialog that appears when stake button is pressed
-  final participatingDialog = stakeDialog(context, farm, cardWidth, isWeb);
 
   return SizedBox(
     width: cardWidth,
@@ -55,7 +54,12 @@ Widget singleLogoFarmTitle(
           child: TextButton(
             onPressed: () => showDialog<void>(
               context: context,
-              builder: (BuildContext context) => participatingDialog,
+              builder: (BuildContext builderContext) => StakeDialog(
+                context: builderContext,
+                farm: farm,
+                layoutWdt: cardWidth,
+                isWeb: isWeb,
+              ),
             ),
             child: Text(
               'Stake',

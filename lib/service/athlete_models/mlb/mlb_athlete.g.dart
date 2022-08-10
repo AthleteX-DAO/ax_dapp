@@ -30,7 +30,7 @@ MLBAthlete _$MLBAthleteFromJson(Map<String, dynamic> json) => MLBAthlete(
       weightedOnBasePercentage:
           (json['weightedOnBasePercentage'] as num).toDouble(),
       price: (json['price'] as num).toDouble(),
-      timeStamp: json['timeStamp'] as String,
+      timeStamp: json['timestamp'] as String,
     );
 
 Map<String, dynamic> _$MLBAthleteToJson(MLBAthlete instance) =>

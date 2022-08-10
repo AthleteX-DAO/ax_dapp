@@ -4,8 +4,10 @@ import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -130,10 +132,9 @@ class _RedeemDialogState extends State<RedeemDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
-    final userWalletAddress =
-        walletController.controller.publicAddress.toString();
-    final walletInt = BigInt.parse(userWalletAddress);
-    final walletAddress = walletInt.toRadixString(16);
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      walletController.controller.publicAddress.toString(),
+    );
 
     return Dialog(
       insetPadding: EdgeInsets.zero,
@@ -418,28 +419,32 @@ class _RedeemDialogState extends State<RedeemDialog> {
                     child: TextButton(
                       onPressed: () async {
                         final result = await lspController.redeem();
-
                         if (result) {
                           await showDialog<void>(
                             context: context,
                             builder: (BuildContext context) =>
                                 confirmTransaction(context, true, ''),
-                          ).then(
-                            (value) => context
+                          ).then((value) {
+                            context
                                 .read<TrackingCubit>()
                                 .trackAthleteRedeemSuccess(
-                                  widget.athlete.name,
-                                  widget.athlete.sport.toString(),
-                                  _longInputController.text,
-                                  _shortInputController.text,
-                                  widget.valueInAX,
-                                  walletAddress,
-                                ),
+                                  name: '${widget.athlete.name} pair',
+                                  sport: widget.athlete.sport.toString(),
+                                  inputLongApt: _longInputController.text,
+                                  inputShortApt: _shortInputController.text,
+                                  valueInAx: (lspController.redeemAmt * 15000)
+                                      .toStringAsFixed(6),
+                                  walletId: userWalletAddress.walletAddress,
+                                );
+                          });
+                        } else {
+                          await showDialog<void>(
+                            context: context,
+                            builder: (context) => const FailedDialog(),
                           );
-
-                          if (mounted) {
-                            Navigator.pop(context);
-                          }
+                        }
+                        if (mounted) {
+                          Navigator.pop(context);
                         }
                       },
                       child: Text(

@@ -1,13 +1,17 @@
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/pages/athlete/components/athlete_sell_approve_button.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
+import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:ax_dapp/util/token_type.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 
 class SellDialog extends StatefulWidget {
   const SellDialog(
@@ -35,6 +39,7 @@ class _SellDialogState extends State<SellDialog> {
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
+  Controller controller = Get.find();
 
   @override
   void dispose() {
@@ -244,6 +249,9 @@ class _SellDialogState extends State<SellDialog> {
     final wid = isWeb ? 400.0 : 355.0;
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
+    final userWalletAddress = FormatWalletAddress.getWalletAddress(
+      controller.publicAddress.toString(),
+    );
 
     return BlocBuilder<SellDialogBloc, SellDialogState>(
       buildWhen: (previous, current) => previous != current,
@@ -264,7 +272,7 @@ class _SellDialogState extends State<SellDialog> {
         }
         var aptLongOrShort = 'Long Apt';
         if (_currentTokenTypeSelection == TokenType.long) {
-          aptLongOrShort = 'Long Aot';
+          aptLongOrShort = 'Long Apt';
         }
         if (_currentTokenTypeSelection == TokenType.short) {
           aptLongOrShort = 'Short Apt';
@@ -522,6 +530,7 @@ class _SellDialogState extends State<SellDialog> {
                         approveCallback: bloc.swapController.approve,
                         confirmCallback: bloc.swapController.swap,
                         confirmDialog: transactionConfirmed,
+                        walletAddress: userWalletAddress.walletAddress,
                       ),
                     ],
                   ),

@@ -1,4 +1,4 @@
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,6 +74,10 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
         textcolor = Colors.black;
       });
     }).catchError((_) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const FailedDialog(),
+      );
       setState(() {
         isApproved = false;
         text = 'Approve';
@@ -96,19 +100,29 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
       child: TextButton(
         onPressed: () {
           if (isApproved) {
-            context
-                .read<TrackingCubit>()
-                .onPoolRemovalConfirmClick(widget.currencyTwo);
+            context.read<TrackingCubit>().onPoolRemovalConfirmClick(
+                  currencyOne: widget.currencyOne,
+                  currencyTwo: widget.currencyTwo,
+                  valueOne: widget.valueOne,
+                  valueTwo: widget.valueTwo,
+                  lpTokens: widget.lpTokens,
+                  shareOfPool: widget.shareOfPool,
+                  percentRemoval: widget.percentRemoval,
+                  walletId: widget.walletId,
+                  lpTokenName: widget.lpTokenName,
+                );
             //Confirm button pressed
             widget.confirmCallback().then((value) {
               context.read<TrackingCubit>().onPoolRemoval(
-                    widget.valueOne,
-                    widget.valueTwo,
-                    widget.lpTokens,
-                    widget.shareOfPool,
-                    widget.percentRemoval,
-                    widget.walletId,
-                    widget.lpTokenName,
+                    currencyOne: widget.currencyOne,
+                    currencyTwo: widget.currencyTwo,
+                    valueOne: widget.valueOne,
+                    valueTwo: widget.valueTwo,
+                    lpTokens: widget.lpTokens,
+                    shareOfPool: widget.shareOfPool,
+                    percentRemoval: widget.percentRemoval,
+                    walletId: widget.walletId,
+                    lpTokenName: widget.lpTokenName,
                   );
               showDialog<void>(
                 context: context,
@@ -123,9 +137,17 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
             });
           } else {
             //Approve button was pressed
-            context
-                .read<TrackingCubit>()
-                .onPoolRemovalApproveClick(widget.currencyOne);
+            context.read<TrackingCubit>().onPoolRemovalApproveClick(
+                  currencyOne: widget.currencyOne,
+                  currencyTwo: widget.currencyTwo,
+                  valueOne: widget.valueOne,
+                  valueTwo: widget.valueTwo,
+                  lpTokens: widget.lpTokens,
+                  shareOfPool: widget.shareOfPool,
+                  percentRemoval: widget.percentRemoval,
+                  walletId: widget.walletId,
+                  lpTokenName: widget.lpTokenName,
+                );
             changeButton();
           }
         },

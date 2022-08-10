@@ -1,10 +1,8 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 // This code changes the state of the button
 class AthleteMintApproveButton extends StatefulWidget {
@@ -19,6 +17,7 @@ class AthleteMintApproveButton extends StatefulWidget {
     required this.approveCallback,
     required this.confirmCallback,
     required this.confirmDialog,
+    required this.walletAddress,
     super.key,
   });
 
@@ -29,6 +28,7 @@ class AthleteMintApproveButton extends StatefulWidget {
   final String aptName;
   final String inputApt;
   final String valueInAX;
+  final String walletAddress;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -46,7 +46,6 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
   Color? fillcolor;
   Color? textcolor;
   Widget? dialog;
-  final walletController = Get.find<WalletController>();
 
   @override
   void initState() {
@@ -68,6 +67,14 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
         textcolor = Colors.black;
       });
     }).catchError((_) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const FailedDialog(),
+      ).then((value) {
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      });
       setState(() {
         isApproved = false;
         text = 'Approve';
@@ -79,10 +86,6 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
 
   @override
   Widget build(BuildContext context) {
-    final userWalletAddress =
-        walletController.controller.publicAddress.toString();
-    final walletInt = BigInt.parse(userWalletAddress);
-    final walletAddress = walletInt.toRadixString(16);
     return Container(
       width: width,
       height: height,
@@ -96,29 +99,47 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteMintConfirmButtonClicked(
-                  widget.athlete.sport.toString(),
+                  aptName: '${widget.aptName} pair',
+                  sport: widget.athlete.sport.toString(),
+                  inputApt: widget.inputApt,
+                  valueInAx: widget.valueInAX,
+                  walletId: widget.walletAddress,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
               context.read<TrackingCubit>().trackAthleteMintSuccess(
-                    widget.inputApt,
-                    widget.valueInAX,
-                    walletAddress,
+                    aptName: '${widget.aptName} pair',
+                    sport: widget.athlete.sport.toString(),
+                    inputApt: widget.inputApt,
+                    valueInAx: widget.valueInAX,
+                    walletId: widget.walletAddress,
                   );
             }).catchError((error) {
               showDialog<void>(
                 context: context,
                 builder: (context) => const FailedDialog(),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
             });
           } else {
             //Approve button was pressed
             context.read<TrackingCubit>().trackAthleteMintApproveButtonClicked(
-                  widget.aptName,
+                  aptName: '${widget.aptName} pair',
+                  sport: widget.athlete.sport.toString(),
+                  inputApt: widget.inputApt,
+                  valueInAx: widget.valueInAX,
+                  walletId: widget.walletAddress,
                 );
             changeButton();
           }
