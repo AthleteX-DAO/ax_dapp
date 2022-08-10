@@ -71,6 +71,7 @@ class TokenList {
       '0xE91c7952Be8AcbfE6088aAfC50516496273A8aDA',
       '0x37d388321c2cE1E130e36443e8dAE91836a786C0'
     ],
+    // TODO(anyone): https://athletex.atlassian.net/browse/AX-859 get long and short addresses for the NFL APTs
     20737: [
       '0x9a9f951a7421a50a119DD2c642E66e5ccc5ff49F',
       '0x0000000000000000000000000000000000000000',
