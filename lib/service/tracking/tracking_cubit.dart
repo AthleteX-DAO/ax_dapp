@@ -254,7 +254,7 @@ extension AthleteMintTracking on TrackingCubit {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedAthleteMint(
         {
-          'apt_name': aptName,
+          'apt_pair_name': aptName,
           'sport': sport,
           'input_apt': inputApt,
           'value_in_ax': valueInAx,
@@ -275,7 +275,7 @@ extension AthleteMintTracking on TrackingCubit {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedConfirmMint(
         {
-          'apt_name': aptName,
+          'apt_pair_name': aptName,
           'sport': sport,
           'input_apt': inputApt,
           'value_in_ax': valueInAx,
@@ -295,7 +295,7 @@ extension AthleteMintTracking on TrackingCubit {
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteMintSuccess({
-        'apt_name': aptName,
+        'apt_pair_name': aptName,
         'sport': sport,
         'input_apt': inputApt,
         'value_in_ax': valueInAx,
@@ -317,7 +317,7 @@ extension AthleteRedeemTracking on TrackingCubit {
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteRedeemSuccess({
-        'apt_name': name,
+        'apt_pair_name': name,
         'sport': sport,
         'input_long_apt': inputLongApt,
         'input_short_apt': inputShortApt,
