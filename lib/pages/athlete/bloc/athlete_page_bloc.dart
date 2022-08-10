@@ -21,6 +21,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
     on<OnPageRefresh>(_mapPageRefreshEventToState);
     on<OnGraphRefresh>(_mapGraphRefreshEventToState);
   }
+
   final AthleteScoutModel athlete;
 
   final MLBRepo mlbRepo;
@@ -39,12 +40,11 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
           final playerId = event.playerId;
           emit(state.copyWith(status: BlocStatus.loading));
           final now = DateTime.now();
-          //final startDate = DateTime(now.year, now.month - 10, now.day);
+          final startDate = DateTime(now.year, now.month - 10, now.day);
           final formattedDate = DateFormat('yyyy-MM-dd').format(now);
-          //final formattedStartDate =
-          // DateFormat('yyyy-MM-dd').format(startDate);
+          final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
           final until = formattedDate;
-          const from = '2022-05-02';
+          final from = formattedStartDate;
           final stats = await nflRepo.getPlayerStatsHistory(
             playerId,
             from,
