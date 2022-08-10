@@ -140,7 +140,7 @@ class _StakeDialogState extends State<StakeDialog> {
                                   selectedFarm.stakedInfo.value.viewAmount,
                                 ) +
                                 double.parse(selectedFarm.strStakeInput.value);
-                            isValid.value = true;
+                            isValid.value = checkValidInput(selectedFarm);
                           },
                           child: Text(
                             'Max',
@@ -164,14 +164,7 @@ class _StakeDialogState extends State<StakeDialog> {
                                 double.parse(selectedFarm.strStakeInput.value);
                             selectedFarm.strStakeInput.value =
                                 double.parse(value).toString();
-                            if (double.parse(selectedFarm.strStakeInput.value) >
-                                double.parse(
-                                  selectedFarm.stakingInfo.value.viewAmount,
-                                )) {
-                              isValid.value = false;
-                            } else {
-                              isValid.value = true;
-                            }
+                            isValid.value = checkValidInput(selectedFarm);
                           },
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
@@ -289,4 +282,8 @@ class _StakeDialogState extends State<StakeDialog> {
       ),
     );
   }
+
+  bool checkValidInput(FarmController selectedFarm) =>
+      !(double.parse(selectedFarm.strStakeInput.value) >
+          double.parse(selectedFarm.stakingInfo.value.viewAmount));
 }
