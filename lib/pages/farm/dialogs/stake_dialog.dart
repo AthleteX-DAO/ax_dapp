@@ -169,6 +169,8 @@ class _StakeDialogState extends State<StakeDialog> {
                                   selectedFarm.stakingInfo.value.viewAmount,
                                 )) {
                               isValid.value = false;
+                            } else {
+                              isValid.value = true;
                             }
                           },
                           style: textStyle(Colors.grey[400]!, 22, false),
