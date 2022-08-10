@@ -3,6 +3,7 @@ import 'package:ax_dapp/pages/farm/dialogs/trx_confirmed_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/util/insufficient_balance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,7 @@ class StakeDialog extends StatefulWidget {
 
 class _StakeDialogState extends State<StakeDialog> {
   final stakeAxInput = TextEditingController();
+  RxBool isValid = true.obs;
   @override
   void dispose() {
     stakeAxInput.dispose();
@@ -138,6 +140,7 @@ class _StakeDialogState extends State<StakeDialog> {
                                   selectedFarm.stakedInfo.value.viewAmount,
                                 ) +
                                 double.parse(selectedFarm.strStakeInput.value);
+                            isValid.value = true;
                           },
                           child: Text(
                             'Max',
@@ -150,7 +153,10 @@ class _StakeDialogState extends State<StakeDialog> {
                         child: TextFormField(
                           controller: stakeAxInput,
                           onChanged: (value) {
-                            if (value.isEmpty) totalStakedBalance.value = 0.0;
+                            if (value.isEmpty) {
+                              totalStakedBalance.value = 0.0;
+                              isValid.value = true;
+                            }
                             selectedFarm.strStakeInput.value = value;
                             totalStakedBalance.value = double.parse(
                                   selectedFarm.stakedInfo.value.viewAmount,
@@ -158,6 +164,12 @@ class _StakeDialogState extends State<StakeDialog> {
                                 double.parse(selectedFarm.strStakeInput.value);
                             selectedFarm.strStakeInput.value =
                                 double.parse(value).toString();
+                            if (double.parse(selectedFarm.strStakeInput.value) >
+                                double.parse(
+                                  selectedFarm.stakingInfo.value.viewAmount,
+                                )) {
+                              isValid.value = false;
+                            }
                           },
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
@@ -252,18 +264,24 @@ class _StakeDialogState extends State<StakeDialog> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                StakeApproveButton(
-                  width: 175,
-                  height: 45,
-                  text: 'Approve',
-                  confirmDialog: transactionConfirmed,
-                  selectedFarm: selectedFarm,
-                )
-              ],
-            )
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (isValid.value) ...[
+                    StakeApproveButton(
+                      width: 175,
+                      height: 45,
+                      text: 'Approve',
+                      confirmDialog: transactionConfirmed,
+                      selectedFarm: selectedFarm,
+                    )
+                  ] else ...[
+                    const InsufficientBalance()
+                  ]
+                ],
+              ),
+            ),
           ],
         ),
       ),
