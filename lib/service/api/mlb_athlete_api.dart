@@ -41,7 +41,7 @@ abstract class MLBAthleteAPI {
   );
 
   @POST('/players/history')
-  Future<List<MLBAthlete>> getPlayersHistory(
+  Future<List<MLBAthleteStats>> getPlayersHistory(
     @Body() PlayerIds playerIds,
     @Query('from') String from,
     @Query('until') String until,

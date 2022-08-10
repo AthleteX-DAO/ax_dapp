@@ -41,6 +41,25 @@ class GetScoutAthletesDataUseCase {
     return axPrice?.currentPrice ?? 0.0;
   }
 
+  Future<dynamic> getStatsHistory(
+    SportsRepo<SportAthlete> repo,
+    List<SportAthlete> players,
+  ) async {
+    final ids = players.map((player) => player.id).toList();
+    final now = DateTime.now();
+    final startDate = DateTime(now.year, now.month, now.day - 1);
+    final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
+    final formattedEndDate = DateFormat('yyyy-MM-dd').format(now);
+    final history = await repo.getPlayersStatsHistory(
+      ids,
+      formattedStartDate,
+      formattedEndDate,
+    );
+    print('History of Players');
+    print(history);
+    return history;
+  }
+
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
     SupportedSport sportSelection,
   ) async {
@@ -53,16 +72,7 @@ class GetScoutAthletesDataUseCase {
       final repo = _repos[sportSelection]!;
       // fetch supported players list
       final players = await repo.getSupportedPlayers();
-
-      // make the ids list to fetch batch stats history of players
-      final ids = players.map((player) => player.id).toList();
-      final now = DateTime.now();
-      final startDate = DateTime(now.year, now.month, now.day - 1);
-      final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
-      final formattedEndDate = DateFormat('yyyy-MM-dd').format(now);
-      final history = await repo.getPlayersStatsHistory(
-          ids, formattedStartDate, formattedEndDate);
-      print(history);
+      //   final history = await getStatsHistory(repo, players);
       return _mapAthleteToScoutModel(players, repo, axPrice);
     } else {
       /// if ALL sports is selected fetch for each sport and add athletes to a
@@ -73,11 +83,13 @@ class GetScoutAthletesDataUseCase {
             .map((key, repo) => MapEntry(key, repo.getSupportedPlayers()))
             .values,
       );
-      response.asMap().forEach((key, response) {
+      response.asMap().forEach((key, response) async {
+        final repo = _repos.values.elementAt(key);
+        //  final history = await getStatsHistory(repo, response);
         athletes.addAll(
           _mapAthleteToScoutModel(
             response,
-            _repos.values.elementAt(key),
+            repo,
             axPrice,
           ),
         );
