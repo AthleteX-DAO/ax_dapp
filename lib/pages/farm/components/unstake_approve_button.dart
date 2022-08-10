@@ -1,6 +1,6 @@
 import 'package:ax_dapp/pages/farm/modules/axl_info.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,8 +81,11 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
             showDialog<void>(
               context: context,
               builder: (BuildContext context) => widget.confirmDialog(context),
-            );
-
+            ).then((value) {
+              if (mounted) {
+                Navigator.pop(context);
+              }
+            });
             final info = getUnStakeInfo();
             context.read<TrackingCubit>().onUnStakeSuccess(
                   tickerPair: info.tickerPair,
@@ -94,7 +97,11 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
             showDialog<void>(
               context: context,
               builder: (context) => const FailedDialog(),
-            );
+            ).then((value) {
+              if (mounted) {
+                Navigator.pop(context);
+              }
+            });
           });
         },
         child: Text(
