@@ -78,7 +78,11 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
       showDialog<void>(
         context: context,
         builder: (context) => const FailedDialog(),
-      );
+      ).then((value) {
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      });
       setState(() {
         isApproved = false;
         text = 'Approve';
@@ -115,8 +119,11 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
-
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
               final info = getStakeInfo();
               context.read<TrackingCubit>().onStakeSuccess(
                     tickerPair: info.tickerPair,
@@ -128,7 +135,11 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
               showDialog<void>(
                 context: context,
                 builder: (context) => const FailedDialog(),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
             });
           } else {
             //Approve button was pressed

@@ -1,5 +1,4 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +70,11 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
       showDialog<void>(
         context: context,
         builder: (context) => const FailedDialog(),
-      );
+      ).then((value) {
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      });
       setState(() {
         isApproved = false;
         text = 'Approve';
