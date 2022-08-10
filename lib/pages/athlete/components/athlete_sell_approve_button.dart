@@ -111,7 +111,11 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
               context.read<TrackingCubit>().trackAthleteSellSuccess(
                     athleteName: widget.aptName,
                     id: widget.aptId,
@@ -127,7 +131,11 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
               showDialog<void>(
                 context: context,
                 builder: (context) => const FailedDialog(),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
             });
           } else {
             //Approve button was pressed
