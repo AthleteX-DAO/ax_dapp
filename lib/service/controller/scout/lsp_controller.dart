@@ -35,20 +35,16 @@ class LSPController extends GetxController {
     controller.updateTxString(txString); //Sends tx to controller
   }
 
-  Future<void> approve(String chainTokenAddress) async {
+  Future<void> approve(String axtAddress) async {
     final address = EthereumAddress.fromHex(aptAddress.value);
     genericLSP = LongShortPair(address: address, client: tokenClient);
     final transferAmount = await genericLSP.collateralPerPair();
     final amount = normalizeInput(createAmt.value) *
         transferAmount ~/
         BigInt.from(10).pow(18); // removes 18 zeros from collateralPerPair
-    final chainTokenEthereumAddress =
-        EthereumAddress.fromHex(chainTokenAddress);
-    final token =
-        ERC20(address: chainTokenEthereumAddress, client: tokenClient);
-    try {
-      await token.approve(address, amount, credentials: controller.credentials);
-    } catch (_) {}
+    final axtEthereumAddress = EthereumAddress.fromHex(axtAddress);
+    final axt = ERC20(address: axtEthereumAddress, client: tokenClient);
+    await axt.approve(address, amount, credentials: controller.credentials);
   }
 
   Future<bool> redeem() async {

@@ -54,11 +54,11 @@ Widget singleLogoFarmTitle(
           child: TextButton(
             onPressed: () => showDialog<void>(
               context: context,
-              builder: (BuildContext builderContext) => stakeDialog(
-                builderContext,
-                farm,
-                cardWidth,
-                isWeb,
+              builder: (BuildContext builderContext) => StakeDialog(
+                context: builderContext,
+                farm: farm,
+                layoutWdt: cardWidth,
+                isWeb: isWeb,
               ),
             ),
             child: Text(

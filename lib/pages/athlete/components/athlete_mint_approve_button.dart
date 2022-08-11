@@ -1,5 +1,5 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,6 +67,14 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
         textcolor = Colors.black;
       });
     }).catchError((_) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const FailedDialog(),
+      ).then((value) {
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      });
       setState(() {
         isApproved = false;
         text = 'Approve';
@@ -91,15 +99,25 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteMintConfirmButtonClicked(
+                  aptName: '${widget.aptName} pair',
                   sport: widget.athlete.sport.toString(),
+                  inputApt: widget.inputApt,
+                  valueInAx: widget.valueInAX,
+                  walletId: widget.walletAddress,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
               context.read<TrackingCubit>().trackAthleteMintSuccess(
+                    aptName: '${widget.aptName} pair',
+                    sport: widget.athlete.sport.toString(),
                     inputApt: widget.inputApt,
                     valueInAx: widget.valueInAX,
                     walletId: widget.walletAddress,
@@ -108,12 +126,20 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
               showDialog<void>(
                 context: context,
                 builder: (context) => const FailedDialog(),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
             });
           } else {
             //Approve button was pressed
             context.read<TrackingCubit>().trackAthleteMintApproveButtonClicked(
                   aptName: '${widget.aptName} pair',
+                  sport: widget.athlete.sport.toString(),
+                  inputApt: widget.inputApt,
+                  valueInAx: widget.valueInAX,
+                  walletId: widget.walletAddress,
                 );
             changeButton();
           }

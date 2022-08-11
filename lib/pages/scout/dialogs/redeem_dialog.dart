@@ -4,6 +4,7 @@ import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -439,9 +440,14 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                   walletId: userWalletAddress.walletAddress,
                                 );
                           });
-                          if (mounted) {
-                            Navigator.pop(context);
-                          }
+                        } else {
+                          await showDialog<void>(
+                            context: context,
+                            builder: (context) => const FailedDialog(),
+                          );
+                        }
+                        if (mounted) {
+                          Navigator.pop(context);
                         }
                       },
                       child: Text(
