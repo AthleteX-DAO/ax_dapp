@@ -50,10 +50,13 @@ class GetScoutAthletesDataUseCase {
     List<SportAthlete> players,
   ) async {
     final ids = players.map((player) => player.id).toList();
-    // final now = DateTime.now();
-    // final startDate = DateTime(now.year, now.month, now.day - 1);
-    final now = DateTime(2022, 8, 2);
-    final startDate = DateTime(2022, 8, 1);
+    // currently the api is not working with current date
+    final now = DateTime.now();
+    final startDate = DateTime(now.year, now.month, now.day - 1);
+
+    // this code is used to test the api, because api is not working correctly
+    // final now = DateTime(2022, 8, 2);
+    // final startDate = DateTime(2022, 8, 1);
     final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
     final formattedEndDate = DateFormat('yyyy-MM-dd').format(now);
     try {
