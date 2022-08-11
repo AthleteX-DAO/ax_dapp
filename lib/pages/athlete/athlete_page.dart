@@ -1553,14 +1553,29 @@ class _AthletePageState extends State<AthletePage> {
                         ),
                         Text(
                           (_longAptIndex == 0)
-                              ? longBookValuePercent
-                              : shortBookValuePercent,
-                          style: textStyle(
-                            Colors.green,
-                            12,
-                            false,
-                            false,
-                          ),
+                              ? getPercentageDesc(
+                                  athlete.longTokenBookPricePercent!,
+                                )
+                              : getPercentageDesc(
+                                  athlete.shortTokenBookPricePercent!,
+                                ),
+                          style: (_longAptIndex == 0)
+                              ? textStyle(
+                                  getPercentageColor(
+                                    athlete.longTokenBookPricePercent!,
+                                  ),
+                                  12,
+                                  false,
+                                  false,
+                                )
+                              : textStyle(
+                                  getPercentageColor(
+                                    athlete.shortTokenBookPricePercent!,
+                                  ),
+                                  12,
+                                  false,
+                                  false,
+                                ),
                         ),
                         // TODO(anyone): get the all time high book value and
                         // market value prices
