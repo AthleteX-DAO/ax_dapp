@@ -132,14 +132,10 @@ class _StakeDialogState extends State<StakeDialog> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            stakeAxInput.text =
-                                selectedFarm.stakingInfo.value.viewAmount;
-                            selectedFarm.strStakeInput.value =
-                                stakeAxInput.text;
-                            totalStakedBalance.value = double.parse(
-                                  selectedFarm.stakedInfo.value.viewAmount,
-                                ) +
-                                double.parse(selectedFarm.strStakeInput.value);
+                            getMaxBalanceInput(
+                              selectedFarm,
+                              totalStakedBalance,
+                            );
                             isValid.value = checkValidInput(selectedFarm);
                           },
                           child: Text(
@@ -153,17 +149,7 @@ class _StakeDialogState extends State<StakeDialog> {
                         child: TextFormField(
                           controller: stakeAxInput,
                           onChanged: (value) {
-                            if (value.isEmpty) {
-                              totalStakedBalance.value = 0.0;
-                              isValid.value = true;
-                            }
-                            selectedFarm.strStakeInput.value = value;
-                            totalStakedBalance.value = double.parse(
-                                  selectedFarm.stakedInfo.value.viewAmount,
-                                ) +
-                                double.parse(selectedFarm.strStakeInput.value);
-                            selectedFarm.strStakeInput.value =
-                                double.parse(value).toString();
+                            stakeInput(value, totalStakedBalance, selectedFarm);
                             isValid.value = checkValidInput(selectedFarm);
                           },
                           style: textStyle(Colors.grey[400]!, 22, false),
@@ -281,6 +267,35 @@ class _StakeDialogState extends State<StakeDialog> {
         ),
       ),
     );
+  }
+
+  void stakeInput(
+    String value,
+    RxDouble totalStakedBalance,
+    FarmController selectedFarm,
+  ) {
+    if (value.isEmpty) {
+      totalStakedBalance.value = 0.0;
+      isValid.value = true;
+    }
+    selectedFarm.strStakeInput.value = value;
+    totalStakedBalance.value = double.parse(
+          selectedFarm.stakedInfo.value.viewAmount,
+        ) +
+        double.parse(selectedFarm.strStakeInput.value);
+    selectedFarm.strStakeInput.value = double.parse(value).toString();
+  }
+
+  void getMaxBalanceInput(
+    FarmController selectedFarm,
+    RxDouble totalStakedBalance,
+  ) {
+    stakeAxInput.text = selectedFarm.stakingInfo.value.viewAmount;
+    selectedFarm.strStakeInput.value = stakeAxInput.text;
+    totalStakedBalance.value = double.parse(
+          selectedFarm.stakedInfo.value.viewAmount,
+        ) +
+        double.parse(selectedFarm.strStakeInput.value);
   }
 
   bool checkValidInput(FarmController selectedFarm) =>
