@@ -128,17 +128,10 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            unStakeAxInput.text =
-                                selectedFarm.stakedInfo.value.viewAmount;
-                            selectedFarm.strUnStakeInput.value =
-                                unStakeAxInput.text;
-                            totalStakedBalance.value = double.parse(
-                                  selectedFarm.stakedInfo.value.viewAmount,
-                                ) -
-                                double.parse(
-                                  selectedFarm.strUnStakeInput.value,
-                                );
-                            isValid.value = !totalStakedBalance.isNegative;
+                            getMaxBalanceInput(
+                              selectedFarm,
+                              totalStakedBalance,
+                            );
                           },
                           child: Text(
                             'Max',
@@ -151,18 +144,11 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                         child: TextFormField(
                           controller: unStakeAxInput,
                           onChanged: (value) {
-                            if (value.isEmpty) {
-                              totalStakedBalance.value = 0.0;
-                              isValid.value = true;
-                            }
-                            selectedFarm.strUnStakeInput.value = value;
-                            totalStakedBalance.value = double.parse(
-                                  selectedFarm.stakedInfo.value.viewAmount,
-                                ) -
-                                double.parse(
-                                  selectedFarm.strUnStakeInput.value,
-                                );
-                            isValid.value = !totalStakedBalance.isNegative;
+                            unstakeInput(
+                              value,
+                              totalStakedBalance,
+                              selectedFarm,
+                            );
                           },
                           style: textStyle(Colors.grey[400]!, 22, false),
                           decoration: InputDecoration(
@@ -264,5 +250,39 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
         ),
       ),
     );
+  }
+
+  void unstakeInput(
+    String value,
+    RxDouble totalStakedBalance,
+    FarmController selectedFarm,
+  ) {
+    if (value.isEmpty) {
+      totalStakedBalance.value = 0.0;
+      isValid.value = true;
+    }
+    selectedFarm.strUnStakeInput.value = value;
+    totalStakedBalance.value = double.parse(
+          selectedFarm.stakedInfo.value.viewAmount,
+        ) -
+        double.parse(
+          selectedFarm.strUnStakeInput.value,
+        );
+    isValid.value = !totalStakedBalance.isNegative;
+  }
+
+  void getMaxBalanceInput(
+    FarmController selectedFarm,
+    RxDouble totalStakedBalance,
+  ) {
+    unStakeAxInput.text = selectedFarm.stakedInfo.value.viewAmount;
+    selectedFarm.strUnStakeInput.value = unStakeAxInput.text;
+    totalStakedBalance.value = double.parse(
+          selectedFarm.stakedInfo.value.viewAmount,
+        ) -
+        double.parse(
+          selectedFarm.strUnStakeInput.value,
+        );
+    isValid.value = !totalStakedBalance.isNegative;
   }
 }
