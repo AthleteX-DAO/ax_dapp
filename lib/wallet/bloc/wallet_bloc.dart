@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:shared/shared.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 export 'package:wallet_repository/wallet_repository.dart' hide WalletRepository;
@@ -11,7 +13,9 @@ part 'wallet_state.dart';
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
   WalletBloc({
     required WalletRepository walletRepository,
+    required TokensRepository tokensRepository,
   })  : _walletRepository = walletRepository,
+        _tokensRepository = tokensRepository,
         super(
           WalletState(
             chain: walletRepository.currentChain,
@@ -22,12 +26,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
     on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
     on<SwitchChainRequested>(_onSwitchChainRequested);
+    on<WatchAxtChangesStarted>(_onWatchAxtChangesStarted);
+    on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
     on<WalletFailed>(_onWalletFailed);
 
     add(const WatchChainChangesStarted());
+    add(const WatchAxtChangesStarted());
   }
 
   final WalletRepository _walletRepository;
+  final TokensRepository _tokensRepository;
 
   Future<void> _onConnectWalletRequested(
     ConnectWalletRequested _,
@@ -74,6 +82,31 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
     }
+  }
+
+  Future<void> _onWatchAxtChangesStarted(
+    WatchAxtChangesStarted event,
+    Emitter<WalletState> emit,
+  ) async {
+    await emit.onEach<Token>(
+      _tokensRepository.axtChanges,
+      // Tokens are only being updated when the new chain is supported.
+      // `axtChanges` will also emit after user's wallet is connected, since
+      // new tokens will be generated, thus ax data will be updated.
+      onData: (_) => add(const UpdateAxDataRequested()),
+    );
+  }
+
+  Future<void> _onUpdateAxDataRequested(
+    UpdateAxDataRequested event,
+    Emitter<WalletState> emit,
+  ) async {
+    final axMarketData = await _tokensRepository.getAxMarketData();
+    final currentAxtAddress = _tokensRepository.currentAxt.address;
+    final axBalance =
+        await _walletRepository.getTokenBalance(currentAxtAddress);
+    final axData = AxData.fromAxMarketData(axMarketData);
+    emit(state.copyWith(axData: axData.copyWith(balance: axBalance)));
   }
 
   void _onWalletFailed(

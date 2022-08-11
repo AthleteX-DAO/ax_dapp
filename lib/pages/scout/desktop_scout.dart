@@ -24,6 +24,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -739,9 +740,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 context,
                               ),
                               wallet: GetTotalTokenBalanceUseCase(
+                                walletRepository:
+                                    context.read<WalletRepository>(),
                                 tokensRepository:
                                     context.read<TokensRepository>(),
-                                walletController: Get.find(),
                               ),
                               swapController: Get.find(),
                               athleteId: athlete.id,
@@ -973,9 +975,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 context,
                               ),
                               wallet: GetTotalTokenBalanceUseCase(
+                                walletRepository:
+                                    context.read<WalletRepository>(),
                                 tokensRepository:
                                     context.read<TokensRepository>(),
-                                walletController: Get.find(),
                               ),
                               swapController: Get.find(),
                               athleteId: athlete.id,

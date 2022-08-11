@@ -1,13 +1,11 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
-import 'package:ax_dapp/pages/trade/components/TradeApproveButton.dart';
+import 'package:ax_dapp/pages/trade/components/trade_approve_button.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/assets/assets.dart';
-import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +22,6 @@ class DesktopTrade extends StatefulWidget {
 
 class _DesktopTradeState extends State<DesktopTrade> {
   SwapController swapController = Get.find();
-  WalletController walletController = Get.find();
   bool isWeb = true;
   final TextEditingController _tokenFromInputController =
       TextEditingController();
@@ -49,9 +46,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
     // input box
     final tokenContainerWid = wid * 0.95;
     final amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
-    final userWalletAddress = FormatWalletAddress.getWalletAddress(
-      walletController.controller.publicAddress.toString(),
-    );
 
     return BlocBuilder<TradePageBloc, TradePageState>(
       buildWhen: (previous, current) => current.status.name.isNotEmpty,
@@ -669,7 +663,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     fromUnits: _tokenFromInputController.text,
                     toUnits: receiveAmount,
                     totalFee: totalFee,
-                    walletAddress: userWalletAddress.walletAddress,
                   ),
                 ],
               ),

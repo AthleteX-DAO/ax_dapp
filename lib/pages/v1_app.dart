@@ -9,7 +9,6 @@ import 'package:ax_dapp/pages/scout/desktop_scout.dart';
 import 'package:ax_dapp/pages/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/desktop_trade.dart';
-import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
@@ -20,7 +19,6 @@ import 'package:ax_dapp/service/controller/create_wallet/web.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -96,7 +94,6 @@ class _V1AppState extends State<V1App> {
     Get
       ..put(LSPController())
       ..put(SwapController())
-      ..put(WalletController())
       ..put(PoolController())
       ..put(WebWallet());
   }
@@ -152,7 +149,6 @@ class _V1AppState extends State<V1App> {
                   sportsRepos: [
                     RepositoryProvider.of<MLBRepo>(context),
                   ],
-                  coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
                 ),
               ),
               child: DesktopScout(goToTradePage: goToTradePage),
@@ -163,7 +159,6 @@ class _V1AppState extends State<V1App> {
                 walletRepository: context.read<WalletRepository>(),
                 repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
                 swapController: Get.find(),
-                walletController: Get.find(),
                 isBuyAX: isBuyAX,
               ),
               child: const DesktopTrade(),
@@ -188,7 +183,6 @@ class _V1AppState extends State<V1App> {
                 sportsRepos: [
                   RepositoryProvider.of<MLBRepo>(context),
                 ],
-                coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
               ),
             ),
             child: DesktopScout(goToTradePage: goToTradePage),
@@ -198,16 +192,15 @@ class _V1AppState extends State<V1App> {
               walletRepository: context.read<WalletRepository>(),
               repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
               swapController: Get.find(),
-              walletController: Get.find(),
               isBuyAX: isBuyAX,
             ),
             child: const DesktopTrade(),
           ),
           BlocProvider(
             create: (BuildContext context) => PoolBloc(
+              walletRepository: context.read<WalletRepository>(),
               tokensRepository: context.read<TokensRepository>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-              walletController: Get.find(),
               poolController: Get.find(),
             ),
             child: const DesktopPool(),
@@ -352,10 +345,7 @@ class _V1AppState extends State<V1App> {
               ],
             ),
           ),
-          WalletView(
-            controller: controller,
-            walletController: Get.find<WalletController>(),
-          ),
+          WalletView(controller: controller),
         ],
       ),
     );
@@ -382,10 +372,7 @@ class _V1AppState extends State<V1App> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              WalletView(
-                controller: controller,
-                walletController: Get.find<WalletController>(),
-              ),
+              WalletView(controller: controller),
               const DropdownMenuMobile(),
             ],
           ),

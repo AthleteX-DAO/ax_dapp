@@ -27,6 +27,7 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (_) => WalletBloc(
             walletRepository: context.read<WalletRepository>(),
+            tokensRepository: context.read<TokensRepository>(),
           ),
         ),
         BlocProvider(

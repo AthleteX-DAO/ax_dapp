@@ -4,7 +4,6 @@ import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/pages/scout/models/market_model.dart';
 import 'package:ax_dapp/pages/scout/models/sports_model/mlb_athlete_scout_model.dart';
 import 'package:ax_dapp/pages/scout/models/sports_model/nfl_athlete_scout_model.dart';
-import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
@@ -17,7 +16,6 @@ class GetScoutAthletesDataUseCase {
   GetScoutAthletesDataUseCase({
     required TokensRepository tokensRepository,
     required this.graphRepo,
-    required this.coinGeckoRepo,
     required List<SportsRepo<SportAthlete>> sportsRepos,
   }) : _tokensRepository = tokensRepository {
     for (final repo in sportsRepos) {
@@ -27,7 +25,6 @@ class GetScoutAthletesDataUseCase {
 
   final TokensRepository _tokensRepository;
   final SubGraphRepo graphRepo;
-  final CoinGeckoRepo coinGeckoRepo;
   final Map<SupportedSport, SportsRepo<SportAthlete>> _repos = {};
 
   List<TokenPair> allPairs = [];
@@ -35,21 +32,14 @@ class GetScoutAthletesDataUseCase {
   static const collateralizationMultiplier = 1000;
   static const collateralizationPerPair = 15;
 
-  Future<double> fetchAxPrice() async {
-    final axMarketData = await coinGeckoRepo.getAxPrice();
-    final axDataByCurrency = axMarketData.data?.marketData?.dataByCurrency;
-    final axPrice =
-        axDataByCurrency?.firstWhere((axPrice) => axPrice.coinId == 'usd');
-    return axPrice?.currentPrice ?? 0.0;
-  }
-
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
     SupportedSport sportSelection,
   ) async {
-    final scoutToken = _tokensRepository.chainToken;
-    allPairs = await fetchSpecificPairs(scoutToken);
+    final currentAxt = _tokensRepository.currentAxt;
+    allPairs = await fetchSpecificPairs(currentAxt);
     //fetching AX Price
-    final axPrice = await fetchAxPrice();
+    final axData = await _tokensRepository.getAxMarketData();
+    final axPrice = axData.price ?? 0;
 
     /// If specific sport is selected return athletes from that specific repo
     if (sportSelection != SupportedSport.all) {
@@ -59,7 +49,7 @@ class GetScoutAthletesDataUseCase {
         response,
         repo,
         axPrice,
-        scoutToken: scoutToken,
+        scoutToken: currentAxt,
       );
     } else {
       /// if ALL sports is selected fetch for each sport and add athletes to a
@@ -76,7 +66,7 @@ class GetScoutAthletesDataUseCase {
             response,
             _repos.values.elementAt(key),
             axPrice,
-            scoutToken: scoutToken,
+            scoutToken: currentAxt,
           ),
         );
       });

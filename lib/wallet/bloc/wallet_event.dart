@@ -28,6 +28,14 @@ class SwitchChainRequested extends WalletEvent {
   List<Object?> get props => [chain];
 }
 
+class WatchAxtChangesStarted extends WalletEvent {
+  const WatchAxtChangesStarted();
+}
+
+class UpdateAxDataRequested extends WalletEvent {
+  const UpdateAxDataRequested();
+}
+
 class WalletFailed extends WalletEvent {
   const WalletFailed(this.failure);
 

@@ -4,8 +4,8 @@ class PoolState extends Equatable {
   const PoolState({
     this.shareOfPool = '0.0',
     this.apy = '0.0',
-    this.balance0 = '0.0',
-    this.balance1 = '0.0',
+    this.balance0 = 0.0,
+    this.balance1 = 0.0,
     this.token0AmountInput = 0,
     this.token1AmountInput = 0,
     required this.token0,
@@ -16,8 +16,8 @@ class PoolState extends Equatable {
 
   final String shareOfPool;
   final String apy;
-  final String balance0;
-  final String balance1;
+  final double balance0;
+  final double balance1;
   final double token0AmountInput;
   final double token1AmountInput;
   final Token token0;
@@ -26,7 +26,7 @@ class PoolState extends Equatable {
   final PoolPairInfo poolPairInfo;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         shareOfPool,
         apy,
         balance0,
@@ -47,8 +47,8 @@ class PoolState extends Equatable {
   PoolState copyWith({
     String? shareOfPool,
     String? apy,
-    String? balance0,
-    String? balance1,
+    double? balance0,
+    double? balance1,
     double? token0AmountInput,
     double? token1AmountInput,
     Token? token0,

@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:ax_dapp/app/app.dart';
 import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/firebase_options.dart';
-import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -17,7 +16,6 @@ import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.da
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/graphql/graphql_client_helper.dart';
 import 'package:ax_dapp/service/graphql/graphql_configuration.dart';
-import 'package:coingecko_api/coingecko_api.dart';
 import 'package:ethereum_api/ethereum_api.dart';
 import 'package:ethereum_api/lsp_api.dart';
 import 'package:ethereum_api/wallet_api.dart';
@@ -33,7 +31,6 @@ import 'package:wallet_repository/wallet_repository.dart';
 void main() async {
   final _dio = Dio();
   final _mlbApi = MLBAthleteAPI(_dio);
-  final _coinGeckoApi = CoinGeckoApi();
   final _graphQLClientHelper =
       GraphQLClientHelper(GraphQLConfiguration.athleteDexApiLink);
   final _gQLClient = await _graphQLClientHelper.initializeClient();
@@ -47,7 +44,7 @@ void main() async {
   // TODO(Rolly): reactive configuration
   final web3Client = Web3Client('url', httpClient);
   final walletApiClient = EthereumWalletApiClient(web3Client: web3Client);
-  final ethereumApiClient = EthereumApiClient();
+  final ethereumApiClient = EthereumApiClient(web3Client: web3Client);
 
   // TODO(Rolly): AppBloc should update this with the needed apt address,
   // AppEvent being dispatched by the widget needing lsp
@@ -83,9 +80,6 @@ void main() async {
             ),
             RepositoryProvider(
               create: (context) => NFLRepo(),
-            ),
-            RepositoryProvider(
-              create: (context) => CoinGeckoRepo(_coinGeckoApi),
             ),
             RepositoryProvider(create: (context) => _getPairInfoUseCase),
             RepositoryProvider(create: (context) => _getSwapInfoUseCase),

@@ -25,12 +25,14 @@ class WalletState extends Equatable {
     required this.status,
     required this.chain,
     this.walletAddress = kEmptyAddress,
+    this.axData = AxData.empty,
     this.failure = WalletFailure.none,
   });
 
   final WalletStatus status;
   final EthereumChain chain;
   final String walletAddress;
+  final AxData axData;
   final WalletFailure failure;
 
   @override
@@ -40,12 +42,14 @@ class WalletState extends Equatable {
     WalletStatus? status,
     EthereumChain? chain,
     String? walletAddress,
+    AxData? axData,
     WalletFailure? failure,
   }) {
     return WalletState(
       status: status ?? this.status,
       chain: chain ?? this.chain,
       walletAddress: walletAddress ?? this.walletAddress,
+      axData: axData ?? this.axData,
       failure: failure ?? this.failure,
     );
   }
@@ -56,4 +60,6 @@ extension WalletStateX on WalletState {
   bool get isWalletUnsupported => status == WalletStatus.unsupported;
   bool get isWalletUnavailable => failure is WalletUnavailableFailure;
   bool get hasFailure => failure != WalletFailure.none;
+
+  String get formattedWalletAddress => "'$walletAddress'";
 }

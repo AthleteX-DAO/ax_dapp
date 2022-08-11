@@ -26,10 +26,10 @@ class GetSellInfoUseCase {
   }) async {
     try {
       final newAptInput = aptInput ?? 0.0;
-      final chainToken = _tokensRepository.chainToken;
+      final currentAxt = _tokensRepository.currentAxt;
       final response = await _repo.fetchSwapInfo(
         tokenFrom: aptAddress,
-        tokenTo: chainToken.address,
+        tokenTo: currentAxt.address,
         fromInput: newAptInput,
       );
       final isSuccess = response.isLeft();

@@ -35,15 +35,11 @@ abstract class WalletApiClient {
     required String tokenImageUrl,
   });
 
-  /// Returns an aproximate balance for the token with the given [tokenAddress],
-  /// on the wallet identified by [walletAddress]. It returns a balance of
-  /// `0.0` when any error occurs.
+  /// Returns the amount of tokens with [tokenAddress] owned by the wallet
+  /// identified by [walletAddress].
   ///
-  /// **WARNING**: Due to rounding errors, the returned balance is not
-  /// reliable, especially for larger amounts or smaller units. While it can be
-  /// used to display the amount of ether in a human-readable format, it should
-  /// not be used for anything else.
-  Future<double> getTokenBalance({
+  /// Defaults to [BigInt.zero] on error.
+  Future<BigInt> getRawTokenBalance({
     required String tokenAddress,
     required String walletAddress,
   });

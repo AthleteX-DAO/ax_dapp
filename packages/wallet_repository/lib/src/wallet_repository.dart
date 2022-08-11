@@ -106,19 +106,33 @@ class WalletRepository {
         tokenImageUrl: tokenImageUrl,
       );
 
+  /// Returns the amount of tokens with [tokenAddress] owned by the wallet
+  /// identified by [walletAddress].
+  ///
+  /// Defaults to [BigInt.zero] on error.
+  Future<BigInt> getRawTokenBalance(String tokenAddress) =>
+      _walletApiClient.getRawTokenBalance(
+        tokenAddress: tokenAddress,
+        walletAddress: walletAddress,
+      );
+
   /// Returns an aproximate balance for the token with the given [tokenAddress],
-  /// on the connected wallet. It returns a balance of `0.0` when any error
-  /// occurs.
+  /// on the connected wallet. It returns `null` when any error occurs.
   ///
   /// **WARNING**: Due to rounding errors, the returned balance is not
   /// reliable, especially for larger amounts or smaller units. While it can be
   /// used to display the amount of ether in a human-readable format, it should
   /// not be used for anything else.
-  Future<double> getTokenBalance(String tokenAddress) =>
-      _walletApiClient.getTokenBalance(
-        tokenAddress: tokenAddress,
-        walletAddress: walletAddress,
-      );
+  Future<double?> getTokenBalance(String tokenAddress) async {
+    final rawBalance = await getRawTokenBalance(tokenAddress);
+    if (rawBalance == BigInt.zero) {
+      return null;
+    }
+    final balanceInWei = EtherAmount.inWei(rawBalance);
+    final balance = balanceInWei.getValueInUnit(EtherUnit.ether);
+    final formattedBalance = balance.toStringAsFixed(2);
+    return double.parse(formattedBalance);
+  }
 
   /// Returns the amount typically needed to pay for one unit of gas(in gwei).
   Future<double> getGasPrice() => _walletApiClient.getGasPrice();

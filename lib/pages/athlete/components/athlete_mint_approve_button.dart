@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +18,6 @@ class AthleteMintApproveButton extends StatefulWidget {
     required this.approveCallback,
     required this.confirmCallback,
     required this.confirmDialog,
-    required this.walletAddress,
     super.key,
   });
 
@@ -28,7 +28,6 @@ class AthleteMintApproveButton extends StatefulWidget {
   final String aptName;
   final String inputApt;
   final String valueInAX;
-  final String walletAddress;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -67,6 +66,14 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
         textcolor = Colors.black;
       });
     }).catchError((_) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const FailedDialog(),
+      ).then((value) {
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      });
       setState(() {
         isApproved = false;
         text = 'Approve';
@@ -88,10 +95,16 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
+          final walletAddress =
+              context.read<WalletBloc>().state.formattedWalletAddress;
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteMintConfirmButtonClicked(
+                  aptName: '${widget.aptName} pair',
                   sport: widget.athlete.sport.toString(),
+                  inputApt: widget.inputApt,
+                  valueInAx: widget.valueInAX,
+                  walletId: walletAddress,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
@@ -99,21 +112,32 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
               );
+
               context.read<TrackingCubit>().trackAthleteMintSuccess(
+                    aptName: '${widget.aptName} pair',
+                    sport: widget.athlete.sport.toString(),
                     inputApt: widget.inputApt,
                     valueInAx: widget.valueInAX,
-                    walletId: widget.walletAddress,
+                    walletId: walletAddress,
                   );
             }).catchError((error) {
               showDialog<void>(
                 context: context,
                 builder: (context) => const FailedDialog(),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
             });
           } else {
             //Approve button was pressed
             context.read<TrackingCubit>().trackAthleteMintApproveButtonClicked(
                   aptName: '${widget.aptName} pair',
+                  sport: widget.athlete.sport.toString(),
+                  inputApt: widget.inputApt,
+                  valueInAx: widget.valueInAX,
+                  walletId: walletAddress,
                 );
             changeButton();
           }

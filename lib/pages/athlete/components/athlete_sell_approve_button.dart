@@ -1,6 +1,6 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_sell_info.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,6 +72,14 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
         textcolor = Colors.black;
       });
     }).catchError((_) {
+      showDialog<void>(
+        context: context,
+        builder: (context) => const FailedDialog(),
+      ).then((value) {
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      });
       setState(() {
         isApproved = false;
         text = 'Approve';
@@ -96,15 +104,29 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteSellConfirmButtonClicked(
+                  athleteName: widget.aptName,
                   id: widget.aptId,
+                  sellPosition: widget.longOrShort,
+                  unit: widget.amountInputted,
+                  currencyReceive: widget.aptSellInfo.receiveAmount,
+                  currency: 'AX',
+                  totalFee: widget.aptSellInfo.totalFee,
+                  sport: widget.athlete.sport.toString(),
+                  walletId: widget.walletAddress,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
               context.read<TrackingCubit>().trackAthleteSellSuccess(
+                    athleteName: widget.aptName,
+                    id: widget.aptId,
                     sellPosition: widget.longOrShort,
                     unit: widget.amountInputted,
                     currencyReceive: widget.aptSellInfo.receiveAmount,
@@ -117,12 +139,24 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
               showDialog<void>(
                 context: context,
                 builder: (context) => const FailedDialog(),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
             });
           } else {
             //Approve button was pressed
             context.read<TrackingCubit>().trackAthleteSellApproveButtonClicked(
                   athleteName: widget.aptName,
+                  id: widget.aptId,
+                  sellPosition: widget.longOrShort,
+                  unit: widget.amountInputted,
+                  currencyReceive: widget.aptSellInfo.receiveAmount,
+                  currency: 'AX',
+                  totalFee: widget.aptSellInfo.totalFee,
+                  sport: widget.athlete.sport.toString(),
+                  walletId: widget.walletAddress,
                 );
             changeButton();
           }

@@ -7,7 +7,10 @@ import 'package:shared/shared.dart';
 /// {@endtemplate}
 class EthereumApiClient {
   /// {@macro ethereum_api_client}
-  EthereumApiClient();
+  EthereumApiClient({required Web3Client web3Client})
+      : _web3Client = web3Client;
+
+  final Web3Client _web3Client;
 
   final _tokensController = BehaviorSubject<List<Token>>();
 
@@ -66,6 +69,19 @@ class EthereumApiClient {
   void switchTokens(EthereumChain chain) {
     if (chain.isSupported) {
       _tokensController.add(Token.values(chain));
+    }
+  }
+
+  /// Returns the symbol for the [Token] identified by the [tokenAddress].
+  ///
+  /// Defaults to returning an empty string on error.
+  Future<String> getTokenSymbol(String tokenAddress) async {
+    try {
+      final tokenEthereumAddress = EthereumAddress.fromHex(tokenAddress);
+      final token = ERC20(address: tokenEthereumAddress, client: _web3Client);
+      return await token.symbol();
+    } catch (_) {
+      return '';
     }
   }
 }
