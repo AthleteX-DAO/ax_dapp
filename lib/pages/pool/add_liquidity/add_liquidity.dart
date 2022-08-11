@@ -7,7 +7,6 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/debouncer.dart';
-import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -55,9 +54,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final layoutHgt = _height * 0.8;
     final layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
-    final userWalletAddress = FormatWalletAddress.getWalletAddress(
-      controller.publicAddress.toString(),
-    );
 
     return BlocBuilder<PoolBloc, PoolState>(
       buildWhen: (previous, current) => current != previous,
@@ -342,17 +338,20 @@ class _AddLiquidityState extends State<AddLiquidity> {
                             ),
                             child: TextButton(
                               onPressed: () {
-                                _tokenAmountOneController.text = balance0;
+                                final formattedBalance0 =
+                                    balance0.toStringAsFixed(6);
+                                _tokenAmountOneController.text =
+                                    formattedBalance0;
                                 if (state.status == BlocStatus.success) {
                                   onTokenInputChange(
                                     tknNum,
-                                    balance0,
+                                    formattedBalance0,
                                     true,
                                   );
                                 } else {
                                   onTokenInputChange(
                                     tknNum,
-                                    balance0,
+                                    formattedBalance0,
                                     false,
                                   );
                                 }
@@ -646,7 +645,6 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   valueTwo: _tokenAmountTwoController.text,
                   shareOfPool: poolInfo.shareOfPool,
                   lpTokenName: '${token0.ticker}/${token1.ticker}',
-                  walletId: userWalletAddress.walletAddress,
                 )
               ],
             ),

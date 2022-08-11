@@ -1,5 +1,8 @@
+import 'package:coingecko_api/coingecko_api.dart';
 import 'package:ethereum_api/ethereum_api.dart';
 import 'package:ethereum_api/lsp_api.dart';
+import 'package:shared/shared.dart';
+import 'package:tokens_repository/src/models/models.dart';
 
 /// {@template tokens_repository}
 /// Repository that manages the token domain.
@@ -9,11 +12,18 @@ class TokensRepository {
   TokensRepository({
     required EthereumApiClient ethereumApiClient,
     required LongShortPair lspClient,
+    CoinGeckoApi? coinGeckoApiClient,
   })  : _ethereumApiClient = ethereumApiClient,
-        _lspClient = lspClient;
+        _lspClient = lspClient,
+        _coinGeckoApiClient = coinGeckoApiClient ??
+            CoinGeckoApi(
+              rateLimitManagement: false,
+              enableLogging: false,
+            );
 
   final EthereumApiClient _ethereumApiClient;
   final LongShortPair _lspClient;
+  final CoinGeckoApi _coinGeckoApiClient;
 
   /// Allows listening to changes to the current [Token]s.
   Stream<List<Token>> get tokensChanges => _ethereumApiClient.tokensChanges;
@@ -38,33 +48,18 @@ class TokensRepository {
   /// The returned [AptPair] is based on the current [EthereumChain].
   AptPair aptPair(int athleteId) => _ethereumApiClient.aptPair(athleteId);
 
-  /// Allows listening to changes to the [Token] associated with the current
+  /// Allows listening to changes to the [Token.ax] associated with the current
   /// [EthereumChain].
-  Stream<Token> get chainTokenChanges => tokensChanges.map(_chainTokenMapper);
+  Stream<Token> get axtChanges => tokensChanges.map((tokens) => tokens.axt);
 
-  /// Returns the [Token] associated with the current [EthereumChain],
+  /// Returns the [Token.ax] associated with the current [EthereumChain],
   /// synchronously.
-  Token get chainToken => _chainTokenMapper(tokens);
+  Token get currentAxt => tokens.axt;
 
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
   void switchTokens(EthereumChain chain) =>
       _ethereumApiClient.switchTokens(chain);
-
-  Token _chainTokenMapper(List<Token> tokens) {
-    final tokensChain = tokens.first.chain;
-    switch (tokensChain) {
-      case EthereumChain.none:
-      case EthereumChain.unsupported:
-        return Token.empty;
-      case EthereumChain.polygonMainnet:
-      case EthereumChain.polygonTestnet:
-        return tokens.axt;
-      case EthereumChain.sxMainnet:
-      case EthereumChain.sxTestnet:
-        return tokens.sxt;
-    }
-  }
 
   /// Returns the collateral value per pair. In case of an error it returns
   /// [BigInt.zero].
@@ -78,4 +73,42 @@ class TokensRepository {
       return BigInt.zero;
     }
   }
+
+  /// Returns `AthleteX` market data: price, total supply and circulating
+  /// supply.
+  ///
+  /// Defaults to [AxMarketData.empty] if data fetch fails.
+  Future<AxMarketData> getAxMarketData() async {
+    try {
+      final result = await _coinGeckoApiClient.coins.getCoinData(
+        id: 'athletex',
+        localization: false,
+        communityData: false,
+        tickers: false,
+        developerData: false,
+      );
+      final axData = result.data;
+      final axMarketData = axData?.marketData;
+      final axDataByCurrency = axMarketData?.dataByCurrency;
+      final axMarketDataByUsd = axDataByCurrency?.firstWhereOrNull(
+        (marketData) => marketData.coinId.toLowerCase() == 'usd',
+      );
+      final axPrice = axMarketDataByUsd?.currentPrice;
+      final axTotalSupply = axMarketData?.totalSupply;
+      final axCirculatingSupply = axMarketData?.circulatingSupply;
+      return AxMarketData(
+        price: axPrice,
+        totalSupply: axTotalSupply,
+        circulatingSupply: axCirculatingSupply,
+      );
+    } catch (_) {
+      return AxMarketData.empty;
+    }
+  }
+
+  /// Returns the symbol for the [Token] identified by the [tokenAddress].
+  ///
+  /// Defaults to returning an empty string on error.
+  Future<String> getTokenSymbol(String tokenAddress) =>
+      _ethereumApiClient.getTokenSymbol(tokenAddress);
 }

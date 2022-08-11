@@ -1,21 +1,17 @@
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 
 class WalletView extends StatelessWidget {
   const WalletView({
     super.key,
     required this.controller,
-    required this.walletController,
   });
 
   final Controller controller;
-  final WalletController walletController;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +34,6 @@ class WalletView extends StatelessWidget {
           context.read<TrackingCubit>().onPressedConnectWallet(
                 publicAddress: '"$walletAddress"',
               );
-          final chainToken = context.read<TokensRepository>().chainToken;
-          // TODO(Rolly): expose from wallet repository
-          walletController
-            ..getTokenMetrics()
-            ..getYourAxBalance(chainToken.address);
         }
       },
       buildWhen: (previous, current) => previous.status != current.status,

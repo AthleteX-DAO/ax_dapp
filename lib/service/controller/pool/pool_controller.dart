@@ -1,5 +1,4 @@
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:ethereum_api/apt_router_api.dart';
 import 'package:ethereum_api/dex_api.dart';
@@ -27,7 +26,6 @@ class PoolController extends GetxController {
   String lpTokenPairAddress = '';
   double removePercentage = 0;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
-  WalletController walletController = Get.find();
   final tokenClient = Web3Client('https://polygon-rpc.com', Client());
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
@@ -106,16 +104,15 @@ class PoolController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  Future<void> approveRemove() async {
+  Future<void> approveRemove(
+    Future<double?> Function(String address) getTokenBalanceHandler,
+  ) async {
     var txStringA = '';
     final lpTokenEthAddress = EthereumAddress.fromHex(lpTokenPairAddress);
     final lpToken =
         ERC20(address: lpTokenEthAddress, client: controller.client.value);
-    final lpTokenBalance = normalizeInput(
-      double.parse(
-        await walletController.getTokenBalance(lpTokenPairAddress),
-      ),
-    );
+    final tokenBalance = await getTokenBalanceHandler(lpTokenPairAddress);
+    final lpTokenBalance = normalizeInput(tokenBalance ?? 0);
     final approveAmount =
         (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
     try {
@@ -130,12 +127,11 @@ class PoolController extends GetxController {
     }
   }
 
-  Future<void> removeLiquidity() async {
-    final lpTokenBalance = normalizeInput(
-      double.parse(
-        await walletController.getTokenBalance(lpTokenPairAddress),
-      ),
-    );
+  Future<void> removeLiquidity(
+    Future<double?> Function(String address) getTokenBalanceHandler,
+  ) async {
+    final tokenBalance = await getTokenBalanceHandler(lpTokenPairAddress);
+    final lpTokenBalance = normalizeInput(tokenBalance ?? 0);
     final liquidity =
         (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
     final amountAMin = BigInt.zero;

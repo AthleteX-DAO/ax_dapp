@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class DesktopFarm extends StatefulWidget {
   const DesktopFarm({super.key});
@@ -155,6 +156,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                   isWeb,
                                   FarmController(
                                     farm: state.filteredFarms[index],
+                                    walletRepository:
+                                        context.read<WalletRepository>(),
                                     tokensRepository:
                                         context.read<TokensRepository>(),
                                   ),
@@ -166,6 +169,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                   isWeb,
                                   FarmController(
                                     farm: state.filteredStakedFarms[index],
+                                    walletRepository:
+                                        context.read<WalletRepository>(),
                                     tokensRepository:
                                         context.read<TokensRepository>(),
                                   ),

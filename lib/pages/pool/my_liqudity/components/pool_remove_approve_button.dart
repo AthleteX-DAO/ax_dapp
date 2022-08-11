@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +20,6 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.lpTokens,
     required this.shareOfPool,
     required this.percentRemoval,
-    required this.walletId,
     required this.lpTokenName,
     super.key,
   });
@@ -34,7 +34,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final String lpTokens;
   final String shareOfPool;
   final double percentRemoval;
-  final String walletId;
+
   final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
@@ -99,6 +99,8 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
+          final walletAddress =
+              context.read<WalletBloc>().state.formattedWalletAddress;
           if (isApproved) {
             context.read<TrackingCubit>().onPoolRemovalConfirmClick(
                   currencyOne: widget.currencyOne,
@@ -108,11 +110,13 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                   lpTokens: widget.lpTokens,
                   shareOfPool: widget.shareOfPool,
                   percentRemoval: widget.percentRemoval,
-                  walletId: widget.walletId,
+                  walletId: walletAddress,
                   lpTokenName: widget.lpTokenName,
                 );
             //Confirm button pressed
             widget.confirmCallback().then((value) {
+              final walletAddress =
+                  context.read<WalletBloc>().state.formattedWalletAddress;
               context.read<TrackingCubit>().onPoolRemoval(
                     currencyOne: widget.currencyOne,
                     currencyTwo: widget.currencyTwo,
@@ -121,7 +125,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                     lpTokens: widget.lpTokens,
                     shareOfPool: widget.shareOfPool,
                     percentRemoval: widget.percentRemoval,
-                    walletId: widget.walletId,
+                    walletId: walletAddress,
                     lpTokenName: widget.lpTokenName,
                   );
               showDialog<void>(
@@ -145,7 +149,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                   lpTokens: widget.lpTokens,
                   shareOfPool: widget.shareOfPool,
                   percentRemoval: widget.percentRemoval,
-                  walletId: widget.walletId,
+                  walletId: walletAddress,
                   lpTokenName: widget.lpTokenName,
                 );
             changeButton();

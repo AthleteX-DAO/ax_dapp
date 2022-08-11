@@ -3,7 +3,7 @@ import 'package:ax_dapp/pages/athlete/components/athlete_buy_approve_button.dart
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/util/format_wallet_address.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -160,10 +160,6 @@ class _BuyDialogState extends State<BuyDialog> {
     final wid = isWeb ? 400.0 : 355.0;
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
-
-    final userWalletAddress = FormatWalletAddress.getWalletAddress(
-      controller.publicAddress.toString(),
-    );
 
     return BlocBuilder<BuyDialogBloc, BuyDialogState>(
       builder: (context, state) {
@@ -423,22 +419,27 @@ class _BuyDialogState extends State<BuyDialog> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AthleteBuyApproveButton(
-                        width: 175,
-                        height: 40,
-                        text: 'Approve',
-                        amountInputted: _aptAmountController.text,
-                        aptBuyInfo: state.aptBuyInfo,
-                        athlete: widget.athlete,
-                        aptName: widget.athleteName,
-                        aptId: widget.athleteId,
-                        longOrShort: state.aptTypeSelection.isLong
-                            ? 'Long Apt'
-                            : 'Short Apt',
-                        approveCallback: bloc.swapController.approve,
-                        confirmCallback: bloc.swapController.swap,
-                        confirmDialog: transactionConfirmed,
-                        walletAddress: userWalletAddress.walletAddress,
+                      BlocSelector<WalletBloc, WalletState, String>(
+                        selector: (state) => state.formattedWalletAddress,
+                        builder: (context, formattedWalletAddress) {
+                          return AthleteBuyApproveButton(
+                            width: 175,
+                            height: 40,
+                            text: 'Approve',
+                            amountInputted: _aptAmountController.text,
+                            aptBuyInfo: state.aptBuyInfo,
+                            athlete: widget.athlete,
+                            aptName: widget.athleteName,
+                            aptId: widget.athleteId,
+                            longOrShort: state.aptTypeSelection.isLong
+                                ? 'Long Apt'
+                                : 'Short Apt',
+                            approveCallback: bloc.swapController.approve,
+                            confirmCallback: bloc.swapController.swap,
+                            confirmDialog: transactionConfirmed,
+                            walletAddress: formattedWalletAddress,
+                          );
+                        },
                       ),
                     ],
                   ),

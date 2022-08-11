@@ -46,7 +46,7 @@ void main() {
       totalFee: testTotalFee,
     );
     final axt = Token.ax(EthereumChain.polygonMainnet);
-    when(mockTokensRepository.chainToken).thenReturn(axt);
+    when(mockTokensRepository.currentAxt).thenReturn(axt);
     const testSuccessResponse = Success(targetTokenSwapInfo);
     when(
       mockRepo.fetchSwapInfo(

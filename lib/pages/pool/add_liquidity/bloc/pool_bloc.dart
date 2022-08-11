@@ -1,22 +1,23 @@
 import 'package:ax_dapp/pages/pool/add_liquidity/models/pool_pair_info.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'pool_event.dart';
 part 'pool_state.dart';
 
 class PoolBloc extends Bloc<PoolEvent, PoolState> {
   PoolBloc({
+    required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
     required this.repo,
-    required this.walletController,
     required this.poolController,
-  }) : super(
+  })  : _walletRepository = walletRepository,
+        super(
           PoolState(
             token0: tokensRepository.tokens.first,
             token1: tokensRepository.tokens[1],
@@ -37,8 +38,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     on<SwapTokens>(_mapSwapTokensEventToState);
   }
 
+  final WalletRepository _walletRepository;
   final GetPoolInfoUseCase repo;
-  final WalletController walletController;
   final PoolController poolController;
 
   Future<void> _mapRefreshEventToState(
@@ -51,13 +52,13 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
       ..updateTknAddress2(state.token1.address);
     try {
       final balance0 =
-          await walletController.getTokenBalance(state.token0.address);
+          await _walletRepository.getTokenBalance(state.token0.address);
       final balance1 =
-          await walletController.getTokenBalance(state.token1.address);
+          await _walletRepository.getTokenBalance(state.token1.address);
       emit(
         state.copyWith(
-          balance0: balance0,
-          balance1: balance1,
+          balance0: balance0 ?? 0,
+          balance1: balance1 ?? 0,
         ),
       );
       final response = await repo.fetchPairInfo(
@@ -95,11 +96,9 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     emit(state.copyWith(status: BlocStatus.loading));
     final token0 = event.token0;
     emit(state.copyWith(token0: token0));
-    final balance0 = double.parse(
-      await walletController.getTokenBalance(token0.address),
-    );
+    final balance0 = await _walletRepository.getTokenBalance(token0.address);
     poolController.updateTknAddress1(token0.address);
-    emit(state.copyWith(token0: token0, balance0: balance0.toStringAsFixed(6)));
+    emit(state.copyWith(token0: token0, balance0: balance0 ?? 0));
     try {
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
@@ -131,11 +130,9 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
     emit(state.copyWith(status: BlocStatus.loading));
     final token1 = event.token1;
     emit(state.copyWith(token1: token1));
-    final balance1 = double.parse(
-      await walletController.getTokenBalance(token1.address),
-    );
+    final balance1 = await _walletRepository.getTokenBalance(token1.address);
     poolController.updateTknAddress2(token1.address);
-    emit(state.copyWith(token1: token1, balance1: balance1.toStringAsFixed(6)));
+    emit(state.copyWith(token1: token1, balance1: balance1 ?? 0));
     try {
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,

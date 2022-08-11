@@ -53,11 +53,11 @@ class EthereumWalletApiClient implements WalletApiClient {
   }
 
   @override
-  Future<double> getTokenBalance({
+  Future<BigInt> getRawTokenBalance({
     required String tokenAddress,
     required String walletAddress,
   }) {
-    throw UnimplementedError('getTokenBalance');
+    throw UnimplementedError('getRawTokenBalance');
   }
 
   @override

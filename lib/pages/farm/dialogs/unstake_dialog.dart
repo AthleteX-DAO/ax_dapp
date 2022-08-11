@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class UnstakeDialog extends StatefulWidget {
   const UnstakeDialog({
@@ -45,6 +46,7 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
     const dialogHorPadding = 30.0;
     final selectedFarm = FarmController.fromFarm(
       farm: widget.farm,
+      walletRepository: context.read<WalletRepository>(),
       tokensRepository: context.read<TokensRepository>(),
     );
     final totalStakedBalance = 0.0.obs;

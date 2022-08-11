@@ -2,7 +2,6 @@ import 'package:ax_dapp/pages/trade/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +16,6 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     required WalletRepository walletRepository,
     required this.repo,
     required this.swapController,
-    required this.walletController,
     required this.isBuyAX,
   })  : _walletRepository = walletRepository,
         super(
@@ -42,7 +40,6 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   final WalletRepository _walletRepository;
   final GetSwapInfoUseCase repo;
   final SwapController swapController;
-  final WalletController walletController;
   final bool isBuyAX;
 
   Future<void> _onWatchChainChangesStarted(
@@ -73,13 +70,13 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final tokenFromBalance =
-          await walletController.getTokenBalance(state.tokenFrom.address);
+          await _walletRepository.getTokenBalance(state.tokenFrom.address);
       final tokenToBalance =
-          await walletController.getTokenBalance(state.tokenTo.address);
+          await _walletRepository.getTokenBalance(state.tokenTo.address);
       emit(
         state.copyWith(
-          tokenFromBalance: double.parse(tokenFromBalance),
-          tokenToBalance: double.parse(tokenToBalance),
+          tokenFromBalance: tokenFromBalance ?? 0,
+          tokenToBalance: tokenToBalance ?? 0,
         ),
       );
       final response = await repo.fetchSwapInfo(
@@ -150,8 +147,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final tokenFromBalance =
-          await walletController.getTokenBalance(state.tokenFrom.address);
-      final maxInput = double.parse(tokenFromBalance);
+          await _walletRepository.getTokenBalance(state.tokenFrom.address);
+      final maxInput = tokenFromBalance ?? 0;
       emit(
         state.copyWith(
           tokenInputFromAmount: maxInput,

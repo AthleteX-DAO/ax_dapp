@@ -198,7 +198,7 @@ packages:
     source: hosted
     version: "4.2.0"
   coingecko_api:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: coingecko_api
       url: "https://pub.dartlang.org"

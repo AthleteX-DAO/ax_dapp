@@ -26,9 +26,9 @@ class GetBuyInfoUseCase {
   }) async {
     try {
       final newAxInput = axInput ?? 0.0;
-      final chainToken = _tokensRepository.chainToken;
+      final currentAxt = _tokensRepository.currentAxt;
       final response = await _repo.fetchSwapInfo(
-        tokenFrom: chainToken.address,
+        tokenFrom: currentAxt.address,
         tokenTo: aptAddress,
         fromInput: newAxInput,
       );

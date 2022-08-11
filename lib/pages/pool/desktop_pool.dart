@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class DesktopPool extends StatefulWidget {
   const DesktopPool({super.key});
@@ -143,13 +144,13 @@ class _DesktopPoolState extends State<DesktopPool> {
                   height: layoutHgt,
                   child: BlocProvider(
                     create: (BuildContext context) => PoolBloc(
+                      walletRepository: context.read<WalletRepository>(),
                       tokensRepository: context.read<TokensRepository>(),
                       repo: GetPoolInfoUseCase(
                         RepositoryProvider.of<GetPairInfoUseCase>(
                           context,
                         ),
                       ),
-                      walletController: Get.find(),
                       poolController: Get.find(),
                     ),
                     child: (token0 != null && token1 != null)
