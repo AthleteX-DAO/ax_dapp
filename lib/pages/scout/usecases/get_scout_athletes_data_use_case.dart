@@ -9,15 +9,12 @@ import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
-import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete_stats.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
-import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
 import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/supported_sports.dart';
-import 'package:charts_flutter/flutter.dart';
 import 'package:intl/intl.dart';
 
 class GetScoutAthletesDataUseCase {
@@ -168,12 +165,16 @@ class GetScoutAthletesDataUseCase {
           double.parse(allPairs[index1].pairHourData![0].reserve1);
     }
     return MarketModel(
-        marketPrice: marketPrice,
-        recentPrice: recentPrice,
-        bookPrice: bookPrice * collateralizationMultiplier);
+      marketPrice: marketPrice,
+      recentPrice: recentPrice,
+      bookPrice: bookPrice * collateralizationMultiplier,
+    );
   }
 
-  BookPriceModel getBookPricePercentage(double startPrice, double endPrice) {
+  BookPriceModel getBookPricePercentage(
+    double startPrice,
+    double endPrice,
+  ) {
     return BookPriceModel(startPrice: startPrice, endPrice: endPrice);
   }
 

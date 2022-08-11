@@ -44,7 +44,6 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         );
       }
     } catch (_) {
-      print(_.toString());
       emit(state.copyWith(status: BlocStatus.error));
     }
   }

@@ -1361,8 +1361,6 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    const longBookValuePercent = '+4%';
-    const shortBookValuePercent = '+2%';
     final walletController = Get.find<WalletController>();
     final longCurrentBookValueRatio =
         (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
