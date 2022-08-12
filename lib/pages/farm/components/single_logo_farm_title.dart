@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:ax_dapp/pages/farm/components/sport_token.dart';
 import 'package:ax_dapp/pages/farm/dialogs/stake_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
@@ -31,16 +32,9 @@ Widget singleLogoFarmTitle(
         ),
         Container(width: 15),
         Expanded(
-          child: Text(
-            farm.athlete == null
-                ? '${farm.strName} Farm'
-                : '${farm.athlete!} Farm',
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-              fontSize: 20,
-            ),
-          ),
+          child: farm.athlete == null
+              ? SportToken(sport: farm.sport, symbol: '${farm.strName} Farm')
+              : SportToken(sport: farm.sport, symbol: '${farm.athlete!} Farm'),
         ),
         Container(
           width: 120,

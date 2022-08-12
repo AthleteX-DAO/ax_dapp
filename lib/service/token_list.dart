@@ -243,6 +243,13 @@ class TokenList {
             '';
     return name;
   }
+
+  static SupportedSport mapTickerToSport(String ticker) {
+    final sport =
+        tokenList.firstWhereOrNull((token) => token.ticker == ticker)?.sport ??
+            SupportedSport.all;
+    return sport;
+  }
 }
 
 class TokenIndex {
