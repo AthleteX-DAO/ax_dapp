@@ -13,6 +13,7 @@ import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
+import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
@@ -82,8 +83,9 @@ class _DesktopScoutState extends State<DesktopScout> {
           return BlocProvider(
             create: (context) => AthletePageBloc(
               tokensRepository: context.read<TokensRepository>(),
-              repo: RepositoryProvider.of<MLBRepo>(context),
-              athleteId: curAthlete!.id,
+              mlbRepo: RepositoryProvider.of<MLBRepo>(context),
+              nflRepo: RepositoryProvider.of<NFLRepo>(context),
+              athlete: curAthlete!,
             ),
             child: AthletePage(
               athlete: curAthlete!,
@@ -192,6 +194,23 @@ class _DesktopScoutState extends State<DesktopScout> {
             'MLB',
             style: textSwapState(
               supportedSport == SupportedSport.MLB,
+              textStyle(Colors.white, sportFilterTxSz, false, false),
+              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+            ),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            myController.clear();
+            setState(() {
+              supportedSport = SupportedSport.NFL;
+            });
+            bloc.add(const SelectSport(selectedSport: SupportedSport.NFL));
+          },
+          child: Text(
+            'NFL',
+            style: textSwapState(
+              supportedSport == SupportedSport.NFL,
               textStyle(Colors.white, sportFilterTxSz, false, false),
               textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
@@ -306,6 +325,51 @@ class _DesktopScoutState extends State<DesktopScout> {
                           setState(() {
                             sportState = 1;
                             allSportsTitle = 'MLB';
+                          });
+                        }
+                      },
+                    ),
+                    PopupMenuItem(
+                      height: 5,
+                      value: 2,
+                      child: ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 8),
+                              child: Icon(
+                                Icons.sports_football,
+                                size: sportFilterIconSz,
+                              ),
+                            ),
+                            Text(
+                              'NFL',
+                              style: textSwapState(
+                                sportState == 2,
+                                textStyle(
+                                  Colors.white,
+                                  sportFilterTxSz,
+                                  false,
+                                  false,
+                                ),
+                                textStyle(
+                                  Colors.amber[400]!,
+                                  sportFilterTxSz,
+                                  false,
+                                  true,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        myController.clear();
+                        if (sportState != 2) {
+                          setState(() {
+                            sportState = 2;
+                            allSportsTitle = 'NFL';
                           });
                         }
                       },
