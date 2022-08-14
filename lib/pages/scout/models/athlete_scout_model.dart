@@ -8,8 +8,10 @@ class AthleteScoutModel {
     required this.team,
     required this.longTokenBookPrice,
     required this.longTokenBookPriceUsd,
+    required this.longTokenBookPricePercent,
     required this.shortTokenBookPrice,
     required this.shortTokenBookPriceUsd,
+    required this.shortTokenBookPricePercent,
     required this.sport,
     required this.time,
     required this.longTokenPrice,
@@ -28,6 +30,8 @@ class AthleteScoutModel {
   final double? longTokenBookPriceUsd;
   final double? shortTokenBookPrice;
   final double? shortTokenBookPriceUsd;
+  final double? longTokenBookPricePercent;
+  final double? shortTokenBookPricePercent;
   final SupportedSport sport;
   final String time;
   final double? longTokenPrice;
