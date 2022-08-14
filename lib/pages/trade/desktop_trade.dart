@@ -9,6 +9,7 @@ import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
+import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -660,20 +661,25 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       ],
                     ),
                   ),
-                  TradeApproveButton(
-                    width: 175,
-                    height: 40,
-                    text: 'Approve',
-                    approveCallback: swapController.approve,
-                    confirmCallback: swapController.swap,
-                    confirmDialog: transactionConfirmed,
-                    fromCurrency: tokenFrom.name,
-                    toCurrency: tokenTo.name,
-                    fromUnits: _tokenFromInputController.text,
-                    toUnits: receiveAmount,
-                    totalFee: totalFee,
-                    walletAddress: userWalletAddress.walletAddress,
-                  ),
+                  if (state.status != BlocStatus.error)
+                    TradeApproveButton(
+                      width: 175,
+                      height: 40,
+                      text: 'Approve',
+                      approveCallback: swapController.approve,
+                      confirmCallback: swapController.swap,
+                      confirmDialog: transactionConfirmed,
+                      fromCurrency: tokenFrom.name,
+                      toCurrency: tokenTo.name,
+                      fromUnits: _tokenFromInputController.text,
+                      toUnits: receiveAmount,
+                      totalFee: totalFee,
+                      walletAddress: userWalletAddress.walletAddress,
+                    )
+                  else
+                    WarningTextButton(
+                      warningTitle: state.errorMessage,
+                    ),
                 ],
               ),
             ),

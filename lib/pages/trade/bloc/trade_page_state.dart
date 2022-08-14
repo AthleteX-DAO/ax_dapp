@@ -10,6 +10,7 @@ class TradePageState extends Equatable {
     required this.tokenFrom,
     required this.tokenTo,
     required this.swapInfo,
+    required this.errorMessage,
   });
 
   // ignore: avoid_positional_boolean_parameters
@@ -35,6 +36,7 @@ class TradePageState extends Equatable {
       tokenFrom: tokenFrom,
       tokenTo: tokenTo,
       swapInfo: TokenSwapInfo.empty(),
+      errorMessage: '',
     );
   }
 
@@ -46,6 +48,7 @@ class TradePageState extends Equatable {
   final Token tokenFrom;
   final Token tokenTo;
   final TokenSwapInfo swapInfo;
+  final String errorMessage;
 
   @override
   List<Object> get props {
@@ -58,6 +61,7 @@ class TradePageState extends Equatable {
       tokenFrom,
       tokenTo,
       swapInfo,
+      errorMessage,
     ];
   }
 
@@ -70,6 +74,7 @@ class TradePageState extends Equatable {
     Token? tokenFrom,
     Token? tokenTo,
     TokenSwapInfo? swapInfo,
+    String? errorMessage,
   }) {
     return TradePageState(
       tokenToBalance: tokenToBalance ?? this.tokenToBalance,
@@ -80,6 +85,7 @@ class TradePageState extends Equatable {
       tokenFrom: tokenFrom ?? this.tokenFrom,
       tokenTo: tokenTo ?? this.tokenTo,
       swapInfo: swapInfo ?? this.swapInfo,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }

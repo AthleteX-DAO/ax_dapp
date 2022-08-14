@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
-class InsufficientBalance extends StatelessWidget {
-  const InsufficientBalance({super.key});
+class WarningTextButton extends StatelessWidget {
+  const WarningTextButton({
+    required this.warningTitle,
+    super.key,
+  });
+
+  final String warningTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +18,12 @@ class InsufficientBalance extends StatelessWidget {
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(100),
       ),
-      child: const TextButton(
+      child: TextButton(
         onPressed: null,
         child: Text(
-          'Insufficient Balance',
-          style: TextStyle(
+          warningTitle,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
             fontSize: 16,
             color: Colors.amber,
           ),
