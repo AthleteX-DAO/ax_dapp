@@ -83,7 +83,6 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         emit(
           state.copyWith(
             status: BlocStatus.error,
-            tokenInputToAmount: 0,
             errorMessage: _somethingWentWrong,
           ),
         );
@@ -96,7 +95,6 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          tokenInputToAmount: 0,
           errorMessage: message,
         ),
       );
@@ -130,7 +128,6 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           emit(
             state.copyWith(
               status: BlocStatus.error,
-              tokenInputToAmount: 0,
               errorMessage: noSwapInfoErrorMessage,
             ),
           );
@@ -138,7 +135,6 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           emit(
             state.copyWith(
               status: BlocStatus.error,
-              tokenInputToAmount: 0,
               errorMessage: _somethingWentWrong,
             ),
           );
@@ -148,7 +144,6 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          tokenInputToAmount: 0,
           errorMessage: _somethingWentWrong,
         ),
       );
@@ -186,7 +181,6 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          tokenInputToAmount: 0,
           errorMessage: _somethingWentWrong,
         ),
       );

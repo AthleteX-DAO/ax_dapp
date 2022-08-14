@@ -63,14 +63,17 @@ class _DesktopTradeState extends State<DesktopTrade> {
         final tokenFromBalance = state.tokenFromBalance.toStringAsFixed(6);
         final minReceived = state.swapInfo.minimumReceived.toStringAsFixed(6);
         final priceImpact = state.swapInfo.priceImpact.toStringAsFixed(6);
-        final receiveAmount = state.swapInfo.receiveAmount.toStringAsFixed(6);
+        final receiveAmount = state.status != BlocStatus.error
+            ? state.swapInfo.receiveAmount.toStringAsFixed(6)
+            : '0';
         final totalFee = state.swapInfo.totalFee.toStringAsFixed(6);
         const slippageTolerance = 1;
         final tokenFrom = state.tokenFrom;
         final tokenTo = state.tokenTo;
         // TODO(mretana1999): add autofill feature
 
-        if (state.status == BlocStatus.initial) {
+        if (state.status == BlocStatus.initial ||
+            state.errorMessage == WalletController.walletNotConnected) {
           bloc.add(PageRefreshEvent());
         }
 
