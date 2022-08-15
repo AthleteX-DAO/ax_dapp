@@ -143,6 +143,26 @@ class _NFLAthleteAPI implements NFLAthleteAPI {
     return value;
   }
 
+  @override
+  Future<List<NFLAthleteStats>> getPlayersHistory(
+      playerIds, from, until) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'from': from, r'until': until};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(playerIds.toJson());
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<NFLAthleteStats>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/players/history',
+                queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => NFLAthleteStats.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||
