@@ -67,7 +67,6 @@ class _MintDialogState extends State<MintDialog> {
 
   Widget showYouReceive() {
     return Flexible(
-      
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -85,71 +84,53 @@ class _MintDialogState extends State<MintDialog> {
               Obx(
                 () => Row(
                   children: [
-                  
-                   SizedBox(
-                     width: hgt*0.2,
-                     child: Expanded(
-                      child:Text(
-                        lspController.createAmt.toStringAsFixed(6),
-                        style: textStyle(Colors.white, 15, false),
-                        
-                        maxLines: 1,
-                      ),
-                     ),
-                   ),
-                   SizedBox(
-                     
-                     child: Expanded(
-                      child:Text(
-                        'Long APTs',
-                        style: textStyle(Colors.white, 15, false),
-                        
-                        maxLines: 1,
-                      ),
-                     ),
-                   ),
-                   
-                  SizedBox(
-                    
-                    child: Expanded(
-                      child:Text(
-                        ' + ',
-                        style: textStyle(Colors.white, 15, false),
-                        maxLines: 1,
+                    SizedBox(
+                      width: hgt * 0.2,
+                      child: Expanded(
+                        child: Text(
+                          lspController.createAmt.toStringAsFixed(6),
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
                       ),
                     ),
-                  ),
-                  
-                  SizedBox(
-                    width: hgt*0.2,
-                    child: Expanded( 
-                      child:Text(
-                        lspController.createAmt.toStringAsFixed(6),
-                        style: textStyle(Colors.white, 15, false),
-                        maxLines: 1,
-                        
+                    SizedBox(
+                      child: Expanded(
+                        child: Text(
+                          'Long APTs',
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
                       ),
                     ),
-                    
-                  ),
-                  SizedBox(
-                    
-                    child: Expanded(
-                      
-                      child:Text(
-                        'Short APTs',
-                        
-                        style: textStyle(Colors.white, 15, false),
-                        maxLines: 1,
-                        
-                        
-                        
-                      
+                    SizedBox(
+                      child: Expanded(
+                        child: Text(
+                          ' + ',
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
                       ),
                     ),
-                    
-                  ),
-                  
+                    SizedBox(
+                      width: hgt * 0.2,
+                      child: Expanded(
+                        child: Text(
+                          lspController.createAmt.toStringAsFixed(6),
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      child: Expanded(
+                        child: Text(
+                          'Short APTs',
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -342,11 +323,9 @@ class _MintDialogState extends State<MintDialog> {
                               ),
                             ),
                           ),
-                          
-                           ConstrainedBox(
+                          ConstrainedBox(
                             constraints: BoxConstraints(maxWidth: wid * 0.4),
                             child: IntrinsicWidth(
-                           
                               child: TextField(
                                 controller: _aptAmountController,
                                 style: textStyle(Colors.grey[400]!, 22, false),
@@ -376,13 +355,9 @@ class _MintDialogState extends State<MintDialog> {
                                     RegExp(r'^(\d+)?\.?\d{0,6}'),
                                   ),
                                 ],
-                               
                               ),
                             ),
-                              ),
-                            
-                          
-                          
+                          ),
                         ],
                       ),
                       Row(
