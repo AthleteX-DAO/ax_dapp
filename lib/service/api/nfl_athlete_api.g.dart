@@ -155,7 +155,7 @@ class _NFLAthleteAPI implements NFLAthleteAPI {
         _setStreamType<List<NFLAthleteStats>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/players/history',
-                queryParameters: queryParameters, data: _data)
+                    queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) => NFLAthleteStats.fromJson(i as Map<String, dynamic>))
