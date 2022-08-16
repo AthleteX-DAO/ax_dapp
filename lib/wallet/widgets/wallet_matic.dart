@@ -1,16 +1,15 @@
-import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WalletMatic extends StatelessWidget {
-  const WalletMatic({super.key, required this.controller});
-
-  final Controller controller;
+  const WalletMatic({super.key});
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: controller.getCurrentGas,
+      onPressed: () =>
+          context.read<WalletBloc>().add(const GetGasPriceRequested()),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -18,16 +17,19 @@ class WalletMatic extends StatelessWidget {
             Icons.local_gas_station,
             color: Colors.grey,
           ),
-          Obx(
-            () => Text(
-              '${controller.gasString} gwei',
-              style: TextStyle(
-                color: Colors.grey[400],
-                fontFamily: 'OpenSans',
-                fontSize: 11,
-              ),
-            ),
-          )
+          BlocSelector<WalletBloc, WalletState, double>(
+            selector: (state) => state.gasPrice,
+            builder: (_, gasPrice) {
+              return Text(
+                '$gasPrice gwei',
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontFamily: 'OpenSans',
+                  fontSize: 11,
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

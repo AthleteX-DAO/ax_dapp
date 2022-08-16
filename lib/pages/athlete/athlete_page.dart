@@ -7,7 +7,6 @@ import 'package:ax_dapp/pages/scout/desktop_scout.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/create_wallet/web.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
@@ -54,7 +53,7 @@ class _AthletePageState extends State<AthletePage> {
   void initState() {
     super.initState();
     athlete = widget.athlete;
-    final aptPair = context.read<TokensRepository>().aptPair(athlete.id);
+    final aptPair = context.read<TokensRepository>().currentAptPair(athlete.id);
     Get.find<LSPController>().updateAptAddress(aptPair.address);
     _zoomPanBehavior = ZoomPanBehavior(
       enableMouseWheelZooming: true,
@@ -1042,7 +1041,6 @@ class _AthletePageState extends State<AthletePage> {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
     var wid = _width * 0.4;
-    final webWallet = Get.find<WebWallet>();
 
     if (_width < 1160) wid = containerWdt;
     return Container(
@@ -1229,10 +1227,9 @@ class _AthletePageState extends State<AthletePage> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          final selectedAptAddress = context
+                          context
                               .read<AthletePageBloc>()
-                              .state
-                              .selectedAptAddress;
+                              .add(const AddTokenToWalletRequested());
                           final formattedWalletAddress = context
                               .read<WalletBloc>()
                               .state
@@ -1241,10 +1238,6 @@ class _AthletePageState extends State<AthletePage> {
                                 athleteName: athlete.name,
                                 walletId: formattedWalletAddress,
                               );
-                          webWallet.addTokenToWallet(
-                            selectedAptAddress,
-                            _getTokenImage(),
-                          );
                         },
                         child: Text(
                           '+ Add to Wallet',
@@ -1680,13 +1673,5 @@ class _AthletePageState extends State<AthletePage> {
         textAlign: TextAlign.center,
       ),
     );
-  }
-
-  String _getTokenImage() {
-    final isLongApt =
-        context.read<AthletePageBloc>().state.aptTypeSelection.isLong;
-    return isLongApt
-        ? 'https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_noninverted.png'
-        : 'https://raw.githubusercontent.com/SportsToken/ax_dapp/develop/assets/images/apt_inverted.png';
   }
 }

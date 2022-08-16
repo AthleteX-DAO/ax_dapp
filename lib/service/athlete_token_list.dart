@@ -41,7 +41,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   void initState() {
     super.initState();
     tokenNumber = widget.tknNum;
-    filteredApts = [...context.read<TokensRepository>().apts];
+    filteredApts = [...context.read<TokensRepository>().currentApts];
     aptsSubscription =
         context.read<TokensRepository>().aptsChanges.listen(updateApts);
   }

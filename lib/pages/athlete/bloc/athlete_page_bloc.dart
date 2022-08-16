@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -7,33 +9,38 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'athlete_page_event.dart';
 part 'athlete_page_state.dart';
 
 class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
   AthletePageBloc({
+    required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
     required this.mlbRepo,
     required this.nflRepo,
     required this.athlete,
-  })  : _tokensRepository = tokensRepository,
+  })  : _walletRepository = walletRepository,
+        _tokensRepository = tokensRepository,
         super(
           // setting the apt corresponding to the default aptType which is long
           AthletePageState(
-            longApt: tokensRepository.aptPair(athlete.id).longApt,
+            longApt: tokensRepository.currentAptPair(athlete.id).longApt,
           ),
         ) {
     on<WatchAptPairStarted>(_onWatchAptPairStarted);
     on<AptTypeSelectionChanged>(_onAptTypeSelectionChanged);
     on<OnPageRefresh>(_mapPageRefreshEventToState);
     on<OnGraphRefresh>(_mapGraphRefreshEventToState);
+    on<AddTokenToWalletRequested>(_onAddTokenToWalletRequested);
 
     add(WatchAptPairStarted(athlete.id));
   }
 
   final AthleteScoutModel athlete;
 
+  final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
   final MLBRepo mlbRepo;
   final NFLRepo nflRepo;
@@ -149,4 +156,18 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
     OnGraphRefresh event,
     Emitter<AthletePageState> emit,
   ) {}
+
+  Future<void> _onAddTokenToWalletRequested(
+    AddTokenToWalletRequested event,
+    Emitter<AthletePageState> emit,
+  ) async {
+    try {
+      await _walletRepository.addToken(
+        tokenAddress: state.selectedAptAddress,
+        tokenImageUrl: state.aptTypeSelection.url,
+      );
+    } on WalletFailure {
+      emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
 }

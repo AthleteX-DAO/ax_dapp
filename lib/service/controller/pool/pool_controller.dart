@@ -4,7 +4,6 @@ import 'package:ethereum_api/apt_router_api.dart';
 import 'package:ethereum_api/dex_api.dart';
 import 'package:ethereum_api/erc20_api.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
 class PoolController extends GetxController {
@@ -26,7 +25,6 @@ class PoolController extends GetxController {
   String lpTokenPairAddress = '';
   double removePercentage = 0;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
-  final tokenClient = Web3Client('https://polygon-rpc.com', Client());
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
     DateTime.now().add(const Duration(minutes: 2)).millisecondsSinceEpoch,

@@ -16,7 +16,6 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.da
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/create_wallet/web.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
@@ -95,8 +94,7 @@ class _V1AppState extends State<V1App> {
     Get
       ..put(LSPController())
       ..put(SwapController())
-      ..put(PoolController())
-      ..put(WebWallet());
+      ..put(PoolController());
   }
 
   @override
@@ -348,7 +346,7 @@ class _V1AppState extends State<V1App> {
               ],
             ),
           ),
-          WalletView(controller: controller),
+          const WalletView(),
         ],
       ),
     );
@@ -374,9 +372,9 @@ class _V1AppState extends State<V1App> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              WalletView(controller: controller),
-              const DropdownMenuMobile(),
+            children: const [
+              WalletView(),
+              DropdownMenuMobile(),
             ],
           ),
         ],

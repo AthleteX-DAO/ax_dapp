@@ -121,7 +121,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
       double layoutWdt,
     ) {
       final tokensRepository = context.read<TokensRepository>();
-      final tokens = tokensRepository.tokens;
+      final tokens = tokensRepository.currentTokens;
       final token0 = tokens.byAddress(liquidityPositionInfo.token0Address);
       final token1 = tokens.byAddress(liquidityPositionInfo.token1Address);
       return ClipRRect(

@@ -13,7 +13,7 @@ export 'package:gql/language.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:meta/meta.dart';
 export 'package:rxdart/rxdart.dart';
-export 'package:web3dart/web3dart.dart';
+export 'package:web3dart/web3dart.dart' hide Wallet;
 export 'package:web_socket_channel/web_socket_channel.dart';
 
 export 'src/failure/failure.dart';

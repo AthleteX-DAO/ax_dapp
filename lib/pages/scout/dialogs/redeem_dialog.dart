@@ -48,7 +48,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
   @override
   void initState() {
     super.initState();
-    final aptPair = context.read<TokensRepository>().aptPair(widget.athlete.id);
+    final aptPair =
+        context.read<TokensRepository>().currentAptPair(widget.athlete.id);
     lspController.updateAptAddress(aptPair.address);
     updateStats();
   }
@@ -56,7 +57,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
   Future<void> updateStats() async {
     try {
       final tokensRepository = context.read<TokensRepository>();
-      final aptPair = tokensRepository.aptPair(widget.athlete.id);
+      final aptPair = tokensRepository.currentAptPair(widget.athlete.id);
       final walletRepository = context.read<WalletRepository>();
       final _longBalance =
           await walletRepository.getTokenBalance(aptPair.longApt.address);

@@ -30,9 +30,19 @@ extension AptPairX on AptPair {
   /// compromised pair.
   bool get isEmpty => longApt.isEmpty || shortApt.isEmpty;
 
+  /// Returns `true` when both [AptPair.longApt] and [AptPair.shortApt] are not
+  /// empty.
+  bool get isNotEmpty => !isEmpty;
+
   /// Represents [AptPair] address for an [Apt.long] and [Apt.short] pair of
   /// tokens.
   ///
-  /// The `pairAddress` returned by the [Apt.long] and [Apt.short] are the same.
+  /// The `pairAddress` returned by the [Apt.long] and [Apt.short] is the same.
   String get address => longApt.pairAddress;
+
+  /// Represents the `athleteId` for the [Apt.long] and [Apt.short] pair of
+  /// tokens attached to this [AptPair].
+  ///
+  /// The `athleteId` returned by the [Apt.long] and [Apt.short] is the same.
+  int get athleteId => longApt.athleteId;
 }

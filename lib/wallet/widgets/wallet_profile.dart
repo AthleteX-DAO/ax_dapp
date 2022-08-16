@@ -1,4 +1,3 @@
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/wallet/widgets/wallet_account.dart';
 import 'package:ax_dapp/wallet/widgets/wallet_ax.dart';
 import 'package:ax_dapp/wallet/widgets/wallet_chain.dart';
@@ -8,12 +7,7 @@ import 'package:flutter/material.dart';
 
 /// Previously known as the "account box".
 class WalletProfile extends StatelessWidget {
-  const WalletProfile({
-    super.key,
-    required this.controller,
-  });
-
-  final Controller controller;
+  const WalletProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +40,7 @@ class WalletProfile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           if (showChain) const WalletChain(),
-          if (showMatic) WalletMatic(controller: controller),
+          if (showMatic) const WalletMatic(),
           const WalletAx(),
           const WalletAccount(),
         ],

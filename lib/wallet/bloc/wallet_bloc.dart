@@ -16,21 +16,17 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     required TokensRepository tokensRepository,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
-        super(
-          WalletState(
-            chain: walletRepository.currentChain,
-            status: WalletStatus.fromChain(walletRepository.currentChain),
-          ),
-        ) {
+        super(WalletState.fromWallet(walletRepository.currentWallet)) {
     on<ConnectWalletRequested>(_onConnectWalletRequested);
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
-    on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
+    on<WatchWalletChangesStarted>(_onWatchWalletChangesStarted);
     on<SwitchChainRequested>(_onSwitchChainRequested);
     on<WatchAxtChangesStarted>(_onWatchAxtChangesStarted);
     on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
+    on<GetGasPriceRequested>(_onGetGasPriceRequested);
     on<WalletFailed>(_onWalletFailed);
 
-    add(const WatchChainChangesStarted());
+    add(const WatchWalletChangesStarted());
     add(const WatchAxtChangesStarted());
   }
 
@@ -57,16 +53,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(state.copyWith(walletAddress: kEmptyAddress));
   }
 
-  Future<void> _onWatchChainChangesStarted(
-    WatchChainChangesStarted event,
+  Future<void> _onWatchWalletChangesStarted(
+    WatchWalletChangesStarted event,
     Emitter<WalletState> emit,
   ) async {
-    await emit.forEach<EthereumChain>(
-      _walletRepository.chainChanges,
-      onData: (chain) => state.copyWith(
-        chain: chain,
-        status: WalletStatus.fromChain(chain),
-      ),
+    await emit.forEach<Wallet>(
+      _walletRepository.walletChanges,
+      onData: (wallet) => state.copyWithWallet(wallet),
     );
   }
 
@@ -107,6 +100,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         await _walletRepository.getTokenBalance(currentAxtAddress);
     final axData = AxData.fromAxMarketData(axMarketData);
     emit(state.copyWith(axData: axData.copyWith(balance: axBalance)));
+  }
+
+  Future<void> _onGetGasPriceRequested(
+    GetGasPriceRequested event,
+    Emitter<WalletState> emit,
+  ) async {
+    final gasPrice = await _walletRepository.getGasPrice();
+    emit(state.copyWith(gasPrice: gasPrice));
   }
 
   void _onWalletFailed(

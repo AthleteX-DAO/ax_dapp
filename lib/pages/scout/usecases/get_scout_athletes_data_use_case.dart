@@ -191,7 +191,7 @@ class GetScoutAthletesDataUseCase {
     required Token scoutToken,
   }) {
     final mappedAthletes = athletes.asMap().map((key, athlete) {
-      final aptPair = _tokensRepository.aptPair(athlete.id);
+      final aptPair = _tokensRepository.currentAptPair(athlete.id);
       final longAptAddress = aptPair.longApt.address;
       final shortAptAddress = aptPair.shortApt.address;
       final longToken =

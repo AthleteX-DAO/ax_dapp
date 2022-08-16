@@ -1250,7 +1250,6 @@ Dialog accountDialog(BuildContext context) {
                                     context
                                         .read<WalletBloc>()
                                         .add(const DisconnectWalletRequested());
-                                    controller.disconnect();
                                     Navigator.pop(context);
                                   },
                                   child: Text(

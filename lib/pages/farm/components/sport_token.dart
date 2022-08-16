@@ -1,7 +1,7 @@
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class BadgeToken extends StatelessWidget {
   const BadgeToken({

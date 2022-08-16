@@ -10,3 +10,7 @@ abstract class AppEvent extends Equatable {
 class WatchChainChangesStarted extends AppEvent {
   const WatchChainChangesStarted();
 }
+
+class WatchAptsChangesStarted extends AppEvent {
+  const WatchAptsChangesStarted();
+}

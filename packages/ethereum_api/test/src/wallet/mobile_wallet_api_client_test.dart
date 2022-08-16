@@ -6,17 +6,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared/shared.dart';
 
-class MockWeb3Client extends Mock implements Web3Client {}
+class MockReactiveWeb3Client extends Mock implements ValueStream<Web3Client> {}
 
 void main() {
   group('EthereumWalletApiClient', () {
-    late Web3Client web3client;
+    late ValueStream<Web3Client> reactiveWeb3Client;
 
     late EthereumWalletApiClient subject;
 
     setUp(() {
-      web3client = MockWeb3Client();
-      subject = EthereumWalletApiClient(web3Client: web3client);
+      reactiveWeb3Client = MockReactiveWeb3Client();
+      subject = EthereumWalletApiClient(reactiveWeb3Client: reactiveWeb3Client);
     });
 
     test('is unimplemented on mobile', () {
