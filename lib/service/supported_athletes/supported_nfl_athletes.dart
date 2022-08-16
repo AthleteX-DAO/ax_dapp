@@ -14,6 +14,8 @@ class SupportedNFLAthletes {
   static const int _mAndrews = 19803;
   static const int _kPitts = 22508;
   static const int _gKittle = 19063;
+  static const int _cCampbell = 3341;
+  static const int _aRodgers = 2593;
 
   static const List<int> _athleteIdsList = [
     _jAllen,
@@ -31,6 +33,8 @@ class SupportedNFLAthletes {
     _mAndrews,
     _kPitts,
     _gKittle,
+    _cCampbell,
+    _aRodgers,
   ];
 
   List<int> getSupportedAthletesList() {

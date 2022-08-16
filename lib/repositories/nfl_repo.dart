@@ -67,7 +67,8 @@ class NFLRepo extends SportsRepo<NFLAthlete> {
     String from,
     String until,
   ) async {
-    final list = List<NFLAthleteStats>.empty();
+    final playerIds = PlayerIds(ids);
+    final list = _api.getPlayersHistory(playerIds, from, until);
     return list;
   }
 }

@@ -9,7 +9,11 @@ import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
+import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete_stats.dart';
+import 'package:ax_dapp/service/athlete_models/mlb/mlb_stats.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
+import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
+import 'package:ax_dapp/service/athlete_models/nfl/nfl_stats.dart';
 import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
@@ -57,14 +61,74 @@ class GetScoutAthletesDataUseCase {
     final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
     final formattedEndDate = DateFormat('yyyy-MM-dd').format(now);
     try {
-      final history = await repo.getPlayersStatsHistory(
+      final histories = await repo.getPlayersStatsHistory(
         ids,
         formattedStartDate,
         formattedEndDate,
       );
-      return history;
+      return histories;
     } catch (e) {
-      return List.empty();
+      final histories = players
+          .asMap()
+          .map((key, player) {
+            dynamic history;
+            if (repo.sport == SupportedSport.MLB) {
+              history = MLBAthleteStats(
+                id: player.id,
+                name: player.name,
+                team: player.team,
+                position: player.position,
+                statHistory: [
+                  const MLBStats(
+                    started: 0,
+                    games: 0,
+                    atBats: 0,
+                    runs: 0,
+                    singles: 0,
+                    triples: 0,
+                    homeRuns: 0,
+                    inningsPlayed: 0,
+                    battingAverage: 0,
+                    outs: 0,
+                    walks: 0,
+                    errors: 0,
+                    saves: 0,
+                    strikeOuts: 0,
+                    stolenBases: 0,
+                    plateAppearances: 0,
+                    weightedOnBasePercentage: 0,
+                    price: 0,
+                    timeStamp: '2022',
+                  ),
+                ].toList(),
+              );
+            } else if (repo.sport == SupportedSport.NFL) {
+              history = NFLAthleteStats(
+                id: player.id,
+                name: player.name,
+                team: player.team,
+                position: player.position,
+                statHistory: [
+                  const NFLStats(
+                    passingYards: 0,
+                    passingTouchDowns: 0,
+                    reception: 0,
+                    receiveYards: 0,
+                    receiveTouch: 0,
+                    rushingYards: 0,
+                    offensiveSnapsPlayed: 0,
+                    defensiveSnapsPlayed: 0,
+                    price: 0,
+                    timeStamp: '2022',
+                  ),
+                ].toList(),
+              );
+            }
+            return MapEntry(key, history);
+          })
+          .values
+          .toList();
+      return histories;
     }
   }
 
