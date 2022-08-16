@@ -6,7 +6,7 @@ import 'package:fpdart/fpdart.dart';
 /// the general usecase of requesting information for any given token pair
 /// this can be used to fetch data to complete functions like swap, pool
 /// liquidity
-const String _noSwapInfoErrorMessage = 'No pair info found';
+const String _noPairInfoErrorMessage = 'No pair info found';
 
 class GetPairInfoUseCase {
   GetPairInfoUseCase(SubGraphRepo graphRepo) : _graphRepo = graphRepo;
@@ -43,7 +43,7 @@ class GetPairInfoUseCase {
           );
           return Either.left(Success(tokenPair));
         } else {
-          return Either.right(const Error(_noSwapInfoErrorMessage));
+          return Either.right(const Error(_noPairInfoErrorMessage));
         }
       } else {
         final errorMsg = tokenPairData.getRight().toNullable().toString();

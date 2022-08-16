@@ -21,6 +21,8 @@ class WalletController extends GetxController {
   RxDouble tokenPrice = 0.0.obs;
   Controller controller = Get.find();
 
+  static const walletNotConnected = 'Wallet not connected';
+
   Future<void> getYourAxBalance() async {
     if (!_isWalletConnected()) return;
     if (controller.networkID.value == Controller.mainnetChainId) {
@@ -38,6 +40,9 @@ class WalletController extends GetxController {
 
   // Update token balance
   Future<String> getTokenBalance(String tokenAddress) async {
+    if (!_isWalletConnected()) {
+      throw ArgumentError(walletNotConnected);
+    }
     final walletAddress = controller.publicAddress.value;
     late EthereumAddress tokenEthAddress;
     late String tokenBalance;
