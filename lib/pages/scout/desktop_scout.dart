@@ -757,9 +757,31 @@ class _DesktopScoutState extends State<DesktopScout> {
                             ),
                             Container(width: 10),
                             Text(
-                              '-2%',
-                              style: textStyle(Colors.red, 12, false, false),
-                            )
+                              isLongToken
+                                  ? getPercentageDesc(
+                                      athlete.longTokenBookPricePercent!,
+                                    )
+                                  : getPercentageDesc(
+                                      athlete.shortTokenBookPricePercent!,
+                                    ),
+                              style: isLongToken
+                                  ? textStyle(
+                                      getPercentageColor(
+                                        athlete.longTokenBookPricePercent!,
+                                      ),
+                                      12,
+                                      false,
+                                      false,
+                                    )
+                                  : textStyle(
+                                      getPercentageColor(
+                                        athlete.shortTokenBookPricePercent!,
+                                      ),
+                                      12,
+                                      false,
+                                      false,
+                                    ),
+                            ),
                           ],
                         ),
                         Text(
@@ -994,8 +1016,30 @@ class _DesktopScoutState extends State<DesktopScout> {
                         ),
                         Container(width: 10),
                         Text(
-                          '-2%',
-                          style: textStyle(Colors.red, 12, false, false),
+                          isLongToken
+                              ? getPercentageDesc(
+                                  athlete.longTokenBookPricePercent!,
+                                )
+                              : getPercentageDesc(
+                                  athlete.shortTokenBookPricePercent!,
+                                ),
+                          style: isLongToken
+                              ? textStyle(
+                                  getPercentageColor(
+                                    athlete.longTokenBookPricePercent!,
+                                  ),
+                                  12,
+                                  false,
+                                  false,
+                                )
+                              : textStyle(
+                                  getPercentageColor(
+                                    athlete.shortTokenBookPricePercent!,
+                                  ),
+                                  12,
+                                  false,
+                                  false,
+                                ),
                         ),
                       ],
                     ),

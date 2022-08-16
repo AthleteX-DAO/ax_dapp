@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/pages/scout/models/book_price_model.dart';
 import 'package:ax_dapp/pages/scout/models/market_model.dart';
 import 'package:ax_dapp/pages/scout/models/sports_model/mlb_athlete_scout_model.dart';
 import 'package:ax_dapp/pages/scout/models/sports_model/nfl_athlete_scout_model.dart';
@@ -10,6 +11,7 @@ import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
+import 'package:intl/intl.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class GetScoutAthletesDataUseCase {
@@ -32,6 +34,32 @@ class GetScoutAthletesDataUseCase {
   static const collateralizationMultiplier = 1000;
   static const collateralizationPerPair = 15;
 
+  Future<List<dynamic>> getStatsHistory(
+    SportsRepo<SportAthlete> repo,
+    List<SportAthlete> players,
+  ) async {
+    final ids = players.map((player) => player.id).toList();
+    // currently the api is not working with current date
+    final now = DateTime.now();
+    final startDate = DateTime(now.year, now.month, now.day - 1);
+
+    // this code is used to test the api, because api is not working correctly
+    // final now = DateTime(2022, 8, 2);
+    // final startDate = DateTime(2022, 8, 1);
+    final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
+    final formattedEndDate = DateFormat('yyyy-MM-dd').format(now);
+    try {
+      final history = await repo.getPlayersStatsHistory(
+        ids,
+        formattedStartDate,
+        formattedEndDate,
+      );
+      return history;
+    } catch (e) {
+      return List.empty();
+    }
+  }
+
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
     SupportedSport sportSelection,
   ) async {
@@ -44,9 +72,12 @@ class GetScoutAthletesDataUseCase {
     /// If specific sport is selected return athletes from that specific repo
     if (sportSelection != SupportedSport.all) {
       final repo = _repos[sportSelection]!;
-      final response = await repo.getSupportedPlayers();
+      // fetch supported players list
+      final players = await repo.getSupportedPlayers();
+      final history = await getStatsHistory(repo, players);
       return _mapAthleteToScoutModel(
-        response,
+        players,
+        history,
         repo,
         axPrice,
         scoutToken: currentAxt,
@@ -60,11 +91,22 @@ class GetScoutAthletesDataUseCase {
             .map((key, repo) => MapEntry(key, repo.getSupportedPlayers()))
             .values,
       );
+
+      final histories = await Future.wait(
+        response.asMap().map((key, response) {
+          final repo = _repos.values.elementAt(key);
+          return MapEntry(key, getStatsHistory(repo, response));
+        }).values,
+      );
+
       response.asMap().forEach((key, response) {
+        final repo = _repos.values.elementAt(key);
+        final history = histories.elementAt(key);
         athletes.addAll(
           _mapAthleteToScoutModel(
             response,
-            _repos.values.elementAt(key),
+            history,
+            repo,
             axPrice,
             scoutToken: currentAxt,
           ),
@@ -134,24 +176,45 @@ class GetScoutAthletesDataUseCase {
     );
   }
 
+  BookPriceModel getBookPricePercentage(
+    double startPrice,
+    double endPrice,
+  ) {
+    return BookPriceModel(startPrice: startPrice, endPrice: endPrice);
+  }
+
   List<AthleteScoutModel> _mapAthleteToScoutModel(
     List<SportAthlete> athletes,
+    List<dynamic> histories,
     SportsRepo<SportAthlete> repo,
     double axPrice, {
     required Token scoutToken,
   }) {
-    final mappedAthletes = <AthleteScoutModel>[];
-    for (final athlete in athletes) {
+    final mappedAthletes = athletes.asMap().map((key, athlete) {
       final aptPair = _tokensRepository.aptPair(athlete.id);
       final longAptAddress = aptPair.longApt.address;
       final shortAptAddress = aptPair.shortApt.address;
       final longToken =
           getMarketModel(longAptAddress, athlete.price, scoutToken: scoutToken);
+      final history = histories.elementAt(key);
       final shortToken = getMarketModel(
         shortAptAddress,
         collateralizationPerPair - athlete.price,
         scoutToken: scoutToken,
       );
+
+      final length = history.statHistory.length;
+      final startPrice = history.statHistory[0].price as double;
+      final endPrice = history.statHistory[length - 1].price as double;
+      final longBookModel = getBookPricePercentage(
+        startPrice,
+        endPrice,
+      );
+      final shortBookModel = getBookPricePercentage(
+        collateralizationPerPair - startPrice,
+        collateralizationPerPair - endPrice,
+      );
+
       AthleteScoutModel athleteScoutModel;
       switch (repo.sport) {
         case SupportedSport.MLB:
@@ -164,8 +227,10 @@ class GetScoutAthletesDataUseCase {
               team: mlbAthlete.team,
               longTokenBookPrice: longToken.bookPrice,
               longTokenBookPriceUsd: longToken.bookPrice * axPrice,
+              longTokenBookPricePercent: longBookModel.percentage,
               shortTokenBookPrice: shortToken.bookPrice,
               shortTokenBookPriceUsd: shortToken.bookPrice * axPrice,
+              shortTokenBookPricePercent: shortBookModel.percentage,
               sport: repo.sport,
               time: mlbAthlete.timeStamp,
               longTokenPrice: longToken.marketPrice,
@@ -195,8 +260,10 @@ class GetScoutAthletesDataUseCase {
               team: nflAthlete.team,
               longTokenBookPrice: longToken.bookPrice,
               longTokenBookPriceUsd: longToken.bookPrice * axPrice,
+              longTokenBookPricePercent: longBookModel.percentage,
               shortTokenBookPrice: shortToken.bookPrice,
               shortTokenBookPriceUsd: shortToken.bookPrice * axPrice,
+              shortTokenBookPricePercent: shortBookModel.percentage,
               sport: repo.sport,
               time: nflAthlete.timeStamp,
               longTokenPrice: longToken.marketPrice,
@@ -226,8 +293,10 @@ class GetScoutAthletesDataUseCase {
               team: athlete.team,
               longTokenBookPrice: longToken.bookPrice,
               longTokenBookPriceUsd: longToken.bookPrice * axPrice,
+              longTokenBookPricePercent: longBookModel.percentage,
               shortTokenBookPrice: shortToken.bookPrice,
               shortTokenBookPriceUsd: shortToken.bookPrice * axPrice,
+              shortTokenBookPricePercent: shortBookModel.percentage,
               // TODO(anyone): check for sport
               sport: repo.sport,
               time: athlete.timeStamp,
@@ -240,8 +309,8 @@ class GetScoutAthletesDataUseCase {
             );
           }
       }
-      mappedAthletes.add(athleteScoutModel);
-    }
-    return mappedAthletes;
+      return MapEntry(key, athleteScoutModel);
+    });
+    return mappedAthletes.values.toList();
   }
 }

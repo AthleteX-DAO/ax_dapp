@@ -22,6 +22,7 @@ class FarmController {
     strAddress = farm.strAddress;
     strName = farm.strName;
     athlete = _getAthleteTokenNameFromAlias(farm.strStakedAlias);
+    sport = _getAthleteSportFromAlias(farm.strStakedAlias);
     strAPR = double.parse(farm.strAPR).toStringAsFixed(2);
     strTVL = double.parse(farm.strTVL).toStringAsFixed(2);
     strStaked = RxString(farm.strStaked);
@@ -97,12 +98,26 @@ class FarmController {
         '';
   }
 
+  SupportedSport _getAthleteSportFromAlias(String stakingAlias) {
+    // returns athlete token name, returns null if stakingAlias is empty
+    // stakingToken alias example: 'AJLT1010-AX' or 'AX-CCST1010' or ''
+    if (stakingAlias.isEmpty) return SupportedSport.all;
+    final tickers = stakingAlias.split('-');
+    //we want athlete ticker not 'AX'
+    final athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
+    return _tokensRepository.apts
+            .firstWhereOrNull((apt) => apt.ticker == athleteTicker)
+            ?.sport ??
+        SupportedSport.all;
+  }
+
   // decalaration of member varibles
   late Pool contract;
 
   Controller controller = Get.find();
   String? athlete;
   String strName = '';
+  SupportedSport sport = SupportedSport.all;
   String strAddress = '';
   String strStakeTokenAddress = '';
   String strRewardTokenAddress = '';

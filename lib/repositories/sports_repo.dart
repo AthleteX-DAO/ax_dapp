@@ -24,5 +24,9 @@ abstract class SportsRepo<SportAthlete> {
 
   Future<dynamic> getPlayerStatsHistory(int id, String from, String until);
 
-  Future<dynamic> getPlayersStatsHistory();
+  Future<List<dynamic>> getPlayersStatsHistory(
+    List<int> ids,
+    String from,
+    String until,
+  );
 }

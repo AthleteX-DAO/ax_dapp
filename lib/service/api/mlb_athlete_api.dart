@@ -39,4 +39,11 @@ abstract class MLBAthleteAPI {
     @Query('from') String from,
     @Query('until') String until,
   );
+
+  @POST('/players/history')
+  Future<List<MLBAthleteStats>> getPlayersHistory(
+    @Body() PlayerIds playerIds,
+    @Query('from') String from,
+    @Query('until') String until,
+  );
 }
