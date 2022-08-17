@@ -3,7 +3,7 @@ import 'package:ax_dapp/pages/farm/dialogs/trx_confirmed_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
-import 'package:ax_dapp/util/insufficient_balance.dart';
+import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -265,7 +265,9 @@ class _StakeDialogState extends State<StakeDialog> {
                       selectedFarm: selectedFarm,
                     )
                   ] else ...[
-                    const InsufficientBalance()
+                    const WarningTextButton(
+                      warningTitle: 'Insufficient Balance',
+                    )
                   ]
                 ],
               ),

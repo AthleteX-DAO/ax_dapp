@@ -10,6 +10,7 @@ class TradePageState extends Equatable {
     required this.tokenFrom,
     required this.tokenTo,
     this.swapInfo = TokenSwapInfo.empty,
+    this.failure = Failure.none,
   });
 
   factory TradePageState.initial({
@@ -31,6 +32,7 @@ class TradePageState extends Equatable {
   final Token tokenFrom;
   final Token tokenTo;
   final TokenSwapInfo swapInfo;
+  final Failure failure;
 
   @override
   List<Object> get props {
@@ -43,6 +45,7 @@ class TradePageState extends Equatable {
       tokenFrom,
       tokenTo,
       swapInfo,
+      failure,
     ];
   }
 
@@ -55,6 +58,7 @@ class TradePageState extends Equatable {
     Token? tokenFrom,
     Token? tokenTo,
     TokenSwapInfo? swapInfo,
+    Failure? failure,
   }) {
     return TradePageState(
       tokenToBalance: tokenToBalance ?? this.tokenToBalance,
@@ -65,6 +69,29 @@ class TradePageState extends Equatable {
       tokenFrom: tokenFrom ?? this.tokenFrom,
       tokenTo: tokenTo ?? this.tokenTo,
       swapInfo: swapInfo ?? this.swapInfo,
+      failure: failure ?? this.failure,
     );
   }
+}
+
+/// {@template temp_failure}
+/// Temporary failure, this should come from the bottom most layer.
+/// {@endtemplate}
+class DisconnectedWalletFailure extends Failure {
+  /// {@macro temp_failure}
+  DisconnectedWalletFailure()
+      : super(Exception('Wallet is disconnected'), StackTrace.empty);
+}
+
+/// {@macro temp_failure}
+class NoSwapInfoFailure extends Failure {
+  /// {@macro temp_failure}
+  NoSwapInfoFailure() : super(Exception('No swap info'), StackTrace.empty);
+}
+
+/// {@macro temp_failure}
+class UnknownTradeFailure extends Failure {
+  /// {@macro temp_failure}
+  UnknownTradeFailure()
+      : super(Exception('Something went wrong'), StackTrace.empty);
 }

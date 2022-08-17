@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:ax_dapp/pages/trade/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -63,11 +64,25 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     );
   }
 
-  Future<void> _onFetchTradeInfoRequested(
+  FutureOr<void> _onFetchTradeInfoRequested(
     FetchTradeInfoRequested event,
     Emitter<TradePageState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
+    if (_walletRepository.currentChain.isSupported) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
+    }
+    emit(
+      state.copyWith(
+        status: BlocStatus.loading,
+        failure: Failure.none,
+      ),
+    );
     try {
       final tokenFromBalance =
           await _walletRepository.getTokenBalance(state.tokenFrom.address);
@@ -77,6 +92,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         state.copyWith(
           tokenFromBalance: tokenFromBalance ?? 0,
           tokenToBalance: tokenToBalance ?? 0,
+          failure: Failure.none,
         ),
       );
       final response = await repo.fetchSwapInfo(
@@ -95,14 +111,25 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           state.copyWith(
             status: BlocStatus.success,
             swapInfo: swapInfo,
+            failure: Failure.none,
           ),
         );
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.error));
+        emit(
+          state.copyWith(
+            status: BlocStatus.error,
+            failure: UnknownTradeFailure(),
+          ),
+        );
       }
-    } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
+    } catch (error) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: UnknownTradeFailure(),
+        ),
+      );
     }
   }
 
@@ -128,10 +155,30 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         emit(state.copyWith(status: BlocStatus.success, swapInfo: swapInfo));
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.error));
+        final errorMsg = response.getRight().toNullable()?.errorMsg;
+        if (errorMsg == noSwapInfoErrorMessage) {
+          emit(
+            state.copyWith(
+              status: BlocStatus.error,
+              failure: NoSwapInfoFailure(),
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              status: BlocStatus.error,
+              failure: UnknownTradeFailure(),
+            ),
+          );
+        }
       }
     } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: UnknownTradeFailure(),
+        ),
+      );
     }
   }
 
@@ -144,7 +191,12 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     MaxSwapTapEvent event,
     Emitter<TradePageState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
+    emit(
+      state.copyWith(
+        status: BlocStatus.loading,
+        failure: Failure.none,
+      ),
+    );
     try {
       final tokenFromBalance =
           await _walletRepository.getTokenBalance(state.tokenFrom.address);
@@ -153,11 +205,17 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         state.copyWith(
           tokenInputFromAmount: maxInput,
           tokenFromBalance: maxInput,
+          failure: Failure.none,
         ),
       );
     } catch (_) {
       // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-      emit(state.copyWith(status: BlocStatus.error));
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: UnknownTradeFailure(),
+        ),
+      );
     }
   }
 
@@ -166,7 +224,12 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     Emitter<TradePageState> emit,
   ) {
     swapController.updateFromAddress(event.tokenFrom.address);
-    emit(state.copyWith(tokenFrom: event.tokenFrom));
+    emit(
+      state.copyWith(
+        tokenFrom: event.tokenFrom,
+        failure: Failure.none,
+      ),
+    );
   }
 
   void _mapSetTokenToEventToState(
@@ -174,7 +237,12 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     Emitter<TradePageState> emit,
   ) {
     swapController.updateToAddress(event.tokenTo.address);
-    emit(state.copyWith(tokenTo: event.tokenTo));
+    emit(
+      state.copyWith(
+        tokenTo: event.tokenTo,
+        failure: Failure.none,
+      ),
+    );
   }
 
   void _mapSwapTokensEventToState(
@@ -191,6 +259,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         tokenTo: tokenTo,
         tokenInputFromAmount: tokenInputFromAmount,
         tokenInputToAmount: tokenInputToAmount,
+        failure: Failure.none,
       ),
     );
   }
