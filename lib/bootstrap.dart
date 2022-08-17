@@ -14,6 +14,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() bootstrapper) async {
 
   await runZonedGuarded(
     () async => runApp(await bootstrapper()),
-    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
+    (error, stackTrace) => debugPrint(
+      'zone error: $error \n stackTrace: $stackTrace',
+    ),
   );
 }

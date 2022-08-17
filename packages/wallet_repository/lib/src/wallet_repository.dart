@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cache/cache.dart';
 import 'package:ethereum_api/wallet_api.dart';
 import 'package:shared/shared.dart';
+import 'package:wallet_repository/src/models/models.dart';
 
 /// {@template wallet_repository}
 /// Repository that manages the wallet domain.
@@ -11,11 +12,25 @@ class WalletRepository {
   /// {@macro wallet_repository}
   WalletRepository({
     required WalletApiClient walletApiClient,
-    CacheClient? cache,
+    required CacheClient cache,
     required EthereumChain defaultChain,
   })  : _walletApiClient = walletApiClient,
-        _cache = cache ?? CacheClient(),
-        _defaultChain = defaultChain;
+        _cache = cache,
+        _defaultChain = defaultChain,
+        _walletChanges = walletApiClient.chainChanges
+            .map(
+              (chain) => Wallet(
+                address: chain.isSupported
+                    ? cache
+                            .read<WalletCredentials>(key: credentialsCacheKey)
+                            ?.walletAddress ??
+                        kEmptyAddress
+                    : kEmptyAddress,
+                chain: chain,
+                status: WalletStatus.fromChain(chain),
+              ),
+            )
+            .shareValue();
 
   final WalletApiClient _walletApiClient;
   final CacheClient _cache;
@@ -34,14 +49,20 @@ class WalletRepository {
   /// Returns the current [EthereumChain] synchronously.
   EthereumChain get currentChain => _walletApiClient.currentChain;
 
+  final ValueStream<Wallet> _walletChanges;
+
+  /// Allows listening to changes to the current [Wallet].
+  Stream<Wallet> get walletChanges => _walletChanges;
+
+  /// Returns the current [Wallet] synchronously.
+  Wallet get currentWallet =>
+      _walletChanges.valueOrNull ?? const Wallet.disconnected();
+
   /// Returns the cached [WalletCredentials] for the connected wallet. This
   /// doesn't return `null`, because when called, the wallet is asssumed to be
   /// connected and thus have it's credentials cached.
   WalletCredentials get credentials =>
       _cache.read<WalletCredentials>(key: credentialsCacheKey)!;
-
-  /// Returns the connected wallet address.
-  String get walletAddress => credentials.value.address.hex;
 
   /// Allows the user to connect to a `MetaMask` wallet.
   ///
@@ -107,13 +128,13 @@ class WalletRepository {
       );
 
   /// Returns the amount of tokens with [tokenAddress] owned by the wallet
-  /// identified by [walletAddress].
+  /// identified by current [Wallet.address].
   ///
   /// Defaults to [BigInt.zero] on error.
   Future<BigInt> getRawTokenBalance(String tokenAddress) =>
       _walletApiClient.getRawTokenBalance(
         tokenAddress: tokenAddress,
-        walletAddress: walletAddress,
+        walletAddress: currentWallet.address,
       );
 
   /// Returns an aproximate balance for the token with the given [tokenAddress],

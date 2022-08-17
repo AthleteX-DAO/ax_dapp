@@ -92,7 +92,7 @@ class FarmController {
     final tickers = stakingAlias.split('-');
     //we want athlete ticker not 'AX'
     final athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
-    return _tokensRepository.apts
+    return _tokensRepository.currentApts
             .firstWhereOrNull((apt) => apt.ticker == athleteTicker)
             ?.name ??
         '';
@@ -105,7 +105,7 @@ class FarmController {
     final tickers = stakingAlias.split('-');
     //we want athlete ticker not 'AX'
     final athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
-    return _tokensRepository.apts
+    return _tokensRepository.currentApts
             .firstWhereOrNull((apt) => apt.ticker == athleteTicker)
             ?.sport ??
         SupportedSport.all;

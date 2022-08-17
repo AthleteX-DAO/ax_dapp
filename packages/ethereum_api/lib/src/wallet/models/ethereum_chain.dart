@@ -1,4 +1,10 @@
-import 'package:ethereum_api/src/wallet/models/ethereum_currency.dart';
+import 'package:ethereum_api/src/apt_router/apt_router.dart';
+import 'package:ethereum_api/src/config/models/apt_config.dart';
+import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
+import 'package:ethereum_api/src/dex/dex.dart';
+import 'package:ethereum_api/src/tokens/tokens.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared/shared.dart';
 
 // TODO(Pearlson): confirm info
 /// {@template ethereum_chain}
@@ -92,11 +98,61 @@ enum EthereumChain {
   /// List of block explorer urls used by this [chainId].
   final List<String>? blockExplorerUrls;
 
+  /// Returns a list of supported [EthereumChain]s.
+  static List<EthereumChain> get supportedValues =>
+      values.where((chain) => chain.isSupported).toList();
+}
+
+/// [EthereumChain] extensions.
+extension ChainX on EthereumChain {
   /// Returns whether this [EthereumChain] is supported.
   bool get isSupported =>
       this != EthereumChain.none && this != EthereumChain.unsupported;
 
-  /// Returns a list of supported [EthereumChain]s.
-  static List<EthereumChain> get supportedValues =>
-      values.where((chain) => chain.isSupported).toList();
+  /// Returns the RPC URL used to initialize a [Web3Client].
+  String get rpcUrl => rpcUrls.firstOrNull ?? '';
+}
+
+/// [EthereumChain] configuration.
+extension ChainConfigX on EthereumChain {
+  /// Generates a list of all available [Token]s for this [EthereumChain].
+  List<Token> createTokens() => [
+        Token.ax(this),
+        Token.sx(this),
+        Token.matic(this),
+        Token.weth(this),
+        Token.usdc(this),
+        ...createApts(),
+      ];
+
+  /// Generates the list of [Apt]'s for this [EthereumChain]. Composed based on
+  /// a list of [AptConfig]s.
+  List<Token> createApts() => AptConfig.values
+      .expand(
+        (aptConfig) => [
+          Token.longAp(this, aptConfig: aptConfig),
+          Token.shortAp(this, aptConfig: aptConfig),
+        ],
+      )
+      .toList();
+
+  /// Creates a [Web3Client] based on this [EthereumChain] configuration.
+  Web3Client createWeb3Client(http.Client httpClient) =>
+      Web3Client(rpcUrl, httpClient);
+
+  /// Creates an [APTRouter] client based on this [EthereumChain] configuration.
+  APTRouter createAptRouterClient(Web3Client client) => APTRouter(
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.aptRouter().address(this),
+        ),
+        client: client,
+      );
+
+  /// Creates a [Dex] client based on this [EthereumChain] configuration.
+  Dex createDexClient(Web3Client client) => Dex(
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.dex().address(this),
+        ),
+        client: client,
+      );
 }

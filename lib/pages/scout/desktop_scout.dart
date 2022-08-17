@@ -82,6 +82,7 @@ class _DesktopScoutState extends State<DesktopScout> {
         if (athletePage && curAthlete != null) {
           return BlocProvider(
             create: (context) => AthletePageBloc(
+              walletRepository: context.read<WalletRepository>(),
               tokensRepository: context.read<TokensRepository>(),
               mlbRepo: RepositoryProvider.of<MLBRepo>(context),
               nflRepo: RepositoryProvider.of<NFLRepo>(context),

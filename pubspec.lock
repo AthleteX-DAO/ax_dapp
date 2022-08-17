@@ -142,7 +142,7 @@ packages:
     source: hosted
     version: "8.4.0"
   cache:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "packages/cache"
       relative: true
@@ -211,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
+  config_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/config_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   connectivity_plus:
     dependency: transitive
     description:

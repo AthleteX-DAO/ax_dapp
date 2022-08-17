@@ -19,8 +19,8 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
   })  : _walletRepository = walletRepository,
         super(
           PoolState(
-            token0: tokensRepository.tokens.first,
-            token1: tokensRepository.tokens[1],
+            token0: tokensRepository.currentTokens.first,
+            token1: tokensRepository.currentTokens[1],
           ),
         ) {
     on<PageRefreshEvent>(_mapRefreshEventToState);

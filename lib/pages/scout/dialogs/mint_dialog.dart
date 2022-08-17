@@ -34,7 +34,8 @@ class _MintDialogState extends State<MintDialog> {
   @override
   void initState() {
     super.initState();
-    final aptPair = context.read<TokensRepository>().aptPair(widget.athlete.id);
+    final aptPair =
+        context.read<TokensRepository>().currentAptPair(widget.athlete.id);
     lspController.updateAptAddress(aptPair.address);
     updateStats();
   }

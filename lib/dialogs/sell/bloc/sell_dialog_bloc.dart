@@ -23,7 +23,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         super(
           // setting the apt corresponding to the default aptType which is long
           SellDialogState(
-            longApt: tokensRepository.aptPair(athleteId).longApt,
+            longApt: tokensRepository.currentAptPair(athleteId).longApt,
           ),
         ) {
     on<WatchAptPairStarted>(_onWatchAptPairStarted);
@@ -79,7 +79,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       if (isSuccess) {
         swapController
           ..updateFromAddress(selectedTokenAddress)
-          ..updateToAddress(_tokensRepository.tokens.axt.address);
+          ..updateToAddress(_tokensRepository.currentTokens.axt.address);
         final swapInfo = response.getLeft().toNullable()!.sellInfo;
         final balance =
             await wallet.getTotalBalanceForToken(selectedTokenAddress);

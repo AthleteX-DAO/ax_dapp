@@ -8,11 +8,11 @@ import 'package:shared/shared.dart';
 class EthereumWalletApiClient implements WalletApiClient {
   /// {@macro mobile_wallet_api_client}
   EthereumWalletApiClient({
-    required Web3Client web3Client,
-  }) : _web3Client = web3Client;
+    required ValueStream<Web3Client> reactiveWeb3Client,
+  }) : _reactiveWeb3Client = reactiveWeb3Client;
 
   // ignore: unused_field
-  final Web3Client _web3Client;
+  final ValueStream<Web3Client> _reactiveWeb3Client;
 
   @override
   Stream<EthereumChain> get chainChanges =>

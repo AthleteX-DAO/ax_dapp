@@ -22,7 +22,9 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   })  : _tokensRepository = tokensRepository,
         super(
           // setting the apt corresponding to the default aptType which is long
-          BuyDialogState(longApt: tokensRepository.aptPair(athleteId).longApt),
+          BuyDialogState(
+            longApt: tokensRepository.currentAptPair(athleteId).longApt,
+          ),
         ) {
     on<WatchAptPairStarted>(_onWatchAptPairStarted);
     on<AptTypeSelectionChanged>(_onAptTypeSelectionChanged);
@@ -76,7 +78,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
 
       if (isSuccess) {
         swapController
-          ..updateFromAddress(_tokensRepository.tokens.axt.address)
+          ..updateFromAddress(_tokensRepository.currentTokens.axt.address)
           ..updateToAddress(selectedTokenAddress);
         final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
         final balance = await wallet.getTotalAxBalance();

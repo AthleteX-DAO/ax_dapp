@@ -11,7 +11,7 @@ import 'package:shared/shared.dart';
 class EthereumWalletApiClient implements WalletApiClient {
   /// {@macro unsupported_wallet_api_client}
   EthereumWalletApiClient({
-    required Web3Client web3Client,
+    required ValueStream<Web3Client> reactiveWeb3Client,
   });
 
   @override
