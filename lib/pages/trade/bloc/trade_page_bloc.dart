@@ -68,7 +68,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     FetchTradeInfoRequested event,
     Emitter<TradePageState> emit,
   ) async {
-    if (_walletRepository.currentChain.isSupported) {
+    if (_walletRepository.currentWallet.isConnected) {
       emit(
         state.copyWith(
           status: BlocStatus.error,
