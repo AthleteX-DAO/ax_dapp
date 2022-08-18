@@ -17,8 +17,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         super(const ScoutPageState()) {
     on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
-    on<SelectSport>(_mapSelectSportToState);
-    on<OnAthleteSearch>(_mapSearchAthleteEventToState);
+    on<SelectedSportChanged>(_onSelectedSportChanged);
+    on<AthleteSearchChanged>(_onAthleteSearchChanged);
 
     add(const WatchChainChangesStarted());
     add(FetchScoutInfoRequested());
@@ -68,8 +68,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     }
   }
 
-  Future<void> _mapSelectSportToState(
-    SelectSport event,
+  Future<void> _onSelectedSportChanged(
+    SelectedSportChanged event,
     Emitter<ScoutPageState> emit,
   ) async {
     try {
@@ -112,8 +112,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     }
   }
 
-  void _mapSearchAthleteEventToState(
-    OnAthleteSearch event,
+  void _onAthleteSearchChanged(
+    AthleteSearchChanged event,
     Emitter<ScoutPageState> emit,
   ) {
     final parsedInput = event.searchedName.trim().toUpperCase();

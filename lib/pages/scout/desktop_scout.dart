@@ -172,7 +172,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               supportedSport = SupportedSport.all;
             });
-            bloc.add(const SelectSport(selectedSport: SupportedSport.all));
+            bloc.add(
+              const SelectedSportChanged(selectedSport: SupportedSport.all),
+            );
           },
           child: Text(
             'ALL',
@@ -189,7 +191,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               supportedSport = SupportedSport.MLB;
             });
-            bloc.add(const SelectSport(selectedSport: SupportedSport.MLB));
+            bloc.add(
+              const SelectedSportChanged(selectedSport: SupportedSport.MLB),
+            );
           },
           child: Text(
             'MLB',
@@ -206,7 +210,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               supportedSport = SupportedSport.NFL;
             });
-            bloc.add(const SelectSport(selectedSport: SupportedSport.NFL));
+            bloc.add(
+              const SelectedSportChanged(selectedSport: SupportedSport.NFL),
+            );
           },
           child: Text(
             'NFL',
@@ -1214,7 +1220,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                   input = value;
                 });
                 bloc.add(
-                  OnAthleteSearch(
+                  AthleteSearchChanged(
                     searchedName: value,
                     selectedSport: selectedSport,
                   ),

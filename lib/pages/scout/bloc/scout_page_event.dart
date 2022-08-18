@@ -11,8 +11,8 @@ class WatchChainChangesStarted extends ScoutPageEvent {
   const WatchChainChangesStarted();
 }
 
-class SelectSport extends ScoutPageEvent {
-  const SelectSport({
+class SelectedSportChanged extends ScoutPageEvent {
+  const SelectedSportChanged({
     required this.selectedSport,
   });
 
@@ -24,8 +24,8 @@ class SelectSport extends ScoutPageEvent {
 
 class FetchScoutInfoRequested extends ScoutPageEvent {}
 
-class OnAthleteSearch extends ScoutPageEvent {
-  const OnAthleteSearch({
+class AthleteSearchChanged extends ScoutPageEvent {
+  const AthleteSearchChanged({
     required this.searchedName,
     required this.selectedSport,
   });
