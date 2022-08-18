@@ -144,7 +144,7 @@ class GetScoutAthletesDataUseCase {
         history,
         repo,
         axPrice,
-        scoutToken: currentAxt,
+        axt: currentAxt,
       );
     } else {
       /// if ALL sports is selected fetch for each sport and add athletes to a
@@ -172,7 +172,7 @@ class GetScoutAthletesDataUseCase {
             history,
             repo,
             axPrice,
-            scoutToken: currentAxt,
+            axt: currentAxt,
           ),
         );
       });
@@ -200,9 +200,9 @@ class GetScoutAthletesDataUseCase {
   MarketModel getMarketModel(
     String strTokenAddr,
     double bookPrice, {
-    required Token scoutToken,
+    required Token axt,
   }) {
-    final strAXTAddr = scoutToken.address.toUpperCase();
+    final strAXTAddr = axt.address.toUpperCase();
     // Looking for a pair which has the same token name as strTokenAddr
     // (token address as uppercase)
     final index0 = allPairs.indexWhere(
@@ -252,19 +252,18 @@ class GetScoutAthletesDataUseCase {
     List<dynamic> histories,
     SportsRepo<SportAthlete> repo,
     double axPrice, {
-    required Token scoutToken,
+    required Token axt,
   }) {
     final mappedAthletes = athletes.asMap().map((key, athlete) {
       final aptPair = _tokensRepository.currentAptPair(athlete.id);
       final longAptAddress = aptPair.longApt.address;
       final shortAptAddress = aptPair.shortApt.address;
-      final longToken =
-          getMarketModel(longAptAddress, athlete.price, scoutToken: scoutToken);
+      final longToken = getMarketModel(longAptAddress, athlete.price, axt: axt);
       final history = histories.elementAt(key);
       final shortToken = getMarketModel(
         shortAptAddress,
         collateralizationPerPair - athlete.price,
-        scoutToken: scoutToken,
+        axt: axt,
       );
 
       final length = history.statHistory.length;

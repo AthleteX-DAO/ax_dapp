@@ -38,7 +38,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   }
 
   Future<void> _onFetchScoutInfoRequested(
-    FetchScoutInfoRequested event,
+    FetchScoutInfoRequested _,
     Emitter<ScoutPageState> emit,
   ) async {
     try {
