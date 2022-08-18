@@ -58,8 +58,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         emit(
           state.copyWith(
             status: BlocStatus.noData,
-            filteredAthletes: [],
-            athletes: [],
+            filteredAthletes: const [],
+            athletes: const [],
           ),
         );
       }
@@ -90,7 +90,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
           emit(
             state.copyWith(
               status: BlocStatus.noData,
-              filteredAthletes: [],
+              filteredAthletes: const [],
               selectedSport: event.selectedSport,
             ),
           );
