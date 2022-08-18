@@ -4,15 +4,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 /// [LoggingInterceptor] is used to print logs during network requests.
-/// It's better to add [LoggingInterceptor] to the tail of the interceptor queue,
-/// otherwise the changes made in the interceptor behind A will not be printed out.
-/// This is because the execution of interceptors is in the order of addition.
+///It's better to add [LoggingInterceptor] to the tail of the interceptor queue,
+///otherwise changes made in the interceptor behind A will not be printed out.
+///This is because the execution of interceptors is in the order of addition.
 class LoggingInterceptor extends Interceptor {
   LoggingInterceptor();
 
   @override
-  Future onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<void> onRequest(
+      RequestOptions options, RequestInterceptorHandler handler,) async {
     logPrint('*** API Request - Start ***');
 
     printKV('URI', options.uri);
@@ -47,8 +47,8 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
-  Future onResponse(
-      Response response, ResponseInterceptorHandler handler) async {
+  Future<void> onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler,) async {
     logPrint('*** Api Response - Start ***');
 
     printKV('URI', response.requestOptions.uri);
@@ -66,7 +66,7 @@ class LoggingInterceptor extends Interceptor {
     logPrint('$key: $v');
   }
 
-  void printAll(msg) {
+  void printAll(dynamic msg) {
     msg.toString().split('\n').forEach(logPrint);
   }
 

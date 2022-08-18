@@ -22,6 +22,7 @@ import 'package:ax_dapp/service/graphql/graphql_configuration.dart';
 import 'package:coingecko_api/coingecko_api.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logging/logging.dart';
@@ -89,6 +90,6 @@ void main() async {
 void _setupLogging() {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((rec) {
-    print('${rec.level.name}: ${rec.time}: ${rec.message}');
+    debugPrint('${rec.level.name}: ${rec.time}: ${rec.message}');
   });
 }
