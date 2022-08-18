@@ -29,8 +29,4 @@ class ScoutPageState extends Equatable {
 
   @override
   List<Object> get props => [athletes, filteredAthletes, selectedSport, status];
-
-  @override
-  String toString() =>
-      '''ScoutPageState(cards: $athletes, status: $status, filteredAthletes: $filteredAthletes, selectedSport: $selectedSport)''';
 }
