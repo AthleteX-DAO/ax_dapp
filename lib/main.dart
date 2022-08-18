@@ -32,9 +32,9 @@ import 'package:wallet_repository/wallet_repository.dart';
 void main() async {
   const defaultChain = EthereumChain.polygonMainnet;
 
-  final _dio = Dio();
-  final _mlbApi = MLBAthleteAPI(_dio);
-  final _nflApi = NFLAthleteAPI(_dio);
+  final dio = Dio();
+  final mlbApi = MLBAthleteAPI(dio);
+  final nflApi = NFLAthleteAPI(dio);
 
   final cache = CacheClient();
 
@@ -59,10 +59,10 @@ void main() async {
 
   final gysrApiClient =
       GysrApiClient(reactiveGysrClient: appConfig.reactiveGysrGqlClient);
-  final _subGraphRepo =
+  final subGraphRepo =
       SubGraphRepo(reactiveDexClient: appConfig.reactiveDexGqlClient);
-  final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
-  final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
+  final getPairInfoUseCase = GetPairInfoUseCase(subGraphRepo);
+  final getSwapInfoUseCase = GetSwapInfoUseCase(getPairInfoUseCase);
 
   unawaited(
     bootstrap(() async {
@@ -85,32 +85,32 @@ void main() async {
             ),
           ),
           RepositoryProvider.value(value: gysrApiClient),
-          RepositoryProvider.value(value: _subGraphRepo),
+          RepositoryProvider.value(value: subGraphRepo),
           RepositoryProvider(
-            create: (context) => MLBRepo(_mlbApi),
+            create: (context) => MLBRepo(mlbApi),
           ),
           RepositoryProvider(
-            create: (context) => NFLRepo(_nflApi),
+            create: (context) => NFLRepo(nflApi),
           ),
-          RepositoryProvider.value(value: _getPairInfoUseCase),
-          RepositoryProvider.value(value: _getSwapInfoUseCase),
+          RepositoryProvider.value(value: getPairInfoUseCase),
+          RepositoryProvider.value(value: getSwapInfoUseCase),
           RepositoryProvider(
             create: (context) => GetBuyInfoUseCase(
               tokensRepository: context.read<TokensRepository>(),
-              repo: _getSwapInfoUseCase,
+              repo: getSwapInfoUseCase,
             ),
           ),
           RepositoryProvider(
             create: (context) => GetSellInfoUseCase(
               tokensRepository: context.read<TokensRepository>(),
-              repo: _getSwapInfoUseCase,
+              repo: getSwapInfoUseCase,
             ),
           ),
           RepositoryProvider(
-            create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase),
+            create: (context) => GetPoolInfoUseCase(getPairInfoUseCase),
           ),
           RepositoryProvider(
-            create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo),
+            create: (context) => GetAllLiquidityInfoUseCase(subGraphRepo),
           ),
           RepositoryProvider(
             create: (context) => TrackingRepository(),
