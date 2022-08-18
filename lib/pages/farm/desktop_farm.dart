@@ -158,7 +158,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                       context,
                                       isWeb,
                                       FarmController(
-                                          state.filteredFarms[index]),
+                                          state.filteredFarms[index],),
                                       listHeight,
                                       layoutWdt,
                                     )
