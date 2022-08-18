@@ -1,16 +1,19 @@
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
-import 'package:ax_dapp/service/controller/usecases/get_wallet_address_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'farm_event.dart';
 part 'farm_state.dart';
 
 class FarmBloc extends Bloc<FarmEvent, FarmState> {
-  FarmBloc({required this.repo, required this.controller})
-      : super(const FarmState()) {
+  FarmBloc({
+    required WalletRepository walletRepository,
+    required this.repo,
+  })  : _walletRepository = walletRepository,
+        super(const FarmState()) {
     on<OnLoadFarms>(_mapLoadFarmsEventToState);
     on<OnLoadStakedFarms>(_mapLoadStakedFarmsEventToState);
     on<OnSearchFarms>(_mapSearchEventToState);
@@ -19,8 +22,8 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
   // the address of farms' owner in the gysr platform
   static const String owner = '0xe1bf752fd7480992345629bf3866f6618d57a7da';
 
+  final WalletRepository _walletRepository;
   final GetFarmDataUseCase repo;
-  final GetWalletAddressUseCase controller;
 
   final List<FarmModel> farms = [];
   final List<FarmModel> stakedFarms = [];
@@ -62,8 +65,8 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
           filteredStakedFarms: [],
         ),
       );
-      final account = controller.getWalletAddress();
-      if (account != null) {
+      final account = _walletRepository.currentWallet.address;
+      if (account.isNotEmpty) {
         final stakedFarms = await repo.fetchStakedFarms(account);
         if (stakedFarms.isNotEmpty) {
           emit(

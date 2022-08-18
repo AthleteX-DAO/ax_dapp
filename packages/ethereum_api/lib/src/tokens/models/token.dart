@@ -98,7 +98,7 @@ class Token extends Equatable {
   /// The [SupportedSport] for this [Token].
   final SupportedSport sport;
 
-  /// {@macro token_address_config}
+  /// {@macro ethereum_address_config}
   final EthereumAddressConfig _addressConfig;
 
   /// Represents current [EthereumChain].

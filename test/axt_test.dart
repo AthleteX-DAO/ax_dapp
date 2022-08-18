@@ -1,5 +1,6 @@
 @TestOn('browser')
-import 'package:test/test.dart';
+
+import 'package:flutter_test/flutter_test.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 void main() {

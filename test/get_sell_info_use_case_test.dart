@@ -4,10 +4,10 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.da
     as usecase;
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 import 'get_sell_info_use_case_test.mocks.dart';

@@ -11,7 +11,16 @@ import 'package:shared/shared.dart';
 /// {@endtemplate}
 class ConfigApiClient {
   /// {@macro config_api_client}
-  ConfigApiClient({required http.Client httpClient}) : _httpClient = httpClient;
+  ConfigApiClient({
+    required EthereumChain defaultChain,
+    required http.Client httpClient,
+  })  : _httpClient = httpClient,
+        _dexGqlClientController = BehaviorSubject<GraphQLClient>.seeded(
+          defaultChain.createDexGraphQLClient(),
+        ),
+        _gysrGqlClientController = BehaviorSubject<GraphQLClient>.seeded(
+          defaultChain.createGysrGraphQLClient(),
+        );
 
   final http.Client _httpClient;
 
@@ -24,6 +33,9 @@ class ConfigApiClient {
   /// Returns the current [LongShortPair] address synchronously.
   String get currentLspAddress => _lspClientController.value.self.address.hex;
 
+  final BehaviorSubject<GraphQLClient> _dexGqlClientController;
+  final BehaviorSubject<GraphQLClient> _gysrGqlClientController;
+
   /// Creates and returns the initial [AppConfig] which is used to pass down
   /// reactive dependencies.
   AppConfig initializeAppConfig() {
@@ -32,6 +44,8 @@ class ConfigApiClient {
       reactiveAptRouterClient: _aptRouterClientController.stream,
       reactiveDexClient: _dexClientController.stream,
       reactiveLspClient: _lspClientController.stream,
+      reactiveDexGqlClient: _dexGqlClientController.stream,
+      reactiveGysrGqlClient: _gysrGqlClientController.stream,
     );
   }
 
@@ -50,6 +64,12 @@ class ConfigApiClient {
 
     final dexClient = chain.createDexClient(web3Client);
     _dexClientController.add(dexClient);
+
+    final dexGqlClient = chain.createDexGraphQLClient();
+    _dexGqlClientController.add(dexGqlClient);
+
+    final gysrGqlClient = chain.createGysrGraphQLClient();
+    _gysrGqlClientController.add(gysrGqlClient);
   }
 
   /// Switches the [LongShortPair] client.

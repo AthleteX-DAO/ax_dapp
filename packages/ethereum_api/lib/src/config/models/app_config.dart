@@ -13,6 +13,8 @@ class AppConfig extends Equatable {
     required this.reactiveAptRouterClient,
     required this.reactiveDexClient,
     required this.reactiveLspClient,
+    required this.reactiveDexGqlClient,
+    required this.reactiveGysrGqlClient,
   });
 
   /// Reactive [Web3Client].
@@ -27,11 +29,19 @@ class AppConfig extends Equatable {
   /// Reactive [LongShortPair] client.
   final ValueStream<LongShortPair> reactiveLspClient;
 
+  /// Reactive dex [GraphQLClient] client.
+  final ValueStream<GraphQLClient> reactiveDexGqlClient;
+
+  /// Reactive gysr [GraphQLClient] client.
+  final ValueStream<GraphQLClient> reactiveGysrGqlClient;
+
   @override
   List<Object?> get props => [
         reactiveWeb3Client,
         reactiveAptRouterClient,
         reactiveDexClient,
         reactiveLspClient,
+        reactiveDexGqlClient,
+        reactiveGysrGqlClient,
       ];
 }

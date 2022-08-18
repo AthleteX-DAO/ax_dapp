@@ -3,7 +3,7 @@ import 'package:ethereum_api/src/dex/dex.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 
-/// {@template token_address_config}
+/// {@template ethereum_address_config}
 /// Configures an object with addresses, one for each supported [EthereumChain].
 /// {@endtemplate}
 class EthereumAddressConfig {
@@ -85,7 +85,7 @@ class EthereumAddressConfig {
 }
 
 /// [EthereumAddressConfig] extensions.
-extension TokenAddressConfigX on EthereumAddressConfig {
+extension EthereumAddressConfigX on EthereumAddressConfig {
   /// Returns the correspondent object's address based on the current
   /// [EthereumChain]. For [EthereumChain.none] and [EthereumChain.unsupported]
   /// it will return [kEmptyAddress].

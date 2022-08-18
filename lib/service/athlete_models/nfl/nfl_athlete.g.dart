@@ -30,7 +30,7 @@ Map<String, dynamic> _$NFLAthleteToJson(NFLAthlete instance) =>
       'team': instance.team,
       'position': instance.position,
       'price': instance.price,
-      'timeStamp': instance.timeStamp,
+      'timestamp': instance.timeStamp,
       'passingYards': instance.passingYards,
       'passingTouchDowns': instance.passingTouchDowns,
       'reception': instance.reception,

@@ -1,15 +1,15 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:gql/language.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shared/shared.dart';
 
 /// This is a repository that makes queries with the GraphQlClient
 /// primarily it should be employed by using or adding a usecase to subgraph/usecases
 /// to define the specific functionality needed
 
 class SubGraphRepo {
-  SubGraphRepo(GraphQLClient client) : _client = client;
+  SubGraphRepo({required ValueStream<GraphQLClient> reactiveDexClient})
+      : _reactiveDexClient = reactiveDexClient;
 
-  final GraphQLClient _client;
+  final ValueStream<GraphQLClient> _reactiveDexClient;
+  GraphQLClient get _client => _reactiveDexClient.value;
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryPairDataForTokenAddress(String token0, String token1) async {

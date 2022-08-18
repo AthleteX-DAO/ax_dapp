@@ -6,7 +6,6 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.da
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/athlete.dart';
-import 'package:ax_dapp/service/controller/usecases/get_wallet_address_use_case.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -163,10 +162,10 @@ class _DesktopPoolState extends State<DesktopPool> {
                 ),
                 BlocProvider(
                   create: (BuildContext context) => MyLiquidityBloc(
+                    walletRepository: context.read<WalletRepository>(),
                     repo: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(
                       context,
                     ),
-                    controller: GetWalletAddressUseCase(Get.find()),
                   ),
                   child: MyLiquidity(
                     togglePool: togglePool,

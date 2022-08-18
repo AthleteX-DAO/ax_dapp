@@ -8,13 +8,12 @@ import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
 import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
-import 'package:ax_dapp/service/controller/usecases/get_wallet_address_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -59,8 +58,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
         // child:  FarmLayout(layoutHgt, layoutWdt),
         child: BlocProvider(
           create: (BuildContext context) => FarmBloc(
-            repo: GetFarmDataUseCase(),
-            controller: GetWalletAddressUseCase(Get.find()),
+            walletRepository: context.read<WalletRepository>(),
+            repo: GetFarmDataUseCase(
+              gysrApiClient: context.read<GysrApiClient>(),
+            ),
           ),
           child: farmLayout(layoutHgt, layoutWdt),
         ),
