@@ -11,8 +11,8 @@ class LoggingInterceptor extends Interceptor {
   LoggingInterceptor();
 
   @override
-  Future onRequest(RequestOptions options, RequestInterceptorHandler handler)
-  async {
+  Future onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     logPrint('*** API Request - Start ***');
 
     printKV('URI', options.uri);
@@ -47,7 +47,8 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
-  Future onResponse(Response response, ResponseInterceptorHandler handler) async {
+  Future onResponse(
+      Response response, ResponseInterceptorHandler handler) async {
     logPrint('*** Api Response - Start ***');
 
     printKV('URI', response.requestOptions.uri);

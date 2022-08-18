@@ -27,7 +27,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:tracking_repository/tracking_repository.dart';
 
-
 void main() async {
   _setupLogging();
   final _dio = Dio();
