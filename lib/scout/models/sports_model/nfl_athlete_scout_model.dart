@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 
 class NFLAthleteScoutModel extends AthleteScoutModel {
   NFLAthleteScoutModel({

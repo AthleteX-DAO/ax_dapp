@@ -1,8 +1,9 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/pages/scout/models/sports_model/athlete_scout_model_exports.dart';
-import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget_exports.dart';
+import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/scout/models/sports_model/sports_model.dart';
+import 'package:ax_dapp/scout/widgets/widget_factories/mlb_athlete_details_widget.dart';
+import 'package:ax_dapp/scout/widgets/widget_factories/nfl_athlete_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 

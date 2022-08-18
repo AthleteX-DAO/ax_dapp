@@ -1,12 +1,8 @@
 // ignore_for_file: avoid_dynamic_calls
 
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/pages/scout/models/book_price_model.dart';
-import 'package:ax_dapp/pages/scout/models/market_model.dart';
-import 'package:ax_dapp/pages/scout/models/sports_model/mlb_athlete_scout_model.dart';
-import 'package:ax_dapp/pages/scout/models/sports_model/nfl_athlete_scout_model.dart';
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
+import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete_stats.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_stats.dart';

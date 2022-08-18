@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';

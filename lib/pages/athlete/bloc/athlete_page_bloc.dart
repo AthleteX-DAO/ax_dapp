@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
+import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:equatable/equatable.dart';
