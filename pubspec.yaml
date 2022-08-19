@@ -46,6 +46,7 @@ dependencies:
   graphql_flutter: ^5.1.0
   intl: ^0.17.0
   local_auth: ^2.1.0
+  motion_toast: ^2.3.2
   postgres: ^2.4.5
   provider: ^6.0.3
   retrofit: ^3.0.1+1
