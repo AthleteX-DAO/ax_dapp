@@ -5,7 +5,6 @@ import 'package:ax_dapp/contracts/Pool.g.dart';
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
 import 'package:get/get.dart';

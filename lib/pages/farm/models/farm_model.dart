@@ -1,6 +1,6 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/supported_sports.dart';
+import 'package:json_annotation/json_annotation.dart';
 part 'farm_model.g.dart';
 
 @JsonSerializable()
