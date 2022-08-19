@@ -12,6 +12,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() bootstrapper) async {
 
   await runZonedGuarded(
     () async {
+      // ignore: deprecated_member_use
       await BlocOverrides.runZoned(
         () async => runApp(await bootstrapper()),
         blocObserver: AppBlocObserver(),
