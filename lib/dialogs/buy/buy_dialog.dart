@@ -5,7 +5,6 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
-import 'package:ax_dapp/util/token_type.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -16,18 +15,20 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BuyDialog extends StatefulWidget {
-  const BuyDialog(
-    this.athlete,
-    this.athleteName,
-    this.aptPrice,
-    this.athleteId,
-    this.goToTradePage, {
+  const BuyDialog({
+    required this.athlete,
+    required this.athleteName,
+    required this.aptPrice,
+    required this.athleteId,
+    required this.isLongApt,
+    required this.goToTradePage,
     super.key,
   });
   final AthleteScoutModel athlete;
   final String athleteName;
   final double aptPrice;
   final int athleteId;
+  final bool isLongApt;
   final void Function() goToTradePage;
 
   @override
@@ -39,7 +40,8 @@ class _BuyDialogState extends State<BuyDialog> {
   double hgt = 500;
   final TextEditingController _aptAmountController = TextEditingController();
 
-  TokenType _currentTokenTypeSelection = TokenType.long;
+  bool isFirst = true;
+  bool isLongSelected = true;
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
@@ -68,19 +70,20 @@ class _BuyDialogState extends State<BuyDialog> {
                 ),
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == TokenType.long)
+                primary: (isFirst ? widget.isLongApt : isLongSelected)
                     ? Colors.amber
                     : Colors.transparent,
               ),
               onPressed: () {
                 setState(() {
-                  _currentTokenTypeSelection = TokenType.long;
+                  isLongSelected = true;
+                  isFirst = false;
                 });
               },
               child: Text(
                 'Long',
                 style: TextStyle(
-                  color: (_currentTokenTypeSelection == TokenType.long)
+                  color: (isFirst ? widget.isLongApt : isLongSelected)
                       ? Colors.black
                       : const Color.fromRGBO(154, 154, 154, 1),
                   fontSize: 11,
@@ -97,19 +100,20 @@ class _BuyDialogState extends State<BuyDialog> {
                 ),
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == TokenType.long)
+                primary: (isFirst ? widget.isLongApt : isLongSelected)
                     ? Colors.transparent
                     : Colors.black,
               ),
               onPressed: () {
                 setState(() {
-                  _currentTokenTypeSelection = TokenType.short;
+                  isLongSelected = false;
+                  isFirst = false;
                 });
               },
               child: Text(
                 'Short',
                 style: TextStyle(
-                  color: (_currentTokenTypeSelection == TokenType.long)
+                  color: (isFirst ? widget.isLongApt : isLongSelected)
                       ? const Color.fromRGBO(154, 154, 154, 1)
                       : Colors.amber,
                   fontSize: 11,
@@ -128,7 +132,7 @@ class _BuyDialogState extends State<BuyDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Price:', style: textStyle(Colors.white, 15, false)),
-          if (_currentTokenTypeSelection == TokenType.long)
+          if (isFirst ? widget.isLongApt : isLongSelected)
             Text(
               '$price AX per ${getLongAthleteSymbol(widget.athleteId)} APT',
               style: textStyle(Colors.white, 15, false),
@@ -235,7 +239,7 @@ class _BuyDialogState extends State<BuyDialog> {
             'You Receive:',
             style: textStyle(Colors.white, 15, false),
           ),
-          if (_currentTokenTypeSelection == TokenType.long)
+          if (isFirst ? widget.isLongApt : isLongSelected)
             Text(
               '$amountToReceive '
               '${getLongAthleteSymbol(widget.athleteId)}'
@@ -263,10 +267,9 @@ class _BuyDialogState extends State<BuyDialog> {
     if (_height < 505) hgt = _height;
 
     var aptLongOrShort = 'Long Apt';
-    if (_currentTokenTypeSelection == TokenType.long) {
+    if (isFirst ? widget.isLongApt : isLongSelected) {
       aptLongOrShort = 'Long Apt';
-    }
-    if (_currentTokenTypeSelection == TokenType.short) {
+    } else {
       aptLongOrShort = 'Short Apt';
     }
     final userWalletAddress = FormatWalletAddress.getWalletAddress(
@@ -572,7 +575,7 @@ class _BuyDialogState extends State<BuyDialog> {
   }
 
   String _getCurrentTokenAddress() {
-    return (_currentTokenTypeSelection == TokenType.long)
+    return (isFirst ? widget.isLongApt : isLongSelected)
         ? getLongAptAddress(widget.athleteId)
         : getShortAptAddress(widget.athleteId);
   }

@@ -22,6 +22,7 @@ Container buyButton(
   AthleteScoutModel athlete,
   bool isPortraitMode,
   double containerWdt,
+  bool isLongApt,
   void Function() goToTradePage,
 ) {
   final controller = Get.find<Controller>();
@@ -42,11 +43,12 @@ Container buyButton(
                 swapController: Get.find(),
               ),
               child: BuyDialog(
-                athlete,
-                athlete.name,
-                athlete.longTokenBookPrice!,
-                athlete.id,
-                goToTradePage,
+                athlete: athlete,
+                athleteName: athlete.name,
+                aptPrice: athlete.longTokenBookPrice!,
+                athleteId: athlete.id,
+                isLongApt: isLongApt,
+                goToTradePage: goToTradePage,
               ),
             ),
           );
@@ -63,6 +65,7 @@ Container sellButton(
   BuildContext context,
   AthleteScoutModel athlete,
   bool isPortraitMode,
+  bool isLongApt,
   double containerWdt,
 ) {
   final controller = Get.find<Controller>();
@@ -83,10 +86,11 @@ Container sellButton(
                 swapController: Get.find(),
               ),
               child: SellDialog(
-                athlete,
-                athlete.name,
-                athlete.longTokenBookPrice!,
-                athlete.id,
+                athlete: athlete,
+                athleteName: athlete.name,
+                aptPrice: athlete.longTokenBookPrice!,
+                isLongApt: isLongApt,
+                athleteId: athlete.id,
               ),
             ),
           );
