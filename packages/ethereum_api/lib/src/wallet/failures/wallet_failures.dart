@@ -9,6 +9,16 @@ class WalletNoFailure extends WalletFailure {
   const WalletNoFailure._() : super._(Null, StackTrace.empty);
 }
 
+/// {@template wallet_no_failure}
+/// Failure used to signal that the user's wallet is currently disconnected.
+/// Some app features allow access only when the wallet is connected.
+/// {@endtemplate}
+class DisconnectedWalletFailure extends WalletFailure {
+  /// {@macro temp_failure}
+  DisconnectedWalletFailure()
+      : super._(Exception('Wallet is disconnected'), StackTrace.empty);
+}
+
 /// {@macro wallet_unavailable_failure}
 class WalletUnavailableFailure extends WalletFailure {
   /// {@macro wallet_unavailable_failure}
