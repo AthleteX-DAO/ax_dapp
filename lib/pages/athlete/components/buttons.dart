@@ -12,7 +12,7 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
-import 'package:ax_dapp/util/wallet_warning_toast.dart';
+import 'package:ax_dapp/util/toastx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -51,7 +51,7 @@ Container buyButton(
             ),
           );
         } else {
-          WalletWarning(context).show();
+          context.showWalletWarningToast();
         }
       },
       child: Text('Buy', style: textStyle(Colors.black, 20, false, false)),
@@ -91,7 +91,7 @@ Container sellButton(
             ),
           );
         } else {
-          WalletWarning(context).show();
+          context.showWalletWarningToast();
         }
       },
       child: Text('Sell', style: textStyle(Colors.black, 20, false, false)),
@@ -118,7 +118,7 @@ Container mintButton(
             builder: (BuildContext context) => MintDialog(athlete),
           );
         } else {
-          WalletWarning(context).show();
+          context.showWalletWarningToast();
         }
       },
       child:
@@ -155,7 +155,7 @@ Container redeemButton(
             ),
           );
         } else {
-          WalletWarning(context).show();
+          context.showWalletWarningToast();
         }
       },
       child: Text(
