@@ -986,6 +986,7 @@ class _AthletePageState extends State<AthletePage> {
                         athlete,
                         _isPortraitMode,
                         _width,
+                        _isLongApt,
                         widget.goToTradePage,
                       ),
                       sellButton(
@@ -1303,6 +1304,7 @@ class _AthletePageState extends State<AthletePage> {
                             athlete,
                             _isPortraitMode,
                             containerWdt,
+                            _isLongApt,
                             widget.goToTradePage,
                           ),
                           sellButton(

@@ -20,6 +20,7 @@ Container buyButton(
   AthleteScoutModel athlete,
   bool isPortraitMode,
   double containerWdt,
+  bool isLongApt,
   void Function() goToTradePage,
 ) {
   return Container(
@@ -38,11 +39,14 @@ Container buyButton(
               swapController: Get.find(),
             ),
             child: BuyDialog(
-              athlete,
-              athlete.name,
-              athlete.longTokenBookPrice!,
-              athlete.id,
-              goToTradePage,
+              athlete: athlete,
+              athleteName: athlete.name,
+              aptPrice: isLongApt
+                  ? athlete.longTokenBookPrice!
+                  : athlete.shortTokenBookPrice!,
+              athleteId: athlete.id,
+              isLongApt: isLongApt,
+              goToTradePage: goToTradePage,
             ),
           ),
         );
