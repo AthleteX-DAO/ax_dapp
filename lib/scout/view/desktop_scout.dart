@@ -4,7 +4,7 @@ import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/pages/athlete/athlete_page.dart';
 import 'package:ax_dapp/pages/athlete/bloc/athlete_page_bloc.dart'
-    hide OnPageRefresh;
+    hide GetPlayerStatsRequested;
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
@@ -15,6 +15,8 @@ import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
+import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -819,6 +821,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                   ),
                   child: TextButton(
                     onPressed: () {
+                      final isWalletDisconnected =
+                          context.read<WalletBloc>().state.isWalletDisconnected;
+                      if (isWalletDisconnected) {
+                        context.showWalletWarningToast();
+                        return;
+                      }
                       if (kIsWeb) {
                         showDialog<void>(
                           context: context,
@@ -1076,6 +1084,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                   ),
                   child: TextButton(
                     onPressed: () {
+                      final isWalletDisconnected =
+                          context.read<WalletBloc>().state.isWalletDisconnected;
+                      if (isWalletDisconnected) {
+                        context.showWalletWarningToast();
+                        return;
+                      }
                       if (kIsWeb) {
                         showDialog<void>(
                           context: context,

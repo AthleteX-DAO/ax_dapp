@@ -7,6 +7,7 @@ class AthletePageState extends Equatable {
     this.longApt = const Apt.empty(),
     this.shortApt = const Apt.empty(),
     this.stats = const [],
+    this.failure = Failure.none,
   });
 
   final BlocStatus status;
@@ -14,6 +15,7 @@ class AthletePageState extends Equatable {
   final Apt longApt;
   final Apt shortApt;
   final List<GraphData> stats;
+  final Failure failure;
 
   AthletePageState copyWith({
     BlocStatus? status,
@@ -21,6 +23,7 @@ class AthletePageState extends Equatable {
     Apt? longApt,
     Apt? shortApt,
     List<GraphData>? stats,
+    Failure? failure,
   }) {
     return AthletePageState(
       status: status ?? this.status,
@@ -28,6 +31,7 @@ class AthletePageState extends Equatable {
       longApt: longApt ?? this.longApt,
       shortApt: shortApt ?? this.shortApt,
       stats: stats ?? this.stats,
+      failure: failure ?? this.failure,
     );
   }
 
@@ -38,6 +42,7 @@ class AthletePageState extends Equatable {
         longApt,
         shortApt,
         stats,
+        failure,
       ];
 }
 

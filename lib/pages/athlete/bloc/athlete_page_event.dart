@@ -25,10 +25,13 @@ class AptTypeSelectionChanged extends AthletePageEvent {
   List<Object?> get props => [aptType];
 }
 
-class OnPageRefresh extends AthletePageEvent {
-  const OnPageRefresh({required this.playerId});
+class GetPlayerStatsRequested extends AthletePageEvent {
+  const GetPlayerStatsRequested(this.playerId);
 
   final int playerId;
+
+  @override
+  List<Object?> get props => [playerId];
 }
 
 class OnGraphRefresh extends AthletePageEvent {}

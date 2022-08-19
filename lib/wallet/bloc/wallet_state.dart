@@ -73,6 +73,7 @@ class WalletState extends Equatable {
 
 extension WalletStateX on WalletState {
   bool get isWalletConnected => walletStatus.isConnected;
+  bool get isWalletDisconnected => !isWalletConnected;
   bool get isWalletUnsupported => walletStatus.isUnsupported;
   bool get isWalletUnavailable => failure is WalletUnavailableFailure;
   bool get hasFailure => failure != WalletFailure.none;

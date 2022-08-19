@@ -5,9 +5,8 @@ import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -31,11 +30,12 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
         ) {
     on<WatchAptPairStarted>(_onWatchAptPairStarted);
     on<AptTypeSelectionChanged>(_onAptTypeSelectionChanged);
-    on<OnPageRefresh>(_mapPageRefreshEventToState);
+    on<GetPlayerStatsRequested>(_onGetPlayerStatsRequested);
     on<OnGraphRefresh>(_mapGraphRefreshEventToState);
     on<AddTokenToWalletRequested>(_onAddTokenToWalletRequested);
 
     add(WatchAptPairStarted(athlete.id));
+    add(GetPlayerStatsRequested(athlete.id));
   }
 
   final AthleteScoutModel athlete;
@@ -63,8 +63,8 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
     emit(state.copyWith(aptTypeSelection: event.aptType));
   }
 
-  Future<void> _mapPageRefreshEventToState(
-    OnPageRefresh event,
+  Future<void> _onGetPlayerStatsRequested(
+    GetPlayerStatsRequested event,
     Emitter<AthletePageState> emit,
   ) async {
     switch (athlete.sport) {
@@ -161,6 +161,11 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
     AddTokenToWalletRequested event,
     Emitter<AthletePageState> emit,
   ) async {
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(state.copyWith(failure: DisconnectedWalletFailure()));
+      emit(state.copyWith(failure: Failure.none));
+      return;
+    }
     try {
       await _walletRepository.addToken(
         tokenAddress: state.selectedAptAddress,

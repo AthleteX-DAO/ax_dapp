@@ -8,10 +8,10 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
-import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -68,18 +68,22 @@ class _AthletePageState extends State<AthletePage> {
     _isPortraitMode = _mediaquery.orientation == Orientation.portrait;
     if (listView == 1) return DesktopScout(goToTradePage: widget.goToTradePage);
 
-    return kIsWeb
-        ? BlocBuilder<AthletePageBloc, AthletePageState>(
-            builder: (context, state) {
-              final bloc = context.read<AthletePageBloc>();
-              final chartStats = state.stats;
-              if (state.status == BlocStatus.initial) {
-                bloc.add(OnPageRefresh(playerId: athlete.id));
-              }
-              return buildWebView(athlete, chartStats);
-            },
-          )
-        : buildMobileView(context);
+    return BlocListener<AthletePageBloc, AthletePageState>(
+      listener: (context, state) {
+        if (state.failure is DisconnectedWalletFailure) {
+          context.showWalletWarningToast();
+        }
+      },
+      child: kIsWeb
+          ? BlocBuilder<AthletePageBloc, AthletePageState>(
+              buildWhen: (previous, current) => previous.stats != current.stats,
+              builder: (_, state) {
+                final chartStats = state.stats;
+                return buildWebView(athlete, chartStats);
+              },
+            )
+          : buildMobileView(context),
+    );
   }
 
   Widget buildWebView(AthleteScoutModel athlete, List<GraphData> chartStats) {
@@ -978,38 +982,34 @@ class _AthletePageState extends State<AthletePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      buyButton(
-                        context,
-                        athlete,
-                        _isPortraitMode,
-                        _width,
-                        widget.goToTradePage,
+                      BuyButton(
+                        athlete: athlete,
+                        isPortraitMode: _isPortraitMode,
+                        containerWdt: _width,
+                        goToTradePage: widget.goToTradePage,
                       ),
-                      sellButton(
-                        context,
-                        athlete,
-                        _isPortraitMode,
-                        _width,
+                      SellButton(
+                        athlete: athlete,
+                        isPortraitMode: _isPortraitMode,
+                        containerWdt: _width,
                       )
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      mintButton(
-                        context,
-                        athlete,
-                        _isPortraitMode,
-                        _width,
+                      MintButton(
+                        athlete: athlete,
+                        isPortraitMode: _isPortraitMode,
+                        containerWdt: _width,
                       ),
-                      redeemButton(
-                        context,
-                        athlete,
-                        '',
-                        '',
-                        '',
-                        _isPortraitMode,
-                        _width,
+                      RedeemButton(
+                        athlete: athlete,
+                        inputLongApt: '',
+                        inputShortApt: '',
+                        valueInAX: '',
+                        isPortraitMode: _isPortraitMode,
+                        containerWdt: _width,
                       )
                     ],
                   ),
@@ -1316,38 +1316,34 @@ class _AthletePageState extends State<AthletePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          buyButton(
-                            context,
-                            athlete,
-                            _isPortraitMode,
-                            containerWdt,
-                            widget.goToTradePage,
+                          BuyButton(
+                            athlete: athlete,
+                            isPortraitMode: _isPortraitMode,
+                            containerWdt: containerWdt,
+                            goToTradePage: widget.goToTradePage,
                           ),
-                          sellButton(
-                            context,
-                            athlete,
-                            _isPortraitMode,
-                            containerWdt,
+                          SellButton(
+                            athlete: athlete,
+                            isPortraitMode: _isPortraitMode,
+                            containerWdt: containerWdt,
                           )
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          mintButton(
-                            context,
-                            athlete,
-                            _isPortraitMode,
-                            containerWdt,
+                          MintButton(
+                            athlete: athlete,
+                            isPortraitMode: _isPortraitMode,
+                            containerWdt: containerWdt,
                           ),
-                          redeemButton(
-                            context,
-                            athlete,
-                            '',
-                            '',
-                            '',
-                            _isPortraitMode,
-                            containerWdt,
+                          RedeemButton(
+                            athlete: athlete,
+                            inputLongApt: '',
+                            inputShortApt: '',
+                            valueInAX: '',
+                            isPortraitMode: _isPortraitMode,
+                            containerWdt: containerWdt,
                           )
                         ],
                       ),
