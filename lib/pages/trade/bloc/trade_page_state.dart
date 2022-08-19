@@ -77,13 +77,6 @@ class TradePageState extends Equatable {
 /// {@template temp_failure}
 /// Temporary failure, this should come from the bottom most layer.
 /// {@endtemplate}
-class DisconnectedWalletFailure extends Failure {
-  /// {@macro temp_failure}
-  DisconnectedWalletFailure()
-      : super(Exception('Wallet is disconnected'), StackTrace.empty);
-}
-
-/// {@macro temp_failure}
 class NoSwapInfoFailure extends Failure {
   /// {@macro temp_failure}
   NoSwapInfoFailure() : super(Exception('No swap info'), StackTrace.empty);
