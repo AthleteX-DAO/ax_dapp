@@ -4,23 +4,22 @@ import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/pages/athlete/athlete_page.dart';
 import 'package:ax_dapp/pages/athlete/bloc/athlete_page_bloc.dart'
-    hide OnPageRefresh;
-import 'package:ax_dapp/pages/scout/bloc/scout_page_bloc.dart';
-import 'package:ax_dapp/pages/scout/components/filter_menu_error.dart';
-import 'package:ax_dapp/pages/scout/components/scout_loading.dart';
-import 'package:ax_dapp/pages/scout/components/scout_loading_error.dart';
-import 'package:ax_dapp/pages/scout/dialogs/misc.dart';
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget.dart';
+    hide GetPlayerStatsRequested;
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
+import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
+import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
+import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
@@ -172,7 +171,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               supportedSport = SupportedSport.all;
             });
-            bloc.add(const SelectSport(selectedSport: SupportedSport.all));
+            bloc.add(
+              const SelectedSportChanged(selectedSport: SupportedSport.all),
+            );
           },
           child: Text(
             'ALL',
@@ -189,7 +190,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               supportedSport = SupportedSport.MLB;
             });
-            bloc.add(const SelectSport(selectedSport: SupportedSport.MLB));
+            bloc.add(
+              const SelectedSportChanged(selectedSport: SupportedSport.MLB),
+            );
           },
           child: Text(
             'MLB',
@@ -206,7 +209,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             setState(() {
               supportedSport = SupportedSport.NFL;
             });
-            bloc.add(const SelectSport(selectedSport: SupportedSport.NFL));
+            bloc.add(
+              const SelectedSportChanged(selectedSport: SupportedSport.NFL),
+            );
           },
           child: Text(
             'NFL',
@@ -816,6 +821,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                   ),
                   child: TextButton(
                     onPressed: () {
+                      final isWalletDisconnected =
+                          context.read<WalletBloc>().state.isWalletDisconnected;
+                      if (isWalletDisconnected) {
+                        context.showWalletWarningToast();
+                        return;
+                      }
                       if (kIsWeb) {
                         showDialog<void>(
                           context: context,
@@ -1073,6 +1084,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                   ),
                   child: TextButton(
                     onPressed: () {
+                      final isWalletDisconnected =
+                          context.read<WalletBloc>().state.isWalletDisconnected;
+                      if (isWalletDisconnected) {
+                        context.showWalletWarningToast();
+                        return;
+                      }
                       if (kIsWeb) {
                         showDialog<void>(
                           context: context,
@@ -1214,7 +1231,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                   input = value;
                 });
                 bloc.add(
-                  OnAthleteSearch(
+                  AthleteSearchChanged(
                     searchedName: value,
                     selectedSport: selectedSport,
                   ),

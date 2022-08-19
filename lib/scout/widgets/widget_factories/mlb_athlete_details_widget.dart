@@ -1,5 +1,5 @@
-import 'package:ax_dapp/pages/scout/models/sports_model/mlb_athlete_scout_model.dart';
-import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget.dart';
+import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/scout/widgets/widget_factories/athlete_details_widget.dart';
 import 'package:ax_dapp/util/abbreviation_mappings_helper.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';

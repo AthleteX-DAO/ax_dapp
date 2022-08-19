@@ -1,5 +1,7 @@
-class MarketModel {
-  MarketModel({
+import 'package:shared/shared.dart';
+
+class MarketModel extends Equatable {
+  const MarketModel({
     required this.marketPrice,
     required double recentPrice,
     required this.bookPrice,
@@ -9,6 +11,13 @@ class MarketModel {
   final double marketPrice;
   final double percentage;
   final double bookPrice;
+
+  @override
+  List<Object?> get props => [
+        marketPrice,
+        percentage,
+        bookPrice,
+      ];
 
   // this purpose of this line is to generate some fake data because we don't
   // have any history of price at the moment

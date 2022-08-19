@@ -38,4 +38,7 @@ class Wallet extends Equatable {
 extension WalletX on Wallet {
   /// Returns `true` when this [Wallet] is connected.
   bool get isConnected => status.isConnected;
+
+  /// Returns `true` when this [Wallet] is disconnected.
+  bool get isDisconnected => !isConnected;
 }

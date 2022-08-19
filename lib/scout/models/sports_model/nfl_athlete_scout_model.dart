@@ -1,7 +1,7 @@
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 
 class NFLAthleteScoutModel extends AthleteScoutModel {
-  NFLAthleteScoutModel({
+  const NFLAthleteScoutModel({
     required super.id,
     required super.name,
     required super.position,
@@ -51,4 +51,17 @@ class NFLAthleteScoutModel extends AthleteScoutModel {
   final double rushingYards;
   final double offensiveSnapsPlayed;
   final double defensiveSnapsPlayed;
+
+  @override
+  List<Object?> get props => super.props
+    ..addAll([
+      passingYards,
+      passingTouchDowns,
+      reception,
+      receiveYards,
+      receiveTouch,
+      rushingYards,
+      offensiveSnapsPlayed,
+      defensiveSnapsPlayed,
+    ]);
 }

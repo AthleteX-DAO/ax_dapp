@@ -1,7 +1,7 @@
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 
 class MLBAthleteScoutModel extends AthleteScoutModel {
-  MLBAthleteScoutModel({
+  const MLBAthleteScoutModel({
     required super.id,
     required super.name,
     required super.position,
@@ -38,4 +38,17 @@ class MLBAthleteScoutModel extends AthleteScoutModel {
   final double weightedOnBasePercentage;
   final double errors;
   final double inningsPlayed;
+
+  @override
+  List<Object?> get props => super.props
+    ..addAll([
+      homeRuns,
+      strikeOuts,
+      saves,
+      stolenBases,
+      atBats,
+      weightedOnBasePercentage,
+      errors,
+      inningsPlayed,
+    ]);
 }

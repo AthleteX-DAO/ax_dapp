@@ -1,5 +1,5 @@
-import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
-import 'package:ax_dapp/pages/scout/usecases/get_scout_athletes_data_use_case.dart';
+import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/scout/usecases/usecases.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +17,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         super(const ScoutPageState()) {
     on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
-    on<SelectSport>(_mapSelectSportToState);
-    on<OnAthleteSearch>(_mapSearchAthleteEventToState);
+    on<SelectedSportChanged>(_onSelectedSportChanged);
+    on<AthleteSearchChanged>(_onAthleteSearchChanged);
 
     add(const WatchChainChangesStarted());
     add(FetchScoutInfoRequested());
@@ -38,7 +38,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   }
 
   Future<void> _onFetchScoutInfoRequested(
-    FetchScoutInfoRequested event,
+    FetchScoutInfoRequested _,
     Emitter<ScoutPageState> emit,
   ) async {
     try {
@@ -58,8 +58,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         emit(
           state.copyWith(
             status: BlocStatus.noData,
-            filteredAthletes: [],
-            athletes: [],
+            filteredAthletes: const [],
+            athletes: const [],
           ),
         );
       }
@@ -68,8 +68,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     }
   }
 
-  Future<void> _mapSelectSportToState(
-    SelectSport event,
+  Future<void> _onSelectedSportChanged(
+    SelectedSportChanged event,
     Emitter<ScoutPageState> emit,
   ) async {
     try {
@@ -90,7 +90,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
           emit(
             state.copyWith(
               status: BlocStatus.noData,
-              filteredAthletes: [],
+              filteredAthletes: const [],
               selectedSport: event.selectedSport,
             ),
           );
@@ -112,8 +112,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     }
   }
 
-  void _mapSearchAthleteEventToState(
-    OnAthleteSearch event,
+  void _onAthleteSearchChanged(
+    AthleteSearchChanged event,
     Emitter<ScoutPageState> emit,
   ) {
     final parsedInput = event.searchedName.trim().toUpperCase();
