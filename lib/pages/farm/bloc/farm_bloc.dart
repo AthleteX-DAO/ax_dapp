@@ -89,14 +89,14 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
       state.copy(
         filteredFarms: state.farms
             .where(
-              (farm) => farm.strName
+              (farm) => (farm.getAthleteTokenName() ?? farm.strName)
                   .toUpperCase()
                   .contains(event.searchedName.toUpperCase()),
             )
             .toList(),
         filteredStakedFarms: state.stakedFarms
             .where(
-              (farm) => farm.strName
+              (farm) => (farm.getAthleteTokenName() ?? farm.strName)
                   .toUpperCase()
                   .contains(event.searchedName.toUpperCase()),
             )
