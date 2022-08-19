@@ -12,28 +12,10 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
+import 'package:ax_dapp/util/wallet_warning_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:motion_toast/motion_toast.dart';
-import 'package:motion_toast/resources/arrays.dart';
-
-void showWarningToast(BuildContext context) {
-  MotionToast(
-    icon: Icons.warning,
-    primaryColor: Colors.black.withOpacity(0.3),
-    secondaryColor: Colors.amber[400],
-    backgroundType: BackgroundType.solid,
-    title: Text(
-      'Wallet Warning',
-      style: TextStyle(color: Colors.amber[400], fontSize: 18),
-    ),
-    description: Text(
-      'You need to connect Wallet to use this feature.',
-      style: TextStyle(color: Colors.amber[400]),
-    ),
-  ).show(context);
-}
 
 Container buyButton(
   BuildContext context,
@@ -69,7 +51,7 @@ Container buyButton(
             ),
           );
         } else {
-          showWarningToast(context);
+          WalletWarning(context).show();
         }
       },
       child: Text('Buy', style: textStyle(Colors.black, 20, false, false)),
@@ -109,7 +91,7 @@ Container sellButton(
             ),
           );
         } else {
-          showWarningToast(context);
+          WalletWarning(context).show();
         }
       },
       child: Text('Sell', style: textStyle(Colors.black, 20, false, false)),
@@ -136,7 +118,7 @@ Container mintButton(
             builder: (BuildContext context) => MintDialog(athlete),
           );
         } else {
-          showWarningToast(context);
+          WalletWarning(context).show();
         }
       },
       child:
@@ -173,7 +155,7 @@ Container redeemButton(
             ),
           );
         } else {
-          showWarningToast(context);
+          WalletWarning(context).show();
         }
       },
       child: Text(
