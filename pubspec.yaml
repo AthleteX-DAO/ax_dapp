@@ -51,6 +51,7 @@ dependencies:
   intl: ^0.17.0
   json_annotation: ^4.6.0
   local_auth: ^2.1.0
+  motion_toast: ^2.3.2
   postgres: ^2.4.5
   provider: ^6.0.3
   retrofit: ^3.0.1+1
@@ -71,7 +72,7 @@ dependencies:
 
 dependency_overrides:
   firebase_analytics_web:
-    git: 
+    git:
       url: https://github.com/durduman/flutterfire.git
       path: packages/firebase_analytics/firebase_analytics_web
       ref: firebase_analytics_web-0.4.0+16-fix-for-web
