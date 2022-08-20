@@ -1,5 +1,5 @@
+import 'package:ax_dapp/athlete/athlete.dart' hide AptTypeSelectionChanged;
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
-import 'package:ax_dapp/pages/athlete/components/athlete_buy_approve_button.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';

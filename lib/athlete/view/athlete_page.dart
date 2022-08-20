@@ -1,8 +1,5 @@
-import 'package:ax_dapp/pages/athlete/bloc/athlete_page_bloc.dart';
-import 'package:ax_dapp/pages/athlete/components/athlete_page_tooltip.dart';
-import 'package:ax_dapp/pages/athlete/components/build_long_chart.dart';
-import 'package:ax_dapp/pages/athlete/components/build_short_chart.dart';
-import 'package:ax_dapp/pages/athlete/components/buttons.dart';
+import 'package:ax_dapp/athlete/bloc/athlete_page_bloc.dart';
+import 'package:ax_dapp/athlete/widgets/widgets.dart';
 import 'package:ax_dapp/scout/scout.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';

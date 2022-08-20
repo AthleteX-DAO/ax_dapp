@@ -1,10 +1,8 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_positional_boolean_parameters
 
+import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
-import 'package:ax_dapp/pages/athlete/athlete_page.dart';
-import 'package:ax_dapp/pages/athlete/bloc/athlete_page_bloc.dart'
-    hide GetPlayerStatsRequested;
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';

@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/athlete/components/athlete_mint_approve_button.dart';
+import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
