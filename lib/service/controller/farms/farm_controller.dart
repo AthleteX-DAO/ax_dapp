@@ -5,7 +5,6 @@ import 'package:ax_dapp/contracts/Pool.g.dart';
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
 import 'package:get/get.dart';
@@ -17,8 +16,8 @@ class FarmController {
   FarmController(FarmModel farm) {
     strAddress = farm.strAddress;
     strName = farm.strName;
-    athlete = _getAthleteTokenNameFromAlias(farm.strStakedAlias);
-    sport = _getAthleteSportFromAlias(farm.strStakedAlias);
+    athlete = farm.getAthleteTokenName();
+    sport = farm.getAthleteSport();
     strAPR = double.parse(farm.strAPR).toStringAsFixed(2);
     strTVL = double.parse(farm.strTVL).toStringAsFixed(2);
     strStaked = RxString(farm.strStaked);
@@ -71,26 +70,6 @@ class FarmController {
     final account = controller.publicAddress.value.hex;
     updateStakedBalance(account);
     updateCurrentBalance();
-  }
-
-  String? _getAthleteTokenNameFromAlias(String stakingAlias) {
-    // returns athlete token name, returns null if stakingAlias is empty
-    // stakingToken alias example: 'AJLT1010-AX' or 'AX-CCST1010' or ''
-    if (stakingAlias.isEmpty) return null;
-    final tickers = stakingAlias.split('-');
-    //we want athlete ticker not 'AX'
-    final athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
-    return TokenList.mapTickerToName(athleteTicker);
-  }
-
-  SupportedSport _getAthleteSportFromAlias(String stakingAlias) {
-    // returns athlete token name, returns null if stakingAlias is empty
-    // stakingToken alias example: 'AJLT1010-AX' or 'AX-CCST1010' or ''
-    if (stakingAlias.isEmpty) return SupportedSport.all;
-    final tickers = stakingAlias.split('-');
-    //we want athlete ticker not 'AX'
-    final athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
-    return TokenList.mapTickerToSport(athleteTicker);
   }
 
   // decalaration of member varibles
