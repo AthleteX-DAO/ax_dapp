@@ -10,6 +10,9 @@ class RemoveLiquidityState extends Equatable {
     required this.percentRemoval,
     required this.lpTokenOneAmount,
     required this.lpTokenTwoAmount,
+    required this.tokenOneAddress,
+    required this.tokenTwoAddress,
+    required this.lpTokenPairAddress,
     required this.status,
   });
 
@@ -22,6 +25,9 @@ class RemoveLiquidityState extends Equatable {
       percentRemoval: 0,
       lpTokenOneAmount: '',
       lpTokenTwoAmount: '',
+      tokenOneAddress: '',
+      tokenTwoAddress: '',
+      lpTokenPairAddress: '',
       status: BlocStatus.initial,
     );
   }
@@ -33,6 +39,9 @@ class RemoveLiquidityState extends Equatable {
   final double percentRemoval;
   final String lpTokenOneAmount;
   final String lpTokenTwoAmount;
+  final String tokenOneAddress;
+  final String tokenTwoAddress;
+  final String lpTokenPairAddress;
   final BlocStatus status;
 
   @override
@@ -55,6 +64,9 @@ class RemoveLiquidityState extends Equatable {
     double? percentRemoval,
     String? lpTokenOneAmount,
     String? lpTokenTwoAmount,
+    String? tokenOneAddress,
+    String? tokenTwoAddress,
+    String? lpTokenPairAddress,
     BlocStatus? status,
   }) {
     return RemoveLiquidityState(
@@ -65,6 +77,9 @@ class RemoveLiquidityState extends Equatable {
       percentRemoval: percentRemoval ?? this.percentRemoval,
       lpTokenOneAmount: lpTokenOneAmount ?? this.lpTokenOneAmount,
       lpTokenTwoAmount: lpTokenTwoAmount ?? this.lpTokenTwoAmount,
+      tokenOneAddress: tokenOneAddress ?? this.tokenOneAddress,
+      tokenTwoAddress: tokenTwoAddress ?? this.tokenTwoAddress,
+      lpTokenPairAddress: lpTokenPairAddress ?? this.lpTokenPairAddress,
       status: status ?? this.status,
     );
   }

@@ -327,6 +327,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                   create: (context) => RemoveLiquidityBloc(
                                     liquidityPositionInfo:
                                         liquidityPositionInfo,
+                                    poolController: poolController,
                                   ),
                                   child: RemoveLiquidity(
                                     infoOfSelectedCard: liquidityPositionInfo,
