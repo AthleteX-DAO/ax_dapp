@@ -108,6 +108,7 @@ Container mintButton(
   AthleteScoutModel athlete,
   bool isPortraitMode,
   double containerWdt,
+  void Function() goToTradePage,
 ) {
   final controller = Get.find<Controller>();
   return Container(
@@ -119,7 +120,8 @@ Container mintButton(
         if (controller.walletConnected) {
           showDialog<void>(
             context: context,
-            builder: (BuildContext context) => MintDialog(athlete),
+            builder: (BuildContext context) =>
+                MintDialog(athlete: athlete, goToTradePage: goToTradePage),
           );
         } else {
           context.showWalletWarningToast();
