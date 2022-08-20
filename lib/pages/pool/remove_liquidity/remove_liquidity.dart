@@ -31,7 +31,6 @@ class _RemoveLiquidityState extends State<RemoveLiquidity> {
   double _width = 0;
   PoolController poolController = Get.find();
   Controller controller = Get.find();
-  double value = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +184,7 @@ class _RemoveLiquidityState extends State<RemoveLiquidity> {
                         thumbColor: Colors.amber.withOpacity(0.88),
                         inactiveColor: Colors.amber.withOpacity(0.5),
                         activeColor: Colors.amber,
-                        value: value,
+                        value: percentRemoval,
                         onChanged: (double newValue) {
                           bloc.add(
                             RemoveInput(
@@ -195,7 +194,7 @@ class _RemoveLiquidityState extends State<RemoveLiquidity> {
                         },
                         max: 100,
                         divisions: 100,
-                        label: '$value',
+                        label: '$percentRemoval',
                       ),
                     ],
                   ),
@@ -443,7 +442,7 @@ class _RemoveLiquidityState extends State<RemoveLiquidity> {
                         valueTwo: tokenTwoRemoveAmount,
                         lpTokens: lpTokenPairBalance,
                         shareOfPool: shareOfPool,
-                        percentRemoval: value,
+                        percentRemoval: percentRemoval,
                         walletId: userWalletAddress.walletAddress,
                         lpTokenName:
                             '${widget.infoOfSelectedCard.token0Symbol}/${widget.infoOfSelectedCard.token1Symbol}',
