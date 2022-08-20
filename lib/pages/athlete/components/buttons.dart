@@ -65,6 +65,7 @@ Container sellButton(
   BuildContext context,
   AthleteScoutModel athlete,
   bool isPortraitMode,
+  bool isLongApt,
   double containerWdt,
 ) {
   final controller = Get.find<Controller>();
@@ -85,10 +86,11 @@ Container sellButton(
                 swapController: Get.find(),
               ),
               child: SellDialog(
-                athlete,
-                athlete.name,
-                athlete.longTokenBookPrice!,
-                athlete.id,
+                athlete: athlete,
+                athleteName: athlete.name,
+                aptPrice: athlete.longTokenBookPrice!,
+                isLongApt: isLongApt,
+                athleteId: athlete.id,
               ),
             ),
           );

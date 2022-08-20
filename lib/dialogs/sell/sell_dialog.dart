@@ -5,7 +5,6 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
-import 'package:ax_dapp/util/token_type.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,16 +13,18 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 
 class SellDialog extends StatefulWidget {
-  const SellDialog(
-    this.athlete,
-    this.athleteName,
-    this.aptPrice,
-    this.athleteId, {
+  const SellDialog({
+    required this.athlete,
+    required this.athleteName,
+    required this.aptPrice,
+    required this.athleteId,
+    required this.isLongApt,
     super.key,
   });
   final AthleteScoutModel athlete;
   final String athleteName;
   final double aptPrice;
+  final bool isLongApt;
   final int athleteId;
 
   @override
@@ -35,7 +36,8 @@ class _SellDialogState extends State<SellDialog> {
   double hgt = 500;
   final TextEditingController _aptAmountController = TextEditingController();
 
-  TokenType _currentTokenTypeSelection = TokenType.long;
+  bool isFirst = true;
+  bool isLongSelected = false;
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
@@ -64,19 +66,20 @@ class _SellDialogState extends State<SellDialog> {
                 ),
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == TokenType.long)
+                primary: (isFirst ? widget.isLongApt : isLongSelected)
                     ? Colors.amber
                     : Colors.transparent,
               ),
               onPressed: () {
                 setState(() {
-                  _currentTokenTypeSelection = TokenType.long;
+                  isLongSelected = true;
+                  isFirst = false;
                 });
               },
               child: Text(
                 'Long',
                 style: TextStyle(
-                  color: (_currentTokenTypeSelection == TokenType.long)
+                  color: (isFirst ? widget.isLongApt : isLongSelected)
                       ? Colors.black
                       : const Color.fromRGBO(154, 154, 154, 1),
                   fontSize: 11,
@@ -93,19 +96,20 @@ class _SellDialogState extends State<SellDialog> {
                 ),
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == TokenType.long)
+                primary: (isFirst ? widget.isLongApt : isLongSelected)
                     ? Colors.transparent
                     : Colors.black,
               ),
               onPressed: () {
                 setState(() {
-                  _currentTokenTypeSelection = TokenType.short;
+                  isLongSelected = false;
+                  isFirst = false;
                 });
               },
               child: Text(
                 'Short',
                 style: TextStyle(
-                  color: (_currentTokenTypeSelection == TokenType.long)
+                  color: (isFirst ? widget.isLongApt : isLongSelected)
                       ? const Color.fromRGBO(154, 154, 154, 1)
                       : Colors.amber,
                   fontSize: 11,
@@ -124,7 +128,7 @@ class _SellDialogState extends State<SellDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Price:', style: textStyle(Colors.white, 15, false)),
-          if (_currentTokenTypeSelection == TokenType.long)
+          if (isFirst ? widget.isLongApt : isLongSelected)
             Text(
               '$price AX per ${getLongAthleteSymbol(widget.athleteId)} APT',
               style: textStyle(Colors.white, 15, false),
@@ -271,10 +275,9 @@ class _SellDialogState extends State<SellDialog> {
           reloadSellDialog(bloc);
         }
         var aptLongOrShort = 'Long Apt';
-        if (_currentTokenTypeSelection == TokenType.long) {
+        if (isFirst ? widget.isLongApt : isLongSelected) {
           aptLongOrShort = 'Long Apt';
-        }
-        if (_currentTokenTypeSelection == TokenType.short) {
+        } else {
           aptLongOrShort = 'Short Apt';
         }
 
@@ -380,21 +383,22 @@ class _SellDialogState extends State<SellDialog> {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 scale: 0.5,
-                                image:
-                                    _currentTokenTypeSelection == TokenType.long
-                                        ? const AssetImage(
-                                            'assets/images/apt_noninverted.png',
-                                          )
-                                        : const AssetImage(
-                                            'assets/images/apt_inverted.png',
-                                          ),
+                                image: (isFirst
+                                        ? widget.isLongApt
+                                        : isLongSelected)
+                                    ? const AssetImage(
+                                        'assets/images/apt_noninverted.png',
+                                      )
+                                    : const AssetImage(
+                                        'assets/images/apt_inverted.png',
+                                      ),
                               ),
                             ),
                           ),
                           Container(width: 15),
                           Expanded(
                             child: Text(
-                              _currentTokenTypeSelection == TokenType.long
+                              (isFirst ? widget.isLongApt : isLongSelected)
                                   ? '''${getLongAthleteSymbol(widget.athleteId)} APT'''
                                   : '''${getShortAthleteSymbol(widget.athleteId)} APT''',
                               style: textStyle(Colors.white, 15, false),
@@ -548,7 +552,7 @@ class _SellDialogState extends State<SellDialog> {
   }
 
   String _getCurrentTokenAddress() {
-    return (_currentTokenTypeSelection == TokenType.long)
+    return (isFirst ? widget.isLongApt : isLongSelected)
         ? getLongAptAddress(widget.athleteId)
         : getShortAptAddress(widget.athleteId);
   }

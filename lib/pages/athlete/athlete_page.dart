@@ -993,6 +993,7 @@ class _AthletePageState extends State<AthletePage> {
                         context,
                         athlete,
                         _isPortraitMode,
+                        _isLongApt,
                         _width,
                       )
                     ],
@@ -1311,6 +1312,7 @@ class _AthletePageState extends State<AthletePage> {
                             context,
                             athlete,
                             _isPortraitMode,
+                            _isLongApt,
                             containerWdt,
                           )
                         ],

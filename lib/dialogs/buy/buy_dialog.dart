@@ -40,7 +40,7 @@ class _BuyDialogState extends State<BuyDialog> {
   double hgt = 500;
   final TextEditingController _aptAmountController = TextEditingController();
 
-  bool isFirst = false;
+  bool isFirst = true;
   bool isLongSelected = true;
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
@@ -70,8 +70,7 @@ class _BuyDialogState extends State<BuyDialog> {
                 ),
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(50, 30),
-                primary: ((isLongSelected && isFirst) ||
-                        (!isFirst && widget.isLongApt))
+                primary: (isFirst ? widget.isLongApt : isLongSelected)
                     ? Colors.amber
                     : Colors.transparent,
               ),
@@ -84,8 +83,7 @@ class _BuyDialogState extends State<BuyDialog> {
               child: Text(
                 'Long',
                 style: TextStyle(
-                  color: ((isLongSelected && isFirst) ||
-                          (!isFirst && widget.isLongApt))
+                  color: (isFirst ? widget.isLongApt : isLongSelected)
                       ? Colors.black
                       : const Color.fromRGBO(154, 154, 154, 1),
                   fontSize: 11,
@@ -102,8 +100,7 @@ class _BuyDialogState extends State<BuyDialog> {
                 ),
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(50, 30),
-                primary: ((isLongSelected && isFirst) ||
-                        (!isFirst && widget.isLongApt))
+                primary: (isFirst ? widget.isLongApt : isLongSelected)
                     ? Colors.transparent
                     : Colors.black,
               ),
@@ -116,8 +113,7 @@ class _BuyDialogState extends State<BuyDialog> {
               child: Text(
                 'Short',
                 style: TextStyle(
-                  color: ((isLongSelected && isFirst) ||
-                          (!isFirst && widget.isLongApt))
+                  color: (isFirst ? widget.isLongApt : isLongSelected)
                       ? const Color.fromRGBO(154, 154, 154, 1)
                       : Colors.amber,
                   fontSize: 11,
@@ -136,7 +132,7 @@ class _BuyDialogState extends State<BuyDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Price:', style: textStyle(Colors.white, 15, false)),
-          if ((isLongSelected && isFirst) || (!isFirst && widget.isLongApt))
+          if (isFirst ? widget.isLongApt : isLongSelected)
             Text(
               '$price AX per ${getLongAthleteSymbol(widget.athleteId)} APT',
               style: textStyle(Colors.white, 15, false),
@@ -243,7 +239,7 @@ class _BuyDialogState extends State<BuyDialog> {
             'You Receive:',
             style: textStyle(Colors.white, 15, false),
           ),
-          if ((isLongSelected && isFirst) || (!isFirst && widget.isLongApt))
+          if (isFirst ? widget.isLongApt : isLongSelected)
             Text(
               '$amountToReceive '
               '${getLongAthleteSymbol(widget.athleteId)}'
@@ -271,7 +267,7 @@ class _BuyDialogState extends State<BuyDialog> {
     if (_height < 505) hgt = _height;
 
     var aptLongOrShort = 'Long Apt';
-    if ((isLongSelected && isFirst) || (!isFirst && widget.isLongApt)) {
+    if (isFirst ? widget.isLongApt : isLongSelected) {
       aptLongOrShort = 'Long Apt';
     } else {
       aptLongOrShort = 'Short Apt';
@@ -579,7 +575,7 @@ class _BuyDialogState extends State<BuyDialog> {
   }
 
   String _getCurrentTokenAddress() {
-    return ((isLongSelected && isFirst) || (!isFirst && widget.isLongApt))
+    return (isFirst ? widget.isLongApt : isLongSelected)
         ? getLongAptAddress(widget.athleteId)
         : getShortAptAddress(widget.athleteId);
   }
