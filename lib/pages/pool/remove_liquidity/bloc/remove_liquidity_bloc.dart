@@ -39,6 +39,9 @@ class RemoveLiquidityBloc
           tokenOneAddress: liquidityPositionInfo.token0Address,
           tokenTwoAddress: liquidityPositionInfo.token1Address,
           lpTokenPairAddress: liquidityPositionInfo.lpTokenPairAddress,
+          percentRemoval: 0,
+          tokenOneRemoveAmount: 0,
+          tokenTwoRemoveAmount: 0,
         ),
       );
     } catch (_) {

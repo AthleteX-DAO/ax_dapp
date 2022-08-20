@@ -1,3 +1,5 @@
+import 'package:ax_dapp/pages/pool/remove_liquidity/bloc/remove_liquidity_bloc.dart';
+import 'package:ax_dapp/pages/pool/remove_liquidity/bloc/remove_liquidity_event.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
@@ -89,6 +91,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<RemoveLiquidityBloc>();
     return Container(
       width: width,
       height: height,
@@ -128,7 +131,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
+              ).then((value) => bloc.add(PageRefreshEvent()));
             }).catchError((error) {
               showDialog<void>(
                 context: context,
