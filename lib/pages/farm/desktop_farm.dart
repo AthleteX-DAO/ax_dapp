@@ -138,48 +138,53 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 ),
                 child: state.status != BlocStatus.success
                     ? widget
-                    : GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: isWeb ? 4 : 1,
-                          mainAxisSpacing: 5,
-                          crossAxisSpacing: 5,
-                          childAspectRatio: state.isAllFarms ? 1.75 : 1,
-                        ),
-                        padding: EdgeInsets.zero,
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: isAllFarms
-                            ? state.filteredFarms.length
-                            : state.filteredStakedFarms.length,
-                        itemBuilder: (context, index) {
-                          return isAllFarms
-                              ? farmItem(
-                                  context,
-                                  isWeb,
-                                  FarmController(
-                                    farm: state.filteredFarms[index],
-                                    walletRepository:
-                                        context.read<WalletRepository>(),
-                                    tokensRepository:
-                                        context.read<TokensRepository>(),
-                                  ),
-                                  listHeight,
-                                  layoutWdt,
-                                )
-                              : myFarmItem(
-                                  context,
-                                  isWeb,
-                                  FarmController(
-                                    farm: state.filteredStakedFarms[index],
-                                    walletRepository:
-                                        context.read<WalletRepository>(),
-                                    tokensRepository:
-                                        context.read<TokensRepository>(),
-                                  ),
-                                  listHeight,
-                                  layoutWdt,
-                                );
-                        },
-                      ),
+                    : (state.isAllFarms
+                            ? state.filteredFarms.isEmpty
+                            : state.filteredStakedFarms.isEmpty)
+                        ? noData()
+                        : GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: isWeb ? 4 : 1,
+                              mainAxisSpacing: 5,
+                              crossAxisSpacing: 5,
+                              childAspectRatio: state.isAllFarms ? 1.75 : 1,
+                            ),
+                            padding: EdgeInsets.zero,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: isAllFarms
+                                ? state.filteredFarms.length
+                                : state.filteredStakedFarms.length,
+                            itemBuilder: (context, index) {
+                              return isAllFarms
+                                  ? farmItem(
+                                      context,
+                                      isWeb,
+                                      FarmController(
+                                        farm: state.filteredFarms[index],
+                                        walletRepository:
+                                            context.read<WalletRepository>(),
+                                        tokensRepository:
+                                            context.read<TokensRepository>(),
+                                      ),
+                                      listHeight,
+                                      layoutWdt,
+                                    )
+                                  : myFarmItem(
+                                      context,
+                                      isWeb,
+                                      FarmController(
+                                        farm: state.filteredStakedFarms[index],
+                                        walletRepository:
+                                            context.read<WalletRepository>(),
+                                        tokensRepository:
+                                            context.read<TokensRepository>(),
+                                      ),
+                                      listHeight,
+                                      layoutWdt,
+                                    );
+                            },
+                          ),
               ),
             ),
           ],
@@ -271,7 +276,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
         children: [
           const SizedBox(width: 8),
           const Icon(Icons.search, color: Colors.white),
-          const SizedBox(width: 50),
+          const SizedBox(width: 8),
           Expanded(
             child: TextFormField(
               controller: myController,
