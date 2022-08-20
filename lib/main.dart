@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:ax_dapp/app/app.dart';
 import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/firebase_options.dart';
+import 'package:ax_dapp/logger_interceptor.dart';
 import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
@@ -21,15 +22,18 @@ import 'package:ax_dapp/service/graphql/graphql_configuration.dart';
 import 'package:coingecko_api/coingecko_api.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:tracking_repository/tracking_repository.dart';
 
 void main() async {
-  final _mlbDio = Dio();
-  final _nflDio = Dio();
-  final _mlbApi = MLBAthleteAPI(_mlbDio);
-  final _nflApi = NFLAthleteAPI(_nflDio);
+  _setupLogging();
+  final _dio = Dio();
+  _dio.interceptors.add(LoggingInterceptor());
+  final _mlbApi = MLBAthleteAPI(_dio);
+  final _nflApi = NFLAthleteAPI(_dio);
   final _coinGeckoApi = CoinGeckoApi();
   final _graphQLClientHelper =
       GraphQLClientHelper(GraphQLConfiguration.athleteDexApiLink);
@@ -81,4 +85,11 @@ void main() async {
       );
     }),
   );
+}
+
+void _setupLogging() {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((rec) {
+    debugPrint('${rec.level.name}: ${rec.time}: ${rec.message}');
+  });
 }
