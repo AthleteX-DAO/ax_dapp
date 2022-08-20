@@ -13,16 +13,18 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class SellDialog extends StatefulWidget {
-  const SellDialog(
-    this.athlete,
-    this.athleteName,
-    this.aptPrice,
-    this.athleteId, {
+  const SellDialog({
+    required this.athlete,
+    required this.athleteName,
+    required this.aptPrice,
+    required this.athleteId,
+    required this.isLongApt,
     super.key,
   });
   final AthleteScoutModel athlete;
   final String athleteName;
   final double aptPrice;
+  final bool isLongApt;
   final int athleteId;
 
   @override

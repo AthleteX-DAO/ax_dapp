@@ -25,12 +25,14 @@ class BuyButton extends StatelessWidget {
     required this.athlete,
     required this.isPortraitMode,
     required this.containerWdt,
+    required this.isLongApt,
     required this.goToTradePage,
   });
 
   final AthleteScoutModel athlete;
   final bool isPortraitMode;
   final double containerWdt;
+  final bool isLongApt;
   final void Function() goToTradePage;
 
   @override
@@ -59,11 +61,12 @@ class BuyButton extends StatelessWidget {
                   athleteId: athlete.id,
                 ),
                 child: BuyDialog(
-                  athlete,
-                  athlete.name,
-                  athlete.longTokenBookPrice!,
-                  athlete.id,
-                  goToTradePage,
+                  athlete: athlete,
+                  athleteName: athlete.name,
+                  aptPrice: athlete.longTokenBookPrice!,
+                  athleteId: athlete.id,
+                  isLongApt: isLongApt,
+                  goToTradePage: goToTradePage,
                 ),
               ),
             );
@@ -83,11 +86,13 @@ class SellButton extends StatelessWidget {
     required this.athlete,
     required this.isPortraitMode,
     required this.containerWdt,
+    required this.isLongApt,
   });
 
   final AthleteScoutModel athlete;
   final bool isPortraitMode;
   final double containerWdt;
+  final bool isLongApt;
 
   @override
   Widget build(BuildContext context) {
@@ -115,10 +120,11 @@ class SellButton extends StatelessWidget {
                   athleteId: athlete.id,
                 ),
                 child: SellDialog(
-                  athlete,
-                  athlete.name,
-                  athlete.longTokenBookPrice!,
-                  athlete.id,
+                  athlete: athlete,
+                  athleteName: athlete.name,
+                  aptPrice: athlete.longTokenBookPrice!,
+                  isLongApt: isLongApt,
+                  athleteId: athlete.id,
                 ),
               ),
             );

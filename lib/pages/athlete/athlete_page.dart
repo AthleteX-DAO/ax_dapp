@@ -982,16 +982,28 @@ class _AthletePageState extends State<AthletePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      BuyButton(
-                        athlete: athlete,
-                        isPortraitMode: _isPortraitMode,
-                        containerWdt: _width,
-                        goToTradePage: widget.goToTradePage,
+                      BlocSelector<AthletePageBloc, AthletePageState, AptType>(
+                        selector: (state) => state.aptTypeSelection,
+                        builder: (context, aptTypeSelection) {
+                          return BuyButton(
+                            athlete: athlete,
+                            isPortraitMode: _isPortraitMode,
+                            containerWdt: _width,
+                            isLongApt: aptTypeSelection.isLong,
+                            goToTradePage: widget.goToTradePage,
+                          );
+                        },
                       ),
-                      SellButton(
-                        athlete: athlete,
-                        isPortraitMode: _isPortraitMode,
-                        containerWdt: _width,
+                      BlocSelector<AthletePageBloc, AthletePageState, AptType>(
+                        selector: (state) => state.aptTypeSelection,
+                        builder: (context, aptTypeSelection) {
+                          return SellButton(
+                            athlete: athlete,
+                            isPortraitMode: _isPortraitMode,
+                            containerWdt: _width,
+                            isLongApt: aptTypeSelection.isLong,
+                          );
+                        },
                       )
                     ],
                   ),
@@ -1316,16 +1328,30 @@ class _AthletePageState extends State<AthletePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          BuyButton(
-                            athlete: athlete,
-                            isPortraitMode: _isPortraitMode,
-                            containerWdt: containerWdt,
-                            goToTradePage: widget.goToTradePage,
+                          BlocSelector<AthletePageBloc, AthletePageState,
+                              AptType>(
+                            selector: (state) => state.aptTypeSelection,
+                            builder: (context, aptTypeSelection) {
+                              return BuyButton(
+                                athlete: athlete,
+                                isPortraitMode: _isPortraitMode,
+                                containerWdt: containerWdt,
+                                goToTradePage: widget.goToTradePage,
+                                isLongApt: aptTypeSelection.isLong,
+                              );
+                            },
                           ),
-                          SellButton(
-                            athlete: athlete,
-                            isPortraitMode: _isPortraitMode,
-                            containerWdt: containerWdt,
+                          BlocSelector<AthletePageBloc, AthletePageState,
+                              AptType>(
+                            selector: (state) => state.aptTypeSelection,
+                            builder: (context, aptTypeSelection) {
+                              return SellButton(
+                                athlete: athlete,
+                                isPortraitMode: _isPortraitMode,
+                                containerWdt: containerWdt,
+                                isLongApt: aptTypeSelection.isLong,
+                              );
+                            },
                           )
                         ],
                       ),

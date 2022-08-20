@@ -15,18 +15,20 @@ import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BuyDialog extends StatefulWidget {
-  const BuyDialog(
-    this.athlete,
-    this.athleteName,
-    this.aptPrice,
-    this.athleteId,
-    this.goToTradePage, {
+  const BuyDialog({
+    required this.athlete,
+    required this.athleteName,
+    required this.aptPrice,
+    required this.athleteId,
+    required this.isLongApt,
+    required this.goToTradePage,
     super.key,
   });
   final AthleteScoutModel athlete;
   final String athleteName;
   final double aptPrice;
   final int athleteId;
+  final bool isLongApt;
   final void Function() goToTradePage;
 
   @override
