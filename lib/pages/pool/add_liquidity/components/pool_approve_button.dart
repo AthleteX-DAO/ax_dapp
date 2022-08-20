@@ -1,3 +1,4 @@
+import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
@@ -84,8 +85,18 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
     });
   }
 
+  void resetButton() {
+    setState(() {
+      isApproved = false;
+      text = 'Approve';
+      fillcolor = Colors.transparent;
+      textcolor = Colors.amber;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<PoolBloc>();
     return Container(
       width: width,
       height: height,
@@ -123,12 +134,15 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
+              ).then((value) {
+                resetButton();
+                bloc.add(PageRefreshEvent());
+              });
             }).catchError((error) {
               showDialog<void>(
                 context: context,
                 builder: (context) => const FailedDialog(),
-              );
+              ).then((value) => resetButton());
             });
           } else {
             //Approve button was pressed
