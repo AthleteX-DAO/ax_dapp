@@ -59,6 +59,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
         child: BlocProvider(
           create: (BuildContext context) => FarmBloc(
             walletRepository: context.read<WalletRepository>(),
+            tokensRepository: context.read<TokensRepository>(),
             repo: GetFarmDataUseCase(
               gysrApiClient: context.read<GysrApiClient>(),
             ),

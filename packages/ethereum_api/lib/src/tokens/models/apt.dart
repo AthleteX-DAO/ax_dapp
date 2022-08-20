@@ -108,4 +108,35 @@ extension AptsX on Iterable<Apt> {
           orElse: () => const Apt.empty(),
         ),
       );
+
+  /// Returns the [Apt] name with the corresponding [stakingAlias].
+  ///
+  /// Defaults to `null` when [stakingAlias] is empty.
+  String? findAptNameByAlias(String stakingAlias) {
+    // returns athlete token name, returns null if stakingAlias is empty
+    // stakingToken alias example: 'AJLT1010-AX' or 'AX-CCST1010' or ''
+    if (stakingAlias.isEmpty) return null;
+    final tickers = stakingAlias.split('-');
+    //we want athlete ticker not 'AX'
+    final ticker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
+    return firstWhereOrNull(
+          (apt) =>
+              apt.ticker.trim().toLowerCase() == ticker.trim().toLowerCase(),
+        )?.name ??
+        '';
+  }
+
+  /// Returns the [Apt] sport with the corresponding [stakingAlias].
+  ///
+  /// Defaults to [SupportedSport.all] when [stakingAlias] is empty.
+  SupportedSport findAptSportByAlias(String stakingAlias) {
+    if (stakingAlias.isEmpty) return SupportedSport.all;
+    final tickers = stakingAlias.split('-');
+    final ticker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
+    return firstWhereOrNull(
+          (apt) =>
+              apt.ticker.trim().toLowerCase() == ticker.trim().toLowerCase(),
+        )?.sport ??
+        SupportedSport.all;
+  }
 }

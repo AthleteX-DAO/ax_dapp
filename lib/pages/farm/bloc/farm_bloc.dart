@@ -3,6 +3,7 @@ import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'farm_event.dart';
@@ -11,8 +12,10 @@ part 'farm_state.dart';
 class FarmBloc extends Bloc<FarmEvent, FarmState> {
   FarmBloc({
     required WalletRepository walletRepository,
+    required TokensRepository tokensRepository,
     required this.repo,
   })  : _walletRepository = walletRepository,
+        _tokensRepository = tokensRepository,
         super(const FarmState()) {
     on<OnLoadFarms>(_mapLoadFarmsEventToState);
     on<OnLoadStakedFarms>(_mapLoadStakedFarmsEventToState);
@@ -23,6 +26,7 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
   static const String owner = '0xe1bf752fd7480992345629bf3866f6618d57a7da';
 
   final WalletRepository _walletRepository;
+  final TokensRepository _tokensRepository;
   final GetFarmDataUseCase repo;
 
   final List<FarmModel> farms = [];
@@ -88,18 +92,21 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
   }
 
   void _mapSearchEventToState(OnSearchFarms event, Emitter<FarmState> emit) {
+    final currentApts = _tokensRepository.currentApts;
     emit(
       state.copy(
         filteredFarms: state.farms
             .where(
-              (farm) => (farm.getAthleteTokenName() ?? farm.strName)
+              (farm) => (currentApts.findAptNameByAlias(farm.strStakedAlias) ??
+                      farm.strName)
                   .toUpperCase()
                   .contains(event.searchedName.toUpperCase()),
             )
             .toList(),
         filteredStakedFarms: state.stakedFarms
             .where(
-              (farm) => (farm.getAthleteTokenName() ?? farm.strName)
+              (farm) => (currentApts.findAptNameByAlias(farm.strStakedAlias) ??
+                      farm.strName)
                   .toUpperCase()
                   .contains(event.searchedName.toUpperCase()),
             )
