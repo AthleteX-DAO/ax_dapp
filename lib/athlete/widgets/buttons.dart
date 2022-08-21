@@ -144,11 +144,13 @@ class MintButton extends StatelessWidget {
     required this.athlete,
     required this.isPortraitMode,
     required this.containerWdt,
+    required this.goToTradePage,
   });
 
   final AthleteScoutModel athlete;
   final bool isPortraitMode;
   final double containerWdt;
+  final void Function() goToTradePage;
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +165,8 @@ class MintButton extends StatelessWidget {
           if (isWalletConnected) {
             showDialog<void>(
               context: context,
-              builder: (BuildContext context) => MintDialog(athlete),
+              builder: (BuildContext context) =>
+                  MintDialog(athlete: athlete, goToTradePage: goToTradePage),
             );
           } else {
             context.showWalletWarningToast();

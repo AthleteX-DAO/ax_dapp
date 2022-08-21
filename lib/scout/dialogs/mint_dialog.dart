@@ -3,6 +3,7 @@ import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +12,14 @@ import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class MintDialog extends StatefulWidget {
-  const MintDialog(this.athlete, {super.key});
+  const MintDialog({
+    required this.athlete,
+    required this.goToTradePage,
+    super.key,
+  });
 
   final AthleteScoutModel athlete;
+  final void Function() goToTradePage;
 
   @override
   State<MintDialog> createState() => _MintDialogState();
@@ -185,7 +191,7 @@ class _MintDialogState extends State<MintDialog> {
                       ),
                     ),
                     TextSpan(
-                      text: ' You can buy AX on the Matic network through',
+                      text: ' Click here to',
                       style: textStyle(
                         Colors.grey[600]!,
                         isWeb ? 14 : 12,
@@ -193,12 +199,17 @@ class _MintDialogState extends State<MintDialog> {
                       ),
                     ),
                     TextSpan(
-                      text: ' SushiSwap',
+                      text: ' Buy AX',
                       style: textStyle(
                         Colors.amber[400]!,
                         isWeb ? 14 : 12,
                         false,
                       ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pop(context);
+                          widget.goToTradePage();
+                        },
                     ),
                   ],
                 ),

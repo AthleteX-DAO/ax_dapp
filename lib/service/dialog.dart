@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: avoid_positional_boolean_parameters
-import 'dart:developer';
 
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/approve_button.dart';
@@ -15,11 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-
-Future<void> testFunction() async {
-  log('Test function invoked');
-  return;
-}
 
 // dynamic
 Dialog redeemDialog(BuildContext context, AthleteScoutModel athlete) {

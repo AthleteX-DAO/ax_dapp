@@ -1011,6 +1011,7 @@ class _AthletePageState extends State<AthletePage> {
                         athlete: athlete,
                         isPortraitMode: _isPortraitMode,
                         containerWdt: _width,
+                        goToTradePage: widget.goToTradePage,
                       ),
                       RedeemButton(
                         athlete: athlete,
@@ -1359,6 +1360,7 @@ class _AthletePageState extends State<AthletePage> {
                             athlete: athlete,
                             isPortraitMode: _isPortraitMode,
                             containerWdt: containerWdt,
+                            goToTradePage: widget.goToTradePage,
                           ),
                           RedeemButton(
                             athlete: athlete,

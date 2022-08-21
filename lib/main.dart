@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ax_dapp/app/app.dart';
 import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/firebase_options.dart';
+import 'package:ax_dapp/logger_interceptor.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -21,9 +22,11 @@ import 'package:ethereum_api/gysr_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:ethereum_api/wallet_api.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:tracking_repository/tracking_repository.dart';
@@ -32,7 +35,8 @@ import 'package:wallet_repository/wallet_repository.dart';
 void main() async {
   const defaultChain = EthereumChain.polygonMainnet;
 
-  final dio = Dio();
+  _setupLogging();
+  final dio = Dio()..interceptors.add(LoggingInterceptor());
   final mlbApi = MLBAthleteAPI(dio);
   final nflApi = NFLAthleteAPI(dio);
 
@@ -120,4 +124,11 @@ void main() async {
       );
     }),
   );
+}
+
+void _setupLogging() {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((rec) {
+    debugPrint('${rec.level.name}: ${rec.time}: ${rec.message}');
+  });
 }
