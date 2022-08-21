@@ -97,8 +97,8 @@ class _MyLiquidityState extends State<MyLiquidity> {
   Controller controller = Get.find();
   double value = 0;
   LiquidityPositionInfo infoOfSelectedCard = LiquidityPositionInfo.empty();
-  AssetImage? token0Icon = const AssetImage('assets/images/apt.png');
-  AssetImage? token1Icon = const AssetImage('assets/images/apt.png');
+  AssetImage token0Icon = const AssetImage('assets/images/apt.png');
+  AssetImage token1Icon = const AssetImage('assets/images/apt.png');
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +113,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
     if (currentTabIndex == 1) {
       return BlocProvider(
         create: (context) => RemoveLiquidityBloc(liquidityPositionInfo: infoOfSelectedCard, poolController: poolController),
-        child: RemoveLiquidity(infoOfSelectedCard: infoOfSelectedCard, togglePool: widget.togglePool,),
+        child: RemoveLiquidity(infoOfSelectedCard: infoOfSelectedCard, togglePool: widget.togglePool, token0Icon: token0Icon, token1Icon: token1Icon),
       );
     }
 
@@ -328,25 +328,9 @@ class _MyLiquidityState extends State<MyLiquidity> {
                           setState(() {
                             currentTabIndex = 1;
                             infoOfSelectedCard = liquidityPositionInfo;
+                            token0Icon = tokenPair.token0.icon!;
+                            token1Icon = tokenPair.token1.icon!;
                           });
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute<void>(
-                          //     builder: (context) {
-                          //       return BlocProvider(
-                          //         create: (context) => RemoveLiquidityBloc(
-                          //           liquidityPositionInfo:
-                          //               liquidityPositionInfo,
-                          //           poolController: poolController,
-                          //         ),
-                          //         child: RemoveLiquidity(
-                          //           infoOfSelectedCard: liquidityPositionInfo,
-                          //           tokenPair: tokenPair,
-                          //         ),
-                          //       );
-                          //     },
-                          //   ),
-                          // );
                         },
                         child: Text(
                           'Remove',

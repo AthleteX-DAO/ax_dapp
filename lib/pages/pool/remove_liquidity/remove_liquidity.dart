@@ -1,5 +1,3 @@
-import 'package:ax_dapp/pages/pool/add_liquidity/add_liquidity.dart';
-import 'package:ax_dapp/pages/pool/my_liqudity/add_liquidity_token_pair.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/components/pool_remove_approve_button.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/my_liquidity.dart';
@@ -19,11 +17,15 @@ class RemoveLiquidity extends StatefulWidget {
   const RemoveLiquidity({
     required this.infoOfSelectedCard,
     required this.togglePool,
+    required this.token0Icon,
+    required this.token1Icon,
     super.key,
   });
 
   final LiquidityPositionInfo infoOfSelectedCard;
   final Function togglePool;
+  final AssetImage token0Icon;
+  final AssetImage token1Icon;
 
   @override
   State<RemoveLiquidity> createState() => _RemoveLiquidityState();
@@ -341,18 +343,18 @@ class _RemoveLiquidityState extends State<RemoveLiquidity> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  // Container(
-                                  //   margin: const EdgeInsets.only(left: 30),
-                                  //   width: 35,
-                                  //   height: 35,
-                                  //   decoration: BoxDecoration(
-                                  //     shape: BoxShape.circle,
-                                  //     image: DecorationImage(
-                                  //       scale: 0.25,
-                                  //       image: widget.tokenPair.token0.icon!,
-                                  //     ),
-                                  //   ),
-                                  // ),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 30),
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        scale: 0.25,
+                                        image: widget.token0Icon,
+                                      ),
+                                    ),
+                                  ),
                                   const SizedBox(
                                     width: 10,
                                   ),
@@ -389,18 +391,18 @@ class _RemoveLiquidityState extends State<RemoveLiquidity> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  // Container(
-                                  //   margin: const EdgeInsets.only(left: 30),
-                                  //   width: 35,
-                                  //   height: 35,
-                                  //   decoration: BoxDecoration(
-                                  //     shape: BoxShape.circle,
-                                  //     image: DecorationImage(
-                                  //       scale: 0.25,
-                                  //       image: widget.tokenPair.token1.icon!,
-                                  //     ),
-                                  //   ),
-                                  // ),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 30),
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        scale: 0.25,
+                                        image: widget.token1Icon,
+                                      ),
+                                    ),
+                                  ),
                                   const SizedBox(
                                     width: 10,
                                   ),
