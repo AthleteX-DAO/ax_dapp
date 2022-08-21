@@ -1,6 +1,8 @@
+import 'package:ax_dapp/pages/pool/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/add_liquidity_token_pair.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/components/pool_remove_approve_button.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
+import 'package:ax_dapp/pages/pool/my_liqudity/my_liquidity.dart';
 import 'package:ax_dapp/pages/pool/remove_liquidity/bloc/remove_liquidity_bloc.dart';
 import 'package:ax_dapp/pages/pool/remove_liquidity/bloc/remove_liquidity_event.dart';
 import 'package:ax_dapp/pages/pool/remove_liquidity/bloc/remove_liquidity_state.dart';
@@ -16,10 +18,12 @@ import 'package:get/get.dart';
 class RemoveLiquidity extends StatefulWidget {
   const RemoveLiquidity({
     required this.infoOfSelectedCard,
+    required this.togglePool,
     super.key,
   });
 
   final LiquidityPositionInfo infoOfSelectedCard;
+  final Function togglePool;
 
   @override
   State<RemoveLiquidity> createState() => _RemoveLiquidityState();
@@ -29,6 +33,7 @@ class _RemoveLiquidityState extends State<RemoveLiquidity> {
   double _width = 0;
   PoolController poolController = Get.find();
   Controller controller = Get.find();
+  int currentTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +43,9 @@ class _RemoveLiquidityState extends State<RemoveLiquidity> {
     final userWalletAddress = FormatWalletAddress.getWalletAddress(
       controller.publicAddress.toString(),
     );
+    if (currentTabIndex == 1) {
+      return MyLiquidity(togglePool: widget.togglePool);
+    }
     return BlocBuilder<RemoveLiquidityBloc, RemoveLiquidityState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
@@ -459,7 +467,9 @@ class _RemoveLiquidityState extends State<RemoveLiquidity> {
                             ),
                             child: TextButton(
                               onPressed: () {
-                                Navigator.pop(context);
+                                setState(() {
+                                  currentTabIndex = 1;
+                                });
                               },
                               child: const Text(
                                 'Cancel',

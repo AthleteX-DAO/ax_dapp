@@ -113,7 +113,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
     if (currentTabIndex == 1) {
       return BlocProvider(
         create: (context) => RemoveLiquidityBloc(liquidityPositionInfo: infoOfSelectedCard, poolController: poolController),
-        child: RemoveLiquidity(infoOfSelectedCard: infoOfSelectedCard,),
+        child: RemoveLiquidity(infoOfSelectedCard: infoOfSelectedCard, togglePool: widget.togglePool,),
       );
     }
 
