@@ -110,6 +110,12 @@ class _MyLiquidityState extends State<MyLiquidity> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final _layoutWdt = _isWeb ? _width * 0.8 : _width * 0.9;
     final gridHgt = _layoutHgt * 0.75;
+    if (currentTabIndex == 1) {
+      return BlocProvider(
+        create: (context) => RemoveLiquidityBloc(liquidityPositionInfo: infoOfSelectedCard, poolController: poolController),
+        child: RemoveLiquidity(infoOfSelectedCard: infoOfSelectedCard,),
+      );
+    }
 
     Widget myLiquidityPoolGridItem(
       LiquidityPositionInfo liquidityPositionInfo,
@@ -319,24 +325,28 @@ class _MyLiquidityState extends State<MyLiquidity> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute<void>(
-                              builder: (context) {
-                                return BlocProvider(
-                                  create: (context) => RemoveLiquidityBloc(
-                                    liquidityPositionInfo:
-                                        liquidityPositionInfo,
-                                    poolController: poolController,
-                                  ),
-                                  child: RemoveLiquidity(
-                                    infoOfSelectedCard: liquidityPositionInfo,
-                                    tokenPair: tokenPair,
-                                  ),
-                                );
-                              },
-                            ),
-                          );
+                          setState(() {
+                            currentTabIndex = 1;
+                            infoOfSelectedCard = liquidityPositionInfo;
+                          });
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute<void>(
+                          //     builder: (context) {
+                          //       return BlocProvider(
+                          //         create: (context) => RemoveLiquidityBloc(
+                          //           liquidityPositionInfo:
+                          //               liquidityPositionInfo,
+                          //           poolController: poolController,
+                          //         ),
+                          //         child: RemoveLiquidity(
+                          //           infoOfSelectedCard: liquidityPositionInfo,
+                          //           tokenPair: tokenPair,
+                          //         ),
+                          //       );
+                          //     },
+                          //   ),
+                          // );
                         },
                         child: Text(
                           'Remove',
