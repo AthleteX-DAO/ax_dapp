@@ -325,12 +325,10 @@ class _MintDialogState extends State<MintDialog> {
                           ),
                           SizedBox(
                             width: hgt * 0.2,
-                            //constraints: BoxConstraints(maxWidth: wid * 0.4),
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _aptAmountController,
                                 style: textStyle(Colors.grey[400]!, 22, false),
-                                maxLines: 1,
                                 decoration: InputDecoration(
                                   hintText: '0.00',
                                   hintStyle: textStyle(
