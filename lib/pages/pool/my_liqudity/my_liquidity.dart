@@ -911,6 +911,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                   ),
                                   child: TextButton(
                                     onPressed: () {
+                                      bloc.add(LoadEvent());
                                       setState(() {
                                         currentTabIndex = 0;
                                         value = 0;
