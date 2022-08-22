@@ -4,7 +4,9 @@ import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
+import 'package:ax_dapp/util/toastx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -276,8 +278,12 @@ class _BuyDialogState extends State<BuyDialog> {
       controller.publicAddress.toString(),
     );
 
-    return BlocBuilder<BuyDialogBloc, BuyDialogState>(
-      buildWhen: (previous, current) => previous != current,
+    return BlocConsumer<BuyDialogBloc, BuyDialogState>(
+      listenWhen: (_, current) => current.status == BlocStatus.error,
+      listener: (context, state) => context.showWarningToast(
+        title: 'Action Error',
+        description: 'An error has occured while handling the Buy action',
+      ),
       builder: (context, state) {
         final bloc = context.read<BuyDialogBloc>();
         final aptBuyInfo = state.aptBuyInfo;
@@ -539,6 +545,7 @@ class _BuyDialogState extends State<BuyDialog> {
                     ],
                   ),
                 ),
+
                 SizedBox(
                   width: wid,
                   child: Row(
