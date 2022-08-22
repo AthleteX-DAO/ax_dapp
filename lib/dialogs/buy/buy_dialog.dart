@@ -3,6 +3,8 @@ import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -163,7 +165,12 @@ class _BuyDialogState extends State<BuyDialog> {
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
 
-    return BlocBuilder<BuyDialogBloc, BuyDialogState>(
+    return BlocConsumer<BuyDialogBloc, BuyDialogState>(
+      listenWhen: (_, current) => current.status == BlocStatus.error,
+      listener: (context, state) => context.showWarningToast(
+        title: 'Action Error',
+        description: 'An error has occured while handling the Buy action',
+      ),
       builder: (context, state) {
         final bloc = context.read<BuyDialogBloc>();
         final balance = state.balance;
@@ -416,6 +423,7 @@ class _BuyDialogState extends State<BuyDialog> {
                     ],
                   ),
                 ),
+
                 SizedBox(
                   width: wid,
                   child: Row(
