@@ -17,4 +17,23 @@ extension ToastX on BuildContext {
           style: TextStyle(color: Colors.amber[400]),
         ),
       ).show(this);
+
+  void showCommonWarningToast({
+    required String title,
+    required String desc,
+  }) =>
+      MotionToast(
+        icon: Icons.warning,
+        primaryColor: Colors.black.withOpacity(0.3),
+        secondaryColor: Colors.amber[400],
+        backgroundType: BackgroundType.solid,
+        title: Text(
+          title,
+          style: TextStyle(color: Colors.amber[400], fontSize: 18),
+        ),
+        description: Text(
+          desc,
+          style: TextStyle(color: Colors.amber[400]),
+        ),
+      ).show(this);
 }

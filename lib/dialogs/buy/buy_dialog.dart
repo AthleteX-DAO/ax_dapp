@@ -6,7 +6,7 @@ import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
-import 'package:ax_dapp/util/warning_text_button.dart';
+import 'package:ax_dapp/util/toastx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -278,7 +278,14 @@ class _BuyDialogState extends State<BuyDialog> {
       controller.publicAddress.toString(),
     );
 
-    return BlocBuilder<BuyDialogBloc, BuyDialogState>(
+    return BlocConsumer<BuyDialogBloc, BuyDialogState>(
+      listenWhen: (previous, current) =>
+          previous.status != BlocStatus.error &&
+          current.status == BlocStatus.error,
+      listener: (context, state) => context.showCommonWarningToast(
+        title: 'Action Error',
+        desc: 'An error has occured while handling the Buy action',
+      ),
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<BuyDialogBloc>();
@@ -547,25 +554,21 @@ class _BuyDialogState extends State<BuyDialog> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (bloc.state.status != BlocStatus.error) ...[
-                        AthleteBuyApproveButton(
-                          width: 175,
-                          height: 40,
-                          text: 'Approve',
-                          amountInputted: _aptAmountController.text,
-                          aptBuyInfo: aptBuyInfo,
-                          athlete: widget.athlete,
-                          aptName: widget.athleteName,
-                          aptId: widget.athleteId,
-                          longOrShort: aptLongOrShort,
-                          approveCallback: bloc.swapController.approve,
-                          confirmCallback: bloc.swapController.swap,
-                          confirmDialog: transactionConfirmed,
-                          walletAddress: userWalletAddress.walletAddress,
-                        ),
-                      ] else ...[
-                        const WarningTextButton(warningTitle: 'Error on Action')
-                      ]
+                      AthleteBuyApproveButton(
+                        width: 175,
+                        height: 40,
+                        text: 'Approve',
+                        amountInputted: _aptAmountController.text,
+                        aptBuyInfo: aptBuyInfo,
+                        athlete: widget.athlete,
+                        aptName: widget.athleteName,
+                        aptId: widget.athleteId,
+                        longOrShort: aptLongOrShort,
+                        approveCallback: bloc.swapController.approve,
+                        confirmCallback: bloc.swapController.swap,
+                        confirmDialog: transactionConfirmed,
+                        walletAddress: userWalletAddress.walletAddress,
+                      ),
                     ],
                   ),
                 )
