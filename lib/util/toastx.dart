@@ -18,9 +18,9 @@ extension ToastX on BuildContext {
         ),
       ).show(this);
 
-  void showCommonWarningToast({
+  void showWarningToast({
     required String title,
-    required String desc,
+    required String description,
   }) =>
       MotionToast(
         icon: Icons.warning,
@@ -32,7 +32,7 @@ extension ToastX on BuildContext {
           style: TextStyle(color: Colors.amber[400], fontSize: 18),
         ),
         description: Text(
-          desc,
+          description,
           style: TextStyle(color: Colors.amber[400]),
         ),
       ).show(this);

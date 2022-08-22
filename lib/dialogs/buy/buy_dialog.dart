@@ -279,14 +279,11 @@ class _BuyDialogState extends State<BuyDialog> {
     );
 
     return BlocConsumer<BuyDialogBloc, BuyDialogState>(
-      listenWhen: (previous, current) =>
-          previous.status != BlocStatus.error &&
-          current.status == BlocStatus.error,
-      listener: (context, state) => context.showCommonWarningToast(
+      listenWhen: (_, current) => current.status == BlocStatus.error,
+      listener: (context, state) => context.showWarningToast(
         title: 'Action Error',
-        desc: 'An error has occured while handling the Buy action',
+        description: 'An error has occured while handling the Buy action',
       ),
-      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<BuyDialogBloc>();
         final aptBuyInfo = state.aptBuyInfo;
