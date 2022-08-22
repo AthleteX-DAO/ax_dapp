@@ -4,7 +4,9 @@ import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
+import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -539,26 +541,31 @@ class _BuyDialogState extends State<BuyDialog> {
                     ],
                   ),
                 ),
+
                 SizedBox(
                   width: wid,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AthleteBuyApproveButton(
-                        width: 175,
-                        height: 40,
-                        text: 'Approve',
-                        amountInputted: _aptAmountController.text,
-                        aptBuyInfo: aptBuyInfo,
-                        athlete: widget.athlete,
-                        aptName: widget.athleteName,
-                        aptId: widget.athleteId,
-                        longOrShort: aptLongOrShort,
-                        approveCallback: bloc.swapController.approve,
-                        confirmCallback: bloc.swapController.swap,
-                        confirmDialog: transactionConfirmed,
-                        walletAddress: userWalletAddress.walletAddress,
-                      ),
+                      if (bloc.state.status != BlocStatus.error) ...[
+                        AthleteBuyApproveButton(
+                          width: 175,
+                          height: 40,
+                          text: 'Approve',
+                          amountInputted: _aptAmountController.text,
+                          aptBuyInfo: aptBuyInfo,
+                          athlete: widget.athlete,
+                          aptName: widget.athleteName,
+                          aptId: widget.athleteId,
+                          longOrShort: aptLongOrShort,
+                          approveCallback: bloc.swapController.approve,
+                          confirmCallback: bloc.swapController.swap,
+                          confirmDialog: transactionConfirmed,
+                          walletAddress: userWalletAddress.walletAddress,
+                        ),
+                      ] else ...[
+                        const WarningTextButton(warningTitle: 'Error on Action')
+                      ]
                     ],
                   ),
                 )
