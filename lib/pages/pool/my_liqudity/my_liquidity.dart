@@ -881,6 +881,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
                             Row(
                               children: [
                                 PoolRemoveApproveButton(
+                                  currentTabIndex: currentTabIndex,
                                   width: 175,
                                   height: 40,
                                   text: 'Approve',
