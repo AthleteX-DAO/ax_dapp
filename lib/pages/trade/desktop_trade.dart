@@ -173,17 +173,23 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           // If the user changes the top token and it is the
                           // same as the bottom token, then swap the top and
                           // bottom
-                          bloc.add(SwapTokens(
+                          bloc.add(
+                            SwapTokens(
                               tokenFromBalance: tokenFromBalance,
-                              tokenToBalance: tokenToBalance));
+                              tokenToBalance: tokenToBalance,
+                            ),
+                          );
                         } else {
                           bloc.add(SetTokenFrom(tokenFrom: token));
                         }
                       } else {
                         if (token == tokenFrom) {
-                          bloc.add(SwapTokens(
+                          bloc.add(
+                            SwapTokens(
                               tokenFromBalance: tokenFromBalance,
-                              tokenToBalance: tokenToBalance));
+                              tokenToBalance: tokenToBalance,
+                            ),
+                          );
                         } else {
                           bloc.add(SetTokenTo(tokenTo: token));
                         }
@@ -596,9 +602,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          bloc.add(SwapTokens(
+                          bloc.add(
+                            SwapTokens(
                               tokenFromBalance: tokenFromBalance,
-                              tokenToBalance: tokenToBalance));
+                              tokenToBalance: tokenToBalance,
+                            ),
+                          );
                           _addEventForFromInputValue(
                             _tokenFromInputController.text,
                             bloc,
