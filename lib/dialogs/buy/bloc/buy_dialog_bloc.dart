@@ -65,11 +65,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
           ),
         );
 
-        emit(
-          state.copyWith(
-            status: BlocStatus.initial,
-          ),
-        );
+        emit(state.copyWith(status: BlocStatus.initial));
       }
     } catch (_) {
       emit(
@@ -79,11 +75,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         ),
       );
 
-      emit(
-        state.copyWith(
-          status: BlocStatus.initial,
-        ),
-      );
+      emit(state.copyWith(status: BlocStatus.initial));
     }
   }
 
@@ -98,16 +90,8 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       add(OnNewAxInput(axInputAmount: maxInput));
     } catch (e) {
       // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-      emit(
-        state.copyWith(
-          status: BlocStatus.error,
-        ),
-      );
-      emit(
-        state.copyWith(
-          status: BlocStatus.initial,
-        ),
-      );
+      emit(state.copyWith(status: BlocStatus.error));
+      emit(state.copyWith(status: BlocStatus.initial));
     }
   }
 
@@ -156,11 +140,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
           ),
         );
 
-        emit(
-          state.copyWith(
-            status: BlocStatus.initial,
-          ),
-        );
+        emit(state.copyWith(status: BlocStatus.initial));
       }
     } catch (_) {
       emit(
@@ -170,11 +150,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         ),
       );
 
-      emit(
-        state.copyWith(
-          status: BlocStatus.initial,
-        ),
-      );
+      emit(state.copyWith(status: BlocStatus.initial));
     }
   }
 }
