@@ -6,15 +6,16 @@ helmDefaults:
   
 environments:
   stage:
+  prod:
 
 releases:
 - name: ax-dapp
   chart: ./service-chart
   namespace: {{ .Environment.Name }}
   values:
-    - ./service-chart/stage-service.yaml
+    - ./service-chart/{{ .Environment.Name }}-service.yaml
   secrets:
-    - ./service-chart/stage.secrets.yaml
+    - ./service-chart/{{ .Environment.Name }}.secrets.yaml
   set:
     - name: image.repository
       value: {{ requiredEnv "ECR_REPOSITORY_BASE_URL" }}/athletex-dapp
