@@ -128,7 +128,7 @@ Widget myFarmItem(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Rewards Earned',
+                'Claimable Rewards',
                 style: customTextStyle,
               ),
               Obx(
@@ -151,7 +151,7 @@ Widget myFarmItem(
               ),
               Obx(
                 () => Text(
-                  '${parsedTotal.toStringAsFixed(2)} $rewardSymbol',
+                  '${parsedTotal.toStringAsFixed(4)} $rewardSymbol',
                   style: customTextStyle,
                 ),
               )
