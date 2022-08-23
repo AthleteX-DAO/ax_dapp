@@ -249,6 +249,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     SwapTokens event,
     Emitter<TradePageState> emit,
   ) {
+    final tokenFromBalance = double.parse(event.tokenFromBalance);
+    final tokenToBalance = double.parse(event.tokenToBalance);
     final tokenFrom = state.tokenTo;
     final tokenTo = state.tokenFrom;
     final tokenInputFromAmount = state.tokenInputToAmount;
@@ -259,6 +261,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         tokenTo: tokenTo,
         tokenInputFromAmount: tokenInputFromAmount,
         tokenInputToAmount: tokenInputToAmount,
+        tokenFromBalance: tokenToBalance,
+        tokenToBalance: tokenFromBalance,
         failure: Failure.none,
       ),
     );
