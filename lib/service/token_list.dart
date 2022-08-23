@@ -283,11 +283,15 @@ String getPairAptAddress(int id) {
 String getLongAthleteSymbol(int id) {
   final longTokenIndex =
       TokenList.namesList.indexWhere((element) => element.contains(id));
-  return TokenList.namesList[longTokenIndex][2] as String;
+  return longTokenIndex >= 0
+      ? TokenList.namesList[longTokenIndex][2] as String
+      : '';
 }
 
 String getShortAthleteSymbol(int id) {
   final shortTokenIndex =
       TokenList.namesList.indexWhere((element) => element.contains(id));
-  return TokenList.namesList[shortTokenIndex][3] as String;
+  return shortTokenIndex >= 0
+      ? TokenList.namesList[shortTokenIndex][3] as String
+      : '';
 }
