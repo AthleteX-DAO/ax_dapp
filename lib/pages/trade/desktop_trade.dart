@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/components/trade_approve_button.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/token.dart';
@@ -57,10 +58,14 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
     return BlocConsumer<TradePageBloc, TradePageState>(
       listenWhen: (_, current) => current.status == BlocStatus.error,
-      listener: (context, state) => context.showWarningToast(
-        title: 'Action Error',
-        description: state.errorMessage,
-      ),
+      listener: (context, state) {
+        if (state.errorMessage == noSwapInfoErrorMessage) {
+          context.showWarningToast(
+            title: 'Action Error',
+            description: state.errorMessage,
+          );
+        }
+      },
       buildWhen: (previous, current) => current.status.name.isNotEmpty,
       builder: (context, state) {
         final bloc = context.read<TradePageBloc>();
