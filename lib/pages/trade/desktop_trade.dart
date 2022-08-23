@@ -9,6 +9,7 @@ import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
+import 'package:ax_dapp/util/toastx.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -54,7 +55,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
       walletController.controller.publicAddress.toString(),
     );
 
-    return BlocBuilder<TradePageBloc, TradePageState>(
+    return BlocConsumer<TradePageBloc, TradePageState>(
+      listenWhen: (_, current) => current.status == BlocStatus.error,
+      listener: (context, state) => context.showWarningToast(
+        title: 'Action Error',
+        description: state.errorMessage,
+      ),
       buildWhen: (previous, current) => current.status.name.isNotEmpty,
       builder: (context, state) {
         final bloc = context.read<TradePageBloc>();

@@ -10,6 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'buy_dialog_event.dart';
 part 'buy_dialog_state.dart';
 
+const String noTokenInfoMessage = 'There is no detailed data for this token.';
+const String exceptionMessage =
+    'There is an exception for the action of this token';
+
 class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   BuyDialogBloc({
     required this.repo,
@@ -61,7 +65,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         emit(
           state.copyWith(
             status: BlocStatus.noData,
-            errorMessage: 'There is no detailed data for this token.',
+            errorMessage: noTokenInfoMessage,
             aptBuyInfo: AptBuyInfo.empty(),
           ),
         );
@@ -70,7 +74,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          errorMessage: 'There is an exception for the action of this token',
+          errorMessage: exceptionMessage,
           aptBuyInfo: AptBuyInfo.empty(),
         ),
       );
@@ -138,7 +142,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         emit(
           state.copyWith(
             status: BlocStatus.noData,
-            errorMessage: 'There is no detailed data for this token.',
+            errorMessage: noTokenInfoMessage,
             aptBuyInfo: AptBuyInfo.empty(),
           ),
         );
@@ -147,7 +151,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          errorMessage: 'There is an exception for the action of this token',
+          errorMessage: exceptionMessage,
           aptBuyInfo: AptBuyInfo.empty(),
         ),
       );

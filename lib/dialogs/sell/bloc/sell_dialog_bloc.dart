@@ -10,6 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'sell_dialog_event.dart';
 part 'sell_dialog_state.dart';
 
+const String noTokenInfoMessage = 'There is no detailed data for this token.';
+const String exceptionMessage =
+    'There is an exception for the action of this token';
+
 class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   SellDialogBloc({
     required this.repo,
@@ -62,7 +66,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         emit(
           state.copyWith(
             status: BlocStatus.noData,
-            errorMessage: 'There is no detailed data for this token.',
+            errorMessage: noTokenInfoMessage,
             aptSellInfo: AptSellInfo.empty(),
           ),
         );
@@ -71,7 +75,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          errorMessage: 'There is an exception for the action of this token',
+          errorMessage: exceptionMessage,
           aptSellInfo: AptSellInfo.empty(),
         ),
       );
@@ -94,7 +98,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          errorMessage: 'There is an exception for the action of this token',
+          errorMessage: exceptionMessage,
         ),
       );
     }
@@ -142,7 +146,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         emit(
           state.copyWith(
             status: BlocStatus.noData,
-            errorMessage: 'There is no detailed data for this token.',
+            errorMessage: noTokenInfoMessage,
             aptSellInfo: AptSellInfo.empty(),
           ),
         );
@@ -151,7 +155,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          errorMessage: 'There is an exception for the action of this token',
+          errorMessage: exceptionMessage,
           aptSellInfo: AptSellInfo.empty(),
         ),
       );
