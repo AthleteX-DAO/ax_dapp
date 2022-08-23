@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // This code changes the state of the button
 class PoolRemoveApproveButton extends StatefulWidget {
    PoolRemoveApproveButton({
+    required this.tabController,
     required this.currentTabIndex,
     required this.width,
     required this.height,
@@ -25,7 +26,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.lpTokenName,
     super.key,
   });
-
+   final TabController tabController;
   late  int currentTabIndex;
   final String text;
   final double width;
@@ -136,6 +137,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                 setState(() {
                   bloc.add(LoadEvent());
                   widget.currentTabIndex = 0;
+                  widget.tabController.index = widget.currentTabIndex;
                 });
               });
             }).catchError((error) {
