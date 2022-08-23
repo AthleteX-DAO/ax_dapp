@@ -90,17 +90,52 @@ class _MintDialogState extends State<MintDialog> {
               Obx(
                 () => Row(
                   children: [
-                    Text(
-                      '${lspController.createAmt.toStringAsFixed(6)} Long APTs',
-                      style: textStyle(Colors.white, 15, false),
+                    SizedBox(
+                      width: hgt * 0.2,
+                      child: Expanded(
+                        child: Text(
+                          lspController.createAmt.toStringAsFixed(6),
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
+                      ),
                     ),
-                    Text(
-                      ' + ',
-                      style: textStyle(Colors.white, 15, false),
+                    SizedBox(
+                      child: Expanded(
+                        child: Text(
+                          'Long APTs',
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
+                      ),
                     ),
-                    Text(
-                      '''${lspController.createAmt.toStringAsFixed(6)} Short APTs''',
-                      style: textStyle(Colors.white, 15, false),
+                    SizedBox(
+                      child: Expanded(
+                        child: Text(
+                          ' + ',
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: hgt * 0.2,
+                      child: Expanded(
+                        child: Text(
+                          lspController.createAmt.toStringAsFixed(6),
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      child: Expanded(
+                        child: Text(
+                          'Short APTs',
+                          style: textStyle(Colors.white, 15, false),
+                          maxLines: 1,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -299,8 +334,8 @@ class _MintDialogState extends State<MintDialog> {
                               ),
                             ),
                           ),
-                          ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: wid * 0.4),
+                          SizedBox(
+                            width: hgt * 0.2,
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _aptAmountController,
