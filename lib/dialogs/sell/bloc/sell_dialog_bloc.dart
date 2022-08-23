@@ -61,7 +61,8 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
-            status: BlocStatus.error,
+            status: BlocStatus.noData,
+            errorMessage: 'There is no detailed data for this token.',
             aptSellInfo: AptSellInfo.empty(),
           ),
         );
@@ -70,6 +71,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
+          errorMessage: 'There is an exception for the action of this token',
           aptSellInfo: AptSellInfo.empty(),
         ),
       );
@@ -89,7 +91,12 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       add(NewAptInput(aptInputAmount: maxInput));
     } catch (_) {
       // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-      emit(state.copyWith(status: BlocStatus.error));
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          errorMessage: 'There is an exception for the action of this token',
+        ),
+      );
     }
   }
 
@@ -134,7 +141,8 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
-            status: BlocStatus.error,
+            status: BlocStatus.noData,
+            errorMessage: 'There is no detailed data for this token.',
             aptSellInfo: AptSellInfo.empty(),
           ),
         );
@@ -143,6 +151,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
+          errorMessage: 'There is an exception for the action of this token',
           aptSellInfo: AptSellInfo.empty(),
         ),
       );

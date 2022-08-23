@@ -279,11 +279,22 @@ class _BuyDialogState extends State<BuyDialog> {
     );
 
     return BlocConsumer<BuyDialogBloc, BuyDialogState>(
-      listenWhen: (_, current) => current.status == BlocStatus.error,
-      listener: (context, state) => context.showWarningToast(
-        title: 'Action Error',
-        description: 'An error has occured while handling the Buy action',
-      ),
+      listenWhen: (_, current) =>
+          current.status == BlocStatus.error ||
+          current.status == BlocStatus.noData,
+      listener: (context, state) {
+        if (state.status == BlocStatus.noData) {
+          context.showWarningToast(
+            title: 'No Pool Data',
+            description: state.errorMessage,
+          );
+        } else {
+          context.showWarningToast(
+            title: 'Action Error',
+            description: state.errorMessage,
+          );
+        }
+      },
       builder: (context, state) {
         final bloc = context.read<BuyDialogBloc>();
         final aptBuyInfo = state.aptBuyInfo;
@@ -293,8 +304,9 @@ class _BuyDialogState extends State<BuyDialog> {
         final priceImpact = state.aptBuyInfo.priceImpact.toStringAsFixed(6);
         final receiveAmount = state.aptBuyInfo.receiveAmount.toStringAsFixed(6);
         final totalFee = state.aptBuyInfo.totalFee;
-        if (state.tokenAddress.isEmpty ||
-            state.tokenAddress != _getCurrentTokenAddress()) {
+        if ((state.tokenAddress.isEmpty ||
+                state.tokenAddress != _getCurrentTokenAddress()) &&
+            state.status == BlocStatus.initial) {
           reloadBuyDialog(bloc);
         }
         return Dialog(

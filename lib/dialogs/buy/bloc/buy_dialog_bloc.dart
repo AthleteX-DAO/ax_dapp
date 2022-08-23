@@ -60,22 +60,20 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
-            status: BlocStatus.error,
+            status: BlocStatus.noData,
+            errorMessage: 'There is no detailed data for this token.',
             aptBuyInfo: AptBuyInfo.empty(),
           ),
         );
-
-        emit(state.copyWith(status: BlocStatus.initial));
       }
     } catch (_) {
       emit(
         state.copyWith(
           status: BlocStatus.error,
+          errorMessage: 'There is an exception for the action of this token',
           aptBuyInfo: AptBuyInfo.empty(),
         ),
       );
-
-      emit(state.copyWith(status: BlocStatus.initial));
     }
   }
 
@@ -90,8 +88,12 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       add(OnNewAxInput(axInputAmount: maxInput));
     } catch (e) {
       // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-      emit(state.copyWith(status: BlocStatus.error));
-      emit(state.copyWith(status: BlocStatus.initial));
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          errorMessage: 'Insufficient balance',
+        ),
+      );
     }
   }
 
@@ -135,22 +137,20 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
-            status: BlocStatus.error,
+            status: BlocStatus.noData,
+            errorMessage: 'There is no detailed data for this token.',
             aptBuyInfo: AptBuyInfo.empty(),
           ),
         );
-
-        emit(state.copyWith(status: BlocStatus.initial));
       }
     } catch (_) {
       emit(
         state.copyWith(
           status: BlocStatus.error,
+          errorMessage: 'There is an exception for the action of this token',
           aptBuyInfo: AptBuyInfo.empty(),
         ),
       );
-
-      emit(state.copyWith(status: BlocStatus.initial));
     }
   }
 }
