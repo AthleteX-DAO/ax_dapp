@@ -285,7 +285,7 @@ class _BuyDialogState extends State<BuyDialog> {
       listener: (context, state) {
         if (state.status == BlocStatus.noData) {
           context.showWarningToast(
-            title: 'No Pool Data',
+            title: 'No Data for APT',
             description: state.errorMessage,
           );
         } else {
