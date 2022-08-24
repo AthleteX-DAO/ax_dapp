@@ -70,6 +70,7 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
         text = 'Confirm';
         fillColor = Colors.amber;
         textColor = Colors.black;
+        borderColor = Colors.amber;
       });
     }).catchError((_) {
       showDialog<void>(
@@ -81,6 +82,7 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
         text = 'Approve';
         fillColor = Colors.transparent;
         textColor = Colors.amber;
+        borderColor = Colors.amber;
       });
     });
   }
