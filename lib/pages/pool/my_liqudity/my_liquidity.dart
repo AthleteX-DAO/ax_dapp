@@ -350,7 +350,6 @@ class _MyLiquidityState extends State<MyLiquidity>
 
                           });
                           setState((){
-                            bloc.add(LoadEvent());
                             _tabController.index = currentTabIndex;
                           });
 
@@ -418,7 +417,7 @@ class _MyLiquidityState extends State<MyLiquidity>
     }
 
     return BlocBuilder<MyLiquidityBloc, MyLiquidityState>(
-      buildWhen: (previous, current) => previous != current,
+      buildWhen: (previous, current) => previous.filteredCards != current.filteredCards || previous.cards != current.cards || previous.status == BlocStatus.success,
       builder: (context, state) {
         final bloc = context.read<MyLiquidityBloc>();
         final filteredCards = state.filteredCards;
