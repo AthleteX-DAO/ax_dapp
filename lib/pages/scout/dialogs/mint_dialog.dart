@@ -111,14 +111,15 @@ class _MintDialogState extends State<MintDialog> {
                         style: textStyle(Colors.white, 15, false),
                       ),
                     ),
-                    Expanded(
+                    SizedBox(
+                      width: hgt * 0.2,
                       child: Text(
                         lspController.createAmt.toStringAsFixed(6),
                         style: textStyle(Colors.white, 15, false),
                         maxLines: 1,
                       ),
                     ),
-                    Expanded(
+                    SizedBox(
                       child: Text(
                         'Short APTs',
                         style: textStyle(Colors.white, 15, false),
