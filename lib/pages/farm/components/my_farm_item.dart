@@ -30,10 +30,6 @@ Widget myFarmItem(
 
   final customTextStyle = textStyle(Colors.grey[600]!, 14, false, false);
   final farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
-
-  final parsedView = double.parse(farm.stakedInfo.value.viewAmount);
-  final parsedReward = double.parse(farm.strRewards.value);
-  final parsedTotal = parsedView + parsedReward;
   final rewardSymbol = farm.strRewardSymbol;
 
   return Container(
@@ -115,7 +111,7 @@ Widget myFarmItem(
               ),
               Obx(
                 () => Text(
-                  '${parsedView.toStringAsFixed(4)} ${farm.strStakedSymbol}',
+                  '${farm.stakedInfo.value.viewAmount} ${farm.strStakedSymbol}',
                   style: customTextStyle,
                 ),
               ),
@@ -128,36 +124,37 @@ Widget myFarmItem(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Claimable Rewards',
+                'Rewards Earned',
                 style: customTextStyle,
               ),
               Obx(
                 () => Text(
-                  '${farm.strRewards} $rewardSymbol',
+                  '${farm.rewardInfo.value.viewAmount} $rewardSymbol',
                   style: customTextStyle,
                 ),
               )
             ],
           ),
         ),
-        SizedBox(
-          width: cardWidth,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Total AX available (Staked + Earned)',
-                style: customTextStyle,
-              ),
-              Obx(
-                () => Text(
-                  '${parsedTotal.toStringAsFixed(4)} $rewardSymbol',
-                  style: customTextStyle,
-                ),
-              )
-            ],
-          ),
-        ),
+        // we will add this feature in the future
+        // SizedBox(
+        //   width: cardWidth,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       Text(
+        //         'Total AX available (Staked + Earned)',
+        //         style: customTextStyle,
+        //       ),
+        //       Obx(
+        //         () => Text(
+        //           '${parsedTotal.toStringAsFixed(2)} $rewardSymbol',
+        //           style: customTextStyle,
+        //         ),
+        //       )
+        //     ],
+        //   ),
+        // ),
         //Claim rewards and Unstake liquidity buttons
         SizedBox(
           width: cardWidth,
