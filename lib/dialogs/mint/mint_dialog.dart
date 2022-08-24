@@ -1,4 +1,3 @@
-import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
 import 'package:ax_dapp/pages/athlete/components/athlete_mint_approve_button.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';

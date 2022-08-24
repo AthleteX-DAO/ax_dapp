@@ -105,12 +105,13 @@ Container sellButton(
 }
 
 Container mintButton(
-    BuildContext context,
-    AthleteScoutModel athlete,
-    bool isPortraitMode,
-    double containerWdt,
-    void Function() goToTradePage,
-    void Function(int pageNumber) animateToPage) {
+  BuildContext context,
+  AthleteScoutModel athlete,
+  bool isPortraitMode,
+  double containerWdt,
+  void Function() goToTradePage,
+  void Function(int pageNumber) animateToPage,
+) {
   final controller = Get.find<Controller>();
   return Container(
     width: isPortraitMode ? containerWdt / 3 : 175,

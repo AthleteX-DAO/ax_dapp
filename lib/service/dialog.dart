@@ -2,7 +2,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 //ignore_for_file: lines_longer_than_80_chars
 import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
-import 'package:ax_dapp/pages/v1_app.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';

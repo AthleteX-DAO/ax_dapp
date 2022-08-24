@@ -34,11 +34,13 @@ class AthleteMintApproveButton extends StatefulWidget {
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final void Function(int pageNumber) animateToPage;
-  final Dialog Function(BuildContext,
-      {void Function(int pageNumber) animatePage,
-      bool isTradeLink,
-      bool isPoolLink,
-      bool isFarmLink}) confirmDialog;
+  final Dialog Function(
+    BuildContext, {
+    void Function(int pageNumber) animatePage,
+    bool isTradeLink,
+    bool isPoolLink,
+    bool isFarmLink,
+  }) confirmDialog;
 
   @override
   State<AthleteMintApproveButton> createState() =>
