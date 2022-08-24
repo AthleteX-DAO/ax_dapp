@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'trade_page_event.dart';
 part 'trade_page_state.dart';
 
-const _somethingWentWrong = 'Something went wrong';
+const _somethingWentWrong = 'No Liquidity Found';
 
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   TradePageBloc({

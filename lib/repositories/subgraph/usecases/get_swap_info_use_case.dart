@@ -2,7 +2,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.da
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
 import 'package:fpdart/fpdart.dart';
 
-const String noSwapInfoErrorMessage = 'No swap info found';
+const String noSwapInfoErrorMessage = 'No Liquidity Found';
 
 /// This is an abstraction on GetPairInfoUseCase that encapsulates
 /// the logic for fetching the swap transaction information needed for a swap
