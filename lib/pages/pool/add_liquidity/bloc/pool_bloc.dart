@@ -5,6 +5,7 @@ import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/token_list.dart' show TokenList;
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/message.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -184,13 +185,27 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
       if (isSuccess) {
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         final token1InputAmount = token0InputAmount / poolInfo.ratio;
+        final balance0 = double.parse(state.balance0);
+        final balance1 = double.parse(state.balance1);
+
         emit(
           state.copyWith(
-            status: BlocStatus.success,
             token0AmountInput: token0InputAmount,
             poolPairInfo: poolInfo,
           ),
         );
+
+        if (balance0 < token0InputAmount || balance1 < token1InputAmount) {
+          emit(
+            state.copyWith(
+              status: BlocStatus.error,
+              message: Message.insufficient,
+            ),
+          );
+        } else {
+          emit(state.copyWith(status: BlocStatus.initial));
+        }
+
         add(Token1InputChanged(token1InputAmount.toString()));
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
@@ -222,7 +237,6 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         emit(
           state.copyWith(
-            status: BlocStatus.success,
             poolPairInfo: poolInfo,
             token1AmountInput: token1InputAmount,
           ),

@@ -9,6 +9,7 @@ import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/debouncer.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
+import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -631,22 +632,30 @@ class _AddLiquidityState extends State<AddLiquidity> {
                   ),
                 ),
                 showYouReceived(poolInfo.recieveAmount),
-                PoolApproveButton(
-                  width: _elementWdt * 0.95,
-                  height: 40,
-                  text: 'Approve',
-                  approveCallback: bloc.poolController.approve,
-                  confirmCallback: bloc.poolController.addLiquidity,
-                  confirmDialog: transactionConfirmed,
-                  currencyOne: token0.name,
-                  currencyTwo: token1.name,
-                  lpTokens: poolInfo.recieveAmount,
-                  valueOne: _tokenAmountOneController.text,
-                  valueTwo: _tokenAmountTwoController.text,
-                  shareOfPool: poolInfo.shareOfPool,
-                  lpTokenName: '${token0.ticker}/${token1.ticker}',
-                  walletId: userWalletAddress.walletAddress,
-                )
+                if (controller.walletConnected)
+                  if (state.status != BlocStatus.error)
+                    PoolApproveButton(
+                      width: _elementWdt * 0.95,
+                      height: 40,
+                      text: 'Approve',
+                      approveCallback: bloc.poolController.approve,
+                      confirmCallback: bloc.poolController.addLiquidity,
+                      confirmDialog: transactionConfirmed,
+                      currencyOne: token0.name,
+                      currencyTwo: token1.name,
+                      lpTokens: poolInfo.recieveAmount,
+                      valueOne: _tokenAmountOneController.text,
+                      valueTwo: _tokenAmountTwoController.text,
+                      shareOfPool: poolInfo.shareOfPool,
+                      lpTokenName: '${token0.ticker}/${token1.ticker}',
+                      walletId: userWalletAddress.walletAddress,
+                    )
+                  else
+                    WarningTextButton(warningTitle: state.message)
+                else
+                  const WarningTextButton(
+                    warningTitle: 'Connect Wallet',
+                  )
               ],
             ),
           );

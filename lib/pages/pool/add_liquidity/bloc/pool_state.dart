@@ -12,6 +12,7 @@ class PoolState extends Equatable {
     required this.token1,
     required this.status,
     required this.poolPairInfo,
+    required this.message,
   });
 
   factory PoolState.initial() {
@@ -26,6 +27,7 @@ class PoolState extends Equatable {
       token1: TokenList.tokenList[1],
       status: BlocStatus.initial,
       poolPairInfo: PoolPairInfo.empty(),
+      message: '',
     );
   }
   final String shareOfPool;
@@ -38,6 +40,7 @@ class PoolState extends Equatable {
   final Token token1;
   final BlocStatus status;
   final PoolPairInfo poolPairInfo;
+  final String message;
 
   @override
   List<Object> get props => [
@@ -51,6 +54,7 @@ class PoolState extends Equatable {
         token1,
         status,
         poolPairInfo,
+        message
       ];
 
   @override
@@ -69,6 +73,7 @@ class PoolState extends Equatable {
     Token? token1,
     BlocStatus? status,
     PoolPairInfo? poolPairInfo,
+    String? message,
   }) {
     return PoolState(
       shareOfPool: shareOfPool ?? this.shareOfPool,
@@ -81,6 +86,7 @@ class PoolState extends Equatable {
       token1: token1 ?? this.token1,
       status: status ?? this.status,
       poolPairInfo: poolPairInfo ?? this.poolPairInfo,
+      message: message ?? this.message,
     );
   }
 }
