@@ -9,6 +9,7 @@ class SellDialogState extends Equatable {
     this.balance = 0,
     this.aptInputAmount = 0,
     this.aptSellInfo = AptSellInfo.empty,
+    this.errorMessage = '',
   });
 
   final AptType aptTypeSelection;
@@ -18,6 +19,7 @@ class SellDialogState extends Equatable {
   final double aptInputAmount;
   final BlocStatus status;
   final AptSellInfo aptSellInfo;
+  final String errorMessage;
 
   @override
   List<Object> get props {
@@ -29,6 +31,7 @@ class SellDialogState extends Equatable {
       aptInputAmount,
       status,
       aptSellInfo,
+      errorMessage,
     ];
   }
 
@@ -41,6 +44,7 @@ class SellDialogState extends Equatable {
     BlocStatus? status,
     String? tokenAddress,
     AptSellInfo? aptSellInfo,
+    String? errorMessage,
   }) {
     return SellDialogState(
       aptTypeSelection: aptTypeSelection ?? this.aptTypeSelection,
@@ -50,6 +54,7 @@ class SellDialogState extends Equatable {
       aptInputAmount: aptInputAmount ?? this.aptInputAmount,
       status: status ?? this.status,
       aptSellInfo: aptSellInfo ?? this.aptSellInfo,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }

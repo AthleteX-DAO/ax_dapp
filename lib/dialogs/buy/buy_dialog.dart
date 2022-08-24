@@ -166,11 +166,22 @@ class _BuyDialogState extends State<BuyDialog> {
     if (_height < 505) hgt = _height;
 
     return BlocConsumer<BuyDialogBloc, BuyDialogState>(
-      listenWhen: (_, current) => current.status == BlocStatus.error,
-      listener: (context, state) => context.showWarningToast(
-        title: 'Action Error',
-        description: 'An error has occured while handling the Buy action',
-      ),
+      listenWhen: (_, current) =>
+          current.status == BlocStatus.error ||
+          current.status == BlocStatus.noData,
+      listener: (context, state) {
+        if (state.status == BlocStatus.noData) {
+          context.showWarningToast(
+            title: 'No Data for APT',
+            description: state.errorMessage,
+          );
+        } else {
+          context.showWarningToast(
+            title: 'Action Error',
+            description: state.errorMessage,
+          );
+        }
+      },
       builder: (context, state) {
         final bloc = context.read<BuyDialogBloc>();
         final balance = state.balance;

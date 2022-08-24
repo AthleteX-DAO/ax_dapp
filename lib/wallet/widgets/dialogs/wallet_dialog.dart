@@ -14,14 +14,18 @@ class WalletDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final controller = Get.find<Controller>();
-    return BlocListener<WalletBloc, WalletState>(
-      listener: (_, state) {
-        if (state.isWalletUnavailable ||
-            state.isWalletUnsupported ||
-            state.isWalletConnected) {
-          Navigator.pop(context);
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<WalletBloc, WalletState>(
+          listener: (_, state) {
+            if (state.isWalletUnavailable ||
+                state.isWalletUnsupported ||
+                state.isWalletConnected) {
+              Navigator.pop(context);
+            }
+          },
+        ),
+      ],
       child: Dialog(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(

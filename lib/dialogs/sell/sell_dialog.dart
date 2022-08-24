@@ -3,6 +3,8 @@ import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -173,7 +175,23 @@ class _SellDialogState extends State<SellDialog> {
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
 
-    return BlocBuilder<SellDialogBloc, SellDialogState>(
+    return BlocConsumer<SellDialogBloc, SellDialogState>(
+      listenWhen: (_, current) =>
+          current.status == BlocStatus.error ||
+          current.status == BlocStatus.noData,
+      listener: (context, state) {
+        if (state.status == BlocStatus.noData) {
+          context.showWarningToast(
+            title: 'No Data for APT',
+            description: state.errorMessage,
+          );
+        } else {
+          context.showWarningToast(
+            title: 'Action Error',
+            description: state.errorMessage,
+          );
+        }
+      },
       builder: (context, state) {
         final bloc = context.read<SellDialogBloc>();
         final balance = state.balance;

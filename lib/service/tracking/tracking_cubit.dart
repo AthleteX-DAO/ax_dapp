@@ -29,13 +29,15 @@ extension LandingPageTracking on TrackingCubit {
   }
 }
 
-extension ConnectWalletTracking on TrackingCubit {
-  void onPressedConnectWallet({
+extension ConnectWalletSuccessfulTracking on TrackingCubit {
+  void onConnectWalletSuccessful({
     required String publicAddress,
+    required String axUnits,
   }) {
     trackingRepository.track(
-      ScoutPageTrackingEvent.onPressedConnectWallet({
+      ScoutPageTrackingEvent.onConnectWalletSuccessful({
         'public_address': publicAddress,
+        'ax_units': axUnits,
       }),
     );
   }

@@ -5,8 +5,8 @@ import 'package:ax_dapp/pages/trade/components/trade_approve_button.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/util/assets/assets.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -50,7 +50,16 @@ class _DesktopTradeState extends State<DesktopTrade> {
     final tokenContainerWid = wid * 0.95;
     final amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
 
-    return BlocBuilder<TradePageBloc, TradePageState>(
+    return BlocConsumer<TradePageBloc, TradePageState>(
+      listenWhen: (_, current) => current.status == BlocStatus.error,
+      listener: (context, state) {
+        if (state.failure is NoSwapInfoFailure) {
+          context.showWarningToast(
+            title: 'Action Error',
+            description: 'No swap info found',
+          );
+        }
+      },
       builder: (context, state) {
         final bloc = context.read<TradePageBloc>();
         final price = state.swapInfo.toPrice.toStringAsFixed(6);

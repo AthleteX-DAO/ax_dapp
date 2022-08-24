@@ -5,11 +5,14 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
 import 'package:ethereum_api/erc20_api.dart';
 import 'package:ethereum_api/pool_api.dart';
+import 'package:ethereum_api/pool_info_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 import 'package:web3dart/web3dart.dart' as web3_dart;
+
+const String strPoolInfoAddress = '0x53590f017d73bAb31A6CbCBF6500A66D92fecFbE';
 
 class FarmController {
   // contructor with poolInfo from api
@@ -46,6 +49,13 @@ class FarmController {
     }
     rpcClient = web3_dart.Web3Client(rpcUrl, Client());
     contract = Pool(address: address, client: rpcClient);
+
+    final poolInfoAddress =
+        web3_dart.EthereumAddress.fromHex(strPoolInfoAddress);
+    contractInfo = PoolInfo(address: poolInfoAddress, client: rpcClient);
+
+    final account = controller.publicAddress.value.hex;
+    updateStakedBalance(account);
     updateCurrentBalance();
   }
 
@@ -73,6 +83,7 @@ class FarmController {
     nRewardTokenDecimals = farm.nRewardTokenDecimals;
     rpcClient = farm.rpcClient;
     contract = farm.contract;
+    contractInfo = farm.contractInfo;
     stakingInfo = farm.stakingInfo;
     stakedInfo = farm.stakedInfo;
 
@@ -85,6 +96,7 @@ class FarmController {
 
   // decalaration of member varibles
   late Pool contract;
+  late PoolInfo contractInfo;
 
   Controller controller = Get.find();
   String? athlete;
@@ -110,6 +122,7 @@ class FarmController {
 
   Rx<UserInputInfo> stakingInfo = UserInputInfo(BigInt.zero, '0.0').obs;
   Rx<UserInputInfo> stakedInfo = UserInputInfo(BigInt.zero, '0.0').obs;
+  Rx<UserInputInfo> rewardInfo = UserInputInfo(BigInt.zero, '0.0').obs;
 
   late web3_dart.Web3Client rpcClient;
 
@@ -178,7 +191,7 @@ class FarmController {
     final rewardData = Uint8List.fromList([]);
 
     final txHash = await contract.claim(
-      BigInt.from(100),
+      rewardInfo.value.rawAmount,
       stakingData,
       rewardData,
       credentials: controller.credentials,
@@ -196,6 +209,13 @@ class FarmController {
     stakedInfo.value = UserInputInfo.fromBalance(
       rawAmount: balances[0],
       decimals: nStakeTokenDecimals,
+    );
+
+    final rewards =
+        await contractInfo.rewards(contract.self.address, ethAccount);
+    rewardInfo.value = UserInputInfo.fromBalance(
+      rawAmount: rewards[0],
+      decimals: nRewardTokenDecimals,
     );
   }
 

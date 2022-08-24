@@ -9,6 +9,7 @@ class BuyDialogState extends Equatable {
     this.balance = 0,
     this.axInputAmount = 0,
     this.aptBuyInfo = AptBuyInfo.empty,
+    this.errorMessage = '',
   });
 
   final AptType aptTypeSelection;
@@ -18,6 +19,7 @@ class BuyDialogState extends Equatable {
   final double axInputAmount;
   final BlocStatus status;
   final AptBuyInfo aptBuyInfo;
+  final String errorMessage;
 
   @override
   List<Object> get props {
@@ -29,6 +31,7 @@ class BuyDialogState extends Equatable {
       axInputAmount,
       status,
       aptBuyInfo,
+      errorMessage,
     ];
   }
 
@@ -40,6 +43,7 @@ class BuyDialogState extends Equatable {
     double? axInputAmount,
     BlocStatus? status,
     AptBuyInfo? aptBuyInfo,
+    String? errorMessage,
   }) {
     return BuyDialogState(
       aptTypeSelection: aptTypeSelection ?? this.aptTypeSelection,
@@ -49,6 +53,7 @@ class BuyDialogState extends Equatable {
       axInputAmount: axInputAmount ?? this.axInputAmount,
       status: status ?? this.status,
       aptBuyInfo: aptBuyInfo ?? this.aptBuyInfo,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
