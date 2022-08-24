@@ -107,7 +107,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     Emitter<TradePageState> emit,
   ) async {
     final tokenInputFromAmount = event.tokenInputFromAmount;
-    final tokenFromBalance = await walletController.getTokenBalance(state.tokenFrom.address.value);
+    final tokenFromBalance =
+        await walletController.getTokenBalance(state.tokenFrom.address.value);
     try {
       final response = await repo.fetchSwapInfo(
         tokenFrom: state.tokenFrom.address.value,
