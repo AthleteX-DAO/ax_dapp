@@ -92,49 +92,38 @@ class _MintDialogState extends State<MintDialog> {
                   children: [
                     SizedBox(
                       width: hgt * 0.2,
-                      child: Expanded(
-                        child: Text(
-                          lspController.createAmt.toStringAsFixed(6),
-                          style: textStyle(Colors.white, 15, false),
-                          maxLines: 1,
-                        ),
+                      child: Text(
+                        lspController.createAmt.toStringAsFixed(6),
+                        style: textStyle(Colors.white, 15, false),
+                        maxLines: 1,
                       ),
                     ),
                     SizedBox(
-                      child: Expanded(
-                        child: Text(
-                          'Long APTs',
-                          style: textStyle(Colors.white, 15, false),
-                          maxLines: 1,
-                        ),
+                      child: Text(
+                        'Long APTs',
+                        style: textStyle(Colors.white, 15, false),
+                        maxLines: 1,
                       ),
                     ),
                     SizedBox(
-                      child: Expanded(
-                        child: Text(
-                          ' + ',
-                          style: textStyle(Colors.white, 15, false),
-                          maxLines: 1,
-                        ),
+                      child: Text(
+                        ' + ',
+                        style: textStyle(Colors.white, 15, false),
                       ),
                     ),
                     SizedBox(
                       width: hgt * 0.2,
-                      child: Expanded(
-                        child: Text(
-                          lspController.createAmt.toStringAsFixed(6),
-                          style: textStyle(Colors.white, 15, false),
-                          maxLines: 1,
-                        ),
+                      child: Text(
+                        lspController.createAmt.toStringAsFixed(6),
+                        style: textStyle(Colors.white, 15, false),
+                        maxLines: 1,
                       ),
                     ),
                     SizedBox(
-                      child: Expanded(
-                        child: Text(
-                          'Short APTs',
-                          style: textStyle(Colors.white, 15, false),
-                          maxLines: 1,
-                        ),
+                      child: Text(
+                        'Short APTs',
+                        style: textStyle(Colors.white, 15, false),
+                        maxLines: 1,
                       ),
                     ),
                   ],
