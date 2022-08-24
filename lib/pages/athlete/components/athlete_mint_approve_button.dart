@@ -1,3 +1,4 @@
+import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
@@ -18,6 +19,7 @@ class AthleteMintApproveButton extends StatefulWidget {
     required this.confirmCallback,
     required this.confirmDialog,
     required this.walletAddress,
+    required this.bloc,
     super.key,
   });
 
@@ -29,9 +31,10 @@ class AthleteMintApproveButton extends StatefulWidget {
   final String inputApt;
   final String valueInAX;
   final String walletAddress;
-  final Future<void> Function() approveCallback;
+  final Future<void> Function(MintDialogBloc) approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
+  final MintDialogBloc bloc;
 
   @override
   State<AthleteMintApproveButton> createState() =>
@@ -59,7 +62,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
 
   void changeButton() {
     //Changes from approve button to confirm
-    widget.approveCallback().then((_) {
+    widget.approveCallback(widget.bloc).then((_) {
       setState(() {
         isApproved = true;
         text = 'Confirm';

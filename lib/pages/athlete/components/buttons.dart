@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
+import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/sell_dialog.dart';
 import 'package:ax_dapp/pages/scout/dialogs/athlete_page_dialogs.dart';
@@ -120,8 +121,15 @@ Container mintButton(
         if (controller.walletConnected) {
           showDialog<void>(
             context: context,
-            builder: (BuildContext context) =>
-                MintDialog(athlete: athlete, goToTradePage: goToTradePage),
+            builder: (BuildContext context) => BlocProvider(
+              create: (BuildContext context) => MintDialogBloc(
+                wallet: GetTotalTokenBalanceUseCase(Get.find()),
+              ),
+              child: MintDialog(
+                athlete: athlete,
+                goToTradePage: goToTradePage,
+              ),
+            ),
           );
         } else {
           context.showWalletWarningToast();
