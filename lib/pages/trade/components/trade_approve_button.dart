@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,9 +44,11 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
   double height = 0;
   String text = '';
   bool isApproved = false;
-  Color? fillcolor;
-  Color? textcolor;
+  Color? fillColor;
+  Color? textColor;
+  Color? borderColor;
   Widget? dialog;
+  bool isWaitingApproval = false;
 
   @override
   void initState() {
@@ -53,8 +56,9 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
     width = widget.width;
     height = widget.height;
     text = widget.text;
-    fillcolor = Colors.transparent;
-    textcolor = Colors.amber;
+    fillColor = Colors.transparent;
+    textColor = Colors.amber;
+    borderColor = Colors.amber;
   }
 
   void changeButton() {
@@ -62,9 +66,10 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
     widget.approveCallback().then((_) {
       setState(() {
         isApproved = true;
+        isWaitingApproval = false;
         text = 'Confirm';
-        fillcolor = Colors.amber;
-        textcolor = Colors.black;
+        fillColor = Colors.amber;
+        textColor = Colors.black;
       });
     }).catchError((_) {
       showDialog<void>(
@@ -74,8 +79,8 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
       setState(() {
         isApproved = false;
         text = 'Approve';
-        fillcolor = Colors.transparent;
-        textcolor = Colors.amber;
+        fillColor = Colors.transparent;
+        textColor = Colors.amber;
       });
     });
   }
@@ -86,13 +91,14 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.amber),
-        color: fillcolor,
+        border: Border.all(color: borderColor!),
+        color: fillColor,
         borderRadius: BorderRadius.circular(100),
       ),
       child: TextButton(
         onPressed: () {
           if (isApproved) {
+            if (isWaitingApproval) return;
             context.read<TrackingCubit>().onSwapConfirmClick(
                   fromCurrency: widget.fromCurrency,
                   toCurrency: widget.toCurrency,
@@ -132,6 +138,13 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
                   totalFee: widget.totalFee,
                   walletId: widget.walletAddress,
                 );
+            setState(() {
+              text = Message.waitingApproval;
+              isWaitingApproval = true;
+              fillColor = Colors.grey;
+              textColor = Colors.white;
+              borderColor = Colors.grey;
+            });
             changeButton();
           }
         },
@@ -139,7 +152,7 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
           text,
           style: TextStyle(
             fontSize: 16,
-            color: textcolor,
+            color: textColor,
           ),
         ),
       ),
