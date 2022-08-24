@@ -29,10 +29,12 @@ class AthletePage extends StatefulWidget {
     super.key,
     required this.athlete,
     required this.goToTradePage,
+    required this.animateToPage,
   });
 
   final AthleteScoutModel athlete;
   final void Function() goToTradePage;
+  final void Function(int pageNumber) animateToPage;
 
   @override
   State<AthletePage> createState() => _AthletePageState();
@@ -71,7 +73,12 @@ class _AthletePageState extends State<AthletePage> {
   Widget build(BuildContext context) {
     final _mediaquery = MediaQuery.of(context);
     _isPortraitMode = _mediaquery.orientation == Orientation.portrait;
-    if (listView == 1) return DesktopScout(goToTradePage: widget.goToTradePage);
+    if (listView == 1) {
+      return DesktopScout(
+        goToTradePage: widget.goToTradePage,
+        animateToPage: widget.animateToPage,
+      );
+    }
 
     return kIsWeb
         ? BlocBuilder<AthletePageBloc, AthletePageState>(
@@ -1007,6 +1014,7 @@ class _AthletePageState extends State<AthletePage> {
                         _isPortraitMode,
                         _width,
                         widget.goToTradePage,
+                        widget.animateToPage,
                       ),
                       redeemButton(
                         context,
@@ -1327,6 +1335,7 @@ class _AthletePageState extends State<AthletePage> {
                             _isPortraitMode,
                             containerWdt,
                             widget.goToTradePage,
+                            widget.animateToPage,
                           ),
                           redeemButton(
                             context,

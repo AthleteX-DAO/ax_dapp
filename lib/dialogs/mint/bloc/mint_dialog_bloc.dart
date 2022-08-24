@@ -10,7 +10,6 @@ part 'mint_dialog_event.dart';
 class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
   MintDialogBloc({required this.wallet}) : super(MintDialogState.initial()) {
     on<OnAxAmountChanged>(_mapAxAmountChangedEventToState);
-    on<OnLoading>(_mapLoadingEventToState);
   }
   GetTotalTokenBalanceUseCase wallet;
 
@@ -41,28 +40,6 @@ class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
         state.copyWith(
           status: BlocStatus.error,
           message: Message.exception,
-        ),
-      );
-    }
-  }
-
-  Future<void> _mapLoadingEventToState(
-    OnLoading event,
-    Emitter<MintDialogState> emit,
-  ) async {
-    final isLoading = event.isLoading;
-    if (isLoading) {
-      emit(
-        state.copyWith(
-          status: BlocStatus.loading,
-          message: Message.waitingApproval,
-        ),
-      );
-    } else {
-      emit(
-        state.copyWith(
-          status: BlocStatus.initial,
-          message: '',
         ),
       );
     }

@@ -2,6 +2,7 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 //ignore_for_file: lines_longer_than_80_chars
 import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
+import 'package:ax_dapp/pages/v1_app.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
@@ -517,15 +518,52 @@ Dialog removalConfirmed(BuildContext context) {
   );
 }
 
+void defaultAnimatePage(int pageNumber) {}
+
+Container linkButton(
+  BuildContext context,
+  String title,
+  int pageNumber,
+  void Function(int pageNumber) animateToPage,
+) {
+  return Container(
+    width: 120,
+    height: 50,
+    decoration: BoxDecoration(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(100),
+    ),
+    child: TextButton(
+      onPressed: () {
+        Navigator.pop(context);
+        animateToPage(pageNumber);
+      },
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 20,
+          color: Colors.white,
+        ),
+      ),
+    ),
+  );
+}
+
 // dynamic
-Dialog transactionConfirmed(BuildContext context) {
+Dialog transactionConfirmed(
+  BuildContext context, {
+  void Function(int pageNumber) animatePage = defaultAnimatePage,
+  bool isTradeLink = false,
+  bool isPoolLink = false,
+  bool isFarmLink = false,
+}) {
   final _height = MediaQuery.of(context).size.height;
   final _width = MediaQuery.of(context).size.width;
   var wid = 500.0;
   const edge = 40.0;
   if (_width < 505) wid = _width;
-  var hgt = 335.0;
-  if (_height < 340) hgt = _height;
+  var hgt = 360.0;
+  if (_height < 365) hgt = _height;
 
   return Dialog(
     backgroundColor: Colors.transparent,
@@ -538,7 +576,7 @@ Dialog transactionConfirmed(BuildContext context) {
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Center(
         child: SizedBox(
-          height: 275,
+          height: 325,
           width: wid - edge,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -600,6 +638,32 @@ Dialog transactionConfirmed(BuildContext context) {
                       ),
                     ),
                   ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (isTradeLink)
+                    linkButton(
+                      context,
+                      'Trade',
+                      1,
+                      animatePage,
+                    ),
+                  if (isPoolLink)
+                    linkButton(
+                      context,
+                      'Pool',
+                      2,
+                      animatePage,
+                    ),
+                  if (isFarmLink)
+                    linkButton(
+                      context,
+                      'Farm',
+                      3,
+                      animatePage,
+                    ),
                 ],
               ),
             ],

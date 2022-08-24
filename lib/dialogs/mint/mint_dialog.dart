@@ -22,11 +22,13 @@ class MintDialog extends StatefulWidget {
   const MintDialog({
     required this.athlete,
     required this.goToTradePage,
+    required this.animateToPage,
     super.key,
   });
 
   final AthleteScoutModel athlete;
   final void Function() goToTradePage;
+  final void Function(int pageNumber) animateToPage;
 
   @override
   State<MintDialog> createState() => _MintDialogState();
@@ -160,12 +162,6 @@ class _MintDialogState extends State<MintDialog> {
         ],
       ),
     );
-  }
-
-  Future<void> approve(MintDialogBloc bloc) async {
-    bloc.add(OnLoading(isLoading: true));
-    await lspController.approve();
-    bloc.add(OnLoading(isLoading: false));
   }
 
   @override
@@ -433,10 +429,6 @@ class _MintDialogState extends State<MintDialog> {
                         WarningTextButton(
                           warningTitle: state.message,
                         ),
-                      ] else if (state.status == BlocStatus.loading) ...[
-                        WarningTextButton(
-                          warningTitle: state.message,
-                        )
                       ] else ...[
                         AthleteMintApproveButton(
                           width: 175,
@@ -446,11 +438,11 @@ class _MintDialogState extends State<MintDialog> {
                           aptName: widget.athlete.name,
                           inputApt: _aptAmountController.text,
                           valueInAX: '$youSpend AX',
-                          approveCallback: approve,
+                          approveCallback: lspController.approve,
                           confirmCallback: lspController.mint,
                           confirmDialog: transactionConfirmed,
+                          animateToPage: widget.animateToPage,
                           walletAddress: userWalletAddress.walletAddress,
-                          bloc: bloc,
                         )
                       ]
                     ],

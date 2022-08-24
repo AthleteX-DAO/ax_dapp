@@ -1,7 +1,7 @@
-import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +19,7 @@ class AthleteMintApproveButton extends StatefulWidget {
     required this.confirmCallback,
     required this.confirmDialog,
     required this.walletAddress,
-    required this.bloc,
+    required this.animateToPage,
     super.key,
   });
 
@@ -31,10 +31,14 @@ class AthleteMintApproveButton extends StatefulWidget {
   final String inputApt;
   final String valueInAX;
   final String walletAddress;
-  final Future<void> Function(MintDialogBloc) approveCallback;
+  final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final Dialog Function(BuildContext) confirmDialog;
-  final MintDialogBloc bloc;
+  final void Function(int pageNumber) animateToPage;
+  final Dialog Function(BuildContext,
+      {void Function(int pageNumber) animatePage,
+      bool isTradeLink,
+      bool isPoolLink,
+      bool isFarmLink}) confirmDialog;
 
   @override
   State<AthleteMintApproveButton> createState() =>
@@ -46,6 +50,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
   double height = 0;
   String text = '';
   bool isApproved = false;
+  bool iswaitingApproval = false;
   Color? fillcolor;
   Color? textcolor;
   Widget? dialog;
@@ -62,9 +67,10 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
 
   void changeButton() {
     //Changes from approve button to confirm
-    widget.approveCallback(widget.bloc).then((_) {
+    widget.approveCallback().then((_) {
       setState(() {
         isApproved = true;
+        iswaitingApproval = false;
         text = 'Confirm';
         fillcolor = Colors.amber;
         textcolor = Colors.black;
@@ -99,6 +105,8 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
+          if (iswaitingApproval) return;
+
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteMintConfirmButtonClicked(
@@ -111,8 +119,13 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
             widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog(context),
+                builder: (BuildContext context) => widget.confirmDialog(
+                  context,
+                  animatePage: widget.animateToPage,
+                  isTradeLink: true,
+                  isPoolLink: true,
+                  isFarmLink: false,
+                ),
               ).then((value) {
                 if (mounted) {
                   Navigator.pop(context);
@@ -144,6 +157,10 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                   valueInAx: widget.valueInAX,
                   walletId: widget.walletAddress,
                 );
+            setState(() {
+              text = Message.waitingApproval;
+              iswaitingApproval = true;
+            });
             changeButton();
           }
         },

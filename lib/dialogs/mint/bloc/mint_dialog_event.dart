@@ -5,12 +5,6 @@ abstract class MintDialogEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class OnLoading extends MintDialogEvent {
-  OnLoading({required this.isLoading});
-
-  final bool isLoading;
-}
-
 class OnAxAmountChanged extends MintDialogEvent {
   OnAxAmountChanged({required this.axAmount});
 

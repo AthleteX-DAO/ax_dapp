@@ -75,6 +75,12 @@ class _V1AppState extends State<V1App> {
     });
   }
 
+  void goToSpecificPage(int index) {
+    setState(() {
+      pageNumber = Pages.values[index];
+    });
+  }
+
   void animateToPage(int index) {
     // use this to animate to the page
     _pageController.animateToPage(
@@ -158,7 +164,10 @@ class _V1AppState extends State<V1App> {
                   coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
                 ),
               ),
-              child: DesktopScout(goToTradePage: goToTradePage),
+              child: DesktopScout(
+                goToTradePage: goToTradePage,
+                animateToPage: goToSpecificPage,
+              ),
             )
           else if (pageNumber == Pages.trade)
             BlocProvider(
@@ -193,7 +202,10 @@ class _V1AppState extends State<V1App> {
                 coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
               ),
             ),
-            child: DesktopScout(goToTradePage: goToTradePage),
+            child: DesktopScout(
+              goToTradePage: goToTradePage,
+              animateToPage: animateToPage,
+            ),
           ),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
