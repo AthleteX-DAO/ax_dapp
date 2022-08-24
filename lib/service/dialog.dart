@@ -2,6 +2,7 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -168,7 +169,7 @@ Dialog wrongNetworkDialog(BuildContext context) {
 Dialog walletDialog(BuildContext context) {
   final controller = Get.find<Controller>();
   final walletController = Get.find<WalletController>();
-
+  final getAxBalance = GetTotalTokenBalanceUseCase(walletController);
   return Dialog(
     backgroundColor: Colors.transparent,
     shape: RoundedRectangleBorder(
@@ -219,30 +220,33 @@ Dialog walletDialog(BuildContext context) {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      controller.connect().then((response) {
+                      controller.connect().then((response) async {
                         if (response == -1) {
                           // No MetaMask
                           Navigator.pop(context);
-                          showDialog<void>(
+                          await showDialog<void>(
                             context: context,
                             builder: connectMetamaskDialog,
                           );
                         } else if (response == 0) {
                           // Wrong network
                           Navigator.pop(context);
-                          showDialog<void>(
+                          await showDialog<void>(
                             context: context,
                             builder: wrongNetworkDialog,
                           );
                         } else {
-                          context.read<TrackingCubit>().onPressedConnectWallet(
-                                publicAddress:
-                                    '"${controller.publicAddress.toString()}"',
-                              );
                           Navigator.pop(context);
-                          walletController
-                            ..getTokenMetrics()
-                            ..getYourAxBalance();
+                          context
+                              .read<TrackingCubit>()
+                              .onConnectWalletSuccessful(
+                                publicAddress:
+                                    controller.publicAddress.toString(),
+                                axUnits:
+                                    '"${await getAxBalance.getTotalAxBalance()} AX"',
+                              );
+                          await walletController.getTokenMetrics();
+                          await walletController.getYourAxBalance();
                         }
                       });
                     },
