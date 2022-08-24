@@ -117,18 +117,19 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       );
       final isSuccess = response.isLeft();
       if (isSuccess) {
+        final swapInfo = response.getLeft().toNullable()!.swapInfo;
         if (tokenInputFromAmount > double.parse(tokenFromBalance)) {
           emit(
             state.copyWith(
               status: BlocStatus.error,
               errorMessage: Message.insufficient,
+              swapInfo: swapInfo,
             ),
           );
         } else {
           if (swapController.amount1.value != tokenInputFromAmount) {
             swapController.updateFromAmount(tokenInputFromAmount);
           }
-          final swapInfo = response.getLeft().toNullable()!.swapInfo;
           //do some math
           emit(state.copyWith(status: BlocStatus.success, swapInfo: swapInfo));
         }
