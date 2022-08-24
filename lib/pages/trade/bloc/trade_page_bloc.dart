@@ -6,6 +6,7 @@ import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/message.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -106,6 +107,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     Emitter<TradePageState> emit,
   ) async {
     final tokenInputFromAmount = event.tokenInputFromAmount;
+    final tokenFromBalance = await walletController.getTokenBalance(state.tokenFrom.address.value);
     try {
       final response = await repo.fetchSwapInfo(
         tokenFrom: state.tokenFrom.address.value,
@@ -113,14 +115,22 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         fromInput: tokenInputFromAmount,
       );
       final isSuccess = response.isLeft();
-
       if (isSuccess) {
-        if (swapController.amount1.value != tokenInputFromAmount) {
-          swapController.updateFromAmount(tokenInputFromAmount);
+        if (tokenInputFromAmount > double.parse(tokenFromBalance)) {
+          emit(
+            state.copyWith(
+              status: BlocStatus.error,
+              errorMessage: Message.insufficient,
+            ),
+          );
+        } else {
+          if (swapController.amount1.value != tokenInputFromAmount) {
+            swapController.updateFromAmount(tokenInputFromAmount);
+          }
+          final swapInfo = response.getLeft().toNullable()!.swapInfo;
+          //do some math
+          emit(state.copyWith(status: BlocStatus.success, swapInfo: swapInfo));
         }
-        final swapInfo = response.getLeft().toNullable()!.swapInfo;
-        //do some math
-        emit(state.copyWith(status: BlocStatus.success, swapInfo: swapInfo));
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         final errorMsg = response.getRight().toNullable()?.errorMsg;
