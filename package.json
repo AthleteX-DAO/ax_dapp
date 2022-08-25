@@ -8,7 +8,7 @@
     "pre-commit": "lint-staged && git add ."
   },
   "lint-staged": {
-    "lib/**/*.{dart}": "flutter format --set-exit-if-changed lib test"
+    "lib/**/*.{dart}": "flutter format --set-exit-if-changed"
   },
   "repository": {
     "type": "git",

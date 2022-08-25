@@ -7,7 +7,6 @@ class AppToolTip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String nope;
     return Tooltip(
       triggerMode: TooltipTriggerMode.tap,
       showDuration: Duration.zero,
