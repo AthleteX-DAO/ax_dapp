@@ -89,7 +89,7 @@ class SportToken extends StatelessWidget {
 }
 
 class _MyLiquidityState extends State<MyLiquidity>
-    with SingleTickerProviderStateMixin{
+    with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   bool _isWeb = true;
   double _width = 0;
@@ -341,6 +341,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                       ),
                       child: TextButton(
                         onPressed: () {
+                          bloc.add(LoadEvent());
                           setState(() {
                             currentTabIndex = 1;
                             token0Icon = tokenPair.token0.icon;
@@ -353,12 +354,10 @@ class _MyLiquidityState extends State<MyLiquidity>
                                   liquidityPositionInfo.token1Address
                               ..lpTokenPairAddress =
                                   liquidityPositionInfo.lpTokenPairAddress;
-
                           });
-                          setState((){
+                          setState(() {
                             _tabController.index = currentTabIndex;
                           });
-
                         },
                         child: Text(
                           'Remove',
@@ -423,7 +422,10 @@ class _MyLiquidityState extends State<MyLiquidity>
     }
 
     return BlocBuilder<MyLiquidityBloc, MyLiquidityState>(
-      buildWhen: (previous, current) => previous.filteredCards != current.filteredCards || previous.cards != current.cards || previous.status == BlocStatus.success,
+      buildWhen: (previous, current) =>
+          previous.filteredCards != current.filteredCards ||
+          previous.cards != current.cards ||
+          previous.status == BlocStatus.success,
       builder: (context, state) {
         final bloc = context.read<MyLiquidityBloc>();
         final filteredCards = state.filteredCards;
@@ -448,23 +450,24 @@ class _MyLiquidityState extends State<MyLiquidity>
         }
 
         return SizedBox(
-          width: _width*0.88,
-          height: _height*0.7,
+          width: _width * 0.88,
+          height: _height * 0.7,
           child: DefaultTabController(
             length: 2,
             child: TabBarView(
               controller: _tabController,
               children: [
                 SizedBox(
-                  width: _width*0.7,
-                  height: _height*0.2,
+                  width: _width * 0.7,
+                  height: _height * 0.2,
                   child: Column(
                     children: [
                       Row(
                         children: [
                           //searchbar for desktop (next to toggle button)
                           if (_isWeb)
-                            createMyLiquiditySearchBar(gridHgt, _layoutWdt, bloc),
+                            createMyLiquiditySearchBar(
+                                gridHgt, _layoutWdt, bloc),
                         ],
                       ),
                       SizedBox(
@@ -473,19 +476,19 @@ class _MyLiquidityState extends State<MyLiquidity>
                           padding: EdgeInsets.zero,
                           gridDelegate: _isWeb
                               ? const SliverGridDelegateWithMaxCrossAxisExtent(
-                            //delegate max width for desktop
-                            maxCrossAxisExtent: 600,
-                            mainAxisExtent: 265,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                          )
+                                  //delegate max width for desktop
+                                  maxCrossAxisExtent: 600,
+                                  mainAxisExtent: 265,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20,
+                                )
                               : const SliverGridDelegateWithFixedCrossAxisCount(
-                            //delegate count of 1 for mobile
-                            crossAxisCount: 1,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                            mainAxisExtent: 265,
-                          ),
+                                  //delegate count of 1 for mobile
+                                  crossAxisCount: 1,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20,
+                                  mainAxisExtent: 265,
+                                ),
                           itemCount: filteredCards.length,
                           itemBuilder: (BuildContext ctx, index) {
                             return myLiquidityPoolGridItem(
@@ -499,8 +502,8 @@ class _MyLiquidityState extends State<MyLiquidity>
                   ),
                 ),
                 SizedBox(
-                  width: _width*0.7,
-                  height: _height*0.7,
+                  width: _width * 0.7,
+                  height: _height * 0.7,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -522,7 +525,8 @@ class _MyLiquidityState extends State<MyLiquidity>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Remove Liquidity',
@@ -537,7 +541,8 @@ class _MyLiquidityState extends State<MyLiquidity>
                                     children: [
                                       Text(
                                         '$value%',
-                                        style: textStyle(Colors.white, 36, true),
+                                        style:
+                                            textStyle(Colors.white, 36, true),
                                       ),
                                       const Spacer(),
                                       DecoratedBox(
@@ -647,7 +652,8 @@ class _MyLiquidityState extends State<MyLiquidity>
                                   ),
                                   Slider(
                                     thumbColor: Colors.amber.withOpacity(0.88),
-                                    inactiveColor: Colors.amber.withOpacity(0.5),
+                                    inactiveColor:
+                                        Colors.amber.withOpacity(0.5),
                                     activeColor: Colors.amber,
                                     value: value,
                                     onChanged: (double newValue) {
@@ -678,15 +684,15 @@ class _MyLiquidityState extends State<MyLiquidity>
                                 height: 100,
                                 child: Column(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}'
-                                              ' LP Tokens:',
+                                          ' LP Tokens:',
                                           style: textStyle(
                                             Colors.white,
                                             16,
@@ -705,7 +711,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           'Share of pool:',
@@ -727,7 +733,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           '''${infoOfSelectedCard.token0Symbol} deposited:''',
@@ -749,7 +755,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           '''${infoOfSelectedCard.token1Symbol} deposited:''',
@@ -795,17 +801,17 @@ class _MyLiquidityState extends State<MyLiquidity>
                                 ),
                                 child: Column(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     SizedBox(
                                       width: _width - 50,
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Container(
                                             margin:
-                                            const EdgeInsets.only(left: 30),
+                                                const EdgeInsets.only(left: 30),
                                             width: 35,
                                             height: 35,
                                             decoration: BoxDecoration(
@@ -829,12 +835,12 @@ class _MyLiquidityState extends State<MyLiquidity>
                                           ),
                                           const Spacer(),
                                           Container(
-                                            margin:
-                                            const EdgeInsets.only(right: 30),
+                                            margin: const EdgeInsets.only(
+                                                right: 30),
                                             width: _width * .20,
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                                  MainAxisAlignment.end,
                                               children: [
                                                 SizedBox(
                                                   width: 100,
@@ -854,11 +860,11 @@ class _MyLiquidityState extends State<MyLiquidity>
                                       width: _width - 50,
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Container(
                                             margin:
-                                            const EdgeInsets.only(left: 30),
+                                                const EdgeInsets.only(left: 30),
                                             width: 35,
                                             height: 35,
                                             decoration: BoxDecoration(
@@ -882,12 +888,12 @@ class _MyLiquidityState extends State<MyLiquidity>
                                           ),
                                           const Spacer(),
                                           Container(
-                                            margin:
-                                            const EdgeInsets.only(right: 30),
+                                            margin: const EdgeInsets.only(
+                                                right: 30),
                                             width: _width * .20,
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                                  MainAxisAlignment.end,
                                               children: [
                                                 SizedBox(
                                                   width: 100,
@@ -915,21 +921,24 @@ class _MyLiquidityState extends State<MyLiquidity>
                                     width: 175,
                                     height: 40,
                                     text: 'Approve',
-                                    approveCallback: poolController.approveRemove,
+                                    approveCallback:
+                                        poolController.approveRemove,
                                     confirmCallback:
-                                    poolController.removeLiquidity,
+                                        poolController.removeLiquidity,
                                     confirmDialog: removalConfirmed,
-                                    currencyOne: infoOfSelectedCard.token0Symbol,
-                                    currencyTwo: infoOfSelectedCard.token1Symbol,
+                                    currencyOne:
+                                        infoOfSelectedCard.token0Symbol,
+                                    currencyTwo:
+                                        infoOfSelectedCard.token1Symbol,
                                     valueOne: tokenOneRemoveAmount,
                                     valueTwo: tokenTwoRemoveAmount,
                                     lpTokens:
-                                    infoOfSelectedCard.lpTokenPairBalance,
+                                        infoOfSelectedCard.lpTokenPairBalance,
                                     shareOfPool: infoOfSelectedCard.shareOfPool,
                                     percentRemoval: value,
                                     walletId: userWalletAddress.walletAddress,
                                     lpTokenName:
-                                    '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}',
+                                        '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}',
                                   ),
                                   const Spacer(),
                                   Container(
@@ -945,9 +954,11 @@ class _MyLiquidityState extends State<MyLiquidity>
                                         bloc.add(LoadEvent());
                                         setState(() {
                                           currentTabIndex = 0;
-                                          _tabController.index = currentTabIndex;
+                                          _tabController.index =
+                                              currentTabIndex;
                                           value = 0;
-                                          poolController.removePercentage = value;
+                                          poolController.removePercentage =
+                                              value;
                                         });
                                       },
                                       child: const Text(
@@ -970,7 +981,6 @@ class _MyLiquidityState extends State<MyLiquidity>
                 ),
               ],
             ),
-
           ),
         );
       },
