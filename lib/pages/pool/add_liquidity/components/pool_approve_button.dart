@@ -21,6 +21,7 @@ class PoolApproveButton extends StatefulWidget {
     required this.shareOfPool,
     required this.lpTokenName,
     required this.walletId,
+    required this.animateToPage,
     super.key,
   });
 
@@ -37,7 +38,14 @@ class PoolApproveButton extends StatefulWidget {
   final String walletId;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final Dialog Function(BuildContext) confirmDialog;
+  final void Function(int pageNumber) animateToPage;
+  final Dialog Function(
+    BuildContext, {
+    void Function(int pageNumber) animatePage,
+    bool isTradeLink,
+    bool isPoolLink,
+    bool isFarmLink,
+  }) confirmDialog;
 
   @override
   State<PoolApproveButton> createState() => _PoolApproveButtonState();
@@ -125,8 +133,13 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                   );
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog(context),
+                builder: (BuildContext context) => widget.confirmDialog(
+                  context,
+                  animatePage: widget.animateToPage,
+                  isTradeLink: false,
+                  isPoolLink: false,
+                  isFarmLink: true,
+                ),
               );
             }).catchError((error) {
               showDialog<void>(

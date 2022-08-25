@@ -15,7 +15,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class DesktopPool extends StatefulWidget {
-  const DesktopPool({super.key});
+  const DesktopPool({
+    required this.animateToPage,
+    super.key,
+  });
+
+  final void Function(int pageNumber) animateToPage;
 
   @override
   State<StatefulWidget> createState() => _DesktopPoolState();
@@ -153,10 +158,13 @@ class _DesktopPoolState extends State<DesktopPool> {
                     ),
                     child: (token0 != null && token1 != null)
                         ? AddLiquidity(
+                            animateToPage: widget.animateToPage,
                             token0: token0,
                             token1: token1,
                           )
-                        : AddLiquidity(),
+                        : AddLiquidity(
+                            animateToPage: widget.animateToPage,
+                          ),
                   ),
                 ),
                 BlocProvider(

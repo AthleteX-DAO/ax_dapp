@@ -181,7 +181,9 @@ class _V1AppState extends State<V1App> {
               child: const DesktopTrade(),
             )
           else if (pageNumber == Pages.pool)
-            const DesktopPool()
+            DesktopPool(
+              animateToPage: goToSpecificPage,
+            )
           else if (pageNumber == Pages.farm)
             const DesktopFarm()
         ],
@@ -204,7 +206,7 @@ class _V1AppState extends State<V1App> {
             ),
             child: DesktopScout(
               goToTradePage: goToTradePage,
-              animateToPage: animateToPage,
+              animateToPage: goToSpecificPage,
             ),
           ),
           BlocProvider(
@@ -223,7 +225,9 @@ class _V1AppState extends State<V1App> {
               walletController: Get.find(),
               poolController: Get.find(),
             ),
-            child: const DesktopPool(),
+            child: DesktopPool(
+              animateToPage: animateToPage,
+            ),
           ),
           const DesktopFarm(),
         ],

@@ -19,10 +19,17 @@ import 'package:get/get_instance/get_instance.dart';
 
 // ignore: must_be_immutable
 class AddLiquidity extends StatefulWidget {
-  AddLiquidity({super.key, this.token0, this.token1});
+  AddLiquidity({
+    super.key,
+    required this.animateToPage,
+    this.token0,
+    this.token1,
+  });
 
   Token? token0;
   Token? token1;
+
+  final void Function(int pageNumber) animateToPage;
 
   @override
   State<AddLiquidity> createState() => _AddLiquidityState();
@@ -649,6 +656,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                       shareOfPool: poolInfo.shareOfPool,
                       lpTokenName: '${token0.ticker}/${token1.ticker}',
                       walletId: userWalletAddress.walletAddress,
+                      animateToPage: widget.animateToPage,
                     )
                   else
                     WarningTextButton(warningTitle: state.message)
