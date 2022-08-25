@@ -45,6 +45,7 @@ class V1App extends StatefulWidget {
 
 class _V1AppState extends State<V1App> {
   bool isWeb = true;
+  final isNflEnabled = false;
 
   // state change variables
   Pages pageNumber = Pages.scout;
@@ -151,10 +152,14 @@ class _V1AppState extends State<V1App> {
               create: (BuildContext context) => ScoutPageBloc(
                 repo: GetScoutAthletesDataUseCase(
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                  sportsRepos: [
-                    RepositoryProvider.of<MLBRepo>(context),
-                    RepositoryProvider.of<NFLRepo>(context),
-                  ],
+                  sportsRepos: isNflEnabled
+                      ? [
+                          RepositoryProvider.of<MLBRepo>(context),
+                          RepositoryProvider.of<NFLRepo>(context),
+                        ]
+                      : [
+                          RepositoryProvider.of<MLBRepo>(context),
+                        ],
                   coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
                 ),
               ),
@@ -193,7 +198,9 @@ class _V1AppState extends State<V1App> {
                 coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
               ),
             ),
-            child: DesktopScout(goToTradePage: goToTradePage),
+            child: DesktopScout(
+              goToTradePage: goToTradePage,
+            ),
           ),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
