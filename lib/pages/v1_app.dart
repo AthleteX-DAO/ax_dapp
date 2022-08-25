@@ -197,7 +197,7 @@ class _V1AppState extends State<V1App> {
                     RepositoryProvider.of<NFLRepo>(context),
                   ],
                   coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
-                  nflFlag: isNflEnabled),
+                  nflFlag: isNflEnabled,),
             ),
             child: DesktopScout(
               goToTradePage: goToTradePage,
