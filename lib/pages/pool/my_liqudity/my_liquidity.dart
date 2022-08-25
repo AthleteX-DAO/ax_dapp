@@ -109,6 +109,12 @@ class _MyLiquidityState extends State<MyLiquidity>
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bloc = context.read<MyLiquidityBloc>();
     final mediaquery = MediaQuery.of(context);
