@@ -13,10 +13,9 @@ class WalletRepository {
   WalletRepository({
     required WalletApiClient walletApiClient,
     required CacheClient cache,
-    required EthereumChain defaultChain,
+    required this.defaultChain,
   })  : _walletApiClient = walletApiClient,
         _cache = cache,
-        _defaultChain = defaultChain,
         _walletChanges = walletApiClient.chainChanges
             .map(
               (chain) => Wallet(
@@ -36,7 +35,7 @@ class WalletRepository {
   final CacheClient _cache;
 
   /// The initial [EthereumChain] that the wallet will be switched to.
-  final EthereumChain _defaultChain;
+  final EthereumChain defaultChain;
 
   /// [WalletCredentials] cache key.
   /// Should only be used for testing purposes.
@@ -75,7 +74,7 @@ class WalletRepository {
   /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
     _walletApiClient.addChainChangedListener();
-    await switchChain(_defaultChain);
+    await switchChain(defaultChain);
     return _getWalletCredentials();
   }
 

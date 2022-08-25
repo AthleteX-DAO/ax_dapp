@@ -64,6 +64,20 @@ class EthereumAddressConfig {
         sxMainnet = kEmptyAddress,
         sxTestnet = kEmptyAddress;
 
+  /// Configuration for farm owner.
+  const EthereumAddressConfig.farmOwner()
+      : polygonMainnet = '0xe1bf752fd7480992345629bf3866f6618d57a7da',
+        polygonTestnet = kEmptyAddress,
+        sxMainnet = kEmptyAddress,
+        sxTestnet = kEmptyAddress;
+
+  /// Configuration for pool info.
+  const EthereumAddressConfig.poolInfo()
+      : polygonMainnet = '0x53590f017d73bAb31A6CbCBF6500A66D92fecFbE',
+        polygonTestnet = kEmptyAddress,
+        sxMainnet = kEmptyAddress,
+        sxTestnet = kEmptyAddress;
+
   /// Empty configuration.
   const EthereumAddressConfig.empty()
       : polygonMainnet = kEmptyAddress,

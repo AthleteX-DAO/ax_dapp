@@ -9,12 +9,14 @@ import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class DesktopFarm extends StatefulWidget {
@@ -60,6 +62,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
           create: (BuildContext context) => FarmBloc(
             walletRepository: context.read<WalletRepository>(),
             tokensRepository: context.read<TokensRepository>(),
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
             repo: GetFarmDataUseCase(
               gysrApiClient: context.read<GysrApiClient>(),
             ),
@@ -81,13 +84,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
       builder: (context, state) {
         final bloc = context.read<FarmBloc>();
         Widget widget = const Loader();
-        if (state.status == BlocStatus.initial) {
-          if (state.isAllFarms) {
-            bloc.add(OnLoadFarms());
-          } else {
-            bloc.add(OnLoadStakedFarms());
-          }
-        }
 
         if (state.status == BlocStatus.error ||
             state.status == BlocStatus.noData) {
@@ -167,6 +163,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                             context.read<WalletRepository>(),
                                         tokensRepository:
                                             context.read<TokensRepository>(),
+                                        configRepository:
+                                            context.read<ConfigRepository>(),
+                                        streamAppDataChanges: context.read<
+                                            StreamAppDataChangesUseCase>(),
                                       ),
                                       listHeight,
                                       layoutWdt,
@@ -180,6 +180,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                             context.read<WalletRepository>(),
                                         tokensRepository:
                                             context.read<TokensRepository>(),
+                                        configRepository:
+                                            context.read<ConfigRepository>(),
+                                        streamAppDataChanges: context.read<
+                                            StreamAppDataChangesUseCase>(),
                                       ),
                                       listHeight,
                                       layoutWdt,

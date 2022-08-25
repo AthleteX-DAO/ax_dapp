@@ -3,6 +3,7 @@ import 'package:ethereum_api/src/config/models/apt_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_url_config.dart';
 import 'package:ethereum_api/src/dex/dex.dart';
+import 'package:ethereum_api/src/pool_info/pool_info.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
@@ -112,6 +113,18 @@ extension ChainX on EthereumChain {
 
   /// Returns the RPC URL used to initialize a [Web3Client].
   String get rpcUrl => rpcUrls.firstOrNull ?? '';
+
+  /// Gets the associated address of the farm owner for this [EthereumChain].
+  String getFarmOwner() =>
+      const EthereumAddressConfig.farmOwner().address(this);
+
+  /// Creates a [PoolInfo] client based on this [EthereumChain] configuration.
+  PoolInfo createPoolInfo(Web3Client client) => PoolInfo(
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.poolInfo().address(this),
+        ),
+        client: client,
+      );
 }
 
 /// [EthereumChain] configuration.

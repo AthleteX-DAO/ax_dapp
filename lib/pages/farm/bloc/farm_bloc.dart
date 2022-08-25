@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'farm_event.dart';
@@ -13,24 +16,53 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
   FarmBloc({
     required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
+    required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
-        super(const FarmState()) {
+        _streamAppDataChanges = streamAppDataChanges,
+        super(
+          FarmState(
+            farmOwner: walletRepository.defaultChain.getFarmOwner(),
+          ),
+        ) {
+    on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<OnLoadFarms>(_mapLoadFarmsEventToState);
     on<OnLoadStakedFarms>(_mapLoadStakedFarmsEventToState);
     on<OnSearchFarms>(_mapSearchEventToState);
     on<OnChangeFarmTab>(_mapChangeTabEventToState);
+
+    if (state.isAllFarms) {
+      add(OnLoadFarms());
+    } else {
+      add(OnLoadStakedFarms());
+    }
   }
-  // the address of farms' owner in the gysr platform
-  static const String owner = '0xe1bf752fd7480992345629bf3866f6618d57a7da';
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
+  final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetFarmDataUseCase repo;
 
   final List<FarmModel> farms = [];
   final List<FarmModel> stakedFarms = [];
+
+  Future<void> _onWatchAppDataChangesStarted(
+    WatchAppDataChangesStarted event,
+    Emitter<FarmState> emit,
+  ) async {
+    await emit.onEach<AppData>(
+      _streamAppDataChanges.appDataChanges,
+      onData: (appData) {
+        emit(state.copyWith(farmOwner: appData.chain.getFarmOwner()));
+        if (state.isAllFarms) {
+          add(OnLoadFarms());
+        } else {
+          add(OnLoadStakedFarms());
+        }
+      },
+    );
+  }
 
   Future<void> _mapLoadFarmsEventToState(
     OnLoadFarms event,
@@ -40,7 +72,7 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
       emit(
         state.copy(status: BlocStatus.loading, farms: [], filteredFarms: []),
       );
-      final farms = await repo.fetchAllFarms(owner);
+      final farms = await repo.fetchAllFarms(state.farmOwner);
       if (farms.isNotEmpty) {
         emit(
           state.copy(

@@ -8,6 +8,7 @@ class FarmState extends Equatable {
     List<FarmModel>? stakedFarms,
     List<FarmModel>? filteredFarms,
     List<FarmModel>? filteredStakedFarms,
+    required this.farmOwner,
   })  : farms = farms ?? const [],
         stakedFarms = stakedFarms ?? const [],
         filteredFarms = filteredFarms ?? const [],
@@ -19,6 +20,7 @@ class FarmState extends Equatable {
   final List<FarmModel> filteredStakedFarms;
   final BlocStatus status;
   final bool isAllFarms;
+  final String farmOwner;
 
   @override
   List<Object?> get props => [
@@ -27,7 +29,8 @@ class FarmState extends Equatable {
         filteredFarms,
         filteredStakedFarms,
         isAllFarms,
-        status
+        status,
+        farmOwner,
       ];
 
   FarmState copy({
@@ -45,6 +48,27 @@ class FarmState extends Equatable {
       filteredStakedFarms: filteredStakedFarms ?? this.filteredStakedFarms,
       status: status ?? this.status,
       isAllFarms: isAllFarms ?? this.isAllFarms,
+      farmOwner: farmOwner,
+    );
+  }
+
+  FarmState copyWith({
+    List<FarmModel>? farms,
+    List<FarmModel>? stakedFarms,
+    List<FarmModel>? filteredFarms,
+    List<FarmModel>? filteredStakedFarms,
+    BlocStatus? status,
+    bool? isAllFarms,
+    String? farmOwner,
+  }) {
+    return FarmState(
+      farms: farms ?? this.farms,
+      stakedFarms: stakedFarms ?? this.stakedFarms,
+      filteredFarms: filteredFarms ?? this.filteredFarms,
+      filteredStakedFarms: filteredStakedFarms ?? this.filteredStakedFarms,
+      status: status ?? this.status,
+      isAllFarms: isAllFarms ?? this.isAllFarms,
+      farmOwner: farmOwner ?? this.farmOwner,
     );
   }
 }
