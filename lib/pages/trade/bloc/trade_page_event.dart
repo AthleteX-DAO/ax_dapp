@@ -49,4 +49,12 @@ class SetTokenTo extends TradePageEvent {
   List<Object?> get props => [tokenTo];
 }
 
-class SwapTokens extends TradePageEvent {}
+class SwapTokens extends TradePageEvent {
+  SwapTokens({required this.tokenFromBalance, required this.tokenToBalance});
+
+  final String tokenFromBalance;
+  final String tokenToBalance;
+
+  @override
+  List<Object?> get props => [tokenFromBalance, tokenToBalance];
+}
