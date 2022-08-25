@@ -152,7 +152,6 @@ class _V1AppState extends State<V1App> {
               create: (BuildContext context) => ScoutPageBloc(
                 repo: GetScoutAthletesDataUseCase(
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                  nflFlag: isNflEnabled,
                   sportsRepos: isNflEnabled
                       ? [
                           RepositoryProvider.of<MLBRepo>(context),
@@ -197,7 +196,6 @@ class _V1AppState extends State<V1App> {
                   RepositoryProvider.of<NFLRepo>(context),
                 ],
                 coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
-                nflFlag: isNflEnabled,
               ),
             ),
             child: DesktopScout(
