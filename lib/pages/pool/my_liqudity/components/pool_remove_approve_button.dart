@@ -133,8 +133,8 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
               ).then((value) {
+                bloc.add(LoadEvent());
                 setState(() {
-                  bloc.add(LoadEvent());
                   widget.tabController.index = 0;
                 });
                 context.showWarningToast(
