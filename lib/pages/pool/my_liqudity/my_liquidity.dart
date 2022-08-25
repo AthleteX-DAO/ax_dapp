@@ -94,7 +94,6 @@ class _MyLiquidityState extends State<MyLiquidity>
   bool _isWeb = true;
   double _width = 0;
   double _layoutHgt = 0;
-  int currentTabIndex = 0;
   PoolController poolController = Get.find();
   Controller controller = Get.find();
   double value = 0;
@@ -343,7 +342,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                         onPressed: () {
                           bloc.add(LoadEvent());
                           setState(() {
-                            currentTabIndex = 1;
+                             _tabController.index = 1;
                             token0Icon = tokenPair.token0.icon;
                             token1Icon = tokenPair.token1.icon;
                             infoOfSelectedCard = liquidityPositionInfo;
@@ -354,9 +353,6 @@ class _MyLiquidityState extends State<MyLiquidity>
                                   liquidityPositionInfo.token1Address
                               ..lpTokenPairAddress =
                                   liquidityPositionInfo.lpTokenPairAddress;
-                          });
-                          setState(() {
-                            _tabController.index = currentTabIndex;
                           });
                         },
                         child: Text(
@@ -467,7 +463,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                           //searchbar for desktop (next to toggle button)
                           if (_isWeb)
                             createMyLiquiditySearchBar(
-                                gridHgt, _layoutWdt, bloc),
+                                gridHgt, _layoutWdt, bloc,),
                         ],
                       ),
                       SizedBox(
@@ -836,7 +832,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                                           const Spacer(),
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                right: 30),
+                                                right: 30,),
                                             width: _width * .20,
                                             child: Row(
                                               mainAxisAlignment:
@@ -889,7 +885,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                                           const Spacer(),
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                right: 30),
+                                                right: 30,),
                                             width: _width * .20,
                                             child: Row(
                                               mainAxisAlignment:
@@ -917,7 +913,6 @@ class _MyLiquidityState extends State<MyLiquidity>
                                 children: [
                                   PoolRemoveApproveButton(
                                     tabController: _tabController,
-                                    currentTabIndex: currentTabIndex,
                                     width: 175,
                                     height: 40,
                                     text: 'Approve',
@@ -953,12 +948,10 @@ class _MyLiquidityState extends State<MyLiquidity>
                                       onPressed: () {
                                         bloc.add(LoadEvent());
                                         setState(() {
-                                          currentTabIndex = 0;
                                           _tabController.index =
-                                              currentTabIndex;
-                                          value = 0;
+                                              0;
                                           poolController.removePercentage =
-                                              value;
+                                              0;
                                         });
                                       },
                                       child: const Text(
