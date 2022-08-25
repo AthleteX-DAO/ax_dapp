@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // This code changes the state of the button
 class PoolApproveButton extends StatefulWidget {
   const PoolApproveButton({
+    required this.tokenAmountOneController,
+    required this.tokenAmountTwoController,
     required this.width,
     required this.height,
     required this.text,
@@ -24,6 +26,8 @@ class PoolApproveButton extends StatefulWidget {
     super.key,
   });
 
+  final TextEditingController tokenAmountOneController;
+  final TextEditingController tokenAmountTwoController;
   final String text;
   final double width;
   final double height;
@@ -137,6 +141,8 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
               ).then((value) {
                 resetButton();
                 bloc.add(PageRefreshEvent());
+                widget.tokenAmountOneController.clear();
+                widget.tokenAmountTwoController.clear();
               });
             }).catchError((error) {
               showDialog<void>(
