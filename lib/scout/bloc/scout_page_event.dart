@@ -7,8 +7,8 @@ abstract class ScoutPageEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class WatchChainChangesStarted extends ScoutPageEvent {
-  const WatchChainChangesStarted();
+class WatchAppDataChangesStarted extends ScoutPageEvent {
+  const WatchAppDataChangesStarted();
 }
 
 class SelectedSportChanged extends ScoutPageEvent {

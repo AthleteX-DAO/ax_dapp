@@ -1,6 +1,5 @@
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/pages/farm/components/farm_item.dart';
-import 'package:ax_dapp/pages/farm/components/loading.dart';
 import 'package:ax_dapp/pages/farm/components/my_farm_item.dart';
 import 'package:ax_dapp/pages/farm/components/no_data.dart';
 import 'package:ax_dapp/pages/farm/components/no_wallet.dart';
@@ -9,6 +8,7 @@ import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
 import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
@@ -80,7 +80,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<FarmBloc>();
-        var widget = loading();
+        Widget widget = const Loader();
         if (state.status == BlocStatus.initial) {
           if (state.isAllFarms) {
             bloc.add(OnLoadFarms());

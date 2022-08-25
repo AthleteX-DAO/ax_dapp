@@ -21,9 +21,7 @@ class LSPController extends GetxController {
   RxDouble createAmt = 0.0.obs;
   RxDouble redeemAmt = 0.0.obs;
   RxString aptAddress = ''.obs;
-  String mainRPCUrl = 'https://polygon-rpc.com';
-  String testRPCUrl = 'https://matic-mumbai.chainstacklabs.com/';
-  final tokenClient = Web3Client('https://polygon-rpc.com', Client());
+  Web3Client tokenClient = Web3Client('https://polygon-rpc.com', Client());
 
   Future<void> mint() async {
     final address = EthereumAddress.fromHex(aptAddress.value);

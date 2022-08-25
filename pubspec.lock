@@ -1283,6 +1283,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  use_cases:
+    dependency: "direct main"
+    description:
+      path: "packages/use_cases"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   uuid:
     dependency: transitive
     description:

@@ -15,23 +15,38 @@ class ConfigApiClient {
     required EthereumChain defaultChain,
     required http.Client httpClient,
   })  : _httpClient = httpClient,
+        _web3ClientController = BehaviorSubject<Web3Client>.seeded(
+          defaultChain.createWeb3Client(httpClient),
+        ),
         _dexGqlClientController = BehaviorSubject<GraphQLClient>.seeded(
           defaultChain.createDexGraphQLClient(),
         ),
         _gysrGqlClientController = BehaviorSubject<GraphQLClient>.seeded(
           defaultChain.createGysrGraphQLClient(),
-        );
+        ) {
+    _aptRouterClientController
+        .add(defaultChain.createAptRouterClient(_web3ClientController.value));
+    _dexClientController
+        .add(defaultChain.createDexClient(_web3ClientController.value));
+  }
 
   final http.Client _httpClient;
 
-  final _web3ClientController = BehaviorSubject<Web3Client>();
+  final _dependenciesController = BehaviorSubject<AppConfig>();
+
+  /// Allows listening to when dependencies change. Used to refetch data that
+  /// is based on reactive dependencies.
+  Stream<AppConfig> get dependenciesChanges => _dependenciesController.stream;
+
+  final BehaviorSubject<Web3Client> _web3ClientController;
   final _aptRouterClientController = BehaviorSubject<APTRouter>();
   final _dexClientController = BehaviorSubject<Dex>();
 
   final _lspClientController = BehaviorSubject<LongShortPair>();
 
   /// Returns the current [LongShortPair] address synchronously.
-  String get currentLspAddress => _lspClientController.value.self.address.hex;
+  String? get currentLspAddress =>
+      _lspClientController.valueOrNull?.self.address.hex;
 
   final BehaviorSubject<GraphQLClient> _dexGqlClientController;
   final BehaviorSubject<GraphQLClient> _gysrGqlClientController;
@@ -70,14 +85,16 @@ class ConfigApiClient {
 
     final gysrGqlClient = chain.createGysrGraphQLClient();
     _gysrGqlClientController.add(gysrGqlClient);
+
+    _dependenciesController.add(initializeAppConfig());
   }
 
-  /// Switches the [LongShortPair] client.
-  void switchLspClient(String pairAddress) {
-    final lspClient = LongShortPair(
-      address: EthereumAddress.fromHex(pairAddress),
-      client: _web3ClientController.value,
-    );
-    _lspClientController.add(lspClient);
-  }
+  // /// Switches the [LongShortPair] client.
+  // void switchLspClient(String pairAddress) {
+  //   final lspClient = LongShortPair(
+  //     address: EthereumAddress.fromHex(pairAddress),
+  //     client: _web3ClientController.value,
+  //   );
+  //   _lspClientController.add(lspClient);
+  // }
 }

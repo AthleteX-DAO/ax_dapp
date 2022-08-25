@@ -6,9 +6,8 @@
 import 'dart:async' as _i4;
 
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart' as _i3;
-import 'package:fpdart/fpdart.dart' as _i2;
-import 'package:graphql_flutter/graphql_flutter.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:shared/shared.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -35,38 +34,38 @@ class MockSubGraphRepo extends _i1.Mock implements _i3.SubGraphRepo {
   }
 
   @override
-  _i4.Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>
+  _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>
       queryPairDataForTokenAddress(String? token0, String? token1) => (super.noSuchMethod(
           Invocation.method(#queryPairDataForTokenAddress, [token0, token1]),
           returnValue:
-              _i4.Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>.value(
-                  _FakeEither_0<Map<String, dynamic>?, _i5.OperationException>(
+              _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>.value(
+                  _FakeEither_0<Map<String, dynamic>?, _i2.OperationException>(
                       this, Invocation.method(#queryPairDataForTokenAddress, [token0, token1])))) as _i4
-          .Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>);
+          .Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>);
   @override
-  _i4.Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>
+  _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>
       queryAllPairs() => (super.noSuchMethod(
           Invocation.method(#queryAllPairs, []),
           returnValue:
-              _i4.Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>.value(
-                  _FakeEither_0<Map<String, dynamic>?, _i5.OperationException>(
+              _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>.value(
+                  _FakeEither_0<Map<String, dynamic>?, _i2.OperationException>(
                       this, Invocation.method(#queryAllPairs, [])))) as _i4
-          .Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>);
+          .Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>);
   @override
-  _i4.Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>
+  _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>
       querySpecificPairs(String? token) => (super.noSuchMethod(
           Invocation.method(#querySpecificPairs, [token]),
           returnValue:
-              _i4.Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>.value(
-                  _FakeEither_0<Map<String, dynamic>?, _i5.OperationException>(
+              _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>.value(
+                  _FakeEither_0<Map<String, dynamic>?, _i2.OperationException>(
                       this, Invocation.method(#querySpecificPairs, [token])))) as _i4
-          .Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>);
+          .Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>);
   @override
-  _i4.Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>
+  _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>
       queryAllPairsForWalletId(String? walletId) => (super.noSuchMethod(
           Invocation.method(#queryAllPairsForWalletId, [walletId]),
-          returnValue: _i4.Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>.value(
-              _FakeEither_0<Map<String, dynamic>?, _i5.OperationException>(this,
+          returnValue: _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>.value(
+              _FakeEither_0<Map<String, dynamic>?, _i2.OperationException>(this,
                   Invocation.method(#queryAllPairsForWalletId, [walletId])))) as _i4
-          .Future<_i2.Either<Map<String, dynamic>?, _i5.OperationException>>);
+          .Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>);
 }

@@ -12,13 +12,13 @@ class PoolController extends GetxController {
     final routerAddress = routerMainnetAddress;
     final dexAddress = dexMainnetAddress;
 
-    _factory = Dex(address: dexAddress, client: controller.client.value);
-    _aptRouter =
+    dex = Dex(address: dexAddress, client: controller.client.value);
+    aptRouter =
         APTRouter(address: routerAddress, client: controller.client.value);
   }
   Controller controller = Get.find();
-  late Dex _factory;
-  late APTRouter _aptRouter;
+  late Dex dex;
+  late APTRouter aptRouter;
   RxString address1 = ''.obs, address2 = ''.obs;
   String lpTokenAAddress = '';
   String lpTokenBAddress = '';
@@ -87,7 +87,7 @@ class PoolController extends GetxController {
     final to = await controller.credentials.extractAddress();
     final credentials = controller.credentials;
 
-    final txString = await _aptRouter.addLiquidity(
+    final txString = await aptRouter.addLiquidity(
       tokenAAddress,
       tokenBAddress,
       amountADesired,
@@ -140,7 +140,7 @@ class PoolController extends GetxController {
     final credentials = controller.credentials;
     final to = await controller.credentials.extractAddress();
 
-    final txString = await _aptRouter.removeLiquidity(
+    final txString = await aptRouter.removeLiquidity(
       tokenAAddress,
       tokenBAddress,
       liquidity,
@@ -158,8 +158,7 @@ class PoolController extends GetxController {
     final tknA = EthereumAddress.fromHex('$address1');
     final tknB = EthereumAddress.fromHex('$address2');
 
-    final txString =
-        await _factory.createPair(tknA, tknB, credentials: credentials);
+    final txString = await dex.createPair(tknA, tknB, credentials: credentials);
     controller.updateTxString(txString);
   }
 

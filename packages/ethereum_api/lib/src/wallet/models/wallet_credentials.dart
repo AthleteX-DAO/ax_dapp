@@ -23,5 +23,5 @@ extension WalletCredentialsX on WalletCredentials {
   CredentialsWithKnownAddress get value => _credentials;
 
   /// Returns the wallet address obtained from [CredentialsWithKnownAddress].
-  String get walletAddress => value.address.hex;
+  String get walletAddress => value.address.hex.toLowerCase();
 }

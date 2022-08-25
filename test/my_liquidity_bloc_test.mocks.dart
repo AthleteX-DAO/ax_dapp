@@ -5,8 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
 
-import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart'
-    as _i3;
+import 'package:ax_dapp/my_liquidity/models/models.dart' as _i3;
 import 'package:ax_dapp/repositories/subgraph/usecases/subgraph_error.dart'
     as _i8;
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart'
@@ -16,8 +15,12 @@ import 'package:ax_dapp/service/blockchain_models/liquidity_position.dart'
 import 'package:ethereum_api/wallet_api.dart' as _i5;
 import 'package:fpdart/fpdart.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:use_cases/src/stream_app_data_changes/models/models.dart'
+    as _i12;
+import 'package:use_cases/src/stream_app_data_changes/stream_app_data_changes_use_case.dart'
+    as _i11;
 import 'package:wallet_repository/src/models/models.dart' as _i4;
-import 'package:wallet_repository/src/wallet_repository.dart' as _i10;
+import 'package:wallet_repository/wallet_repository.dart' as _i10;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -155,4 +158,20 @@ class MockWalletRepository extends _i1.Mock implements _i10.WalletRepository {
   _i7.Future<double> getGasPrice() =>
       (super.noSuchMethod(Invocation.method(#getGasPrice, []),
           returnValue: _i7.Future<double>.value(0.0)) as _i7.Future<double>);
+}
+
+/// A class which mocks [StreamAppDataChangesUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockStreamAppDataChangesUseCase extends _i1.Mock
+    implements _i11.StreamAppDataChangesUseCase {
+  MockStreamAppDataChangesUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i7.Stream<_i12.AppData> get appDataChanges =>
+      (super.noSuchMethod(Invocation.getter(#appDataChanges),
+              returnValue: _i7.Stream<_i12.AppData>.empty())
+          as _i7.Stream<_i12.AppData>);
 }

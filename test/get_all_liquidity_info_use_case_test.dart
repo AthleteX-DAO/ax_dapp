@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
+import 'package:ax_dapp/my_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';

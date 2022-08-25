@@ -15,7 +15,12 @@ void main() {
     });
 
     test('can be instantiated', () {
-      expect(ConfigRepository(configApiClient: configApiClient), isNotNull);
+      expect(
+        ConfigRepository(
+          configApiClient: configApiClient,
+        ),
+        isNotNull,
+      );
     });
   });
 }

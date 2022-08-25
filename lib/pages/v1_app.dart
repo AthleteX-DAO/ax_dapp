@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/pages/farm/desktop_farm.dart';
 import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
-import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
-import 'package:ax_dapp/pages/pool/desktop_pool.dart';
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/desktop_trade.dart';
+import 'package:ax_dapp/pool/pool.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
@@ -26,6 +26,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 enum Pages { scout, trade, pool, farm }
@@ -140,6 +141,8 @@ class _V1AppState extends State<V1App> {
             BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
                 walletRepository: context.read<WalletRepository>(),
+                streamAppDataChanges:
+                    context.read<StreamAppDataChangesUseCase>(),
                 repo: GetScoutAthletesDataUseCase(
                   tokensRepository: context.read<TokensRepository>(),
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
@@ -175,6 +178,7 @@ class _V1AppState extends State<V1App> {
           BlocProvider(
             create: (BuildContext context) => ScoutPageBloc(
               walletRepository: context.read<WalletRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: GetScoutAthletesDataUseCase(
                 tokensRepository: context.read<TokensRepository>(),
                 graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
@@ -196,9 +200,10 @@ class _V1AppState extends State<V1App> {
             child: const DesktopTrade(),
           ),
           BlocProvider(
-            create: (BuildContext context) => PoolBloc(
+            create: (BuildContext context) => AddLiquidityBloc(
               walletRepository: context.read<WalletRepository>(),
               tokensRepository: context.read<TokensRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
               poolController: Get.find(),
             ),

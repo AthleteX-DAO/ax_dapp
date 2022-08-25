@@ -7,13 +7,18 @@ import 'package:shared/shared.dart';
 /// {@endtemplate}
 class TokensApiClient {
   /// {@macro tokens_api_client}
-  TokensApiClient({required ValueStream<Web3Client> reactiveWeb3Client})
-      : _reactiveWeb3Client = reactiveWeb3Client;
+  TokensApiClient({
+    required EthereumChain defaultChain,
+    required ValueStream<Web3Client> reactiveWeb3Client,
+  })  : _reactiveWeb3Client = reactiveWeb3Client,
+        _tokensController = ReplaySubject<List<Token>>(maxSize: 2)
+          ..add(defaultChain.createTokens());
 
   final ValueStream<Web3Client> _reactiveWeb3Client;
   Web3Client get _web3Client => _reactiveWeb3Client.value;
 
-  final _tokensController = ReplaySubject<List<Token>>(maxSize: 2);
+  final ReplaySubject<List<Token>> _tokensController;
+  // final _tokensController = ReplaySubject<List<Token>>(maxSize: 2);
 
   /// Allows listening to changes to the current [Token]s.
   Stream<List<Token>> get tokensChanges => _tokensController.stream;

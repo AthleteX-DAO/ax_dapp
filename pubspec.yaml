@@ -63,6 +63,8 @@ dependencies:
     path: packages/tracking_repository
   url_launcher: ^6.1.5
   url_launcher_web: ^2.0.12
+  use_cases:
+    path: packages/use_cases
   velocity_x: ^3.5.1
   wallet_repository:
     path: packages/wallet_repository

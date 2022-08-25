@@ -32,23 +32,23 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
 
   String keyword = '';
   SupportedSport selectedSport = SupportedSport.all;
-  late List<Apt> apts;
-  late List<Apt> filteredApts;
+  late List<Token> tokens;
+  late List<Token> filteredTokens;
 
-  late StreamSubscription<List<Apt>> aptsSubscription;
+  late StreamSubscription<List<Token>> tokensSubscription;
 
   @override
   void initState() {
     super.initState();
     tokenNumber = widget.tknNum;
-    filteredApts = [...context.read<TokensRepository>().currentApts];
-    aptsSubscription =
-        context.read<TokensRepository>().aptsChanges.listen(updateApts);
+    filteredTokens = [...context.read<TokensRepository>().currentTokens];
+    tokensSubscription =
+        context.read<TokensRepository>().tokensChanges.listen(updateTokens);
   }
 
   @override
   void dispose() {
-    aptsSubscription.cancel();
+    tokensSubscription.cancel();
     super.dispose();
   }
 
@@ -59,9 +59,9 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     updateFilteredApts();
   }
 
-  void updateApts(List<Apt> apts) {
+  void updateTokens(List<Token> tokens) {
     if (mounted) {
-      this.apts = [...apts];
+      this.tokens = [...tokens];
       updateFilteredApts();
     }
   }
@@ -71,12 +71,12 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
       return;
     }
     setState(() {
-      filteredApts = apts.where((apt) {
+      filteredTokens = tokens.where((token) {
         final flagKeyword =
-            apt.ticker.toUpperCase().contains(keyword.toUpperCase()) ||
-                apt.athleteName.toUpperCase().contains(keyword.toUpperCase());
+            token.ticker.toUpperCase().contains(keyword.toUpperCase()) ||
+                token.name.toUpperCase().contains(keyword.toUpperCase());
         final flagSport =
-            selectedSport == SupportedSport.all || apt.sport == selectedSport;
+            selectedSport == SupportedSport.all || token.sport == selectedSport;
         return flagKeyword && flagSport;
       }).toList();
     });
@@ -150,10 +150,10 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                       height: _height * .625 - 160,
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
-                        itemCount: filteredApts.length,
+                        itemCount: filteredTokens.length,
                         itemBuilder: (context, index) {
                           return widget.createTokenElement(
-                            filteredApts[index],
+                            filteredTokens[index],
                             tokenNumber,
                           );
                         },

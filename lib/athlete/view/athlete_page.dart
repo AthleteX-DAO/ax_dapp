@@ -1285,7 +1285,7 @@ class _AthletePageState extends State<AthletePage> {
                           top: 14,
                         ),
                         child: (chartStats.isEmpty)
-                            ? const Center(child: CircularProgressIndicator())
+                            ? const Loader(dimension: 36)
                             : BlocSelector<AthletePageBloc, AthletePageState,
                                 AptType>(
                                 selector: (state) => state.aptTypeSelection,
@@ -1457,15 +1457,7 @@ class _AthletePageState extends State<AthletePage> {
                                 return showSymbol(snapshot.data!);
                               } else {
                                 // loading
-                                return const Center(
-                                  child: SizedBox(
-                                    height: 10,
-                                    width: 10,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.amber,
-                                    ),
-                                  ),
-                                );
+                                return const Loader(dimension: 10);
                               }
                             },
                           );

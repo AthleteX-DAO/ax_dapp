@@ -11,6 +11,6 @@ class WatchChainChangesStarted extends AppEvent {
   const WatchChainChangesStarted();
 }
 
-class WatchAptsChangesStarted extends AppEvent {
-  const WatchAptsChangesStarted();
-}
+// class WatchAptsChangesStarted extends AppEvent {
+//   const WatchAptsChangesStarted();
+// }

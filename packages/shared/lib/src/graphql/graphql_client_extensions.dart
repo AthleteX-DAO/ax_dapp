@@ -5,7 +5,7 @@ extension GraphQLClientX on GraphQLClient {
   /// Performs a `GraphQL` query.
   Future<QueryResult> performQuery(
     String query, {
-    required Map<String, dynamic> variables,
+    Map<String, dynamic> variables = const {},
   }) async {
     final options = QueryOptions(document: gql(query), variables: variables);
     final result = await this.query(options);
@@ -15,7 +15,7 @@ extension GraphQLClientX on GraphQLClient {
   /// Performs a `GraphQL` mutation.
   Future<QueryResult> performMutation(
     String query, {
-    required Map<String, dynamic> variables,
+    Map<String, dynamic> variables = const {},
   }) async {
     final options = MutationOptions(document: gql(query), variables: variables);
     final result = await mutate(options);
