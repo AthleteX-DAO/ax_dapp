@@ -26,11 +26,14 @@ class GetScoutAthletesDataUseCase {
     required this.graphRepo,
     required this.coinGeckoRepo,
     required List<SportsRepo<SportAthlete>> sportsRepos,
+    required this.nflFlag,
   }) {
     for (final repo in sportsRepos) {
       _repos[repo.sport] = repo;
     }
   }
+  final bool nflFlag;
+
   static const collateralizationMultiplier = 1000;
   static const collateralizationPerPair = 15;
   final SubGraphRepo graphRepo;
