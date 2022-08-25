@@ -191,13 +191,14 @@ class _V1AppState extends State<V1App> {
           BlocProvider(
             create: (BuildContext context) => ScoutPageBloc(
               repo: GetScoutAthletesDataUseCase(
-                  graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                  sportsRepos: [
-                    RepositoryProvider.of<MLBRepo>(context),
-                    RepositoryProvider.of<NFLRepo>(context),
-                  ],
-                  coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
-                  nflFlag: isNflEnabled,),
+                graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+                sportsRepos: [
+                  RepositoryProvider.of<MLBRepo>(context),
+                  RepositoryProvider.of<NFLRepo>(context),
+                ],
+                coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
+                nflFlag: isNflEnabled,
+              ),
             ),
             child: DesktopScout(
               goToTradePage: goToTradePage,
