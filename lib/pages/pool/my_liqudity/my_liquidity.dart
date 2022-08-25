@@ -342,7 +342,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                         onPressed: () {
                           bloc.add(LoadEvent());
                           setState(() {
-                             _tabController.index = 1;
+                            _tabController.index = 1;
                             token0Icon = tokenPair.token0.icon;
                             token1Icon = tokenPair.token1.icon;
                             infoOfSelectedCard = liquidityPositionInfo;
@@ -463,7 +463,10 @@ class _MyLiquidityState extends State<MyLiquidity>
                           //searchbar for desktop (next to toggle button)
                           if (_isWeb)
                             createMyLiquiditySearchBar(
-                                gridHgt, _layoutWdt, bloc,),
+                              gridHgt,
+                              _layoutWdt,
+                              bloc,
+                            ),
                         ],
                       ),
                       SizedBox(
@@ -832,7 +835,8 @@ class _MyLiquidityState extends State<MyLiquidity>
                                           const Spacer(),
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                right: 30,),
+                                              right: 30,
+                                            ),
                                             width: _width * .20,
                                             child: Row(
                                               mainAxisAlignment:
@@ -885,7 +889,8 @@ class _MyLiquidityState extends State<MyLiquidity>
                                           const Spacer(),
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                right: 30,),
+                                              right: 30,
+                                            ),
                                             width: _width * .20,
                                             child: Row(
                                               mainAxisAlignment:
@@ -948,10 +953,10 @@ class _MyLiquidityState extends State<MyLiquidity>
                                       onPressed: () {
                                         bloc.add(LoadEvent());
                                         setState(() {
-                                          _tabController.index =
-                                              0;
+                                          _tabController.index = 0;
+                                          value = 0;
                                           poolController.removePercentage =
-                                              0;
+                                              value;
                                         });
                                       },
                                       child: const Text(

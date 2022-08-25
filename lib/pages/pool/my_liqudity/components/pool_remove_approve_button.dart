@@ -1,6 +1,7 @@
 import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/toastx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -136,6 +137,10 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                   bloc.add(LoadEvent());
                   widget.tabController.index = 0;
                 });
+                context.showWarningToast(
+                  title: 'Disclaimer',
+                  description: 'Card info may take a few seconds to refresh',
+                );
               });
             }).catchError((error) {
               showDialog<void>(
