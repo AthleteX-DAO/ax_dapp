@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,6 +48,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
   double height = 0;
   String text = '';
   bool isApproved = false;
+  bool isLoading = false;
   Color? fillcolor;
   Color? textcolor;
   Widget? dialog;
@@ -66,6 +68,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
     widget.approveCallback().then((_) {
       setState(() {
         isApproved = true;
+        isLoading = false;
         text = 'Confirm';
         fillcolor = Colors.amber;
         textcolor = Colors.black;
@@ -96,6 +99,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
       ),
       child: TextButton(
         onPressed: () {
+          if (isLoading) return;
           if (isApproved) {
             context.read<TrackingCubit>().onPoolConfirmClick(
                   currencyOne: widget.currencyOne,
@@ -142,6 +146,11 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                   lpTokenName: widget.lpTokenName,
                   walletId: widget.walletId,
                 );
+
+            setState(() {
+              text = Message.waitingApproval;
+              isLoading = true;
+            });
             changeButton();
           }
         },
