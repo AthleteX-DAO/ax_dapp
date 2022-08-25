@@ -28,7 +28,7 @@ RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
 RUN flutter pub get
-RUN flutter build web --dart-define=BUILD_TYPE=$BUILD_TYPE --web-renderer auto
+RUN flutter build web --dart-define=BUILD_TYPE=${BUILD_TYPE} --web-renderer auto
 
 # Record the exposed port
 EXPOSE $PORT
