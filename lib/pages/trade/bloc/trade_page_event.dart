@@ -5,7 +5,7 @@ abstract class TradePageEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class WatchChainChangesStarted extends TradePageEvent {}
+class WatchAppDataChangesStarted extends TradePageEvent {}
 
 class FetchTradeInfoRequested extends TradePageEvent {}
 

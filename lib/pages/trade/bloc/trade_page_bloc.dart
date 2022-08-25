@@ -7,6 +7,7 @@ import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'trade_page_event.dart';
@@ -15,17 +16,19 @@ part 'trade_page_state.dart';
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   TradePageBloc({
     required WalletRepository walletRepository,
+    required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.swapController,
     required this.isBuyAX,
   })  : _walletRepository = walletRepository,
+        _streamAppDataChanges = streamAppDataChanges,
         super(
           TradePageState.initial(
             isBuyAX: isBuyAX,
             chain: walletRepository.currentChain,
           ),
         ) {
-    on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
+    on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<FetchTradeInfoRequested>(_onFetchTradeInfoRequested);
     on<MaxSwapTapEvent>(_mapMaxSwapTapEventToState);
     on<NewTokenFromInputEvent>(_mapNewTokenFromInputEventToState);
@@ -34,23 +37,31 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     on<SetTokenTo>(_mapSetTokenToEventToState);
     on<SwapTokens>(_mapSwapTokensEventToState);
 
-    add(WatchChainChangesStarted());
+    add(WatchAppDataChangesStarted());
     add(FetchTradeInfoRequested());
   }
 
   final WalletRepository _walletRepository;
+  final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetSwapInfoUseCase repo;
   final SwapController swapController;
   final bool isBuyAX;
 
-  Future<void> _onWatchChainChangesStarted(
-    WatchChainChangesStarted _,
+  Future<void> _onWatchAppDataChangesStarted(
+    WatchAppDataChangesStarted _,
     Emitter<TradePageState> emit,
   ) async {
-    await emit.onEach<EthereumChain>(
-      _walletRepository.chainChanges,
-      onData: (chain) {
-        final tradeTokens = chain.computeTradeTokens(
+    await emit.onEach<AppData>(
+      _streamAppDataChanges.appDataChanges,
+      onData: (appData) {
+        final appConfig = appData.appConfig;
+        swapController
+          ..dex = appConfig.reactiveDexClient.value
+          ..aptRouter = appConfig.reactiveAptRouterClient.value;
+        swapController.controller.credentials =
+            _walletRepository.credentials.value;
+
+        final tradeTokens = appData.chain.computeTradeTokens(
           isBuyAX: isBuyAX,
         );
         emit(

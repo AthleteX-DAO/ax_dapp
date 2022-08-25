@@ -158,6 +158,8 @@ class _V1AppState extends State<V1App> {
             BlocProvider(
               create: (BuildContext context) => TradePageBloc(
                 walletRepository: context.read<WalletRepository>(),
+                streamAppDataChanges:
+                    context.read<StreamAppDataChangesUseCase>(),
                 repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
                 swapController: Get.find(),
                 isBuyAX: isBuyAX,
@@ -193,6 +195,7 @@ class _V1AppState extends State<V1App> {
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
               walletRepository: context.read<WalletRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
               swapController: Get.find(),
               isBuyAX: isBuyAX,

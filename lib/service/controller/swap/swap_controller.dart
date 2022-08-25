@@ -9,8 +9,8 @@ import 'package:web3dart/web3dart.dart';
 
 class SwapController extends GetxController {
   SwapController() {
-    _dex = Dex(address: dexMainnetAddress, client: controller.client.value);
-    _aptRouter = APTRouter(
+    dex = Dex(address: dexMainnetAddress, client: controller.client.value);
+    aptRouter = APTRouter(
       address: routerMainnetAddress,
       client: controller.client.value,
     );
@@ -37,8 +37,8 @@ class SwapController extends GetxController {
   Rx<BigInt> deadline = BigInt.from(
     DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch,
   ).obs;
-  late Dex _dex;
-  late APTRouter _aptRouter;
+  late Dex dex;
+  late APTRouter aptRouter;
   BigInt amountOutMin = BigInt.zero;
   double x = 0, y = 0, k = 0;
 
@@ -80,7 +80,7 @@ class SwapController extends GetxController {
     var txString = '';
 
     try {
-      txString = await _aptRouter.swapExactTokensForTokens(
+      txString = await aptRouter.swapExactTokensForTokens(
         tokenAAmount,
         amountOutMin,
         path,
@@ -101,13 +101,13 @@ class SwapController extends GetxController {
     final tknA = EthereumAddress.fromHex('$address1');
     final tknB = EthereumAddress.fromHex('$address2');
     try {
-      txString = await _dex.createPair(
+      txString = await dex.createPair(
         tknA,
         tknB,
         credentials: controller.credentials,
       );
     } catch (_) {
-      txString = await _dex.createPair(
+      txString = await dex.createPair(
         tknA,
         tknB,
         credentials: controller.credentials,
@@ -125,7 +125,7 @@ class SwapController extends GetxController {
       tknA,
       EthereumAddress.fromHex(chainTokenAddress),
     ];
-    final txString = await _aptRouter.swapExactTokensForAVAX(
+    final txString = await aptRouter.swapExactTokensForAVAX(
       amountIn,
       BigInt.zero,
       path,
@@ -144,7 +144,7 @@ class SwapController extends GetxController {
       EthereumAddress.fromHex(chainTokenAddress),
     ];
     final to = await controller.credentials.extractAddress();
-    final txString = await _aptRouter.swapExactAVAXForTokens(
+    final txString = await aptRouter.swapExactAVAXForTokens(
       amountOutMin,
       path,
       to,
