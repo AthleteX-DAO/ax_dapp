@@ -7,6 +7,7 @@ class BuyDialogState extends Equatable {
     required this.status,
     required this.tokenAddress,
     required this.aptBuyInfo,
+    required this.errorMessage,
   });
 
   factory BuyDialogState.initial() {
@@ -16,6 +17,7 @@ class BuyDialogState extends Equatable {
       status: BlocStatus.initial,
       tokenAddress: '',
       aptBuyInfo: AptBuyInfo.empty(),
+      errorMessage: '',
     );
   }
   final double balance;
@@ -23,6 +25,7 @@ class BuyDialogState extends Equatable {
   final BlocStatus status;
   final String tokenAddress;
   final AptBuyInfo aptBuyInfo;
+  final String errorMessage;
 
   @override
   List<Object> get props {
@@ -32,6 +35,7 @@ class BuyDialogState extends Equatable {
       status,
       tokenAddress,
       aptBuyInfo,
+      errorMessage
     ];
   }
 
@@ -41,6 +45,7 @@ class BuyDialogState extends Equatable {
     BlocStatus? status,
     String? tokenAddress,
     AptBuyInfo? aptBuyInfo,
+    String? errorMessage,
   }) {
     return BuyDialogState(
       balance: balance ?? this.balance,
@@ -48,6 +53,7 @@ class BuyDialogState extends Equatable {
       status: status ?? this.status,
       tokenAddress: tokenAddress ?? this.tokenAddress,
       aptBuyInfo: aptBuyInfo ?? this.aptBuyInfo,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }

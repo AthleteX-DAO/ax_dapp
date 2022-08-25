@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/components/trade_approve_button.dart';
+import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/token.dart';
@@ -9,6 +10,7 @@ import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
+import 'package:ax_dapp/util/toastx.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -54,7 +56,16 @@ class _DesktopTradeState extends State<DesktopTrade> {
       walletController.controller.publicAddress.toString(),
     );
 
-    return BlocBuilder<TradePageBloc, TradePageState>(
+    return BlocConsumer<TradePageBloc, TradePageState>(
+      listenWhen: (_, current) => current.status == BlocStatus.error,
+      listener: (context, state) {
+        if (state.errorMessage == noSwapInfoErrorMessage) {
+          context.showWarningToast(
+            title: 'Action Error',
+            description: state.errorMessage,
+          );
+        }
+      },
       buildWhen: (previous, current) => current.status.name.isNotEmpty,
       builder: (context, state) {
         final bloc = context.read<TradePageBloc>();
@@ -173,13 +184,23 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           // If the user changes the top token and it is the
                           // same as the bottom token, then swap the top and
                           // bottom
-                          bloc.add(SwapTokens());
+                          bloc.add(
+                            SwapTokens(
+                              tokenFromBalance: tokenFromBalance,
+                              tokenToBalance: tokenToBalance,
+                            ),
+                          );
                         } else {
                           bloc.add(SetTokenFrom(tokenFrom: token));
                         }
                       } else {
                         if (token == tokenFrom) {
-                          bloc.add(SwapTokens());
+                          bloc.add(
+                            SwapTokens(
+                              tokenFromBalance: tokenFromBalance,
+                              tokenToBalance: tokenToBalance,
+                            ),
+                          );
                         } else {
                           bloc.add(SetTokenTo(tokenTo: token));
                         }
@@ -592,7 +613,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          bloc.add(SwapTokens());
+                          bloc.add(
+                            SwapTokens(
+                              tokenFromBalance: tokenFromBalance,
+                              tokenToBalance: tokenToBalance,
+                            ),
+                          );
                           _addEventForFromInputValue(
                             _tokenFromInputController.text,
                             bloc,

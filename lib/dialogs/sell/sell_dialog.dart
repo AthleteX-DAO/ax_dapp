@@ -4,7 +4,9 @@ import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/token_list.dart';
+import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/format_wallet_address.dart';
+import 'package:ax_dapp/util/toastx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -257,7 +259,23 @@ class _SellDialogState extends State<SellDialog> {
       controller.publicAddress.toString(),
     );
 
-    return BlocBuilder<SellDialogBloc, SellDialogState>(
+    return BlocConsumer<SellDialogBloc, SellDialogState>(
+      listenWhen: (_, current) =>
+          current.status == BlocStatus.error ||
+          current.status == BlocStatus.noData,
+      listener: (context, state) {
+        if (state.status == BlocStatus.noData) {
+          context.showWarningToast(
+            title: 'No Data for APT',
+            description: state.errorMessage,
+          );
+        } else {
+          context.showWarningToast(
+            title: 'Action Error',
+            description: state.errorMessage,
+          );
+        }
+      },
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<SellDialogBloc>();
@@ -270,8 +288,9 @@ class _SellDialogState extends State<SellDialog> {
         final receiveAmount =
             state.aptSellInfo.receiveAmount.toStringAsFixed(6);
         final totalFee = state.aptSellInfo.totalFee;
-        if (state.tokenAddress.isEmpty ||
-            state.tokenAddress != _getCurrentTokenAddress()) {
+        if ((state.tokenAddress.isEmpty ||
+                state.tokenAddress != _getCurrentTokenAddress()) &&
+            state.status == BlocStatus.initial) {
           reloadSellDialog(bloc);
         }
         var aptLongOrShort = 'Long Apt';
