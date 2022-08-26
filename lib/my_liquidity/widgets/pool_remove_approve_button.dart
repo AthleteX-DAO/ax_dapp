@@ -36,7 +36,6 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final String lpTokens;
   final String shareOfPool;
   final double percentRemoval;
-  final String walletId;
   final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;

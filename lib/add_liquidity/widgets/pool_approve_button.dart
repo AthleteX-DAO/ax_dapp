@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
+import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -99,7 +99,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<PoolBloc>();
+    final bloc = context.read<AddLiquidityBloc>();
     return Container(
       width: width,
       height: height,
@@ -143,7 +143,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                     widget.confirmDialog(context),
               ).then((value) {
                 resetButton();
-                bloc.add(PageRefreshEvent());
+                bloc.add(const FetchPairInfoRequested());
                 widget.tokenAmountOneController.clear();
                 widget.tokenAmountTwoController.clear();
               });

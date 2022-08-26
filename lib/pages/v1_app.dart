@@ -155,7 +155,6 @@ class _V1AppState extends State<V1App> {
                       : [
                           RepositoryProvider.of<MLBRepo>(context),
                         ],
-                  coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
                 ),
               ),
               child: DesktopScout(goToTradePage: goToTradePage),

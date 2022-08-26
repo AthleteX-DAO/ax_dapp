@@ -919,7 +919,6 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                         infoOfSelectedCard.lpTokenPairBalance,
                                     shareOfPool: infoOfSelectedCard.shareOfPool,
                                     percentRemoval: value,
-                                    walletId: userWalletAddress.walletAddress,
                                     lpTokenName:
                                         '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}',
                                   ),
