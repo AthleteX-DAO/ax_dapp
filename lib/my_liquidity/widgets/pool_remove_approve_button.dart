@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // This code changes the state of the button
 class PoolRemoveApproveButton extends StatefulWidget {
   const PoolRemoveApproveButton({
+    required this.tabController,
     required this.width,
     required this.height,
     required this.text,
@@ -23,7 +25,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.lpTokenName,
     super.key,
   });
-
+  final TabController tabController;
   final String text;
   final double width;
   final double height;
@@ -34,7 +36,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final String lpTokens;
   final String shareOfPool;
   final double percentRemoval;
-
+  final String walletId;
   final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
@@ -132,7 +134,16 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
+              ).then((value) {
+                //show loading spinner
+                setState(() {
+                  widget.tabController.index = 0;
+                });
+                context.showWarningToast(
+                  title: 'Disclaimer',
+                  description: 'Card info may take a few seconds to refresh',
+                );
+              });
             }).catchError((error) {
               showDialog<void>(
                 context: context,

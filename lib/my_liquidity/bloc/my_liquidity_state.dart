@@ -29,4 +29,7 @@ class MyLiquidityState extends Equatable {
 
   @override
   List<Object> get props => [status, cards, filteredCards, searchTerm];
+
+  @override
+  String toString() => 'MyLiquidityState(cards: $cards, status: $status)';
 }
