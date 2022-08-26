@@ -155,6 +155,13 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                   isPoolLink: false,
                   isFarmLink: true,
                 ),
+              ).then(
+                (value) {
+                  resetButton();
+                  bloc.add(PageRefreshEvent());
+                  widget.tokenAmountOneController.clear();
+                  widget.tokenAmountTwoController.clear();
+                },
               );
             }).catchError((error) {
               showDialog<void>(
