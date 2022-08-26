@@ -642,6 +642,8 @@ class _AddLiquidityState extends State<AddLiquidity> {
                 if (controller.walletConnected)
                   if (state.status != BlocStatus.error)
                     PoolApproveButton(
+                      tokenAmountOneController: _tokenAmountOneController,
+                      tokenAmountTwoController: _tokenAmountTwoController,
                       width: _elementWdt * 0.95,
                       height: 40,
                       text: 'Approve',

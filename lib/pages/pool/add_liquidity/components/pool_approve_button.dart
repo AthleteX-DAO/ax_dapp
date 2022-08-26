@@ -1,3 +1,4 @@
+import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/message.dart';
@@ -7,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // This code changes the state of the button
 class PoolApproveButton extends StatefulWidget {
   const PoolApproveButton({
+    required this.tokenAmountOneController,
+    required this.tokenAmountTwoController,
     required this.width,
     required this.height,
     required this.text,
@@ -25,6 +28,8 @@ class PoolApproveButton extends StatefulWidget {
     super.key,
   });
 
+  final TextEditingController tokenAmountOneController;
+  final TextEditingController tokenAmountTwoController;
   final String text;
   final double width;
   final double height;
@@ -95,8 +100,18 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
     });
   }
 
+  void resetButton() {
+    setState(() {
+      isApproved = false;
+      text = 'Approve';
+      fillcolor = Colors.transparent;
+      textcolor = Colors.amber;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<PoolBloc>();
     return Container(
       width: width,
       height: height,
@@ -145,7 +160,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
               showDialog<void>(
                 context: context,
                 builder: (context) => const FailedDialog(),
-              );
+              ).then((value) => resetButton());
             });
           } else {
             //Approve button was pressed

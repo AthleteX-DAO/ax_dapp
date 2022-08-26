@@ -124,7 +124,7 @@ Widget myFarmItem(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Rewards Earned',
+                'Claimable Rewards',
                 style: customTextStyle,
               ),
               Obx(
