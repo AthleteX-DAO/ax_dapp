@@ -18,7 +18,15 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return (buildConfig == BuildConfig.release) ? webRelease : webStaging;
+      FirebaseOptions firebaseConfigs;
+      try {
+        firebaseConfigs =
+            (buildConfig == BuildConfig.release) ? webRelease : webStaging;
+      } catch (e) {
+        print('Error occurred fetching firebase configs: $e;\n defaulting to staging');
+        firebaseConfigs = webStaging;
+      }
+      return firebaseConfigs;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:

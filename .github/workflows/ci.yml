@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - infra
+      - develop
 env:
   IMAGE_TAG: ${{ github.sha }}
   ECR_REPOSITORY_BASE_URL: 510626941593.dkr.ecr.us-east-1.amazonaws.com
