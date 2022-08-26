@@ -1,5 +1,9 @@
 environment_name: stage
 
+nodeSelector:
+  environment: stage
+  node: stateless
+
 ingress:
   enabled: true
   annotations:
