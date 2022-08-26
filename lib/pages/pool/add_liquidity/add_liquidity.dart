@@ -632,7 +632,7 @@ class _AddLiquidityState extends State<AddLiquidity> {
                 ),
                 showYouReceived(poolInfo.recieveAmount),
                 PoolApproveButton(
-                  width:150,
+                  width: _elementWdt * 0.95 - 150,
                   tokenAmountOneController: _tokenAmountOneController,
                   tokenAmountTwoController: _tokenAmountTwoController,
                   height: 40,
