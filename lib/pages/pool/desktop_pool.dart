@@ -186,11 +186,3 @@ class _DesktopPoolState extends State<DesktopPool> {
     );
   }
 }
-
-class Farm {
-  Farm(this.name, [this.athlete]);
-
-  final String name;
-
-  Athlete? athlete;
-}
