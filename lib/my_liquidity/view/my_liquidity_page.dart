@@ -88,12 +88,11 @@ class SportToken extends StatelessWidget {
   }
 }
 
-class _MyLiquidityState extends State<MyLiquidity>
-    with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
+class _MyLiquidityPageState extends State<MyLiquidityPage> {
   bool _isWeb = true;
   double _width = 0;
   double _layoutHgt = 0;
+  int currentTabIndex = 0;
   PoolController poolController = Get.find();
   Controller controller = Get.find();
   double value = 0;
@@ -102,20 +101,7 @@ class _MyLiquidityState extends State<MyLiquidity>
   AssetImage? token1Icon = const AssetImage('assets/images/apt.png');
 
   @override
-  void initState() {
-    _tabController = TabController(length: 2, vsync: this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final bloc = context.read<MyLiquidityBloc>();
     final mediaquery = MediaQuery.of(context);
     final _height = mediaquery.size.height;
     _width = mediaquery.size.width;
@@ -333,7 +319,6 @@ class _MyLiquidityState extends State<MyLiquidity>
                       ),
                       child: TextButton(
                         onPressed: () {
-                          bloc.add(LoadEvent());
                           setState(() {
                             currentTabIndex = 1;
                             token0Icon = tokenImage(token0);
@@ -399,10 +384,6 @@ class _MyLiquidityState extends State<MyLiquidity>
     }
 
     return BlocBuilder<MyLiquidityBloc, MyLiquidityState>(
-      buildWhen: (previous, current) =>
-          previous.filteredCards != current.filteredCards ||
-          previous.cards != current.cards ||
-          previous.status == BlocStatus.success,
       builder: (context, state) {
         final bloc = context.read<MyLiquidityBloc>();
         final filteredCards = state.filteredCards;
@@ -423,60 +404,50 @@ class _MyLiquidityState extends State<MyLiquidity>
           return const LoadingError();
         }
 
-        return SizedBox(
-          width: _width * 0.88,
-          height: _height * 0.7,
-          child: DefaultTabController(
-            length: 2,
-            child: TabBarView(
-              controller: _tabController,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            IndexedStack(
+              index: currentTabIndex,
               children: [
-                SizedBox(
-                  width: _width * 0.7,
-                  height: _height * 0.2,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          //searchbar for desktop (next to toggle button)
-                          if (_isWeb)
-                            createMyLiquiditySearchBar(
-                              gridHgt,
-                              _layoutWdt,
-                              bloc,
-                            ),
-                        ],
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        //searchbar for desktop (next to toggle button)
+                        if (_isWeb)
+                          createMyLiquiditySearchBar(gridHgt, _layoutWdt, bloc),
+                      ],
+                    ),
+                    SizedBox(
+                      height: gridHgt,
+                      child: GridView.builder(
+                        padding: EdgeInsets.zero,
+                        gridDelegate: _isWeb
+                            ? const SliverGridDelegateWithMaxCrossAxisExtent(
+                                //delegate max width for desktop
+                                maxCrossAxisExtent: 600,
+                                mainAxisExtent: 265,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 20,
+                              )
+                            : const SliverGridDelegateWithFixedCrossAxisCount(
+                                //delegate count of 1 for mobile
+                                crossAxisCount: 1,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 20,
+                                mainAxisExtent: 265,
+                              ),
+                        itemCount: filteredCards.length,
+                        itemBuilder: (BuildContext ctx, index) {
+                          return myLiquidityPoolGridItem(
+                            filteredCards[index],
+                            _layoutWdt,
+                          );
+                        },
                       ),
-                      SizedBox(
-                        height: gridHgt,
-                        child: GridView.builder(
-                          padding: EdgeInsets.zero,
-                          gridDelegate: _isWeb
-                              ? const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  //delegate max width for desktop
-                                  maxCrossAxisExtent: 600,
-                                  mainAxisExtent: 265,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                )
-                              : const SliverGridDelegateWithFixedCrossAxisCount(
-                                  //delegate count of 1 for mobile
-                                  crossAxisCount: 1,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                  mainAxisExtent: 265,
-                                ),
-                          itemCount: filteredCards.length,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return myLiquidityPoolGridItem(
-                              filteredCards[index],
-                              _layoutWdt,
-                            );
-                          },
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -952,7 +923,7 @@ class _MyLiquidityState extends State<MyLiquidity>
                 ),
               ],
             ),
-          ),
+          ],
         );
       },
     );

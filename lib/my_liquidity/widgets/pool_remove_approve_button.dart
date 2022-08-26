@@ -1,7 +1,5 @@
-import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
-import 'package:ax_dapp/util/toastx.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // This code changes the state of the button
 class PoolRemoveApproveButton extends StatefulWidget {
   const PoolRemoveApproveButton({
-    required this.tabController,
     required this.width,
     required this.height,
     required this.text,
@@ -26,7 +23,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.lpTokenName,
     super.key,
   });
-  final TabController tabController;
+
   final String text;
   final double width;
   final double height;
@@ -92,7 +89,6 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<MyLiquidityBloc>();
     return Container(
       width: width,
       height: height,
@@ -136,16 +132,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              ).then((value) {
-                bloc.add(LoadEvent());
-                setState(() {
-                  widget.tabController.index = 0;
-                });
-                context.showWarningToast(
-                  title: 'Disclaimer',
-                  description: 'Card info may take a few seconds to refresh',
-                );
-              });
+              );
             }).catchError((error) {
               showDialog<void>(
                 context: context,
