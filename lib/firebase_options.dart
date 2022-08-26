@@ -23,8 +23,6 @@ class DefaultFirebaseOptions {
         firebaseConfigs =
             (buildConfig == BuildConfig.release) ? webRelease : webStaging;
       } catch (e) {
-        print(
-            'Error occurred fetching firebase configs: $e;\n defaulting to staging');
         firebaseConfigs = webStaging;
       }
       return firebaseConfigs;
