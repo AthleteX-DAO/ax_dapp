@@ -5,7 +5,6 @@ import 'package:ax_dapp/pages/pool/my_liqudity/my_liquidity.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
-import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/service/controller/usecases/get_wallet_address_use_case.dart';
 import 'package:ax_dapp/service/dialog.dart';
