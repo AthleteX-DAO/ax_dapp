@@ -632,9 +632,9 @@ class _AddLiquidityState extends State<AddLiquidity> {
                 ),
                 showYouReceived(poolInfo.recieveAmount),
                 PoolApproveButton(
+                  width: _elementWdt * 0.95 - 150,
                   tokenAmountOneController: _tokenAmountOneController,
                   tokenAmountTwoController: _tokenAmountTwoController,
-                  width: _elementWdt * 0.95,
                   height: 40,
                   text: 'Approve',
                   approveCallback: bloc.poolController.approve,
