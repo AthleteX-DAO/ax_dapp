@@ -8,7 +8,7 @@ name: Deploy Staging EC2
 on:
   push:
     branches:
-      - 'develop'
+      - 'develop-ax-637'
 jobs:
   deploy:
     name: Deploy Staging Build to EC2
