@@ -52,9 +52,10 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
   double height = 0;
   String text = '';
   bool isApproved = false;
-  bool iswaitingApproval = false;
-  Color? fillcolor;
-  Color? textcolor;
+  bool isWaitingApproval = false;
+  Color? fillColor;
+  Color? textColor;
+  Color? borderColor;
   Widget? dialog;
 
   @override
@@ -63,8 +64,9 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
     width = widget.width;
     height = widget.height;
     text = widget.text;
-    fillcolor = Colors.transparent;
-    textcolor = Colors.amber;
+    fillColor = Colors.transparent;
+    textColor = Colors.amber;
+    borderColor = Colors.amber;
   }
 
   void changeButton() {
@@ -72,10 +74,11 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
     widget.approveCallback().then((_) {
       setState(() {
         isApproved = true;
-        iswaitingApproval = false;
+        isWaitingApproval = false;
         text = 'Confirm';
-        fillcolor = Colors.amber;
-        textcolor = Colors.black;
+        fillColor = Colors.amber;
+        textColor = Colors.black;
+        borderColor = Colors.amber;
       });
     }).catchError((_) {
       showDialog<void>(
@@ -89,8 +92,9 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
       setState(() {
         isApproved = false;
         text = 'Approve';
-        fillcolor = Colors.transparent;
-        textcolor = Colors.amber;
+        fillColor = Colors.transparent;
+        textColor = Colors.amber;
+        borderColor = Colors.amber;
       });
     });
   }
@@ -101,14 +105,13 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.amber),
-        color: fillcolor,
+        border: Border.all(color: borderColor!),
+        color: fillColor,
         borderRadius: BorderRadius.circular(100),
       ),
       child: TextButton(
         onPressed: () {
-          if (iswaitingApproval) return;
-
+          if (isWaitingApproval) return;
           if (isApproved) {
             //Confirm button pressed
             context.read<TrackingCubit>().trackAthleteMintConfirmButtonClicked(
@@ -161,7 +164,10 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                 );
             setState(() {
               text = Message.waitingApproval;
-              iswaitingApproval = true;
+              isWaitingApproval = true;
+              fillColor = Colors.grey;
+              textColor = Colors.white;
+              borderColor = Colors.grey;
             });
             changeButton();
           }
@@ -170,7 +176,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
           text,
           style: TextStyle(
             fontSize: 16,
-            color: textcolor,
+            color: textColor,
           ),
         ),
       ),

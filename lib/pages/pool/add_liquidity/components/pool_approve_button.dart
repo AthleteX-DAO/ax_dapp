@@ -62,8 +62,9 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
   String text = '';
   bool isApproved = false;
   bool isLoading = false;
-  Color? fillcolor;
-  Color? textcolor;
+  Color? fillColor;
+  Color? textColor;
+  Color? borderColor;
   Widget? dialog;
 
   @override
@@ -72,8 +73,9 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
     width = widget.width;
     height = widget.height;
     text = widget.text;
-    fillcolor = Colors.transparent;
-    textcolor = Colors.amber;
+    fillColor = Colors.transparent;
+    textColor = Colors.amber;
+    borderColor = Colors.amber;
   }
 
   void changeButton() {
@@ -83,8 +85,9 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
         isApproved = true;
         isLoading = false;
         text = 'Confirm';
-        fillcolor = Colors.amber;
-        textcolor = Colors.black;
+        fillColor = Colors.amber;
+        textColor = Colors.black;
+        borderColor = Colors.amber;
       });
     }).catchError((_) {
       showDialog<void>(
@@ -94,8 +97,9 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
       setState(() {
         isApproved = false;
         text = 'Approve';
-        fillcolor = Colors.transparent;
-        textcolor = Colors.amber;
+        fillColor = Colors.transparent;
+        textColor = Colors.amber;
+        borderColor = Colors.amber;
       });
     });
   }
@@ -104,8 +108,9 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
     setState(() {
       isApproved = false;
       text = 'Approve';
-      fillcolor = Colors.transparent;
-      textcolor = Colors.amber;
+      fillColor = Colors.transparent;
+      textColor = Colors.amber;
+      borderColor = Colors.amber;
     });
   }
 
@@ -116,8 +121,8 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.amber),
-        color: fillcolor,
+        border: Border.all(color: borderColor!),
+        color: fillColor,
         borderRadius: BorderRadius.circular(100),
       ),
       child: TextButton(
@@ -185,6 +190,9 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
             setState(() {
               text = Message.waitingApproval;
               isLoading = true;
+              fillColor = Colors.grey;
+              textColor = Colors.white;
+              borderColor = Colors.grey;
             });
             changeButton();
           }
@@ -193,7 +201,7 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
           text,
           style: TextStyle(
             fontSize: 16,
-            color: textcolor,
+            color: textColor,
           ),
         ),
       ),
