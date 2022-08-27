@@ -8,6 +8,7 @@ class AxMarketData extends Equatable {
   const AxMarketData({
     this.price,
     this.totalSupply,
+    this.lastUpdated,
     this.circulatingSupply,
   });
 
@@ -17,6 +18,9 @@ class AxMarketData extends Equatable {
   /// `AthleteX` total supply.
   final double? totalSupply;
 
+  /// `AthleteX` last updated time.
+  final String? lastUpdated;
+
   /// `AthleteX` circulating supply.
   final double? circulatingSupply;
 
@@ -24,5 +28,5 @@ class AxMarketData extends Equatable {
   static const empty = AxMarketData();
 
   @override
-  List<Object?> get props => [price, totalSupply, circulatingSupply];
+  List<Object?> get props => [price, totalSupply, lastUpdated, circulatingSupply];
 }

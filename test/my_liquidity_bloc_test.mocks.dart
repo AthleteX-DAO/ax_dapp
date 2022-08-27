@@ -100,6 +100,10 @@ class MockWalletRepository extends _i1.Mock implements _i10.WalletRepository {
   }
 
   @override
+  _i5.EthereumChain get defaultChain =>
+      (super.noSuchMethod(Invocation.getter(#defaultChain),
+          returnValue: _i5.EthereumChain.none) as _i5.EthereumChain);
+  @override
   _i7.Stream<_i5.EthereumChain> get chainChanges =>
       (super.noSuchMethod(Invocation.getter(#chainChanges),
               returnValue: _i7.Stream<_i5.EthereumChain>.empty())

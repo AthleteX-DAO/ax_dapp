@@ -8,6 +8,7 @@ class AxData extends Equatable {
   /// {@macro ax_data}
   const AxData({
     this.price,
+    this.lastUpdated,
     this.totalSupply,
     this.circulatingSupply,
     this.balance,
@@ -20,6 +21,7 @@ class AxData extends Equatable {
           price: axMarketData.price,
           totalSupply: axMarketData.totalSupply,
           circulatingSupply: axMarketData.circulatingSupply,
+          lastUpdated: axMarketData.lastUpdated,
         );
 
   /// `AthleteX` price.
@@ -31,6 +33,9 @@ class AxData extends Equatable {
   /// `AthleteX` circulating supply.
   final double? circulatingSupply;
 
+  /// `AthleteX` last updated time.
+  final String? lastUpdated;
+
   /// `AthleteX` balance.
   final double? balance;
 
@@ -38,10 +43,12 @@ class AxData extends Equatable {
   static const empty = AxData();
 
   @override
-  List<Object?> get props => [price, totalSupply, circulatingSupply, balance];
+  List<Object?> get props =>
+      [price, circulatingSupply, totalSupply, lastUpdated, balance];
 
   AxData copyWith({
     double? price,
+    String? lastUpdated,
     double? totalSupply,
     double? circulatingSupply,
     double? balance,
@@ -51,6 +58,7 @@ class AxData extends Equatable {
       totalSupply: totalSupply ?? this.totalSupply,
       circulatingSupply: circulatingSupply ?? this.circulatingSupply,
       balance: balance ?? this.balance,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
     );
   }
 }
