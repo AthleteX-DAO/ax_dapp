@@ -40,7 +40,7 @@ void main() async {
   final dio = Dio()..interceptors.add(LoggingInterceptor());
   final mlbApi = MLBAthleteAPI(dio);
   final nflApi = NFLAthleteAPI(dio);
-
+  final coinApi = CoinGeckoAPI(dio);
   final cache = CacheClient();
 
   final httpClient = http.Client();
@@ -89,6 +89,7 @@ void main() async {
             create: (_) => TokensRepository(
               tokensApiClient: tokensApiClient,
               reactiveLspClient: reactiveLspClient,
+              coinGeckoApiClient: coinApi,
             ),
           ),
           RepositoryProvider.value(value: gysrApiClient),
