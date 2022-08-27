@@ -335,7 +335,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                           setState(() {
                             _tabController.index = 1;
                             token0Icon = tokenImage(token0);
-                            token1Icon = tokenImage(token1);                            infoOfSelectedCard = liquidityPositionInfo;
+                            token1Icon = tokenImage(token1);
+                            infoOfSelectedCard = liquidityPositionInfo;
                             poolController
                               ..lpTokenAAddress =
                                   liquidityPositionInfo.token0Address

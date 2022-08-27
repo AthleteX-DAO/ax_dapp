@@ -204,13 +204,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.0"
-  coingecko_api:
-    dependency: transitive
-    description:
-      name: coingecko_api
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2+2"
   collection:
     dependency: transitive
     description:
@@ -1413,7 +1406,7 @@ packages:
       path: "."
       ref: "fix/build-runner"
       resolved-ref: "4991b5819c45dedc68a0d2ffc32e279817b6f7c0"
-      url: "https://github.com/narcodico/web3dart.git"
+      url: "https://github.com/SportsToken/web3dart.git"
     source: git
     version: "2.4.1"
   web_socket_channel:
