@@ -15,8 +15,11 @@ class GetTotalTokenBalanceUseCase {
 
   Future<double> getTotalAxBalance() async {
     final currentAxt = _tokensRepository.currentAxt;
+    print('token -> $currentAxt');
+    print('current AXT address -> ${currentAxt.address}');
     final axBalance =
         await _walletRepository.getTokenBalance(currentAxt.address);
+    print('AX balance -> $axBalance');
     return axBalance ?? 0;
   }
 
