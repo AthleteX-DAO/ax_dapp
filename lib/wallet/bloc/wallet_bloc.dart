@@ -39,6 +39,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     try {
       final walletAddress = await _walletRepository.connectWallet();
+      print('wallet Address from the wallet bloc -> $walletAddress');
       emit(state.copyWith(walletAddress: walletAddress));
     } on WalletFailure catch (failure) {
       add(WalletFailed(failure));
