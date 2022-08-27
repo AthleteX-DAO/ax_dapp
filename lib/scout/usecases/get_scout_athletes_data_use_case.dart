@@ -198,18 +198,18 @@ class GetScoutAthletesDataUseCase {
     double bookPrice, {
     required Token axt,
   }) {
-    final strAXTAddr = axt.address.toUpperCase();
+    final strAXTAddr = axt.address;
     // Looking for a pair which has the same token name as strTokenAddr
     // (token address as uppercase)
     final index0 = allPairs.indexWhere(
       (pair) =>
-          pair.token0.id.toUpperCase() == strTokenAddr &&
-          pair.token1.id.toUpperCase() == strAXTAddr,
+          equalsIgnoreCase(pair.token0.id, strTokenAddr) &&
+          equalsIgnoreCase(pair.token1.id, strAXTAddr),
     );
     final index1 = allPairs.indexWhere(
       (pair) =>
-          pair.token0.id.toUpperCase() == strAXTAddr &&
-          pair.token1.id.toUpperCase() == strTokenAddr,
+          equalsIgnoreCase(pair.token0.id, strAXTAddr) &&
+          equalsIgnoreCase(pair.token1.id, strTokenAddr),
     );
 
     var marketPrice = 0.0;
@@ -371,5 +371,9 @@ class GetScoutAthletesDataUseCase {
       return MapEntry(key, athleteScoutModel);
     });
     return mappedAthletes.values.toList();
+  }
+
+  bool equalsIgnoreCase(String? string1, String? string2) {
+    return string1?.toLowerCase() == string2?.toLowerCase();
   }
 }

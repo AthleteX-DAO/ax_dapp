@@ -1,7 +1,7 @@
-import 'package:coingecko_api/coingecko_api.dart';
 import 'package:ethereum_api/lsp_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:shared/shared.dart';
+import 'package:tokens_repository/src/api/coin_gecko_api.dart';
 import 'package:tokens_repository/src/models/models.dart';
 
 /// {@template tokens_repository}
@@ -12,21 +12,17 @@ class TokensRepository {
   TokensRepository({
     required TokensApiClient tokensApiClient,
     required ValueStream<LongShortPair> reactiveLspClient,
-    CoinGeckoApi? coinGeckoApiClient,
+    required CoinGeckoAPI coinGeckoApiClient,
   })  : _tokensApiClient = tokensApiClient,
         _reactiveLspClient = reactiveLspClient,
-        _coinGeckoApiClient = coinGeckoApiClient ??
-            CoinGeckoApi(
-              rateLimitManagement: false,
-              enableLogging: false,
-            );
+        _coinGeckoApiClient = coinGeckoApiClient;
 
   final TokensApiClient _tokensApiClient;
 
   final ValueStream<LongShortPair> _reactiveLspClient;
   LongShortPair get _lspClient => _reactiveLspClient.value;
 
-  final CoinGeckoApi _coinGeckoApiClient;
+  final CoinGeckoAPI _coinGeckoApiClient;
 
   /// Allows listening to changes to the current [Token]s.
   Stream<List<Token>> get tokensChanges => _tokensApiClient.tokensChanges;
@@ -99,28 +95,19 @@ class TokensRepository {
   /// Defaults to [AxMarketData.empty] if data fetch fails.
   Future<AxMarketData> getAxMarketData() async {
     try {
-      final result = await _coinGeckoApiClient.coins.getCoinData(
-        id: 'athletex',
-        localization: false,
-        communityData: false,
-        tickers: false,
-        developerData: false,
-      );
-      final axData = result.data;
-      final axMarketData = axData?.marketData;
-      final axDataByCurrency = axMarketData?.dataByCurrency;
-      final axMarketDataByUsd = axDataByCurrency?.firstWhereOrNull(
-        (marketData) => marketData.coinId.toLowerCase() == 'usd',
-      );
-      final axPrice = axMarketDataByUsd?.currentPrice;
-      final axTotalSupply = axMarketData?.totalSupply;
-      final axCirculatingSupply = axMarketData?.circulatingSupply;
+      final coinData = await _coinGeckoApiClient.getAthleteXCoinData();
+      final price = coinData
+          .marketData
+          ?.currentPrice?['usd'];
+
       return AxMarketData(
-        price: axPrice,
-        totalSupply: axTotalSupply,
-        circulatingSupply: axCirculatingSupply,
+        price: price,
+        totalSupply: coinData.marketData?.totalSupply,
+        lastUpdated: coinData.lastUpdated,
+        circulatingSupply: coinData.marketData?.circulatingSupply,
       );
-    } catch (_) {
+    } catch (e) {
+      print("Error fetching AthleteX market data: $e");
       return AxMarketData.empty;
     }
   }
