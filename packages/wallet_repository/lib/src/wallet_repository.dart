@@ -135,7 +135,7 @@ class WalletRepository {
   Future<BigInt> getRawTokenBalance(String tokenAddress) =>
       _walletApiClient.getRawTokenBalance(
         tokenAddress: tokenAddress,
-        walletAddress: credentials.walletAddress,
+        walletAddress: currentWallet.address,
       );
 
   /// Returns an aproximate balance for the token with the given [tokenAddress],
