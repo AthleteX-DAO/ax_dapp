@@ -26,6 +26,6 @@ jobs:
             cd /home/ubuntu/ax_dapp_staging
             git reset --hard
             git fetch
-            git checkout develop
-            git reset --hard origin/develop
+            git checkout develop-ax-637
+            git reset --hard origin/develop-ax-637
             bash ./launch_staging_container.sh
