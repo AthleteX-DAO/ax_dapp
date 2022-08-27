@@ -1,5 +1,7 @@
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WalletAx extends StatelessWidget {
   const WalletAx({super.key});
@@ -7,10 +9,13 @@ class WalletAx extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => showDialog<void>(
-        context: context,
-        builder: yourAXDialog,
-      ),
+      onPressed: () {
+        context.read<WalletBloc>().add(const UpdateAxDataRequested());
+          showDialog<void>(
+          context: context,
+          builder: yourAXDialog,
+        );
+      } ,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

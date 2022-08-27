@@ -83,6 +83,10 @@ class WalletRepository {
     _cacheWalletCredentials(credentials);
     print('creadentials -> $credentials');
     print('credenitals value -> ${credentials.value.address.hex}');
+    return _getWalletAddress(credentials);
+  }
+
+  Future<String> _getWalletAddress(WalletCredentials credentials) async {
     return credentials.value.address.hex;
   }
 
@@ -132,11 +136,13 @@ class WalletRepository {
   /// identified by current [Wallet.address].
   ///
   /// Defaults to [BigInt.zero] on error.
-  Future<BigInt> getRawTokenBalance(String tokenAddress) =>
-      _walletApiClient.getRawTokenBalance(
+  Future<BigInt> getRawTokenBalance(String tokenAddress) async {
+    final walletAddress = await _getWalletAddress(credentials);
+    return _walletApiClient.getRawTokenBalance(
         tokenAddress: tokenAddress,
-        walletAddress: currentWallet.address,
+        walletAddress: walletAddress,
       );
+  }     
 
   /// Returns an aproximate balance for the token with the given [tokenAddress],
   /// on the connected wallet. It returns `null` when any error occurs.
