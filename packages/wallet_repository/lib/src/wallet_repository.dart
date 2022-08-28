@@ -81,8 +81,6 @@ class WalletRepository {
   Future<String> _getWalletCredentials() async {
     final credentials = await _walletApiClient.getWalletCredentials();
     _cacheWalletCredentials(credentials);
-    print('creadentials -> $credentials');
-    print('credenitals value -> ${credentials.value.address.hex}');
     return _getWalletAddress(credentials);
   }
 
@@ -152,19 +150,13 @@ class WalletRepository {
   /// used to display the amount of ether in a human-readable format, it should
   /// not be used for anything else.
   Future<double?> getTokenBalance(String tokenAddress) async {
-    print('current wallet -> $currentWallet');
-    print('tokenAddress wallet repo -> $tokenAddress');
     final rawBalance = await getRawTokenBalance(tokenAddress);
-    print('rawBalance -> $rawBalance');
     if (rawBalance == BigInt.zero) {
       return null;
     }
     final balanceInWei = EtherAmount.inWei(rawBalance);
-    print('balanceInWei -> $balanceInWei');
     final balance = balanceInWei.getValueInUnit(EtherUnit.ether);
-    print('balance -> $balance');
     final formattedBalance = balance.toStringAsFixed(11);
-    print('formattedBalance -> $formattedBalance');
     return double.parse(formattedBalance);
   }
 

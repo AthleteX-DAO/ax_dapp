@@ -201,8 +201,6 @@ class EthereumWalletApiClient implements WalletApiClient {
     required String walletAddress,
   }) async {
     try {
-      print('token address for raw -> $tokenAddress');
-      print('wallet address for raw -> $walletAddress');
       final tokenEthereumAddress = EthereumAddress.fromHex(tokenAddress);
       final walletEthereumAddress = EthereumAddress.fromHex(walletAddress);
       final token = ERC20(address: tokenEthereumAddress, client: _web3Client);
