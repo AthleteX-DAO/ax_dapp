@@ -11,7 +11,7 @@ class WalletAccount extends StatelessWidget {
     return TextButton(
       onPressed: () => showDialog<void>(
         context: context,
-        builder: accountDialog,
+        builder: (context) => const AccountDialog(),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
