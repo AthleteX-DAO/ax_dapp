@@ -1076,7 +1076,7 @@ class AxTotalSupply extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalSupply =
-        context.select((WalletBloc bloc) => bloc.state.axData.lastUpdated);
+        context.select((WalletBloc bloc) => bloc.state.axData.totalSupply);
     final axTotalSupply = totalSupply ?? '-';
     return Text(
       '$axTotalSupply',
