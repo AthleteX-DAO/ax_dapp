@@ -107,7 +107,6 @@ class TokensRepository {
         circulatingSupply: coinData.marketData?.circulatingSupply,
       );
     } catch (e) {
-      print("Error fetching AthleteX market data: $e");
       return AxMarketData.empty;
     }
   }

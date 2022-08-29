@@ -31,6 +31,7 @@ class WalletState extends Equatable {
         chain,
         gasPrice,
         failure,
+        axData,
       ];
 
   WalletState copyWith({

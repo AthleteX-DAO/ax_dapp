@@ -81,6 +81,10 @@ class WalletRepository {
   Future<String> _getWalletCredentials() async {
     final credentials = await _walletApiClient.getWalletCredentials();
     _cacheWalletCredentials(credentials);
+    return _getWalletAddress(credentials);
+  }
+
+  Future<String> _getWalletAddress(WalletCredentials credentials) async {
     return credentials.value.address.hex;
   }
 
@@ -130,11 +134,13 @@ class WalletRepository {
   /// identified by current [Wallet.address].
   ///
   /// Defaults to [BigInt.zero] on error.
-  Future<BigInt> getRawTokenBalance(String tokenAddress) =>
-      _walletApiClient.getRawTokenBalance(
+  Future<BigInt> getRawTokenBalance(String tokenAddress) async {
+    final walletAddress = await _getWalletAddress(credentials);
+    return _walletApiClient.getRawTokenBalance(
         tokenAddress: tokenAddress,
-        walletAddress: currentWallet.address,
+        walletAddress: walletAddress,
       );
+  }     
 
   /// Returns an aproximate balance for the token with the given [tokenAddress],
   /// on the connected wallet. It returns `null` when any error occurs.
@@ -150,7 +156,7 @@ class WalletRepository {
     }
     final balanceInWei = EtherAmount.inWei(rawBalance);
     final balance = balanceInWei.getValueInUnit(EtherUnit.ether);
-    final formattedBalance = balance.toStringAsFixed(2);
+    final formattedBalance = balance.toStringAsFixed(11);
     return double.parse(formattedBalance);
   }
 
