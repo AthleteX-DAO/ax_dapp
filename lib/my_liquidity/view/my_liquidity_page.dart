@@ -438,10 +438,13 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                         children: [
                           //searchbar for desktop (next to toggle button)
                           if (_isWeb)
-                            createMyLiquiditySearchBar(
-                              gridHgt,
-                              _layoutWdt,
-                              bloc,
+                            Container(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: createMyLiquiditySearchBar(
+                                gridHgt,
+                                _layoutWdt,
+                                bloc,
+                              ),
                             ),
                         ],
                       ),
