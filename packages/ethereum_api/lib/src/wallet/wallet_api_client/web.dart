@@ -6,6 +6,7 @@ import 'dart:html' as html;
 import 'package:ethereum_api/src/wallet/failures/failures.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:ethereum_api/src/wallet/wallet_api_client/wallet_api_client.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_web3/flutter_web3.dart';
 import 'package:shared/shared.dart';
 import 'package:web3_browser/web3_browser.dart' as web3_browser;
@@ -206,7 +207,8 @@ class EthereumWalletApiClient implements WalletApiClient {
       final token = ERC20(address: tokenEthereumAddress, client: _web3Client);
       final rawBalance = await token.balanceOf(walletEthereumAddress);
       return rawBalance;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('AX getRawTokenBalance error occurred: $e');
       return BigInt.zero;
     }
   }

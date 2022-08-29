@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cache/cache.dart';
 import 'package:ethereum_api/wallet_api.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared/shared.dart';
 import 'package:wallet_repository/src/models/models.dart';
 
@@ -10,29 +11,31 @@ import 'package:wallet_repository/src/models/models.dart';
 /// {@endtemplate}
 class WalletRepository {
   /// {@macro wallet_repository}
-  WalletRepository({
-    required WalletApiClient walletApiClient,
-    required CacheClient cache,
+  WalletRepository(
+    this._walletApiClient,
+    this._cache, {
     required this.defaultChain,
-  })  : _walletApiClient = walletApiClient,
-        _cache = cache,
-        _walletChanges = walletApiClient.chainChanges
-            .map(
-              (chain) => Wallet(
-                address: chain.isSupported
-                    ? cache
-                            .read<WalletCredentials>(key: credentialsCacheKey)
-                            ?.walletAddress ??
-                        kEmptyAddress
-                    : kEmptyAddress,
-                chain: chain,
-                status: WalletStatus.fromChain(chain),
-              ),
-            )
-            .shareValue();
+  }) {
+    _walletApiClient.chainChanges.listen((chain) {
+      debugPrint('Wallet Repo: chain changed: ${chain.name}: ${chain.chainId}');
+      debugPrint('Wallet Credentials: $credentialsCacheKey');
+      final walletUpdate = Wallet(
+        address: (chain.isSupported)
+            ? _cache
+                    .read<WalletCredentials>(key: credentialsCacheKey)
+                    ?.walletAddress ??
+                kEmptyAddress
+            : kEmptyAddress,
+        chain: chain,
+        status: WalletStatus.fromChain(chain),
+      );
+      _walletChangeController.add(walletUpdate);
+    });
+  }
 
   final WalletApiClient _walletApiClient;
   final CacheClient _cache;
+  final _walletChangeController = BehaviorSubject<Wallet>();
 
   /// The initial [EthereumChain] that the wallet will be switched to.
   final EthereumChain defaultChain;
@@ -48,7 +51,7 @@ class WalletRepository {
   /// Returns the current [EthereumChain] synchronously.
   EthereumChain get currentChain => _walletApiClient.currentChain;
 
-  final ValueStream<Wallet> _walletChanges;
+  ValueStream<Wallet> get _walletChanges => _walletChangeController.stream;
 
   /// Allows listening to changes to the current [Wallet].
   Stream<Wallet> get walletChanges => _walletChanges;
@@ -75,17 +78,22 @@ class WalletRepository {
   Future<String> connectWallet() async {
     _walletApiClient.addChainChangedListener();
     await switchChain(defaultChain);
-    return _getWalletCredentials();
+    final credentials = _getWalletCredentials();
+    return credentials;
   }
 
   Future<String> _getWalletCredentials() async {
     final credentials = await _walletApiClient.getWalletCredentials();
     _cacheWalletCredentials(credentials);
-    return _getWalletAddress(credentials);
-  }
-
-  Future<String> _getWalletAddress(WalletCredentials credentials) async {
-    return credentials.value.address.hex;
+    final walletAddress = credentials.value.address.hex;
+    _walletChangeController.add(
+      Wallet(
+        status: currentWallet.status,
+        address: walletAddress,
+        chain: currentWallet.chain,
+      ),
+    );
+    return walletAddress;
   }
 
   void _cacheWalletCredentials(WalletCredentials credentials) => _cache.write(
@@ -135,12 +143,14 @@ class WalletRepository {
   ///
   /// Defaults to [BigInt.zero] on error.
   Future<BigInt> getRawTokenBalance(String tokenAddress) async {
-    final walletAddress = await _getWalletAddress(credentials);
+    final walletAddress = (currentWallet.address.isNotEmpty)
+        ? currentWallet.address
+        : await _getWalletCredentials();
     return _walletApiClient.getRawTokenBalance(
-        tokenAddress: tokenAddress,
-        walletAddress: walletAddress,
-      );
-  }     
+      tokenAddress: tokenAddress,
+      walletAddress: walletAddress,
+    );
+  }
 
   /// Returns an aproximate balance for the token with the given [tokenAddress],
   /// on the connected wallet. It returns `null` when any error occurs.
@@ -151,6 +161,7 @@ class WalletRepository {
   /// not be used for anything else.
   Future<double?> getTokenBalance(String tokenAddress) async {
     final rawBalance = await getRawTokenBalance(tokenAddress);
+    print('Buy Dialog Raw AX Balance: $rawBalance');
     if (rawBalance == BigInt.zero) {
       return null;
     }

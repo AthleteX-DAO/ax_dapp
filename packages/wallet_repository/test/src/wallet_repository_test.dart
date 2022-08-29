@@ -23,8 +23,8 @@ void main() {
       cache = MockCacheClient();
 
       subject = WalletRepository(
-        walletApiClient: walletApiClient,
-        cache: cache,
+        walletApiClient,
+        cache,
         defaultChain: EthereumChain.polygonMainnet,
       );
     });

@@ -80,8 +80,8 @@ void main() async {
         providers: [
           RepositoryProvider(
             create: (_) => WalletRepository(
-              walletApiClient: walletApiClient,
-              cache: cache,
+              walletApiClient,
+              cache,
               defaultChain: defaultChain,
             ),
           ),
