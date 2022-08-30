@@ -32,5 +32,3 @@ resources:
 
 env:
   DISABLE_TESTS: false
-  PORT: 5050
-  BUILD_TYPE: 'staging'
