@@ -57,6 +57,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
           _tokenFromInputController.clear();
           _tokenToInputController.clear();
         }
+        if (state.isWalletUnavailable) {
+          debugPrint('Wallet is unavailable -> ${state.isWalletUnavailable}');
+        }
+        if (state.isWalletUnsupported) {
+          debugPrint('wallet is not supported -> ${state.isWalletUnsupported}');
+        }
       },
       child: BlocConsumer<TradePageBloc, TradePageState>(
         listenWhen: (_, current) => current.status == BlocStatus.error,
