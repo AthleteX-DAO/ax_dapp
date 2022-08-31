@@ -1,3 +1,4 @@
+import 'package:ax_dapp/my_liquidity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
@@ -23,6 +24,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.shareOfPool,
     required this.percentRemoval,
     required this.lpTokenName,
+    required this.myLiquidityBloc,
     super.key,
   });
   final TabController tabController;
@@ -40,6 +42,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
+  final MyLiquidityBloc myLiquidityBloc;
 
   @override
   State<PoolRemoveApproveButton> createState() =>
@@ -135,6 +138,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                     widget.confirmDialog(context),
               ).then((value) {
                 //show loading spinner
+                widget.myLiquidityBloc.add(const FetchAllLiquidityPositionsRequested());
                 setState(() {
                   widget.tabController.index = 0;
                 });

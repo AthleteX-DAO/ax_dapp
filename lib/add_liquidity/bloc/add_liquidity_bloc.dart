@@ -4,8 +4,7 @@ import 'package:ax_dapp/add_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -35,7 +34,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     on<Token0AmountChanged>(_onToken0AmountChanged);
     on<Token1AmountChanged>(_onToken1AmountChanged);
     on<SwapTokensRequested>(_onSwapTokensRequested);
-
+    add(const WatchAppDataChangesStarted());
     add(const FetchPairInfoRequested());
   }
 
@@ -75,10 +74,16 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     FetchPairInfoRequested event,
     Emitter<AddLiquidityState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
-    poolController
-      ..updateTknAddress1(state.token0.address)
-      ..updateTknAddress2(state.token1.address);
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
+    }
+    emit(state.copyWith(status: BlocStatus.loading, failure: Failure.none));
     try {
       final balance0 =
           await _walletRepository.getTokenBalance(state.token0.address);
@@ -88,6 +93,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         state.copyWith(
           balance0: balance0 ?? 0,
           balance1: balance1 ?? 0,
+          failure: Failure.none,
         ),
       );
       final response = await repo.fetchPairInfo(
@@ -97,24 +103,29 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
+        poolController
+          ..updateTknAddress1(state.token0.address)
+          ..updateTknAddress2(state.token1.address);
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         emit(
           state.copyWith(
             status: BlocStatus.success,
             poolPairInfo: poolInfo,
+            failure: Failure.none,
           ),
         );
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
-            status: BlocStatus.noData,
+            status: BlocStatus.error,
             poolPairInfo: PoolPairInfo.empty,
+            failure: NoPoolInfoFailure(),
           ),
         );
       }
     } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
+      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure(),));
     }
   }
 
@@ -122,6 +133,15 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     Token0SelectionChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
+    }
     emit(state.copyWith(status: BlocStatus.loading));
     final token0 = event.token0;
     emit(state.copyWith(token0: token0));
@@ -141,14 +161,15 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
           state.copyWith(
             status: BlocStatus.success,
             poolPairInfo: poolInfo,
+            failure: Failure.none,
           ),
         );
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.error));
+        emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
       }
     } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
+      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
     }
   }
 
@@ -156,6 +177,15 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     Token1SelectionChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
+    }
     emit(state.copyWith(status: BlocStatus.loading));
     final token1 = event.token1;
     emit(state.copyWith(token1: token1));
@@ -175,14 +205,15 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
           state.copyWith(
             status: BlocStatus.success,
             poolPairInfo: poolInfo,
+            failure: Failure.none,
           ),
         );
       } else {
         // TODO(aynone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.error));
+        emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
       }
     } catch (e) {
-      emit(state.copyWith(status: BlocStatus.error));
+      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
     }
   }
 
@@ -190,10 +221,16 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     Token0AmountChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
-    final token0Amount = double.parse(event.amount);
-    if (poolController.amount1.value != token0Amount) {
-      poolController.updateTopAmount(token0Amount);
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
     }
+    final token0Amount = double.parse(event.amount);
     try {
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
@@ -203,6 +240,9 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       );
       final isSuccess = response.isLeft();
       if (isSuccess) {
+        if (poolController.amount1.value != token0Amount) {
+          poolController.updateTopAmount(token0Amount);
+        }
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         final token1Amount = token0Amount / poolInfo.ratio;
         emit(
@@ -210,15 +250,16 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
             status: BlocStatus.success,
             token0AmountInput: token0Amount,
             poolPairInfo: poolInfo,
+            failure: Failure.none,
           ),
         );
         add(Token1AmountChanged(token1Amount.toString()));
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.noData));
+        emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
       }
     } catch (e) {
-      emit(state.copyWith(status: BlocStatus.error));
+      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
     }
   }
 
@@ -226,10 +267,16 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     Token1AmountChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
-    final token1Amount = double.parse(event.amount);
-    if (poolController.amount2.value != token1Amount) {
-      poolController.updateBottomAmount(token1Amount);
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
     }
+    final token1Amount = double.parse(event.amount);
     try {
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
@@ -240,20 +287,24 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
+        if (poolController.amount2.value != token1Amount) {
+          poolController.updateBottomAmount(token1Amount);
+        }
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         emit(
           state.copyWith(
             status: BlocStatus.success,
             poolPairInfo: poolInfo,
             token1AmountInput: token1Amount,
+            failure: Failure.none,
           ),
         );
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.noData));
+        emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
       }
     } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error));
+      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
     }
   }
 
@@ -271,6 +322,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         token1: token1,
         token0AmountInput: token0AmountInput,
         token1AmountInput: token1AmountInput,
+        failure: Failure.none,
       ),
     );
   }
