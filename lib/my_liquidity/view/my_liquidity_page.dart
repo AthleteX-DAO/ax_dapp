@@ -811,7 +811,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                           const Spacer(),
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                right: 30),
+                                              right: 30,
+                                            ),
                                             width: _width * .20,
                                             child: Row(
                                               mainAxisAlignment:
@@ -864,7 +865,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                           const Spacer(),
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                right: 30),
+                                              right: 30,
+                                            ),
                                             width: _width * .20,
                                             child: Row(
                                               mainAxisAlignment:
