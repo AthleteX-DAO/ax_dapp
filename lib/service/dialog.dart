@@ -683,7 +683,8 @@ class AccountDialog extends StatelessWidget {
                                 // Container(
                                 //   width: 75,
                                 //   height: 25,
-                                //   decoration: boxDecoration(Colors.transparent,
+                                //   decoration: boxDecoration(
+                                //      Colors.transparent,
                                 //       100, 0, Colors.blue[800]!),
                                 //   child: TextButton(
                                 //     onPressed: () {
@@ -708,7 +709,8 @@ class AccountDialog extends StatelessWidget {
                                   child: TextButton(
                                     onPressed: () {
                                       context.read<WalletBloc>().add(
-                                          const DisconnectWalletRequested());
+                                            const DisconnectWalletRequested(),
+                                          );
                                       Navigator.pop(context);
                                     },
                                     child: Text(
