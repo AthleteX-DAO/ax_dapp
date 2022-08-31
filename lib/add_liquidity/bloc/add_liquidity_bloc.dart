@@ -84,9 +84,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       return;
     }
     emit(state.copyWith(status: BlocStatus.loading, failure: Failure.none));
-    poolController
-      ..updateTknAddress1(state.token0.address)
-      ..updateTknAddress2(state.token1.address);
     try {
       final balance0 =
           await _walletRepository.getTokenBalance(state.token0.address);
@@ -106,6 +103,9 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
+        poolController
+          ..updateTknAddress1(state.token0.address)
+          ..updateTknAddress2(state.token1.address);
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         emit(
           state.copyWith(
@@ -133,6 +133,15 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     Token0SelectionChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
+    }
     emit(state.copyWith(status: BlocStatus.loading));
     final token0 = event.token0;
     emit(state.copyWith(token0: token0));
@@ -168,6 +177,15 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     Token1SelectionChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
+    }
     emit(state.copyWith(status: BlocStatus.loading));
     final token1 = event.token1;
     emit(state.copyWith(token1: token1));
@@ -203,10 +221,16 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     Token0AmountChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
-    final token0Amount = double.parse(event.amount);
-    if (poolController.amount1.value != token0Amount) {
-      poolController.updateTopAmount(token0Amount);
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
     }
+    final token0Amount = double.parse(event.amount);
     try {
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
@@ -216,6 +240,9 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       );
       final isSuccess = response.isLeft();
       if (isSuccess) {
+        if (poolController.amount1.value != token0Amount) {
+          poolController.updateTopAmount(token0Amount);
+        }
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         final token1Amount = token0Amount / poolInfo.ratio;
         emit(
@@ -240,10 +267,16 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     Token1AmountChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
-    final token1Amount = double.parse(event.amount);
-    if (poolController.amount2.value != token1Amount) {
-      poolController.updateBottomAmount(token1Amount);
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
     }
+    final token1Amount = double.parse(event.amount);
     try {
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
@@ -254,6 +287,9 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
+        if (poolController.amount2.value != token1Amount) {
+          poolController.updateBottomAmount(token1Amount);
+        }
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
         emit(
           state.copyWith(
