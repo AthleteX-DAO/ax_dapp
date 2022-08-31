@@ -43,7 +43,6 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     FetchAllLiquidityPositionsRequested event,
     Emitter<MyLiquidityState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
     if (_walletRepository.currentWallet.isDisconnected) {
       emit(
         state.copyWith(
@@ -53,6 +52,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
       );
       return;
     }
+    emit(state.copyWith(status: BlocStatus.loading, failure: Failure.none));
     final currentWallet = _walletRepository.currentWallet;
     try {
         final response = await repo.fetchAllLiquidityPositions(
@@ -72,7 +72,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
               ),
             );
           } else {
-            emit(state.copyWith(status: BlocStatus.noData));
+            emit(state.copyWith(status: BlocStatus.error));
           }
           add(SearchTermChanged(searchTerm: state.searchTerm));
         } else {
