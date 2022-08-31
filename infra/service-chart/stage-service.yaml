@@ -30,5 +30,10 @@ resources:
     cpu: 300m
     memory: 0.5Gi
 
+service:
+  containerPort: 5050
+
 env:
   DISABLE_TESTS: false
+  PORT: 5050
+  BUILD_TYPE: staging
