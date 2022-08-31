@@ -1,8 +1,7 @@
 import 'package:ax_dapp/my_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/shared.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
@@ -45,10 +44,17 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     Emitter<MyLiquidityState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+        ),
+      );
+      return;
+    }
     final currentWallet = _walletRepository.currentWallet;
-    final isWalletConnected = _walletRepository.currentWallet.isConnected;
     try {
-      if (isWalletConnected) {
         final response = await repo.fetchAllLiquidityPositions(
           walletAddress: currentWallet.address,
         );
@@ -62,6 +68,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
                 cards: liquidityPositionsList,
                 filteredCards: liquidityPositionsList,
                 status: BlocStatus.success,
+                failure: Failure.none,
               ),
             );
           } else {
@@ -72,9 +79,6 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
           // TODO(anyone): Create User facing error messages
           emit(state.copyWith(status: BlocStatus.error));
         }
-      } else {
-        emit(state.copyWith(status: BlocStatus.noWallet));
-      }
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
     }

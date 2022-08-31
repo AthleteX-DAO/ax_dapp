@@ -12,6 +12,7 @@ class AddLiquidityState extends Equatable {
     required this.token1,
     this.status = BlocStatus.initial,
     this.poolPairInfo = PoolPairInfo.empty,
+    this.failure = Failure.none,
   });
 
   final String shareOfPool;
@@ -24,6 +25,7 @@ class AddLiquidityState extends Equatable {
   final Token token1;
   final BlocStatus status;
   final PoolPairInfo poolPairInfo;
+  final Failure failure;
 
   @override
   List<Object?> get props => [
@@ -37,6 +39,7 @@ class AddLiquidityState extends Equatable {
         token1,
         status,
         poolPairInfo,
+        failure,
       ];
 
   AddLiquidityState copyWith({
@@ -50,6 +53,7 @@ class AddLiquidityState extends Equatable {
     Token? token1,
     BlocStatus? status,
     PoolPairInfo? poolPairInfo,
+    Failure? failure,
   }) {
     return AddLiquidityState(
       shareOfPool: shareOfPool ?? this.shareOfPool,
@@ -62,6 +66,15 @@ class AddLiquidityState extends Equatable {
       token1: token1 ?? this.token1,
       status: status ?? this.status,
       poolPairInfo: poolPairInfo ?? this.poolPairInfo,
+      failure: failure ?? this.failure,
     );
   }
+}
+
+/// {@template temp_failure}
+/// Temporary failure, this should come from the bottom most layer.
+/// {@endtemplate}
+class NoPoolInfoFailure extends Failure {
+  /// {@macro temp_failure}
+  NoPoolInfoFailure() : super(Exception('No pool info'), StackTrace.empty);
 }
