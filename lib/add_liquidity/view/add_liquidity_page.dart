@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
+import 'package:ax_dapp/add_liquidity/models/pool_pair_info.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
