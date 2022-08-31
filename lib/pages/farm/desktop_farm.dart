@@ -9,6 +9,7 @@ import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -46,6 +47,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
     var layoutHgt = _height * 0.8;
     final layoutWdt = _width * 0.95;
     if (_height < 445) layoutHgt = _height;
+    var listHeight = (isWeb && isAllFarms) ? 225.0 : layoutHgt * 0.80;
+    //If web and in MyFarms list height 500
+    if (isWeb && !isAllFarms) listHeight = 500.0;
+
     return Container(
       width: _width,
       height: _height - AppBar().preferredSize.height,
@@ -58,143 +63,152 @@ class _DesktopFarmState extends State<DesktopFarm> {
         width: layoutWdt,
         height: layoutHgt,
         // child:  FarmLayout(layoutHgt, layoutWdt),
-        child: BlocProvider(
-          create: (BuildContext context) => FarmBloc(
-            walletRepository: context.read<WalletRepository>(),
-            tokensRepository: context.read<TokensRepository>(),
-            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
-            repo: GetFarmDataUseCase(
-              gysrApiClient: context.read<GysrApiClient>(),
-            ),
+        child: BlocListener<WalletBloc, WalletState>(
+          listener: (context, state) {
+            if (state.isWalletConnected || state.isWalletDisconnected) {
+              context.read<FarmBloc>().add(WatchAppDataChangesStarted());
+            }
+            if (state.isWalletUnavailable) {
+              debugPrint(
+                'Wallet is unavailable -> ${state.isWalletUnavailable}',
+              );
+            }
+            if (state.isWalletUnsupported) {
+              debugPrint(
+                'wallet is not supported -> ${state.isWalletUnsupported}',
+              );
+            }
+          },
+          child: BlocConsumer<FarmBloc, FarmState>(
+            listenWhen: (_, current) => current.status == BlocStatus.error,
+            listener: (context, state) {
+              if (state.status == BlocStatus.error) {
+                context.showWarningToast(
+                  title: 'Action Error',
+                  description: 'Something went wrong',
+                );
+              }
+            },
+            builder: (context, state) {
+              final bloc = context.read<FarmBloc>();
+              Widget widget = const Loader();
+
+              if (state.status == BlocStatus.error ||
+                  state.status == BlocStatus.noData) {
+                widget = noData();
+              }
+              if (!state.isAllFarms && state.status == BlocStatus.noWallet) {
+                widget = noWallet();
+              }
+              final Widget toggle =
+                  toggleFarmButton(bloc, layoutWdt, layoutHgt);
+              return Wrap(
+                runSpacing: layoutHgt * 0.02,
+                clipBehavior: Clip.hardEdge,
+                children: [
+                  Row(
+                    mainAxisAlignment: isWeb
+                        ? MainAxisAlignment.start
+                        : MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: isWeb ? 300 : layoutWdt / 2,
+                        height: isWeb ? 45 : layoutHgt * 0.05,
+                        child: Text(
+                          isAllFarms ? 'Participating Farms' : 'My Farms',
+                          style: textStyle(Colors.white, 24, true, false),
+                        ),
+                      ),
+                      if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
+                    ],
+                  ),
+                  if (isWeb)
+                    Row(
+                      children: [
+                        createSearchBar(bloc, layoutWdt, layoutHgt),
+                        const SizedBox(width: 50),
+                        toggle
+                      ],
+                    ),
+                  if (!isWeb) toggle,
+                  SizedBox(
+                    //contains list of allfarms cards
+                    width: layoutWdt,
+                    height: layoutHgt - 120,
+                    child: ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context).copyWith(
+                        dragDevices: {
+                          PointerDeviceKind.mouse,
+                          PointerDeviceKind.touch,
+                        },
+                      ),
+                      child: state.status != BlocStatus.success
+                          ? widget
+                          : (state.isAllFarms
+                                  ? state.filteredFarms.isEmpty
+                                  : state.filteredStakedFarms.isEmpty)
+                              ? noData()
+                              : GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: isWeb ? 4 : 1,
+                                    mainAxisSpacing: 5,
+                                    crossAxisSpacing: 5,
+                                    childAspectRatio:
+                                        state.isAllFarms ? 1.75 : 1,
+                                  ),
+                                  padding: EdgeInsets.zero,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: isAllFarms
+                                      ? state.filteredFarms.length
+                                      : state.filteredStakedFarms.length,
+                                  itemBuilder: (context, index) {
+                                    return isAllFarms
+                                        ? farmItem(
+                                            context,
+                                            isWeb,
+                                            FarmController(
+                                              farm: state.filteredFarms[index],
+                                              walletRepository: context
+                                                  .read<WalletRepository>(),
+                                              tokensRepository: context
+                                                  .read<TokensRepository>(),
+                                              configRepository: context
+                                                  .read<ConfigRepository>(),
+                                              streamAppDataChanges: context.read<
+                                                  StreamAppDataChangesUseCase>(),
+                                            ),
+                                            listHeight,
+                                            layoutWdt,
+                                          )
+                                        : myFarmItem(
+                                            context,
+                                            isWeb,
+                                            FarmController(
+                                              farm: state
+                                                  .filteredStakedFarms[index],
+                                              walletRepository: context
+                                                  .read<WalletRepository>(),
+                                              tokensRepository: context
+                                                  .read<TokensRepository>(),
+                                              configRepository: context
+                                                  .read<ConfigRepository>(),
+                                              streamAppDataChanges: context.read<
+                                                  StreamAppDataChangesUseCase>(),
+                                            ),
+                                            listHeight,
+                                            layoutWdt,
+                                          );
+                                  },
+                                ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
-          child: farmLayout(layoutHgt, layoutWdt),
         ),
       ),
-    );
-  }
-
-  Widget farmLayout(double layoutHgt, double layoutWdt) {
-    // Contains Participating farms, search bar, toggle buttons and cards for
-    // all farms
-    var listHeight = (isWeb && isAllFarms) ? 225.0 : layoutHgt * 0.80;
-    //If web and in MyFarms list height 500
-    if (isWeb && !isAllFarms) listHeight = 500.0;
-    return BlocBuilder<FarmBloc, FarmState>(
-      buildWhen: (previous, current) => previous != current,
-      builder: (context, state) {
-        final bloc = context.read<FarmBloc>();
-        Widget widget = const Loader();
-
-        if (state.status == BlocStatus.error ||
-            state.status == BlocStatus.noData) {
-          widget = noData();
-        }
-        if (!state.isAllFarms && state.status == BlocStatus.noWallet) {
-          widget = noWallet();
-        }
-        final Widget toggle = toggleFarmButton(bloc, layoutWdt, layoutHgt);
-        return Wrap(
-          runSpacing: layoutHgt * 0.02,
-          clipBehavior: Clip.hardEdge,
-          children: [
-            Row(
-              mainAxisAlignment: isWeb
-                  ? MainAxisAlignment.start
-                  : MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: isWeb ? 300 : layoutWdt / 2,
-                  height: isWeb ? 45 : layoutHgt * 0.05,
-                  child: Text(
-                    isAllFarms ? 'Participating Farms' : 'My Farms',
-                    style: textStyle(Colors.white, 24, true, false),
-                  ),
-                ),
-                if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
-              ],
-            ),
-            if (isWeb)
-              Row(
-                children: [
-                  createSearchBar(bloc, layoutWdt, layoutHgt),
-                  const SizedBox(width: 50),
-                  toggle
-                ],
-              ),
-            if (!isWeb) toggle,
-            SizedBox(
-              //contains list of allfarms cards
-              width: layoutWdt,
-              height: layoutHgt - 120,
-              child: ScrollConfiguration(
-                behavior: ScrollConfiguration.of(context).copyWith(
-                  dragDevices: {
-                    PointerDeviceKind.mouse,
-                    PointerDeviceKind.touch,
-                  },
-                ),
-                child: state.status != BlocStatus.success
-                    ? widget
-                    : (state.isAllFarms
-                            ? state.filteredFarms.isEmpty
-                            : state.filteredStakedFarms.isEmpty)
-                        ? noData()
-                        : GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: isWeb ? 4 : 1,
-                              mainAxisSpacing: 5,
-                              crossAxisSpacing: 5,
-                              childAspectRatio: state.isAllFarms ? 1.75 : 1,
-                            ),
-                            padding: EdgeInsets.zero,
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: isAllFarms
-                                ? state.filteredFarms.length
-                                : state.filteredStakedFarms.length,
-                            itemBuilder: (context, index) {
-                              return isAllFarms
-                                  ? farmItem(
-                                      context,
-                                      isWeb,
-                                      FarmController(
-                                        farm: state.filteredFarms[index],
-                                        walletRepository:
-                                            context.read<WalletRepository>(),
-                                        tokensRepository:
-                                            context.read<TokensRepository>(),
-                                        configRepository:
-                                            context.read<ConfigRepository>(),
-                                        streamAppDataChanges: context.read<
-                                            StreamAppDataChangesUseCase>(),
-                                      ),
-                                      listHeight,
-                                      layoutWdt,
-                                    )
-                                  : myFarmItem(
-                                      context,
-                                      isWeb,
-                                      FarmController(
-                                        farm: state.filteredStakedFarms[index],
-                                        walletRepository:
-                                            context.read<WalletRepository>(),
-                                        tokensRepository:
-                                            context.read<TokensRepository>(),
-                                        configRepository:
-                                            context.read<ConfigRepository>(),
-                                        streamAppDataChanges: context.read<
-                                            StreamAppDataChangesUseCase>(),
-                                      ),
-                                      listHeight,
-                                      layoutWdt,
-                                    );
-                            },
-                          ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 
