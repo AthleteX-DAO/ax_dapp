@@ -155,7 +155,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                                 'No tokens are supported.',
                                 style: TextStyle(
                                   color: Colors.red,
-                                  fontSize: 20,
+                                  fontSize: 21,
                                 ),
                               ),
                             )
