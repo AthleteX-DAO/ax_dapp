@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:config_repository/config_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -14,14 +15,12 @@ part 'farm_state.dart';
 
 class FarmBloc extends Bloc<FarmEvent, FarmState> {
   FarmBloc({
-    required WalletRepository walletRepository,
-    required TokensRepository tokensRepository,
-    required StreamAppDataChangesUseCase streamAppDataChanges,
+    required this.walletRepository,
+    required this.tokensRepository,
+    required this.configRepository,
+    required this.streamAppDataChanges,
     required this.repo,
-  })  : _walletRepository = walletRepository,
-        _tokensRepository = tokensRepository,
-        _streamAppDataChanges = streamAppDataChanges,
-        super(
+  }) : super(
           FarmState(
             farmOwner: walletRepository.defaultChain.getFarmOwner(),
           ),
@@ -39,9 +38,10 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
     }
   }
 
-  final WalletRepository _walletRepository;
-  final TokensRepository _tokensRepository;
-  final StreamAppDataChangesUseCase _streamAppDataChanges;
+  final WalletRepository walletRepository;
+  final TokensRepository tokensRepository;
+  final ConfigRepository configRepository;
+  final StreamAppDataChangesUseCase streamAppDataChanges;
   final GetFarmDataUseCase repo;
 
   final List<FarmModel> farms = [];
@@ -52,7 +52,7 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
     Emitter<FarmState> emit,
   ) async {
     await emit.onEach<AppData>(
-      _streamAppDataChanges.appDataChanges,
+      streamAppDataChanges.appDataChanges,
       onData: (appData) {
         emit(state.copyWith(farmOwner: appData.chain.getFarmOwner()));
         if (state.isAllFarms) {
@@ -101,7 +101,7 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
           filteredStakedFarms: [],
         ),
       );
-      final account = _walletRepository.currentWallet.address;
+      final account = walletRepository.currentWallet.address;
       if (account.isNotEmpty) {
         final stakedFarms = await repo.fetchStakedFarms(account);
         if (stakedFarms.isNotEmpty) {
@@ -124,7 +124,7 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
   }
 
   void _mapSearchEventToState(OnSearchFarms event, Emitter<FarmState> emit) {
-    final currentApts = _tokensRepository.currentApts;
+    final currentApts = tokensRepository.currentApts;
     emit(
       state.copy(
         filteredFarms: state.farms

@@ -1,3 +1,4 @@
+import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/pages/farm/components/farm_item.dart';
 import 'package:ax_dapp/pages/farm/components/my_farm_item.dart';
@@ -162,7 +163,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                   itemCount: isAllFarms
                                       ? state.filteredFarms.length
                                       : state.filteredStakedFarms.length,
-                                  itemBuilder: (context, index) {
+                                  itemBuilder: (context, index) {                                    
                                     return isAllFarms
                                         ? farmItem(
                                             context,
@@ -170,13 +171,17 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                             FarmController(
                                               farm: state.filteredFarms[index],
                                               walletRepository: context
-                                                  .read<WalletRepository>(),
+                                                  .read<FarmBloc>()
+                                                  .walletRepository,
                                               tokensRepository: context
-                                                  .read<TokensRepository>(),
+                                                  .read<FarmBloc>()
+                                                  .tokensRepository,
                                               configRepository: context
-                                                  .read<ConfigRepository>(),
-                                              streamAppDataChanges: context.read<
-                                                  StreamAppDataChangesUseCase>(),
+                                                  .read<FarmBloc>()
+                                                  .configRepository,
+                                              streamAppDataChanges: context
+                                                  .read<FarmBloc>()
+                                                  .streamAppDataChanges,
                                             ),
                                             listHeight,
                                             layoutWdt,
@@ -188,13 +193,17 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                               farm: state
                                                   .filteredStakedFarms[index],
                                               walletRepository: context
-                                                  .read<WalletRepository>(),
+                                                  .read<FarmBloc>()
+                                                  .walletRepository,
                                               tokensRepository: context
-                                                  .read<TokensRepository>(),
+                                                  .read<FarmBloc>()
+                                                  .tokensRepository,
                                               configRepository: context
-                                                  .read<ConfigRepository>(),
-                                              streamAppDataChanges: context.read<
-                                                  StreamAppDataChangesUseCase>(),
+                                                  .read<FarmBloc>()
+                                                  .configRepository,
+                                              streamAppDataChanges: context
+                                                  .read<FarmBloc>()
+                                                  .streamAppDataChanges,
                                             ),
                                             listHeight,
                                             layoutWdt,
