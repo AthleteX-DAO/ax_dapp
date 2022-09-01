@@ -74,8 +74,8 @@ class AptConfig extends Equatable {
   );
 }
 
-/// Static list of [AptConfig]s used to generate [Token.shortAp]s and
-/// [Token.longAp]s.
+/// Static list of [AptConfig]s used to generate [Token.shortApt]s and
+/// [Token.longApt]s.
 List<AptConfig> getAllApts() {
   final allApts = List<AptConfig>.from(mlbApts)..addAll(nflApts);
   return allApts;

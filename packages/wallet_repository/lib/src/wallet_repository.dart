@@ -24,8 +24,8 @@ class WalletRepository {
           ?.walletAddress;
       final Wallet walletUpdate;
       if (cachedWalletAddress != null) {
-        print(
-            "Wallet Repo: wallet address found in cache: $cachedWalletAddress");
+        debugPrint(
+            'Wallet Repo: wallet address found in cache: $cachedWalletAddress');
         walletUpdate = Wallet(
           address: (chain.isSupported)
               ? cachedWalletAddress
@@ -34,10 +34,10 @@ class WalletRepository {
           status: WalletStatus.fromChain(chain),
         );
       } else {
-        print(
-            "Wallet Repo: no cached wallet address so lets get the real thing");
+        debugPrint(
+            'Wallet Repo: no cached wallet address so lets get the real thing',);
         final newAddress = await _getWalletCredentials();
-        print("Retrieved the new address: $newAddress");
+        debugPrint('Retrieved the new address: $newAddress');
         walletUpdate = Wallet(
           address: (chain.isSupported) ? newAddress : kEmptyAddress,
           chain: chain,
@@ -176,7 +176,7 @@ class WalletRepository {
   /// not be used for anything else.
   Future<double?> getTokenBalance(String tokenAddress) async {
     final rawBalance = await getRawTokenBalance(tokenAddress);
-    print('Buy Dialog Raw AX Balance: $rawBalance');
+    debugPrint('Buy Dialog Raw AX Balance: $rawBalance');
     if (rawBalance == BigInt.zero) {
       return null;
     }

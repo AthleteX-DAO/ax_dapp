@@ -86,7 +86,7 @@ class Token extends Equatable {
   /// {@macro athlete_performance_token}
   ///
   /// {@macro long_athlete_performance_token}
-  factory Token.longAp(
+  factory Token.longApt(
     EthereumChain chain, {
     required AptConfig aptConfig,
   }) = Apt.long;
@@ -94,7 +94,7 @@ class Token extends Equatable {
   /// {@macro athlete_performance_token}
   ///
   /// {@macro short_athlete_performance_token}
-  factory Token.shortAp(
+  factory Token.shortApt(
     EthereumChain chain, {
     required AptConfig aptConfig,
   }) = Apt.short;

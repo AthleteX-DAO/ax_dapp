@@ -44,7 +44,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   bool athletePage = false;
   static bool isLongToken = true;
   static int sportState = 0;
-  static SupportedSport supportedSport = SupportedSport.all;
+  static SupportedSport _selectedSport = SupportedSport.all;
   String allSportsTitle = 'All Sports';
   String longTitle = 'Long';
   AthleteScoutModel? curAthlete;
@@ -81,11 +81,11 @@ class _DesktopScoutState extends State<DesktopScout> {
       builder: (context, state) {
         final bloc = context.read<ScoutPageBloc>();
         final filteredAthletes = state.filteredAthletes;
-        if(_selectedChain != state.selectedChain) {
-          debugPrint("Fetch scout Selected Chain name is ${state.selectedChain.name}; Pervious Chain name is ${_selectedChain?.name}");
+        if (_selectedChain != state.selectedChain) {
           _selectedChain = state.selectedChain;
           bloc.add(FetchScoutInfoRequested());
         }
+        _selectedSport = state.selectedSport;
         if (athletePage && curAthlete != null) {
           return BlocProvider(
             create: (context) => AthletePageBloc(
@@ -177,7 +177,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           onPressed: () {
             myController.clear();
             setState(() {
-              supportedSport = SupportedSport.all;
+              _selectedSport = SupportedSport.all;
             });
             bloc.add(
               const SelectedSportChanged(selectedSport: SupportedSport.all),
@@ -186,7 +186,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: Text(
             'ALL',
             style: textSwapState(
-              supportedSport == SupportedSport.all,
+              _selectedSport == SupportedSport.all,
               textStyle(Colors.white, sportFilterTxSz, false, false),
               textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
@@ -196,7 +196,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           onPressed: () {
             myController.clear();
             setState(() {
-              supportedSport = SupportedSport.MLB;
+              _selectedSport = SupportedSport.MLB;
             });
             bloc.add(
               const SelectedSportChanged(selectedSport: SupportedSport.MLB),
@@ -205,7 +205,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: Text(
             'MLB',
             style: textSwapState(
-              supportedSport == SupportedSport.MLB,
+              _selectedSport == SupportedSport.MLB,
               textStyle(Colors.white, sportFilterTxSz, false, false),
               textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
@@ -215,7 +215,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           onPressed: () {
             myController.clear();
             setState(() {
-              supportedSport = SupportedSport.NFL;
+              _selectedSport = SupportedSport.NFL;
             });
             bloc.add(
               const SelectedSportChanged(selectedSport: SupportedSport.NFL),
@@ -224,7 +224,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: Text(
             'NFL',
             style: textSwapState(
-              supportedSport == SupportedSport.NFL,
+              _selectedSport == SupportedSport.NFL,
               textStyle(Colors.white, sportFilterTxSz, false, false),
               textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
@@ -234,7 +234,7 @@ class _DesktopScoutState extends State<DesktopScout> {
         toggleTokenButton(800, 40),
         Container(width: 10),
         Container(
-          child: createSearchBar(bloc, supportedSport),
+          child: createSearchBar(bloc, _selectedSport),
         ),
       ],
     );
@@ -488,7 +488,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               Expanded(
                 child: Row(
                   children: [
-                    createSearchBar(bloc, supportedSport),
+                    createSearchBar(bloc, _selectedSport),
                     const Spacer(),
                   ],
                 ),

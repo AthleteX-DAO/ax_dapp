@@ -154,8 +154,8 @@ extension ChainConfigX on EthereumChain {
     return supportedApts
         .expand(
           (aptConfig) => [
-        Token.longAp(this, aptConfig: aptConfig),
-        Token.shortAp(this, aptConfig: aptConfig),
+        Token.longApt(this, aptConfig: aptConfig),
+        Token.shortApt(this, aptConfig: aptConfig),
       ],
     ).toList();
   }

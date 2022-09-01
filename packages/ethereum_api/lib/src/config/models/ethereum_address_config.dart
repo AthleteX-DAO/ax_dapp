@@ -49,7 +49,7 @@ class EthereumAddressConfig {
         sportxMainnet = '0xe2aa35c2039bd0ff196a6ef99523cc0d3972ae3e',
         sportxTestnet = kEmptyAddress;
 
-  /// Configuration for [Token.longAp] and [Token.shortAp].
+  /// Configuration for [Token.longApt] and [Token.shortApt].
   const EthereumAddressConfig.apt({
     required this.polygonMainnet,
     required this.polygonTestnet,
