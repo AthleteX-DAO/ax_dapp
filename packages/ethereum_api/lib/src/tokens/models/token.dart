@@ -43,6 +43,16 @@ class Token extends Equatable {
           currency: EthereumCurrency.sx,
         );
 
+  /// Represents a `Wrapped SportX` [Token].
+  const Token.wsx(EthereumChain chain)
+      : this(
+          name: 'Wrapped SportX',
+          ticker: 'WSX',
+          addressConfig: const EthereumAddressConfig.wsxt(),
+          chain: chain,
+          currency: EthereumCurrency.wsx,
+        );
+
   /// Represents a `Matic` [Token].
   const Token.matic(EthereumChain chain)
       : this(

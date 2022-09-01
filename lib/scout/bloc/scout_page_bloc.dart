@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/usecases/usecases.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
@@ -10,6 +12,7 @@ import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'scout_page_event.dart';
+
 part 'scout_page_state.dart';
 
 class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
@@ -45,6 +48,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
           ..tokenClient = appConfig.reactiveWeb3Client.value;
         lspController.controller.credentials =
             _walletRepository.credentials.value;
+        emit(state.copyWith(selectedChain: appData.chain));
         add(FetchScoutInfoRequested());
       },
     );
@@ -56,14 +60,27 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   ) async {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
+      var supportedSport = SupportedSport.MLB;
+      switch (state.selectedChain) {
+        case EthereumChain.polygonTestnet:
+        case EthereumChain.polygonMainnet:
+        case EthereumChain.unsupported:
+          supportedSport = SupportedSport.MLB;
+          break;
+        case EthereumChain.sxMainnet:
+        case EthereumChain.sxTestnet:
+          supportedSport = SupportedSport.NFL;
+          break;
+      }
+      debugger();
+      final response = await repo.fetchSupportedAthletes(supportedSport);
 
-      final response = await repo.fetchSupportedAthletes(SupportedSport.all);
       if (response.isNotEmpty) {
         emit(
           state.copyWith(
             athletes: response,
             filteredAthletes: response,
-            selectedSport: SupportedSport.all,
+            selectedSport: supportedSport,
             status: BlocStatus.success,
           ),
         );

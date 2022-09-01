@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:html' as html;
 
 import 'package:ethereum_api/src/wallet/failures/failures.dart';
@@ -100,7 +101,7 @@ class EthereumWalletApiClient implements WalletApiClient {
     } on EthereumUserRejected catch (exception, stackTrace) {
       throw WalletFailure.fromOperationRejected(exception, stackTrace);
     } on EthereumException catch (exception, stackTrace) {
-      throw WalletFailure.fromEthereum(exception, stackTrace);
+      throw WalletFailure.fromUnrecognizedChain(exception, stackTrace);
     } catch (error, stackTrace) {
       throw WalletFailure.fromError(error, stackTrace);
     }

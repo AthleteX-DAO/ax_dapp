@@ -16,19 +16,34 @@ class WalletRepository {
     this._cache, {
     required this.defaultChain,
   }) {
-    _walletApiClient.chainChanges.listen((chain) {
+    _walletApiClient.chainChanges.listen((chain) async {
       debugPrint('Wallet Repo: chain changed: ${chain.name}: ${chain.chainId}');
       debugPrint('Wallet Credentials: $credentialsCacheKey');
-      final walletUpdate = Wallet(
-        address: (chain.isSupported)
-            ? _cache
-                    .read<WalletCredentials>(key: credentialsCacheKey)
-                    ?.walletAddress ??
-                kEmptyAddress
-            : kEmptyAddress,
-        chain: chain,
-        status: WalletStatus.fromChain(chain),
-      );
+      final cachedWalletAddress = _cache
+          .read<WalletCredentials>(key: credentialsCacheKey)
+          ?.walletAddress;
+      final Wallet walletUpdate;
+      if (cachedWalletAddress != null) {
+        print(
+            "Wallet Repo: wallet address found in cache: $cachedWalletAddress");
+        walletUpdate = Wallet(
+          address: (chain.isSupported)
+              ? cachedWalletAddress
+              : kEmptyAddress,
+          chain: chain,
+          status: WalletStatus.fromChain(chain),
+        );
+      } else {
+        print(
+            "Wallet Repo: no cached wallet address so lets get the real thing");
+        final newAddress = await _getWalletCredentials();
+        print("Retrieved the new address: $newAddress");
+        walletUpdate = Wallet(
+          address: (chain.isSupported) ? newAddress : kEmptyAddress,
+          chain: chain,
+          status: WalletStatus.fromChain(chain),
+        );
+      }
       _walletChangeController.add(walletUpdate);
     });
   }

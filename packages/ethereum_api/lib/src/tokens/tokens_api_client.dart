@@ -46,7 +46,12 @@ class TokensApiClient {
   /// Otherwise, we keep the existing data.
   void switchTokens(EthereumChain chain) {
     if (chain.isSupported) {
-      _tokensController.add(chain.createTokens());
+      print("Creating tokens for the chain: $chain");
+      final List<Token> tokens = chain.createTokens();
+      tokens.forEach((token) {
+        print('name: ${token.name}, symbol: ${token.ticker}, address: ${token.address}, chain: ${token.chain}');
+      });
+      _tokensController.add(tokens);
     }
   }
 

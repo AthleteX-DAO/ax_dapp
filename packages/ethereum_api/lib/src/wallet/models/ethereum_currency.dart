@@ -13,6 +13,9 @@ enum EthereumCurrency {
   /// SportX currency.
   sx(currencyName: 'SportX Token', symbol: 'SX'),
 
+  /// SportX currency.
+  wsx(currencyName: 'SportX Token', symbol: 'WSX'),
+
   /// Matic currency(used with Polygon).
   matic(currencyName: 'MATIC Token', symbol: 'MATIC'),
 

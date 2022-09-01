@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_dynamic_calls
 
+import 'dart:developer';
+
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/scout/models/models.dart';
@@ -133,6 +135,7 @@ class GetScoutAthletesDataUseCase {
     if (sportSelection != SupportedSport.all) {
       final repo = _repos[sportSelection]!;
       // fetch supported players list
+      debugger();
       final players = await repo.getSupportedPlayers();
       final history = await getStatsHistory(repo, players);
       return _mapAthleteToScoutModel(

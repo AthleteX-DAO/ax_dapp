@@ -1,10 +1,13 @@
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/config/models/apt_config.dart';
+import 'package:ethereum_api/src/config/models/apts/mlb_apt_list.dart';
+import 'package:ethereum_api/src/config/models/apts/nfl_apt_list.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_url_config.dart';
 import 'package:ethereum_api/src/dex/dex.dart';
 import 'package:ethereum_api/src/pool_info/pool_info.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 
@@ -52,7 +55,7 @@ enum EthereumChain {
   /// SX main network.
   sxMainnet(
     chainId: 416,
-    chainName: 'SX Mainnet',
+    chainName: 'Mainnet',
     currency: EthereumCurrency.sx,
     rpcUrls: ['https://rpc.sx.technology'],
     blockExplorerUrls: ['https://explorer.sx.technology/'],
@@ -136,19 +139,26 @@ extension ChainConfigX on EthereumChain {
         Token.matic(this),
         Token.weth(this),
         Token.usdc(this),
-        ...createApts(),
+        ...createApts(this),
       ];
 
   /// Generates the list of [Apt]'s for this [EthereumChain]. Composed based on
   /// a list of [AptConfig]s.
-  List<Token> createApts() => AptConfig.values
-      .expand(
-        (aptConfig) => [
-          Token.longAp(this, aptConfig: aptConfig),
-          Token.shortAp(this, aptConfig: aptConfig),
-        ],
-      )
-      .toList();
+  List<Token> createApts(EthereumChain chain) {
+    debugPrint('Creating apts for Chain Name: ${chain.chainName}; ChainId: ${chain.chainId} Name: ${chain.name}');
+    final supportedApts =
+        ((chain.chainId == EthereumChain.polygonMainnet.chainId) ||
+                (chain.chainId == EthereumChain.polygonTestnet.chainId))
+            ? mlbApts
+            : nflApts;
+    return supportedApts
+        .expand(
+          (aptConfig) => [
+        Token.longAp(this, aptConfig: aptConfig),
+        Token.shortAp(this, aptConfig: aptConfig),
+      ],
+    ).toList();
+  }
 
   /// Creates a [Web3Client] based on this [EthereumChain] configuration.
   Web3Client createWeb3Client(http.Client httpClient) =>
@@ -157,7 +167,7 @@ extension ChainConfigX on EthereumChain {
   /// Creates an [APTRouter] client based on this [EthereumChain] configuration.
   APTRouter createAptRouterClient(Web3Client client) => APTRouter(
         address: EthereumAddress.fromHex(
-          const EthereumAddressConfig.aptRouter().address(this),
+          const EthereumAddressConfig.aptRouterAddress().address(this),
         ),
         client: client,
       );
@@ -165,7 +175,7 @@ extension ChainConfigX on EthereumChain {
   /// Creates a [Dex] client based on this [EthereumChain] configuration.
   Dex createDexClient(Web3Client client) => Dex(
         address: EthereumAddress.fromHex(
-          const EthereumAddressConfig.dex().address(this),
+          const EthereumAddressConfig.factoryRouterAddress().address(this),
         ),
         client: client,
       );
