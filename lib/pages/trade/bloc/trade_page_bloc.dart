@@ -84,6 +84,9 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         state.copyWith(
           status: BlocStatus.error,
           failure: DisconnectedWalletFailure(),
+          tokenFromBalance: 0,
+          tokenToBalance: 0,
+          swapInfo: TokenSwapInfo.empty,
         ),
       );
       return;
