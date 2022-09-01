@@ -128,7 +128,12 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         );
       }
     } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure(),));
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: NoPoolInfoFailure(),
+        ),
+      );
     }
   }
 
@@ -169,10 +174,20 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         );
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
+        emit(
+          state.copyWith(
+            status: BlocStatus.error,
+            failure: NoPoolInfoFailure(),
+          ),
+        );
       }
     } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: NoPoolInfoFailure(),
+        ),
+      );
     }
   }
 
@@ -213,10 +228,20 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         );
       } else {
         // TODO(aynone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
+        emit(
+          state.copyWith(
+            status: BlocStatus.error,
+            failure: NoPoolInfoFailure(),
+          ),
+        );
       }
     } catch (e) {
-      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: NoPoolInfoFailure(),
+        ),
+      );
     }
   }
 
@@ -259,10 +284,20 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         add(Token1AmountChanged(token1Amount.toString()));
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
+        emit(
+          state.copyWith(
+            status: BlocStatus.error,
+            failure: NoPoolInfoFailure(),
+          ),
+        );
       }
     } catch (e) {
-      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: NoPoolInfoFailure(),
+        ),
+      );
     }
   }
 
@@ -304,10 +339,20 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         );
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
-        emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
+        emit(
+          state.copyWith(
+            status: BlocStatus.error,
+            failure: NoPoolInfoFailure(),
+          ),
+        );
       }
     } catch (_) {
-      emit(state.copyWith(status: BlocStatus.error, failure: NoPoolInfoFailure()));
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: NoPoolInfoFailure(),
+        ),
+      );
     }
   }
 
