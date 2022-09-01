@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
-import 'package:ax_dapp/add_liquidity/models/pool_pair_info.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
@@ -80,13 +79,14 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               title: 'Action Error', 
               description: 'No Pool Info found',
             );
+            return;
           }
         },
         builder: (context, state) {
           final bloc = context.read<AddLiquidityBloc>();
-          final poolInfo = state.status != BlocStatus.error ? state.poolPairInfo : PoolPairInfo.empty;
-          final balance0 = state.status != BlocStatus.error ? state.balance0 : 0;
-          final balance1 = state.status != BlocStatus.error ? state.balance1 : 0;
+          final poolInfo = state.poolPairInfo;
+          final balance0 = state.balance0;
+          final balance1 = state.balance1;
           final token0 = state.token0;
           final token1 = state.token1;
     

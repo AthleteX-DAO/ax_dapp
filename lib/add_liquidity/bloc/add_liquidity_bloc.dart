@@ -79,6 +79,9 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         state.copyWith(
           status: BlocStatus.error,
           failure: DisconnectedWalletFailure(),
+          balance0: 0,
+          balance1: 0,
+          poolPairInfo: PoolPairInfo.empty,
         ),
       );
       return;

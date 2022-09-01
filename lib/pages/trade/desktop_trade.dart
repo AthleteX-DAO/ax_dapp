@@ -77,12 +77,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
         builder: (context, state) {
           final bloc = context.read<TradePageBloc>();
           final price = state.swapInfo.toPrice.toStringAsFixed(6);
-          final tokenToBalance = state.status != BlocStatus.error
-              ? state.tokenToBalance.toStringAsFixed(6)
-              : '0';
-          final tokenFromBalance = state.status != BlocStatus.error
-              ? state.tokenFromBalance.toStringAsFixed(6)
-              : '0';
+          final tokenToBalance = state.tokenToBalance.toStringAsFixed(6);
+          final tokenFromBalance = state.tokenFromBalance.toStringAsFixed(6);
           final minReceived = state.swapInfo.minimumReceived.toStringAsFixed(6);
           final priceImpact = state.swapInfo.priceImpact.toStringAsFixed(6);
           final receiveAmount = state.status != BlocStatus.error
