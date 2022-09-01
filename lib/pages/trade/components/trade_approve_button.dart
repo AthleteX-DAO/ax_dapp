@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // This code changes the state of the button
 class TradeApproveButton extends StatefulWidget {
   const TradeApproveButton({
+    required this.tokenFromInputController,
+    required this.tokenToInputController,
     required this.width,
     required this.height,
     required this.text,
@@ -29,6 +31,8 @@ class TradeApproveButton extends StatefulWidget {
   final String fromUnits;
   final String toUnits;
   final String totalFee;
+  final TextEditingController tokenFromInputController;
+  final TextEditingController tokenToInputController;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -118,7 +122,12 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
+              ).then((value) {
+                setState(() {
+                  widget.tokenFromInputController.clear();
+                  widget.tokenToInputController.clear();
+                });
+              });
             }).catchError((error) {
               showDialog<void>(
                 context: context,

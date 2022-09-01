@@ -77,17 +77,18 @@ class _DesktopTradeState extends State<DesktopTrade> {
         builder: (context, state) {
           final bloc = context.read<TradePageBloc>();
           final price = state.swapInfo.toPrice.toStringAsFixed(6);
-          final tokenToBalance = state.status != BlocStatus.error 
-              ? state.tokenToBalance.toStringAsFixed(6) 
+          final tokenToBalance = state.status != BlocStatus.error
+              ? state.tokenToBalance.toStringAsFixed(6)
               : '0';
-          final tokenFromBalance = state.status != BlocStatus.error 
-              ? state.tokenFromBalance.toStringAsFixed(6) 
+          final tokenFromBalance = state.status != BlocStatus.error
+              ? state.tokenFromBalance.toStringAsFixed(6)
               : '0';
           final minReceived = state.swapInfo.minimumReceived.toStringAsFixed(6);
           final priceImpact = state.swapInfo.priceImpact.toStringAsFixed(6);
           final receiveAmount = state.status != BlocStatus.error
               ? state.swapInfo.receiveAmount.toStringAsFixed(6)
               : '0';
+          _tokenToInputController.text = receiveAmount;
           final totalFee = state.swapInfo.totalFee.toStringAsFixed(6);
           const slippageTolerance = 1;
           final tokenFrom = state.tokenFrom;
@@ -310,7 +311,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       builderContext,
                     ),
                   ),
-                ),
+                ).then((value) => setState(_tokenFromInputController.clear)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -372,9 +373,16 @@ class _DesktopTradeState extends State<DesktopTrade> {
             return ConstrainedBox(
               constraints: BoxConstraints(maxWidth: amountBoxAndMaxButtonWid),
               child: IntrinsicWidth(
-                child: Text(
-                  receiveAmount,
+                child: TextFormField(
+                  readOnly: true,
+                  controller: _tokenToInputController,
                   style: textStyle(Colors.grey[400]!, 22, false),
+                  decoration: InputDecoration(
+                    hintText: '0.00',
+                    hintStyle: textStyle(Colors.grey[400]!, 22, false),
+                    contentPadding: const EdgeInsets.all(9),
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
             );
@@ -702,6 +710,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     ),
                     if (state.status != BlocStatus.error)
                       TradeApproveButton(
+                        tokenFromInputController: _tokenFromInputController,
+                        tokenToInputController: _tokenToInputController,
                         width: 175,
                         height: 40,
                         text: 'Approve',
