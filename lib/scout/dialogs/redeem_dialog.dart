@@ -158,18 +158,34 @@ class _RedeemDialogState extends State<RedeemDialog> {
               width: wid,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Redeem ${widget.athlete.name} APT Pair',
-                    style: textStyle(Colors.white, 20, false),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 30,
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.zero,
+                      child: Text(
+                        'Redeem ${widget.athlete.name} APT Pair',
+                        style: textStyle(Colors.white, 20, false),
+                      ),
                     ),
-                    onPressed: () => Navigator.pop(context),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          alignment: Alignment.topRight,
+                          padding: EdgeInsets.zero,
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

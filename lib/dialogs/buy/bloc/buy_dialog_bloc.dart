@@ -79,13 +79,13 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       final response =
           await repo.fetchAptBuyInfo(aptAddress: selectedAptAddress);
       final isSuccess = response.isLeft();
+      final balance = await wallet.getTotalAxBalance();
 
       if (isSuccess) {
         swapController
           ..updateFromAddress(_tokensRepository.currentTokens.axt.address)
           ..updateToAddress(selectedAptAddress);
         final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
-        final balance = await wallet.getTotalAxBalance();
 
         emit(
           state.copyWith(
@@ -104,6 +104,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
+            balance: balance,
             status: BlocStatus.noData,
             errorMessage: noTokenInfoMessage,
             aptBuyInfo: AptBuyInfo.empty,

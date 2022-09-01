@@ -79,11 +79,14 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     FetchTradeInfoRequested event,
     Emitter<TradePageState> emit,
   ) async {
-    if (_walletRepository.currentWallet.isConnected) {
+    if (_walletRepository.currentWallet.isDisconnected) {
       emit(
         state.copyWith(
           status: BlocStatus.error,
           failure: DisconnectedWalletFailure(),
+          tokenFromBalance: 0,
+          tokenToBalance: 0,
+          swapInfo: TokenSwapInfo.empty,
         ),
       );
       return;

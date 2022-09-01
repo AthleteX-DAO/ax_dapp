@@ -8,6 +8,7 @@ import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -332,6 +333,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                       ),
                       child: TextButton(
                         onPressed: () {
+                          context.read<MyLiquidityBloc>().add(const FetchAllLiquidityPositionsRequested());
                           setState(() {
                             _tabController.index = 1;
                             token0Icon = tokenImage(token0);
@@ -396,574 +398,594 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
       );
     }
 
-    return BlocBuilder<MyLiquidityBloc, MyLiquidityState>(
-      buildWhen: (previous, current) =>
-          previous.filteredCards != current.filteredCards ||
-          previous.cards != current.cards ||
-          previous.status == BlocStatus.success,
-      builder: (context, state) {
-        final bloc = context.read<MyLiquidityBloc>();
-        final filteredCards = state.filteredCards;
-        if (state.status == BlocStatus.loading) {
-          return const Loader();
+    return BlocListener<WalletBloc, WalletState>(
+      listener: (context, state) {
+        if (state.isWalletConnected) {
+          context.read<MyLiquidityBloc>().add(const WatchAppDataChangesStarted());
         }
-        if (state.status == BlocStatus.noData ||
-            (state.status == BlocStatus.success && state.cards.isEmpty)) {
-          return EmptyWallet(
-            width: _layoutWdt,
-            height: _layoutHgt,
-          );
+        if (state.isWalletDisconnected) {
+          const NoWallet();
         }
-        if (state.status == BlocStatus.noWallet) {
-          return const NoWallet();
+        if (state.isWalletUnavailable) {
+          debugPrint('Wallet is unavailable -> ${state.isWalletUnavailable}');
         }
-        if (state.status == BlocStatus.error) {
-          return const LoadingError();
+        if (state.isWalletUnsupported) {
+          debugPrint('wallet is not supported -> ${state.isWalletUnsupported}');
         }
-
-        return SizedBox(
-          width: _width * 0.88,
-          height: _height * 0.7,
-          child: DefaultTabController(
-            length: 2,
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                SizedBox(
-                  width: _width * 0.7,
-                  height: _height * 0.2,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          //searchbar for desktop (next to toggle button)
-                          if (_isWeb)
-                            createMyLiquiditySearchBar(
-                              gridHgt,
-                              _layoutWdt,
-                              bloc,
-                            ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: gridHgt,
-                        child: GridView.builder(
-                          padding: EdgeInsets.zero,
-                          gridDelegate: _isWeb
-                              ? const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  //delegate max width for desktop
-                                  maxCrossAxisExtent: 600,
-                                  mainAxisExtent: 265,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                )
-                              : const SliverGridDelegateWithFixedCrossAxisCount(
-                                  //delegate count of 1 for mobile
-                                  crossAxisCount: 1,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                  mainAxisExtent: 265,
-                                ),
-                          itemCount: filteredCards.length,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return myLiquidityPoolGridItem(
-                              filteredCards[index],
-                              _layoutWdt,
-                            );
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: _width * 0.7,
-                  height: _height * 0.7,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: _width * 0.5,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 22,
-                          horizontal: 30,
-                        ),
-                        decoration: boxDecoration(
-                          Colors.grey[900]!,
-                          30,
-                          0,
-                          Colors.black,
-                        ),
-                        child: SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Remove Liquidity',
-                                    style: textStyle(Colors.white, 20, false),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  const Text('Amount'),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '$value%',
-                                        style:
-                                            textStyle(Colors.white, 36, true),
-                                      ),
-                                      const Spacer(),
-                                      DecoratedBox(
-                                        decoration: boxDecoration(
-                                          Colors.grey[600]!,
-                                          4,
-                                          0.5,
-                                          Colors.grey[600]!,
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              value = 25;
-                                              poolController.removePercentage =
-                                                  value;
-                                            });
-                                          },
-                                          child: Text(
-                                            '25%',
-                                            style: textStyle(
-                                              Colors.white,
-                                              12,
-                                              true,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 10),
-                                        decoration: boxDecoration(
-                                          Colors.grey[600]!,
-                                          4,
-                                          0.5,
-                                          Colors.grey[600]!,
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              value = 50;
-                                              poolController.removePercentage =
-                                                  value;
-                                            });
-                                          },
-                                          child: Text(
-                                            '50%',
-                                            style: textStyle(
-                                              Colors.white,
-                                              12,
-                                              true,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 10),
-                                        decoration: boxDecoration(
-                                          Colors.grey[600]!,
-                                          4,
-                                          0.5,
-                                          Colors.grey[600]!,
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              value = 75;
-                                              poolController.removePercentage =
-                                                  value;
-                                            });
-                                          },
-                                          child: Text(
-                                            '75%',
-                                            style: textStyle(
-                                              Colors.white,
-                                              12,
-                                              true,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 10),
-                                        decoration: boxDecoration(
-                                          Colors.grey[600]!,
-                                          4,
-                                          0.5,
-                                          Colors.grey[600]!,
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              value = 100;
-                                              poolController.removePercentage =
-                                                  value;
-                                            });
-                                          },
-                                          child: Text(
-                                            '100%',
-                                            style: textStyle(
-                                              Colors.white,
-                                              12,
-                                              true,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Slider(
-                                    thumbColor: Colors.amber.withOpacity(0.88),
-                                    inactiveColor:
-                                        Colors.amber.withOpacity(0.5),
-                                    activeColor: Colors.amber,
-                                    value: value,
-                                    onChanged: (double newValue) {
-                                      setState(() {
-                                        value = newValue.roundToDouble();
-                                        poolController.removePercentage = value;
-                                      });
-                                    },
-                                    max: 100,
-                                    divisions: 100,
-                                    label: '$value',
-                                  ),
-                                ],
-                              ),
+      },
+      child: BlocBuilder<MyLiquidityBloc, MyLiquidityState>(
+        buildWhen: (previous, current) =>
+            previous.filteredCards != current.filteredCards ||
+            previous.cards != current.cards ||
+            previous.status == BlocStatus.success,
+        builder: (context, state) {
+          final bloc = context.read<MyLiquidityBloc>();
+          final filteredCards = state.filteredCards;
+          if (state.status == BlocStatus.loading) {
+            return const Loader();
+          }
+          if (state.status == BlocStatus.noData ||
+              (state.status == BlocStatus.success && state.cards.isEmpty)) {
+            return EmptyWallet(
+              width: _layoutWdt,
+              height: _layoutHgt,
+            );
+          }
+          if (state.status == BlocStatus.noWallet) {
+            return const NoWallet();
+          }
+          if (state.status == BlocStatus.error) {
+            return const LoadingError();
+          }
+    
+          return SizedBox(
+            width: _width * 0.88,
+            height: _height * 0.7,
+            child: DefaultTabController(
+              length: 2,
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  SizedBox(
+                    width: _width * 0.7,
+                    height: _height * 0.2,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            //searchbar for desktop (next to toggle button)
+                            if (_isWeb)
                               Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Your position:',
-                                  style: textStyle(
-                                    Colors.grey[600]!,
-                                    16,
-                                    false,
-                                  ),
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: createMyLiquiditySearchBar(
+                                  gridHgt,
+                                  _layoutWdt,
+                                  bloc,
                                 ),
                               ),
-                              // ax per apt & share of pool
-                              SizedBox(
-                                height: 100,
-                                child: Column(
+                          ],
+                        ),
+                        SizedBox(
+                          height: gridHgt,
+                          child: GridView.builder(
+                            padding: EdgeInsets.zero,
+                            gridDelegate: _isWeb
+                                ? const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    //delegate max width for desktop
+                                    maxCrossAxisExtent: 600,
+                                    mainAxisExtent: 265,
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20,
+                                  )
+                                : const SliverGridDelegateWithFixedCrossAxisCount(
+                                    //delegate count of 1 for mobile
+                                    crossAxisCount: 1,
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20,
+                                    mainAxisExtent: 265,
+                                  ),
+                            itemCount: filteredCards.length,
+                            itemBuilder: (BuildContext ctx, index) {
+                              return myLiquidityPoolGridItem(
+                                filteredCards[index],
+                                _layoutWdt,
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: _width * 0.7,
+                    height: _height * 0.7,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: _width * 0.5,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 22,
+                            horizontal: 30,
+                          ),
+                          decoration: boxDecoration(
+                            Colors.grey[900]!,
+                            30,
+                            0,
+                            Colors.black,
+                          ),
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}'
-                                          ' LP Tokens:',
-                                          style: textStyle(
-                                            Colors.white,
-                                            16,
-                                            false,
-                                          ),
-                                        ),
-                                        Text(
-                                          infoOfSelectedCard.lpTokenPairBalance,
-                                          style: textStyle(
-                                            Colors.white,
-                                            16,
-                                            false,
-                                          ),
-                                        )
-                                      ],
+                                    Text(
+                                      'Remove Liquidity',
+                                      style: textStyle(Colors.white, 20, false),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Share of pool:',
-                                          style: textStyle(
-                                            Colors.grey[600]!,
-                                            16,
-                                            false,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${infoOfSelectedCard.shareOfPool}%',
-                                          style: textStyle(
-                                            Colors.white,
-                                            16,
-                                            false,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '''${infoOfSelectedCard.token0Symbol} deposited:''',
-                                          style: textStyle(
-                                            Colors.grey[600]!,
-                                            16,
-                                            false,
-                                          ),
-                                        ),
-                                        Text(
-                                          infoOfSelectedCard.token0LpAmount,
-                                          style: textStyle(
-                                            Colors.white,
-                                            16,
-                                            false,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '''${infoOfSelectedCard.token1Symbol} deposited:''',
-                                          style: textStyle(
-                                            Colors.grey[600]!,
-                                            16,
-                                            false,
-                                          ),
-                                        ),
-                                        Text(
-                                          infoOfSelectedCard.token1LpAmount,
-                                          style: textStyle(
-                                            Colors.white,
-                                            16,
-                                            false,
-                                          ),
-                                        )
-                                      ],
-                                    )
                                   ],
                                 ),
-                              ),
-                              Divider(thickness: 1, color: Colors.grey[600]),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Remove:',
-                                  style: textStyle(
-                                    Colors.grey[600]!,
-                                    16,
-                                    false,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: _width,
-                                height: _height * 0.1,
-                                decoration: boxDecoration(
-                                  Colors.transparent,
-                                  15,
-                                  0.5,
-                                  Colors.grey[600]!,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                Column(
                                   children: [
-                                    SizedBox(
-                                      width: _width - 50,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Container(
-                                            margin:
-                                                const EdgeInsets.only(left: 30),
-                                            width: 35,
-                                            height: 35,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                scale: 0.25,
-                                                image: token0Icon!,
+                                    const Text('Amount'),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '$value%',
+                                          style:
+                                              textStyle(Colors.white, 36, true),
+                                        ),
+                                        const Spacer(),
+                                        DecoratedBox(
+                                          decoration: boxDecoration(
+                                            Colors.grey[600]!,
+                                            4,
+                                            0.5,
+                                            Colors.grey[600]!,
+                                          ),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                value = 25;
+                                                poolController.removePercentage =
+                                                    value;
+                                              });
+                                            },
+                                            child: Text(
+                                              '25%',
+                                              style: textStyle(
+                                                Colors.white,
+                                                12,
+                                                true,
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(
-                                            width: 10,
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(left: 10),
+                                          decoration: boxDecoration(
+                                            Colors.grey[600]!,
+                                            4,
+                                            0.5,
+                                            Colors.grey[600]!,
                                           ),
-                                          Text(
-                                            infoOfSelectedCard.token0Symbol,
-                                            style: textStyle(
-                                              Colors.white,
-                                              16,
-                                              false,
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 30),
-                                            width: _width * .20,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                SizedBox(
-                                                  width: 100,
-                                                  child: Text(
-                                                    tokenOneRemoveAmount
-                                                        .toStringAsFixed(6),
-                                                    textAlign: TextAlign.end,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: _width - 50,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Container(
-                                            margin:
-                                                const EdgeInsets.only(left: 30),
-                                            width: 35,
-                                            height: 35,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                scale: 0.25,
-                                                image: token1Icon!,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                value = 50;
+                                                poolController.removePercentage =
+                                                    value;
+                                              });
+                                            },
+                                            child: Text(
+                                              '50%',
+                                              style: textStyle(
+                                                Colors.white,
+                                                12,
+                                                true,
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(
-                                            width: 10,
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(left: 10),
+                                          decoration: boxDecoration(
+                                            Colors.grey[600]!,
+                                            4,
+                                            0.5,
+                                            Colors.grey[600]!,
                                           ),
-                                          Text(
-                                            infoOfSelectedCard.token1Symbol,
-                                            style: textStyle(
-                                              Colors.white,
-                                              16,
-                                              false,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                value = 75;
+                                                poolController.removePercentage =
+                                                    value;
+                                              });
+                                            },
+                                            child: Text(
+                                              '75%',
+                                              style: textStyle(
+                                                Colors.white,
+                                                12,
+                                                true,
+                                              ),
                                             ),
                                           ),
-                                          const Spacer(),
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 30),
-                                            width: _width * .20,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                SizedBox(
-                                                  width: 100,
-                                                  child: Text(
-                                                    tokenTwoRemoveAmount
-                                                        .toStringAsFixed(6),
-                                                    textAlign: TextAlign.end,
-                                                  ),
-                                                ),
-                                              ],
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(left: 10),
+                                          decoration: boxDecoration(
+                                            Colors.grey[600]!,
+                                            4,
+                                            0.5,
+                                            Colors.grey[600]!,
+                                          ),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                value = 100;
+                                                poolController.removePercentage =
+                                                    value;
+                                              });
+                                            },
+                                            child: Text(
+                                              '100%',
+                                              style: textStyle(
+                                                Colors.white,
+                                                12,
+                                                true,
+                                              ),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: _height * 0.03),
-                              Row(
-                                children: [
-                                  PoolRemoveApproveButton(
-                                    tabController: _tabController,
-                                    width: 175,
-                                    height: 40,
-                                    text: 'Approve',
-                                    approveCallback: () {
-                                      final handler = context
-                                          .read<WalletRepository>()
-                                          .getTokenBalance;
-                                      return poolController
-                                          .approveRemove(handler);
-                                    },
-                                    confirmCallback: () {
-                                      final handler = context
-                                          .read<WalletRepository>()
-                                          .getTokenBalance;
-                                      return poolController
-                                          .removeLiquidity(handler);
-                                    },
-                                    confirmDialog: removalConfirmed,
-                                    currencyOne:
-                                        infoOfSelectedCard.token0Symbol,
-                                    currencyTwo:
-                                        infoOfSelectedCard.token1Symbol,
-                                    valueOne: tokenOneRemoveAmount,
-                                    valueTwo: tokenTwoRemoveAmount,
-                                    lpTokens:
-                                        infoOfSelectedCard.lpTokenPairBalance,
-                                    shareOfPool: infoOfSelectedCard.shareOfPool,
-                                    percentRemoval: value,
-                                    lpTokenName:
-                                        '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}',
-                                  ),
-                                  const Spacer(),
-                                  Container(
-                                    width: 175,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.amber),
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(100),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    child: TextButton(
-                                      onPressed: () {
+                                    Slider(
+                                      thumbColor: Colors.amber.withOpacity(0.88),
+                                      inactiveColor:
+                                          Colors.amber.withOpacity(0.5),
+                                      activeColor: Colors.amber,
+                                      value: value,
+                                      onChanged: (double newValue) {
                                         setState(() {
-                                          _tabController.index = 0;
-                                          value = 0;
-                                          poolController.removePercentage =
-                                              value;
+                                          value = newValue.roundToDouble();
+                                          poolController.removePercentage = value;
                                         });
                                       },
-                                      child: const Text(
-                                        'Cancel',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.amber,
+                                      max: 100,
+                                      divisions: 100,
+                                      label: '$value',
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Your position:',
+                                    style: textStyle(
+                                      Colors.grey[600]!,
+                                      16,
+                                      false,
+                                    ),
+                                  ),
+                                ),
+                                // ax per apt & share of pool
+                                SizedBox(
+                                  height: 100,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}'
+                                            ' LP Tokens:',
+                                            style: textStyle(
+                                              Colors.white,
+                                              16,
+                                              false,
+                                            ),
+                                          ),
+                                          Text(
+                                            infoOfSelectedCard.lpTokenPairBalance,
+                                            style: textStyle(
+                                              Colors.white,
+                                              16,
+                                              false,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Share of pool:',
+                                            style: textStyle(
+                                              Colors.grey[600]!,
+                                              16,
+                                              false,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${infoOfSelectedCard.shareOfPool}%',
+                                            style: textStyle(
+                                              Colors.white,
+                                              16,
+                                              false,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '''${infoOfSelectedCard.token0Symbol} deposited:''',
+                                            style: textStyle(
+                                              Colors.grey[600]!,
+                                              16,
+                                              false,
+                                            ),
+                                          ),
+                                          Text(
+                                            infoOfSelectedCard.token0LpAmount,
+                                            style: textStyle(
+                                              Colors.white,
+                                              16,
+                                              false,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '''${infoOfSelectedCard.token1Symbol} deposited:''',
+                                            style: textStyle(
+                                              Colors.grey[600]!,
+                                              16,
+                                              false,
+                                            ),
+                                          ),
+                                          Text(
+                                            infoOfSelectedCard.token1LpAmount,
+                                            style: textStyle(
+                                              Colors.white,
+                                              16,
+                                              false,
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Divider(thickness: 1, color: Colors.grey[600]),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Remove:',
+                                    style: textStyle(
+                                      Colors.grey[600]!,
+                                      16,
+                                      false,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: _width,
+                                  height: _height * 0.1,
+                                  decoration: boxDecoration(
+                                    Colors.transparent,
+                                    15,
+                                    0.5,
+                                    Colors.grey[600]!,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SizedBox(
+                                        width: _width - 50,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.only(left: 30),
+                                              width: 35,
+                                              height: 35,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                  scale: 0.25,
+                                                  image: token0Icon!,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              infoOfSelectedCard.token0Symbol,
+                                              style: textStyle(
+                                                Colors.white,
+                                                16,
+                                                false,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  right: 30),
+                                              width: _width * .20,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 100,
+                                                    child: Text(
+                                                      tokenOneRemoveAmount
+                                                          .toStringAsFixed(6),
+                                                      textAlign: TextAlign.end,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: _width - 50,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.only(left: 30),
+                                              width: 35,
+                                              height: 35,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                  scale: 0.25,
+                                                  image: token1Icon!,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              infoOfSelectedCard.token1Symbol,
+                                              style: textStyle(
+                                                Colors.white,
+                                                16,
+                                                false,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  right: 30),
+                                              width: _width * .20,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 100,
+                                                    child: Text(
+                                                      tokenTwoRemoveAmount
+                                                          .toStringAsFixed(6),
+                                                      textAlign: TextAlign.end,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: _height * 0.03),
+                                Row(
+                                  children: [
+                                    PoolRemoveApproveButton(
+                                      tabController: _tabController,
+                                      width: 175,
+                                      height: 40,
+                                      text: 'Approve',
+                                      approveCallback: () {
+                                        final handler = context
+                                            .read<WalletRepository>()
+                                            .getTokenBalance;
+                                        return poolController
+                                            .approveRemove(handler);
+                                      },
+                                      confirmCallback: () {
+                                        final handler = context
+                                            .read<WalletRepository>()
+                                            .getTokenBalance;
+                                        return poolController
+                                            .removeLiquidity(handler);
+                                      },
+                                      confirmDialog: removalConfirmed,
+                                      currencyOne:
+                                          infoOfSelectedCard.token0Symbol,
+                                      currencyTwo:
+                                          infoOfSelectedCard.token1Symbol,
+                                      valueOne: tokenOneRemoveAmount,
+                                      valueTwo: tokenTwoRemoveAmount,
+                                      lpTokens:
+                                          infoOfSelectedCard.lpTokenPairBalance,
+                                      shareOfPool: infoOfSelectedCard.shareOfPool,
+                                      percentRemoval: value,
+                                      lpTokenName:
+                                          '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}',
+                                      myLiquidityBloc: bloc,
+                                    ),
+                                    const Spacer(),
+                                    Container(
+                                      width: 175,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.amber),
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(100),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _tabController.index = 0;
+                                            value = 0;
+                                            poolController.removePercentage =
+                                                value;
+                                          });
+                                        },
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.amber,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )
-                            ],
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
