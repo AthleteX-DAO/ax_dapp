@@ -43,6 +43,16 @@ class Token extends Equatable {
           currency: EthereumCurrency.sx,
         );
 
+  /// Represents a `Wrapped SportX` [Token].
+  const Token.wsx(EthereumChain chain)
+      : this(
+          name: 'Wrapped SportX',
+          ticker: 'WSX',
+          addressConfig: const EthereumAddressConfig.wsxt(),
+          chain: chain,
+          currency: EthereumCurrency.wsx,
+        );
+
   /// Represents a `Matic` [Token].
   const Token.matic(EthereumChain chain)
       : this(
@@ -76,7 +86,7 @@ class Token extends Equatable {
   /// {@macro athlete_performance_token}
   ///
   /// {@macro long_athlete_performance_token}
-  factory Token.longAp(
+  factory Token.longApt(
     EthereumChain chain, {
     required AptConfig aptConfig,
   }) = Apt.long;
@@ -84,7 +94,7 @@ class Token extends Equatable {
   /// {@macro athlete_performance_token}
   ///
   /// {@macro short_athlete_performance_token}
-  factory Token.shortAp(
+  factory Token.shortApt(
     EthereumChain chain, {
     required AptConfig aptConfig,
   }) = Apt.short;
