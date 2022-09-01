@@ -135,7 +135,6 @@ class GetScoutAthletesDataUseCase {
     if (sportSelection != SupportedSport.all) {
       final repo = _repos[sportSelection]!;
       // fetch supported players list
-      debugger();
       final players = await repo.getSupportedPlayers();
       final history = await getStatsHistory(repo, players);
       return _mapAthleteToScoutModel(

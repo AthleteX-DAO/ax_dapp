@@ -35,7 +35,9 @@ class StreamAppDataChangesUseCase {
         _tokensRepository.tokensChanges.skip(1),
         _configRepository.dependenciesChanges,
         (wallet, tokens, appConfig) => AppData(
-          chain: wallet.chain,
+          // getting chain from wallet changes will be stale for some reason
+          // so for now query the "currentWallet" directly
+          chain: _walletRepository.currentWallet.chain,
           walletStatus: wallet.status,
           walletAddress: wallet.address,
           tokens: tokens,

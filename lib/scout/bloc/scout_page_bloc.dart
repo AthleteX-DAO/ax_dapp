@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/usecases/usecases.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -12,7 +11,6 @@ import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'scout_page_event.dart';
-
 part 'scout_page_state.dart';
 
 class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
@@ -48,8 +46,14 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
           ..tokenClient = appConfig.reactiveWeb3Client.value;
         lspController.controller.credentials =
             _walletRepository.credentials.value;
-        emit(state.copyWith(selectedChain: appData.chain));
-        add(FetchScoutInfoRequested());
+        if(appData.chain.chainId != state.selectedChain.chainId) {
+          emit(state.copyWith(
+            status: BlocStatus.loading,
+            selectedChain: appData.chain,
+            athletes: List.empty(),
+            filteredAthletes: List.empty(),
+          ),);
+        }
       },
     );
   }
@@ -61,6 +65,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       var supportedSport = SupportedSport.MLB;
+      debugPrint('Fetching scout info for ${state.selectedChain.chainName}: ${state.selectedChain.chainId}');
       switch (state.selectedChain) {
         case EthereumChain.polygonTestnet:
         case EthereumChain.polygonMainnet:
@@ -71,10 +76,12 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         case EthereumChain.sxTestnet:
           supportedSport = SupportedSport.NFL;
           break;
+        default: // unsupported
+          supportedSport = SupportedSport.MLB;
+          break;
       }
-      debugger();
       final response = await repo.fetchSupportedAthletes(supportedSport);
-
+      filterOutUnsupportedSportsByChain(response);
       if (response.isNotEmpty) {
         emit(
           state.copyWith(
@@ -108,6 +115,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         final filteredList = state.athletes
             .where((athlete) => event.selectedSport.name == athlete.sport.name)
             .toList();
+        filterOutUnsupportedSportsByChain(filteredList);
         if (filteredList.isNotEmpty) {
           emit(
             state.copyWith(
@@ -139,6 +147,17 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
       }
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
+    }
+  }
+
+  void filterOutUnsupportedSportsByChain(List<AthleteScoutModel> filteredList) {
+    if(state.selectedChain == EthereumChain.sxMainnet ||
+        state.selectedChain == EthereumChain.sxTestnet) {
+      filteredList
+          .removeWhere((element) => element.sport == SupportedSport.MLB);
+    } else {
+      filteredList
+          .removeWhere((element) => element.sport == SupportedSport.NFL);
     }
   }
 

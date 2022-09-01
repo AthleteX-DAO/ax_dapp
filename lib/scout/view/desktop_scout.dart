@@ -1,5 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_positional_boolean_parameters
 
+import 'dart:developer';
+
 import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
@@ -48,7 +50,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   AthleteScoutModel? curAthlete;
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
-
+  EthereumChain? _selectedChain = null;
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -72,10 +74,18 @@ class _DesktopScoutState extends State<DesktopScout> {
     // breaks the code, will come back to it later(probably)
 
     return BlocBuilder<ScoutPageBloc, ScoutPageState>(
-      buildWhen: (previous, current) => current.status.name.isNotEmpty,
+      buildWhen: (previous, current) {
+        return current.status.name.isNotEmpty ||
+            previous.selectedChain.chainId != current.selectedChain.chainId;
+      },
       builder: (context, state) {
         final bloc = context.read<ScoutPageBloc>();
         final filteredAthletes = state.filteredAthletes;
+        if(_selectedChain != state.selectedChain) {
+          debugPrint("Fetch scout Selected Chain name is ${state.selectedChain.name}; Pervious Chain name is ${_selectedChain?.name}");
+          _selectedChain = state.selectedChain;
+          bloc.add(FetchScoutInfoRequested());
+        }
         if (athletePage && curAthlete != null) {
           return BlocProvider(
             create: (context) => AthletePageBloc(
