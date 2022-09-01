@@ -79,14 +79,14 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
       final response =
           await repo.fetchAptSellInfo(aptAddress: selectedTokenAddress);
       final isSuccess = response.isLeft();
+      final balance =
+            await wallet.getTotalBalanceForToken(selectedTokenAddress);
 
       if (isSuccess) {
         swapController
           ..updateFromAddress(selectedTokenAddress)
           ..updateToAddress(_tokensRepository.currentTokens.axt.address);
         final swapInfo = response.getLeft().toNullable()!.sellInfo;
-        final balance =
-            await wallet.getTotalBalanceForToken(selectedTokenAddress);
         //do some math
         emit(
           state.copyWith(
@@ -105,6 +105,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
           state.copyWith(
+            balance: balance,
             status: BlocStatus.noData,
             errorMessage: noTokenInfoMessage,
             aptSellInfo: AptSellInfo.empty,
