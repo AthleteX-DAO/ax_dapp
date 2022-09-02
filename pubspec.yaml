@@ -71,6 +71,7 @@ dependencies:
   webfeed: ^0.7.0
 
 dependency_overrides:
+  meta: 1.8.0
   async: 2.8.0
   web3dart:
     git:
