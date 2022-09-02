@@ -37,7 +37,7 @@ enum EthereumChain {
   /// Polygon main network.
   polygonMainnet(
     chainId: 137,
-    chainName: 'Polygon Mainnet',
+    chainName: 'Polygon',
     currency: EthereumCurrency.matic,
     rpcUrls: ['https://rpc-mainnet.matic.quiknode.pro'],
     blockExplorerUrls: ['https://polygonscan.com/'],
@@ -55,7 +55,7 @@ enum EthereumChain {
   /// SX main network.
   sxMainnet(
     chainId: 416,
-    chainName: 'Mainnet',
+    chainName: 'SX Network',
     currency: EthereumCurrency.sx,
     rpcUrls: ['https://rpc.sx.technology'],
     blockExplorerUrls: ['https://explorer.sx.technology/'],

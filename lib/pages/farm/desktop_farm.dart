@@ -1,25 +1,19 @@
-import 'package:ax_dapp/app/bloc/app_bloc.dart';
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/pages/farm/components/farm_item.dart';
 import 'package:ax_dapp/pages/farm/components/my_farm_item.dart';
 import 'package:ax_dapp/pages/farm/components/no_data.dart';
 import 'package:ax_dapp/pages/farm/components/no_wallet.dart';
+import 'package:ax_dapp/pages/farm/components/unsupported_chain.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
-import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:config_repository/config_repository.dart';
-import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tokens_repository/tokens_repository.dart';
-import 'package:use_cases/stream_app_data_changes_use_case.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 class DesktopFarm extends StatefulWidget {
   const DesktopFarm({super.key});
@@ -80,26 +74,30 @@ class _DesktopFarmState extends State<DesktopFarm> {
               );
             }
           },
-          child: BlocConsumer<FarmBloc, FarmState>(
-            listenWhen: (_, current) => current.status == BlocStatus.error,
-            listener: (context, state) {
+          child: BlocBuilder<FarmBloc, FarmState>(
+            buildWhen: (previous, current) {
+              debugPrint(
+                  'Farm Bloc Builder buildWhen current status: ${current.status}, previous status: ${previous.status}');
+              return previous != current;
+            },
+            builder: (context, state) {
+              final bloc = context.read<FarmBloc>();
+              Widget widget = const Loader();
               if (state.status == BlocStatus.error) {
                 context.showWarningToast(
                   title: 'Action Error',
                   description: 'Something went wrong',
                 );
               }
-            },
-            builder: (context, state) {
-              final bloc = context.read<FarmBloc>();
-              Widget widget = const Loader();
-
               if (state.status == BlocStatus.error ||
                   state.status == BlocStatus.noData) {
                 widget = noData();
               }
               if (!state.isAllFarms && state.status == BlocStatus.noWallet) {
                 widget = noWallet();
+              }
+              if(state.status == BlocStatus.unsupportedChain){
+                widget = unsupported(state.chain);
               }
               final Widget toggle =
                   toggleFarmButton(bloc, layoutWdt, layoutHgt);
@@ -163,7 +161,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                   itemCount: isAllFarms
                                       ? state.filteredFarms.length
                                       : state.filteredStakedFarms.length,
-                                  itemBuilder: (context, index) {                                    
+                                  itemBuilder: (context, index) {
                                     return isAllFarms
                                         ? farmItem(
                                             context,
