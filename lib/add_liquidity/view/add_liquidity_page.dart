@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
+import 'package:ax_dapp/add_liquidity/models/pool_pair_info.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
@@ -652,7 +653,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     ),
                   ),
                   showYouReceived(poolInfo.recieveAmount),
-                  if (state.status != BlocStatus.error)
+                  if (state.status == BlocStatus.success || state.status == BlocStatus.noData)
                     PoolApproveButton(
                       width: _elementWdt * 0.95 - 150,
                       tokenAmountOneController: _tokenAmountOneController,
@@ -677,10 +678,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         if (failure is DisconnectedWalletFailure) {
                           return 'Wallet not connected!';
                         }
-                        if (failure is NoPoolInfoFailure) {
-                          return 'No Pool Info found';
-                        }
-                        return 'Something went wrong';
+                        return 'Fetching Pool Info';
                       }(),
                     ),
                 ],
