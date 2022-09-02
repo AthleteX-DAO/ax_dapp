@@ -17,7 +17,7 @@ class GetFarmDataUseCase {
         response.data!['pools'] as List<dynamic>,
         false,
       );
-    } catch (_) {
+    } catch (error) {
       return const [];
     }
   }

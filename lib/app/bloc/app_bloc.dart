@@ -11,10 +11,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({
     required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
-    required ConfigRepository configRepository,
+    required this.configRepository,
   })  : _walletRepository = walletRepository,
-        _tokensRepository = tokensRepository,
-        _configRepository = configRepository,
+        _tokensRepository = tokensRepository,        
         super(const AppState()) {
     on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
     // on<WatchAptsChangesStarted>(_onWatchAptsChangesStarted);
@@ -25,7 +24,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
-  final ConfigRepository _configRepository;
+  final ConfigRepository configRepository;
 
   Future<void> _onWatchChainChangesStarted(
     WatchChainChangesStarted _,
@@ -35,7 +34,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       _walletRepository.chainChanges,
       onData: (chain) {
         _tokensRepository.switchTokens(chain);
-        _configRepository.switchDependencies(chain);
+        configRepository.switchDependencies(chain);
       },
     );
   }
@@ -51,7 +50,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   //       if (previousApts.isEmpty) {
   //         return;
   //       }
-  //       final currentLspAddress = _configRepository.currentLspAddress;
+  //       final currentLspAddress = configRepository.currentLspAddress;
   //       if (currentLspAddress == null) {
   //         return;
   //       }
@@ -63,7 +62,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   //       final currentAptPair =
   //           apts.findPairByAthleteId(previousAptPair.athleteId);
   //       if (currentAptPair.isNotEmpty) {
-  //         _configRepository.switchLspClient(currentAptPair.address);
+  //         configRepository.switchLspClient(currentAptPair.address);
   //       }
   //     },
   //   );

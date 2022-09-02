@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
+import 'package:ax_dapp/app/bloc/app_bloc.dart';
+import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/pages/farm/desktop_farm.dart';
+import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/desktop_trade.dart';
@@ -19,11 +22,14 @@ import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
+import 'package:config_repository/config_repository.dart';
+import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
@@ -169,7 +175,19 @@ class _V1AppState extends State<V1App> {
           else if (pageNumber == Pages.pool)
             const DesktopPool()
           else if (pageNumber == Pages.farm)
-            const DesktopFarm()
+            BlocProvider(
+              create: (BuildContext context) => FarmBloc(
+                walletRepository: context.read<WalletRepository>(),
+                tokensRepository: context.read<TokensRepository>(),
+                configRepository: context.read<AppBloc>().configRepository,
+                streamAppDataChanges:
+                    context.read<StreamAppDataChangesUseCase>(),
+                repo: GetFarmDataUseCase(
+                  gysrApiClient: context.read<GysrApiClient>(),
+                ),
+              ),
+              child: const DesktopFarm(),
+            )
         ],
       );
     } else {

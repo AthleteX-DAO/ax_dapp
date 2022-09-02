@@ -9,6 +9,7 @@ class FarmState extends Equatable {
     List<FarmModel>? filteredFarms,
     List<FarmModel>? filteredStakedFarms,
     required this.farmOwner,
+    this.chain = EthereumChain.polygonMainnet,
   })  : farms = farms ?? const [],
         stakedFarms = stakedFarms ?? const [],
         filteredFarms = filteredFarms ?? const [],
@@ -21,6 +22,7 @@ class FarmState extends Equatable {
   final BlocStatus status;
   final bool isAllFarms;
   final String farmOwner;
+  final EthereumChain chain;
 
   @override
   List<Object?> get props => [
@@ -31,6 +33,7 @@ class FarmState extends Equatable {
         isAllFarms,
         status,
         farmOwner,
+        chain,
       ];
 
   FarmState copy({
@@ -40,6 +43,7 @@ class FarmState extends Equatable {
     List<FarmModel>? filteredStakedFarms,
     BlocStatus? status,
     bool? isAllFarms,
+    EthereumChain? chain,
   }) {
     return FarmState(
       farms: farms ?? this.farms,
@@ -49,6 +53,7 @@ class FarmState extends Equatable {
       status: status ?? this.status,
       isAllFarms: isAllFarms ?? this.isAllFarms,
       farmOwner: farmOwner,
+      chain: chain ?? this.chain,
     );
   }
 
@@ -60,6 +65,7 @@ class FarmState extends Equatable {
     BlocStatus? status,
     bool? isAllFarms,
     String? farmOwner,
+    EthereumChain? chain,
   }) {
     return FarmState(
       farms: farms ?? this.farms,
@@ -69,6 +75,7 @@ class FarmState extends Equatable {
       status: status ?? this.status,
       isAllFarms: isAllFarms ?? this.isAllFarms,
       farmOwner: farmOwner ?? this.farmOwner,
+      chain: chain ?? this.chain,
     );
   }
 }

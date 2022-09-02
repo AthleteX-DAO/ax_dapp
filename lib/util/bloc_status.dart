@@ -5,4 +5,5 @@ enum BlocStatus {
   loading,
   noData,
   noWallet,
+  unsupportedChain,
 }
