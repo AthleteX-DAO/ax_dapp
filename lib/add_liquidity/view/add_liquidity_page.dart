@@ -653,7 +653,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     ),
                   ),
                   showYouReceived(poolInfo.recieveAmount),
-                  if (state.status != BlocStatus.error)
+                  if (state.status == BlocStatus.success || state.status == BlocStatus.noData)
                     PoolApproveButton(
                       width: _elementWdt * 0.95 - 150,
                       tokenAmountOneController: _tokenAmountOneController,
@@ -678,10 +678,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         if (failure is DisconnectedWalletFailure) {
                           return 'Wallet not connected!';
                         }
-                        if (failure is NoPoolInfoFailure) {
-                          return 'No Pool Info found';
-                        }
-                        return 'Something went wrong';
+                        return 'Fetching Pool Info';
                       }(),
                     ),
                 ],
