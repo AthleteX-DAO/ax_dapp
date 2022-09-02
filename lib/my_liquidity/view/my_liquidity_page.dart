@@ -388,7 +388,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 8.5),
-                  hintText: 'Search a farm',
+                  hintText: 'Search a pair',
                   hintStyle: TextStyle(color: Colors.white),
                 ),
               ),
