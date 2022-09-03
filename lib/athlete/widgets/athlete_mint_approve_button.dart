@@ -111,7 +111,11 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                 context: context,
                 builder: (BuildContext context) =>
                     widget.confirmDialog(context),
-              );
+              ).then((value) {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
               context.read<TrackingCubit>().trackAthleteMintSuccess(
                     aptName: '${widget.aptName} pair',
                     sport: widget.athlete.sport.toString(),
