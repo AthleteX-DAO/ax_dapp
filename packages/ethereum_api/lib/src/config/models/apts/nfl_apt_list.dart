@@ -4,7 +4,7 @@ import 'package:ethereum_api/src/ethereum/models/models.dart';
 
 const nflApts = [
   AptConfig(
-    athleteId: 20737,
+    athleteId: 19801,
     athleteName: 'Josh Allen',
     sport: SupportedSport.NFL,
     longTicker: 'JLLAPT',
@@ -104,7 +104,7 @@ const nflApts = [
     ),
   ),
   AptConfig(
-    athleteId: 21837,
+    athleteId: 21682,
     athleteName: 'Jonathan Taylor',
     sport: SupportedSport.NFL,
     longTicker: 'JTLAPT',
@@ -204,7 +204,7 @@ const nflApts = [
     ),
   ),
   AptConfig(
-    athleteId: 22555,
+    athleteId: 21685,
     athleteName: 'Justin Jefferson',
     sport: SupportedSport.NFL,
     longTicker: 'JJLAPT',
