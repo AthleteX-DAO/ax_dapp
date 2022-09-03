@@ -33,6 +33,7 @@ class _MintDialogState extends State<MintDialog> {
   RxDouble maxAmount = 0.0.obs;
   RxString balance = '---'.obs;
   String aptAddress = '';
+  int collateralPerPair = 15000;
   final TextEditingController _aptAmountController = TextEditingController();
 
   LSPController lspController = Get.find();
@@ -55,7 +56,7 @@ class _MintDialogState extends State<MintDialog> {
       balance.value = axBalance?.toString() ?? '0.0';
 
       maxAmount.value = double.parse(balance.value) /
-          15000; // 15000 is collateral per pair for the APTs
+          collateralPerPair; // 15000 is collateral per pair for the APTs
     } catch (_) {}
     setState(() {});
   }
@@ -166,6 +167,16 @@ class _MintDialogState extends State<MintDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
+    switch (widget.athlete.sport) {
+      case SupportedSport.MLB:
+        collateralPerPair = 15000;
+        break;
+      case SupportedSport.NBA:
+      case SupportedSport.NFL:
+        collateralPerPair = 1000;
+        break;
+      case SupportedSport.all:
+    }
 
     return Dialog(
       insetPadding: EdgeInsets.zero,
@@ -314,7 +325,7 @@ class _MintDialogState extends State<MintDialog> {
                                 updateStats();
                                 lspController.updateCreateAmt(maxAmount.value);
                                 input = maxAmount.value;
-                                youSpend = maxAmount.value * 15000;
+                                youSpend = maxAmount.value * collateralPerPair;
                                 //update controller text to max balance
                                 _aptAmountController.text =
                                     maxAmount.toStringAsFixed(6);
@@ -349,7 +360,7 @@ class _MintDialogState extends State<MintDialog> {
                                   input = double.parse(value);
                                   lspController.updateCreateAmt(input);
                                   setState(() {
-                                    youSpend = input * 15000;
+                                    youSpend = input * collateralPerPair;
                                   });
                                 },
                                 inputFormatters: [
