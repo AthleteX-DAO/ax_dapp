@@ -40,6 +40,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
   RxDouble maxAmount = 0.0.obs;
   RxString longBalance = '---'.obs;
   RxString shortBalance = '---'.obs;
+  int collateralPerPair = 15000;
   final TextEditingController _longInputController = TextEditingController();
   final TextEditingController _shortInputController = TextEditingController();
 
@@ -121,7 +122,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
             () => Row(
               children: [
                 Text(
-                  '''${(lspController.redeemAmt * 15000).toStringAsFixed(6)} AX''', // 15000 is the collateral per pair
+                  '''${(lspController.redeemAmt * collateralPerPair).toStringAsFixed(6)} AX''', // 15000 is the collateral per pair
                   style: textStyle(Colors.white, 15, false),
                 ),
               ],
@@ -139,6 +140,16 @@ class _RedeemDialogState extends State<RedeemDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
+    switch (widget.athlete.sport) {
+      case SupportedSport.MLB:
+        collateralPerPair = 15000;
+        break;
+      case SupportedSport.NBA:
+      case SupportedSport.NFL:
+        collateralPerPair = 1000;
+        break;
+      case SupportedSport.all:
+    }
 
     return Dialog(
       insetPadding: EdgeInsets.zero,
@@ -456,7 +467,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                   sport: widget.athlete.sport.toString(),
                                   inputLongApt: _longInputController.text,
                                   inputShortApt: _shortInputController.text,
-                                  valueInAx: (lspController.redeemAmt * 15000)
+                                  valueInAx: (lspController.redeemAmt * collateralPerPair)
                                       .toStringAsFixed(6),
                                   walletId: walletAddress,
                                 );
