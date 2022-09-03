@@ -731,12 +731,12 @@ packages:
     source: hosted
     version: "0.1.4"
   meta:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.7.0"
   mime:
     dependency: transitive
     description:
