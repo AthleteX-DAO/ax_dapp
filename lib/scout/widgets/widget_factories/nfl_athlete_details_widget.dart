@@ -185,7 +185,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
-                        athlete.passingTouchDowns.toString(),
+                        athlete.passingTouchdowns.toString(),
                         style: textStyle(greyTextColor, 13, false, false),
                       ),
                     ),
@@ -199,14 +199,14 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
-                        athlete.receiveYards.toString(),
+                        athlete.receivingYards.toString(),
                         style: textStyle(greyTextColor, 13, false, false),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
-                        athlete.receiveTouch.toString(),
+                        athlete.receivingTouchdowns.toString(),
                         style: textStyle(greyTextColor, 13, false, false),
                       ),
                     ),

@@ -57,7 +57,7 @@ enum EthereumChain {
     chainId: 416,
     chainName: 'SX Network',
     currency: EthereumCurrency.sx,
-    rpcUrls: ['https://rpc.sx.technology'],
+    rpcUrls: ['https://api-stage.athletex.io/sx/rpc'],
     blockExplorerUrls: ['https://explorer.sx.technology/'],
   ),
 
