@@ -6,7 +6,7 @@ import 'package:retrofit/http.dart';
 
 part 'nfl_athlete_api.g.dart';
 
-@RestApi(baseUrl: 'https://db.athletex.io/nfl')
+@RestApi(baseUrl: 'https://api-stage.athletex.io/nfl')
 abstract class NFLAthleteAPI {
   factory NFLAthleteAPI(Dio dio, {String baseUrl}) = _NFLAthleteAPI;
 
