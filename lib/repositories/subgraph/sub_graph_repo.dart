@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:shared/shared.dart';
+import 'package:http/http.dart' as http;
 
 /// This is a repository that makes queries with the GraphQlClient
 /// primarily it should be employed by using or adding a usecase to subgraph/usecases
@@ -16,7 +19,7 @@ class SubGraphRepo {
     final result = await _dexGqlClient
         .performQuery(_getPairInfoForTokenId(token0, token1));
     if (result.hasException) {
-      return Either.right(result.exception!);
+      return tryPostQuery(_getPairInfoForTokenId(token0, token1));
     } else {
       return Either.left(result.data);
     }
@@ -28,9 +31,28 @@ class SubGraphRepo {
       QueryOptions(document: parseString(_getAllPairs())),
     );
     if (result.hasException) {
-      return Either.right(result.exception!);
+      return tryPostQuery(_getAllPairs());
     } else {
       return Either.left(result.data);
+    }
+  }
+
+
+  Future<Either<Map<String, dynamic>?, OperationException>> tryPostQuery(
+    String query,
+  ) async {
+    final uri = (_dexGqlClient.link as HttpLink).uri;
+    final result = await http.post(
+      uri,
+      headers: {},
+      body: parseString(query),
+    );
+    if (result.statusCode != 200) {
+      return Either.right(OperationException());
+    } else {
+      final decodedJson =
+          jsonDecode(result.body)['data'] as Map<String, String>;
+      return Either.left(decodedJson);
     }
   }
 
@@ -48,7 +70,7 @@ class SubGraphRepo {
       QueryOptions(document: parseString(_getSpecificPairs(token, startTime))),
     );
     if (result.hasException) {
-      return Either.right(result.exception!);
+      return tryPostQuery(_getSpecificPairs(token, startTime));
     } else {
       return Either.left(result.data);
     }
@@ -62,7 +84,7 @@ class SubGraphRepo {
       ),
     );
     if (result.hasException) {
-      return Either.right(result.exception!);
+      return tryPostQuery(_getAllLiquidityPositionsForWalletId(walletId));
     } else {
       return Either.left(result.data);
     }

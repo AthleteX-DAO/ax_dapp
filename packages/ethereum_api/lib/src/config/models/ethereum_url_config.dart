@@ -11,7 +11,7 @@ class EthereumUrlConfig {
             'https://api.thegraph.com/subgraphs/name/nyamwaya/athletex-dex-subgraph-mainnet',
         polygonTestnet = kEmptyUrl,
         sxMainnet =
-            'https://graph.sx.technology/subgraphs/name/sportstoken/athletex-dex/graphql',
+            'https://graph.sx.technology/subgraphs/name/sportstoken/athletex-dex',
         sxTestnet = kEmptyUrl;
 
   /// Configuration for GraphQL gysr link.
