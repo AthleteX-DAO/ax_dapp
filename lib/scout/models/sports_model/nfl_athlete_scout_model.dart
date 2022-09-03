@@ -21,10 +21,10 @@ class NFLAthleteScoutModel extends AthleteScoutModel {
     required double? longTokenPriceUsd,
     required double? shortTokenPriceUsd,
     required this.passingYards,
-    required this.passingTouchDowns,
+    required this.passingTouchdowns,
     required this.reception,
-    required this.receiveYards,
-    required this.receiveTouch,
+    required this.receivingYards,
+    required this.receivingTouchdowns,
     required this.rushingYards,
     required this.offensiveSnapsPlayed,
     required this.defensiveSnapsPlayed,
@@ -44,10 +44,10 @@ class NFLAthleteScoutModel extends AthleteScoutModel {
         );
 
   final double passingYards;
-  final double passingTouchDowns;
+  final double passingTouchdowns;
   final double reception;
-  final double receiveYards;
-  final double receiveTouch;
+  final double receivingYards;
+  final double receivingTouchdowns;
   final double rushingYards;
   final double offensiveSnapsPlayed;
   final double defensiveSnapsPlayed;
@@ -56,10 +56,10 @@ class NFLAthleteScoutModel extends AthleteScoutModel {
   List<Object?> get props => super.props
     ..addAll([
       passingYards,
-      passingTouchDowns,
+      passingTouchdowns,
       reception,
-      receiveYards,
-      receiveTouch,
+      receivingYards,
+      receivingTouchdowns,
       rushingYards,
       offensiveSnapsPlayed,
       defensiveSnapsPlayed,

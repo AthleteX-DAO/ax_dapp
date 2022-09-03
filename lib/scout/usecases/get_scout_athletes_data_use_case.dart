@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_dynamic_calls
 
-import 'dart:developer';
-
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/scout/models/models.dart';
@@ -101,10 +99,10 @@ class GetScoutAthletesDataUseCase {
                 statHistory: [
                   const NFLStats(
                     passingYards: 0,
-                    passingTouchDowns: 0,
+                    passingTouchdowns: 0,
                     reception: 0,
-                    receiveYards: 0,
-                    receiveTouch: 0,
+                    receivingYards: 0,
+                    receivingTouchdowns: 0,
                     rushingYards: 0,
                     offensiveSnapsPlayed: 0,
                     defensiveSnapsPlayed: 0,
@@ -334,10 +332,10 @@ class GetScoutAthletesDataUseCase {
               longTokenPriceUsd: longToken.marketPrice * axPrice,
               shortTokenPriceUsd: shortToken.marketPrice * axPrice,
               passingYards: nflAthlete.passingYards,
-              passingTouchDowns: nflAthlete.passingTouchDowns,
+              passingTouchdowns: nflAthlete.passingTouchdowns,
               reception: nflAthlete.reception,
-              receiveYards: nflAthlete.receiveYards,
-              receiveTouch: nflAthlete.receiveTouch,
+              receivingYards: nflAthlete.receivingYards,
+              receivingTouchdowns: nflAthlete.receivingTouchdowns,
               rushingYards: nflAthlete.rushingYards,
               offensiveSnapsPlayed: nflAthlete.offensiveSnapsPlayed,
               defensiveSnapsPlayed: nflAthlete.defensiveSnapsPlayed,

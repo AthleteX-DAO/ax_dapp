@@ -6,10 +6,10 @@ part 'nfl_stats.g.dart';
 class NFLStats {
   const NFLStats({
     required this.passingYards,
-    required this.passingTouchDowns,
+    required this.passingTouchdowns,
     required this.reception,
-    required this.receiveYards,
-    required this.receiveTouch,
+    required this.receivingYards,
+    required this.receivingTouchdowns,
     required this.rushingYards,
     required this.offensiveSnapsPlayed,
     required this.defensiveSnapsPlayed,
@@ -22,19 +22,19 @@ class NFLStats {
 
   @JsonKey(name: 'passingYards')
   final double passingYards;
-  @JsonKey(name: 'passingTouchDowns')
-  final double passingTouchDowns;
+  @JsonKey(name: 'passingTouchdowns')
+  final double passingTouchdowns;
   @JsonKey(name: 'reception')
   final double reception;
-  @JsonKey(name: 'receiveYards')
-  final double receiveYards;
-  @JsonKey(name: 'receiveTouch')
-  final double receiveTouch;
+  @JsonKey(name: 'receivingYards')
+  final double receivingYards;
+  @JsonKey(name: 'receivingTouchdowns')
+  final double receivingTouchdowns;
   @JsonKey(name: 'rushingYards')
   final double rushingYards;
-  @JsonKey(name: 'OffensiveSnapsPlayed')
+  @JsonKey(name: 'offensiveSnapsPlayed')
   final double offensiveSnapsPlayed;
-  @JsonKey(name: 'DefensiveSnapsPlayed')
+  @JsonKey(name: 'defensiveSnapsPlayed')
   final double defensiveSnapsPlayed;
   @JsonKey(name: 'price')
   final double price;
