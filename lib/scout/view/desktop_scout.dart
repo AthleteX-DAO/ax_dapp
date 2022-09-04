@@ -49,7 +49,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   AthleteScoutModel? curAthlete;
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
-  EthereumChain? _selectedChain = null;
+  EthereumChain? _selectedChain;
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
