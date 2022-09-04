@@ -671,7 +671,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // TODO(Ryan): make this and the input box above
+                                  // TODO(Ryan): make this and the input box
+                                  //  above
                                   // a single function
                                   // dropdown
                                   // tknNum = 2 (this is a comment)

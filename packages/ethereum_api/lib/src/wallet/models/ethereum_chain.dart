@@ -145,7 +145,8 @@ extension ChainConfigX on EthereumChain {
   /// Generates the list of [Apt]'s for this [EthereumChain]. Composed based on
   /// a list of [AptConfig]s.
   List<Token> createApts(EthereumChain chain) {
-    debugPrint('Creating apts for Chain Name: ${chain.chainName}; ChainId: ${chain.chainId} Name: ${chain.name}');
+    debugPrint('Creating apts for Chain Name: ${chain.chainName}; ChainId: ${
+        chain.chainId} Name: ${chain.name}',);
     final supportedApts =
         ((chain.chainId == EthereumChain.polygonMainnet.chainId) ||
                 (chain.chainId == EthereumChain.polygonTestnet.chainId))

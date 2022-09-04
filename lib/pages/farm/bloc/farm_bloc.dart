@@ -75,7 +75,8 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
           add(OnLoadStakedFarms());
         }
         debugPrint(
-            'Farms onAppDataChanges emitted status ${state.status} on chain ${state.chain.chainName}',);
+            'Farms onAppDataChanges emitted status ${state.status} on chain ${
+                state.chain.chainName}',);
       },
     );
   }
@@ -136,7 +137,8 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
           isChainSupported(walletRepository.currentWallet.chain);
       if (account.isNotEmpty && isSupportedChain) {
         debugPrint(
-            'Farms loading staked for owner ${state.farmOwner} for chain ${currentWallet.chain.chainName}',);
+            'Farms loading staked for owner ${state.farmOwner} for chain ${
+                currentWallet.chain.chainName}',);
         final stakedFarms = await repo.fetchStakedFarms(account);
         if (stakedFarms.isNotEmpty) {
           emit(

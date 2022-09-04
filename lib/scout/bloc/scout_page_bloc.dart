@@ -68,7 +68,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
       emit(state.copyWith(status: BlocStatus.loading));
       var supportedSport = SupportedSport.MLB;
       debugPrint(
-          'Fetching scout info for ${state.selectedChain.chainName}: ${state.selectedChain.chainId}',);
+          'Fetching scout info for ${state.selectedChain.chainName}: ${
+              state.selectedChain.chainId}',);
       switch (state.selectedChain) {
         case EthereumChain.polygonTestnet:
         case EthereumChain.polygonMainnet:

@@ -6,7 +6,8 @@
 // import 'package:mocktail/mocktail.dart';
 // import 'package:shared/shared.dart';
 //
-// class MockReactiveWeb3Client extends Mock implements ValueStream<Web3Client> {}
+// class MockReactiveWeb3Client extends Mock implements
+// ValueStream<Web3Client> {}
 //
 // void main() {
 //   group('EthereumWalletApiClient', () {
@@ -16,7 +17,8 @@
 //
 //     setUp(() {
 //       reactiveWeb3Client = MockReactiveWeb3Client();
-//       subject = EthereumWalletApiClient(reactiveWeb3Client: reactiveWeb3Client);
+//       subject = EthereumWalletApiClient(
+//       reactiveWeb3Client: reactiveWeb3Client);
 //     });
 //
 //     test('is unimplemented on mobile', () {

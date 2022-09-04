@@ -13,7 +13,8 @@
 //
 // class MockEthereum extends Mock implements Ethereum {}
 //
-// class MockReactiveWeb3Client extends Mock implements ValueStream<Web3Client> {}
+// class MockReactiveWeb3Client extends Mock implements
+// ValueStream<Web3Client> {}
 //
 // class MockWindow extends Mock implements html.Window {}
 //
