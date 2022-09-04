@@ -126,7 +126,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               height: 24,
               width: 40,
               decoration: boxDecoration(
-                  Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                  Colors.transparent, 100, 0.5, Colors.grey[400]!,),
               child: TextButton(
                 onPressed: () {
                   bloc

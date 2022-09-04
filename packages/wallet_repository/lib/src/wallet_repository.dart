@@ -25,7 +25,7 @@ class WalletRepository {
       final Wallet walletUpdate;
       if (cachedWalletAddress != null) {
         debugPrint(
-            'Wallet Repo: wallet address found in cache: $cachedWalletAddress');
+            'Wallet Repo: wallet address found in cache: $cachedWalletAddress',);
         walletUpdate = Wallet(
           address: (chain.isSupported)
               ? cachedWalletAddress

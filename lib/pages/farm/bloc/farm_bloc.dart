@@ -74,7 +74,8 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
         } else {
           add(OnLoadStakedFarms());
         }
-        debugPrint('Farms onAppDataChanges emitted status ${state.status} on chain ${state.chain.chainName}');
+        debugPrint(
+            'Farms onAppDataChanges emitted status ${state.status} on chain ${state.chain.chainName}',);
       },
     );
   }
@@ -131,9 +132,11 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
       );
       final currentWallet = walletRepository.currentWallet;
       final account = currentWallet.address;
-      final isSupportedChain = isChainSupported(walletRepository.currentWallet.chain);
+      final isSupportedChain =
+          isChainSupported(walletRepository.currentWallet.chain);
       if (account.isNotEmpty && isSupportedChain) {
-        debugPrint('Farms loading staked for owner ${state.farmOwner} for chain ${currentWallet.chain.chainName}');
+        debugPrint(
+            'Farms loading staked for owner ${state.farmOwner} for chain ${currentWallet.chain.chainName}',);
         final stakedFarms = await repo.fetchStakedFarms(account);
         if (stakedFarms.isNotEmpty) {
           emit(
@@ -144,14 +147,14 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
             ),
           );
         } else {
-          if(isSupportedChain) {
+          if (isSupportedChain) {
             emit(state.copy(status: BlocStatus.noData));
           } else {
             emit(state.copy(status: BlocStatus.unsupportedChain));
           }
         }
       } else {
-        if(isSupportedChain) {
+        if (isSupportedChain) {
           emit(state.copy(status: BlocStatus.noWallet));
         } else {
           emit(state.copy(status: BlocStatus.unsupportedChain));
@@ -195,13 +198,13 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
     final currentWallet = walletRepository.currentWallet;
     final isSupportedChain = isChainSupported(currentWallet.chain);
     if (currentWallet.isConnected) {
-      if(isSupportedChain) {
+      if (isSupportedChain) {
         status = BlocStatus.loading;
       } else {
         status = BlocStatus.unsupportedChain;
       }
     } else {
-      if(isSupportedChain) {
+      if (isSupportedChain) {
         status = BlocStatus.noWallet;
       } else {
         status = BlocStatus.unsupportedChain;

@@ -333,7 +333,9 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                       ),
                       child: TextButton(
                         onPressed: () {
-                          context.read<MyLiquidityBloc>().add(const FetchAllLiquidityPositionsRequested());
+                          context
+                              .read<MyLiquidityBloc>()
+                              .add(const FetchAllLiquidityPositionsRequested());
                           setState(() {
                             _tabController.index = 1;
                             token0Icon = tokenImage(token0);
@@ -401,7 +403,9 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
     return BlocListener<WalletBloc, WalletState>(
       listener: (context, state) {
         if (state.isWalletConnected) {
-          context.read<MyLiquidityBloc>().add(const WatchAppDataChangesStarted());
+          context
+              .read<MyLiquidityBloc>()
+              .add(const WatchAppDataChangesStarted());
         }
         if (state.isWalletDisconnected) {
           const NoWallet();
@@ -437,7 +441,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
           if (state.status == BlocStatus.error) {
             return const LoadingError();
           }
-    
+
           return SizedBox(
             width: _width * 0.88,
             height: _height * 0.7,
@@ -551,8 +555,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             onPressed: () {
                                               setState(() {
                                                 value = 25;
-                                                poolController.removePercentage =
-                                                    value;
+                                                poolController
+                                                    .removePercentage = value;
                                               });
                                             },
                                             child: Text(
@@ -566,7 +570,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                           ),
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.only(left: 10),
+                                          margin:
+                                              const EdgeInsets.only(left: 10),
                                           decoration: boxDecoration(
                                             Colors.grey[600]!,
                                             4,
@@ -577,8 +582,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             onPressed: () {
                                               setState(() {
                                                 value = 50;
-                                                poolController.removePercentage =
-                                                    value;
+                                                poolController
+                                                    .removePercentage = value;
                                               });
                                             },
                                             child: Text(
@@ -592,7 +597,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                           ),
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.only(left: 10),
+                                          margin:
+                                              const EdgeInsets.only(left: 10),
                                           decoration: boxDecoration(
                                             Colors.grey[600]!,
                                             4,
@@ -603,8 +609,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             onPressed: () {
                                               setState(() {
                                                 value = 75;
-                                                poolController.removePercentage =
-                                                    value;
+                                                poolController
+                                                    .removePercentage = value;
                                               });
                                             },
                                             child: Text(
@@ -618,7 +624,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                           ),
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.only(left: 10),
+                                          margin:
+                                              const EdgeInsets.only(left: 10),
                                           decoration: boxDecoration(
                                             Colors.grey[600]!,
                                             4,
@@ -629,8 +636,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             onPressed: () {
                                               setState(() {
                                                 value = 100;
-                                                poolController.removePercentage =
-                                                    value;
+                                                poolController
+                                                    .removePercentage = value;
                                               });
                                             },
                                             child: Text(
@@ -646,7 +653,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                       ],
                                     ),
                                     Slider(
-                                      thumbColor: Colors.amber.withOpacity(0.88),
+                                      thumbColor:
+                                          Colors.amber.withOpacity(0.88),
                                       inactiveColor:
                                           Colors.amber.withOpacity(0.5),
                                       activeColor: Colors.amber,
@@ -654,7 +662,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                       onChanged: (double newValue) {
                                         setState(() {
                                           value = newValue.roundToDouble();
-                                          poolController.removePercentage = value;
+                                          poolController.removePercentage =
+                                              value;
                                         });
                                       },
                                       max: 100,
@@ -695,7 +704,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             ),
                                           ),
                                           Text(
-                                            infoOfSelectedCard.lpTokenPairBalance,
+                                            infoOfSelectedCard
+                                                .lpTokenPairBalance,
                                             style: textStyle(
                                               Colors.white,
                                               16,
@@ -805,8 +815,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Container(
-                                              margin:
-                                                  const EdgeInsets.only(left: 30),
+                                              margin: const EdgeInsets.only(
+                                                  left: 30,),
                                               width: 35,
                                               height: 35,
                                               decoration: BoxDecoration(
@@ -831,7 +841,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             const Spacer(),
                                             Container(
                                               margin: const EdgeInsets.only(
-                                                  right: 30),
+                                                  right: 30,),
                                               width: _width * .20,
                                               child: Row(
                                                 mainAxisAlignment:
@@ -858,8 +868,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Container(
-                                              margin:
-                                                  const EdgeInsets.only(left: 30),
+                                              margin: const EdgeInsets.only(
+                                                  left: 30,),
                                               width: 35,
                                               height: 35,
                                               decoration: BoxDecoration(
@@ -884,7 +894,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             const Spacer(),
                                             Container(
                                               margin: const EdgeInsets.only(
-                                                  right: 30),
+                                                  right: 30,),
                                               width: _width * .20,
                                               child: Row(
                                                 mainAxisAlignment:
@@ -938,7 +948,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                       valueTwo: tokenTwoRemoveAmount,
                                       lpTokens:
                                           infoOfSelectedCard.lpTokenPairBalance,
-                                      shareOfPool: infoOfSelectedCard.shareOfPool,
+                                      shareOfPool:
+                                          infoOfSelectedCard.shareOfPool,
                                       percentRemoval: value,
                                       lpTokenName:
                                           '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}',
@@ -951,7 +962,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                       decoration: BoxDecoration(
                                         border: Border.all(color: Colors.amber),
                                         color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(100),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
                                       ),
                                       child: TextButton(
                                         onPressed: () {

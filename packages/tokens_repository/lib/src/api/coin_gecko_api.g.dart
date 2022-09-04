@@ -27,8 +27,8 @@ class _CoinGeckoAPI implements CoinGeckoAPI {
         _setStreamType<CoinData>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/athletex',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+                    queryParameters: queryParameters, data: _data,)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl),),);
     final value = CoinData.fromJson(_result.data!);
     return value;
   }

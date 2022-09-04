@@ -80,7 +80,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
           await repo.fetchAptSellInfo(aptAddress: selectedTokenAddress);
       final isSuccess = response.isLeft();
       final balance =
-            await wallet.getTotalBalanceForToken(selectedTokenAddress);
+          await wallet.getTotalBalanceForToken(selectedTokenAddress);
 
       if (isSuccess) {
         swapController

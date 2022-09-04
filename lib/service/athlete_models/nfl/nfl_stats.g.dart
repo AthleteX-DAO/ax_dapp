@@ -19,8 +19,7 @@ NFLStats _$NFLStatsFromJson(Map<String, dynamic> json) => NFLStats(
       timeStamp: json['timestamp'] as String,
     );
 
-Map<String, dynamic> _$NFLStatsToJson(NFLStats instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$NFLStatsToJson(NFLStats instance) => <String, dynamic>{
       'passingYards': instance.passingYards,
       'passingTouchdowns': instance.passingTouchdowns,
       'reception': instance.reception,

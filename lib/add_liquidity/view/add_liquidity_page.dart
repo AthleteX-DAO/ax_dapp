@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
-import 'package:ax_dapp/add_liquidity/models/pool_pair_info.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
@@ -61,7 +60,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
     return BlocListener<WalletBloc, WalletState>(
       listener: (context, state) {
         if (state.isWalletConnected || state.isWalletDisconnected) {
-          context.read<AddLiquidityBloc>().add(const WatchAppDataChangesStarted());
+          context
+              .read<AddLiquidityBloc>()
+              .add(const WatchAppDataChangesStarted());
           _tokenAmountOneController.clear();
           _tokenAmountTwoController.clear();
         }
@@ -77,7 +78,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
         listener: (context, state) {
           if (state.failure is NoPoolInfoFailure) {
             context.showWarningToast(
-              title: 'Action Error', 
+              title: 'Action Error',
               description: 'No Pool Info found',
             );
             return;
@@ -90,7 +91,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
           final balance1 = state.balance1;
           final token0 = state.token0;
           final token1 = state.token1;
-    
+
           if (widget.token0 != null && widget.token1 != null) {
             bloc
               ..add(Token0SelectionChanged(token0: widget.token0!))
@@ -99,7 +100,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ..token0 = null
               ..token1 = null;
           }
-    
+
           TextStyle textStyle(Color color, double size, bool isBold) {
             if (isBold) {
               return TextStyle(
@@ -116,7 +117,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               );
             }
           }
-    
+
           BoxDecoration boxDecoration(
             Color col,
             double rad,
@@ -129,7 +130,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               border: Border.all(color: borCol, width: borWid),
             );
           }
-    
+
           bool isTokenSelected(Token currentToken, int tknNum) {
             if (tknNum == 1) {
               return currentToken.address == token0.address;
@@ -138,7 +139,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               return currentToken.address == token1.address;
             }
           }
-    
+
           Widget createTokenElement(
             Token token,
             int tknNum,
@@ -150,8 +151,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Colors.grey[900],
-                  onSurface:
-                      isTokenSelected(token, tknNum) ? Colors.amber : Colors.grey,
+                  onSurface: isTokenSelected(token, tknNum)
+                      ? Colors.amber
+                      : Colors.grey,
                 ),
                 onPressed: isTokenSelected(token, tknNum)
                     ? null
@@ -225,7 +227,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ),
             );
           }
-    
+
           Widget showBalance(int tknNum) {
             return Container(
               padding: const EdgeInsets.only(right: 10),
@@ -236,7 +238,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ),
             );
           }
-    
+
           void onTokenInputChange(
             int tokenNumber,
             String tokenInput,
@@ -261,7 +263,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               }
             });
           }
-    
+
           Widget createTokenButton(
             int tknNum,
             double elementWdt,
@@ -283,7 +285,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               tkr = token1.ticker;
               _tokenImage = tokenImage(token1);
             }
-    
+
             return Container(
               height: 80,
               width: tokenContainerWdt,
@@ -441,7 +443,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ),
             );
           }
-    
+
           Widget addLiquidityToolTip(double elementWdt) {
             return Tooltip(
               triggerMode: TooltipTriggerMode.tap,
@@ -464,7 +466,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ),
             );
           }
-    
+
           Widget youWillReceiveToolTip() {
             return Tooltip(
               triggerMode: TooltipTriggerMode.tap,
@@ -487,7 +489,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ),
             );
           }
-    
+
           Widget poolShareDetailsHeader(double elementWdt, bool isAdvDetails) {
             return SizedBox(
               height: 30,
@@ -508,7 +510,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ),
             );
           }
-    
+
           Widget showYouReceived(String amountToReceive) {
             return Column(
               children: [
@@ -568,9 +570,10 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ],
             );
           }
-    
+
           Widget pricePoolShareDetails(double elementWdt, bool isAdvDetails) {
-            // element width refers to the width of the widget that is returned by
+            // element width refers to the width of the widget that is returned
+            // by
             // this method
             final _elementWdt = isWeb ? elementWdt * 0.85 : elementWdt * 0.9;
             return Padding(
@@ -653,7 +656,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     ),
                   ),
                   showYouReceived(poolInfo.recieveAmount),
-                  if (state.status == BlocStatus.success || state.status == BlocStatus.noData)
+                  if (state.status == BlocStatus.success ||
+                      state.status == BlocStatus.noData)
                     PoolApproveButton(
                       width: _elementWdt * 0.95 - 150,
                       tokenAmountOneController: _tokenAmountOneController,
@@ -685,7 +689,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ),
             );
           }
-    
+
           List<Widget> allLiquidityCardContents(
             double layoutHgt,
             double layoutWdt,
@@ -714,24 +718,25 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     // Bottom Token container
                     createTokenButton(2, elementWdt, _tokenAmountTwoController),
                     if (state.status == BlocStatus.noData) ...[
-                      const Text('Not Created - Please input both token amounts'),
+                      const Text(
+                          'Not Created - Please input both token amounts',),
                     ]
                   ],
                 ),
               ),
-              // Pool details side (add liq.) -right side of liquidity pool card,
+              // Pool details side (add liq.) -right side of liquidity pool card
               // bottom of card in mobile-
               pricePoolShareDetails(elementWdt, isAdvDetails),
             ];
           }
-    
+
           Widget allLiquidityLayout(double layoutHgt, double layoutWdt) {
             // Boolean to show advanced details
             // Using 87% of layoutHgt at the moment (76) Pool Card + (5) Title +
             // (6) Toggle Button
             const isAdvDetails = true;
             final allLiquidityCardHgt = isWeb ? 300.0 : layoutHgt * 0.76;
-    
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -746,7 +751,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     1.5,
                     Colors.grey[400]!,
                   ),
-                  // if isWeb return a row structure for all liquidity card, else
+                  // if isWeb return a row structure for all liquidity card,
+                  // else
                   // return a column
                   child: isWeb
                       ? Row(
@@ -771,7 +777,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ],
             );
           }
-    
+
           //Bloc builder return
           return allLiquidityLayout(layoutHgt, layoutWdt);
         },

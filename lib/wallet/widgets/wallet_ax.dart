@@ -11,11 +11,11 @@ class WalletAx extends StatelessWidget {
     return TextButton(
       onPressed: () {
         context.read<WalletBloc>().add(const UpdateAxDataRequested());
-          showDialog<void>(
+        showDialog<void>(
           context: context,
           builder: yourAXDialog,
         );
-      } ,
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

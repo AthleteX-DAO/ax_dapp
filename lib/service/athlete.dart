@@ -20,7 +20,7 @@ class Athlete {
   });
 
   factory Athlete.fromJson(Map<String, dynamic> json) => Athlete(
-    name: json['name'] as String,
+        name: json['name'] as String,
         id: json['id'] as int,
         team: json['team'] as String,
         position: json['position'] as String,

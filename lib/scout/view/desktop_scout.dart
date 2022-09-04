@@ -1,6 +1,5 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_positional_boolean_parameters
 
-import 'dart:developer';
 
 import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';

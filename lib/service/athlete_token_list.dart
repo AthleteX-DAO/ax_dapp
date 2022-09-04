@@ -2,7 +2,6 @@
 
 import 'dart:async';
 
-import 'package:ax_dapp/service/colors.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -150,7 +149,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                     SizedBox(
                       height: _height * .625 - 160,
                       child: (filteredTokens.length == 0)
-                          ? Center(
+                          ? const Center(
                               child: Text(
                                 'No tokens are supported.',
                                 style: TextStyle(

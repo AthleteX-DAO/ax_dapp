@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:shared/shared.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared/shared.dart';
 
 /// This is a repository that makes queries with the GraphQlClient
 /// primarily it should be employed by using or adding a usecase to subgraph/usecases
@@ -36,7 +36,6 @@ class SubGraphRepo {
       return Either.left(result.data);
     }
   }
-
 
   Future<Either<Map<String, dynamic>?, OperationException>> tryPostQuery(
     String query,

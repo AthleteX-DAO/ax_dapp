@@ -88,8 +88,8 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     }
     emit(state.copyWith(status: BlocStatus.loading, failure: Failure.none));
     poolController
-        ..updateTknAddress1(state.token0.address)
-        ..updateTknAddress2(state.token1.address);
+      ..updateTknAddress1(state.token0.address)
+      ..updateTknAddress2(state.token1.address);
     try {
       final balance0 =
           await _walletRepository.getTokenBalance(state.token0.address);
