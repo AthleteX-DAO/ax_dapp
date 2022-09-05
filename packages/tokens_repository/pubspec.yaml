@@ -15,7 +15,7 @@ dependencies:
 
 dependency_overrides:
   async: 2.8.0
-  meta: 1.7.0
+  meta: 1.8.0
   web3dart:
     git:
       url: https://github.com/narcodico/web3dart.git

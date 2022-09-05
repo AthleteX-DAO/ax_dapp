@@ -16,7 +16,7 @@ dependencies:
 
 dependency_overrides:
   async: 2.8.2
-  meta: 1.7.0
+  meta: 1.8.0
 
 dev_dependencies:
   mocktail: ^0.3.0
