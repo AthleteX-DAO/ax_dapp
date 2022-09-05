@@ -12,6 +12,10 @@ dependencies:
   shared:
     path: ../shared
 
+dependency_overrides:
+  async: 2.8.0
+  meta: 1.7.0
+
 dev_dependencies:
   meta: 1.7.0
   mocktail: ^0.3.0
