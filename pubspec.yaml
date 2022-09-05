@@ -72,7 +72,7 @@ dependencies:
 
 dependency_overrides:
   async: 2.8.0
-  meta: 1.8.0
+  meta: 1.7.0
   web3dart:
     git:
       ref: fix/build-runner
