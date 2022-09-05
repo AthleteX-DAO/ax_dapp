@@ -2,6 +2,7 @@ import 'package:ethereum_api/src/config/models/apt_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 
+/// gets the list of [mlbApts] along with supported addresses
 const mlbApts = [
   AptConfig(
     athleteId: 10002087,
