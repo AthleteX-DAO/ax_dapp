@@ -148,7 +148,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                     ),
                     SizedBox(
                       height: _height * .625 - 160,
-                      child: (filteredTokens.length == 0)
+                      child: (filteredTokens.isEmpty)
                           ? const Center(
                               child: Text(
                                 'No tokens are supported.',
