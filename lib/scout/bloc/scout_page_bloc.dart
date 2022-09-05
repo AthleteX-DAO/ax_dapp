@@ -81,7 +81,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
           supportedSport = SupportedSport.NFL;
           break;
 
-      // ignore: no_default_cases
+        // ignore: no_default_cases
         default: // unsupported
           supportedSport = SupportedSport.MLB;
           break;
