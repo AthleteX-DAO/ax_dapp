@@ -1,26 +1,33 @@
 import 'dart:typed_data';
 
-import 'package:ax_dapp/contracts/ERC20.g.dart';
-import 'package:ax_dapp/contracts/Pool.g.dart';
-import 'package:ax_dapp/contracts/PoolInfo.g.dart';
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
+import 'package:config_repository/config_repository.dart';
+import 'package:ethereum_api/erc20_api.dart';
+import 'package:ethereum_api/pool_api.dart';
+import 'package:ethereum_api/pool_info_api.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 import 'package:web3dart/web3dart.dart' as web3_dart;
-
-const String strPoolInfoAddress = '0x53590f017d73bAb31A6CbCBF6500A66D92fecFbE';
 
 class FarmController {
   // contructor with poolInfo from api
-  FarmController(FarmModel farm) {
+  FarmController({
+    required FarmModel farm,
+    required WalletRepository walletRepository,
+    required TokensRepository tokensRepository,
+    required ConfigRepository configRepository,
+    required StreamAppDataChangesUseCase streamAppDataChanges,
+  }) : _walletRepository = walletRepository {
     strAddress = farm.strAddress;
     strName = farm.strName;
-    athlete = farm.getAthleteTokenName();
-    sport = farm.getAthleteSport();
+    athlete =
+        tokensRepository.currentApts.findAptNameByAlias(farm.strStakedAlias);
+    sport =
+        tokensRepository.currentApts.findAptSportByAlias(farm.strStakedAlias);
     strAPR = double.parse(farm.strAPR).toStringAsFixed(2);
     strTVL = double.parse(farm.strTVL).toStringAsFixed(2);
     strStaked = RxString(farm.strStaked);
@@ -37,24 +44,36 @@ class FarmController {
     nRewardTokenDecimals = farm.nRewardTokenDecimals;
 
     final address = web3_dart.EthereumAddress.fromHex(strAddress);
-    var rpcUrl = controller.mainRPCUrl;
-    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
-      rpcUrl = Controller.supportedChains[controller.networkID.value]!;
-    }
-    rpcClient = web3_dart.Web3Client(rpcUrl, Client());
+
+    final appConfig = configRepository.initializeAppConfig();
+    rpcClient = appConfig.reactiveWeb3Client.value;
     contract = Pool(address: address, client: rpcClient);
+    final chain = walletRepository.currentChain.isSupported
+        ? walletRepository.currentChain
+        : walletRepository.defaultChain;
+    contractInfo = chain.createPoolInfo(rpcClient);
 
-    final poolInfoAddress =
-        web3_dart.EthereumAddress.fromHex(strPoolInfoAddress);
-    contractInfo = PoolInfo(address: poolInfoAddress, client: rpcClient);
-
-    final account = controller.publicAddress.value.hex;
+    final account = _walletRepository.currentWallet.address;
     updateStakedBalance(account);
     updateCurrentBalance();
+
+    streamAppDataChanges.appDataChanges.listen((appData) {
+      final chain = appData.chain;
+      final appConfig = appData.appConfig;
+      rpcClient = appConfig.reactiveWeb3Client.value;
+      contract = Pool(address: address, client: rpcClient);
+      contractInfo = chain.createPoolInfo(rpcClient);
+      final account = _walletRepository.currentWallet.address;
+      updateStakedBalance(account);
+      updateCurrentBalance();
+    });
   }
 
   // constructor from another farm
-  FarmController.fromFarm(FarmController farm) {
+  FarmController.fromFarm({
+    required FarmController farm,
+    required WalletRepository walletRepository,
+  }) : _walletRepository = walletRepository {
     strAddress = farm.strAddress;
     strName = farm.strName;
     athlete = farm.athlete;
@@ -78,17 +97,18 @@ class FarmController {
     stakingInfo = farm.stakingInfo;
     stakedInfo = farm.stakedInfo;
 
-    final account = controller.publicAddress.value.hex;
+    final account = _walletRepository.currentWallet.address;
     updateStakedBalance(account);
     updateCurrentBalance();
   }
+
+  final WalletRepository _walletRepository;
 
   // decalaration of member varibles
   late Pool contract;
   late PoolInfo contractInfo;
 
   Controller controller = Get.find();
-  WalletController wallet = Get.find();
   String? athlete;
   String strName = '';
   SupportedSport sport = SupportedSport.all;
@@ -120,9 +140,11 @@ class FarmController {
   ///
   /// @return {void}
   Future<void> updateCurrentBalance() async {
-    stakingInfo.value = await wallet.getTokenBalanceAsInfo(
-      strStakeTokenAddress,
-      nStakeTokenDecimals,
+    final rawBalance =
+        await _walletRepository.getRawTokenBalance(strStakeTokenAddress);
+    stakingInfo.value = UserInputInfo.fromBalance(
+      rawAmount: rawBalance,
+      decimals: nStakeTokenDecimals,
     );
   }
 

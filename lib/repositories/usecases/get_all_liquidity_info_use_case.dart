@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_dynamic_calls
 
-import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
+import 'package:ax_dapp/my_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/subgraph_error.dart';
 import 'package:ax_dapp/service/blockchain_models/liquidity_position.dart';
@@ -15,9 +15,9 @@ class GetAllLiquidityInfoUseCase {
   Future<Either<Success, SubgraphError>> fetchAllLiquidityPositions({
     required String walletAddress,
   }) async {
-    final walletId = walletAddress.toLowerCase();
     try {
-      final tokenPairData = await _graphRepo.queryAllPairsForWalletId(walletId);
+      final tokenPairData =
+          await _graphRepo.queryAllPairsForWalletId(walletAddress);
 
       if (tokenPairData.isLeft()) {
         final data = tokenPairData.getLeft().toNullable();

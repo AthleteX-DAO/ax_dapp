@@ -1,6 +1,5 @@
-import 'package:ax_dapp/service/token_list.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'farm_model.g.dart';
 
 @JsonSerializable()
@@ -48,21 +47,5 @@ class FarmModel {
   @override
   String toString() {
     return '''APTFarmInfo(name: "$strName", address: "$strAddress", stakedAlias: "$strStakedAlias", stakedSymbol: "$strStakedSymbol", rewardSymbol: "$strRewardSymbol", stakeTokenAddress: "$strStakeTokenAddress", rewardTokenAddress: "$strRewardTokenAddress", stakingModule: "$strStakingModule", apr: "$strAPR", tvl: "$strTVL", staked: "$strStaked", rewards: "$strRewards", stakeTokenPrice: "$strStakeTokenPrice", rewardTokenPrice: "$strRewardTokenPrice")''';
-  }
-
-  String? getAthleteTokenName() {
-    if (strStakedAlias.isEmpty) return null;
-    final tickers = strStakedAlias.split('-');
-    //we want athlete ticker not 'AX'
-    final athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
-    return TokenList.mapTickerToName(athleteTicker);
-  }
-
-  SupportedSport getAthleteSport() {
-    if (strStakedAlias.isEmpty) return SupportedSport.all;
-    final tickers = strStakedAlias.split('-');
-    //we want athlete ticker not 'AX'
-    final athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
-    return TokenList.mapTickerToSport(athleteTicker);
   }
 }

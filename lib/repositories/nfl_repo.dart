@@ -4,7 +4,7 @@ import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
 import 'package:ax_dapp/service/supported_athletes/supported_nfl_athletes.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class NFLRepo extends SportsRepo<NFLAthlete> {
   NFLRepo(NFLAthleteAPI api)

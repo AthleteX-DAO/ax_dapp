@@ -10,23 +10,21 @@ class TokenSwapInfo extends Equatable {
     required this.totalFee,
   });
 
-  factory TokenSwapInfo.empty() {
-    return const TokenSwapInfo(
-      toPrice: 0,
-      fromPrice: 0,
-      minimumReceived: 0,
-      priceImpact: 0,
-      receiveAmount: 0,
-      totalFee: 0,
-    );
-  }
-
   final double toPrice;
   final double fromPrice;
   final double minimumReceived;
   final double priceImpact;
   final double receiveAmount;
   final double totalFee;
+
+  static const empty = TokenSwapInfo(
+    toPrice: 0,
+    fromPrice: 0,
+    minimumReceived: 0,
+    priceImpact: 0,
+    receiveAmount: 0,
+    totalFee: 0,
+  );
 
   @override
   List<Object?> get props => [

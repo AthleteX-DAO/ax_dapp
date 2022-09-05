@@ -1,320 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: avoid_positional_boolean_parameters
-//ignore_for_file: lines_longer_than_80_chars
-import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
+
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-Dialog connectMetamaskDialog(BuildContext context) {
-  final _height = MediaQuery.of(context).size.height;
-  final _width = MediaQuery.of(context).size.width;
-  var wid = 450.0;
-  var hgt = 200.0;
-  const edge = 75.0;
-  if (_width < 405) wid = _width;
-  if (_height < 505) hgt = _height * 0.45;
-  final wid_child = wid - edge;
-  return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Container(
-      height: hgt,
-      width: wid,
-      padding: const EdgeInsets.all(20),
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Metamask wallet',
-                style: textStyle(Colors.white, 18, true),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.close,
-                  size: 30,
-                  color: Colors.white,
-                ),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Text(
-                "Couldn't find MetaMask extension",
-                style: TextStyle(color: Colors.grey[400]),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 40),
-                width: wid_child,
-                height: 45,
-                decoration: boxDecoration(
-                  Colors.transparent,
-                  100,
-                  2,
-                  Colors.purple[900]!,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    launchUrl(Uri.parse('https://metamask.io/download/'));
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Install MetaMask extension',
-                    style: textStyle(Colors.white, 16, false),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-//dynamic
-Dialog wrongNetworkDialog(BuildContext context) {
-  final _height = MediaQuery.of(context).size.height;
-  final _width = MediaQuery.of(context).size.width;
-  var wid = 450.0;
-  var hgt = 200.0;
-  const edge = 75.0;
-  if (_width < 405) wid = _width;
-  if (_height < 505) hgt = _height * 0.45;
-  final wid_child = wid - edge;
-  return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Container(
-      height: hgt,
-      width: wid,
-      padding: const EdgeInsets.all(20),
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Wrong Network',
-                style: textStyle(Colors.white, 18, true),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.close,
-                  size: 30,
-                  color: Colors.white,
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 40),
-                width: wid_child,
-                height: 45,
-                decoration: boxDecoration(
-                  Colors.transparent,
-                  100,
-                  2,
-                  Colors.purple[900]!,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    // controller.switchNetwork();
-                  },
-                  child: Text(
-                    'Switch to Matic Network',
-                    style: textStyle(Colors.white, 16, false),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-//dynamic
-Dialog walletDialog(BuildContext context) {
-  final controller = Get.find<Controller>();
-  final walletController = Get.find<WalletController>();
-  final getAxBalance = GetTotalTokenBalanceUseCase(walletController);
-  return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: LayoutBuilder(
-      builder: (context, constraints) => Container(
-        constraints: const BoxConstraints(minHeight: 235, maxHeight: 250),
-        height: constraints.maxHeight * 0.26,
-        width: constraints.maxWidth * 0.27,
-        padding: const EdgeInsets.all(20),
-        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Choose Wallet',
-                  style: textStyle(Colors.white, 18, true),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    Icons.close,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30),
-                  width: constraints.maxWidth < 450
-                      ? constraints.maxWidth * 0.62
-                      : constraints.maxWidth * 0.22,
-                  height: 45,
-                  decoration: boxDecoration(
-                    Colors.transparent,
-                    100,
-                    2,
-                    Colors.grey[400]!,
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      controller.connect().then((response) async {
-                        if (response == -1) {
-                          // No MetaMask
-                          Navigator.pop(context);
-                          await showDialog<void>(
-                            context: context,
-                            builder: connectMetamaskDialog,
-                          );
-                        } else if (response == 0) {
-                          // Wrong network
-                          Navigator.pop(context);
-                          await showDialog<void>(
-                            context: context,
-                            builder: wrongNetworkDialog,
-                          );
-                        } else {
-                          Navigator.pop(context);
-                          context
-                              .read<TrackingCubit>()
-                              .onConnectWalletSuccessful(
-                                publicAddress:
-                                    controller.publicAddress.toString(),
-                                axUnits:
-                                    '"${await getAxBalance.getTotalAxBalance()} AX"',
-                              );
-                          await walletController.getTokenMetrics();
-                          await walletController.getYourAxBalance();
-                        }
-                      });
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: 30,
-                          width: 30,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/fox.png'),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'Metamask',
-                          style: textStyle(Colors.white, 16, false),
-                        ),
-                        //empty container
-                        Container(
-                          margin: const EdgeInsets.only(left: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Visibility(
-              visible: !kIsWeb,
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 4),
-                width: constraints.maxWidth < 450
-                    ? constraints.maxWidth * 0.62
-                    : constraints.maxWidth * 0.22,
-                height: 45,
-                decoration: boxDecoration(
-                  Colors.transparent,
-                  100,
-                  2,
-                  Colors.grey[400]!,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (context) => const MobileLoginPage(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Add/Create wallet',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
 
 // dynamic
 Dialog confirmTransaction(
@@ -612,7 +305,6 @@ Dialog transactionConfirmed(BuildContext context) {
 
 // dynamic
 Dialog yourAXDialog(BuildContext context) {
-  final walletController = Get.find<WalletController>();
   final _height = MediaQuery.of(context).size.height;
   final _width = MediaQuery.of(context).size.width;
   var wid = 400.0;
@@ -651,9 +343,9 @@ Dialog yourAXDialog(BuildContext context) {
                       size: 30,
                     ),
                     onPressed: () {
-                      walletController
-                        ..getTokenMetrics()
-                        ..getYourAxBalance();
+                      context
+                          .read<WalletBloc>()
+                          .add(const UpdateAxDataRequested());
                       Navigator.pop(context);
                     },
                   ),
@@ -675,9 +367,12 @@ Dialog yourAXDialog(BuildContext context) {
             Container(
               height: 65,
               alignment: Alignment.center,
-              child: Text(
-                '${walletController.yourBalance} AX',
-                style: textStyle(Colors.white, 20, false),
+              child: const AxBalance(
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'OpenSans',
+                  fontSize: 20,
+                ),
               ),
             ),
             SizedBox(
@@ -696,13 +391,10 @@ Dialog yourAXDialog(BuildContext context) {
                           color: Colors.grey[600],
                         ),
                       ),
-                      Obx(
-                        () => Text(
-                          '${walletController.yourBalance} AX',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
+                      AxBalance(
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
                         ),
                       ),
                     ],
@@ -730,13 +422,7 @@ Dialog yourAXDialog(BuildContext context) {
                           color: Colors.grey[600],
                         ),
                       ),
-                      Text(
-                        '${walletController.axPrice} USD',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      )
+                      const AxPrice(),
                     ],
                   ),
                   Row(
@@ -749,13 +435,7 @@ Dialog yourAXDialog(BuildContext context) {
                           color: Colors.grey[600],
                         ),
                       ),
-                      Text(
-                        '${walletController.axCirculation}',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
+                      const AxCirculation(),
                     ],
                   ),
                   Row(
@@ -768,13 +448,7 @@ Dialog yourAXDialog(BuildContext context) {
                           color: Colors.grey[600],
                         ),
                       ),
-                      Text(
-                        '${walletController.axTotalSupply}',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[600],
-                        ),
-                      ),
+                      const AxTotalSupply(),
                     ],
                   ),
                 ],
@@ -796,7 +470,16 @@ Dialog yourAXDialog(BuildContext context) {
                       Colors.amber[600]!,
                     ),
                     child: TextButton(
-                      onPressed: walletController.buyAX,
+                      onPressed: () {
+                        // TODO(KevinKamto): Update this when we need sushiswap
+                        // connection
+                        // String axEth =
+                        //     "https://app.sushi.com/swap?inputCurrency=0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df&outputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
+                        const axEthUniswap =
+                            'https://app.uniswap.org/#/swap?chain=polygon';
+
+                        launchUrl(Uri.parse(axEthUniswap));
+                      },
                       child: Text(
                         'Buy AX',
                         style: textStyle(Colors.black, 14, true),
@@ -813,221 +496,295 @@ Dialog yourAXDialog(BuildContext context) {
   );
 }
 
-// dynamic
-Dialog accountDialog(BuildContext context) {
-  // double wid = 475;
-  // double hgt = 200;
-  final controller = Get.find<Controller>();
-  final accNum = '${controller.publicAddress}';
-  final _height = MediaQuery.of(context).size.height;
-  final _width = MediaQuery.of(context).size.width;
-  var wid = 400.0;
-  const edge = 40.0;
-  const edge2 = 60.0;
-  if (_width < 405) wid = _width;
-  var hgt = 240.0;
-  if (_height < 235) hgt = _height;
+class AxPrice extends StatelessWidget {
+  const AxPrice({super.key});
 
-  var retStr = accNum;
-  if (accNum.length > 15) {
-    retStr =
-        '''${accNum.substring(0, 7)}...${accNum.substring(accNum.length - 5, accNum.length)}''';
+  @override
+  Widget build(BuildContext context) {
+    final price = context.select((WalletBloc bloc) => bloc.state.axData.price);
+    final axPrice = price ?? '-';
+    return Text(
+      '$axPrice USD',
+      style: TextStyle(
+        fontSize: 15,
+        color: Colors.grey[600],
+      ),
+    );
   }
+}
 
-  return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Container(
-      height: hgt,
-      width: wid,
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      alignment: Alignment.center,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // title
-            SizedBox(
-              width: wid - edge,
-              height: 45,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Account', style: textStyle(Colors.white, 20, false)),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 26,
+class AxCirculation extends StatelessWidget {
+  const AxCirculation({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final circulatingSupply = context
+        .select((WalletBloc bloc) => bloc.state.axData.circulatingSupply);
+    final axCirculation = circulatingSupply ?? '-';
+    return Text(
+      '$axCirculation',
+      style: TextStyle(
+        fontSize: 15,
+        color: Colors.grey[600],
+      ),
+    );
+  }
+}
+
+class AxTotalSupply extends StatelessWidget {
+  const AxTotalSupply({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final totalSupply =
+        context.select((WalletBloc bloc) => bloc.state.axData.totalSupply);
+    final axTotalSupply = totalSupply ?? '-';
+    return Text(
+      '$axTotalSupply',
+      style: TextStyle(
+        fontSize: 15,
+        color: Colors.grey[600],
+      ),
+    );
+  }
+}
+
+class AxBalance extends StatelessWidget {
+  const AxBalance({super.key, required this.style});
+
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context) {
+    final balance =
+        context.select((WalletBloc bloc) => bloc.state.axData.balance);
+    final axBalance = balance ?? '-';
+    return Text('$axBalance AX', style: style);
+  }
+}
+
+class AccountDialog extends StatelessWidget {
+  const AccountDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final walletAddress =
+        context.select((WalletBloc bloc) => bloc.state.walletAddress);
+    final _height = MediaQuery.of(context).size.height;
+    final _width = MediaQuery.of(context).size.width;
+    var wid = 400.0;
+    const edge = 40.0;
+    const edge2 = 60.0;
+    if (_width < 405) wid = _width;
+    var hgt = 240.0;
+    if (_height < 235) hgt = _height;
+
+    var formattedWalletAddress = '';
+    if (walletAddress.isNotEmpty) {
+      final walletAddressPrefix = walletAddress.substring(0, 7);
+      final walletAddressSuffix = walletAddress.substring(
+        walletAddress.length - 5,
+        walletAddress.length,
+      );
+      formattedWalletAddress = '$walletAddressPrefix...$walletAddressSuffix';
+    }
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Container(
+        height: hgt,
+        width: wid,
+        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+        alignment: Alignment.center,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // title
+              SizedBox(
+                width: wid - edge,
+                height: 45,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Account', style: textStyle(Colors.white, 20, false)),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 26,
+                      ),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            // inner box
-            Container(
-              width: wid - edge,
-              height: 145,
-              decoration: boxDecoration(
-                Colors.transparent,
-                14,
-                .5,
-                Colors.grey[400]!,
-              ),
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    width: wid - edge2,
-                    child: Row(
+              // inner box
+              Container(
+                width: wid - edge,
+                height: 145,
+                decoration: boxDecoration(
+                  Colors.transparent,
+                  14,
+                  .5,
+                  Colors.grey[400]!,
+                ),
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: wid - edge2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: 65,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Connected With Metamask',
+                                  style: textStyle(
+                                    Colors.grey[600]!,
+                                    13,
+                                    false,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.account_balance_wallet,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      formattedWalletAddress,
+                                      style: textStyle(Colors.white, 20, false),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 65,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // TODO(anyone): https://athletex.atlassian.net/browse/AX-734
+                                // There's only MetaMask currently supported,
+                                // so there's no point in having a change
+                                // wallet button yet.
+
+                                // Container(
+                                //   width: 75,
+                                //   height: 25,
+                                //   decoration: boxDecoration(
+                                //      Colors.transparent,
+                                //       100, 0, Colors.blue[800]!),
+                                //   child: TextButton(
+                                //     onPressed: () {
+                                //       controller.changeAddress();
+                                //     },
+                                //     child: Text(
+                                //       "Change",
+                                //       style: textStyle(
+                                //           Colors.blue[300]!, 10, true),
+                                //     ),
+                                //   ),
+                                // ),
+                                Container(
+                                  width: 75,
+                                  height: 25,
+                                  decoration: boxDecoration(
+                                    Colors.transparent,
+                                    100,
+                                    0,
+                                    Colors.red[900]!,
+                                  ),
+                                  child: TextButton(
+                                    onPressed: () {
+                                      context.read<WalletBloc>().add(
+                                            const DisconnectWalletRequested(),
+                                          );
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Disconnect',
+                                      style: textStyle(
+                                        Colors.red[900]!,
+                                        10,
+                                        true,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          height: 65,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            // crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Connected With Metamask',
-                                style: textStyle(
-                                  Colors.grey[600]!,
-                                  13,
-                                  false,
-                                ),
+                        TextButton(
+                          onPressed: () {
+                            Clipboard.setData(
+                              ClipboardData(
+                                text: walletAddress,
                               ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.account_balance_wallet,
-                                    color: Colors.white,
-                                  ),
-                                  Text(
-                                    retStr,
-                                    style: textStyle(Colors.white, 20, false),
-                                  ),
-                                ],
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const Icon(
+                                Icons.filter_none,
+                                color: Colors.grey,
+                              ),
+                              Text(
+                                'Copy Address',
+                                style: textStyle(Colors.grey[400]!, 15, false),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 65,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        TextButton(
+                          onPressed: () {
+                            final urlString =
+                                'https://polygonscan.com/address/$walletAddress';
+                            launchUrl(Uri.parse(urlString));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              // TODO(anyone): https://athletex.atlassian.net/browse/AX-734
-                              // There's only MetaMask currently supported,
-                              // so there's no point in having a change
-                              // wallet button yet.
-
-                              // Container(
-                              //   width: 75,
-                              //   height: 25,
-                              //   decoration: boxDecoration(Colors.transparent,
-                              //       100, 0, Colors.blue[800]!),
-                              //   child: TextButton(
-                              //     onPressed: () {
-                              //       controller.changeAddress();
-                              //     },
-                              //     child: Text(
-                              //       "Change",
-                              //       style: textStyle(
-                              //           Colors.blue[300]!, 10, true),
-                              //     ),
-                              //   ),
-                              // ),
-                              Container(
-                                width: 75,
-                                height: 25,
-                                decoration: boxDecoration(
-                                  Colors.transparent,
-                                  100,
-                                  0,
-                                  Colors.red[900]!,
-                                ),
-                                child: TextButton(
-                                  onPressed: () {
-                                    controller.disconnect();
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'Disconnect',
-                                    style: textStyle(
-                                      Colors.red[900]!,
-                                      10,
-                                      true,
-                                    ),
-                                  ),
-                                ),
+                              const Icon(
+                                Icons.open_in_new,
+                                color: Colors.grey,
+                              ),
+                              Text(
+                                'Show on Polygonscan',
+                                style: textStyle(Colors.grey[400]!, 15, false),
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Clipboard.setData(
-                            ClipboardData(
-                              text: '${controller.publicAddress}',
-                            ),
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Icon(
-                              Icons.filter_none,
-                              color: Colors.grey,
-                            ),
-                            Text(
-                              'Copy Address',
-                              style: textStyle(Colors.grey[400]!, 15, false),
-                            ),
-                          ],
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          final address =
-                              controller.publicAddress.value.toString();
-                          final urlString =
-                              'https://polygonscan.com/address/$address';
-                          launchUrl(Uri.parse(urlString));
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Icon(
-                              Icons.open_in_new,
-                              color: Colors.grey,
-                            ),
-                            Text(
-                              'Show on Polygonscan',
-                              style: textStyle(Colors.grey[400]!, 15, false),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 TextStyle textStyle(Color color, double size, bool isBold) {

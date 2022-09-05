@@ -9,10 +9,10 @@ class Athlete {
     required this.team,
     required this.position,
     required this.passingYards,
-    required this.passingTouchDowns,
+    required this.passingTouchdowns,
     required this.reception,
-    required this.receiveYards,
-    required this.receiveTouch,
+    required this.receivingYards,
+    required this.receivingTouchdowns,
     required this.rushingYards,
     required this.war,
     required this.scaledPrice,
@@ -25,10 +25,10 @@ class Athlete {
         team: json['team'] as String,
         position: json['position'] as String,
         passingYards: json['passingYards'] as double,
-        passingTouchDowns: json['passingTouchDowns'] as double,
+        passingTouchdowns: json['passingTouchdowns'] as double,
         reception: json['reception'] as double,
-        receiveYards: json['receiveYards'] as double,
-        receiveTouch: json['receiveTouch'] as double,
+        receivingYards: json['receivingYards'] as double,
+        receivingTouchdowns: json['receivingTouchdowns'] as double,
         rushingYards: json['rushingYards'] as double,
         time: json['timestamp'] as String,
         war: json['price'] as double,
@@ -40,10 +40,10 @@ class Athlete {
   final String team;
   final String position;
   final double passingYards;
-  final double passingTouchDowns;
+  final double passingTouchdowns;
   final double reception;
-  final double receiveYards;
-  final double receiveTouch;
+  final double receivingYards;
+  final double receivingTouchdowns;
   final double rushingYards;
   final double war;
   final double scaledPrice;

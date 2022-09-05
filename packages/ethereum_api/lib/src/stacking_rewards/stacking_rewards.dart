@@ -1,0 +1,1 @@
+export 'StakingRewards.g.dart';

@@ -6,7 +6,9 @@ import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class StakeDialog extends StatefulWidget {
   const StakeDialog({
@@ -41,7 +43,10 @@ class _StakeDialogState extends State<StakeDialog> {
     final wid = widget.isWeb ? 390.0 : widget.layoutWdt;
     final hgt = _height < 455.0 ? _height : 450.0;
     const dialogHorPadding = 30.0;
-    final selectedFarm = FarmController.fromFarm(widget.farm);
+    final selectedFarm = FarmController.fromFarm(
+      farm: widget.farm,
+      walletRepository: context.read<WalletRepository>(),
+    );
     final totalStakedBalance = 0.0.obs;
     return Dialog(
       //remove inset padding to increase width of child widget

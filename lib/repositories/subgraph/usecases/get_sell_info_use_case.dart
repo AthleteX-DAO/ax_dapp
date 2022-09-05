@@ -1,7 +1,7 @@
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 /// This is an abstraction on the GetSwapInfoUseCase to request
 /// PairInfo in the context of a "Sell" scenario; Because every sell
@@ -11,8 +11,13 @@ import 'package:fpdart/fpdart.dart';
 const String _noSellInfoErrorMessage = 'No sell info found';
 
 class GetSellInfoUseCase {
-  GetSellInfoUseCase(GetSwapInfoUseCase repo) : _repo = repo;
+  GetSellInfoUseCase({
+    required TokensRepository tokensRepository,
+    required GetSwapInfoUseCase repo,
+  })  : _tokensRepository = tokensRepository,
+        _repo = repo;
 
+  final TokensRepository _tokensRepository;
   final GetSwapInfoUseCase _repo;
 
   Future<Either<Success, Error>> fetchAptSellInfo({
@@ -21,9 +26,10 @@ class GetSellInfoUseCase {
   }) async {
     try {
       final newAptInput = aptInput ?? 0.0;
+      final currentAxt = _tokensRepository.currentAxt;
       final response = await _repo.fetchSwapInfo(
         tokenFrom: aptAddress,
-        tokenTo: AXT.polygonAddress,
+        tokenTo: currentAxt.address,
         fromInput: newAptInput,
       );
       final isSuccess = response.isLeft();

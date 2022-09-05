@@ -8,26 +8,26 @@ part of 'nfl_stats.dart';
 
 NFLStats _$NFLStatsFromJson(Map<String, dynamic> json) => NFLStats(
       passingYards: (json['passingYards'] as num).toDouble(),
-      passingTouchDowns: (json['passingTouchDowns'] as num).toDouble(),
+      passingTouchdowns: (json['passingTouchdowns'] as num).toDouble(),
       reception: (json['reception'] as num).toDouble(),
-      receiveYards: (json['receiveYards'] as num).toDouble(),
-      receiveTouch: (json['receiveTouch'] as num).toDouble(),
+      receivingYards: (json['receivingYards'] as num).toDouble(),
+      receivingTouchdowns: (json['receivingTouchdowns'] as num).toDouble(),
       rushingYards: (json['rushingYards'] as num).toDouble(),
-      offensiveSnapsPlayed: (json['OffensiveSnapsPlayed'] as num).toDouble(),
-      defensiveSnapsPlayed: (json['DefensiveSnapsPlayed'] as num).toDouble(),
+      offensiveSnapsPlayed: (json['offensiveSnapsPlayed'] as num).toDouble(),
+      defensiveSnapsPlayed: (json['defensiveSnapsPlayed'] as num).toDouble(),
       price: (json['price'] as num).toDouble(),
       timeStamp: json['timestamp'] as String,
     );
 
 Map<String, dynamic> _$NFLStatsToJson(NFLStats instance) => <String, dynamic>{
       'passingYards': instance.passingYards,
-      'passingTouchDowns': instance.passingTouchDowns,
+      'passingTouchdowns': instance.passingTouchdowns,
       'reception': instance.reception,
-      'receiveYards': instance.receiveYards,
-      'receiveTouch': instance.receiveTouch,
+      'receivingYards': instance.receivingYards,
+      'receivingTouchdowns': instance.receivingTouchdowns,
       'rushingYards': instance.rushingYards,
-      'OffensiveSnapsPlayed': instance.offensiveSnapsPlayed,
-      'DefensiveSnapsPlayed': instance.defensiveSnapsPlayed,
+      'offensiveSnapsPlayed': instance.offensiveSnapsPlayed,
+      'defensiveSnapsPlayed': instance.defensiveSnapsPlayed,
       'price': instance.price,
       'timestamp': instance.timeStamp,
     };

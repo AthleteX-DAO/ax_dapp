@@ -1,27 +1,30 @@
 // ignore_for_file: only_throw_errors, avoid_dynamic_calls
 
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
-import 'package:ax_dapp/service/graphql/gysr_api.dart';
+import 'package:ethereum_api/gysr_api.dart';
 
 class GetFarmDataUseCase {
-  final GysrApi gysrApi = GysrApi();
+  GetFarmDataUseCase({required GysrApiClient gysrApiClient})
+      : _gysrApiClient = gysrApiClient;
+
+  final GysrApiClient _gysrApiClient;
 
   Future<List<FarmModel>> fetchAllFarms(String owner) async {
     try {
-      final response = await gysrApi.fetchAllFarms(owner);
+      final response = await _gysrApiClient.fetchAllFarms(owner);
       if (response.hasException) throw response.exception.toString();
       return _mapQueryResultToFarmModel(
         response.data!['pools'] as List<dynamic>,
         false,
       );
-    } catch (e) {
-      return List.empty();
+    } catch (error) {
+      return const [];
     }
   }
 
   Future<List<FarmModel>> fetchStakedFarms(String account) async {
     try {
-      final response = await gysrApi.fetchStakedFarms(account);
+      final response = await _gysrApiClient.fetchStakedFarms(account);
       if (response.hasException) {
         throw response.exception.toString();
       }
@@ -29,8 +32,8 @@ class GetFarmDataUseCase {
         response.data!['user']!['positions'] as List<dynamic>,
         true,
       );
-    } catch (e) {
-      return List.empty();
+    } catch (_) {
+      return const [];
     }
   }
 

@@ -1,12 +1,13 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'dart:async';
+
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/token.dart';
-import 'package:ax_dapp/service/token_list.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class AthleteTokenList extends StatefulWidget {
   const AthleteTokenList(
@@ -31,25 +32,46 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
 
   String keyword = '';
   SupportedSport selectedSport = SupportedSport.all;
-  List<Token> tokenListFilter = [];
+  late List<Token> tokens;
+  late List<Token> filteredTokens;
+
+  late StreamSubscription<List<Token>> tokensSubscription;
 
   @override
   void initState() {
     super.initState();
     tokenNumber = widget.tknNum;
-    tokenListFilter = TokenList.tokenList;
+    filteredTokens = [...context.read<TokensRepository>().currentTokens];
+    tokensSubscription =
+        context.read<TokensRepository>().tokensChanges.listen(updateTokens);
+  }
+
+  @override
+  void dispose() {
+    tokensSubscription.cancel();
+    super.dispose();
   }
 
   void setSelectedSport(SupportedSport sport) {
     setState(() {
       selectedSport = sport;
     });
-    updateTokenList();
+    updateFilteredApts();
   }
 
-  void updateTokenList() {
+  void updateTokens(List<Token> tokens) {
+    if (mounted) {
+      this.tokens = [...tokens];
+      updateFilteredApts();
+    }
+  }
+
+  void updateFilteredApts() {
+    if (!mounted) {
+      return;
+    }
     setState(() {
-      tokenListFilter = TokenList.tokenList.where((token) {
+      filteredTokens = tokens.where((token) {
         final flagKeyword =
             token.ticker.toUpperCase().contains(keyword.toUpperCase()) ||
                 token.name.toUpperCase().contains(keyword.toUpperCase());
@@ -126,16 +148,26 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                     ),
                     SizedBox(
                       height: _height * .625 - 160,
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: tokenListFilter.length,
-                        itemBuilder: (context, index) {
-                          return widget.createTokenElement(
-                            tokenListFilter[index],
-                            tokenNumber,
-                          );
-                        },
-                      ),
+                      child: (filteredTokens.isEmpty)
+                          ? const Center(
+                              child: Text(
+                                'No tokens are supported.',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: filteredTokens.length,
+                              itemBuilder: (context, index) {
+                                return widget.createTokenElement(
+                                  filteredTokens[index],
+                                  tokenNumber,
+                                );
+                              },
+                            ),
                     ),
                   ],
                 ),
@@ -167,7 +199,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                 setState(() {
                   keyword = value;
                 });
-                updateTokenList();
+                updateFilteredApts();
               },
               decoration: InputDecoration(
                 border: InputBorder.none,

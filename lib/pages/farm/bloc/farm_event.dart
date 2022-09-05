@@ -5,6 +5,8 @@ class FarmEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class WatchAppDataChangesStarted extends FarmEvent {}
+
 class OnLoadFarms extends FarmEvent {}
 
 class OnLoadStakedFarms extends FarmEvent {}

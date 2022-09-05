@@ -1,73 +1,123 @@
+import 'dart:async';
+
+import 'package:ax_dapp/pages/trade/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/token.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/shared.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'trade_page_event.dart';
 part 'trade_page_state.dart';
 
-const _somethingWentWrong = 'Something went wrong';
-
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   TradePageBloc({
+    required WalletRepository walletRepository,
+    required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
-    required this.controller,
     required this.swapController,
-    required this.walletController,
     required this.isBuyAX,
-  }) : super(TradePageState.initial(controller, isBuyAX)) {
-    on<PageRefreshEvent>(_mapRefreshEventToState);
+  })  : _walletRepository = walletRepository,
+        _streamAppDataChanges = streamAppDataChanges,
+        super(
+          TradePageState.initial(
+            isBuyAX: isBuyAX,
+            chain: walletRepository.currentChain,
+          ),
+        ) {
+    on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
+    on<FetchTradeInfoRequested>(_onFetchTradeInfoRequested);
     on<MaxSwapTapEvent>(_mapMaxSwapTapEventToState);
     on<NewTokenFromInputEvent>(_mapNewTokenFromInputEventToState);
     on<NewTokenToInputEvent>(_mapNewTokenToInputEventToState);
     on<SetTokenFrom>(_mapSetTokenFromEventToState);
     on<SetTokenTo>(_mapSetTokenToEventToState);
     on<SwapTokens>(_mapSwapTokensEventToState);
+
+    add(WatchAppDataChangesStarted());
+    add(FetchTradeInfoRequested());
   }
 
+  final WalletRepository _walletRepository;
+  final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetSwapInfoUseCase repo;
-  final Controller controller;
   final SwapController swapController;
-  final WalletController walletController;
   final bool isBuyAX;
 
-  Future<void> _mapRefreshEventToState(
-    PageRefreshEvent event,
+  Future<void> _onWatchAppDataChangesStarted(
+    WatchAppDataChangesStarted _,
     Emitter<TradePageState> emit,
   ) async {
+    await emit.onEach<AppData>(
+      _streamAppDataChanges.appDataChanges,
+      onData: (appData) {
+        final appConfig = appData.appConfig;
+        swapController
+          ..dex = appConfig.reactiveDexClient.value
+          ..aptRouter = appConfig.reactiveAptRouterClient.value;
+        swapController.controller.credentials =
+            _walletRepository.credentials.value;
+
+        final tradeTokens = appData.chain.computeTradeTokens(
+          isBuyAX: isBuyAX,
+        );
+        emit(
+          state.copyWith(
+            tokenFrom: tradeTokens.tokenFrom,
+            tokenTo: tradeTokens.tokenTo,
+          ),
+        );
+        add(FetchTradeInfoRequested());
+      },
+    );
+  }
+
+  FutureOr<void> _onFetchTradeInfoRequested(
+    FetchTradeInfoRequested event,
+    Emitter<TradePageState> emit,
+  ) async {
+    if (_walletRepository.currentWallet.isDisconnected) {
+      emit(
+        state.copyWith(
+          status: BlocStatus.error,
+          failure: DisconnectedWalletFailure(),
+          tokenFromBalance: 0,
+          tokenToBalance: 0,
+          swapInfo: TokenSwapInfo.empty,
+        ),
+      );
+      return;
+    }
     emit(
       state.copyWith(
         status: BlocStatus.loading,
-        errorMessage: '',
+        failure: Failure.none,
       ),
     );
     try {
       final tokenFromBalance =
-          await walletController.getTokenBalance(state.tokenFrom.address.value);
+          await _walletRepository.getTokenBalance(state.tokenFrom.address);
       final tokenToBalance =
-          await walletController.getTokenBalance(state.tokenTo.address.value);
+          await _walletRepository.getTokenBalance(state.tokenTo.address);
       emit(
         state.copyWith(
-          tokenFromBalance: double.parse(tokenFromBalance),
-          tokenToBalance: double.parse(tokenToBalance),
-          errorMessage: '',
+          tokenFromBalance: tokenFromBalance ?? 0,
+          tokenToBalance: tokenToBalance ?? 0,
+          failure: Failure.none,
         ),
       );
       final response = await repo.fetchSwapInfo(
-        tokenFrom: state.tokenFrom.address.value,
-        tokenTo: state.tokenTo.address.value,
+        tokenFrom: state.tokenFrom.address,
+        tokenTo: state.tokenTo.address,
       );
       final isSuccess = response.isLeft();
       if (isSuccess) {
         swapController
-          ..updateFromAddress(state.tokenFrom.address.value)
-          ..updateToAddress(state.tokenTo.address.value);
+          ..updateFromAddress(state.tokenFrom.address)
+          ..updateToAddress(state.tokenTo.address);
         final swapInfo = response.getLeft().toNullable()!.swapInfo;
 
         //do some math
@@ -75,7 +125,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           state.copyWith(
             status: BlocStatus.success,
             swapInfo: swapInfo,
-            errorMessage: '',
+            failure: Failure.none,
           ),
         );
       } else {
@@ -83,19 +133,15 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         emit(
           state.copyWith(
             status: BlocStatus.error,
-            errorMessage: _somethingWentWrong,
+            failure: UnknownTradeFailure(),
           ),
         );
       }
     } catch (error) {
-      final message = (error as ArgumentError).message ==
-              WalletController.walletNotConnected
-          ? WalletController.walletNotConnected
-          : _somethingWentWrong;
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          errorMessage: message,
+          failure: UnknownTradeFailure(),
         ),
       );
     }
@@ -108,8 +154,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     final tokenInputFromAmount = event.tokenInputFromAmount;
     try {
       final response = await repo.fetchSwapInfo(
-        tokenFrom: state.tokenFrom.address.value,
-        tokenTo: state.tokenTo.address.value,
+        tokenFrom: state.tokenFrom.address,
+        tokenTo: state.tokenTo.address,
         fromInput: tokenInputFromAmount,
       );
       final isSuccess = response.isLeft();
@@ -128,14 +174,14 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           emit(
             state.copyWith(
               status: BlocStatus.error,
-              errorMessage: noSwapInfoErrorMessage,
+              failure: NoSwapInfoFailure(),
             ),
           );
         } else {
           emit(
             state.copyWith(
               status: BlocStatus.error,
-              errorMessage: _somethingWentWrong,
+              failure: UnknownTradeFailure(),
             ),
           );
         }
@@ -144,7 +190,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          errorMessage: _somethingWentWrong,
+          failure: UnknownTradeFailure(),
         ),
       );
     }
@@ -162,18 +208,18 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     emit(
       state.copyWith(
         status: BlocStatus.loading,
-        errorMessage: '',
+        failure: Failure.none,
       ),
     );
     try {
       final tokenFromBalance =
-          await walletController.getTokenBalance(state.tokenFrom.address.value);
-      final maxInput = double.parse(tokenFromBalance);
+          await _walletRepository.getTokenBalance(state.tokenFrom.address);
+      final maxInput = tokenFromBalance ?? 0;
       emit(
         state.copyWith(
           tokenInputFromAmount: maxInput,
           tokenFromBalance: maxInput,
-          errorMessage: '',
+          failure: Failure.none,
         ),
       );
     } catch (_) {
@@ -181,7 +227,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          errorMessage: _somethingWentWrong,
+          failure: UnknownTradeFailure(),
         ),
       );
     }
@@ -191,11 +237,11 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     SetTokenFrom event,
     Emitter<TradePageState> emit,
   ) {
-    swapController.updateFromAddress(event.tokenFrom.address.value);
+    swapController.updateFromAddress(event.tokenFrom.address);
     emit(
       state.copyWith(
         tokenFrom: event.tokenFrom,
-        errorMessage: '',
+        failure: Failure.none,
       ),
     );
   }
@@ -204,11 +250,11 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     SetTokenTo event,
     Emitter<TradePageState> emit,
   ) {
-    swapController.updateToAddress(event.tokenTo.address.value);
+    swapController.updateToAddress(event.tokenTo.address);
     emit(
       state.copyWith(
         tokenTo: event.tokenTo,
-        errorMessage: '',
+        failure: Failure.none,
       ),
     );
   }
@@ -229,9 +275,9 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         tokenTo: tokenTo,
         tokenInputFromAmount: tokenInputFromAmount,
         tokenInputToAmount: tokenInputToAmount,
-        errorMessage: '',
         tokenFromBalance: tokenToBalance,
         tokenToBalance: tokenFromBalance,
+        failure: Failure.none,
       ),
     );
   }
