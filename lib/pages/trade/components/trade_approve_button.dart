@@ -1,3 +1,4 @@
+import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
@@ -20,6 +21,7 @@ class TradeApproveButton extends StatefulWidget {
     required this.fromUnits,
     required this.toUnits,
     required this.totalFee,
+    required this.tradePageBloc,
     super.key,
   });
 
@@ -36,6 +38,7 @@ class TradeApproveButton extends StatefulWidget {
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
+  final TradePageBloc tradePageBloc;
 
   @override
   State<TradeApproveButton> createState() => _TradeApproveButtonState();
@@ -83,6 +86,15 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
     });
   }
 
+  void resetButton() {
+    setState(() {
+      isApproved = false;
+      text = 'Approve';
+      fillcolor = Colors.transparent;
+      textcolor = Colors.amber;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -124,6 +136,8 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
                     widget.confirmDialog(context),
               ).then((value) {
                 setState(() {
+                  resetButton();
+                  widget.tradePageBloc.add(FetchTradeInfoRequested());
                   widget.tokenFromInputController.clear();
                   widget.tokenToInputController.clear();
                 });
