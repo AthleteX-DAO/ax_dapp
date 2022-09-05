@@ -126,7 +126,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
               height: 24,
               width: 40,
               decoration: boxDecoration(
-                  Colors.transparent, 100, 0.5, Colors.grey[400]!),
+                Colors.transparent,
+                100,
+                0.5,
+                Colors.grey[400]!,
+              ),
               child: TextButton(
                 onPressed: () {
                   bloc
@@ -671,7 +675,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // TODO(Ryan): make this and the input box above
+                                  // TODO(Ryan): make this and the input box
+                                  //  above
                                   // a single function
                                   // dropdown
                                   // tknNum = 2 (this is a comment)

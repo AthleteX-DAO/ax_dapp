@@ -53,6 +53,15 @@ class MockSubGraphRepo extends _i1.Mock implements _i3.SubGraphRepo {
           .Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>);
   @override
   _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>
+      tryPostQuery(String? query) => (super.noSuchMethod(
+          Invocation.method(#tryPostQuery, [query]),
+          returnValue:
+              _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>.value(
+                  _FakeEither_0<Map<String, dynamic>?, _i2.OperationException>(
+                      this, Invocation.method(#tryPostQuery, [query])))) as _i4
+          .Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>);
+  @override
+  _i4.Future<_i2.Either<Map<String, dynamic>?, _i2.OperationException>>
       querySpecificPairs(String? token) => (super.noSuchMethod(
           Invocation.method(#querySpecificPairs, [token]),
           returnValue:

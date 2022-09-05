@@ -7,22 +7,23 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
-  retrofit: ^3.0.1+1
   ethereum_api:
     path: ../ethereum_api
+  retrofit: ^3.0.1+1
   shared:
     path: ../shared
 
 dependency_overrides:
   async: 2.8.0
+  meta: 1.8.0
   web3dart:
     git:
-      url: https://github.com/narcodico/web3dart.git
       ref: fix/build-runner
+      url: https://github.com/SportsToken/web3dart.git
 dev_dependencies:
-  mocktail: ^0.3.0
-  test: ^1.21.4
-  very_good_analysis: ^3.0.1
-  retrofit_generator: ^4.0.2
   build_runner: ^2.2.0
   json_serializable: ^6.3.1
+  mocktail: ^0.3.0
+  retrofit_generator: ^4.0.2
+  test: ^1.21.4
+  very_good_analysis: ^3.0.1

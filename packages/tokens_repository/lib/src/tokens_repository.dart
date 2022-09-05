@@ -96,9 +96,7 @@ class TokensRepository {
   Future<AxMarketData> getAxMarketData() async {
     try {
       final coinData = await _coinGeckoApiClient.getAthleteXCoinData();
-      final price = coinData
-          .marketData
-          ?.currentPrice?['usd'];
+      final price = coinData.marketData?.currentPrice?['usd'];
 
       return AxMarketData(
         price: price,

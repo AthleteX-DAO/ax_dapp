@@ -2,6 +2,7 @@ import 'package:ethereum_api/src/config/models/apt_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 
+/// gets the list of [nflApts] along with supported addresses
 const nflApts = [
   AptConfig(
     athleteId: 19801,

@@ -467,7 +467,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                   sport: widget.athlete.sport.toString(),
                                   inputLongApt: _longInputController.text,
                                   inputShortApt: _shortInputController.text,
-                                  valueInAx: (lspController.redeemAmt * collateralPerPair)
+                                  valueInAx: (lspController.redeemAmt *
+                                          collateralPerPair)
                                       .toStringAsFixed(6),
                                   walletId: walletAddress,
                                 );

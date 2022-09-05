@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:async';
-import 'dart:developer';
 import 'dart:html' as html;
 
 import 'package:ethereum_api/src/wallet/failures/failures.dart';

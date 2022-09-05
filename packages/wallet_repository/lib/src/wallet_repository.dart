@@ -25,17 +25,17 @@ class WalletRepository {
       final Wallet walletUpdate;
       if (cachedWalletAddress != null) {
         debugPrint(
-            'Wallet Repo: wallet address found in cache: $cachedWalletAddress');
+          'Wallet Repo: wallet address found in cache: $cachedWalletAddress',
+        );
         walletUpdate = Wallet(
-          address: (chain.isSupported)
-              ? cachedWalletAddress
-              : kEmptyAddress,
+          address: (chain.isSupported) ? cachedWalletAddress : kEmptyAddress,
           chain: chain,
           status: WalletStatus.fromChain(chain),
         );
       } else {
         debugPrint(
-            'Wallet Repo: no cached wallet address so lets get the real thing',);
+          'Wallet Repo: no cached wallet address so lets get the real thing',
+        );
         final newAddress = await _getWalletCredentials();
         debugPrint('Retrieved the new address: $newAddress');
         walletUpdate = Wallet(

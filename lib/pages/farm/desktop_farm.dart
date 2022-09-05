@@ -77,7 +77,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
           child: BlocBuilder<FarmBloc, FarmState>(
             buildWhen: (previous, current) {
               debugPrint(
-                  'Farm Bloc Builder buildWhen current status: ${current.status}, previous status: ${previous.status}');
+                'Farm Bloc Builder buildWhen current status: ${current.status}, previous status: ${previous.status}',
+              );
               return previous != current;
             },
             builder: (context, state) {
@@ -96,7 +97,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
               if (!state.isAllFarms && state.status == BlocStatus.noWallet) {
                 widget = noWallet();
               }
-              if(state.status == BlocStatus.unsupportedChain){
+              if (state.status == BlocStatus.unsupportedChain) {
                 widget = unsupported(state.chain);
               }
               final Widget toggle =

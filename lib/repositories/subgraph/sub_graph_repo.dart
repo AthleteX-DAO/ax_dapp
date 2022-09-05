@@ -1,7 +1,9 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'dart:convert';
 
-import 'package:shared/shared.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared/shared.dart';
 
 /// This is a repository that makes queries with the GraphQlClient
 /// primarily it should be employed by using or adding a usecase to subgraph/usecases
@@ -37,7 +39,6 @@ class SubGraphRepo {
     }
   }
 
-
   Future<Either<Map<String, dynamic>?, OperationException>> tryPostQuery(
     String query,
   ) async {
@@ -50,8 +51,9 @@ class SubGraphRepo {
     if (result.statusCode != 200) {
       return Either.right(OperationException());
     } else {
+      final body = jsonDecode(result.body) as Map<String, dynamic>;
       final decodedJson =
-          jsonDecode(result.body)['data'] as Map<String, String>;
+          body['data'] as Map<String, String>;
       return Either.left(decodedJson);
     }
   }

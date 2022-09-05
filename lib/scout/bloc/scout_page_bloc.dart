@@ -46,13 +46,15 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
           ..tokenClient = appConfig.reactiveWeb3Client.value;
         lspController.controller.credentials =
             _walletRepository.credentials.value;
-        if(appData.chain.chainId != state.selectedChain.chainId) {
-          emit(state.copyWith(
-            status: BlocStatus.loading,
-            selectedChain: appData.chain,
-            athletes: List.empty(),
-            filteredAthletes: List.empty(),
-          ),);
+        if (appData.chain.chainId != state.selectedChain.chainId) {
+          emit(
+            state.copyWith(
+              status: BlocStatus.loading,
+              selectedChain: appData.chain,
+              athletes: List.empty(),
+              filteredAthletes: List.empty(),
+            ),
+          );
         }
       },
     );
@@ -65,7 +67,9 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     try {
       emit(state.copyWith(status: BlocStatus.loading));
       var supportedSport = SupportedSport.MLB;
-      debugPrint('Fetching scout info for ${state.selectedChain.chainName}: ${state.selectedChain.chainId}');
+      debugPrint(
+        'Fetching scout info for ${state.selectedChain.chainName}: ${state.selectedChain.chainId}',
+      );
       switch (state.selectedChain) {
         case EthereumChain.polygonTestnet:
         case EthereumChain.polygonMainnet:
@@ -76,6 +80,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         case EthereumChain.sxTestnet:
           supportedSport = SupportedSport.NFL;
           break;
+        // ignore: no_default_cases
         default: // unsupported
           supportedSport = SupportedSport.MLB;
           break;
@@ -151,7 +156,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   }
 
   void filterOutUnsupportedSportsByChain(List<AthleteScoutModel> filteredList) {
-    if(state.selectedChain == EthereumChain.sxMainnet ||
+    if (state.selectedChain == EthereumChain.sxMainnet ||
         state.selectedChain == EthereumChain.sxTestnet) {
       filteredList
           .removeWhere((element) => element.sport == SupportedSport.MLB);

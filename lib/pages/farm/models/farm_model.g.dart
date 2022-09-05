@@ -7,22 +7,22 @@ part of 'farm_model.dart';
 // **************************************************************************
 
 FarmModel _$FarmModelFromJson(Map<String, dynamic> json) => FarmModel(
-      json['stakingToken']['symbol'] as String,
-      json['id'] as String,
-      json['stakingToken']['alias'] as String,
-      json['stakingToken']['symbol'] as String,
-      json['rewardToken']['symbol'] as String,
-      json['stakingToken']['id'] as String,
-      json['rewardToken']['id'] as String,
-      json['stakingModule'] as String,
-      json['apr'] as String,
-      json['tvl'] as String,
-      json['staked'] as String,
-      json['rewards'] as String,
-      json['stakingToken']['price'] as String,
-      json['rewardToken']['price'] as String,
-      int.parse(json['stakingToken']['decimals'] as String),
-      int.parse(json['rewardToken']['decimals'] as String),
+      json['strName'] as String,
+      json['strAddress'] as String,
+      json['strStakedAlias'] as String,
+      json['strStakedSymbol'] as String,
+      json['strRewardSymbol'] as String,
+      json['strStakeTokenAddress'] as String,
+      json['strRewardTokenAddress'] as String,
+      json['strStakingModule'] as String,
+      json['strAPR'] as String,
+      json['strTVL'] as String,
+      json['strStaked'] as String,
+      json['strRewards'] as String,
+      json['strStakeTokenPrice'] as String,
+      json['strRewardTokenPrice'] as String,
+      json['nStakeTokenDecimals'] as int,
+      json['nRewardTokenDecimals'] as int,
     );
 
 Map<String, dynamic> _$FarmModelToJson(FarmModel instance) => <String, dynamic>{

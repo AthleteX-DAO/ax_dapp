@@ -138,7 +138,8 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                     widget.confirmDialog(context),
               ).then((value) {
                 //show loading spinner
-                widget.myLiquidityBloc.add(const FetchAllLiquidityPositionsRequested());
+                widget.myLiquidityBloc
+                    .add(const FetchAllLiquidityPositionsRequested());
                 setState(() {
                   widget.tabController.index = 0;
                 });

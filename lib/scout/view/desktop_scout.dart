@@ -1,7 +1,5 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_positional_boolean_parameters
 
-import 'dart:developer';
-
 import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
@@ -50,7 +48,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   AthleteScoutModel? curAthlete;
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
-  EthereumChain? _selectedChain = null;
+  EthereumChain? _selectedChain;
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the

@@ -13,7 +13,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     required TokensRepository tokensRepository,
     required this.configRepository,
   })  : _walletRepository = walletRepository,
-        _tokensRepository = tokensRepository,        
+        _tokensRepository = tokensRepository,
         super(const AppState()) {
     on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
     // on<WatchAptsChangesStarted>(_onWatchAptsChangesStarted);

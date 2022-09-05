@@ -28,5 +28,6 @@ class AxMarketData extends Equatable {
   static const empty = AxMarketData();
 
   @override
-  List<Object?> get props => [price, totalSupply, lastUpdated, circulatingSupply];
+  List<Object?> get props =>
+      [price, totalSupply, lastUpdated, circulatingSupply];
 }

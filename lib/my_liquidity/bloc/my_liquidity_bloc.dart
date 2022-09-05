@@ -55,30 +55,29 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     emit(state.copyWith(status: BlocStatus.loading, failure: Failure.none));
     final currentWallet = _walletRepository.currentWallet;
     try {
-        final response = await repo.fetchAllLiquidityPositions(
-          walletAddress: currentWallet.address,
-        );
-        final isSuccess = response.isLeft();
-        if (isSuccess) {
-          final liquidityPositionsList =
-              response.getLeft().toNullable()!.liquidityPositionsList;
-          if (liquidityPositionsList != null) {
-            emit(
-              state.copyWith(
-                cards: liquidityPositionsList,
-                filteredCards: liquidityPositionsList,
-                status: BlocStatus.success,
-                failure: Failure.none,
-              ),
-            );
-          } else {
-            emit(state.copyWith(status: BlocStatus.error));
-          }
-          add(SearchTermChanged(searchTerm: state.searchTerm));
+      final response = await repo.fetchAllLiquidityPositions(
+        walletAddress: currentWallet.address,
+      );
+      final isSuccess = response.isLeft();
+      if (isSuccess) {
+        final liquidityPositionsList =
+            response.getLeft().toNullable()!.liquidityPositionsList;
+        if (liquidityPositionsList != null) {
+          emit(
+            state.copyWith(
+              cards: liquidityPositionsList,
+              filteredCards: liquidityPositionsList,
+              status: BlocStatus.success,
+              failure: Failure.none,
+            ),
+          );
         } else {
-          // TODO(anyone): Create User facing error messages
           emit(state.copyWith(status: BlocStatus.error));
         }
+        add(SearchTermChanged(searchTerm: state.searchTerm));
+      } else {
+        emit(state.copyWith(status: BlocStatus.error));
+      }
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.error));
     }

@@ -145,7 +145,9 @@ extension ChainConfigX on EthereumChain {
   /// Generates the list of [Apt]'s for this [EthereumChain]. Composed based on
   /// a list of [AptConfig]s.
   List<Token> createApts(EthereumChain chain) {
-    debugPrint('Creating apts for Chain Name: ${chain.chainName}; ChainId: ${chain.chainId} Name: ${chain.name}');
+    debugPrint(
+      'Creating apts for Chain Name: ${chain.chainName}; ChainId: ${chain.chainId} Name: ${chain.name}',
+    );
     final supportedApts =
         ((chain.chainId == EthereumChain.polygonMainnet.chainId) ||
                 (chain.chainId == EthereumChain.polygonTestnet.chainId))
@@ -154,10 +156,11 @@ extension ChainConfigX on EthereumChain {
     return supportedApts
         .expand(
           (aptConfig) => [
-        Token.longApt(this, aptConfig: aptConfig),
-        Token.shortApt(this, aptConfig: aptConfig),
-      ],
-    ).toList();
+            Token.longApt(this, aptConfig: aptConfig),
+            Token.shortApt(this, aptConfig: aptConfig),
+          ],
+        )
+        .toList();
   }
 
   /// Creates a [Web3Client] based on this [EthereumChain] configuration.
