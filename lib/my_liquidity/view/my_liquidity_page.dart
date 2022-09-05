@@ -474,16 +474,14 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                           child: GridView.builder(
                             padding: EdgeInsets.zero,
                             gridDelegate: _isWeb
-                                ? const SliverGridDelegateWithMaxCrossAxisExtent
-                              (
+                                ? const SliverGridDelegateWithMaxCrossAxisExtent(
                                     //delegate max width for desktop
                                     maxCrossAxisExtent: 600,
                                     mainAxisExtent: 265,
                                     crossAxisSpacing: 20,
                                     mainAxisSpacing: 20,
                                   )
-                                : const
-                            SliverGridDelegateWithFixedCrossAxisCount(
+                                : const SliverGridDelegateWithFixedCrossAxisCount(
                                     //delegate count of 1 for mobile
                                     crossAxisCount: 1,
                                     crossAxisSpacing: 20,
@@ -729,8 +727,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             ),
                                           ),
                                           Text(
-                                            '${infoOfSelectedCard.shareOfPool}%'
-                                            ,
+                                            '${infoOfSelectedCard.shareOfPool}%',
                                             style: textStyle(
                                               Colors.white,
                                               16,
@@ -819,7 +816,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                           children: [
                                             Container(
                                               margin: const EdgeInsets.only(
-                                                  left: 30,),
+                                                left: 30,
+                                              ),
                                               width: 35,
                                               height: 35,
                                               decoration: BoxDecoration(
@@ -844,7 +842,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             const Spacer(),
                                             Container(
                                               margin: const EdgeInsets.only(
-                                                  right: 30,),
+                                                right: 30,
+                                              ),
                                               width: _width * .20,
                                               child: Row(
                                                 mainAxisAlignment:
@@ -872,7 +871,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                           children: [
                                             Container(
                                               margin: const EdgeInsets.only(
-                                                  left: 30,),
+                                                left: 30,
+                                              ),
                                               width: 35,
                                               height: 35,
                                               decoration: BoxDecoration(
@@ -897,7 +897,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             const Spacer(),
                                             Container(
                                               margin: const EdgeInsets.only(
-                                                  right: 30,),
+                                                right: 30,
+                                              ),
                                               width: _width * .20,
                                               child: Row(
                                                 mainAxisAlignment:

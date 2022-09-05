@@ -719,7 +719,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     createTokenButton(2, elementWdt, _tokenAmountTwoController),
                     if (state.status == BlocStatus.noData) ...[
                       const Text(
-                          'Not Created - Please input both token amounts',),
+                        'Not Created - Please input both token amounts',
+                      ),
                     ]
                   ],
                 ),

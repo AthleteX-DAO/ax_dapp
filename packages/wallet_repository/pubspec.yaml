@@ -21,3 +21,4 @@ dev_dependencies:
 
 dependency_overrides:
   async: 2.8.2
+  meta: 1.8.0
