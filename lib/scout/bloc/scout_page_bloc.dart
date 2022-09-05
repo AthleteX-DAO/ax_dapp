@@ -80,6 +80,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
         case EthereumChain.sxTestnet:
           supportedSport = SupportedSport.NFL;
           break;
+
+      // ignore: no_default_cases
         default: // unsupported
           supportedSport = SupportedSport.MLB;
           break;
