@@ -150,10 +150,13 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.grey[900],
-                  onSurface: isTokenSelected(token, tknNum)
+                  backgroundColor: Colors.grey[900],
+                  disabledForegroundColor: isTokenSelected(token, tknNum)
                       ? Colors.amber
-                      : Colors.grey,
+                      : Colors.grey.withOpacity(0.38),
+                  disabledBackgroundColor: isTokenSelected(token, tknNum)
+                      ? Colors.amber
+                      : Colors.grey.withOpacity(0.12),
                 ),
                 onPressed: isTokenSelected(token, tknNum)
                     ? null

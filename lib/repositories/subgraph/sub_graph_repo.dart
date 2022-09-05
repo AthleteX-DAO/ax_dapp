@@ -51,8 +51,9 @@ class SubGraphRepo {
     if (result.statusCode != 200) {
       return Either.right(OperationException());
     } else {
+      final body = jsonDecode(result.body) as Map<String, dynamic>;
       final decodedJson =
-          jsonDecode(result.body)['data'] as Map<String, String>;
+          body['data'] as Map<String, String>;
       return Either.left(decodedJson);
     }
   }
