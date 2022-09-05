@@ -6,9 +6,6 @@ publish_to: none
 environment:
   sdk: ">=2.17.0 <3.0.0"
 
-dependency_overrides:
-  meta: 1.8.0
-
 dev_dependencies:
   firebase_analytics: ^9.1.11
   firebase_core: ^1.19.0
