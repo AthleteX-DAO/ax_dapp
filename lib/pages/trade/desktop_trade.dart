@@ -724,6 +724,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         fromUnits: _tokenFromInputController.text,
                         toUnits: receiveAmount,
                         totalFee: totalFee,
+                        tradePageBloc: bloc,
                       )
                     else
                       WarningTextButton(
