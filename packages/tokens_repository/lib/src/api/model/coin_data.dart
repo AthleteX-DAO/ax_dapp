@@ -1,4 +1,3 @@
-
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/src/api/model/market_data.dart';
 
@@ -36,18 +35,18 @@ class Image {
   });
 
   factory Image.fromJson(Map<String, String> json) => Image(
-    thumb: json['thumb'] ?? '',
-    small: json['small'] ?? '',
-    large: json['large'] ?? '',
-  );
+        thumb: json['thumb'] ?? '',
+        small: json['small'] ?? '',
+        large: json['large'] ?? '',
+      );
 
   String thumb;
   String small;
   String large;
 
   Map<String, dynamic> toJson() => {
-    'thumb': thumb,
-    'small': small,
-    'large': large,
-  };
+        'thumb': thumb,
+        'small': small,
+        'large': large,
+      };
 }

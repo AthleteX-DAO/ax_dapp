@@ -12,6 +12,6 @@ abstract class TrackEvent {
   /// name of the parameters for each event
   final Map<String, dynamic> params;
 
-/// different tracking services may different event requirements
-/// may be extended to have type/(screen/action)/role/...
+  /// different tracking services may different event requirements
+  /// may be extended to have type/(screen/action)/role/...
 }

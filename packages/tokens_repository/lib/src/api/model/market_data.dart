@@ -1,6 +1,7 @@
 import 'package:shared/shared.dart';
 
 part 'market_data.g.dart';
+
 /// Market Coin Data
 @JsonSerializable()
 class MarketData {
