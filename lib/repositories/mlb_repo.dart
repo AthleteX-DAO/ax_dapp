@@ -3,7 +3,8 @@ import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/models/player_ids.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete_stats.dart';
-import 'package:ax_dapp/service/supported_athletes/supported_mlb_athletes.dart';
+// ignore: don't_import_implementation_files
+import 'package:ethereum_api/src/config/models/apts/mlb_apt_list.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class MLBRepo extends SportsRepo<MLBAthlete> {
@@ -26,7 +27,7 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
   @override
   Future<List<MLBAthlete>> getSupportedPlayers() async {
     return _api.getPlayersById(
-      PlayerIds(SupportedMLBAthletes().getSupportedAthletesList()),
+      PlayerIds(mlbApts.map((e) => e.athleteId).toList()),
     );
   }
 
