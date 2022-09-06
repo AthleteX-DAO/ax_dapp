@@ -44,12 +44,11 @@ SfCartesianChart buildLongChart(
       dateFormat: DateFormat.Md(),
     ),
     primaryYAxis: NumericAxis(
+      rangePadding: ChartRangePadding.round,
       majorGridLines: const MajorGridLines(
         width: 0,
       ),
       interval: 100,
-      minimum: 0,
-      maximum: 15500,
       labelFormat: '{value}AX',
       numberFormat: NumberFormat.decimalPattern(),
     ),
