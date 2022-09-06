@@ -5,7 +5,7 @@ import 'package:ethereum_api/src/ethereum/models/models.dart';
 /// gets the list of [nflApts] along with supported addresses
 const nflApts = [
   AptConfig(
-    athleteId: 19801,
+    athleteId: 20737,
     athleteName: 'Josh Allen',
     sport: SupportedSport.NFL,
     longTicker: 'JLLAPT',
@@ -108,7 +108,7 @@ const nflApts = [
   ),
 
   AptConfig(
-    athleteId: 21682,
+    athleteId: 21837,
     athleteName: 'Jonathan Taylor',
     sport: SupportedSport.NFL,
     longTicker: 'JTLAPT',
