@@ -275,13 +275,19 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   ),
             child: TextButton(
               onPressed: () {
-                if (isAllFarms) {
-                  myController.clear();
-                  setState(() {
-                    isAllFarms = false;
-                    bloc.add(OnChangeFarmTab(isAllFarms: false));
-                  });
-                }
+                final isWalletConnected =
+                  context.read<WalletBloc>().state.isWalletConnected;
+                if (isWalletConnected) {
+                  if (isAllFarms) {
+                    myController.clear();
+                    setState(() {
+                      isAllFarms = false;
+                      bloc.add(OnChangeFarmTab(isAllFarms: false));
+                    });
+                  }
+                } else {
+                  context.showWalletWarningToast();
+                }     
               },
               child: Text(
                 'My Farms',
