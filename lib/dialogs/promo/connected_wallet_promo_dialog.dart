@@ -36,13 +36,8 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                 SizedBox(
                   width: wid - edge,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const SizedBox(width: 5),
-                      const Text(
-                        'Wallet successfully connected!',
-                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
                       SizedBox(
                         width: 40,
                         child: IconButton(
@@ -55,6 +50,15 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                       )
                     ],
                   ),
+                ),
+                const Text(
+                  'Wallet successfully connected!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +132,8 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
   }
 
   void launchDiscordLink() {
-    const url = 'https://discord.com/channels/761052062184112148/1016454317403807814 ';
+    const url =
+        'https://discord.gg/pAWyqJh67k';
     launchUrl(Uri.parse(url));
   }
 }
