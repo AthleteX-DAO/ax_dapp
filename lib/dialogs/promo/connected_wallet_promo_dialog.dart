@@ -1,6 +1,6 @@
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ConnectedWalletPromoDialog extends StatelessWidget {
   const ConnectedWalletPromoDialog({
@@ -14,8 +14,8 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
     var wid = 500.0;
     const edge = 40.0;
     if (_width < 505) wid = _width;
-    var hgt = 335.0;
-    if (_height < 340) hgt = _height;
+    var hgt = 345.0;
+    if (_height < 350) hgt = _height;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -38,9 +38,9 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(width: 5),
+                      const SizedBox(width: 5),
                       Text(
-                        'Wallet successfully connected',
+                        'Wallet successfully connected!',
                         style: textStyle(Colors.white, 20, false),
                       ),
                       SizedBox(
@@ -59,16 +59,34 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.check_circle_outline,
-                      size: 150,
-                      color: Colors.amber[400],
-                    ),
+                    Container(
+                      width: 55,
+                      height: 55,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/x.jpg',
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    const Text(
+                      'Did you learn about AX from an existing AX User?'
+                      ' Use the following link to join our discord'
+                      ' and shout them out and both of you will receive'
+                      ' 1000 AX!',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
                     Container(
                       width: 275,
                       height: 50,
@@ -78,16 +96,13 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Controller.viewTx();
+                          launchDIscordLink();
                           Navigator.pop(context);
                         },
                         child: const Text(
-                          'Did you learn about AX from an existing AX User?'
-                          ' Use the following link to join our discord'
-                          ' and shout them out and both of you will receive'
-                          ' 1000 AX!',
+                          'Join Our Discord!',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 20,
                             color: Colors.black,
                           ),
                         ),
@@ -101,5 +116,10 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void launchDIscordLink() {
+    const url = 'https://discord.com/channels/761052062184112148/1016454317403807814 ';
+    launchUrl(Uri.parse(url));
   }
 }
