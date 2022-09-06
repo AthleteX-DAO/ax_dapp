@@ -1,4 +1,5 @@
 //dynamic
+import 'package:ax_dapp/dialogs/promo/connected_wallet_promo_dialog.dart';
 import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -89,6 +90,11 @@ class WalletDialog extends StatelessWidget {
                               .add(const ConnectWalletRequested());
                           // TODO(Rolly): swap old wallet for new(Credentials?)
                           // controller.connect();
+                          Navigator.pop(context);
+                          showDialog<void>(
+                            context: context,
+                            builder: (context) => const ConnectedWalletPromoDialog(),
+                          );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
