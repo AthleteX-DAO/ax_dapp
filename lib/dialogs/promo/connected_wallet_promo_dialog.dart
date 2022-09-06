@@ -105,7 +105,7 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          launchDIscordLink();
+                          launchDiscordLink();
                           Navigator.pop(context);
                         },
                         child: const Text(
@@ -127,7 +127,7 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
     );
   }
 
-  void launchDIscordLink() {
+  void launchDiscordLink() {
     const url = 'https://discord.com/channels/761052062184112148/1016454317403807814 ';
     launchUrl(Uri.parse(url));
   }
