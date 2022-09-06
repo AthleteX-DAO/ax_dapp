@@ -84,7 +84,7 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 15),
                     const Text(
                       ' Use the following link to join our discord'
                       ' and shout them out and both of you will receive'
