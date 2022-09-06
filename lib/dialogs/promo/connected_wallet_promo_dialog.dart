@@ -39,9 +39,9 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const SizedBox(width: 5),
-                      Text(
+                      const Text(
                         'Wallet successfully connected!',
-                        style: textStyle(Colors.white, 20, false),
+                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         width: 40,
@@ -77,7 +77,15 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const Text(
-                      'Did you learn about AX from an existing AX User?'
+                      'Did you learn about AX from an existing AX User?',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 5),
+                    const Text(
                       ' Use the following link to join our discord'
                       ' and shout them out and both of you will receive'
                       ' 1000 AX!',
@@ -85,13 +93,14 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                         fontSize: 16,
                         color: Colors.white,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
                     Container(
                       width: 275,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.amber[400],
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: TextButton(
@@ -100,10 +109,10 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: const Text(
-                          'Join Our Discord!',
+                          'Claim Your AX!',
                           style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
+                            fontSize: 19,
+                            color: Colors.yellow,
                           ),
                         ),
                       ),
