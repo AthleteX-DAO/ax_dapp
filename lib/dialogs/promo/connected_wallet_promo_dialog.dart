@@ -12,7 +12,7 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     var wid = 500.0;
-    const edge = 40.0;
+    const edge = 20.0;
     if (_width < 505) wid = _width;
     var hgt = 345.0;
     if (_height < 350) hgt = _height;
@@ -28,12 +28,13 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
         decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
         child: Center(
           child: SizedBox(
-            height: 275,
+            height: 325,
             width: wid - edge,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
+                  height: 20,
                   width: wid - edge,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -64,8 +65,8 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 55,
-                      height: 55,
+                      width: 75,
+                      height: 75,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
