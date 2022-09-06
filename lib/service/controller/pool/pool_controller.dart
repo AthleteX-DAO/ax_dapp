@@ -1,46 +1,32 @@
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
+import 'package:ethereum_api/apt_factory_api.dart';
 import 'package:ethereum_api/apt_router_api.dart';
-import 'package:ethereum_api/dex_api.dart';
 import 'package:ethereum_api/erc20_api.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';
 
 class PoolController extends GetxController {
-  PoolController() {
-    // This is meant to switch as per the correct chain
-    final routerAddress = routerMainnetAddress;
-    final dexAddress = dexMainnetAddress;
-
-    dex = Dex(address: dexAddress, client: controller.client.value);
-    aptRouter =
-        APTRouter(address: routerAddress, client: controller.client.value);
-  }
+  PoolController();
   Controller controller = Get.find();
-  late Dex dex;
+  late APTFactory aptFactory;
   late APTRouter aptRouter;
+  RxString routerAddress = ''.obs;
+  RxString factoryAddress = ''.obs;
   RxString address1 = ''.obs, address2 = ''.obs;
   String lpTokenAAddress = '';
   String lpTokenBAddress = '';
   String lpTokenPairAddress = '';
   double removePercentage = 0;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
+
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
     DateTime.now().add(const Duration(minutes: 2)).millisecondsSinceEpoch,
   );
 
-  final EthereumAddress routerTestnetAddress =
-      EthereumAddress.fromHex('0x7EFc361e568d0038cfB200dF9d9Be27943e19017');
-  final EthereumAddress dexTestnetAddress =
-      EthereumAddress.fromHex('0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551');
-
-  final EthereumAddress dexMainnetAddress =
-      EthereumAddress.fromHex('0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B');
-  final EthereumAddress routerMainnetAddress =
-      EthereumAddress.fromHex('0x15e4eb77713CD274472D95bDfcc7797F6a8C2D95');
-
   Future<void> approve() async {
+    final routerMainnetAddress = EthereumAddress.fromHex(routerAddress.value);
     var txStringA = '';
     var txStringB = '';
     final tokenAAmount = normalizeInput(amount1.value);
@@ -105,6 +91,7 @@ class PoolController extends GetxController {
   Future<void> approveRemove(
     Future<double?> Function(String address) getTokenBalanceHandler,
   ) async {
+    final routerMainnetAddress = EthereumAddress.fromHex(routerAddress.value);
     var txStringA = '';
     final lpTokenEthAddress = EthereumAddress.fromHex(lpTokenPairAddress);
     final lpToken =
@@ -158,7 +145,7 @@ class PoolController extends GetxController {
     final tknA = EthereumAddress.fromHex('$address1');
     final tknB = EthereumAddress.fromHex('$address2');
 
-    final txString = await dex.createPair(tknA, tknB, credentials: credentials);
+    final txString = await aptFactory.createPair(tknA, tknB, credentials: credentials);
     controller.updateTxString(txString);
   }
 

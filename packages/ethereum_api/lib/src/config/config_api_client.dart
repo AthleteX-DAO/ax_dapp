@@ -1,6 +1,6 @@
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/config/models/models.dart';
-import 'package:ethereum_api/src/dex/dex.dart';
+import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:http/http.dart' as http;
@@ -26,8 +26,8 @@ class ConfigApiClient {
         ) {
     _aptRouterClientController
         .add(defaultChain.createAptRouterClient(_web3ClientController.value));
-    _dexClientController
-        .add(defaultChain.createDexClient(_web3ClientController.value));
+    _aptFactoryClientController
+        .add(defaultChain.createAptFactoryClient(_web3ClientController.value));
   }
 
   final http.Client _httpClient;
@@ -40,7 +40,7 @@ class ConfigApiClient {
 
   final BehaviorSubject<Web3Client> _web3ClientController;
   final _aptRouterClientController = BehaviorSubject<APTRouter>();
-  final _dexClientController = BehaviorSubject<Dex>();
+  final _aptFactoryClientController = BehaviorSubject<APTFactory>();
 
   final _lspClientController = BehaviorSubject<LongShortPair>();
 
@@ -57,7 +57,7 @@ class ConfigApiClient {
     return AppConfig(
       reactiveWeb3Client: _web3ClientController.stream,
       reactiveAptRouterClient: _aptRouterClientController.stream,
-      reactiveDexClient: _dexClientController.stream,
+      reactiveAptFactoryClient: _aptFactoryClientController.stream,
       reactiveLspClient: _lspClientController.stream,
       reactiveDexGqlClient: _dexGqlClientController.stream,
       reactiveGysrGqlClient: _gysrGqlClientController.stream,
@@ -77,8 +77,8 @@ class ConfigApiClient {
     final aptRouterClient = chain.createAptRouterClient(web3Client);
     _aptRouterClientController.add(aptRouterClient);
 
-    final dexClient = chain.createDexClient(web3Client);
-    _dexClientController.add(dexClient);
+    final aptFactoryClient = chain.createAptFactoryClient(web3Client);
+    _aptFactoryClientController.add(aptFactoryClient);
 
     final dexGqlClient = chain.createDexGraphQLClient();
     _dexGqlClientController.add(dexGqlClient);

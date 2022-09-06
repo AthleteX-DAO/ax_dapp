@@ -1,5 +1,5 @@
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
-import 'package:ethereum_api/src/dex/dex.dart';
+import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
 import 'package:shared/shared.dart';
 
@@ -11,7 +11,7 @@ class AppConfig extends Equatable {
   const AppConfig({
     required this.reactiveWeb3Client,
     required this.reactiveAptRouterClient,
-    required this.reactiveDexClient,
+    required this.reactiveAptFactoryClient,
     required this.reactiveLspClient,
     required this.reactiveDexGqlClient,
     required this.reactiveGysrGqlClient,
@@ -23,8 +23,8 @@ class AppConfig extends Equatable {
   /// Reactive [APTRouter] client.
   final ValueStream<APTRouter> reactiveAptRouterClient;
 
-  /// Reactive [Dex] client.
-  final ValueStream<Dex> reactiveDexClient;
+  /// Reactive [APTFactory] client.
+  final ValueStream<APTFactory> reactiveAptFactoryClient;
 
   /// Reactive [LongShortPair] client.
   final ValueStream<LongShortPair> reactiveLspClient;
@@ -39,7 +39,7 @@ class AppConfig extends Equatable {
   List<Object?> get props => [
         reactiveWeb3Client,
         reactiveAptRouterClient,
-        reactiveDexClient,
+        reactiveAptFactoryClient,
         reactiveLspClient,
         reactiveDexGqlClient,
         reactiveGysrGqlClient,

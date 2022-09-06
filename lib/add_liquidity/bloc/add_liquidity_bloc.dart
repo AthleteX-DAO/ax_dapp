@@ -8,7 +8,7 @@ import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-
+import 'package:ethereum_api/src/tokens/models/contract.dart';
 part 'add_liquidity_event.dart';
 part 'add_liquidity_state.dart';
 
@@ -63,8 +63,12 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         poolController.controller.credentials =
             _walletRepository.credentials.value;
         poolController
-          ..dex = appConfig.reactiveDexClient.value
+          ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
+        
+        poolController.factoryAddress.value = Contract.exchangeFactory(appData.chain).address;
+        poolController.routerAddress.value = Contract.exchangeRouter(appData.chain).address;
+
         add(const FetchPairInfoRequested());
       },
     );

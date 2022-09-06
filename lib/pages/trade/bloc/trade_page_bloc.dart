@@ -56,7 +56,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       onData: (appData) {
         final appConfig = appData.appConfig;
         swapController
-          ..dex = appConfig.reactiveDexClient.value
+          ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
         swapController.controller.credentials =
             _walletRepository.credentials.value;
