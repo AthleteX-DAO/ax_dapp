@@ -11,6 +11,7 @@ import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_stats.dart';
 import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
@@ -177,20 +178,25 @@ class GetScoutAthletesDataUseCase {
   }
 
   Future<List<TokenPair>> fetchSpecificPairs(Token token) async {
-    final response = await graphRepo.querySpecificPairs(token.ticker);
-    if (!response.isLeft()) return List.empty();
-    final prefixInfos =
-        response.getLeft().toNullable()!['prefix'] as List<dynamic>;
-    final suffixInfos =
-        response.getLeft().toNullable()!['suffix'] as List<dynamic>;
-    final prefixPairs = List<Map<String, dynamic>>.from(prefixInfos)
-        .map(TokenPair.fromJson)
-        .toList();
-    final suffixPairs = List<Map<String, dynamic>>.from(suffixInfos)
-        .map(TokenPair.fromJson)
-        .toList();
-    final pairs = [...prefixPairs, ...suffixPairs];
-    return pairs;
+    try {
+      final response = await graphRepo.querySpecificPairs(token.ticker);
+      if (!response.isLeft()) return List.empty();
+      final prefixInfos =
+              response.getLeft().toNullable()!['prefix'] as List<dynamic>;
+      final suffixInfos =
+              response.getLeft().toNullable()!['suffix'] as List<dynamic>;
+      final prefixPairs = List<Map<String, dynamic>>.from(prefixInfos)
+              .map(TokenPair.fromJson)
+              .toList();
+      final suffixPairs = List<Map<String, dynamic>>.from(suffixInfos)
+              .map(TokenPair.fromJson)
+              .toList();
+      final pairs = [...prefixPairs, ...suffixPairs];
+      return pairs;
+    } catch (e) {
+      debugPrint('Error fetching specific pairs: $e');
+      return List.empty();
+    }
   }
 
   MarketModel getMarketModel(
