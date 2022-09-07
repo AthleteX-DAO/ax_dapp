@@ -70,6 +70,8 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
     //Changes from approve to waiting
     setState(() {
       text = 'Waiting for Approval';
+      fillcolor = Colors.grey;
+      textcolor = Colors.black;
     });
     //Changes from waiting button to confirm
     widget.approveCallback().then((_) {

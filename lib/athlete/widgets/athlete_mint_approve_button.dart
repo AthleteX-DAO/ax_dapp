@@ -61,6 +61,8 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
     // Changes from approbe to waiting
     setState(() {
       text = 'Waiting for Approval';
+      fillcolor = Colors.grey;
+      textcolor = Colors.black;
     });
     //Changes from approve button to confirm
     widget.approveCallback().then((_) {
