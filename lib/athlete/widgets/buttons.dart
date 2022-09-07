@@ -167,8 +167,11 @@ class MintButton extends StatelessWidget {
           if (isWalletConnected) {
             showDialog<void>(
               context: context,
-              builder: (BuildContext context) =>
-                  MintDialog(athlete: athlete, goToTradePage: goToTradePage),
+              builder: (BuildContext context) => MintDialog(
+                athlete: athlete,
+                goToTradePage: goToTradePage,
+                goToPage: goToPage,
+              ),
             );
           } else {
             context.showWalletWarningToast();
