@@ -14,8 +14,8 @@ class SwapController extends GetxController {
   RxString address1 = ''.obs, address2 = ''.obs;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
   RxDouble price = 0.0.obs;
-  final routerAddress = ''.obs;
-  final factoryAddress = ''.obs;
+  RxString routerAddress = ''.obs;
+  RxString factoryAddress = ''.obs;
 
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
