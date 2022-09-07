@@ -72,6 +72,12 @@ class _V1AppState extends State<V1App> {
     });
   }
 
+  void goToPage(int page) {
+    setState(() {
+      pageNumber = Pages.values[page];
+    });
+  }
+
   void animateToPage(int index) {
     // use this to animate to the page
     _pageController.animateToPage(
@@ -156,7 +162,10 @@ class _V1AppState extends State<V1App> {
                   ],
                 ),
               ),
-              child: DesktopScout(goToTradePage: goToTradePage),
+              child: DesktopScout(
+                goToTradePage: goToTradePage,
+                goToPage: goToPage,
+              ),
             )
           else if (pageNumber == Pages.trade)
             BlocProvider(
@@ -208,6 +217,7 @@ class _V1AppState extends State<V1App> {
             ),
             child: DesktopScout(
               goToTradePage: goToTradePage,
+              goToPage: goToPage,
             ),
           ),
           BlocProvider(
