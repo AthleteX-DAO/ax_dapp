@@ -45,13 +45,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
   Controller controller = Get.find();
 
   bool isSufficient(double balance0, double balance1) {
-    var tokenOneAmount = double.tryParse(_tokenAmountOneController.text);
-    var tokenTwoAmount = double.tryParse(_tokenAmountTwoController.text);
-    if (tokenOneAmount == null || tokenTwoAmount == null) {
-      tokenOneAmount = 0.0;
-      tokenTwoAmount = 0.0;
-    }
-    final result = tokenOneAmount <= balance0 && tokenTwoAmount <= balance1;
+    final tokenOneAmount = double.tryParse(_tokenAmountOneController.text);
+    final tokenTwoAmount = double.tryParse(_tokenAmountTwoController.text);
+    final result = tokenOneAmount! <= balance0 && tokenTwoAmount! <= balance1;
     return result;
   }
 

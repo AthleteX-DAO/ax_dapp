@@ -736,6 +736,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           if (failure is NoSwapInfoFailure) {
                             return 'No swap info found';
                           }
+                          if (failure is InSufficientFailure) {
+                            return 'InSufficient Balance';
+                          }
                           return 'Something went wrong';
                         }(),
                       ),
