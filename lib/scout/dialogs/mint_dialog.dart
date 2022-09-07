@@ -169,7 +169,6 @@ class _MintDialogState extends State<MintDialog> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
-    final isSufficient = youSpend > double.parse(balance.value);
     if (_height < 505) hgt = _height;
     switch (widget.athlete.sport) {
       case SupportedSport.MLB:
@@ -413,7 +412,7 @@ class _MintDialogState extends State<MintDialog> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (double.parse(balance.value) > youSpend)
+                    if (double.parse(balance.value) >= youSpend)
                       AthleteMintApproveButton(
                         width: 175,
                         height: 40,
