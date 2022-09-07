@@ -46,7 +46,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     if (_walletRepository.currentWallet.isDisconnected) {
       emit(
         state.copyWith(
-          status: BlocStatus.error,
+          status: BlocStatus.noWallet,
           failure: DisconnectedWalletFailure(),
         ),
       );
@@ -72,7 +72,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
             ),
           );
         } else {
-          emit(state.copyWith(status: BlocStatus.error));
+          emit(state.copyWith(status: BlocStatus.noData));
         }
         add(SearchTermChanged(searchTerm: state.searchTerm));
       } else {

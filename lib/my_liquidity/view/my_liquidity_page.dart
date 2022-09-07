@@ -421,7 +421,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
         buildWhen: (previous, current) =>
             previous.filteredCards != current.filteredCards ||
             previous.cards != current.cards ||
-            previous.status == BlocStatus.success,
+            previous.status != current.status,
         builder: (context, state) {
           final bloc = context.read<MyLiquidityBloc>();
           final filteredCards = state.filteredCards;
