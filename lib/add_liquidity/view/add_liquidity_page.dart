@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
+import 'package:ax_dapp/add_liquidity/widgets/pool_insufficient_button.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
@@ -20,10 +21,16 @@ import 'package:tokens_repository/tokens_repository.dart';
 
 // ignore: must_be_immutable
 class AddLiquidityPage extends StatefulWidget {
-  AddLiquidityPage({super.key, this.token0, this.token1});
+  AddLiquidityPage({
+    super.key,
+    this.token0,
+    this.token1,
+    required this.goToPage,
+  });
 
   Token? token0;
   Token? token1;
+  final void Function(int pageNumber) goToPage;
 
   @override
   State<AddLiquidityPage> createState() => _AddLiquidityPageState();
@@ -36,6 +43,17 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
       TextEditingController();
   final Debouncer _debouncer = Debouncer(milliseconds: 200);
   Controller controller = Get.find();
+
+  bool isSufficient(double balance0, double balance1) {
+    var tokenOneAmount = double.tryParse(_tokenAmountOneController.text);
+    var tokenTwoAmount = double.tryParse(_tokenAmountTwoController.text);
+    if (tokenOneAmount == null || tokenTwoAmount == null) {
+      tokenOneAmount = 0.0;
+      tokenTwoAmount = 0.0;
+    }
+    final result = tokenOneAmount <= balance0 && tokenTwoAmount <= balance1;
+    return result;
+  }
 
   @override
   void dispose() {
@@ -661,23 +679,29 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                   showYouReceived(poolInfo.recieveAmount),
                   if (state.status == BlocStatus.success ||
                       state.status == BlocStatus.noData)
-                    PoolApproveButton(
-                      width: _elementWdt * 0.95 - 150,
-                      tokenAmountOneController: _tokenAmountOneController,
-                      tokenAmountTwoController: _tokenAmountTwoController,
-                      height: 40,
-                      text: 'Approve',
-                      approveCallback: bloc.poolController.approve,
-                      confirmCallback: bloc.poolController.addLiquidity,
-                      confirmDialog: transactionConfirmed,
-                      currencyOne: token0.name,
-                      currencyTwo: token1.name,
-                      lpTokens: poolInfo.recieveAmount,
-                      valueOne: _tokenAmountOneController.text,
-                      valueTwo: _tokenAmountTwoController.text,
-                      shareOfPool: poolInfo.shareOfPool,
-                      lpTokenName: '${token0.ticker}/${token1.ticker}',
-                    )
+                    if (isSufficient(balance0, balance1))
+                      PoolApproveButton(
+                        width: _elementWdt * 0.95 - 150,
+                        tokenAmountOneController: _tokenAmountOneController,
+                        tokenAmountTwoController: _tokenAmountTwoController,
+                        height: 40,
+                        text: 'Approve',
+                        approveCallback: bloc.poolController.approve,
+                        confirmCallback: bloc.poolController.addLiquidity,
+                        currencyOne: token0.name,
+                        currencyTwo: token1.name,
+                        lpTokens: poolInfo.recieveAmount,
+                        valueOne: _tokenAmountOneController.text,
+                        valueTwo: _tokenAmountTwoController.text,
+                        shareOfPool: poolInfo.shareOfPool,
+                        lpTokenName: '${token0.ticker}/${token1.ticker}',
+                        goToPage: widget.goToPage,
+                      )
+                    else
+                      PoolInsufficientButton(
+                        width: _elementWdt * 0.95 - 150,
+                        height: 40,
+                      )
                   else
                     WarningTextButton(
                       warningTitle: () {

@@ -180,7 +180,9 @@ class _V1AppState extends State<V1App> {
               child: const DesktopTrade(),
             )
           else if (pageNumber == Pages.pool)
-            const DesktopPool()
+            DesktopPool(
+              goToPage: goToPage,
+            )
           else if (pageNumber == Pages.farm)
             BlocProvider(
               create: (BuildContext context) => FarmBloc(
@@ -238,7 +240,9 @@ class _V1AppState extends State<V1App> {
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
               poolController: Get.find(),
             ),
-            child: const DesktopPool(),
+            child: DesktopPool(
+              goToPage: goToPage,
+            ),
           ),
           const DesktopFarm(),
         ],

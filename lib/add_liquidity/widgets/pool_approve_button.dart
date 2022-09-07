@@ -1,4 +1,5 @@
 import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
+import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -15,7 +16,6 @@ class PoolApproveButton extends StatefulWidget {
     required this.text,
     required this.approveCallback,
     required this.confirmCallback,
-    required this.confirmDialog,
     required this.currencyOne,
     required this.currencyTwo,
     required this.lpTokens,
@@ -23,6 +23,7 @@ class PoolApproveButton extends StatefulWidget {
     required this.valueTwo,
     required this.shareOfPool,
     required this.lpTokenName,
+    required this.goToPage,
     super.key,
   });
 
@@ -40,7 +41,7 @@ class PoolApproveButton extends StatefulWidget {
   final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final Dialog Function(BuildContext) confirmDialog;
+  final void Function(int pageNumber) goToPage;
 
   @override
   State<PoolApproveButton> createState() => _PoolApproveButtonState();
@@ -66,7 +67,11 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
   }
 
   void changeButton() {
-    //Changes from approve button to confirm
+    //Changes from approve to waiting
+    setState(() {
+      text = 'Waiting for Approval';
+    });
+    //Changes from waiting button to confirm
     widget.approveCallback().then((_) {
       setState(() {
         isApproved = true;
@@ -139,8 +144,11 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                   );
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog(context),
+                builder: (BuildContext context) => TransactionConfirmed(
+                  context: context,
+                  goToPage: widget.goToPage,
+                  isFarm: true,
+                ),
               ).then((value) {
                 resetButton();
                 bloc.add(const FetchPairInfoRequested());
