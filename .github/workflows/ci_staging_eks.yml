@@ -1,0 +1,132 @@
+name: build and deploy to EKS
+on:
+  push:
+    branches:
+      - develop
+      - infra
+env:
+  IMAGE_TAG: ${{ github.sha }}
+  ECR_REPOSITORY_BASE_URL: 510626941593.dkr.ecr.us-east-1.amazonaws.com
+  AWS_REGION: us-east-1
+  ATHLETEX_SERVICE_REPONAME: athletex-dapp
+  EKS_CLUSTER_NAME: athletex-cluster
+  PORT: 5050
+  BUILD_TYPE: staging
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-stage:
+    name: Build, Scan Image and Push on PR merge
+    environment: staging
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Cleanup Everything
+        uses: colpal/actions-clean@v1
+
+      - name: Get Code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::510626941593:role/github-actions-role
+          role-duration-seconds: 3600
+          role-session-name: GithubActions-PushImage
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          context: .
+          build-args: |
+            PORT=${{ env.PORT }}
+            BUILD_TYPE=${{ env.BUILD_TYPE }}
+          tags: |
+            ${{ env.ECR_REPOSITORY_BASE_URL }}/${{ env.ATHLETEX_SERVICE_REPONAME }}:${{ github.sha }}
+
+      - name: Cleanup Everything
+        uses: colpal/actions-clean@v1
+        if: ${{ always() }}
+
+  deploy-stage:
+    name: Deploy to Staging EKS
+    runs-on: ubuntu-latest
+    environment: staging
+    needs: build-stage
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      
+      - name: Install kubectl and helm
+        run: |
+          # Install required packages
+          sudo apt update
+          sudo apt install -y curl wget
+
+          # Install kubectl
+          curl -LO https://dl.k8s.io/release/v1.22.4/bin/linux/amd64/kubectl
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          kubectl version --client
+
+          # Install helm 3
+          wget https://get.helm.sh/helm-v3.9.0-linux-amd64.tar.gz
+          tar xvf helm-v3.9.0-linux-amd64.tar.gz
+          mv linux-amd64/helm /usr/local/bin
+          rm helm-v3.9.0-linux-amd64.tar.gz
+          rm -rf linux-amd64
+          helm version
+
+          # helm plugins
+          helm plugin install https://github.com/databus23/helm-diff
+          helm plugin install https://github.com/adamreese/helm-env
+          helm plugin install https://github.com/jkroepke/helm-secrets --version v3.12.0
+
+          # helmfile
+          wget -O helmfile_linux_amd64 https://github.com/roboll/helmfile/releases/download/v0.144.0/helmfile_linux_amd64
+          chmod +x helmfile_linux_amd64
+          mv helmfile_linux_amd64 /usr/local/bin/helmfile
+          helmfile version 
+
+          # sops
+          wget -O sops_3.7.3_amd64.deb https://github.com/mozilla/sops/releases/download/v3.7.3/sops_3.7.3_amd64.deb
+          sudo dpkg -i sops_3.7.3_amd64.deb
+          rm sops_3.7.3_amd64.deb
+          sops -v
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::510626941593:role/github-actions-role
+          role-duration-seconds: 3600
+          role-session-name: GithubActions-DeployToEKS
+
+      - name: Get Kuberentes Config
+        run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+
+      - name: List existing configuration
+        run: helm list -n stage
+
+      - name: Helmfile Diff
+        run: |
+          cd infra
+          helmfile --environment stage diff
+
+      - name: Helmfile Deploy
+        run: |
+          cd infra
+          helmfile --environment stage apply --suppress-secrets
+
