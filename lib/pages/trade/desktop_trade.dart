@@ -6,6 +6,7 @@ import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -78,7 +79,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
           final bloc = context.read<TradePageBloc>();
           final price = state.swapInfo.toPrice.toStringAsFixed(6);
           final tokenToBalance = state.tokenToBalance.toStringAsFixed(6);
-          final tokenFromBalance = state.tokenFromBalance.toStringAsFixed(6);
+          final tokenFromBalance = toDecimal(state.tokenFromBalance, 6);
           final minReceived = state.swapInfo.minimumReceived.toStringAsFixed(6);
           final priceImpact = state.swapInfo.priceImpact.toStringAsFixed(6);
           final receiveAmount = state.status != BlocStatus.error
@@ -735,6 +736,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           }
                           if (failure is NoSwapInfoFailure) {
                             return 'No swap info found';
+                          }
+                          if (failure is InSufficientFailure) {
+                            return 'Insufficient Balance';
                           }
                           return 'Something went wrong';
                         }(),

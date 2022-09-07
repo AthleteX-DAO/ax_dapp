@@ -1,4 +1,5 @@
 import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -17,7 +18,7 @@ class AthleteMintApproveButton extends StatefulWidget {
     required this.valueInAX,
     required this.approveCallback,
     required this.confirmCallback,
-    required this.confirmDialog,
+    required this.goToPage,
     super.key,
   });
 
@@ -30,7 +31,7 @@ class AthleteMintApproveButton extends StatefulWidget {
   final String valueInAX;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final Dialog Function(BuildContext) confirmDialog;
+  final void Function(int page) goToPage;
 
   @override
   State<AthleteMintApproveButton> createState() =>
@@ -57,6 +58,12 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
   }
 
   void changeButton() {
+    // Changes from approbe to waiting
+    setState(() {
+      text = 'Waiting for Approval';
+      fillcolor = Colors.grey;
+      textcolor = Colors.black;
+    });
     //Changes from approve button to confirm
     widget.approveCallback().then((_) {
       setState(() {
@@ -109,8 +116,12 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
             widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog(context),
+                builder: (BuildContext context) => TransactionConfirmed(
+                  context: context,
+                  goToPage: widget.goToPage,
+                  isTrade: true,
+                  isPool: true,
+                ),
               ).then((value) {
                 if (mounted) {
                   Navigator.pop(context);

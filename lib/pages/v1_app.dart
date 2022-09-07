@@ -72,6 +72,12 @@ class _V1AppState extends State<V1App> {
     });
   }
 
+  void goToPage(int page) {
+    setState(() {
+      pageNumber = Pages.values[page];
+    });
+  }
+
   void animateToPage(int index) {
     // use this to animate to the page
     _pageController.animateToPage(
@@ -156,7 +162,10 @@ class _V1AppState extends State<V1App> {
                   ],
                 ),
               ),
-              child: DesktopScout(goToTradePage: goToTradePage),
+              child: DesktopScout(
+                goToTradePage: goToTradePage,
+                goToPage: goToPage,
+              ),
             )
           else if (pageNumber == Pages.trade)
             BlocProvider(
@@ -171,7 +180,9 @@ class _V1AppState extends State<V1App> {
               child: const DesktopTrade(),
             )
           else if (pageNumber == Pages.pool)
-            const DesktopPool()
+            DesktopPool(
+              goToPage: goToPage,
+            )
           else if (pageNumber == Pages.farm)
             BlocProvider(
               create: (BuildContext context) => FarmBloc(
@@ -208,6 +219,7 @@ class _V1AppState extends State<V1App> {
             ),
             child: DesktopScout(
               goToTradePage: goToTradePage,
+              goToPage: goToPage,
             ),
           ),
           BlocProvider(
@@ -228,7 +240,9 @@ class _V1AppState extends State<V1App> {
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
               poolController: Get.find(),
             ),
-            child: const DesktopPool(),
+            child: DesktopPool(
+              goToPage: goToPage,
+            ),
           ),
           const DesktopFarm(),
         ],

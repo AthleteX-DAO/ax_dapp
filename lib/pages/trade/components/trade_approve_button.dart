@@ -64,7 +64,14 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
   }
 
   void changeButton() {
-    //Changes from approve button to confirm
+    //Changes from approve to waiting
+    setState(() {
+      isApproved = true;
+      text = 'Waiting for Approval';
+      fillcolor = Colors.grey;
+      textcolor = Colors.black;
+    });
+    //Changes from waiting button to confirm
     widget.approveCallback().then((_) {
       setState(() {
         isApproved = true;

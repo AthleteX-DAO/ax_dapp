@@ -28,9 +28,11 @@ class DesktopScout extends StatefulWidget {
   const DesktopScout({
     super.key,
     required this.goToTradePage,
+    required this.goToPage,
   });
 
   final void Function() goToTradePage;
+  final void Function(int page) goToPage;
 
   @override
   State<DesktopScout> createState() => _DesktopScoutState();
@@ -96,6 +98,7 @@ class _DesktopScoutState extends State<DesktopScout> {
             child: AthletePage(
               athlete: curAthlete!,
               goToTradePage: widget.goToTradePage,
+              goToPage: widget.goToPage,
             ),
           );
         }
