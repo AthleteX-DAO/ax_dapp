@@ -88,3 +88,9 @@ class UnknownTradeFailure extends Failure {
   UnknownTradeFailure()
       : super(Exception('Something went wrong'), StackTrace.empty);
 }
+
+class InSufficientFailure extends Failure {
+  /// {@macro temp_failure}
+  InSufficientFailure()
+      : super(Exception('InSufficent Failure'), StackTrace.empty);
+}

@@ -1,4 +1,5 @@
 import 'package:ax_dapp/athlete/athlete.dart';
+import 'package:ax_dapp/athlete/widgets/athlete_insufficient_button.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
@@ -15,11 +16,13 @@ class MintDialog extends StatefulWidget {
   const MintDialog({
     required this.athlete,
     required this.goToTradePage,
+    required this.goToPage,
     super.key,
   });
 
   final AthleteScoutModel athlete;
   final void Function() goToTradePage;
+  final void Function(int page) goToPage;
 
   @override
   State<MintDialog> createState() => _MintDialogState();
@@ -31,7 +34,7 @@ class _MintDialogState extends State<MintDialog> {
   double input = 0;
   double youSpend = 0;
   RxDouble maxAmount = 0.0.obs;
-  RxString balance = '---'.obs;
+  RxString balance = '0.0'.obs;
   String aptAddress = '';
   int collateralPerPair = 15000;
   final TextEditingController _aptAmountController = TextEditingController();
@@ -403,28 +406,36 @@ class _MintDialogState extends State<MintDialog> {
               ),
             ),
             //Approve/Confirm
-            SizedBox(
-              width: wid,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AthleteMintApproveButton(
-                    width: 175,
-                    height: 40,
-                    text: 'Approve',
-                    athlete: widget.athlete,
-                    aptName: widget.athlete.name,
-                    inputApt: _aptAmountController.text,
-                    valueInAX: '$youSpend AX',
-                    approveCallback: () {
-                      final currentAxt =
-                          context.read<TokensRepository>().currentAxt;
-                      return lspController.approve(currentAxt.address);
-                    },
-                    confirmCallback: lspController.mint,
-                    confirmDialog: transactionConfirmed,
-                  )
-                ],
+            Obx(
+              () => SizedBox(
+                width: wid,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (double.parse(balance.value) >= youSpend)
+                      AthleteMintApproveButton(
+                        width: 175,
+                        height: 40,
+                        text: 'Approve',
+                        athlete: widget.athlete,
+                        aptName: widget.athlete.name,
+                        inputApt: _aptAmountController.text,
+                        valueInAX: '$youSpend AX',
+                        approveCallback: () {
+                          final currentAxt =
+                              context.read<TokensRepository>().currentAxt;
+                          return lspController.approve(currentAxt.address);
+                        },
+                        confirmCallback: lspController.mint,
+                        goToPage: widget.goToPage,
+                      )
+                    else
+                      const AthleteInsufficientButton(
+                        width: 250,
+                        height: 40,
+                      )
+                  ],
+                ),
               ),
             )
           ],

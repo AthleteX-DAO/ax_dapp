@@ -152,6 +152,8 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     Emitter<TradePageState> emit,
   ) async {
     final tokenInputFromAmount = event.tokenInputFromAmount;
+    final tokenFromBalance =
+        await _walletRepository.getTokenBalance(state.tokenFrom.address);
     try {
       final response = await repo.fetchSwapInfo(
         tokenFrom: state.tokenFrom.address,
@@ -161,12 +163,21 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
-        if (swapController.amount1.value != tokenInputFromAmount) {
-          swapController.updateFromAmount(tokenInputFromAmount);
+        if (tokenInputFromAmount > tokenFromBalance!) {
+          emit(
+            state.copyWith(
+              status: BlocStatus.error,
+              failure: InSufficientFailure(),
+            ),
+          );
+        } else {
+          if (swapController.amount1.value != tokenInputFromAmount) {
+            swapController.updateFromAmount(tokenInputFromAmount);
+          }
+          final swapInfo = response.getLeft().toNullable()!.swapInfo;
+          //do some math
+          emit(state.copyWith(status: BlocStatus.success, swapInfo: swapInfo));
         }
-        final swapInfo = response.getLeft().toNullable()!.swapInfo;
-        //do some math
-        emit(state.copyWith(status: BlocStatus.success, swapInfo: swapInfo));
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         final errorMsg = response.getRight().toNullable()?.errorMsg;

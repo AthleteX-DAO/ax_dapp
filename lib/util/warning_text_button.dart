@@ -14,7 +14,7 @@ class WarningTextButton extends StatelessWidget {
       width: 175,
       height: 45,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.amber),
+        border: Border.all(color: Colors.red[400]!),
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(100),
       ),
@@ -23,9 +23,9 @@ class WarningTextButton extends StatelessWidget {
         child: Text(
           warningTitle,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
-            color: Colors.amber,
+            color: Colors.red[400],
           ),
         ),
       ),
