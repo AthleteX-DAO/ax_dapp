@@ -1688,7 +1688,7 @@ class _AthletePageState extends State<AthletePage> {
   Widget showSymbol(String symbol) {
     return Center(
       child: Text(
-        'Symbol: \$$symbol',
+        'Symbol: $symbol',
         style: textStyle(greyTextColor, 10, false, false),
         textAlign: TextAlign.center,
       ),
