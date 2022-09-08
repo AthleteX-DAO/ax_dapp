@@ -22,6 +22,7 @@ Widget singleLogoFarmTitle(
     width: cardWidth,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 35,
