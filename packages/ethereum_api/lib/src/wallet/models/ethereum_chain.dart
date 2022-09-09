@@ -105,7 +105,7 @@ enum EthereumChain {
 
   /// Returns a list of supported [EthereumChain]s.
   static List<EthereumChain> get supportedValues =>
-      values.where((chain) => chain.isSupported).toList();
+      values.where((chain) => chain.chainId != 647 && chain.isSupported).toList();
 }
 
 /// [EthereumChain] extensions.
