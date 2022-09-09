@@ -4,7 +4,7 @@ import 'package:ethereum_api/src/config/models/apts/mlb_apt_list.dart';
 import 'package:ethereum_api/src/config/models/apts/nfl_apt_list.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_url_config.dart';
-import 'package:ethereum_api/src/dex/dex.dart';
+import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/pool_info/pool_info.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 import 'package:flutter/widgets.dart';
@@ -170,15 +170,15 @@ extension ChainConfigX on EthereumChain {
   /// Creates an [APTRouter] client based on this [EthereumChain] configuration.
   APTRouter createAptRouterClient(Web3Client client) => APTRouter(
         address: EthereumAddress.fromHex(
-          const EthereumAddressConfig.aptRouterAddress().address(this),
+          const EthereumAddressConfig.dexRouterAddress().address(this),
         ),
         client: client,
       );
 
   /// Creates a [Dex] client based on this [EthereumChain] configuration.
-  Dex createDexClient(Web3Client client) => Dex(
+  APTFactory createAptFactoryClient(Web3Client client) => APTFactory(
         address: EthereumAddress.fromHex(
-          const EthereumAddressConfig.factoryRouterAddress().address(this),
+          const EthereumAddressConfig.dexFactoryAddress().address(this),
         ),
         client: client,
       );

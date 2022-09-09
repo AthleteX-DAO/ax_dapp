@@ -9,6 +9,7 @@ import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
+import 'package:ethereum_api/src/tokens/models/contract.dart';
 
 part 'trade_page_event.dart';
 part 'trade_page_state.dart';
@@ -56,11 +57,12 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       onData: (appData) {
         final appConfig = appData.appConfig;
         swapController
-          ..dex = appConfig.reactiveDexClient.value
+          ..aptFactory = appConfig.reactiveAptFactoryClient.value
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
         swapController.controller.credentials =
             _walletRepository.credentials.value;
-
+        swapController.factoryAddress.value = Contract.exchangeFactory(appData.chain).address;
+        swapController.routerAddress.value = Contract.exchangeRouter(appData.chain).address;
         final tradeTokens = appData.chain.computeTradeTokens(
           isBuyAX: isBuyAX,
         );

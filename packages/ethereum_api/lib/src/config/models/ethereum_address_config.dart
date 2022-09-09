@@ -1,5 +1,5 @@
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
-import 'package:ethereum_api/src/dex/dex.dart';
+import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 
@@ -58,14 +58,14 @@ class EthereumAddressConfig {
   });
 
   /// Configuration for [APTRouter] client.
-  const EthereumAddressConfig.aptRouterAddress()
+  const EthereumAddressConfig.dexRouterAddress()
       : polygonMainnet = '0x15e4eb77713CD274472D95bDfcc7797F6a8C2D95',
         polygonTestnet = '0x7EFc361e568d0038cfB200dF9d9Be27943e19017',
         sportxMainnet = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A',
         sportxTestnet = kEmptyAddress;
 
   /// Configuration for [Dex] client.
-  const EthereumAddressConfig.factoryRouterAddress()
+  const EthereumAddressConfig.dexFactoryAddress()
       : polygonMainnet = '0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B',
         polygonTestnet = '0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551',
         sportxMainnet = '0x668880Eb73AAd6474b8aE1C08D3310e765803717',
