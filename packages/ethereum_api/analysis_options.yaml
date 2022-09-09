@@ -1,0 +1,7 @@
+include: package:very_good_analysis/analysis_options.3.0.1.yaml
+
+analyzer:
+  errors:
+    lines_longer_than_80_chars: ignore
+  exclude: 
+    - 'lib/src/**/*.g.dart'

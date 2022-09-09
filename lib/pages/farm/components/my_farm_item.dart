@@ -6,7 +6,10 @@ import 'package:ax_dapp/pages/farm/dialogs/unstake_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/service/failed_dialog.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 // First card of the my farms page is unique
@@ -27,10 +30,6 @@ Widget myFarmItem(
 
   final customTextStyle = textStyle(Colors.grey[600]!, 14, false, false);
   final farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
-
-  final parsedView = double.parse(farm.stakedInfo.value.viewAmount);
-  final parsedReward = double.parse(farm.strRewards.value);
-  final parsedTotal = parsedView + parsedReward;
   final rewardSymbol = farm.strRewardSymbol;
 
   return Container(
@@ -112,7 +111,7 @@ Widget myFarmItem(
               ),
               Obx(
                 () => Text(
-                  '${parsedView.toStringAsFixed(4)} ${farm.strStakedSymbol}',
+                  '${farm.stakedInfo.value.viewAmount} ${farm.strStakedSymbol}',
                   style: customTextStyle,
                 ),
               ),
@@ -125,36 +124,37 @@ Widget myFarmItem(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Rewards Earned',
+                'Claimable Rewards',
                 style: customTextStyle,
               ),
               Obx(
                 () => Text(
-                  '${farm.strRewards} $rewardSymbol',
+                  '${farm.rewardInfo.value.viewAmount} $rewardSymbol',
                   style: customTextStyle,
                 ),
               )
             ],
           ),
         ),
-        SizedBox(
-          width: cardWidth,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Total AX available (Staked + Earned)',
-                style: customTextStyle,
-              ),
-              Obx(
-                () => Text(
-                  '${parsedTotal.toStringAsFixed(2)} $rewardSymbol',
-                  style: customTextStyle,
-                ),
-              )
-            ],
-          ),
-        ),
+        // we will add this feature in the future
+        // SizedBox(
+        //   width: cardWidth,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       Text(
+        //         'Total AX available (Staked + Earned)',
+        //         style: customTextStyle,
+        //       ),
+        //       Obx(
+        //         () => Text(
+        //           '${parsedTotal.toStringAsFixed(2)} $rewardSymbol',
+        //           style: customTextStyle,
+        //         ),
+        //       )
+        //     ],
+        //   ),
+        // ),
         //Claim rewards and Unstake liquidity buttons
         SizedBox(
           width: cardWidth,
@@ -173,11 +173,33 @@ Widget myFarmItem(
                 ),
                 child: TextButton(
                   onPressed: () async => {
-                    await farm.claim(),
-                    showDialog<void>(
-                      context: context,
-                      builder: rewardClaimDialog,
-                    )
+                    context.read<TrackingCubit>().onPressedClaimRewards(
+                          tickerPair: farm.athlete == null
+                              ? farm.strName
+                              : farm.athlete!,
+                          tickerPairName: farm.strStakedAlias.value.isNotEmpty
+                              ? farm.strStakedAlias.value
+                              : farm.strStakedSymbol.value,
+                        ),
+                    await farm.claim().then((value) {
+                      showDialog<void>(
+                        context: context,
+                        builder: rewardClaimDialog,
+                      );
+                      context.read<TrackingCubit>().onClaimRewardsSuccess(
+                            tickerPair: farm.athlete == null
+                                ? farm.strName
+                                : farm.athlete!,
+                            tickerPairName: farm.strStakedAlias.value.isNotEmpty
+                                ? farm.strStakedAlias.value
+                                : farm.strStakedSymbol.value,
+                          );
+                    }).catchError((error) {
+                      showDialog<void>(
+                        context: context,
+                        builder: (context) => const FailedDialog(),
+                      );
+                    })
                   },
                   child: Text(
                     'Claim Rewards',
@@ -198,8 +220,12 @@ Widget myFarmItem(
                 child: TextButton(
                   onPressed: () => showDialog<void>(
                     context: context,
-                    builder: (BuildContext builderContext) =>
-                        unstakeDialog(builderContext, farm, cardWidth, isWeb),
+                    builder: (BuildContext builderContext) => UnstakeDialog(
+                      context: builderContext,
+                      farm: farm,
+                      layoutWdt: cardWidth,
+                      isWeb: isWeb,
+                    ),
                   ),
                   child: Text(
                     'Unstake Liquidity',

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:ax_dapp/pages/pool/add_liquidity/models/pool_pair_info.dart';
+import 'package:ax_dapp/add_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/subgraph_error.dart';
 import 'package:fpdart/fpdart.dart';

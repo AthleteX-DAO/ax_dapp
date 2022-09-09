@@ -1,50 +1,32 @@
-import 'package:ax_dapp/contracts/APTRouter.g.dart';
-import 'package:ax_dapp/contracts/Dex.g.dart';
-import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
+import 'package:ethereum_api/apt_factory_api.dart';
+import 'package:ethereum_api/apt_router_api.dart';
+import 'package:ethereum_api/erc20_api.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
 class PoolController extends GetxController {
-  PoolController() {
-    // This is meant to switch as per the correct chain
-    final routerAddress = routerMainnetAddress;
-    final dexAddress = dexMainnetAddress;
-
-    _factory = Dex(address: dexAddress, client: controller.client.value);
-    _aptRouter =
-        APTRouter(address: routerAddress, client: controller.client.value);
-  }
+  PoolController();
   Controller controller = Get.find();
-  late Dex _factory;
-  late APTRouter _aptRouter;
+  late APTFactory aptFactory;
+  late APTRouter aptRouter;
+  RxString routerAddress = ''.obs;
+  RxString factoryAddress = ''.obs;
   RxString address1 = ''.obs, address2 = ''.obs;
   String lpTokenAAddress = '';
   String lpTokenBAddress = '';
   String lpTokenPairAddress = '';
   double removePercentage = 0;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
-  WalletController walletController = Get.find();
-  final tokenClient = Web3Client('https://polygon-rpc.com', Client());
+
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
     DateTime.now().add(const Duration(minutes: 2)).millisecondsSinceEpoch,
   );
 
-  final EthereumAddress routerTestnetAddress =
-      EthereumAddress.fromHex('0x7EFc361e568d0038cfB200dF9d9Be27943e19017');
-  final EthereumAddress dexTestnetAddress =
-      EthereumAddress.fromHex('0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551');
-
-  final EthereumAddress dexMainnetAddress =
-      EthereumAddress.fromHex('0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B');
-  final EthereumAddress routerMainnetAddress =
-      EthereumAddress.fromHex('0x15e4eb77713CD274472D95bDfcc7797F6a8C2D95');
-
   Future<void> approve() async {
+    final routerMainnetAddress = EthereumAddress.fromHex(routerAddress.value);
     var txStringA = '';
     var txStringB = '';
     final tokenAAmount = normalizeInput(amount1.value);
@@ -91,7 +73,7 @@ class PoolController extends GetxController {
     final to = await controller.credentials.extractAddress();
     final credentials = controller.credentials;
 
-    final txString = await _aptRouter.addLiquidity(
+    final txString = await aptRouter.addLiquidity(
       tokenAAddress,
       tokenBAddress,
       amountADesired,
@@ -106,16 +88,16 @@ class PoolController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  Future<void> approveRemove() async {
+  Future<void> approveRemove(
+    Future<double?> Function(String address) getTokenBalanceHandler,
+  ) async {
+    final routerMainnetAddress = EthereumAddress.fromHex(routerAddress.value);
     var txStringA = '';
     final lpTokenEthAddress = EthereumAddress.fromHex(lpTokenPairAddress);
     final lpToken =
         ERC20(address: lpTokenEthAddress, client: controller.client.value);
-    final lpTokenBalance = normalizeInput(
-      double.parse(
-        await walletController.getTokenBalance(lpTokenPairAddress),
-      ),
-    );
+    final tokenBalance = await getTokenBalanceHandler(lpTokenPairAddress);
+    final lpTokenBalance = normalizeInput(tokenBalance ?? 0);
     final approveAmount =
         (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
     try {
@@ -130,12 +112,11 @@ class PoolController extends GetxController {
     }
   }
 
-  Future<void> removeLiquidity() async {
-    final lpTokenBalance = normalizeInput(
-      double.parse(
-        await walletController.getTokenBalance(lpTokenPairAddress),
-      ),
-    );
+  Future<void> removeLiquidity(
+    Future<double?> Function(String address) getTokenBalanceHandler,
+  ) async {
+    final tokenBalance = await getTokenBalanceHandler(lpTokenPairAddress);
+    final lpTokenBalance = normalizeInput(tokenBalance ?? 0);
     final liquidity =
         (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
     final amountAMin = BigInt.zero;
@@ -146,7 +127,7 @@ class PoolController extends GetxController {
     final credentials = controller.credentials;
     final to = await controller.credentials.extractAddress();
 
-    final txString = await _aptRouter.removeLiquidity(
+    final txString = await aptRouter.removeLiquidity(
       tokenAAddress,
       tokenBAddress,
       liquidity,
@@ -164,8 +145,7 @@ class PoolController extends GetxController {
     final tknA = EthereumAddress.fromHex('$address1');
     final tknB = EthereumAddress.fromHex('$address2');
 
-    final txString =
-        await _factory.createPair(tknA, tknB, credentials: credentials);
+    final txString = await aptFactory.createPair(tknA, tknB, credentials: credentials);
     controller.updateTxString(txString);
   }
 

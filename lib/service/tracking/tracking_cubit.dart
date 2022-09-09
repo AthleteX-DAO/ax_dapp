@@ -29,13 +29,15 @@ extension LandingPageTracking on TrackingCubit {
   }
 }
 
-extension ConnectWalletTracking on TrackingCubit {
-  void onPressedConnectWallet({
+extension ConnectWalletSuccessfulTracking on TrackingCubit {
+  void onConnectWalletSuccessful({
     required String publicAddress,
+    required String axUnits,
   }) {
     trackingRepository.track(
-      ScoutPageTrackingEvent.onPressedConnectWallet({
+      ScoutPageTrackingEvent.onConnectWalletSuccessful({
         'public_address': publicAddress,
+        'ax_units': axUnits,
       }),
     );
   }
@@ -72,11 +74,27 @@ extension AthleteBuyTracking on TrackingCubit {
   /// Get athlete info when buy approve button clicked for analytics
   void trackAthleteBuyApproveButtonClicked({
     required String aptName,
+    required int id,
+    required String buyPosition,
+    required double unit,
+    required String currencySpent,
+    required String currency,
+    required double totalFee,
+    required String sport,
+    required String walletId,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedAthleteBuy(
         {
           'apt_name': aptName,
+          'apt_id': id,
+          'long_short': buyPosition,
+          'apt_units': unit,
+          'currency_spent': currencySpent,
+          'currency': currency,
+          'total_fee': totalFee,
+          'sport': sport,
+          'wallet_id': walletId
         },
       ),
     );
@@ -84,12 +102,28 @@ extension AthleteBuyTracking on TrackingCubit {
 
   /// Get athlete info when buy confirm button clicked for analytics
   void trackAthleteBuyConfirmButtonClicked({
+    required String aptName,
     required int id,
+    required String buyPosition,
+    required double unit,
+    required String currencySpent,
+    required String currency,
+    required double totalFee,
+    required String sport,
+    required String walletId,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedConfirmBuy(
         {
+          'apt_name': aptName,
           'apt_id': id,
+          'long_short': buyPosition,
+          'apt_units': unit,
+          'currency_spent': currencySpent,
+          'currency': currency,
+          'total_fee': totalFee,
+          'sport': sport,
+          'wallet_id': walletId
         },
       ),
     );
@@ -97,6 +131,8 @@ extension AthleteBuyTracking on TrackingCubit {
 
   /// Get athlete info when buy success for analytics
   void trackAthleteBuySuccess({
+    required String aptName,
+    required int id,
     required String buyPosition,
     required double unit,
     required String currencySpent,
@@ -107,6 +143,8 @@ extension AthleteBuyTracking on TrackingCubit {
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteBuySuccess({
+        'apt_name': aptName,
+        'apt_id': id,
         'long_short': buyPosition,
         'apt_units': unit,
         'currency_spent': currencySpent,
@@ -123,11 +161,27 @@ extension AthleteSellTracking on TrackingCubit {
   /// Get athlete info when sell button clicked for analytics
   void trackAthleteSellApproveButtonClicked({
     required String athleteName,
+    required int id,
+    required String sellPosition,
+    required String unit,
+    required double currencyReceive,
+    required String currency,
+    required double totalFee,
+    required String sport,
+    required String walletId,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedAthleteSell(
         {
           'apt_name': athleteName,
+          'apt_id': id,
+          'long_short': sellPosition,
+          'apt_units': unit,
+          'currency_received': currencyReceive,
+          'currency': currency,
+          'total_fee': totalFee,
+          'sport': sport,
+          'wallet_id': walletId
         },
       ),
     );
@@ -135,12 +189,28 @@ extension AthleteSellTracking on TrackingCubit {
 
   /// Get athlete info when sell confirm button clicked for analytics
   void trackAthleteSellConfirmButtonClicked({
+    required String athleteName,
     required int id,
+    required String sellPosition,
+    required String unit,
+    required double currencyReceive,
+    required String currency,
+    required double totalFee,
+    required String sport,
+    required String walletId,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedConfirmSell(
         {
+          'apt_name': athleteName,
           'apt_id': id,
+          'long_short': sellPosition,
+          'apt_units': unit,
+          'currency_received': currencyReceive,
+          'currency': currency,
+          'total_fee': totalFee,
+          'sport': sport,
+          'wallet_id': walletId
         },
       ),
     );
@@ -148,6 +218,8 @@ extension AthleteSellTracking on TrackingCubit {
 
   /// Get athlete info when sell successful for analytics
   void trackAthleteSellSuccess({
+    required String athleteName,
+    required int id,
     required String sellPosition,
     required String unit,
     required double currencyReceive,
@@ -158,6 +230,8 @@ extension AthleteSellTracking on TrackingCubit {
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteSellSuccess({
+        'apt_name': athleteName,
+        'apt_id': id,
         'long_short': sellPosition,
         'apt_units': unit,
         'currency_received': currencyReceive,
@@ -174,11 +248,19 @@ extension AthleteMintTracking on TrackingCubit {
   /// Get athlete info when mint button clicked for analytics
   void trackAthleteMintApproveButtonClicked({
     required String aptName,
+    required String sport,
+    required String inputApt,
+    required String valueInAx,
+    required String walletId,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedAthleteMint(
         {
-          'apt_name': aptName,
+          'apt_pair_name': aptName,
+          'sport': sport,
+          'input_apt': inputApt,
+          'value_in_ax': valueInAx,
+          'wallet_id': walletId
         },
       ),
     );
@@ -186,12 +268,20 @@ extension AthleteMintTracking on TrackingCubit {
 
   /// Get athlete info when mint confirmed button clicked for analytics
   void trackAthleteMintConfirmButtonClicked({
+    required String aptName,
     required String sport,
+    required String inputApt,
+    required String valueInAx,
+    required String walletId,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedConfirmMint(
         {
+          'apt_pair_name': aptName,
           'sport': sport,
+          'input_apt': inputApt,
+          'value_in_ax': valueInAx,
+          'wallet_id': walletId
         },
       ),
     );
@@ -199,12 +289,16 @@ extension AthleteMintTracking on TrackingCubit {
 
   /// Get athlete info when mint successful for analytics
   void trackAthleteMintSuccess({
+    required String aptName,
+    required String sport,
     required String inputApt,
     required String valueInAx,
     required String walletId,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteMintSuccess({
+        'apt_pair_name': aptName,
+        'sport': sport,
         'input_apt': inputApt,
         'value_in_ax': valueInAx,
         'wallet_id': walletId
@@ -225,7 +319,7 @@ extension AthleteRedeemTracking on TrackingCubit {
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteRedeemSuccess({
-        'apt_name': name,
+        'apt_pair_name': name,
         'sport': sport,
         'input_long_apt': inputLongApt,
         'input_short_apt': inputShortApt,
@@ -238,6 +332,8 @@ extension AthleteRedeemTracking on TrackingCubit {
 
 extension PoolPageTracking on TrackingCubit {
   void onPoolCreated({
+    required String currencyOne,
+    required String currencyTwo,
     required String valueOne,
     required String valueTwo,
     required String lpTokens,
@@ -248,6 +344,8 @@ extension PoolPageTracking on TrackingCubit {
     trackingRepository.track(
       PoolPageUserEvent.onPoolCreate(
         {
+          'currency_1': currencyOne,
+          'currency_2': currencyTwo,
           'value_1': valueOne,
           'value_2': valueTwo,
           'lp_tokens': lpTokens,
@@ -259,27 +357,61 @@ extension PoolPageTracking on TrackingCubit {
     );
   }
 
-  void onPoolApproveClick({required String currencyOne}) {
+  void onPoolApproveClick({
+    required String currencyOne,
+    required String currencyTwo,
+    required String valueOne,
+    required String valueTwo,
+    required String lpTokens,
+    required String shareOfPool,
+    required String lpTokenName,
+    required String walletId,
+  }) {
     trackingRepository.track(
       PoolPageUserEvent.onApprovePoolClick(
         {
           'currency_1': currencyOne,
+          'currency_2': currencyTwo,
+          'value_1': valueOne,
+          'value_2': valueTwo,
+          'lp_tokens': lpTokens,
+          'share_of_pool': shareOfPool,
+          'lp_token_name': lpTokenName,
+          'wallet_id': walletId,
         },
       ),
     );
   }
 
-  void onPoolConfirmClick({required String currencyTwo}) {
+  void onPoolConfirmClick({
+    required String currencyOne,
+    required String currencyTwo,
+    required String valueOne,
+    required String valueTwo,
+    required String lpTokens,
+    required String shareOfPool,
+    required String lpTokenName,
+    required String walletId,
+  }) {
     trackingRepository.track(
       PoolPageUserEvent.onConfirmPoolClick(
         {
+          'currency_1': currencyOne,
           'currency_2': currencyTwo,
+          'value_1': valueOne,
+          'value_2': valueTwo,
+          'lp_tokens': lpTokens,
+          'share_of_pool': shareOfPool,
+          'lp_token_name': lpTokenName,
+          'wallet_id': walletId,
         },
       ),
     );
   }
 
   void onPoolRemoval({
+    required String currencyOne,
+    required String currencyTwo,
     required double valueOne,
     required double valueTwo,
     required String lpTokens,
@@ -291,33 +423,71 @@ extension PoolPageTracking on TrackingCubit {
     trackingRepository.track(
       PoolPageUserEvent.onPoolRemove(
         {
+          'currency_1': currencyOne,
+          'currency_2': currencyTwo,
           'value_1': valueOne,
           'value_2': valueTwo,
           'lp_tokens': lpTokens,
           'share_of_pool': shareOfPool,
           'percent_removal': percentRemoval,
           'wallet_id': walletId,
-          'lp_token_name': lpTokenName
+          'lp_token_name': lpTokenName,
         },
       ),
     );
   }
 
-  void onPoolRemovalApproveClick({required String currencyOne}) {
+  void onPoolRemovalApproveClick({
+    required String currencyOne,
+    required String currencyTwo,
+    required double valueOne,
+    required double valueTwo,
+    required String lpTokens,
+    required String shareOfPool,
+    required double percentRemoval,
+    required String walletId,
+    required String lpTokenName,
+  }) {
     trackingRepository.track(
       PoolPageUserEvent.onRemoveApproveClick(
         {
           'currency_1': currencyOne,
+          'currency_2': currencyTwo,
+          'value_1': valueOne,
+          'value_2': valueTwo,
+          'lp_tokens': lpTokens,
+          'share_of_pool': shareOfPool,
+          'percent_removal': percentRemoval,
+          'wallet_id': walletId,
+          'lp_token_name': lpTokenName,
         },
       ),
     );
   }
 
-  void onPoolRemovalConfirmClick({required String currencyTwo}) {
+  void onPoolRemovalConfirmClick({
+    required String currencyOne,
+    required String currencyTwo,
+    required double valueOne,
+    required double valueTwo,
+    required String lpTokens,
+    required String shareOfPool,
+    required double percentRemoval,
+    required String walletId,
+    required String lpTokenName,
+  }) {
     trackingRepository.track(
       PoolPageUserEvent.onRemoveConfirmClick(
         {
+          'currency_1': currencyOne,
           'currency_2': currencyTwo,
+          'value_1': valueOne,
+          'value_2': valueTwo,
+          'lp_tokens': lpTokens,
+          'share_of_pool': shareOfPool,
+          'percent_removal': percentRemoval,
+          'wallet_id': walletId,
+          'lp_token_name': lpTokenName,
         },
       ),
     );
@@ -326,6 +496,8 @@ extension PoolPageTracking on TrackingCubit {
 
 extension TradePageTracking on TrackingCubit {
   void onSwapConfirmedTransaction({
+    required String fromCurrency,
+    required String toCurrency,
     required String fromUnits,
     required String toUnits,
     required String totalFee,
@@ -334,6 +506,8 @@ extension TradePageTracking on TrackingCubit {
     trackingRepository.track(
       TradePageUserEvent.onSwapConfirmedTransaction(
         {
+          'from_currency': fromCurrency,
+          'to_currency': toCurrency,
           'from_units': fromUnits,
           'to_units': toUnits,
           'fee': totalFee,
@@ -343,19 +517,169 @@ extension TradePageTracking on TrackingCubit {
     );
   }
 
-  void onSwapApproveClick({required String fromCurrency}) {
+  void onSwapApproveClick({
+    required String fromCurrency,
+    required String toCurrency,
+    required String fromUnits,
+    required String toUnits,
+    required String totalFee,
+    required String walletId,
+  }) {
     trackingRepository.track(
       TradePageUserEvent.onApproveClick(
-        {'from_currency': fromCurrency},
+        {
+          'from_currency': fromCurrency,
+          'to_currency': toCurrency,
+          'from_units': fromUnits,
+          'to_units': toUnits,
+          'fee': totalFee,
+          'wallet_id': walletId,
+        },
       ),
     );
   }
 
-  void onSwapConfirmClick({required String toCurrency}) {
+  void onSwapConfirmClick({
+    required String fromCurrency,
+    required String toCurrency,
+    required String fromUnits,
+    required String toUnits,
+    required String totalFee,
+    required String walletId,
+  }) {
     trackingRepository.track(
       TradePageUserEvent.onConfirmClick(
-        {'to_currency': toCurrency},
+        {
+          'from_currency': fromCurrency,
+          'to_currency': toCurrency,
+          'from_units': fromUnits,
+          'to_units': toUnits,
+          'fee': totalFee,
+          'wallet_id': walletId,
+        },
       ),
+    );
+  }
+}
+
+extension FarmPageTracking on TrackingCubit {
+  void onPressedStake({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedStake({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onPressedStakeConfirm({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedStakeConfirm({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onStakeSuccess({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onStakeSuccess({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onPressedClaimRewards({
+    required String tickerPair,
+    required String tickerPairName,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedClaimRewards({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+      }),
+    );
+  }
+
+  void onClaimRewardsSuccess({
+    required String tickerPair,
+    required String tickerPairName,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onClaimRewardsSuccess({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+      }),
+    );
+  }
+
+  void onPressedUnStake({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedUnStake({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onPressedUnStakeConfirm({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onPressedUnStakeConfirm({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
+    );
+  }
+
+  void onUnStakeSuccess({
+    required String tickerPair,
+    required String tickerPairName,
+    required String axlInput,
+    required String axlBalance,
+  }) {
+    trackingRepository.track(
+      FarmPageTrackingEvent.onUnStakeSuccess({
+        'ticker_pair': tickerPair,
+        'ticker_pair_name': tickerPairName,
+        'axl_input': axlInput,
+        'axl_balance': axlBalance,
+      }),
     );
   }
 }

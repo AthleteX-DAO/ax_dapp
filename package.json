@@ -1,0 +1,27 @@
+{
+  "name": "ax_dapp",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "flutter run --no-sound-null-safety",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged && git add ."
+  },
+  "lint-staged": {
+    "(lib|test)/**/*.dart": "flutter format --set-exit-if-changed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SportsToken/ax_dapp.git"
+  },
+  "author": "AthleteX DAO",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SportsToken/ax_dapp/issues"
+  },
+  "homepage": "https://github.com/SportsToken/ax_dapp#readme",
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
+  }
+}

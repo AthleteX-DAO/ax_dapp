@@ -1,25 +1,30 @@
-// ignore_for_file: prefer_asserts_with_message
+// ignore_for_file: prefer_asserts_with_message, prefer_const_constructors
 
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart'
     as usecase;
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 import 'get_buy_info_use_case_test.mocks.dart';
 
-@GenerateMocks([GetSwapInfoUseCase])
+@GenerateMocks([GetSwapInfoUseCase, TokensRepository])
 void main() {
   late usecase.GetBuyInfoUseCase buyInfoUseCase;
   var mockRepo = MockGetSwapInfoUseCase();
+  late TokensRepository mockTokensRepository;
 
   setUp(() {
+    mockTokensRepository = MockTokensRepository();
     mockRepo = MockGetSwapInfoUseCase();
-    buyInfoUseCase = usecase.GetBuyInfoUseCase(mockRepo);
+    buyInfoUseCase = usecase.GetBuyInfoUseCase(
+      tokensRepository: mockTokensRepository,
+      repo: mockRepo,
+    );
   });
 
   test('Should successfully fetch buy info details', () async {
@@ -40,6 +45,8 @@ void main() {
       receiveAmount: testReceivedAmount,
       totalFee: testTotalFee,
     );
+    final axt = Token.ax(EthereumChain.polygonMainnet);
+    when(mockTokensRepository.currentAxt).thenReturn(axt);
     const testSuccessResponse = Success(targetTokenSwapInfo);
     when(
       mockRepo.fetchSwapInfo(
@@ -56,8 +63,8 @@ void main() {
       axInput: testAxInput,
     );
 
-    assert(response.isLeft());
-    assert(response.getLeft().toNullable()!.aptBuyInfo == targetTokenSwapInfo);
+    expect(response.isLeft(), isTrue);
+    expect(response.getLeft().toNullable()!.aptBuyInfo, targetTokenSwapInfo);
     expect(
       verify(
         mockRepo.fetchSwapInfo(
@@ -66,7 +73,7 @@ void main() {
           fromInput: testAxInput,
         ),
       ).captured,
-      [AXT.polygonAddress],
+      [axt.address],
     );
   });
 }

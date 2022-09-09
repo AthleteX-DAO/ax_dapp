@@ -1,46 +1,22 @@
-import 'package:ax_dapp/contracts/APTRouter.g.dart';
-import 'package:ax_dapp/contracts/Dex.g.dart';
-import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
+import 'package:ethereum_api/apt_factory_api.dart';
+import 'package:ethereum_api/apt_router_api.dart';
+import 'package:ethereum_api/erc20_api.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:web3dart/web3dart.dart';
 
 class SwapController extends GetxController {
-  SwapController() {
-    _dex = Dex(address: dexMainnetAddress, client: controller.client.value);
-    _aptRouter = APTRouter(
-      address: routerMainnetAddress,
-      client: controller.client.value,
-    );
-  }
+  SwapController();
   Controller controller = Get.find();
-  Rx<Token> activeTkn1 = Token(
-        'Empty Token',
-        'ET',
-        '0x0000000000000000000000000000000000000000',
-      ).obs,
-      activeTkn2 = Token(
-        'Empty Token',
-        'ET',
-        '0x0000000000000000000000000000000000000000',
-      ).obs;
+  Rx<Token> activeTkn1 = Token.empty.obs, activeTkn2 = Token.empty.obs;
   RxString address1 = ''.obs, address2 = ''.obs;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
   RxDouble price = 0.0.obs;
-  final EthereumAddress routerTestnetAddress =
-      EthereumAddress.fromHex('0x7EFc361e568d0038cfB200dF9d9Be27943e19017');
-  final EthereumAddress dexTestnetAddress =
-      EthereumAddress.fromHex('0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551');
+  RxString routerAddress = ''.obs;
+  RxString factoryAddress = ''.obs;
 
-  final EthereumAddress routerMainnetAddress =
-      EthereumAddress.fromHex('0x15e4eb77713CD274472D95bDfcc7797F6a8C2D95');
-  final EthereumAddress dexMainnetAddress =
-      EthereumAddress.fromHex('0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B');
-
-  final axtAddress = EthereumAddress.fromHex(AXT.polygonAddress);
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
     DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch,
@@ -48,30 +24,29 @@ class SwapController extends GetxController {
   Rx<BigInt> deadline = BigInt.from(
     DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch,
   ).obs;
-  late Dex _dex;
-  late APTRouter _aptRouter;
+  late APTFactory aptFactory;
+  late APTRouter aptRouter;
   BigInt amountOutMin = BigInt.zero;
   double x = 0, y = 0, k = 0;
 
   Future<void> approve() async {
     var txString = '';
     final tokenAAddress = EthereumAddress.fromHex(address1.value);
-    //EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
+    final routerMainnetAddress = EthereumAddress.fromHex(routerAddress.value);
     final tokenAAmount = normalizeInput(amount1.value);
-    //BigInt tokenBAmount = BigInt.from(amount2.value);
     final tokenA =
         ERC20(address: tokenAAddress, client: controller.client.value);
-    //ERC20 tokenB =
-    //ERC20(address: tokenBAddress, client: controller.client.value);
     try {
       txString = await tokenA.approve(
         routerMainnetAddress,
         tokenAAmount,
         credentials: controller.credentials,
       );
-      //txString = await tokenB.approve(dexAddress, tokenBAmount,
-      //  credentials: controller.credentials);
-    } catch (_) {}
+    } catch (e) {
+      txString = '';
+      controller.updateTxString(txString);
+      return Future.error(e);
+    }
 
     controller.updateTxString(txString);
   }
@@ -87,7 +62,7 @@ class SwapController extends GetxController {
     var txString = '';
 
     try {
-      txString = await _aptRouter.swapExactTokensForTokens(
+      txString = await aptRouter.swapExactTokensForTokens(
         tokenAAmount,
         amountOutMin,
         path,
@@ -108,13 +83,13 @@ class SwapController extends GetxController {
     final tknA = EthereumAddress.fromHex('$address1');
     final tknB = EthereumAddress.fromHex('$address2');
     try {
-      txString = await _dex.createPair(
+      txString = await aptFactory.createPair(
         tknA,
         tknB,
         credentials: controller.credentials,
       );
     } catch (_) {
-      txString = await _dex.createPair(
+      txString = await aptFactory.createPair(
         tknA,
         tknB,
         credentials: controller.credentials,
@@ -124,12 +99,15 @@ class SwapController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  Future<void> swapforAX() async {
+  Future<void> swapforAX(String chainTokenAddress) async {
     final tknA = EthereumAddress.fromHex(address1.value);
     final amountIn = normalizeInput(amount1.value);
     final to = await controller.credentials.extractAddress();
-    final path = <EthereumAddress>[tknA, axtAddress];
-    final txString = await _aptRouter.swapExactTokensForAVAX(
+    final path = <EthereumAddress>[
+      tknA,
+      EthereumAddress.fromHex(chainTokenAddress),
+    ];
+    final txString = await aptRouter.swapExactTokensForAVAX(
       amountIn,
       BigInt.zero,
       path,
@@ -140,12 +118,15 @@ class SwapController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  Future<void> swapFromAX() async {
+  Future<void> swapFromAX(String chainTokenAddress) async {
     final tknA = EthereumAddress.fromHex('$address1.value');
 
-    final path = <EthereumAddress>[tknA, axtAddress];
+    final path = <EthereumAddress>[
+      tknA,
+      EthereumAddress.fromHex(chainTokenAddress),
+    ];
     final to = await controller.credentials.extractAddress();
-    final txString = await _aptRouter.swapExactAVAXForTokens(
+    final txString = await aptRouter.swapExactAVAXForTokens(
       amountOutMin,
       path,
       to,

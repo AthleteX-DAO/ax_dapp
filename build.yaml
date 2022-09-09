@@ -8,6 +8,7 @@ targets:
             - lib/service/api/models/**.dart
             - lib/service/athlete_models/**.dart
             - lib/service/blockchain_models/**.dart
+            - lib/pages/farm/models/**.dart
             - test/**.dart
         options:
           explicit_to_json: true

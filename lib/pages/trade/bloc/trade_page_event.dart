@@ -5,7 +5,9 @@ abstract class TradePageEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class PageRefreshEvent extends TradePageEvent {}
+class WatchAppDataChangesStarted extends TradePageEvent {}
+
+class FetchTradeInfoRequested extends TradePageEvent {}
 
 class NewTokenFromInputEvent extends TradePageEvent {
   NewTokenFromInputEvent({required this.tokenInputFromAmount});
@@ -49,4 +51,12 @@ class SetTokenTo extends TradePageEvent {
   List<Object?> get props => [tokenTo];
 }
 
-class SwapTokens extends TradePageEvent {}
+class SwapTokens extends TradePageEvent {
+  SwapTokens({required this.tokenFromBalance, required this.tokenToBalance});
+
+  final String tokenFromBalance;
+  final String tokenToBalance;
+
+  @override
+  List<Object?> get props => [tokenFromBalance, tokenToBalance];
+}

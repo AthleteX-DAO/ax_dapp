@@ -1,21 +1,36 @@
 part of 'sell_dialog_bloc.dart';
 
 abstract class SellDialogEvent extends Equatable {
+  const SellDialogEvent();
+
   @override
   List<Object?> get props => [];
 }
 
-class LoadDialog extends SellDialogEvent {
-  LoadDialog({required this.currentTokenAddress});
+class WatchAptPairStarted extends SellDialogEvent {
+  const WatchAptPairStarted(this.athleteId);
 
-  final String currentTokenAddress;
+  final int athleteId;
 
   @override
-  List<Object?> get props => [currentTokenAddress];
+  List<Object?> get props => [athleteId];
+}
+
+class AptTypeSelectionChanged extends SellDialogEvent {
+  const AptTypeSelectionChanged(this.aptType);
+
+  final AptType aptType;
+
+  @override
+  List<Object?> get props => [aptType];
+}
+
+class FetchAptSellInfoRequested extends SellDialogEvent {
+  const FetchAptSellInfoRequested();
 }
 
 class NewAptInput extends SellDialogEvent {
-  NewAptInput({required this.aptInputAmount});
+  const NewAptInput({required this.aptInputAmount});
 
   final double aptInputAmount;
 
@@ -26,7 +41,7 @@ class NewAptInput extends SellDialogEvent {
 class MaxSellTap extends SellDialogEvent {}
 
 class ConfirmSell extends SellDialogEvent {
-  ConfirmSell({required this.sellPrice});
+  const ConfirmSell({required this.sellPrice});
 
   final double sellPrice;
 

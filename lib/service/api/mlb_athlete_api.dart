@@ -6,7 +6,7 @@ import 'package:retrofit/http.dart';
 
 part 'mlb_athlete_api.g.dart';
 
-@RestApi(baseUrl: 'https://db.athletex.io/mlb')
+@RestApi(baseUrl: 'https://api-stage.athletex.io/mlb')
 abstract class MLBAthleteAPI {
   factory MLBAthleteAPI(Dio dio, {String baseUrl}) = _MLBAthleteAPI;
 
@@ -36,6 +36,13 @@ abstract class MLBAthleteAPI {
   @GET('/players/{id}/history')
   Future<MLBAthleteStats> getPlayerHistory(
     @Path() int id,
+    @Query('from') String from,
+    @Query('until') String until,
+  );
+
+  @POST('/players/history')
+  Future<List<MLBAthleteStats>> getPlayersHistory(
+    @Body() PlayerIds playerIds,
     @Query('from') String from,
     @Query('until') String until,
   );

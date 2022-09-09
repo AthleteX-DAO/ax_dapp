@@ -6,3 +6,5 @@ linter:
 
 analyzer:
   exclude: [lib/**.g.dart, test/**.mocks.dart, test_resources/**]
+  errors:
+    lines_longer_than_80_chars: ignore

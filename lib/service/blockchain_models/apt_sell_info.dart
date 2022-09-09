@@ -1,5 +1,5 @@
 class AptSellInfo {
-  AptSellInfo({
+  const AptSellInfo({
     required this.axPrice,
     required this.minimumReceived,
     required this.priceImpact,
@@ -7,15 +7,14 @@ class AptSellInfo {
     required this.totalFee,
   });
 
-  factory AptSellInfo.empty() {
-    return AptSellInfo(
-      axPrice: 0,
-      minimumReceived: 0,
-      priceImpact: 0,
-      receiveAmount: 0,
-      totalFee: 0,
-    );
-  }
+  static const empty = AptSellInfo(
+    axPrice: 0,
+    minimumReceived: 0,
+    priceImpact: 0,
+    receiveAmount: 0,
+    totalFee: 0,
+  );
+
   final double axPrice;
   final double minimumReceived;
   final double priceImpact;

@@ -1,10 +1,14 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:ax_dapp/pages/farm/components/sport_token.dart';
 import 'package:ax_dapp/pages/farm/dialogs/stake_dialog.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget singleLogoFarmTitle(
   BuildContext context,
@@ -31,16 +35,9 @@ Widget singleLogoFarmTitle(
         ),
         Container(width: 15),
         Expanded(
-          child: Text(
-            farm.athlete == null
-                ? '${farm.strName} Farm'
-                : '${farm.athlete!} Farm',
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-              fontSize: 20,
-            ),
-          ),
+          child: farm.athlete == null
+              ? SportToken(sport: farm.sport, symbol: '${farm.strName} Farm')
+              : SportToken(sport: farm.sport, symbol: '${farm.athlete!} Farm'),
         ),
         Container(
           width: 120,
@@ -52,15 +49,23 @@ Widget singleLogoFarmTitle(
             Colors.amber[600]!,
           ),
           child: TextButton(
-            onPressed: () => showDialog<void>(
-              context: context,
-              builder: (BuildContext builderContext) => stakeDialog(
-                builderContext,
-                farm,
-                cardWidth,
-                isWeb,
-              ),
-            ),
+            onPressed: () {
+              final isWalletConnected =
+                  context.read<WalletBloc>().state.isWalletConnected;
+              if (isWalletConnected) {
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext builderContext) => StakeDialog(
+                    context: builderContext,
+                    farm: farm,
+                    layoutWdt: cardWidth,
+                    isWeb: isWeb,
+                  ),
+                );
+              } else {
+                context.showWalletWarningToast();
+              }
+            },
             child: Text(
               'Stake',
               style: textStyle(Colors.black, 14, true, false),

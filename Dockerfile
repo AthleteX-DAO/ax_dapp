@@ -1,7 +1,10 @@
 # Install Operating system and dependencies
+FROM ubuntu:20.04
+
+# args
 ARG PORT
 ARG BUILD_TYPE
-FROM ubuntu:20.04
+
 # To prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -14,6 +17,9 @@ RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
 
 # Set flutter environment path
 ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
+
+EXPOSE ${PORT}
+RUN echo "Launching ${BUILD_TYPE} App on Port: ${PORT}"
 
 # Run flutter doctor
 RUN flutter doctor
@@ -28,11 +34,7 @@ RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
 RUN flutter pub get
-RUN flutter build web --web-renderer auto
-
-# Record the exposed port
-EXPOSE $PORT
-RUN echo "Launching ${BUILD_TYPE} App on Port: ${PORT}"
+RUN flutter build web --dart-define=BUILD_TYPE=${BUILD_TYPE} --web-renderer auto
 
 # make server startup script executable and start the web server
 RUN ["chmod", "+x", "/app/server/server.sh"]

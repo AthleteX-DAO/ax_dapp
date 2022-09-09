@@ -1,22 +1,33 @@
 import 'dart:typed_data';
 
-import 'package:ax_dapp/contracts/ERC20.g.dart';
-import 'package:ax_dapp/contracts/Pool.g.dart';
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
+import 'package:config_repository/config_repository.dart';
+import 'package:ethereum_api/erc20_api.dart';
+import 'package:ethereum_api/pool_api.dart';
+import 'package:ethereum_api/pool_info_api.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
+import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 import 'package:web3dart/web3dart.dart' as web3_dart;
 
 class FarmController {
   // contructor with poolInfo from api
-  FarmController(FarmModel farm) {
+  FarmController({
+    required FarmModel farm,
+    required WalletRepository walletRepository,
+    required TokensRepository tokensRepository,
+    required ConfigRepository configRepository,
+    required StreamAppDataChangesUseCase streamAppDataChanges,
+  }) : _walletRepository = walletRepository {
     strAddress = farm.strAddress;
     strName = farm.strName;
-    athlete = _getAthleteTokenNameFromAlias(farm.strStakedAlias);
+    athlete =
+        tokensRepository.currentApts.findAptNameByAlias(farm.strStakedAlias);
+    sport =
+        tokensRepository.currentApts.findAptSportByAlias(farm.strStakedAlias);
     strAPR = double.parse(farm.strAPR).toStringAsFixed(2);
     strTVL = double.parse(farm.strTVL).toStringAsFixed(2);
     strStaked = RxString(farm.strStaked);
@@ -33,17 +44,36 @@ class FarmController {
     nRewardTokenDecimals = farm.nRewardTokenDecimals;
 
     final address = web3_dart.EthereumAddress.fromHex(strAddress);
-    var rpcUrl = controller.mainRPCUrl;
-    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
-      rpcUrl = Controller.supportedChains[controller.networkID.value]!;
-    }
-    rpcClient = web3_dart.Web3Client(rpcUrl, Client());
+
+    final appConfig = configRepository.initializeAppConfig();
+    rpcClient = appConfig.reactiveWeb3Client.value;
     contract = Pool(address: address, client: rpcClient);
+    final chain = walletRepository.currentChain.isSupported
+        ? walletRepository.currentChain
+        : walletRepository.defaultChain;
+    contractInfo = chain.createPoolInfo(rpcClient);
+
+    final account = _walletRepository.currentWallet.address;
+    updateStakedBalance(account);
     updateCurrentBalance();
+
+    streamAppDataChanges.appDataChanges.listen((appData) {
+      final chain = appData.chain;
+      final appConfig = appData.appConfig;
+      rpcClient = appConfig.reactiveWeb3Client.value;
+      contract = Pool(address: address, client: rpcClient);
+      contractInfo = chain.createPoolInfo(rpcClient);
+      final account = _walletRepository.currentWallet.address;
+      updateStakedBalance(account);
+      updateCurrentBalance();
+    });
   }
 
   // constructor from another farm
-  FarmController.fromFarm(FarmController farm) {
+  FarmController.fromFarm({
+    required FarmController farm,
+    required WalletRepository walletRepository,
+  }) : _walletRepository = walletRepository {
     strAddress = farm.strAddress;
     strName = farm.strName;
     athlete = farm.athlete;
@@ -63,31 +93,25 @@ class FarmController {
     nRewardTokenDecimals = farm.nRewardTokenDecimals;
     rpcClient = farm.rpcClient;
     contract = farm.contract;
+    contractInfo = farm.contractInfo;
     stakingInfo = farm.stakingInfo;
     stakedInfo = farm.stakedInfo;
 
-    final account = controller.publicAddress.value.hex;
+    final account = _walletRepository.currentWallet.address;
     updateStakedBalance(account);
     updateCurrentBalance();
   }
 
-  String? _getAthleteTokenNameFromAlias(String stakingAlias) {
-    // returns athlete token name, returns null if stakingAlias is empty
-    // stakingToken alias example: 'AJLT1010-AX' or 'AX-CCST1010' or ''
-    if (stakingAlias.isEmpty) return null;
-    final tickers = stakingAlias.split('-');
-    //we want athlete ticker not 'AX'
-    final athleteTicker = tickers[0] == 'AX' ? tickers[1] : tickers[0];
-    return TokenList.mapTickerToName(athleteTicker);
-  }
+  final WalletRepository _walletRepository;
 
   // decalaration of member varibles
   late Pool contract;
+  late PoolInfo contractInfo;
 
   Controller controller = Get.find();
-  WalletController wallet = Get.find();
   String? athlete;
   String strName = '';
+  SupportedSport sport = SupportedSport.all;
   String strAddress = '';
   String strStakeTokenAddress = '';
   String strRewardTokenAddress = '';
@@ -108,6 +132,7 @@ class FarmController {
 
   Rx<UserInputInfo> stakingInfo = UserInputInfo(BigInt.zero, '0.0').obs;
   Rx<UserInputInfo> stakedInfo = UserInputInfo(BigInt.zero, '0.0').obs;
+  Rx<UserInputInfo> rewardInfo = UserInputInfo(BigInt.zero, '0.0').obs;
 
   late web3_dart.Web3Client rpcClient;
 
@@ -115,9 +140,11 @@ class FarmController {
   ///
   /// @return {void}
   Future<void> updateCurrentBalance() async {
-    stakingInfo.value = await wallet.getTokenBalanceAsInfo(
-      strStakeTokenAddress,
-      nStakeTokenDecimals,
+    final rawBalance =
+        await _walletRepository.getRawTokenBalance(strStakeTokenAddress);
+    stakingInfo.value = UserInputInfo.fromBalance(
+      rawAmount: rawBalance,
+      decimals: nStakeTokenDecimals,
     );
   }
 
@@ -174,7 +201,7 @@ class FarmController {
     final rewardData = Uint8List.fromList([]);
 
     final txHash = await contract.claim(
-      BigInt.from(100),
+      rewardInfo.value.rawAmount,
       stakingData,
       rewardData,
       credentials: controller.credentials,
@@ -192,6 +219,13 @@ class FarmController {
     stakedInfo.value = UserInputInfo.fromBalance(
       rawAmount: balances[0],
       decimals: nStakeTokenDecimals,
+    );
+
+    final rewards =
+        await contractInfo.rewards(contract.self.address, ethAccount);
+    rewardInfo.value = UserInputInfo.fromBalance(
+      rawAmount: rewards[0],
+      decimals: nRewardTokenDecimals,
     );
   }
 

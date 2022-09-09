@@ -1,6 +1,6 @@
 @TestOn('browser')
 import 'package:ax_dapp/service/controller/scout/prices.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('verify mainnet address', () {

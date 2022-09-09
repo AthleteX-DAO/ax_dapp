@@ -28,11 +28,64 @@
 
   <title>AthleteX dApp</title>
   <link rel="manifest" href="manifest.json">
+  <style>
+    *{
+      background-image: url("assets/images/axBackground.jpeg");
+      background-size: cover;
+    }
+
+    .loading {
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    
+    .loader {
+      background: transparent;
+      border-radius: 50%;
+      border-top: 16px solid yellow;
+      border-right: 16px solid transparent;
+      border-bottom: 16px solid yellow;
+      border-left: 16px solid transparent;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+    
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+    
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <div class="loading">
+    <div class="loader"></div>
+  </div>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('flutter-first-frame', function () {

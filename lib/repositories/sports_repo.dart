@@ -1,4 +1,4 @@
-import 'package:ax_dapp/util/supported_sports.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 abstract class SportsRepo<SportAthlete> {
   SportsRepo(this.sport);
@@ -24,5 +24,9 @@ abstract class SportsRepo<SportAthlete> {
 
   Future<dynamic> getPlayerStatsHistory(int id, String from, String until);
 
-  Future<dynamic> getPlayersStatsHistory();
+  Future<List<dynamic>> getPlayersStatsHistory(
+    List<int> ids,
+    String from,
+    String until,
+  );
 }

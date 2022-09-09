@@ -10,7 +10,7 @@ part of 'mlb_athlete_api.dart';
 
 class _MLBAthleteAPI implements MLBAthleteAPI {
   _MLBAthleteAPI(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://db.athletex.io/mlb';
+    baseUrl ??= 'https://api-stage.athletex.io/mlb';
   }
 
   final Dio _dio;
@@ -140,6 +140,26 @@ class _MLBAthleteAPI implements MLBAthleteAPI {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MLBAthleteStats.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<MLBAthleteStats>> getPlayersHistory(
+      playerIds, from, until) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'from': from, r'until': until};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(playerIds.toJson());
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<MLBAthleteStats>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/players/history',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => MLBAthleteStats.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

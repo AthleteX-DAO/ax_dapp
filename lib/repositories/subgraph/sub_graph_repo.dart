@@ -1,23 +1,27 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:gql/language.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+// ignore_for_file: avoid_dynamic_calls
+
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:shared/shared.dart';
 
 /// This is a repository that makes queries with the GraphQlClient
 /// primarily it should be employed by using or adding a usecase to subgraph/usecases
 /// to define the specific functionality needed
 
 class SubGraphRepo {
-  SubGraphRepo(GraphQLClient client) : _client = client;
+  SubGraphRepo({required ValueStream<GraphQLClient> reactiveDexClient})
+      : _reactiveDexClient = reactiveDexClient;
 
-  final GraphQLClient _client;
+  final ValueStream<GraphQLClient> _reactiveDexClient;
+  GraphQLClient get _dexGqlClient => _reactiveDexClient.value;
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryPairDataForTokenAddress(String token0, String token1) async {
-    final result = await _client.query(
-      QueryOptions(document: gql(_getPairInfoForTokenId(token0, token1))),
-    );
+    final result = await _dexGqlClient
+        .performQuery(_getPairInfoForTokenId(token0, token1));
     if (result.hasException) {
-      return Either.right(result.exception!);
+      return tryPostQuery(_getPairInfoForTokenId(token0, token1));
     } else {
       return Either.left(result.data);
     }
@@ -25,13 +29,32 @@ class SubGraphRepo {
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairs() async {
-    final result = await _client.query(
+    final result = await _dexGqlClient.query(
       QueryOptions(document: parseString(_getAllPairs())),
     );
     if (result.hasException) {
-      return Either.right(result.exception!);
+      return tryPostQuery(_getAllPairs());
     } else {
       return Either.left(result.data);
+    }
+  }
+
+  Future<Either<Map<String, dynamic>?, OperationException>> tryPostQuery(
+    String query,
+  ) async {
+    final uri = (_dexGqlClient.link as HttpLink).uri;
+    final result = await http.post(
+      uri,
+      headers: {},
+      body: parseString(query),
+    );
+    if (result.statusCode != 200) {
+      return Either.right(OperationException());
+    } else {
+      final body = jsonDecode(result.body) as Map<String, dynamic>;
+      final decodedJson =
+          body['data'] as Map<String, String>;
+      return Either.left(decodedJson);
     }
   }
 
@@ -45,11 +68,11 @@ class SubGraphRepo {
             1000)
         .round();
 
-    final result = await _client.query(
+    final result = await _dexGqlClient.query(
       QueryOptions(document: parseString(_getSpecificPairs(token, startTime))),
     );
     if (result.hasException) {
-      return Either.right(result.exception!);
+      return tryPostQuery(_getSpecificPairs(token, startTime));
     } else {
       return Either.left(result.data);
     }
@@ -57,13 +80,13 @@ class SubGraphRepo {
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairsForWalletId(String walletId) async {
-    final result = await _client.query(
+    final result = await _dexGqlClient.query(
       QueryOptions(
         document: parseString(_getAllLiquidityPositionsForWalletId(walletId)),
       ),
     );
     if (result.hasException) {
-      return Either.right(result.exception!);
+      return tryPostQuery(_getAllLiquidityPositionsForWalletId(walletId));
     } else {
       return Either.left(result.data);
     }

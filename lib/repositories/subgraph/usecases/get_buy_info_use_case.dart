@@ -1,7 +1,7 @@
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 const String _noBuyInfoErrorMessage = 'No buy info found';
 
@@ -11,8 +11,13 @@ const String _noBuyInfoErrorMessage = 'No buy info found';
 /// This is simply accomplished by hardcoding the tokenFrom value
 /// to the AX Token address
 class GetBuyInfoUseCase {
-  GetBuyInfoUseCase(GetSwapInfoUseCase repo) : _repo = repo;
+  GetBuyInfoUseCase({
+    required TokensRepository tokensRepository,
+    required GetSwapInfoUseCase repo,
+  })  : _tokensRepository = tokensRepository,
+        _repo = repo;
 
+  final TokensRepository _tokensRepository;
   final GetSwapInfoUseCase _repo;
 
   Future<Either<Success, Error>> fetchAptBuyInfo({
@@ -21,8 +26,9 @@ class GetBuyInfoUseCase {
   }) async {
     try {
       final newAxInput = axInput ?? 0.0;
+      final currentAxt = _tokensRepository.currentAxt;
       final response = await _repo.fetchSwapInfo(
-        tokenFrom: AXT.polygonAddress,
+        tokenFrom: currentAxt.address,
         tokenTo: aptAddress,
         fromInput: newAxInput,
       );

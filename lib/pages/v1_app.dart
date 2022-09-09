@@ -1,38 +1,37 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
+import 'package:ax_dapp/app/bloc/app_bloc.dart';
+import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
 import 'package:ax_dapp/pages/farm/desktop_farm.dart';
+import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
 import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
-import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
-import 'package:ax_dapp/pages/pool/desktop_pool.dart';
-import 'package:ax_dapp/pages/scout/bloc/scout_page_bloc.dart';
-import 'package:ax_dapp/pages/scout/desktop_scout.dart';
-import 'package:ax_dapp/pages/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/desktop_trade.dart';
-import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
+import 'package:ax_dapp/pool/pool.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
+import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
+import 'package:ax_dapp/scout/scout.dart';
 import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/create_wallet/web.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
-import 'package:ax_dapp/service/controller/swap/matic.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/token.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
+import 'package:ethereum_api/gysr_api.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 enum Pages { scout, trade, pool, farm }
 
@@ -55,8 +54,6 @@ class _V1AppState extends State<V1App> {
   List<Athlete> athleteList = [];
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
-  AXT axt = AXT('AthleteX', 'AX');
-  Token matic = MATIC('Polygon', 'MATIC');
   late PageController _pageController;
   var _selectedIndex = 0;
   String axText = 'Ax';
@@ -72,6 +69,12 @@ class _V1AppState extends State<V1App> {
     setState(() {
       pageNumber = Pages.trade;
       isBuyAX = true;
+    });
+  }
+
+  void goToPage(int page) {
+    setState(() {
+      pageNumber = Pages.values[page];
     });
   }
 
@@ -100,9 +103,7 @@ class _V1AppState extends State<V1App> {
     Get
       ..put(LSPController())
       ..put(SwapController())
-      ..put(WalletController())
-      ..put(PoolController())
-      ..put(WebWallet());
+      ..put(PoolController());
   }
 
   @override
@@ -149,31 +150,53 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == Pages.scout)
             BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
+                walletRepository: context.read<WalletRepository>(),
+                streamAppDataChanges:
+                    context.read<StreamAppDataChangesUseCase>(),
                 repo: GetScoutAthletesDataUseCase(
+                  tokensRepository: context.read<TokensRepository>(),
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                   sportsRepos: [
                     RepositoryProvider.of<MLBRepo>(context),
+                    RepositoryProvider.of<NFLRepo>(context),
                   ],
-                  coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
                 ),
               ),
-              child: DesktopScout(goToTradePage: goToTradePage),
+              child: DesktopScout(
+                goToTradePage: goToTradePage,
+                goToPage: goToPage,
+              ),
             )
           else if (pageNumber == Pages.trade)
             BlocProvider(
               create: (BuildContext context) => TradePageBloc(
+                walletRepository: context.read<WalletRepository>(),
+                streamAppDataChanges:
+                    context.read<StreamAppDataChangesUseCase>(),
                 repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                controller: Get.find(),
                 swapController: Get.find(),
-                walletController: Get.find(),
                 isBuyAX: isBuyAX,
               ),
               child: const DesktopTrade(),
             )
           else if (pageNumber == Pages.pool)
-            const DesktopPool()
+            DesktopPool(
+              goToPage: goToPage,
+            )
           else if (pageNumber == Pages.farm)
-            const DesktopFarm()
+            BlocProvider(
+              create: (BuildContext context) => FarmBloc(
+                walletRepository: context.read<WalletRepository>(),
+                tokensRepository: context.read<TokensRepository>(),
+                configRepository: context.read<AppBloc>().configRepository,
+                streamAppDataChanges:
+                    context.read<StreamAppDataChangesUseCase>(),
+                repo: GetFarmDataUseCase(
+                  gysrApiClient: context.read<GysrApiClient>(),
+                ),
+              ),
+              child: const DesktopFarm(),
+            )
         ],
       );
     } else {
@@ -183,33 +206,43 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
             create: (BuildContext context) => ScoutPageBloc(
+              walletRepository: context.read<WalletRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: GetScoutAthletesDataUseCase(
+                tokensRepository: context.read<TokensRepository>(),
                 graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                 sportsRepos: [
                   RepositoryProvider.of<MLBRepo>(context),
+                  RepositoryProvider.of<NFLRepo>(context),
                 ],
-                coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
               ),
             ),
-            child: DesktopScout(goToTradePage: goToTradePage),
+            child: DesktopScout(
+              goToTradePage: goToTradePage,
+              goToPage: goToPage,
+            ),
           ),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
+              walletRepository: context.read<WalletRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-              controller: Get.find(),
               swapController: Get.find(),
-              walletController: Get.find(),
               isBuyAX: isBuyAX,
             ),
             child: const DesktopTrade(),
           ),
           BlocProvider(
-            create: (BuildContext context) => PoolBloc(
+            create: (BuildContext context) => AddLiquidityBloc(
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-              walletController: Get.find(),
               poolController: Get.find(),
             ),
-            child: const DesktopPool(),
+            child: DesktopPool(
+              goToPage: goToPage,
+            ),
           ),
           const DesktopFarm(),
         ],
@@ -351,16 +384,7 @@ class _V1AppState extends State<V1App> {
               ],
             ),
           ),
-          if (!controller.walletConnected ||
-              (controller.walletConnected &&
-                  !Controller.supportedChains
-                      .containsKey(controller.networkID.value))) ...[
-            // top Connect Wallet Button
-            buildConnectWalletButton(),
-          ] else ...[
-            //top right corner wallet information
-            buildAccountBox()
-          ]
+          const WalletView(),
         ],
       ),
     );
@@ -375,7 +399,7 @@ class _V1AppState extends State<V1App> {
       width: MediaQuery.of(context).size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           IconButton(
             icon: Image.asset('assets/images/x.png'),
             iconSize: 40,
@@ -386,18 +410,9 @@ class _V1AppState extends State<V1App> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              if (!controller.walletConnected ||
-                  (controller.walletConnected &&
-                      !Controller.supportedChains
-                          .containsKey(controller.networkID.value))) ...[
-                // top Connect Wallet Button
-                buildConnectWalletButton(),
-              ] else ...[
-                //top right corner wallet information
-                buildAccountBox()
-              ],
-              const DropdownMenuMobile(),
+            children: const [
+              WalletView(),
+              DropdownMenuMobile(),
             ],
           ),
         ],
@@ -535,132 +550,6 @@ class _V1AppState extends State<V1App> {
         // build mobile UI
         animateToPage(index);
       },
-    );
-  }
-
-  Widget buildConnectWalletButton() {
-    final _width = MediaQuery.of(context).size.width;
-    var width = 180.0;
-    var text = 'Connect Wallet';
-    if (_width < 565) {
-      width = 110;
-      text = 'Connect';
-    }
-
-    return Container(
-      height: 37.5,
-      width: width,
-      decoration: boxDecoration(Colors.transparent, 100, 2, Colors.amber[400]!),
-      child: TextButton(
-        onPressed: () {
-          context.read<TrackingCubit>().onPressedConnectWallet(
-                publicAddress: controller.publicAddress.toString(),
-              );
-          showDialog<void>(
-            context: context,
-            builder: walletDialog,
-          ).then((value) => setState(() {}));
-        },
-        child: Text(
-          text,
-          style: textStyle(Colors.amber[400]!, 16, true, false),
-        ),
-      ),
-    );
-  }
-
-  Widget buildAccountBox() {
-    final _width = MediaQuery.of(context).size.width;
-    var width = 350.0;
-    var matic = true;
-
-    if (_width < 835) {
-      matic = false;
-      width = 200;
-    }
-    if (_width < 665) {
-      width = 100;
-    }
-
-    final accNum = controller.publicAddress.value.toString();
-    var retStr = accNum;
-    if (accNum.length > 15) {
-      retStr =
-          '''${accNum.substring(0, 7)}...${accNum.substring(accNum.length - 5, accNum.length)}''';
-    }
-
-    return Container(
-      height: isWeb ? 30 : 40,
-      width: width,
-      decoration: boxDecoration(Colors.black, 10, 2, Colors.grey[400]!),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          if (matic)
-            TextButton(
-              onPressed: () {
-                controller.getCurrentGas();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  const Icon(
-                    Icons.local_gas_station,
-                    color: Colors.grey,
-                  ),
-                  Obx(
-                    () => Text(
-                      '${controller.gasString} gwei',
-                      style: textStyle(Colors.grey[400]!, 11, false, false),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          TextButton(
-            onPressed: () => showDialog<void>(
-              context: context,
-              builder: yourAXDialog,
-            ).then((value) => setState(() {})),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const DecoratedBox(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('../assets/images/X_white.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                Text(
-                  axText,
-                  style: textStyle(Colors.grey[400]!, 11, false, false),
-                ),
-              ],
-            ),
-          ),
-          TextButton(
-            onPressed: () => showDialog<void>(
-              context: context,
-              builder: accountDialog,
-            ).then((value) => setState(() {})),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Icon(
-                  Icons.account_balance_wallet,
-                  color: Colors.grey,
-                ),
-                Text(
-                  retStr,
-                  style: textStyle(Colors.grey[400]!, 11, false, false),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'farm_model.g.dart';
 
 @JsonSerializable()
