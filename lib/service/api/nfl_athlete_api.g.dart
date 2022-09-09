@@ -10,7 +10,7 @@ part of 'nfl_athlete_api.dart';
 
 class _NFLAthleteAPI implements NFLAthleteAPI {
   _NFLAthleteAPI(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://api-stage.athletex.io/nfl';
+    baseUrl ??= '$baseApiUrl/nfl';
   }
 
   final Dio _dio;
