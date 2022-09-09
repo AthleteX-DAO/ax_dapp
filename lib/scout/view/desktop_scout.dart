@@ -697,6 +697,17 @@ class _DesktopScoutState extends State<DesktopScout> {
     if (_width < 689) team = false;
     var athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
+    String longTknBookPrice = athlete.longTokenBookPrice!.toStringAsFixed(4);
+    String shortTknBookPrice = athlete.shortTokenBookPrice!.toStringAsFixed(4);
+
+    if (athlete.id == 19801) {
+      longTknBookPrice = 542.7586.toString();
+      shortTknBookPrice = 467.2414.toString();
+    }
+    if (athlete.id == 18882) {
+      longTknBookPrice = 447.7876.toString();
+      shortTknBookPrice = 552.2124.toString();
+    }
 
     return SizedBox(
       height: 70,
@@ -761,8 +772,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                           children: <Widget>[
                             Text(
                               isLongToken
-                                  ? '${athlete.longTokenBookPrice!.toStringAsFixed(4)} AX'
-                                  : '${athlete.shortTokenBookPrice!.toStringAsFixed(4)} AX',
+                                  ? '$longTknBookPrice AX'
+                                  : '$shortTknBookPrice AX',
                               style: textStyle(
                                 Colors.white,
                                 16,
@@ -858,7 +869,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             child: BuyDialog(
                               athlete: athlete,
                               athleteName: athlete.name,
-                              aptPrice: athlete.longTokenBookPrice!,
+                              aptPrice: double.parse(longTknBookPrice)!,
                               athleteId: athlete.id,
                               isLongApt: isLongToken,
                               goToTradePage: widget.goToTradePage,
@@ -938,6 +949,18 @@ class _DesktopScoutState extends State<DesktopScout> {
     if (_width < 689) team = false;
     var athNameBx = _width * 0.15;
     if (_width < 685) athNameBx = 107;
+
+    String longTknBookPrice = athlete.longTokenBookPrice!.toStringAsFixed(4);
+    String shortTknBookPrice = athlete.shortTokenBookPrice!.toStringAsFixed(4);
+
+    if (athlete.id == 19801) {
+      longTknBookPrice = 542.7586.toString();
+      shortTknBookPrice = 467.2414.toString();
+    }
+    if (athlete.id == 18882) {
+      longTknBookPrice = 447.7876.toString();
+      shortTknBookPrice = 552.2124.toString();
+    }
 
     return SizedBox(
       height: 70,
@@ -1027,8 +1050,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                       children: <Widget>[
                         Text(
                           isLongToken
-                              ? '${athlete.longTokenBookPrice!.toStringAsFixed(4)} AX'
-                              : '${athlete.shortTokenBookPrice!.toStringAsFixed(4)}AX',
+                              ? '$longTknBookPrice AX'
+                              : '$shortTknBookPrice AX',
                           style: textStyle(
                             Colors.white,
                             16,
@@ -1122,7 +1145,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             child: BuyDialog(
                               athlete: athlete,
                               athleteName: athlete.name,
-                              aptPrice: athlete.longTokenBookPrice!,
+                              aptPrice: double.parse(longTknBookPrice),
                               athleteId: athlete.id,
                               isLongApt: isLongToken,
                               goToTradePage: widget.goToTradePage,
