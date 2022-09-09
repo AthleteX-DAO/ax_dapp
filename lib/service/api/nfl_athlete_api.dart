@@ -26,21 +26,16 @@ abstract class NFLAthleteAPI {
 
   @GET('/players')
   Future<List<NFLAthlete>> getPlayersByPosition(
-    @Query('position') String position,
-  );
+      @Query('position') String position,);
 
   @GET('/players')
-  Future<List<NFLAthlete>> getPlayersByTeamAtPosition(
-    @Query('team') String team,
-    @Query('position') String position,
-  );
+  Future<List<NFLAthlete>> getPlayersByTeamAtPosition(@Query('team') String team,
+      @Query('position') String position,);
 
   @GET('/players/{id}/history')
-  Future<NFLAthleteStats> getPlayerHistory(
-    @Path() int id,
-    @Query('from') String from,
-    @Query('until') String until,
-  );
+  Future<NFLAthleteStats> getPlayerHistory(@Path() int id,
+      @Query('from') String from,
+      @Query('until') String until,);
 
   @GET('/players/{id}/history/price')
   Future<AthletePriceRecord> getPlayerPriceHistory(
