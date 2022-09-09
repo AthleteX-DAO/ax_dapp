@@ -16,9 +16,11 @@ part 'scout_page_state.dart';
 class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   ScoutPageBloc({
     required WalletRepository walletRepository,
+    required TokensRepository tokenRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
   })  : _walletRepository = walletRepository,
+        _tokenRepository = tokenRepository,
         _streamAppDataChanges = streamAppDataChanges,
         super(const ScoutPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -31,6 +33,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   }
 
   final WalletRepository _walletRepository;
+  final TokensRepository _tokenRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetScoutAthletesDataUseCase repo;
 
@@ -86,6 +89,9 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
           break;
       }
       final response = await repo.fetchSupportedAthletes(supportedSport);
+      final marketData = await _tokenRepository.getAxMarketData();
+      final axPrice = marketData.price;
+
       filterOutUnsupportedSportsByChain(response);
       if (response.isNotEmpty) {
         emit(
@@ -94,6 +100,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
             filteredAthletes: response,
             selectedSport: supportedSport,
             status: BlocStatus.success,
+            axPrice: axPrice,
           ),
         );
       } else {
