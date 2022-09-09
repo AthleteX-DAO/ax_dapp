@@ -8,8 +8,8 @@ const nflApts = [
     athleteId: 19801,
     athleteName: 'Josh Allen',
     sport: SupportedSport.NFL,
-    longTicker: 'JLLAPT',
-    shortTicker: 'JLSAPT',
+    longTicker: 'JALAPT',
+    shortTicker: 'JASAPT',
     pairAddressConfig: EthereumAddressConfig.apt(
       polygonMainnet: 'TODO',
       polygonTestnet: 'TODO',
