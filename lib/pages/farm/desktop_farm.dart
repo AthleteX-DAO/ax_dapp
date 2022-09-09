@@ -151,7 +151,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
                               : GridView.builder(
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: isWeb ? 4 : 1,
+                                    crossAxisCount: isWeb && _width > 1700
+                                        ? 4
+                                        : isWeb
+                                            ? 3
+                                            : 1,
                                     mainAxisSpacing: 5,
                                     crossAxisSpacing: 5,
                                     childAspectRatio:
@@ -276,7 +280,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
             child: TextButton(
               onPressed: () {
                 final isWalletConnected =
-                  context.read<WalletBloc>().state.isWalletConnected;
+                    context.read<WalletBloc>().state.isWalletConnected;
                 if (isWalletConnected) {
                   if (isAllFarms) {
                     myController.clear();
@@ -287,7 +291,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                   }
                 } else {
                   context.showWalletWarningToast();
-                }     
+                }
               },
               child: Text(
                 'My Farms',
