@@ -681,7 +681,7 @@ class _DesktopScoutState extends State<DesktopScout> {
         itemCount: filteredAthletes.length,
         itemBuilder: (context, index) {
           return kIsWeb
-              ? createListCardsForWeb(filteredAthletes[index])
+              ? createListCardsForWeb(filteredAthletes[index], state.axPrice)
               : createListCardsForMobile(filteredAthletes[index]);
         },
       ),
@@ -940,7 +940,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     );
   }
 
-  Widget createListCardsForWeb(AthleteScoutModel athlete) {
+  Widget createListCardsForWeb(AthleteScoutModel athlete, double axPrice) {
     final _width = MediaQuery.of(context).size.width;
 
     var view = true;
@@ -1090,8 +1090,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                     ),
                     Text(
                       isLongToken
-                          ? '\$${athlete.longTokenBookPriceUsd!.toStringAsFixed(4)}'
-                          : '\$${athlete.shortTokenBookPriceUsd!.toStringAsFixed(4)}',
+                          ? '\$${(double.parse(longTknBookPrice) * axPrice).toStringAsFixed(4)}'
+                          : '\$${(double.parse(shortTknBookPrice) * axPrice).toStringAsFixed(4)}',
                       style: textStyle(
                         Colors.amberAccent,
                         14,
