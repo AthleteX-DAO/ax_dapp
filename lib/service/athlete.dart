@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-const kCollateralizationMultiplier = 1000;
+import 'package:ax_dapp/app/config/app_config.dart';
 
 class Athlete {
   const Athlete({
