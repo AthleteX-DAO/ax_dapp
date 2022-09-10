@@ -22,6 +22,7 @@ Widget singleLogoFarmTitle(
     width: cardWidth,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 35,
@@ -39,8 +40,9 @@ Widget singleLogoFarmTitle(
               ? SportToken(sport: farm.sport, symbol: '${farm.strName} Farm')
               : SportToken(sport: farm.sport, symbol: '${farm.athlete!} Farm'),
         ),
+        Container(width: 10),
         Container(
-          width: 120,
+          width: 110,
           height: 35,
           decoration: boxDecoration(
             Colors.amber[600]!,

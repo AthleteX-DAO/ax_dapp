@@ -1,10 +1,19 @@
 enum BuildConfig { staging, release }
 
-final buildConfig = BuildConfig.values.firstWhere(
-  (BuildConfig buildConfig) =>
-      buildConfig.name ==
-      const String.fromEnvironment(
-        'BUILD_TYPE',
-        defaultValue: 'staging',
-      ),
-);
+const buildConfig = String.fromEnvironment(
+          'BUILD_TYPE',
+          defaultValue: 'staging',
+        ) ==
+        'staging'
+    ? BuildConfig.staging
+    : BuildConfig.release;
+
+const baseApiUrl = (String.fromEnvironment(
+          'BUILD_TYPE',
+          defaultValue: 'staging',
+        ) ==
+        'staging')
+    ? 'https://api-stage.athletex.io'
+    : 'https://api.athletex.io';
+
+const kCollateralizationMultiplier = 1000;
