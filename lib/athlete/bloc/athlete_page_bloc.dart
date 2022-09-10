@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:ax_dapp/app/config/app_config.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
 import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:intl/intl.dart';
@@ -67,43 +69,16 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
     GetPlayerStatsRequested event,
     Emitter<AthletePageState> emit,
   ) async {
+    final playerId = event.playerId;
+    emit(state.copyWith(status: BlocStatus.loading));
     switch (athlete.sport) {
       case SupportedSport.all:
         break;
 
       case SupportedSport.NFL:
         try {
-          final playerId = event.playerId;
-          emit(state.copyWith(status: BlocStatus.loading));
-          final now = DateTime.now();
-          final startDate = DateTime(now.year, now.month - 10, now.day);
-          final formattedDate = DateFormat('yyyy-MM-dd').format(now);
-          final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
-          final until = formattedDate;
-          final from = formattedStartDate;
-          final stats = await nflRepo.getPlayerStatsHistory(
-            playerId,
-            from,
-            until,
-          );
-          final graphStats = stats.statHistory
-              .map(
-                (stat) => GraphData(
-                  DateFormat('yyy-MM-dd').parse(stat.timeStamp),
-                  stat.price * 10000,
-                ),
-              )
-              .toList();
-          final seenDates = <DateTime>{};
-          final distinctPoints = graphStats
-              .where((element) => seenDates.add(element.date))
-              .toList();
-          emit(
-            state.copyWith(
-              stats: distinctPoints,
-              status: BlocStatus.success,
-            ),
-          );
+          final priceRecord = await nflRepo.getPlayerPriceHistory(playerId,);
+          updatePriceGraphData(priceRecord, emit);
         } catch (_) {
           emit(state.copyWith(status: BlocStatus.error));
         }
@@ -111,45 +86,37 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
 
       case SupportedSport.MLB:
         try {
-          final playerId = event.playerId;
-          emit(state.copyWith(status: BlocStatus.loading));
-          final now = DateTime.now();
-          final startDate = DateTime(now.year, now.month - 1, now.day);
-          final formattedDate = DateFormat('yyyy-MM-dd').format(now);
-          final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
-          final until = formattedDate;
-          final from = formattedStartDate;
-          final stats = await mlbRepo.getPlayerStatsHistory(
-            playerId,
-            from,
-            until,
-          );
-          final graphStats = stats.statHistory
-              .map(
-                (stat) => GraphData(
-                  DateFormat('yyy-MM-dd').parse(stat.timeStamp),
-                  stat.price * 1000,
-                ),
-              )
-              .toList();
-          final seenDates = <DateTime>{};
-          final distinctPoints = graphStats
-              .where((element) => seenDates.add(element.date))
-              .toList();
-          emit(
-            state.copyWith(
-              stats: distinctPoints,
-              status: BlocStatus.success,
-            ),
-          );
+          final priceRecord = await mlbRepo.getPlayerPriceHistory(playerId,);
+          updatePriceGraphData(priceRecord, emit);
         } catch (_) {
           emit(state.copyWith(status: BlocStatus.error));
         }
         break;
-
       case SupportedSport.NBA:
         break;
     }
+  }
+
+  void updatePriceGraphData(
+      AthletePriceRecord priceRecord, Emitter<AthletePageState> emit,) {
+    final graphStats = priceRecord.priceHistory
+        .map(
+          (record) => GraphData(
+            DateFormat('yyy-MM-dd').parse(record.timestamp),
+            //
+            record.price * kCollateralizationMultiplier,
+          ),
+        )
+        .toList();
+    final seenDates = <DateTime>{};
+    final distinctPoints =
+        graphStats.where((element) => seenDates.add(element.date)).toList();
+    emit(
+      state.copyWith(
+        stats: distinctPoints,
+        status: BlocStatus.success,
+      ),
+    );
   }
 
   void _mapGraphRefreshEventToState(

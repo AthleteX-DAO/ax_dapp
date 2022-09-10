@@ -1,5 +1,6 @@
 import 'package:ax_dapp/app/config/app_config.dart';
 import 'package:ax_dapp/service/api/models/player_ids.dart';
+import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
 import 'package:dio/dio.dart';
@@ -36,8 +37,20 @@ abstract class NFLAthleteAPI {
       @Query('from') String from,
       @Query('until') String until,);
 
+  @GET('/players/{id}/history/price')
+  Future<AthletePriceRecord> getPlayerPriceHistory(@Path() int id,
+      @Query('from') String? from,
+      @Query('until') String? until,
+      @Query('interval') String? interval,);
+
   @POST('/players/history')
   Future<List<NFLAthleteStats>> getPlayersHistory(@Body() PlayerIds playerIds,
       @Query('from') String from,
       @Query('until') String until,);
+
+  @POST('/players/history/price')
+  Future<List<AthletePriceRecord>> getPlayersPriceHistory(@Body() PlayerIds playerIds,
+      @Query('from') String? from,
+      @Query('until') String? until,
+      @Query('interval') String interval,);
 }
