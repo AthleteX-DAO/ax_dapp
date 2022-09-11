@@ -31,7 +31,6 @@ class GetScoutAthletesDataUseCase {
   List<TokenPair> allPairs = [];
 
   static const collateralizationMultiplier = 1000;
-  static const collateralizationPerPair = 15;
 
   Future<List<AthletePriceRecord>> getPriceHistory(
     SportsRepo<SportAthlete> repo,
@@ -207,6 +206,7 @@ class GetScoutAthletesDataUseCase {
     required Token axt,
   }) {
     final mappedAthletes = athletes.asMap().map((key, athlete) {
+      final collateralizationPerPair = getCollateralizationPerPair(repo);
       final aptPair = _tokensRepository.currentAptPair(athlete.id);
       final longAptAddress = aptPair.longApt.address;
       final shortAptAddress = aptPair.shortApt.address;
@@ -329,6 +329,25 @@ class GetScoutAthletesDataUseCase {
       return MapEntry(key, athleteScoutModel);
     });
     return mappedAthletes.values.toList();
+  }
+
+  int getCollateralizationPerPair(SportsRepo<SportAthlete> repo) {
+    int collateralizationPerPair;
+    switch (repo.sport) {
+      case SupportedSport.MLB:
+        collateralizationPerPair = 15;
+        break;
+      case SupportedSport.NFL:
+        collateralizationPerPair = 1;
+        break;
+      case SupportedSport.NBA:
+        collateralizationPerPair = 0;
+        break;
+      case SupportedSport.all:
+        collateralizationPerPair = 0;
+        break;
+    }
+    return collateralizationPerPair;
   }
 
   bool equalsIgnoreCase(String? string1, String? string2) {
