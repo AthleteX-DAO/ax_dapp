@@ -7,6 +7,7 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -423,22 +424,33 @@ class _SellDialogState extends State<SellDialog> {
                       BlocSelector<WalletBloc, WalletState, String>(
                         selector: (state) => state.formattedWalletAddress,
                         builder: (_, formattedWalletAddress) {
-                          return AthleteSellApproveButton(
-                            width: 175,
-                            height: 40,
-                            text: 'Approve',
-                            amountInputted: _aptAmountController.text,
-                            aptSellInfo: state.aptSellInfo,
-                            athlete: widget.athlete,
-                            aptName: widget.athleteName,
-                            aptId: widget.athleteId,
-                            longOrShort: state.aptTypeSelection.isLong
-                                ? 'Long Apt'
-                                : 'Short Apt',
-                            approveCallback: bloc.swapController.approve,
-                            confirmCallback: bloc.swapController.swap,
-                            confirmDialog: const ConfirmTransactionDialog(),
-                            walletAddress: formattedWalletAddress,
+                          if (state.status != BlocStatus.error) {
+                            return AthleteSellApproveButton(
+                              width: 175,
+                              height: 40,
+                              text: 'Approve',
+                              amountInputted: _aptAmountController.text,
+                              aptSellInfo: state.aptSellInfo,
+                              athlete: widget.athlete,
+                              aptName: widget.athleteName,
+                              aptId: widget.athleteId,
+                              longOrShort: state.aptTypeSelection.isLong
+                                  ? 'Long Apt'
+                                  : 'Short Apt',
+                              approveCallback: bloc.swapController.approve,
+                              confirmCallback: bloc.swapController.swap,
+                              confirmDialog: const ConfirmTransactionDialog(),
+                              walletAddress: formattedWalletAddress,
+                            );
+                          }
+                          return WarningTextButton(
+                            warningTitle: () {
+                              final failure = state.failure;
+                              if (failure is InSufficientFailure) {
+                                return 'Insufficient Balance';
+                              }
+                              return 'Something went wrong';
+                            }(),
                           );
                         },
                       ),
