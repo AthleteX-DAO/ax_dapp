@@ -15,3 +15,5 @@ const baseApiUrl = (String.fromEnvironment(
         'staging')
     ? 'https://api-stage.athletex.io'
     : 'https://api.athletex.io';
+
+const kCollateralizationMultiplier = 1000;

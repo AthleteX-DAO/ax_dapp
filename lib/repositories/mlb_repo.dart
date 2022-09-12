@@ -1,6 +1,7 @@
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/models/player_ids.dart';
+import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete_stats.dart';
 // ignore: don't_import_implementation_files
@@ -64,6 +65,16 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
   }
 
   @override
+  Future<AthletePriceRecord> getPlayerPriceHistory(
+    int id, {
+    String? from,
+    String? until,
+    String? interval,
+  }) {
+    return _api.getPlayerPriceHistory(id, from, until, interval ?? '1d');
+  }
+
+  @override
   Future<List<MLBAthleteStats>> getPlayersStatsHistory(
     List<int> ids,
     String from,
@@ -71,6 +82,19 @@ class MLBRepo extends SportsRepo<MLBAthlete> {
   ) async {
     final playerIds = PlayerIds(ids);
     final list = _api.getPlayersHistory(playerIds, from, until);
+    return list;
+  }
+
+  @override
+  Future<List<AthletePriceRecord>> getPlayersPriceHistory(
+    List<int> ids, {
+    String? from,
+    String? until,
+    String? interval,
+  }) async {
+    final playerIds = PlayerIds(ids);
+    final list =
+        _api.getPlayersPriceHistory(playerIds, from, until, interval ?? '1d');
     return list;
   }
 }

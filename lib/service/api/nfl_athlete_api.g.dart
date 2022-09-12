@@ -144,6 +144,28 @@ class _NFLAthleteAPI implements NFLAthleteAPI {
   }
 
   @override
+  Future<AthletePriceRecord> getPlayerPriceHistory(
+      id, from, until, interval) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'from': from,
+      r'until': until,
+      r'interval': interval
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AthletePriceRecord>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/players/${id}/history/price',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AthletePriceRecord.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<List<NFLAthleteStats>> getPlayersHistory(
       playerIds, from, until) async {
     const _extra = <String, dynamic>{};
@@ -159,6 +181,32 @@ class _NFLAthleteAPI implements NFLAthleteAPI {
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) => NFLAthleteStats.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<AthletePriceRecord>> getPlayersPriceHistory(
+      playerIds, from, until, interval) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'from': from,
+      r'until': until,
+      r'interval': interval
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(playerIds.toJson());
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<AthletePriceRecord>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/players/history/price',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) =>
+            AthletePriceRecord.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
