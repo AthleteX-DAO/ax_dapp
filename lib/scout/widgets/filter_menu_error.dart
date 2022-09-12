@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class FilterMenuError extends StatelessWidget {
   const FilterMenuError({
-    this.selectedChain = EthereumChain.sxMainnet,
+    required this.selectedChain,
     super.key,
   });
   final EthereumChain selectedChain;
@@ -21,7 +21,7 @@ class FilterMenuError extends StatelessWidget {
       width: 600,
       child: Text(
         warningText,
-        style: TextStyle(color: Colors.amber, fontSize: 30),
+        style: const TextStyle(color: Colors.amber, fontSize: 30),
       ),
     );
   }
