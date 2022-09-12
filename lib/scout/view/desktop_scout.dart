@@ -50,7 +50,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   AthleteScoutModel? curAthlete;
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
-  EthereumChain? _selectedChain;
+  EthereumChain _selectedChain = EthereumChain.polygonMainnet;
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -158,7 +158,10 @@ class _DesktopScoutState extends State<DesktopScout> {
       children: [
         if (state.status == BlocStatus.loading) const Loader(),
         if (state.status == BlocStatus.error) const ScoutLoadingError(),
-        if (state.status == BlocStatus.noData) const FilterMenuError(),
+        if (state.status == BlocStatus.noData)
+          FilterMenuError(
+            selectedChain: _selectedChain,
+          ),
         buildListview(state, filteredAthletes)
       ],
     );

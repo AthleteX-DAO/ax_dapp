@@ -1413,10 +1413,12 @@ class _AthletePageState extends State<AthletePage> {
         (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
     var shortCurrentBookValueRatio =
         (athlete.shortTokenPrice! / athlete.shortTokenBookPrice!) * 100;
-    if (longCurrentBookValueRatio.isNaN || longCurrentBookValueRatio.isInfinite) {
+    if (longCurrentBookValueRatio.isNaN ||
+        longCurrentBookValueRatio.isInfinite) {
       longCurrentBookValueRatio = 0;
     }
-    if (shortCurrentBookValueRatio.isNaN || shortCurrentBookValueRatio.isInfinite) {
+    if (shortCurrentBookValueRatio.isNaN ||
+        shortCurrentBookValueRatio.isInfinite) {
       shortCurrentBookValueRatio = 0;
     }
     final _width = MediaQuery.of(context).size.width;
