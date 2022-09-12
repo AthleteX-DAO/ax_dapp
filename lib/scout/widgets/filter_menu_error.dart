@@ -6,11 +6,11 @@ class FilterMenuError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
-      height: 70,
-      width: 400,
+      height: 80,
+      width: 600,
       child: Text(
-        'Athletes not supported yet',
-        style: TextStyle(color: Colors.red, fontSize: 30),
+        'Change to SX network for NFL Tokens',
+        style: TextStyle(color: Colors.amber, fontSize: 30),
       ),
     );
   }
