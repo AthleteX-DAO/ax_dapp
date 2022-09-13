@@ -6,7 +6,7 @@ class FilterMenuError extends StatelessWidget {
     required this.selectedChain,
     super.key,
   });
-  final EthereumChain selectedChain;
+  final EthereumChain? selectedChain;
 
   @override
   Widget build(BuildContext context) {
