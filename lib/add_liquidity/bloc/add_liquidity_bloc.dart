@@ -276,7 +276,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       final isSuccess = response.isLeft();
       if (isSuccess) {
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
-//        final token1Amount = token0Amount / poolInfo.ratio;
         emit(
           state.copyWith(
             status: BlocStatus.success,
@@ -285,7 +284,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
             failure: Failure.none,
           ),
         );
-//        add(Token1AmountChanged(token1Amount.toString()));
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(
