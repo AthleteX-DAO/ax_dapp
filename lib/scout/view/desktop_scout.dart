@@ -158,7 +158,10 @@ class _DesktopScoutState extends State<DesktopScout> {
       children: [
         if (state.status == BlocStatus.loading) const Loader(),
         if (state.status == BlocStatus.error) const ScoutLoadingError(),
-        if (state.status == BlocStatus.noData) const FilterMenuError(),
+        if (state.status == BlocStatus.noData)
+          FilterMenuError(
+            selectedChain: _selectedChain,
+          ),
         buildListview(state, filteredAthletes)
       ],
     );
