@@ -270,8 +270,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               if (hasData) {
                 if (tokenNumber == 1) {
                   bloc.add(Token0AmountChanged(_tokenInput));
-                  final tokenTwoAmount =
-                      double.parse(_tokenInput) / poolInfo.ratio;
                 } else {
                   bloc.add(Token1AmountChanged(_tokenInput));
                 }
