@@ -746,6 +746,10 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                       const Text(
                         'Not Created - Please input both token amounts',
                       ),
+                    ] else ...[
+                      const Text(
+                        'Please input an amount of liquidity for both tokens',
+                      ),
                     ]
                   ],
                 ),
