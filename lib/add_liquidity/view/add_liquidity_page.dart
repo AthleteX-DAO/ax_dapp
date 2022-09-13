@@ -272,8 +272,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                   bloc.add(Token0AmountChanged(_tokenInput));
                   final tokenTwoAmount =
                       double.parse(_tokenInput) / poolInfo.ratio;
-                  _tokenAmountTwoController.text =
-                      tokenTwoAmount.toStringAsFixed(6);
+                } else {
+                  bloc.add(Token1AmountChanged(_tokenInput));
                 }
               } else {
                 if (tokenNumber == 1) {
@@ -421,7 +421,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                               child: TextFormField(
                                 readOnly: ((tknNum == 2) &&
                                         (state.status == BlocStatus.success))
-                                    ? isReadOnly
+                                    ? !isReadOnly
                                     : !isReadOnly,
                                 controller: tokenAmountController,
                                 onChanged: (tokenInput) {
