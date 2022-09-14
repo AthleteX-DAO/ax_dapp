@@ -36,4 +36,4 @@ service:
 env:
   DISABLE_TESTS: false
   PORT: 5000
-  BUILD_TYPE: production
+  BUILD_TYPE: release
