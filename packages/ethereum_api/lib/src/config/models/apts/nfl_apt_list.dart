@@ -82,7 +82,7 @@ const nflApts = [
     ),
   ),
   AptConfig(
-    athleteId: 22049,
+    athleteId: 19781,
     athleteName: 'Lamar Jackson',
     sport: SupportedSport.NFL,
     longTicker: 'LJLAPT',

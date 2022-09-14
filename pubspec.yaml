@@ -136,7 +136,6 @@ flutter:
     - assets/images/X_Logo_Black_BR.png
     - assets/images/apt_noninverted.png
     - assets/images/apt_inverted.png
-    - assets/nfl_athletes.json
     - assets/images/weth_small.png
     - assets/images/USDC_small.png
 
