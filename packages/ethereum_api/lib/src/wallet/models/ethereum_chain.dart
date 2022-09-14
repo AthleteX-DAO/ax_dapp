@@ -84,7 +84,7 @@ enum EthereumChain {
   /// [EthereumChain.unsupported].
   factory EthereumChain.fromChainId(int chainId) =>
       EthereumChain.values.firstWhere(
-            (chain) => chain.chainId == chainId,
+        (chain) => chain.chainId == chainId,
         orElse: () => EthereumChain.unsupported,
       );
 
@@ -104,8 +104,9 @@ enum EthereumChain {
   final List<String>? blockExplorerUrls;
 
   /// Returns a list of supported [EthereumChain]s.
-  static List<EthereumChain> get supportedValues =>
-      values.where((chain) => chain.chainId != 647 && chain.isSupported).toList();
+  static List<EthereumChain> get supportedValues => values
+      .where((chain) => chain.chainId != 647 && chain.isSupported)
+      .toList();
 }
 
 /// [EthereumChain] extensions.
@@ -123,24 +124,24 @@ extension ChainX on EthereumChain {
 
   /// Creates a [PoolInfo] client based on this [EthereumChain] configuration.
   PoolInfo createPoolInfo(Web3Client client) => PoolInfo(
-    address: EthereumAddress.fromHex(
-      const EthereumAddressConfig.poolInfo().address(this),
-    ),
-    client: client,
-  );
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.poolInfo().address(this),
+        ),
+        client: client,
+      );
 }
 
 /// [EthereumChain] configuration.
 extension ChainConfigX on EthereumChain {
   /// Generates a list of all available [Token]s for this [EthereumChain].
   List<Token> createTokens() => [
-    Token.ax(this),
-    Token.sx(this),
-    Token.matic(this),
-    Token.weth(this),
-    Token.usdc(this),
-    ...createApts(this),
-  ];
+        Token.ax(this),
+        Token.sx(this),
+        Token.matic(this),
+        Token.weth(this),
+        Token.usdc(this),
+        ...createApts(this),
+      ];
 
   /// Generates the list of [Apt]'s for this [EthereumChain]. Composed based on
   /// a list of [AptConfig]s.
@@ -149,17 +150,17 @@ extension ChainConfigX on EthereumChain {
       'Creating apts for Chain Name: ${chain.chainName}; ChainId: ${chain.chainId} Name: ${chain.name}',
     );
     final supportedApts =
-    ((chain.chainId == EthereumChain.polygonMainnet.chainId) ||
-        (chain.chainId == EthereumChain.polygonTestnet.chainId))
-        ? mlbApts
-        : nflApts;
+        ((chain.chainId == EthereumChain.polygonMainnet.chainId) ||
+                (chain.chainId == EthereumChain.polygonTestnet.chainId))
+            ? mlbApts
+            : nflApts;
     return supportedApts
         .expand(
           (aptConfig) => [
-        Token.longApt(this, aptConfig: aptConfig),
-        Token.shortApt(this, aptConfig: aptConfig),
-      ],
-    )
+            Token.longApt(this, aptConfig: aptConfig),
+            Token.shortApt(this, aptConfig: aptConfig),
+          ],
+        )
         .toList();
   }
 
@@ -169,19 +170,19 @@ extension ChainConfigX on EthereumChain {
 
   /// Creates an [APTRouter] client based on this [EthereumChain] configuration.
   APTRouter createAptRouterClient(Web3Client client) => APTRouter(
-    address: EthereumAddress.fromHex(
-      const EthereumAddressConfig.dexRouterAddress().address(this),
-    ),
-    client: client,
-  );
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.dexRouterAddress().address(this),
+        ),
+        client: client,
+      );
 
   /// Creates a [Dex] client based on this [EthereumChain] configuration.
   APTFactory createAptFactoryClient(Web3Client client) => APTFactory(
-    address: EthereumAddress.fromHex(
-      const EthereumAddressConfig.dexFactoryAddress().address(this),
-    ),
-    client: client,
-  );
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.dexFactoryAddress().address(this),
+        ),
+        client: client,
+      );
 
   /// Creates a dex [GraphQLClient] based on this [EthereumChain] configuration.
   GraphQLClient createDexGraphQLClient() {
