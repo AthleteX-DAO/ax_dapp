@@ -37,7 +37,7 @@ class TradeApproveButton extends StatefulWidget {
   final TextEditingController tokenToInputController;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final Dialog Function(BuildContext) confirmDialog;
+  final Widget confirmDialog;
   final TradePageBloc tradePageBloc;
 
   @override
@@ -140,7 +140,7 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
-                    widget.confirmDialog(context),
+                    widget.confirmDialog,
               ).then((value) {
                 setState(() {
                   resetButton();

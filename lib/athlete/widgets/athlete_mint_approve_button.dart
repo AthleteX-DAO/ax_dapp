@@ -1,10 +1,11 @@
 import 'package:ax_dapp/scout/models/models.dart';
-import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 
 // This code changes the state of the button
 class AthleteMintApproveButton extends StatefulWidget {
