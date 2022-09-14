@@ -3,12 +3,10 @@
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
-import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete_stats.dart';
-import 'package:ax_dapp/service/athlete_models/mlb/mlb_stats.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
-import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete_stats.dart';
-import 'package:ax_dapp/service/athlete_models/nfl/nfl_stats.dart';
+import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
 import 'package:flutter/widgets.dart';
@@ -33,87 +31,38 @@ class GetScoutAthletesDataUseCase {
   List<TokenPair> allPairs = [];
 
   static const collateralizationMultiplier = 1000;
-  static const collateralizationPerPair = 15;
 
-  Future<List<dynamic>> getStatsHistory(
+  Future<List<AthletePriceRecord>> getPriceHistory(
     SportsRepo<SportAthlete> repo,
     List<SportAthlete> players,
   ) async {
     final ids = players.map((player) => player.id).toList();
-    // currently the api is not working with current date
     final now = DateTime.now();
-    final startDate = DateTime(now.year, now.month, now.day - 1);
-
-    // this code is used to test the api, because api is not working correctly
-    // final now = DateTime(2022, 8, 2);
-    // final startDate = DateTime(2022, 8, 1);
+    final startDate = DateTime(now.year, now.month, now.day - 2);
     final formattedStartDate = DateFormat('yyyy-MM-dd').format(startDate);
-    final formattedEndDate = DateFormat('yyyy-MM-dd').format(now);
     try {
-      final histories = await repo.getPlayersStatsHistory(
+      final histories = await repo.getPlayersPriceHistory(
         ids,
-        formattedStartDate,
-        formattedEndDate,
+        from: formattedStartDate,
       );
       return histories;
     } catch (e) {
       final histories = players
           .asMap()
           .map((key, player) {
-            dynamic history;
-            if (repo.sport == SupportedSport.MLB) {
-              history = MLBAthleteStats(
+            return MapEntry(
+              key,
+              AthletePriceRecord(
                 id: player.id,
                 name: player.name,
-                team: player.team,
-                position: player.position,
-                statHistory: [
-                  const MLBStats(
-                    started: 0,
-                    games: 0,
-                    atBats: 0,
-                    runs: 0,
-                    singles: 0,
-                    triples: 0,
-                    homeRuns: 0,
-                    inningsPlayed: 0,
-                    battingAverage: 0,
-                    outs: 0,
-                    walks: 0,
-                    errors: 0,
-                    saves: 0,
-                    strikeOuts: 0,
-                    stolenBases: 0,
-                    plateAppearances: 0,
-                    weightedOnBasePercentage: 0,
+                priceHistory: [
+                  const PriceRecord(
                     price: 0,
-                    timeStamp: '2022',
+                    timestamp: '2022',
                   ),
                 ].toList(),
-              );
-            } else if (repo.sport == SupportedSport.NFL) {
-              history = NFLAthleteStats(
-                id: player.id,
-                name: player.name,
-                team: player.team,
-                position: player.position,
-                statHistory: [
-                  const NFLStats(
-                    passingYards: 0,
-                    passingTouchdowns: 0,
-                    reception: 0,
-                    receivingYards: 0,
-                    receivingTouchdowns: 0,
-                    rushingYards: 0,
-                    offensiveSnapsPlayed: 0,
-                    defensiveSnapsPlayed: 0,
-                    price: 0,
-                    timeStamp: '2022',
-                  ),
-                ].toList(),
-              );
-            }
-            return MapEntry(key, history);
+              ),
+            );
           })
           .values
           .toList();
@@ -135,7 +84,7 @@ class GetScoutAthletesDataUseCase {
       final repo = _repos[sportSelection]!;
       // fetch supported players list
       final players = await repo.getSupportedPlayers();
-      final history = await getStatsHistory(repo, players);
+      final history = await getPriceHistory(repo, players);
       return _mapAthleteToScoutModel(
         players,
         history,
@@ -156,7 +105,7 @@ class GetScoutAthletesDataUseCase {
       final histories = await Future.wait(
         response.asMap().map((key, response) {
           final repo = _repos.values.elementAt(key);
-          return MapEntry(key, getStatsHistory(repo, response));
+          return MapEntry(key, getPriceHistory(repo, response));
         }).values,
       );
 
@@ -251,12 +200,13 @@ class GetScoutAthletesDataUseCase {
 
   List<AthleteScoutModel> _mapAthleteToScoutModel(
     List<SportAthlete> athletes,
-    List<dynamic> histories,
+    List<AthletePriceRecord> histories,
     SportsRepo<SportAthlete> repo,
     double axPrice, {
     required Token axt,
   }) {
     final mappedAthletes = athletes.asMap().map((key, athlete) {
+      final collateralizationPerPair = getCollateralizationPerPair(repo);
       final aptPair = _tokensRepository.currentAptPair(athlete.id);
       final longAptAddress = aptPair.longApt.address;
       final shortAptAddress = aptPair.shortApt.address;
@@ -268,9 +218,11 @@ class GetScoutAthletesDataUseCase {
         axt: axt,
       );
 
-      final length = history.statHistory.length;
-      final startPrice = history.statHistory[0].price as double;
-      final endPrice = history.statHistory[length - 1].price as double;
+      final length = history.priceHistory.length;
+      final startPrice = history.priceHistory[0].price;
+      final endPrice = (length > 1)
+          ? history.priceHistory[1].price
+          : history.priceHistory[0].price;
       final longBookModel = getBookPricePercentage(
         startPrice,
         endPrice,
@@ -377,6 +329,25 @@ class GetScoutAthletesDataUseCase {
       return MapEntry(key, athleteScoutModel);
     });
     return mappedAthletes.values.toList();
+  }
+
+  int getCollateralizationPerPair(SportsRepo<SportAthlete> repo) {
+    int collateralizationPerPair;
+    switch (repo.sport) {
+      case SupportedSport.MLB:
+        collateralizationPerPair = 15;
+        break;
+      case SupportedSport.NFL:
+        collateralizationPerPair = 1;
+        break;
+      case SupportedSport.NBA:
+        collateralizationPerPair = 0;
+        break;
+      case SupportedSport.all:
+        collateralizationPerPair = 0;
+        break;
+    }
+    return collateralizationPerPair;
   }
 
   bool equalsIgnoreCase(String? string1, String? string2) {

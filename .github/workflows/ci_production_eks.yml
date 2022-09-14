@@ -11,7 +11,7 @@ env:
   ATHLETEX_SERVICE_REPONAME: athletex-dapp
   EKS_CLUSTER_NAME: athletex-cluster
   PORT: 5000
-  BUILD_TYPE: production
+  BUILD_TYPE: release
 permissions:
   id-token: write
   contents: read
