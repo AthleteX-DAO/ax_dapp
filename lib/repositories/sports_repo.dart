@@ -26,7 +26,7 @@ abstract class SportsRepo<SportAthlete> {
   Future<dynamic> getPlayerStatsHistory(int id, String from, String until);
 
   Future<AthletePriceRecord> getPlayerPriceHistory(
-    int id,{
+    int id, {
     String? from,
     String? until,
     String? interval,

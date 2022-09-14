@@ -38,19 +38,25 @@ abstract class MLBAthleteAPI {
       @Query('until') String until,);
 
   @GET('/players/{id}/history/price')
-  Future<AthletePriceRecord> getPlayerPriceHistory(@Path() int id,
-      @Query('from') String? from,
-      @Query('until') String? until,
-      @Query('interval') String interval,);
+  Future<AthletePriceRecord> getPlayerPriceHistory(
+    @Path() int id,
+    @Query('from') String? from,
+    @Query('until') String? until,
+    @Query('interval') String interval,
+  );
 
   @POST('/players/history')
-  Future<List<MLBAthleteStats>> getPlayersHistory(@Body() PlayerIds playerIds,
-      @Query('from') String from,
-      @Query('until') String until,);
+  Future<List<MLBAthleteStats>> getPlayersHistory(
+    @Body() PlayerIds playerIds,
+    @Query('from') String from,
+    @Query('until') String until,
+  );
 
   @POST('/players/history/price')
-  Future<List<AthletePriceRecord>> getPlayersPriceHistory(@Body() PlayerIds playerIds,
-      @Query('from') String? from,
-      @Query('until') String? until,
-      @Query('interval') String interval,);
+  Future<List<AthletePriceRecord>> getPlayersPriceHistory(
+    @Body() PlayerIds playerIds,
+    @Query('from') String? from,
+    @Query('until') String? until,
+    @Query('interval') String interval,
+  );
 }
