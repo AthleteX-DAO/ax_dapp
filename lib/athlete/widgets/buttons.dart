@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class BuyButton extends StatelessWidget {
@@ -51,6 +52,9 @@ class BuyButton extends StatelessWidget {
               context: context,
               builder: (BuildContext context) => BlocProvider(
                 create: (BuildContext context) => BuyDialogBloc(
+                  walletRepository: context.read<WalletRepository>(),
+                  streamAppDataChanges:
+                    context.read<StreamAppDataChangesUseCase>(),
                   tokensRepository: context.read<TokensRepository>(),
                   repo: RepositoryProvider.of<GetBuyInfoUseCase>(context),
                   wallet: GetTotalTokenBalanceUseCase(
@@ -110,6 +114,9 @@ class SellButton extends StatelessWidget {
               context: context,
               builder: (BuildContext context) => BlocProvider(
                 create: (BuildContext context) => SellDialogBloc(
+                  walletRepository: context.read<WalletRepository>(),
+                  streamAppDataChanges:
+                    context.read<StreamAppDataChangesUseCase>(),
                   tokensRepository: context.read<TokensRepository>(),
                   repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
                   wallet: GetTotalTokenBalanceUseCase(
