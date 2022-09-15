@@ -25,6 +25,13 @@ class AptTypeSelectionChanged extends SellDialogEvent {
   List<Object?> get props => [aptType];
 }
 
+class UpdateSwapController extends SellDialogEvent {
+  const UpdateSwapController();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class FetchAptSellInfoRequested extends SellDialogEvent {
   const FetchAptSellInfoRequested();
 }
