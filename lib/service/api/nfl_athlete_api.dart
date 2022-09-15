@@ -44,13 +44,17 @@ abstract class NFLAthleteAPI {
       @Query('interval') String? interval,);
 
   @POST('/players/history')
-  Future<List<NFLAthleteStats>> getPlayersHistory(@Body() PlayerIds playerIds,
-      @Query('from') String from,
-      @Query('until') String until,);
+  Future<List<NFLAthleteStats>> getPlayersHistory(
+    @Body() PlayerIds playerIds,
+    @Query('from') String from,
+    @Query('until') String until,
+  );
 
   @POST('/players/history/price')
-  Future<List<AthletePriceRecord>> getPlayersPriceHistory(@Body() PlayerIds playerIds,
-      @Query('from') String? from,
-      @Query('until') String? until,
-      @Query('interval') String interval,);
+  Future<List<AthletePriceRecord>> getPlayersPriceHistory(
+    @Body() PlayerIds playerIds,
+    @Query('from') String? from,
+    @Query('until') String? until,
+    @Query('interval') String interval,
+  );
 }
