@@ -45,6 +45,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     on<OnMaxBuyTap>(_mapMaxBuyTapEventToState);
     on<OnConfirmBuy>(_mapConfirmBuyEventToState);
     on<OnNewAxInput>(_mapNewAxInputEventToState);
+    on<UpdateSwapController>(_mapUpdateSwapControllerEventToState);
 
     add(WatchAptPairStarted(athleteId));
     add(const FetchAptBuyInfoRequested());
@@ -59,6 +60,21 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
 
   Future<void> _onWatchAptPairStarted(
     WatchAptPairStarted event,
+    Emitter<BuyDialogState> emit,
+  ) async {
+    await emit.onEach<AptPair>(
+      _tokensRepository.aptPairChanges(event.athleteId),
+      onData: (aptPair) {
+        emit(
+          state.copyWith(longApt: aptPair.longApt, shortApt: aptPair.shortApt),
+        );
+        add(const UpdateSwapController());
+      },
+    );
+  }
+
+  Future<void> _mapUpdateSwapControllerEventToState (
+    UpdateSwapController event,
     Emitter<BuyDialogState> emit,
   ) async {
     await emit.onEach<AppData>(
