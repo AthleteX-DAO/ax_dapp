@@ -106,6 +106,32 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
+  /// Sync the current chain of Wallet.
+  ///
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletUnrecognizedChainFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
+  @override
+  Future<void> syncChain(EthereumChain chain) async {
+    _checkWalletAvailability();
+    try {
+      await _syncChainId();
+    } on EthereumUnrecognizedChainException catch (exception, stackTrace) {
+      // Bug with `EthereumUnrecognizedChainException` not being thrown by the
+      // underlying method, `WalletFailure.fromError` handles it.
+      throw WalletFailure.fromUnrecognizedChain(exception, stackTrace);
+    } on EthereumUserRejected catch (exception, stackTrace) {
+      throw WalletFailure.fromOperationRejected(exception, stackTrace);
+    } on EthereumException catch (exception, stackTrace) {
+      throw WalletFailure.fromUnrecognizedChain(exception, stackTrace);
+    } catch (error, stackTrace) {
+      throw WalletFailure.fromError(error, stackTrace);
+    }
+  }
+
   /// When the `defaultChain` is the same with the last known chain on
   /// `MetaMask`, [Ethereum.onChainChanged] doesn't get triggered, so we
   /// explicitly sync up the chain.
