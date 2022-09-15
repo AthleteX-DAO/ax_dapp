@@ -16,6 +16,13 @@ class WatchAptPairStarted extends BuyDialogEvent {
   List<Object?> get props => [athleteId];
 }
 
+class UpdateSwapController extends BuyDialogEvent {
+  const UpdateSwapController();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class AptTypeSelectionChanged extends BuyDialogEvent {
   const AptTypeSelectionChanged(this.aptType);
 

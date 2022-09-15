@@ -22,6 +22,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class DesktopScout extends StatefulWidget {
@@ -844,6 +845,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                           context: context,
                           builder: (BuildContext context) => BlocProvider(
                             create: (BuildContext context) => BuyDialogBloc(
+                              walletRepository: context.read<WalletRepository>(),
+                              streamAppDataChanges:
+                                  context.read<StreamAppDataChangesUseCase>(),
                               tokensRepository:
                                   context.read<TokensRepository>(),
                               repo: RepositoryProvider.of<GetBuyInfoUseCase>(
@@ -1108,6 +1112,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                           context: context,
                           builder: (BuildContext context) => BlocProvider(
                             create: (BuildContext context) => BuyDialogBloc(
+                              walletRepository: context.read<WalletRepository>(),
+                              streamAppDataChanges:
+                                  context.read<StreamAppDataChangesUseCase>(),
                               tokensRepository:
                                   context.read<TokensRepository>(),
                               repo: RepositoryProvider.of<GetBuyInfoUseCase>(
