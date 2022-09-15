@@ -92,7 +92,7 @@ class WalletRepository {
   /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
     _walletApiClient.addChainChangedListener();
-    await switchChain(defaultChain);
+    await _walletApiClient.syncChain(defaultChain);
     final credentials = _getWalletCredentials();
     return credentials;
   }

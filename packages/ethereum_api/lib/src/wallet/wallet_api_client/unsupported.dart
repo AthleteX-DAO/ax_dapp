@@ -37,6 +37,13 @@ class EthereumWalletApiClient implements WalletApiClient {
   }
 
   @override
+  Future<void> syncChain(EthereumChain ethereumChain) {
+    throw UnsupportedError(
+      'syncChain not supported on the current platform',
+    );
+  }
+
+  @override
   Future<WalletCredentials> getWalletCredentials() {
     throw UnsupportedError(
       'getWalletCredentials not supported on the current platform',
