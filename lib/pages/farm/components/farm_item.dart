@@ -31,7 +31,7 @@ Widget farmItem(
     margin: isWeb
         ? const EdgeInsets.symmetric(horizontal: 5, vertical: 5)
         : const EdgeInsets.symmetric(vertical: 5),
-    padding: const EdgeInsets.symmetric(horizontal: 20),
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
     decoration: boxDecoration(
       const Color(0x80424242).withOpacity(0.25),
       20,
@@ -39,7 +39,7 @@ Widget farmItem(
       Colors.grey[600]!,
     ),
     child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         farmTitleWidget,
         // Current Balance
@@ -47,7 +47,7 @@ Widget farmItem(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Current Balance',
+              'Available Balance',
               style: txStyle,
             ),
             Obx(

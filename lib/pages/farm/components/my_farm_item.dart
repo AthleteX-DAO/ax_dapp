@@ -55,7 +55,7 @@ Widget myFarmItem(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Current Balance',
+              'Available Balance',
               style: customTextStyle,
             ),
             Obx(

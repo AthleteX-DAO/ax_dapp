@@ -708,6 +708,7 @@ class _AthletePageState extends State<AthletePage> {
                               0,
                               Colors.transparent,
                             ),
+                            // ignore: todo
                             // TODO(anyone): remove button if not needed
                             child: TextButton(
                               style: TextButton.styleFrom(
@@ -1087,8 +1088,28 @@ class _AthletePageState extends State<AthletePage> {
                   ),
                 ),
                 // APT Icon
-                const SizedBox(
-                  width: 10,
+                BlocSelector<AthletePageBloc, AthletePageState, AptType>(
+                  selector: (state) => state.aptTypeSelection,
+                  builder: (context, aptTypeSelection) {
+                    return Container(
+                      width: 50,
+                      height: 50,
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          scale: 1,
+                          image: aptTypeSelection.isLong
+                              ? const AssetImage(
+                                  'assets/images/apt_noninverted.png',
+                                )
+                              : const AssetImage(
+                                  'assets/images/apt_inverted.png',
+                                ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 // Player Name
                 Text(
@@ -1409,10 +1430,18 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    final longCurrentBookValueRatio =
+    var longCurrentBookValueRatio =
         (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
-    final shortCurrentBookValueRatio =
+    var shortCurrentBookValueRatio =
         (athlete.shortTokenPrice! / athlete.shortTokenBookPrice!) * 100;
+    if (longCurrentBookValueRatio.isNaN ||
+        longCurrentBookValueRatio.isInfinite) {
+      longCurrentBookValueRatio = 0;
+    }
+    if (shortCurrentBookValueRatio.isNaN ||
+        shortCurrentBookValueRatio.isInfinite) {
+      shortCurrentBookValueRatio = 0;
+    }
     final _width = MediaQuery.of(context).size.width;
     var wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;

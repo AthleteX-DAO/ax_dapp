@@ -1,10 +1,10 @@
+import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/config/models/apt_config.dart';
 import 'package:ethereum_api/src/config/models/apts/mlb_apt_list.dart';
 import 'package:ethereum_api/src/config/models/apts/nfl_apt_list.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_url_config.dart';
-import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/pool_info/pool_info.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 import 'package:flutter/widgets.dart';
@@ -57,7 +57,7 @@ enum EthereumChain {
     chainId: 416,
     chainName: 'SX Network',
     currency: EthereumCurrency.sx,
-    rpcUrls: ['https://api-stage.athletex.io/sx/rpc'],
+    rpcUrls: ['https://api.athletex.io/sx/rpc'],
     blockExplorerUrls: ['https://explorer.sx.technology/'],
   ),
 
@@ -104,8 +104,9 @@ enum EthereumChain {
   final List<String>? blockExplorerUrls;
 
   /// Returns a list of supported [EthereumChain]s.
-  static List<EthereumChain> get supportedValues =>
-      values.where((chain) => chain.chainId != 647 && chain.isSupported).toList();
+  static List<EthereumChain> get supportedValues => values
+      .where((chain) => chain.chainId != 647 && chain.isSupported)
+      .toList();
 }
 
 /// [EthereumChain] extensions.
