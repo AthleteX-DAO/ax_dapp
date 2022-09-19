@@ -1,3 +1,5 @@
+// ignore_for_file: implementation_imports
+
 import 'dart:async';
 
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
@@ -6,8 +8,11 @@ import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
+import 'package:ethereum_api/src/tokens/models/contract.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'sell_dialog_event.dart';
 part 'sell_dialog_state.dart';
@@ -19,11 +24,15 @@ const String exceptionMessage =
 class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   SellDialogBloc({
     required TokensRepository tokensRepository,
+    required WalletRepository walletRepository,
+    required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.wallet,
     required this.swapController,
     required int athleteId,
-  })  : _tokensRepository = tokensRepository,
+  })  : _streamAppDataChanges = streamAppDataChanges,
+        _walletRepository = walletRepository,
+        _tokensRepository = tokensRepository,
         super(
           // setting the apt corresponding to the default aptType which is long
           SellDialogState(
@@ -36,6 +45,8 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
     on<MaxSellTap>(_mapMaxSellTapEventToState);
     on<ConfirmSell>(_mapConfirmSellEventToState);
     on<NewAptInput>(_mapNewAptInputEventToState);
+    on<UpdateSwapController>(_mapUpdateSwapControllerEventToState);
+
 
     add(WatchAptPairStarted(athleteId));
     add(const FetchAptSellInfoRequested());
@@ -45,6 +56,8 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   final GetSellInfoUseCase repo;
   final GetTotalTokenBalanceUseCase wallet;
   final SwapController swapController;
+  final WalletRepository _walletRepository;
+  final StreamAppDataChangesUseCase _streamAppDataChanges;
 
   Future<void> _onWatchAptPairStarted(
     WatchAptPairStarted event,
@@ -56,6 +69,26 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
         emit(
           state.copyWith(longApt: aptPair.longApt, shortApt: aptPair.shortApt),
         );
+        add(const UpdateSwapController());
+      },
+    );
+  }
+
+  Future<void> _mapUpdateSwapControllerEventToState (
+    UpdateSwapController event,
+    Emitter<SellDialogState> emit,
+  ) async {
+    await emit.onEach<AppData>(
+      _streamAppDataChanges.appDataChanges,
+      onData: (appData) {
+        final appConfig = appData.appConfig;
+        swapController
+          ..aptFactory = appConfig.reactiveAptFactoryClient.value
+          ..aptRouter = appConfig.reactiveAptRouterClient.value;
+        swapController.controller.credentials =
+            _walletRepository.credentials.value;
+        swapController.factoryAddress.value = Contract.exchangeFactory(appData.chain).address;
+        swapController.routerAddress.value = Contract.exchangeRouter(appData.chain).address;
         add(const FetchAptSellInfoRequested());
       },
     );

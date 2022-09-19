@@ -18,6 +18,9 @@ abstract class WalletApiClient {
   /// Switches the currently used chain.
   Future<void> switchChain(EthereumChain chain);
 
+  /// Sync the current used chain
+  Future<void> syncChain(EthereumChain chain);
+
   /// Asks the user to select an account and give your application access to it.
   /// Returns the [WalletCredentials] for the connected account.
   Future<WalletCredentials> getWalletCredentials();
