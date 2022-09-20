@@ -10,11 +10,11 @@ SfCartesianChart buildLongChart(
 ) {
   return SfCartesianChart(
     tooltipBehavior: _longToolTipBehavior,
-    legend: Legend(isVisible: false),
+    legend: Legend(isVisible: true),
     zoomPanBehavior: _zoomPanBehavior,
     series: [
       FastLineSeries<GraphData, DateTime>(
-        name: 'Price',
+        name: 'Book Value',
         dataSource: chartStats.toSet().toList(),
         xValueMapper: (
           GraphData data,
@@ -35,6 +35,32 @@ SfCartesianChart buildLongChart(
         ),
         enableTooltip: true,
         color: Colors.orange,
+        width: 2,
+        opacity: 1,
+        dashArray: <double>[5, 5],
+      ),
+      FastLineSeries<GraphData, DateTime>(
+        name: 'Market Value',
+        dataSource: chartStats.toSet().toList(),
+        xValueMapper: (
+          GraphData data,
+          _,
+        ) =>
+            data.date,
+        yValueMapper: (
+          GraphData data,
+          _,
+        ) =>
+        (data.price + 200),
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          textStyle: TextStyle(
+            fontSize: 10,
+            color: Colors.orange,
+          ),
+        ),
+        enableTooltip: true,
+        color: Colors.white,
         width: 2,
         opacity: 1,
         dashArray: <double>[5, 5],
