@@ -13,7 +13,7 @@ class WalletAx extends StatelessWidget {
         context.read<WalletBloc>().add(const UpdateAxDataRequested());
         showDialog<void>(
           context: context,
-          builder: (context) => YourAXDialog(context: context),
+          builder: (context) => const YourAXDialog(),
         );
       },
       child: Row(
@@ -28,7 +28,7 @@ class WalletAx extends StatelessWidget {
             ),
           ),
           Text(
-            'Ax',
+            'AX',
             style: TextStyle(
               color: Colors.grey[400],
               fontFamily: 'OpenSans',

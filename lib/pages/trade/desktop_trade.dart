@@ -719,7 +719,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         text: 'Approve',
                         approveCallback: swapController.approve,
                         confirmCallback: swapController.swap,
-                        confirmDialog: ConfirmTransactionDialog(context: context),
+                        confirmDialog: const ConfirmTransactionDialog(),
                         fromCurrency: tokenFrom.name,
                         toCurrency: tokenTo.name,
                         fromUnits: _tokenFromInputController.text,

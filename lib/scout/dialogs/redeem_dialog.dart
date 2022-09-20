@@ -454,7 +454,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                         if (result) {
                           await showDialog<void>(
                             context: context,
-                            builder: (BuildContext context) => ConfirmTransactionDialog(context: context),
+                            builder: (BuildContext context) => const ConfirmTransactionDialog(),
                           ).then((value) {
                             final walletAddress = context
                                 .read<WalletBloc>()

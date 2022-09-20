@@ -4,12 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmTransactionDialog extends StatelessWidget {
-  const ConfirmTransactionDialog({
-    super.key,
-    required this.context,
-  });
-
-  final BuildContext context;
+  const ConfirmTransactionDialog({super.key,});
 
   @override
   Widget build(BuildContext context) {

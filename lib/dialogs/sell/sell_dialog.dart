@@ -433,7 +433,7 @@ class _SellDialogState extends State<SellDialog> {
                                 : 'Short Apt',
                             approveCallback: bloc.swapController.approve,
                             confirmCallback: bloc.swapController.swap,
-                            confirmDialog: ConfirmTransactionDialog(context: context),
+                            confirmDialog: const ConfirmTransactionDialog(),
                             walletAddress: formattedWalletAddress,
                           );
                         },

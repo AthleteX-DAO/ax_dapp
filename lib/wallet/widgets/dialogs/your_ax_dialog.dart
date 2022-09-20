@@ -6,12 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class YourAXDialog extends StatelessWidget {
-  const YourAXDialog({
-    super.key,
-    required this.context,
-  });
+  const YourAXDialog({super.key,});
 
-  final BuildContext context;
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
