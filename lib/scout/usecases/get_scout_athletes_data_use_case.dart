@@ -82,7 +82,10 @@ class GetScoutAthletesDataUseCase {
     final longAptAddress = aptPair.longApt.address;
     final shortAptAddress = aptPair.shortApt.address;
     final currentAxt = _tokensRepository.currentAxt;
-    allPairs = await fetchSpecificPairs(currentAxt);
+    final formattedDate =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
+    allPairs =
+        await fetchSpecificPairs(currentAxt, formattedDate, isLimited: false);
 
     final longRecords = getMarketPriceRecords(
       longAptAddress,
@@ -149,7 +152,7 @@ class GetScoutAthletesDataUseCase {
     SupportedSport sportSelection,
   ) async {
     final currentAxt = _tokensRepository.currentAxt;
-    allPairs = await fetchSpecificPairs(currentAxt);
+    allPairs = await fetchSpecificPairs(currentAxt, '');
     //fetching AX Price
     final axData = await _tokensRepository.getAxMarketData();
     final axPrice = axData.price ?? 0;
@@ -201,9 +204,17 @@ class GetScoutAthletesDataUseCase {
     }
   }
 
-  Future<List<TokenPair>> fetchSpecificPairs(Token token) async {
+  Future<List<TokenPair>> fetchSpecificPairs(
+    Token token,
+    String startDate, {
+    bool isLimited = true,
+  }) async {
     try {
-      final response = await graphRepo.querySpecificPairs(token.ticker);
+      final response = await graphRepo.querySpecificPairs(
+        token.ticker,
+        startDate: startDate,
+        isLimited: isLimited,
+      );
       if (!response.isLeft()) return List.empty();
       final prefixInfos =
           response.getLeft().toNullable()!['prefix'] as List<dynamic>;

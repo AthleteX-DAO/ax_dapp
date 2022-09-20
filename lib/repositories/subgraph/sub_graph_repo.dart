@@ -60,18 +60,23 @@ class SubGraphRepo {
   Future<Either<Map<String, dynamic>?, OperationException>> querySpecificPairs(
     String token, {
     String startDate = '',
+    bool isLimited = true,
   }) async {
     // calculating the first time of 24 hours ago as secondsSinceEpoch
     final startTime = startDate != ''
-        ? (DateTime.parse(startDate).microsecondsSinceEpoch / 1000).round()
+        ? (DateTime.parse(startDate).millisecondsSinceEpoch / 1000).round()
         : (DateTime.now()
                     .subtract(const Duration(days: 1))
                     .millisecondsSinceEpoch /
                 1000)
             .round();
 
+    final query = isLimited
+        ? _getSpecificPairs(token, startTime)
+        : _getSpecificPairsHistory(token, startTime);
+
     final result = await _dexGqlClient.query(
-      QueryOptions(document: parseString(_getSpecificPairs(token, startTime))),
+      QueryOptions(document: parseString(query)),
     );
     if (result.hasException) {
       return tryPostQuery(_getSpecificPairs(token, startTime));
@@ -177,6 +182,63 @@ query {
     reserve1
   	totalSupply
     pairHourData(where: {hourStartUnix_lte: $startTime}, first: 1, orderBy: hourStartUnix, orderDirection: desc) {
+      hourStartUnix
+      reserve0
+      reserve1
+      pair {
+        id
+        name
+        token0 {id, name}
+        token1 {id, name}
+        reserve0
+        reserve1
+        token0Price
+        token1Price
+      }
+    }
+  }
+}
+''';
+
+String _getSpecificPairsHistory(String token, int startTime) => '''
+query {
+  prefix: pairs(where: {name_starts_with: "$token-"}) {
+  	id
+    name
+    token0Price
+    token1Price
+    token0 {name, id}
+    token1 {name, id}
+    reserve0 
+    reserve1
+  	totalSupply
+    pairHourData(where: {hourStartUnix_gte: $startTime}, orderBy: hourStartUnix, orderDirection: asc) {
+      hourStartUnix
+      reserve0
+      reserve1
+      pair {
+        id
+        name
+        token0 {id, name}
+        token1 {id, name}
+        reserve0
+        reserve1
+        token0Price
+        token1Price
+      }
+    }
+  },
+  suffix: pairs(where: {name_ends_with: "-$token"}) {
+  	id
+    name
+    token0Price
+    token1Price
+    token0 {name, id}
+    token1 {name, id}
+    reserve0 
+    reserve1
+  	totalSupply
+    pairHourData(where: {hourStartUnix_gte: $startTime}, orderBy: hourStartUnix, orderDirection: asc) {
       hourStartUnix
       reserve0
       reserve1

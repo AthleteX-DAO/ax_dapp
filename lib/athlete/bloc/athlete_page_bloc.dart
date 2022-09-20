@@ -87,7 +87,8 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
           );
           final recordLength = priceRecord.priceHistory.length;
           if (recordLength > 0) {
-            final startDate = priceRecord.priceHistory[0].timestamp;
+            final startDate =
+                priceRecord.priceHistory[recordLength - 1].timestamp;
             final marketRecords = await athleteUseCase.getMarketPriceHistory(
               nflRepo,
               playerId,
@@ -109,7 +110,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
           if (recordLength > 0) {
             final startDate = priceRecord.priceHistory[0].timestamp;
             final marketRecords = await athleteUseCase.getMarketPriceHistory(
-              nflRepo,
+              mlbRepo,
               playerId,
               startDate,
             );
@@ -129,42 +130,84 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
     MarketPriceRecord marketRecord,
     Emitter<AthletePageState> emit,
   ) {
-    var longIndex = 0, shortIndex = 0;
     final longHistory = marketRecord.longRecord.priceHistory;
     final shortHistory = marketRecord.shortRecord.priceHistory;
+    final graphStats = <String, GraphData>{};
+    for (final record in priceRecord.priceHistory) {
+      final date = DateTime.parse(record.timestamp);
+      final dateStr = DateFormat('yyyy-MM-dd').format(date);
+      graphStats[dateStr] =
+          GraphData(date, record.price * kCollateralizationMultiplier);
+    }
 
-    final graphStats = priceRecord.priceHistory.map(
-      (record) {
-        final bookDate = DateFormat('yyy-MM-dd').parse(record.timestamp);
-        if (longHistory.isNotEmpty) {
-          final nextIndex = min(longIndex + 1, longHistory.length - 1);
-          final nextDateStr = longHistory[nextIndex].timestamp;
-          final nextDate = DateFormat('yyy-MM-dd').parse(nextDateStr);
-          if (bookDate.isAfter(nextDate)) {
-            longIndex = nextIndex;
-          }
-        }
-
-        if (shortHistory.isNotEmpty) {
-          final nextIndex = min(shortIndex + 1, shortHistory.length - 1);
-          final nextDateStr = shortHistory[nextIndex].timestamp;
-          final nextDate = DateFormat('yyy-MM-dd').parse(nextDateStr);
-          if (bookDate.isAfter(nextDate)) {
-            shortIndex = nextIndex;
-          }
-        }
-
-        return GraphData(
-          DateFormat('yyy-MM-dd').parse(record.timestamp),
-          record.price * kCollateralizationMultiplier,
-          longHistory[longIndex].price,
-          shortHistory[shortIndex].price,
+    for (final record in longHistory) {
+      final date = DateTime.parse(record.timestamp);
+      final dateStr = DateFormat('yyyy-MM-dd').format(date);
+      if (graphStats.containsKey(dateStr)) {
+        graphStats.update(
+          dateStr,
+          (value) =>
+              GraphData(date, value.price, longMarketPrice: record.price),
         );
-      },
-    ).toList();
-    final seenDates = <DateTime>{};
+      } else {
+        graphStats[dateStr] = GraphData(date, 0, longMarketPrice: record.price);
+      }
+    }
+
+    for (final record in shortHistory) {
+      final date = DateTime.parse(record.timestamp);
+      final dateStr = DateFormat('yyyy-MM-dd').format(date);
+      if (graphStats.containsKey(dateStr)) {
+        graphStats.update(
+          dateStr,
+          (value) => GraphData(
+            date,
+            value.price,
+            longMarketPrice: value.longMarketPrice,
+            shortMarketPrice: record.price,
+          ),
+        );
+      } else {
+        graphStats[dateStr] =
+            GraphData(date, 0, shortMarketPrice: record.price);
+      }
+    }
+
+    final keys = graphStats.keys.toList().sorted((a, b) => a.compareTo(b));
+    for (var i = 1; i < keys.length; i++) {
+      final prevData = graphStats[keys[i - 1]];
+      graphStats.update(keys[i], (data) {
+        return GraphData(
+          data.date,
+          data.price == 0 ? prevData!.price : data.price,
+          longMarketPrice: data.longMarketPrice == 0
+              ? prevData!.longMarketPrice
+              : data.longMarketPrice,
+          shortMarketPrice: data.shortMarketPrice == 0
+              ? prevData!.shortMarketPrice
+              : data.shortMarketPrice,
+        );
+      });
+    }
+
+    for (var i = keys.length - 2; i >= 0; i--) {
+      final nextData = graphStats[keys[i + 1]];
+      graphStats.update(keys[i], (data) {
+        return GraphData(
+          data.date,
+          data.price == 0 ? nextData!.price : data.price,
+          longMarketPrice: data.longMarketPrice == 0
+              ? nextData!.longMarketPrice
+              : data.longMarketPrice,
+          shortMarketPrice: data.shortMarketPrice == 0
+              ? nextData!.shortMarketPrice
+              : data.shortMarketPrice,
+        );
+      });
+    }
+
     final distinctPoints =
-        graphStats.where((element) => seenDates.add(element.date)).toList();
+        keys.asMap().entries.map((e) => graphStats[e.value]!).toList();
     emit(
       state.copyWith(
         stats: distinctPoints,
