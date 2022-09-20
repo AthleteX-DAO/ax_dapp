@@ -15,7 +15,7 @@ SfCartesianChart buildLongChart(
     series: [
       FastLineSeries<GraphData, DateTime>(
         name: 'Book Value',
-        dataSource: chartStats.toSet().toList(),
+        dataSource: chartStats,
         xValueMapper: (
           GraphData data,
           _,
@@ -41,7 +41,7 @@ SfCartesianChart buildLongChart(
       ),
       FastLineSeries<GraphData, DateTime>(
         name: 'Market Value',
-        dataSource: chartStats.toSet().toList(),
+        dataSource: chartStats,
         xValueMapper: (
           GraphData data,
           _,
