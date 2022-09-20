@@ -97,7 +97,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 mlbRepo: RepositoryProvider.of<MLBRepo>(context),
                 nflRepo: RepositoryProvider.of<NFLRepo>(context),
                 athlete: curAthlete!,
-                athleteUseCase: GetScoutAthletesDataUseCase(
+                getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
                   tokensRepository: context.read<TokensRepository>(),
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                   sportsRepos: [

@@ -25,7 +25,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
     required this.mlbRepo,
     required this.nflRepo,
     required this.athlete,
-    required this.athleteUseCase,
+    required this.getScoutAthletesDataUseCase,
   })  : _walletRepository = walletRepository,
         _tokensRepository = tokensRepository,
         super(
@@ -50,7 +50,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
   final TokensRepository _tokensRepository;
   final MLBRepo mlbRepo;
   final NFLRepo nflRepo;
-  final GetScoutAthletesDataUseCase athleteUseCase;
+  final GetScoutAthletesDataUseCase getScoutAthletesDataUseCase;
 
   Future<void> _onWatchAptPairStarted(
     WatchAptPairStarted event,
@@ -89,7 +89,8 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
           if (recordLength > 0) {
             final startDate =
                 priceRecord.priceHistory[recordLength - 1].timestamp;
-            final marketRecords = await athleteUseCase.getMarketPriceHistory(
+            final marketRecords =
+                await getScoutAthletesDataUseCase.getMarketPriceHistory(
               nflRepo,
               playerId,
               startDate,
@@ -109,7 +110,8 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
           final recordLength = priceRecord.priceHistory.length;
           if (recordLength > 0) {
             final startDate = priceRecord.priceHistory[0].timestamp;
-            final marketRecords = await athleteUseCase.getMarketPriceHistory(
+            final marketRecords =
+                await getScoutAthletesDataUseCase.getMarketPriceHistory(
               mlbRepo,
               playerId,
               startDate,

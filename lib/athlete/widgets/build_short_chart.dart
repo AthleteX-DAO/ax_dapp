@@ -27,7 +27,6 @@ SfCartesianChart buildShortChart(
         ) =>
             15000 - data.price,
         dataLabelSettings: const DataLabelSettings(
-          isVisible: false,
           textStyle: TextStyle(
             fontSize: 10,
             color: Colors.white,
@@ -53,7 +52,6 @@ SfCartesianChart buildShortChart(
         ) =>
             data.shortMarketPrice,
         dataLabelSettings: const DataLabelSettings(
-          isVisible: false,
           textStyle: TextStyle(
             fontSize: 10,
             color: Colors.orange,
