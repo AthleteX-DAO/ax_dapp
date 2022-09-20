@@ -27,7 +27,7 @@ SfCartesianChart buildLongChart(
         ) =>
             data.price,
         dataLabelSettings: const DataLabelSettings(
-          isVisible: true,
+          isVisible: false,
           textStyle: TextStyle(
             fontSize: 10,
             color: Colors.white,
@@ -53,7 +53,7 @@ SfCartesianChart buildLongChart(
         ) =>
             data.longMarketPrice,
         dataLabelSettings: const DataLabelSettings(
-          isVisible: true,
+          isVisible: false,
           textStyle: TextStyle(
             fontSize: 10,
             color: Colors.orange,
