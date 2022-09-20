@@ -41,7 +41,7 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final Dialog Function(BuildContext) confirmDialog;
+  final Widget confirmDialog;
   final MyLiquidityBloc myLiquidityBloc;
 
   @override
@@ -134,8 +134,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                   );
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog(context),
+                builder: (BuildContext context) => widget.confirmDialog,
               ).then((value) {
                 //show loading spinner
                 widget.myLiquidityBloc
