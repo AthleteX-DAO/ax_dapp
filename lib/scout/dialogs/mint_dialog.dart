@@ -2,7 +2,7 @@ import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/athlete/widgets/athlete_insufficient_button.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +72,7 @@ class _MintDialogState extends State<MintDialog> {
           Obx(
             () => Text(
               'AX Balance: ${balance.value}',
-              style: textStyle(Colors.grey[600]!, 15, false),
+              style: textStyle(Colors.grey[600]!, 15, isBold: false),
             ),
           ),
         ],
@@ -89,7 +89,7 @@ class _MintDialogState extends State<MintDialog> {
             children: [
               Text(
                 'You Receive: ',
-                style: textStyle(Colors.white, 15, false),
+                style: textStyle(Colors.white, 15, isBold: false),
               ),
             ],
           ),
@@ -103,35 +103,35 @@ class _MintDialogState extends State<MintDialog> {
                       width: hgt * 0.2,
                       child: Text(
                         lspController.createAmt.toStringAsFixed(6),
-                        style: textStyle(Colors.white, 15, false),
+                        style: textStyle(Colors.white, 15, isBold: false),
                         maxLines: 1,
                       ),
                     ),
                     SizedBox(
                       child: Text(
                         'Long APTs',
-                        style: textStyle(Colors.white, 15, false),
+                        style: textStyle(Colors.white, 15, isBold: false),
                         maxLines: 1,
                       ),
                     ),
                     SizedBox(
                       child: Text(
                         ' + ',
-                        style: textStyle(Colors.white, 15, false),
+                        style: textStyle(Colors.white, 15, isBold: false),
                       ),
                     ),
                     SizedBox(
                       width: hgt * 0.2,
                       child: Text(
                         lspController.createAmt.toStringAsFixed(6),
-                        style: textStyle(Colors.white, 15, false),
+                        style: textStyle(Colors.white, 15, isBold: false),
                         maxLines: 1,
                       ),
                     ),
                     SizedBox(
                       child: Text(
                         'Short APTs',
-                        style: textStyle(Colors.white, 15, false),
+                        style: textStyle(Colors.white, 15, isBold: false),
                         maxLines: 1,
                       ),
                     ),
@@ -152,11 +152,11 @@ class _MintDialogState extends State<MintDialog> {
         children: [
           Text(
             'You Spend:',
-            style: textStyle(Colors.white, 15, false),
+            style: textStyle(Colors.white, 15, isBold: false),
           ),
           Text(
             '$youSpend AX',
-            style: textStyle(Colors.white, 15, false),
+            style: textStyle(Colors.white, 15, isBold: false),
           ),
         ],
       ),
@@ -202,7 +202,7 @@ class _MintDialogState extends State<MintDialog> {
                 children: [
                   Text(
                     'Mint ${widget.athlete.name} APT Pair',
-                    style: textStyle(Colors.white, 20, false),
+                    style: textStyle(Colors.white, 20, isBold: false),
                   ),
                   IconButton(
                     icon: const Icon(
@@ -225,7 +225,7 @@ class _MintDialogState extends State<MintDialog> {
                       style: textStyle(
                         Colors.grey[600]!,
                         isWeb ? 14 : 12,
-                        false,
+                        isBold: false,
                       ),
                     ),
                     TextSpan(
@@ -233,7 +233,7 @@ class _MintDialogState extends State<MintDialog> {
                       style: textStyle(
                         Colors.grey[600]!,
                         isWeb ? 14 : 12,
-                        false,
+                        isBold: false,
                       ),
                     ),
                     TextSpan(
@@ -241,7 +241,7 @@ class _MintDialogState extends State<MintDialog> {
                       style: textStyle(
                         Colors.amber[400]!,
                         isWeb ? 14 : 12,
-                        false,
+                        isBold: false,
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
@@ -260,7 +260,7 @@ class _MintDialogState extends State<MintDialog> {
                   width: wid,
                   child: Text(
                     'Input APT:',
-                    style: textStyle(Colors.grey[600]!, 14, false),
+                    style: textStyle(Colors.grey[600]!, 14, isBold: false),
                   ),
                 ),
                 //Input box
@@ -311,7 +311,7 @@ class _MintDialogState extends State<MintDialog> {
                           Expanded(
                             child: Text(
                               '${widget.athlete.name} APT',
-                              style: textStyle(Colors.white, 15, false),
+                              style: textStyle(Colors.white, 15, isBold: false),
                             ),
                           ),
                           Container(
@@ -335,7 +335,7 @@ class _MintDialogState extends State<MintDialog> {
                               },
                               child: Text(
                                 'MAX',
-                                style: textStyle(Colors.grey[400]!, 9, false),
+                                style: textStyle(Colors.grey[400]!, 9, isBold: false),
                               ),
                             ),
                           ),
@@ -344,13 +344,13 @@ class _MintDialogState extends State<MintDialog> {
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _aptAmountController,
-                                style: textStyle(Colors.grey[400]!, 22, false),
+                                style: textStyle(Colors.grey[400]!, 22, isBold: false),
                                 decoration: InputDecoration(
                                   hintText: '0.00',
                                   hintStyle: textStyle(
                                     Colors.grey[400]!,
                                     22,
-                                    false,
+                                    isBold: false,
                                   ),
                                   contentPadding:
                                       const EdgeInsets.only(left: 3),

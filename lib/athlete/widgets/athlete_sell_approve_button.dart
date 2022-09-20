@@ -36,7 +36,7 @@ class AthleteSellApproveButton extends StatefulWidget {
   final String walletAddress;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final Dialog Function(BuildContext) confirmDialog;
+  final Widget confirmDialog;
 
   @override
   State<AthleteSellApproveButton> createState() =>
@@ -118,7 +118,7 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) =>
-                    widget.confirmDialog(context),
+                    widget.confirmDialog,
               ).then((value) {
                 if (mounted) {
                   Navigator.pop(context);

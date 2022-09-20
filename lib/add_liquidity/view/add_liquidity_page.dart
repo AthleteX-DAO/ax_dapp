@@ -5,7 +5,6 @@ import 'package:ax_dapp/add_liquidity/widgets/pool_insufficient_button.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/debouncer.dart';
 import 'package:ax_dapp/util/util.dart';

@@ -3,9 +3,10 @@
 import 'package:ax_dapp/my_liquidity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/my_liquidity/models/models.dart';
 import 'package:ax_dapp/my_liquidity/widgets/widgets.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -43,13 +44,13 @@ class BadgeToken extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       badgeContent: Text(
         sport.name.toUpperCase(),
-        style: textStyle(Colors.white, 12, true),
+        style: textStyle(Colors.white, 12, isBold:true),
       ),
       position: BadgePosition.topEnd(top: -14, end: -14),
       padding: const EdgeInsets.only(top: 2, bottom: 2, left: 5, right: 5),
       child: Text(
         symbol,
-        style: textStyle(Colors.white, 24, true),
+        style: textStyle(Colors.white, 24, isBold:true),
       ),
     );
   }
@@ -66,7 +67,7 @@ class SimpleToken extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Text(
         symbol,
-        style: textStyle(Colors.white, 24, true),
+        style: textStyle(Colors.white, 24, isBold:true),
       ),
     );
   }
@@ -317,7 +318,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                         },
                         child: Text(
                           'Add',
-                          style: textStyle(Colors.black, 20, true),
+                          style: textStyle(Colors.black, 20, isBold:true),
                         ),
                       ),
                     ),
@@ -352,7 +353,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                         },
                         child: Text(
                           'Remove',
-                          style: textStyle(Colors.amber[400]!, 18, true),
+                          style: textStyle(Colors.amber[400]!, 18, isBold:true),
                         ),
                       ),
                     ),
@@ -529,7 +530,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                   children: [
                                     Text(
                                       'Remove Liquidity',
-                                      style: textStyle(Colors.white, 20, false),
+                                      style: textStyle(Colors.white, 20, isBold:false),
                                     ),
                                   ],
                                 ),
@@ -541,7 +542,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                         Text(
                                           '$value%',
                                           style:
-                                              textStyle(Colors.white, 36, true),
+                                              textStyle(Colors.white, 36, isBold:true),
                                         ),
                                         const Spacer(),
                                         DecoratedBox(
@@ -564,7 +565,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                               style: textStyle(
                                                 Colors.white,
                                                 12,
-                                                true,
+                                                isBold:true,
                                               ),
                                             ),
                                           ),
@@ -591,7 +592,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                               style: textStyle(
                                                 Colors.white,
                                                 12,
-                                                true,
+                                                isBold:true,
                                               ),
                                             ),
                                           ),
@@ -618,7 +619,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                               style: textStyle(
                                                 Colors.white,
                                                 12,
-                                                true,
+                                                isBold:true,
                                               ),
                                             ),
                                           ),
@@ -645,7 +646,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                               style: textStyle(
                                                 Colors.white,
                                                 12,
-                                                true,
+                                                isBold:true,
                                               ),
                                             ),
                                           ),
@@ -679,7 +680,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                     style: textStyle(
                                       Colors.grey[600]!,
                                       16,
-                                      false,
+                                      isBold:false,
                                     ),
                                   ),
                                 ),
@@ -700,7 +701,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             style: textStyle(
                                               Colors.white,
                                               16,
-                                              false,
+                                              isBold:false,
                                             ),
                                           ),
                                           Text(
@@ -709,7 +710,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             style: textStyle(
                                               Colors.white,
                                               16,
-                                              false,
+                                              isBold:false,
                                             ),
                                           )
                                         ],
@@ -723,7 +724,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             style: textStyle(
                                               Colors.grey[600]!,
                                               16,
-                                              false,
+                                              isBold:false,
                                             ),
                                           ),
                                           Text(
@@ -731,7 +732,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             style: textStyle(
                                               Colors.white,
                                               16,
-                                              false,
+                                              isBold:false,
                                             ),
                                           )
                                         ],
@@ -745,7 +746,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             style: textStyle(
                                               Colors.grey[600]!,
                                               16,
-                                              false,
+                                              isBold:false,
                                             ),
                                           ),
                                           Text(
@@ -753,7 +754,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             style: textStyle(
                                               Colors.white,
                                               16,
-                                              false,
+                                              isBold:false,
                                             ),
                                           )
                                         ],
@@ -767,7 +768,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             style: textStyle(
                                               Colors.grey[600]!,
                                               16,
-                                              false,
+                                              isBold:false,
                                             ),
                                           ),
                                           Text(
@@ -775,7 +776,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                             style: textStyle(
                                               Colors.white,
                                               16,
-                                              false,
+                                              isBold:false,
                                             ),
                                           )
                                         ],
@@ -791,7 +792,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                     style: textStyle(
                                       Colors.grey[600]!,
                                       16,
-                                      false,
+                                      isBold:false,
                                     ),
                                   ),
                                 ),
@@ -836,7 +837,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                               style: textStyle(
                                                 Colors.white,
                                                 16,
-                                                false,
+                                                isBold:false,
                                               ),
                                             ),
                                             const Spacer(),
@@ -891,7 +892,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                               style: textStyle(
                                                 Colors.white,
                                                 16,
-                                                false,
+                                                isBold:false,
                                               ),
                                             ),
                                             const Spacer(),
@@ -943,7 +944,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                         return poolController
                                             .removeLiquidity(handler);
                                       },
-                                      confirmDialog: removalConfirmed,
+                                      confirmDialog: const RemovalConfirmedDialog(),
                                       currencyOne:
                                           infoOfSelectedCard.token0Symbol,
                                       currencyTwo:
