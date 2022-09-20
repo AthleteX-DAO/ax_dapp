@@ -4,7 +4,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.da
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/athlete.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,7 +96,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                         },
                         child: Text(
                           'Add Liquidity',
-                          style: textStyle(Colors.white, 16, true),
+                          style: textStyle(Colors.white, 16, isBold:true),
                         ),
                       ),
                     ),
@@ -123,7 +123,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                         },
                         child: Text(
                           'My Liquidity',
-                          style: textStyle(Colors.white, 16, true),
+                          style: textStyle(Colors.white, 16, isBold:true),
                         ),
                       ),
                     ),

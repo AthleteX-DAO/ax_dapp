@@ -1,5 +1,5 @@
-import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:ax_dapp/wallet/widgets/dialogs/your_ax_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +13,7 @@ class WalletAx extends StatelessWidget {
         context.read<WalletBloc>().add(const UpdateAxDataRequested());
         showDialog<void>(
           context: context,
-          builder: yourAXDialog,
+          builder: (context) => const YourAXDialog(),
         );
       },
       child: Row(
@@ -28,7 +28,7 @@ class WalletAx extends StatelessWidget {
             ),
           ),
           Text(
-            'Ax',
+            'AX',
             style: TextStyle(
               color: Colors.grey[400],
               fontFamily: 'OpenSans',
