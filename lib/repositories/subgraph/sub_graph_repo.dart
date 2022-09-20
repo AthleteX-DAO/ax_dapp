@@ -52,21 +52,23 @@ class SubGraphRepo {
       return Either.right(OperationException());
     } else {
       final body = jsonDecode(result.body) as Map<String, dynamic>;
-      final decodedJson =
-          body['data'] as Map<String, String>;
+      final decodedJson = body['data'] as Map<String, String>;
       return Either.left(decodedJson);
     }
   }
 
   Future<Either<Map<String, dynamic>?, OperationException>> querySpecificPairs(
-    String token,
-  ) async {
+    String token, {
+    String startDate = '',
+  }) async {
     // calculating the first time of 24 hours ago as secondsSinceEpoch
-    final startTime = (DateTime.now()
-                .subtract(const Duration(days: 1))
-                .millisecondsSinceEpoch /
-            1000)
-        .round();
+    final startTime = startDate != ''
+        ? (DateTime.parse(startDate).microsecondsSinceEpoch / 1000).round()
+        : (DateTime.now()
+                    .subtract(const Duration(days: 1))
+                    .millisecondsSinceEpoch /
+                1000)
+            .round();
 
     final result = await _dexGqlClient.query(
       QueryOptions(document: parseString(_getSpecificPairs(token, startTime))),

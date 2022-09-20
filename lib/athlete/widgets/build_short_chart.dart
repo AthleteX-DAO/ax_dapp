@@ -11,7 +11,7 @@ SfCartesianChart buildShortChart(
   return SfCartesianChart(
     tooltipBehavior: _shortToolTipBehavior,
     zoomPanBehavior: _zoomPanBehavior,
-    legend: Legend(isVisible: false),
+    legend: Legend(isVisible: true),
     series: [
       FastLineSeries<GraphData, DateTime>(
         name: 'Price',
@@ -35,6 +35,32 @@ SfCartesianChart buildShortChart(
         ),
         enableTooltip: true,
         color: Colors.orange,
+        width: 2,
+        opacity: 1,
+        dashArray: <double>[5, 5],
+      ),
+      FastLineSeries<GraphData, DateTime>(
+        name: 'Market Value',
+        dataSource: chartStats.toSet().toList(),
+        xValueMapper: (
+          GraphData data,
+          _,
+        ) =>
+            data.date,
+        yValueMapper: (
+          GraphData data,
+          _,
+        ) =>
+            data.shortMarketPrice,
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          textStyle: TextStyle(
+            fontSize: 10,
+            color: Colors.orange,
+          ),
+        ),
+        enableTooltip: true,
+        color: Colors.white,
         width: 2,
         opacity: 1,
         dashArray: <double>[5, 5],

@@ -51,7 +51,7 @@ SfCartesianChart buildLongChart(
           GraphData data,
           _,
         ) =>
-        (data.price + 200),
+            data.longMarketPrice,
         dataLabelSettings: const DataLabelSettings(
           isVisible: true,
           textStyle: TextStyle(
