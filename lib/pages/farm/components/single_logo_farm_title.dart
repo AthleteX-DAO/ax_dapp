@@ -34,7 +34,7 @@ Widget singleLogoFarmTitle(
             ),
           ),
         ),
-        Container(width: 15),
+        Container(width: 35),
         Expanded(
           child: farm.athlete == null
               ? SportToken(sport: farm.sport, symbol: '${farm.strName} Farm')
