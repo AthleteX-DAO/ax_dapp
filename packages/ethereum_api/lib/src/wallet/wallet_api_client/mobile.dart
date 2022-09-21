@@ -69,4 +69,10 @@ class EthereumWalletApiClient implements WalletApiClient {
   Future<double> getGasPrice() {
     throw UnimplementedError('getGasPrice');
   }
+
+  /// Returns current Token decimals
+  @override
+  Future<BigInt> getDecimals(String tokenAddress) async {
+    throw UnimplementedError('getDecimals');
+  }
 }

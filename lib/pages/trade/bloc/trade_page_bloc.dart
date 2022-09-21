@@ -61,8 +61,10 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
         swapController.controller.credentials =
             _walletRepository.credentials.value;
-        swapController.factoryAddress.value = Contract.exchangeFactory(appData.chain).address;
-        swapController.routerAddress.value = Contract.exchangeRouter(appData.chain).address;
+        swapController.factoryAddress.value =
+            Contract.exchangeFactory(appData.chain).address;
+        swapController.routerAddress.value =
+            Contract.exchangeRouter(appData.chain).address;
         final tradeTokens = appData.chain.computeTradeTokens(
           isBuyAX: isBuyAX,
         );
@@ -100,8 +102,11 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       ),
     );
     try {
+      print('==== tokenFrom =====');
+      print(state.tokenFrom.address);
       final tokenFromBalance =
           await _walletRepository.getTokenBalance(state.tokenFrom.address);
+      print(tokenFromBalance);
       final tokenToBalance =
           await _walletRepository.getTokenBalance(state.tokenTo.address);
       emit(
