@@ -72,12 +72,12 @@ class WrongNetworkDialog extends StatelessWidget {
                       Navigator.pop(context);
                       context.read<WalletBloc>().add(
                             const SwitchChainRequested(
-                              EthereumChain.polygonMainnet,
+                              EthereumChain.sxMainnet,
                             ),
                           );
                     },
                     child: const Text(
-                      'Switch to Matic Network',
+                      'Switch to SX Network',
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'OpenSans',
