@@ -257,6 +257,15 @@ class EthereumWalletApiClient implements WalletApiClient {
       throw WalletFailure.fromWalletUnavailable();
     }
   }
+
+  /// Returns current Token decimals
+  @override
+  Future<BigInt> getDecimals(String tokenAddress) async {
+    final ethereumAddress = EthereumAddress.fromHex(tokenAddress);
+    final token = ERC20(address: ethereumAddress, client: _web3Client);
+    final decimals = await token.decimals();
+    return decimals;
+  }
 }
 
 /// `EthereumCurrency` extensions.
