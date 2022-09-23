@@ -7,6 +7,7 @@ import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/debouncer.dart';
+import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -253,7 +254,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               padding: const EdgeInsets.only(right: 10),
               alignment: Alignment.bottomRight,
               child: Text(
-                tknNum == 1 ? 'Balance: $balance0' : 'Balance: $balance1',
+                tknNum == 1
+                    ? 'Balance: ${toDecimal(balance0, 6)}'
+                    : 'Balance: ${toDecimal(balance1, 6)}',
                 style: textStyle(Colors.grey[600]!, 13, false),
               ),
             );
