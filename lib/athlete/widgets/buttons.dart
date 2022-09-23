@@ -42,7 +42,7 @@ class BuyButton extends StatelessWidget {
       width: isPortraitMode ? containerWdt / 3 : 175,
       height: 50,
       //if app is in portrait, buyButton will use 1/4 of the total width
-      decoration: boxDecoration(primaryOrangeColor, 100, 0, primaryOrangeColor),
+      decoration: boxDecoration(primaryOrangeColor, 100, 0, primaryWhiteColor),
       child: TextButton(
         onPressed: () {
           final isWalletConnected =
@@ -54,7 +54,7 @@ class BuyButton extends StatelessWidget {
                 create: (BuildContext context) => BuyDialogBloc(
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
+                      context.read<StreamAppDataChangesUseCase>(),
                   tokensRepository: context.read<TokensRepository>(),
                   repo: RepositoryProvider.of<GetBuyInfoUseCase>(context),
                   wallet: GetTotalTokenBalanceUseCase(
@@ -116,7 +116,7 @@ class SellButton extends StatelessWidget {
                 create: (BuildContext context) => SellDialogBloc(
                   walletRepository: context.read<WalletRepository>(),
                   streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
+                      context.read<StreamAppDataChangesUseCase>(),
                   tokensRepository: context.read<TokensRepository>(),
                   repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
                   wallet: GetTotalTokenBalanceUseCase(

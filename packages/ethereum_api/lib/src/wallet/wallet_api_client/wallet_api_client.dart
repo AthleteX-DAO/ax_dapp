@@ -21,6 +21,9 @@ abstract class WalletApiClient {
   /// Sync the current used chain
   Future<void> syncChain(EthereumChain chain);
 
+  /// Returns current Token decimals
+  Future<BigInt> getDecimals(String tokenAddress);
+
   /// Asks the user to select an account and give your application access to it.
   /// Returns the [WalletCredentials] for the connected account.
   Future<WalletCredentials> getWalletCredentials();

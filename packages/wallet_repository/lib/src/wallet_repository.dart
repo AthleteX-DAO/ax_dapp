@@ -5,6 +5,7 @@ import 'package:ethereum_api/wallet_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared/shared.dart';
 import 'package:wallet_repository/src/models/models.dart';
+import 'package:wallet_repository/src/utils/utils.dart';
 
 /// {@template wallet_repository}
 /// Repository that manages the wallet domain.
@@ -176,12 +177,12 @@ class WalletRepository {
   /// not be used for anything else.
   Future<double?> getTokenBalance(String tokenAddress) async {
     final rawBalance = await getRawTokenBalance(tokenAddress);
+    final decimal = await _walletApiClient.getDecimals(tokenAddress);
     debugPrint('Buy Dialog Raw AX Balance: $rawBalance');
     if (rawBalance == BigInt.zero) {
       return null;
     }
-    final balanceInWei = EtherAmount.inWei(rawBalance);
-    final balance = balanceInWei.getValueInUnit(EtherUnit.ether);
+    final balance = getAmountWithDecimal(rawBalance, decimal);
     final formattedBalance = balance.toStringAsFixed(11);
     return double.parse(formattedBalance);
   }

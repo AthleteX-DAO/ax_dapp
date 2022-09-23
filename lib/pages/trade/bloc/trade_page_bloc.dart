@@ -61,8 +61,10 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
         swapController.controller.credentials =
             _walletRepository.credentials.value;
-        swapController.factoryAddress.value = Contract.exchangeFactory(appData.chain).address;
-        swapController.routerAddress.value = Contract.exchangeRouter(appData.chain).address;
+        swapController.factoryAddress.value =
+            Contract.exchangeFactory(appData.chain).address;
+        swapController.routerAddress.value =
+            Contract.exchangeRouter(appData.chain).address;
         final tradeTokens = appData.chain.computeTradeTokens(
           isBuyAX: isBuyAX,
         );

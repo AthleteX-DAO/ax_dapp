@@ -82,4 +82,9 @@ class EthereumWalletApiClient implements WalletApiClient {
   Future<double> getGasPrice() {
     throw UnsupportedError('getGasPrice not supported on the current platform');
   }
+
+  @override
+  Future<BigInt> getDecimals(String tokenAddress) async {
+    throw UnimplementedError('getDecimals');
+  }
 }

@@ -1,8 +1,11 @@
 // ignore_for_file: avoid_dynamic_calls
 
+import 'package:ax_dapp/athlete/models/market_price_record.dart';
+import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/repositories/sports_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/athlete_models/athlete_price_record.dart';
 import 'package:ax_dapp/service/athlete_models/mlb/mlb_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
@@ -70,11 +73,86 @@ class GetScoutAthletesDataUseCase {
     }
   }
 
+  Future<MarketPriceRecord> getMarketPriceHistory(
+    SportsRepo<SportAthlete> repo,
+    int playerId,
+    String startDate,
+  ) async {
+    final aptPair = _tokensRepository.currentAptPair(playerId);
+    final longAptAddress = aptPair.longApt.address;
+    final shortAptAddress = aptPair.shortApt.address;
+    final currentAxt = _tokensRepository.currentAxt;
+    final formattedDate =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(startDate));
+    allPairs =
+        await fetchSpecificPairs(currentAxt, formattedDate, isLimited: false);
+
+    final longRecords = getMarketPriceRecords(
+      longAptAddress,
+      currentAxt.address,
+    );
+    final shortRecords = getMarketPriceRecords(
+      shortAptAddress,
+      currentAxt.address,
+    );
+
+    return MarketPriceRecord(
+      longRecord: AthletePriceRecord(
+        id: playerId,
+        name: '',
+        priceHistory: longRecords!,
+      ),
+      shortRecord: AthletePriceRecord(
+        id: playerId,
+        name: '',
+        priceHistory: shortRecords!,
+      ),
+    );
+  }
+
+  List<PriceRecord>? getMarketPriceRecords(
+    String strTokenAddr,
+    String strAXTAddr,
+  ) {
+    // Looking for a pair which has the same token name as strTokenAddr
+    // (token address as uppercase)
+    final index0 = allPairs.indexWhere(
+      (pair) =>
+          equalsIgnoreCase(pair.token0.id, strTokenAddr) &&
+          equalsIgnoreCase(pair.token1.id, strAXTAddr),
+    );
+    final index1 = allPairs.indexWhere(
+      (pair) =>
+          equalsIgnoreCase(pair.token0.id, strAXTAddr) &&
+          equalsIgnoreCase(pair.token1.id, strTokenAddr),
+    );
+
+    return allPairs[index0 >= 0 ? index0 : index1]
+        .pairHourData
+        ?.asMap()
+        .entries
+        .map((entry) {
+      final price = index0 >= 0
+          ? double.parse(entry.value.reserve1) /
+              double.parse(entry.value.reserve0)
+          : double.parse(entry.value.reserve0) /
+              double.parse(entry.value.reserve1);
+
+      final date =
+          DateTime.fromMillisecondsSinceEpoch(entry.value.hourStartUnix * 1000);
+
+      return PriceRecord(
+        price: price,
+        timestamp: date.toString(),
+      );
+    }).toList();
+  }
+
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
     SupportedSport sportSelection,
   ) async {
     final currentAxt = _tokensRepository.currentAxt;
-    allPairs = await fetchSpecificPairs(currentAxt);
+    allPairs = await fetchSpecificPairs(currentAxt, '');
     //fetching AX Price
     final axData = await _tokensRepository.getAxMarketData();
     final axPrice = axData.price ?? 0;
@@ -126,20 +204,28 @@ class GetScoutAthletesDataUseCase {
     }
   }
 
-  Future<List<TokenPair>> fetchSpecificPairs(Token token) async {
+  Future<List<TokenPair>> fetchSpecificPairs(
+    Token token,
+    String startDate, {
+    bool isLimited = true,
+  }) async {
     try {
-      final response = await graphRepo.querySpecificPairs(token.ticker);
+      final response = await graphRepo.querySpecificPairs(
+        token.ticker,
+        startDate: startDate,
+        isLimited: isLimited,
+      );
       if (!response.isLeft()) return List.empty();
       final prefixInfos =
-              response.getLeft().toNullable()!['prefix'] as List<dynamic>;
+          response.getLeft().toNullable()!['prefix'] as List<dynamic>;
       final suffixInfos =
-              response.getLeft().toNullable()!['suffix'] as List<dynamic>;
+          response.getLeft().toNullable()!['suffix'] as List<dynamic>;
       final prefixPairs = List<Map<String, dynamic>>.from(prefixInfos)
-              .map(TokenPair.fromJson)
-              .toList();
+          .map(TokenPair.fromJson)
+          .toList();
       final suffixPairs = List<Map<String, dynamic>>.from(suffixInfos)
-              .map(TokenPair.fromJson)
-              .toList();
+          .map(TokenPair.fromJson)
+          .toList();
       final pairs = [...prefixPairs, ...suffixPairs];
       return pairs;
     } catch (e) {
