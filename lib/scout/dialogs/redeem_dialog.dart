@@ -6,6 +6,7 @@ import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -77,16 +78,17 @@ class _RedeemDialogState extends State<RedeemDialog> {
   }
 
   Widget showLongBalance() {
+    final dBalance = double.tryParse(longBalance.value);
+    final balance =
+        dBalance != null ? toDecimal(dBalance, 6) : longBalance.value;
     return Container(
       margin: const EdgeInsets.only(right: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Obx(
-            () => Text(
-              'Balance: ${longBalance.value}',
-              style: textStyle(Colors.grey[600]!, 15, isBold: false),
-            ),
+          Text(
+            'Balance: $balance',
+            style: textStyle(Colors.grey[600]!, 15, isBold: false),
           ),
         ],
       ),
@@ -117,14 +119,14 @@ class _RedeemDialogState extends State<RedeemDialog> {
         children: [
           Text(
             'You Receive: ',
-            style: textStyle(Colors.white, 15, isBold:false),
+            style: textStyle(Colors.white, 15, isBold: false),
           ),
           Obx(
             () => Row(
               children: [
                 Text(
                   '''${(lspController.redeemAmt * collateralPerPair).toStringAsFixed(6)} AX''', // 15000 is the collateral per pair
-                  style: textStyle(Colors.white, 15, isBold:false),
+                  style: textStyle(Colors.white, 15, isBold: false),
                 ),
               ],
             ),
@@ -177,7 +179,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       padding: EdgeInsets.zero,
                       child: Text(
                         'Redeem ${widget.athlete.name} APT Pair',
-                        style: textStyle(Colors.white, 20, isBold:false),
+                        style: textStyle(Colors.white, 20, isBold: false),
                       ),
                     ),
                   ),
@@ -212,7 +214,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       style: textStyle(
                         Colors.grey[600]!,
                         isWeb ? 14 : 12,
-                        isBold:false,
+                        isBold: false,
                       ),
                     ),
                     TextSpan(
@@ -221,7 +223,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       style: textStyle(
                         Colors.grey[600]!,
                         isWeb ? 14 : 12,
-                        isBold:false,
+                        isBold: false,
                       ),
                     ),
                     TextSpan(
@@ -229,7 +231,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       style: textStyle(
                         Colors.amber[400]!,
                         isWeb ? 14 : 12,
-                        isBold:false,
+                        isBold: false,
                       ),
                     ),
                   ],
@@ -245,7 +247,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                   children: [
                     Text(
                       isWeb ? 'Input APT pair:' : 'Input APT pair and amount:',
-                      style: textStyle(Colors.grey[600]!, 14, isBold:false),
+                      style: textStyle(Colors.grey[600]!, 14, isBold: false),
                     ),
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
@@ -266,7 +268,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                         },
                         child: Text(
                           'MAX',
-                          style: textStyle(Colors.grey[400]!, 9, isBold:false),
+                          style: textStyle(Colors.grey[400]!, 9, isBold: false),
                         ),
                       ),
                     ),
@@ -306,7 +308,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           Expanded(
                             child: Text(
                               'Long APTs',
-                              style: textStyle(Colors.white, 15, isBold:false),
+                              style: textStyle(Colors.white, 15, isBold: false),
                             ),
                           ),
                           ConstrainedBox(
@@ -314,13 +316,14 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _longInputController,
-                                style: textStyle(Colors.grey[400]!, 22, isBold:false),
+                                style: textStyle(Colors.grey[400]!, 22,
+                                    isBold: false),
                                 decoration: InputDecoration(
                                   hintText: '0.00',
                                   hintStyle: textStyle(
                                     Colors.grey[400]!,
                                     22,
-                                    isBold:false,
+                                    isBold: false,
                                   ),
                                   contentPadding: isWeb
                                       ? const EdgeInsets.all(9)
@@ -383,7 +386,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           Expanded(
                             child: Text(
                               'Short APTs',
-                              style: textStyle(Colors.white, 15, isBold:false),
+                              style: textStyle(Colors.white, 15, isBold: false),
                             ),
                           ),
                           ConstrainedBox(
@@ -391,13 +394,14 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _shortInputController,
-                                style: textStyle(Colors.grey[400]!, 22, isBold:false),
+                                style: textStyle(Colors.grey[400]!, 22,
+                                    isBold: false),
                                 decoration: InputDecoration(
                                   hintText: '0.00',
                                   hintStyle: textStyle(
                                     Colors.grey[400]!,
                                     22,
-                                    isBold:false,
+                                    isBold: false,
                                   ),
                                   contentPadding: isWeb
                                       ? const EdgeInsets.all(9)
@@ -454,7 +458,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
                         if (result) {
                           await showDialog<void>(
                             context: context,
-                            builder: (BuildContext context) => const ConfirmTransactionDialog(),
+                            builder: (BuildContext context) =>
+                                const ConfirmTransactionDialog(),
                           ).then((value) {
                             final walletAddress = context
                                 .read<WalletBloc>()
@@ -485,7 +490,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       },
                       child: Text(
                         'Confirm',
-                        style: textStyle(Colors.amber[500]!, 16, isBold:false),
+                        style: textStyle(Colors.amber[500]!, 16, isBold: false),
                       ),
                     ),
                   ),
