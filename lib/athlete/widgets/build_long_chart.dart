@@ -24,8 +24,7 @@ SfCartesianChart buildLongChart(
         yValueMapper: (
           GraphData data,
           _,
-        ) =>
-            data.price,
+        ) => data.price,
         dataLabelSettings: const DataLabelSettings(
           textStyle: TextStyle(
             fontSize: 10,
