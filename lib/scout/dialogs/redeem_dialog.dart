@@ -7,6 +7,7 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/helper.dart';
+import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -40,8 +41,11 @@ class _RedeemDialogState extends State<RedeemDialog> {
   double paddingHorizontal = 40;
   double hgt = 450;
   RxDouble maxAmount = 0.0.obs;
-  RxString longBalance = '---'.obs;
-  RxString shortBalance = '---'.obs;
+  RxString longBalance = '0.0'.obs;
+  RxString shortBalance = '0.0'.obs;
+  double shortInput = 0;
+  double longInput = 0;
+  double newAmount = 0;
   int collateralPerPair = 15000;
   final TextEditingController _longInputController = TextEditingController();
   final TextEditingController _shortInputController = TextEditingController();
@@ -340,8 +344,11 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     value = '0.00';
                                   }
                                   _shortInputController.text = value;
-                                  final newAmount = double.parse(value);
+                                  newAmount = double.parse(value);
                                   lspController.updateRedeemAmt(newAmount);
+                                  setState(() {
+                                    longInput = newAmount;
+                                  });
                                 },
                               ),
                             ),
@@ -418,8 +425,11 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     value = '0.00';
                                   }
                                   _longInputController.text = value;
-                                  final newAmount = double.parse(value);
+                                  newAmount = double.parse(value);
                                   lspController.updateRedeemAmt(newAmount);
+                                  setState(() {
+                                    shortInput = newAmount;
+                                  });
                                 },
                               ),
                             ),
@@ -442,58 +452,61 @@ class _RedeemDialogState extends State<RedeemDialog> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 30),
-                    width: 175,
-                    height: 45,
-                    decoration: boxDecoration(
-                      Colors.amber[500]!.withOpacity(0.20),
-                      500,
-                      1,
-                      Colors.transparent,
-                    ),
-                    child: TextButton(
-                      onPressed: () async {
-                        final result = await lspController.redeem();
-                        if (result) {
-                          await showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                const ConfirmTransactionDialog(),
-                          ).then((value) {
-                            final walletAddress = context
-                                .read<WalletBloc>()
-                                .state
-                                .formattedWalletAddress;
-                            context
-                                .read<TrackingCubit>()
-                                .trackAthleteRedeemSuccess(
-                                  name: '${widget.athlete.name} pair',
-                                  sport: widget.athlete.sport.toString(),
-                                  inputLongApt: _longInputController.text,
-                                  inputShortApt: _shortInputController.text,
-                                  valueInAx: (lspController.redeemAmt *
-                                          collateralPerPair)
-                                      .toStringAsFixed(6),
-                                  walletId: walletAddress,
-                                );
-                          });
-                        } else {
-                          await showDialog<void>(
-                            context: context,
-                            builder: (context) => const FailedDialog(),
-                          );
-                        }
-                        if (mounted) {
-                          Navigator.pop(context);
-                        }
-                      },
-                      child: Text(
-                        'Confirm',
-                        style: textStyle(Colors.amber[500]!, 16, isBold: false),
+                  if (double.parse(longBalance.value) >= longInput && double.parse(shortBalance.value) >= shortInput) ...[
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 30),
+                      width: 175,
+                      height: 45,
+                      decoration: boxDecoration(
+                        Colors.amber[500]!.withOpacity(0.20),
+                        500,
+                        1,
+                        Colors.transparent,
+                      ),
+                      child: TextButton(
+                        onPressed: () async {
+                          final result = await lspController.redeem();
+                          if (result) {
+                            await showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) => const ConfirmTransactionDialog(),
+                            ).then((value) {
+                              final walletAddress = context
+                                  .read<WalletBloc>()
+                                  .state
+                                  .formattedWalletAddress;
+                              context
+                                  .read<TrackingCubit>()
+                                  .trackAthleteRedeemSuccess(
+                                    name: '${widget.athlete.name} pair',
+                                    sport: widget.athlete.sport.toString(),
+                                    inputLongApt: _longInputController.text,
+                                    inputShortApt: _shortInputController.text,
+                                    valueInAx: (lspController.redeemAmt *
+                                            collateralPerPair)
+                                        .toStringAsFixed(6),
+                                    walletId: walletAddress,
+                                  );
+                            });
+                          } else {
+                            await showDialog<void>(
+                              context: context,
+                              builder: (context) => const FailedDialog(),
+                            );
+                          }
+                          if (mounted) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Text(
+                          'Confirm',
+                          style: textStyle(Colors.amber[500]!, 16, isBold:false),
+                        ),
                       ),
                     ),
-                  ),
+                  ] else ...[
+                    const WarningTextButton(warningTitle: 'Insufficient Balance')
+                  ]
                 ],
               ),
             )
