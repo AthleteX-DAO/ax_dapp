@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:ax_dapp/athlete/widgets/athlete_insufficient_button.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
@@ -8,6 +7,7 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/helper.dart';
+import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -505,10 +505,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       ),
                     ),
                   ] else ...[
-                    const AthleteInsufficientButton(
-                      width: 250,
-                      height: 40,
-                    )
+                    const WarningTextButton(warningTitle: 'Insufficient Balance')
                   ]
                 ],
               ),
