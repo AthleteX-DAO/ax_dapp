@@ -1,3 +1,4 @@
+import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +65,8 @@ class AxBalance extends StatelessWidget {
   Widget build(BuildContext context) {
     final balance =
         context.select((WalletBloc bloc) => bloc.state.axData.balance);
-    final axBalance = balance ?? '-';
+
+    final axBalance = balance != null ? toDecimal(balance, 6) : '-';
     return Text('$axBalance AX', style: style);
   }
 }

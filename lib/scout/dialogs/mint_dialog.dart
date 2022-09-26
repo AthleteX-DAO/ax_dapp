@@ -3,6 +3,7 @@ import 'package:ax_dapp/athlete/widgets/athlete_insufficient_button.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/helper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +72,7 @@ class _MintDialogState extends State<MintDialog> {
         children: [
           Obx(
             () => Text(
-              'AX Balance: ${balance.value}',
+              'AX Balance: ${toDecimal(double.tryParse(balance.value)!, 6)}',
               style: textStyle(Colors.grey[600]!, 15, isBold: false),
             ),
           ),
@@ -335,7 +336,8 @@ class _MintDialogState extends State<MintDialog> {
                               },
                               child: Text(
                                 'MAX',
-                                style: textStyle(Colors.grey[400]!, 9, isBold: false),
+                                style: textStyle(Colors.grey[400]!, 9,
+                                    isBold: false),
                               ),
                             ),
                           ),
@@ -344,7 +346,8 @@ class _MintDialogState extends State<MintDialog> {
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _aptAmountController,
-                                style: textStyle(Colors.grey[400]!, 22, isBold: false),
+                                style: textStyle(Colors.grey[400]!, 22,
+                                    isBold: false),
                                 decoration: InputDecoration(
                                   hintText: '0.00',
                                   hintStyle: textStyle(
