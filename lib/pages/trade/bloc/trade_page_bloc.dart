@@ -161,7 +161,9 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     final tokenFromBalance =
         await _walletRepository.getTokenBalance(state.tokenFrom.address);
     try {
-      state.copyWith(swapInfo: TokenSwapInfo.empty);
+      emit(
+        state.copyWith(swapInfo: TokenSwapInfo.empty),
+      );
 
       final response = await repo.fetchSwapInfo(
         tokenFrom: state.tokenFrom.address,
