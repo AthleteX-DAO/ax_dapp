@@ -88,7 +88,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     Emitter<MyLiquidityState> emit,
   ) async {
     final searchTerm = event.searchTerm;
-    if (searchTerm.isEmpty && state.filteredCards.isEmpty) {
+    if (searchTerm.isEmpty && state.cards.isEmpty) {
       return;
     }
     final formattedSearchTerm = searchTerm.trim().toLowerCase();
