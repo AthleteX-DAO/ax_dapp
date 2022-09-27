@@ -420,10 +420,6 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
         }
       },
       child: BlocBuilder<MyLiquidityBloc, MyLiquidityState>(
-        buildWhen: (previous, current) =>
-            previous.filteredCards != current.filteredCards ||
-            previous.cards != current.cards ||
-            previous.status != current.status,
         builder: (context, state) {
           final bloc = context.read<MyLiquidityBloc>();
           final filteredCards = state.filteredCards;
@@ -476,7 +472,8 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                         ),
                         if (!isResultFound)
                           Container(
-                            alignment: Alignment.centerRight,
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.only(left: 150),
                             height: gridHgt,
                             child: const NoResultFound(),
                           )
