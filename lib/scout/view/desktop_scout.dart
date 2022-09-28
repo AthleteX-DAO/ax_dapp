@@ -172,6 +172,8 @@ class _DesktopScoutState extends State<DesktopScout> {
           FilterMenuError(
             selectedChain: _selectedChain,
           ),
+        if (state.status == BlocStatus.success && filteredAthletes.isEmpty)
+          const NoResultFound(),
         buildListview(state, filteredAthletes)
       ],
     );
