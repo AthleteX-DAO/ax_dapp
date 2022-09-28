@@ -23,7 +23,10 @@ class RedeemDialog extends StatefulWidget {
     this.aptName,
     this.inputLongApt,
     this.inputShortApt,
-    this.valueInAX, {
+    this.valueInAX,
+      this.goToTradePage,
+
+      {
     super.key,
   });
 
@@ -32,6 +35,7 @@ class RedeemDialog extends StatefulWidget {
   final String inputLongApt;
   final String inputShortApt;
   final String valueInAX;
+  final void Function() goToTradePage;
 
   @override
   State<RedeemDialog> createState() => _RedeemDialogState();
@@ -223,7 +227,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                     ),
                     TextSpan(
                       text:
-                          ''' You can access other funds with AX on the Matic network through''',
+                          ''' Visit the Trade page to swap APT's and AX.''',
                       style: textStyle(
                         Colors.grey[600]!,
                         isWeb ? 14 : 12,
@@ -231,7 +235,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       ),
                     ),
                     TextSpan(
-                      text: ' SushiSwap',
+                      text: ' Trade Page',
                       style: textStyle(
                         Colors.amber[400]!,
                         isWeb ? 14 : 12,
