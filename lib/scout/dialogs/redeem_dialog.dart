@@ -10,6 +10,7 @@ import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,10 @@ class RedeemDialog extends StatefulWidget {
     this.aptName,
     this.inputLongApt,
     this.inputShortApt,
-    this.valueInAX, {
+    this.valueInAX,
+      this.goToTradePage,
+
+      {
     super.key,
   });
 
@@ -32,6 +36,7 @@ class RedeemDialog extends StatefulWidget {
   final String inputLongApt;
   final String inputShortApt;
   final String valueInAX;
+  final void Function() goToTradePage;
 
   @override
   State<RedeemDialog> createState() => _RedeemDialogState();
@@ -223,7 +228,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                     ),
                     TextSpan(
                       text:
-                          ''' You can access other funds with AX on the Matic network through''',
+                          ''' Visit the Trade page to swap APT's and AX.''',
                       style: textStyle(
                         Colors.grey[600]!,
                         isWeb ? 14 : 12,
@@ -231,12 +236,17 @@ class _RedeemDialogState extends State<RedeemDialog> {
                       ),
                     ),
                     TextSpan(
-                      text: ' SushiSwap',
+                      text: ' Trade Page',
                       style: textStyle(
                         Colors.amber[400]!,
                         isWeb ? 14 : 12,
                         isBold: false,
                       ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pop(context);
+                          widget.goToTradePage();
+                        },
                     ),
                   ],
                 ),

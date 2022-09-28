@@ -91,12 +91,14 @@ class SellButton extends StatelessWidget {
     required this.isPortraitMode,
     required this.containerWdt,
     required this.isLongApt,
+    required this.goToTradePage,
   });
 
   final AthleteScoutModel athlete;
   final bool isPortraitMode;
   final double containerWdt;
   final bool isLongApt;
+  final void Function() goToTradePage;
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +134,7 @@ class SellButton extends StatelessWidget {
                   aptPrice: athlete.longTokenBookPrice!,
                   isLongApt: isLongApt,
                   athleteId: athlete.id,
+                  goToTradePage: goToTradePage,
                 ),
               ),
             );
@@ -200,6 +203,7 @@ class RedeemButton extends StatelessWidget {
     required this.valueInAX,
     required this.isPortraitMode,
     required this.containerWdt,
+    required this.goToTradePage,
   });
 
   final AthleteScoutModel athlete;
@@ -208,6 +212,7 @@ class RedeemButton extends StatelessWidget {
   final String valueInAX;
   final bool isPortraitMode;
   final double containerWdt;
+  final void Function() goToTradePage;
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +233,7 @@ class RedeemButton extends StatelessWidget {
                 inputLongApt,
                 inputShortApt,
                 valueInAX,
+                goToTradePage,
               ),
             );
           } else {
