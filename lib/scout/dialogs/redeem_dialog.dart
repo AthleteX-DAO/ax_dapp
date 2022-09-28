@@ -10,6 +10,7 @@ import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -241,6 +242,11 @@ class _RedeemDialogState extends State<RedeemDialog> {
                         isWeb ? 14 : 12,
                         isBold: false,
                       ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pop(context);
+                          widget.goToTradePage();
+                        },
                     ),
                   ],
                 ),
