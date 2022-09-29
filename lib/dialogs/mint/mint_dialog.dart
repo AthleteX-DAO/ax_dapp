@@ -151,7 +151,7 @@ class _MintDialogState extends State<MintDialog> {
         final shortReceive = state.shortReceiveAmount;
         final longReceive = state.longReceiveAmount;
         final spendAmount = state.spendAmount;
-        final mintInputAmount = state.mintInputAmount;
+        final collateralPerPair = state.collateralPerPair;
         return Dialog(
           insetPadding: EdgeInsets.zero,
           backgroundColor: Colors.transparent,
@@ -303,7 +303,7 @@ class _MintDialogState extends State<MintDialog> {
                                   onPressed: () {
                                     bloc.add(OnMaxMintTap());
                                     _aptAmountController.text =
-                                        mintInputAmount.toStringAsFixed(6);
+                                        (balance / collateralPerPair).toStringAsFixed(6);
                                   },
                                   child: Text(
                                     'MAX',

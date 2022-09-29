@@ -59,7 +59,8 @@ class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
       final aptPair = _tokensRepository.currentAptPair(event.athleteId);
       lspController.updateAptAddress(aptPair.address);
       final balance = await getTotalTokenBalanceUseCase.getTotalAxBalance();
-      emit(state.copyWith(status: BlocStatus.success, balance: balance));
+      final collateralPerPair = getCollateralPerPair(supportedSport);
+      emit(state.copyWith(status: BlocStatus.success, balance: balance, collateralPerPair: collateralPerPair));
     } catch (_) {
       emit(state.copyWith(status: BlocStatus.error));
     }
@@ -110,15 +111,16 @@ class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
-      final maxInput = await getTotalTokenBalanceUseCase.getTotalAxBalance();
+      final balance = await getTotalTokenBalanceUseCase.getTotalAxBalance();
       final collateralPerPair = getCollateralPerPair(supportedSport);
+      final maxMintInputAmount = balance / collateralPerPair;
       emit(
         state.copyWith(
           status: BlocStatus.success,
-          mintInputAmount: maxInput / collateralPerPair,
+          mintInputAmount: maxMintInputAmount,
         ),
       );
-      add(OnNewMintInput(mintInputAmount: maxInput / collateralPerPair));
+      add(OnNewMintInput(mintInputAmount: maxMintInputAmount));
     } catch (_) {
       emit(
         state.copyWith(
@@ -133,8 +135,6 @@ class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
     var collateralPerPair = state.collateralPerPair;
     switch (supportedSport) {
       case SupportedSport.all:
-        collateralPerPair = 0;
-        break;
       case SupportedSport.MLB:
         collateralPerPair = 15000;
         break;
@@ -142,8 +142,6 @@ class MintDialogBloc extends Bloc<MintDialogEvent, MintDialogState> {
         collateralPerPair = 1000;
         break;
       case SupportedSport.NBA:
-        collateralPerPair = 0;
-        break;
     }
 
     return collateralPerPair;

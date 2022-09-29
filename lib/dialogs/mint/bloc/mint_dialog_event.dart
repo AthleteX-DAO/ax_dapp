@@ -35,10 +35,3 @@ class OnNewMintInput extends MintDialogEvent {
 }
 
 class OnMaxMintTap extends MintDialogEvent {}
-
-class UpdateLSPController extends MintDialogEvent {
-  const UpdateLSPController();
-
-  @override
-  List<Object?> get props => [];
-}
