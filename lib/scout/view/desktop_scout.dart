@@ -5,9 +5,11 @@ import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/nfl_repo.dart';
+import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
@@ -90,12 +92,19 @@ class _DesktopScoutState extends State<DesktopScout> {
         if (athletePage && curAthlete != null) {
           return BlocProvider(
             create: (context) => AthletePageBloc(
-              walletRepository: context.read<WalletRepository>(),
-              tokensRepository: context.read<TokensRepository>(),
-              mlbRepo: RepositoryProvider.of<MLBRepo>(context),
-              nflRepo: RepositoryProvider.of<NFLRepo>(context),
-              athlete: curAthlete!,
-            ),
+                walletRepository: context.read<WalletRepository>(),
+                tokensRepository: context.read<TokensRepository>(),
+                mlbRepo: RepositoryProvider.of<MLBRepo>(context),
+                nflRepo: RepositoryProvider.of<NFLRepo>(context),
+                athlete: curAthlete!,
+                getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
+                  tokensRepository: context.read<TokensRepository>(),
+                  graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+                  sportsRepos: [
+                    RepositoryProvider.of<MLBRepo>(context),
+                    RepositoryProvider.of<NFLRepo>(context),
+                  ],
+                )),
             child: AthletePage(
               athlete: curAthlete!,
               goToTradePage: widget.goToTradePage,
@@ -159,7 +168,12 @@ class _DesktopScoutState extends State<DesktopScout> {
       children: [
         if (state.status == BlocStatus.loading) const Loader(),
         if (state.status == BlocStatus.error) const ScoutLoadingError(),
-        if (state.status == BlocStatus.noData) const FilterMenuError(),
+        if (state.status == BlocStatus.noData)
+          FilterMenuError(
+            selectedChain: _selectedChain,
+          ),
+        if (state.status == BlocStatus.success && filteredAthletes.isEmpty)
+          const NoResultFound(),
         buildListview(state, filteredAthletes)
       ],
     );
@@ -842,7 +856,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                           context: context,
                           builder: (BuildContext context) => BlocProvider(
                             create: (BuildContext context) => BuyDialogBloc(
-                              walletRepository: context.read<WalletRepository>(),
+                              walletRepository:
+                                  context.read<WalletRepository>(),
                               streamAppDataChanges:
                                   context.read<StreamAppDataChangesUseCase>(),
                               tokensRepository:
@@ -1109,7 +1124,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                           context: context,
                           builder: (BuildContext context) => BlocProvider(
                             create: (BuildContext context) => BuyDialogBloc(
-                              walletRepository: context.read<WalletRepository>(),
+                              walletRepository:
+                                  context.read<WalletRepository>(),
                               streamAppDataChanges:
                                   context.read<StreamAppDataChangesUseCase>(),
                               tokensRepository:

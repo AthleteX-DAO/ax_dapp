@@ -3,8 +3,8 @@
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/components/trade_approve_button.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/confirm_transaction_dialog.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -719,7 +719,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         text: 'Approve',
                         approveCallback: swapController.approve,
                         confirmCallback: swapController.swap,
-                        confirmDialog: transactionConfirmed,
+                        confirmDialog: const ConfirmTransactionDialog(),
                         fromCurrency: tokenFrom.name,
                         toCurrency: tokenTo.name,
                         fromUnits: _tokenFromInputController.text,

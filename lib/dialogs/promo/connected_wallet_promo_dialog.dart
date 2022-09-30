@@ -1,4 +1,4 @@
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 

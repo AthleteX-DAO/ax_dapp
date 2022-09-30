@@ -34,3 +34,11 @@ String getViewAmount(BigInt input, int decimals) {
           .toDecimal();
   return inDecimal.toStringAsFixed(6);
 }
+
+/// Converts a BigInt rawAmount to double amount
+double getAmountWithDecimal(BigInt amount, BigInt decimals) {
+  final inDecimal =
+      (Decimal.fromBigInt(amount) / Decimal.fromInt(10).pow(decimals.toInt()))
+          .toDouble();
+  return inDecimal;
+}

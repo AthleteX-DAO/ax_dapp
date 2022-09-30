@@ -150,6 +150,7 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == Pages.scout)
             BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
+                tokenRepository: context.read<TokensRepository>(),
                 walletRepository: context.read<WalletRepository>(),
                 streamAppDataChanges:
                     context.read<StreamAppDataChangesUseCase>(),
@@ -206,6 +207,7 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
             create: (BuildContext context) => ScoutPageBloc(
+              tokenRepository: context.read<TokensRepository>(),
               walletRepository: context.read<WalletRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: GetScoutAthletesDataUseCase(

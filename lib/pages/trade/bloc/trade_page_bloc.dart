@@ -5,11 +5,11 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ethereum_api/src/tokens/models/contract.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-import 'package:ethereum_api/src/tokens/models/contract.dart';
 
 part 'trade_page_event.dart';
 part 'trade_page_state.dart';
@@ -61,8 +61,10 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           ..aptRouter = appConfig.reactiveAptRouterClient.value;
         swapController.controller.credentials =
             _walletRepository.credentials.value;
-        swapController.factoryAddress.value = Contract.exchangeFactory(appData.chain).address;
-        swapController.routerAddress.value = Contract.exchangeRouter(appData.chain).address;
+        swapController.factoryAddress.value =
+            Contract.exchangeFactory(appData.chain).address;
+        swapController.routerAddress.value =
+            Contract.exchangeRouter(appData.chain).address;
         final tradeTokens = appData.chain.computeTradeTokens(
           isBuyAX: isBuyAX,
         );
@@ -96,6 +98,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     emit(
       state.copyWith(
         status: BlocStatus.loading,
+        swapInfo: TokenSwapInfo.empty,
         failure: Failure.none,
       ),
     );
@@ -108,6 +111,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         state.copyWith(
           tokenFromBalance: tokenFromBalance ?? 0,
           tokenToBalance: tokenToBalance ?? 0,
+          swapInfo: TokenSwapInfo.empty,
           failure: Failure.none,
         ),
       );
@@ -157,6 +161,10 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     final tokenFromBalance =
         await _walletRepository.getTokenBalance(state.tokenFrom.address);
     try {
+      emit(
+        state.copyWith(swapInfo: TokenSwapInfo.empty),
+      );
+
       final response = await repo.fetchSwapInfo(
         tokenFrom: state.tokenFrom.address,
         tokenTo: state.tokenTo.address,

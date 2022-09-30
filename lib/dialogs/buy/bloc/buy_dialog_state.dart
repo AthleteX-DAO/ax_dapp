@@ -10,6 +10,7 @@ class BuyDialogState extends Equatable {
     this.axInputAmount = 0,
     this.aptBuyInfo = AptBuyInfo.empty,
     this.errorMessage = '',
+    this.failure = Failure.none,
   });
 
   final AptType aptTypeSelection;
@@ -20,6 +21,7 @@ class BuyDialogState extends Equatable {
   final BlocStatus status;
   final AptBuyInfo aptBuyInfo;
   final String errorMessage;
+  final Failure failure;
 
   @override
   List<Object> get props {
@@ -32,6 +34,7 @@ class BuyDialogState extends Equatable {
       status,
       aptBuyInfo,
       errorMessage,
+      failure,
     ];
   }
 
@@ -44,6 +47,7 @@ class BuyDialogState extends Equatable {
     BlocStatus? status,
     AptBuyInfo? aptBuyInfo,
     String? errorMessage,
+    Failure? failure,
   }) {
     return BuyDialogState(
       aptTypeSelection: aptTypeSelection ?? this.aptTypeSelection,
@@ -54,6 +58,7 @@ class BuyDialogState extends Equatable {
       status: status ?? this.status,
       aptBuyInfo: aptBuyInfo ?? this.aptBuyInfo,
       errorMessage: errorMessage ?? this.errorMessage,
+      failure: failure ?? this.failure,
     );
   }
 }
@@ -61,4 +66,9 @@ class BuyDialogState extends Equatable {
 extension BuyDialogStateX on BuyDialogState {
   String get selectedAptAddress =>
       aptTypeSelection.isLong ? longApt.address : shortApt.address;
+}
+class InSufficientFailure extends Failure {
+  /// {@macro temp_failure}
+  InSufficientFailure()
+      : super(Exception('Insufficent Failure'), StackTrace.empty);
 }

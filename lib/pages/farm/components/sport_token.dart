@@ -1,4 +1,4 @@
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -20,13 +20,13 @@ class BadgeToken extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       badgeContent: Text(
         sport.name.toUpperCase(),
-        style: textStyle(Colors.white, 12, true),
+        style: textStyle(Colors.white, 12, isBold:true),
       ),
       position: BadgePosition.topEnd(top: -10, end: -12),
       padding: const EdgeInsets.only(top: 2, bottom: 2, left: 5, right: 5),
       child: Text(
         symbol,
-        style: textStyle(Colors.white, 24, true),
+        style: textStyle(Colors.white, 24, isBold:true),
       ),
     );
   }
@@ -43,7 +43,7 @@ class SimpleToken extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Text(
         symbol,
-        style: textStyle(Colors.white, 24, true),
+        style: textStyle(Colors.white, 24, isBold:true),
       ),
     );
   }

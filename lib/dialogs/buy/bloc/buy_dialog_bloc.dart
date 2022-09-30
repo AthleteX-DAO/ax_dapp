@@ -7,9 +7,8 @@ import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:equatable/equatable.dart';
 import 'package:ethereum_api/src/tokens/models/contract.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -193,23 +192,30 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       final isSuccess = response.isLeft();
 
       if (isSuccess) {
-        if (swapController.amount1.value != axInputAmount) {
-          swapController.updateFromAmount(axInputAmount);
-        }
         final pairInfo = response.getLeft().toNullable()!.aptBuyInfo;
-        emit(
-          state.copyWith(
-            status: BlocStatus.success,
-            balance: balance,
-            aptBuyInfo: AptBuyInfo(
-              axPerAptPrice: pairInfo.fromPrice,
-              minimumReceived: pairInfo.minimumReceived,
-              priceImpact: pairInfo.priceImpact,
-              receiveAmount: pairInfo.receiveAmount,
-              totalFee: pairInfo.totalFee,
+        if (axInputAmount > balance) {
+          emit(state.copyWith(
+              status: BlocStatus.error,
+              failure: InSufficientFailure(),
+              errorMessage: 'Insufficient balance'));
+        } else {
+          if (swapController.amount1.value != axInputAmount) {
+            swapController.updateFromAmount(axInputAmount);
+          }
+          emit(
+            state.copyWith(
+              status: BlocStatus.success,
+              balance: balance,
+              aptBuyInfo: AptBuyInfo(
+                axPerAptPrice: pairInfo.fromPrice,
+                minimumReceived: pairInfo.minimumReceived,
+                priceImpact: pairInfo.priceImpact,
+                receiveAmount: pairInfo.receiveAmount,
+                totalFee: pairInfo.totalFee,
+              ),
             ),
-          ),
-        );
+          );
+        }
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(

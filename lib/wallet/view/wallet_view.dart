@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:ax_dapp/wallet/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class WalletView extends StatelessWidget {
         final walletAddress = context.read<WalletBloc>().state.walletAddress;
         context.read<TrackingCubit>().onConnectWalletSuccessful(
               publicAddress: walletAddress,
-              axUnits: '"${state.axData.balance} AX"',
+              axUnits: '"${toDecimal(state.axData.balance!, 6)} AX"',
             );
       },
       child: BlocConsumer<WalletBloc, WalletState>(

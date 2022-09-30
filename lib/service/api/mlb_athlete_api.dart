@@ -26,21 +26,16 @@ abstract class MLBAthleteAPI {
 
   @GET('/players')
   Future<List<MLBAthlete>> getPlayersByPosition(
-    @Query('position') String position,
-  );
+      @Query('position') String position,);
 
   @GET('/players')
-  Future<List<MLBAthlete>> getPlayersByTeamAtPosition(
-    @Query('team') String team,
-    @Query('position') String position,
-  );
+  Future<List<MLBAthlete>> getPlayersByTeamAtPosition(@Query('team') String team,
+      @Query('position') String position,);
 
   @GET('/players/{id}/history')
-  Future<MLBAthleteStats> getPlayerHistory(
-    @Path() int id,
-    @Query('from') String from,
-    @Query('until') String until,
-  );
+  Future<MLBAthleteStats> getPlayerHistory(@Path() int id,
+      @Query('from') String from,
+      @Query('until') String until,);
 
   @GET('/players/{id}/history/price')
   Future<AthletePriceRecord> getPlayerPriceHistory(

@@ -5,9 +5,9 @@ import 'package:ax_dapp/add_liquidity/widgets/pool_insufficient_button.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/debouncer.dart';
+import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -254,7 +254,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               padding: const EdgeInsets.only(right: 10),
               alignment: Alignment.bottomRight,
               child: Text(
-                tknNum == 1 ? 'Balance: $balance0' : 'Balance: $balance1',
+                tknNum == 1
+                    ? 'Balance: ${toDecimal(balance0, 6)}'
+                    : 'Balance: ${toDecimal(balance1, 6)}',
                 style: textStyle(Colors.grey[600]!, 13, false),
               ),
             );
@@ -270,10 +272,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               if (hasData) {
                 if (tokenNumber == 1) {
                   bloc.add(Token0AmountChanged(_tokenInput));
-                  final tokenTwoAmount =
-                      double.parse(_tokenInput) / poolInfo.ratio;
-                  _tokenAmountTwoController.text =
-                      tokenTwoAmount.toStringAsFixed(6);
+                } else {
+                  bloc.add(Token1AmountChanged(_tokenInput));
                 }
               } else {
                 if (tokenNumber == 1) {
@@ -421,7 +421,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                               child: TextFormField(
                                 readOnly: ((tknNum == 2) &&
                                         (state.status == BlocStatus.success))
-                                    ? isReadOnly
+                                    ? !isReadOnly
                                     : !isReadOnly,
                                 controller: tokenAmountController,
                                 onChanged: (tokenInput) {
@@ -747,6 +747,10 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     if (state.status == BlocStatus.noData) ...[
                       const Text(
                         'Not Created - Please input both token amounts',
+                      ),
+                    ] else ...[
+                      const Text(
+                        'Please input an amount of liquidity for both tokens',
                       ),
                     ]
                   ],

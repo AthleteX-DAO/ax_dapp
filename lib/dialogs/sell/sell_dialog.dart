@@ -1,12 +1,16 @@
 import 'package:ax_dapp/athlete/athlete.dart' hide AptTypeSelectionChanged;
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/dialog.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
+import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +25,8 @@ class SellDialog extends StatefulWidget {
     required this.aptPrice,
     required this.athleteId,
     required this.isLongApt,
+    required this.goToTradePage,
+
     super.key,
   });
   final AthleteScoutModel athlete;
@@ -28,6 +34,7 @@ class SellDialog extends StatefulWidget {
   final double aptPrice;
   final bool isLongApt;
   final int athleteId;
+  final void Function() goToTradePage;
 
   @override
   State<StatefulWidget> createState() => _SellDialogState();
@@ -69,10 +76,11 @@ class _SellDialogState extends State<SellDialog> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Total Fees:', style: textStyle(Colors.grey[600]!, 15, false)),
+          Text('Total Fees:',
+              style: textStyle(Colors.grey[600]!, 15, isBold: false)),
           Text(
             '$totalFee APT(0.3%)',
-            style: textStyle(Colors.grey[600]!, 15, false),
+            style: textStyle(Colors.grey[600]!, 15, isBold: false),
           ),
         ],
       ),
@@ -85,8 +93,8 @@ class _SellDialogState extends State<SellDialog> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            'Balance: $balance',
-            style: textStyle(Colors.grey[600]!, 15, false),
+            'Balance: ${toDecimal(balance, 6)}',
+            style: textStyle(Colors.grey[600]!, 15, isBold: false),
           ),
         ],
       ),
@@ -100,11 +108,11 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text(
             'Market Price Impact:',
-            style: textStyle(Colors.grey[600]!, 15, false),
+            style: textStyle(Colors.grey[600]!, 15, isBold: false),
           ),
           Text(
             '$marketPriceImpact %',
-            style: textStyle(Colors.grey[600]!, 15, false),
+            style: textStyle(Colors.grey[600]!, 15, isBold: false),
           ),
         ],
       ),
@@ -118,11 +126,11 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text(
             'Minimum Received:',
-            style: textStyle(Colors.grey[600]!, 15, false),
+            style: textStyle(Colors.grey[600]!, 15, isBold: false),
           ),
           Text(
             '$minimumReceived AX',
-            style: textStyle(Colors.grey[600]!, 15, false),
+            style: textStyle(Colors.grey[600]!, 15, isBold: false),
           ),
         ],
       ),
@@ -136,11 +144,11 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text(
             'Slippage Tolerance:',
-            style: textStyle(Colors.grey[600]!, 15, false),
+            style: textStyle(Colors.grey[600]!, 15, isBold: false),
           ),
           Text(
             '$slipageTolerance %',
-            style: textStyle(Colors.grey[600]!, 15, false),
+            style: textStyle(Colors.grey[600]!, 15, isBold: false),
           ),
         ],
       ),
@@ -154,11 +162,11 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text(
             'You Receive:',
-            style: textStyle(Colors.white, 15, false),
+            style: textStyle(Colors.white, 15, isBold: false),
           ),
           Text(
             '$amountToReceive AX',
-            style: textStyle(Colors.white, 15, false),
+            style: textStyle(Colors.white, 15, isBold: false),
           ),
         ],
       ),
@@ -219,7 +227,7 @@ class _SellDialogState extends State<SellDialog> {
                     children: [
                       Text(
                         'Sell ${widget.athleteName} APT',
-                        style: textStyle(Colors.white, 20, false),
+                        style: textStyle(Colors.white, 20, isBold: false),
                       ),
                       IconButton(
                         icon: const Icon(
@@ -246,18 +254,23 @@ class _SellDialogState extends State<SellDialog> {
                         ),
                         TextSpan(
                           text:
-                              ''' You can access other funds with AX on the Matic network through''',
+                              ''' Visit the Trade page to swap APT's and AX.''',
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: isWeb ? 14 : 12,
                           ),
                         ),
                         TextSpan(
-                          text: ' SushiSwap',
+                          text: ' Trade Page',
                           style: TextStyle(
                             color: Colors.amber[400],
                             fontSize: isWeb ? 14 : 12,
                           ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pop(context);
+                              widget.goToTradePage();
+                            },
                         ),
                       ],
                     ),
@@ -317,7 +330,8 @@ class _SellDialogState extends State<SellDialog> {
                               },
                               child: Text(
                                 'MAX',
-                                style: textStyle(Colors.grey[400]!, 9, false),
+                                style: textStyle(Colors.grey[400]!, 9,
+                                    isBold: false),
                               ),
                             ),
                           ),
@@ -326,11 +340,12 @@ class _SellDialogState extends State<SellDialog> {
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _aptAmountController,
-                                style: textStyle(Colors.grey[400]!, 22, false),
+                                style: textStyle(Colors.grey[400]!, 22,
+                                    isBold: false),
                                 decoration: InputDecoration(
                                   hintText: '0.00',
-                                  hintStyle:
-                                      textStyle(Colors.grey[400]!, 22, false),
+                                  hintStyle: textStyle(Colors.grey[400]!, 22,
+                                      isBold: false),
                                   contentPadding:
                                       const EdgeInsets.only(left: 3),
                                   border: InputBorder.none,
@@ -418,22 +433,33 @@ class _SellDialogState extends State<SellDialog> {
                       BlocSelector<WalletBloc, WalletState, String>(
                         selector: (state) => state.formattedWalletAddress,
                         builder: (_, formattedWalletAddress) {
-                          return AthleteSellApproveButton(
-                            width: 175,
-                            height: 40,
-                            text: 'Approve',
-                            amountInputted: _aptAmountController.text,
-                            aptSellInfo: state.aptSellInfo,
-                            athlete: widget.athlete,
-                            aptName: widget.athleteName,
-                            aptId: widget.athleteId,
-                            longOrShort: state.aptTypeSelection.isLong
-                                ? 'Long Apt'
-                                : 'Short Apt',
-                            approveCallback: bloc.swapController.approve,
-                            confirmCallback: bloc.swapController.swap,
-                            confirmDialog: transactionConfirmed,
-                            walletAddress: formattedWalletAddress,
+                          if (state.status != BlocStatus.error) {
+                            return AthleteSellApproveButton(
+                              width: 175,
+                              height: 40,
+                              text: 'Approve',
+                              amountInputted: _aptAmountController.text,
+                              aptSellInfo: state.aptSellInfo,
+                              athlete: widget.athlete,
+                              aptName: widget.athleteName,
+                              aptId: widget.athleteId,
+                              longOrShort: state.aptTypeSelection.isLong
+                                  ? 'Long Apt'
+                                  : 'Short Apt',
+                              approveCallback: bloc.swapController.approve,
+                              confirmCallback: bloc.swapController.swap,
+                              confirmDialog: const ConfirmTransactionDialog(),
+                              walletAddress: formattedWalletAddress,
+                            );
+                          }
+                          return WarningTextButton(
+                            warningTitle: () {
+                              final failure = state.failure;
+                              if (failure is InSufficientFailure) {
+                                return 'Insufficient Balance';
+                              }
+                              return 'Something went wrong';
+                            }(),
                           );
                         },
                       ),
@@ -548,7 +574,7 @@ class Price extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Price:', style: textStyle(Colors.white, 15, false)),
+        Text('Price:', style: textStyle(Colors.white, 15, isBold: false)),
         BlocBuilder<SellDialogBloc, SellDialogState>(
           buildWhen: (previous, current) =>
               previous.aptTypeSelection != current.aptTypeSelection ||
@@ -557,7 +583,7 @@ class Price extends StatelessWidget {
               previous.shortApt != current.shortApt,
           builder: (context, state) {
             final price = state.aptSellInfo.axPrice.toStringAsFixed(6);
-            final _textStyle = textStyle(Colors.white, 15, false);
+            final _textStyle = textStyle(Colors.white, 15, isBold: false);
             return state.aptTypeSelection.isLong
                 ? Text(
                     '$price AX per ${state.longApt.ticker} APT',
@@ -585,7 +611,7 @@ class Ticker extends StatelessWidget {
           previous.longApt != current.longApt ||
           previous.shortApt != current.shortApt,
       builder: (context, state) {
-        final _textStyle = textStyle(Colors.white, 15, false);
+        final _textStyle = textStyle(Colors.white, 15, isBold: false);
         return Text(
           state.aptTypeSelection.isLong
               ? '''${state.longApt.ticker} APT'''
