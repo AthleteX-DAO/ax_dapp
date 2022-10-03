@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
+import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/sell_dialog.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
@@ -177,10 +178,22 @@ class MintButton extends StatelessWidget {
           if (isWalletConnected) {
             showDialog<void>(
               context: context,
-              builder: (BuildContext context) => MintDialog(
-                athlete: athlete,
-                goToTradePage: goToTradePage,
-                goToPage: goToPage,
+              builder: (BuildContext context) => BlocProvider(
+                create: (BuildContext context) => MintDialogBloc(
+                  tokensRepository: context.read<TokensRepository>(),
+                  getTotalTokenBalanceUseCase: GetTotalTokenBalanceUseCase(
+                    walletRepository: context.read<WalletRepository>(),
+                    tokensRepository: context.read<TokensRepository>(),
+                  ),
+                  lspController: Get.find(),
+                  athleteId: athlete.id,
+                  supportedSport: athlete.sport,
+                ),
+                child: MintDialog(
+                  athlete: athlete,
+                  goToTradePage: goToTradePage,
+                  goToPage: goToPage,
+                ),
               ),
             );
           } else {
