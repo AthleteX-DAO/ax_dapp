@@ -3,6 +3,7 @@
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/redeem/bloc/redeem_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/bloc/sell_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/sell/sell_dialog.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
@@ -240,13 +241,25 @@ class RedeemButton extends StatelessWidget {
           if (isWalletConnected) {
             showDialog<void>(
               context: context,
-              builder: (BuildContext context) => RedeemDialog(
-                athlete,
-                athlete.sport.toString(),
-                inputLongApt,
-                inputShortApt,
-                valueInAX,
-                goToTradePage,
+              builder: (BuildContext context) => BlocProvider(
+                create: (BuildContext context) => RedeemDialogBloc(
+                  tokensRepository: context.read<TokensRepository>(),
+                  getTotalTokenBalanceUseCase: GetTotalTokenBalanceUseCase(
+                    walletRepository: context.read<WalletRepository>(),
+                    tokensRepository: context.read<TokensRepository>(),
+                  ),
+                  lspController: Get.find(),
+                  athleteId: athlete.id,
+                  supportedSport: athlete.sport,
+                ),
+                child: RedeemDialog(
+                  athlete,
+                  athlete.sport.toString(),
+                  inputLongApt,
+                  inputShortApt,
+                  valueInAX,
+                  goToTradePage,
+                ),
               ),
             );
           } else {
