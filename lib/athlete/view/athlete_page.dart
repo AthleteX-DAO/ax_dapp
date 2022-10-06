@@ -79,7 +79,9 @@ class _AthletePageState extends State<AthletePage> {
         }
         if (state.failure is InvalidAthleteFailure) {
           context.showWarningToast(
-              title: 'Error', description: 'Cannot add athlete to wallet');
+            title: 'Error',
+            description: 'Cannot add athlete to wallet',
+          );
         }
       },
       child: kIsWeb
