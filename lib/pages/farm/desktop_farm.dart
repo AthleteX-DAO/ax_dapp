@@ -111,14 +111,14 @@ class _DesktopFarmState extends State<DesktopFarm> {
                         ? MainAxisAlignment.start
                         : MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: isWeb ? 300 : layoutWdt / 2,
-                        height: isWeb ? 45 : layoutHgt * 0.1,
+                      FittedBox(
+                        //width: isWeb ? 300 : layoutWdt / 2,
+                        //height: isWeb ? 45 : layoutHgt * 0.1,
                         child: Text(
                           isAllFarms ? 'Participating Farms' : 'My Farms',
                           style: isWeb
                               ? textStyle(Colors.white, 24, true, false)
-                              : textStyle(Colors.white, 22, true, false),
+                              : textStyle(Colors.white, 20, true, false),
                         ),
                       ),
                       if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
