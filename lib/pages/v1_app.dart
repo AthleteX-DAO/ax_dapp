@@ -246,7 +246,18 @@ class _V1AppState extends State<V1App> {
               goToPage: goToPage,
             ),
           ),
-          const DesktopFarm(),
+          BlocProvider(
+            create: (BuildContext context) => FarmBloc(
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
+              configRepository: context.read<AppBloc>().configRepository,
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+              repo: GetFarmDataUseCase(
+                gysrApiClient: context.read<GysrApiClient>(),
+              ),
+            ),
+            child: const DesktopFarm(),
+          )
         ],
       );
     }
