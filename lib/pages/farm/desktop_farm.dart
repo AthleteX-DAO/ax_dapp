@@ -113,10 +113,12 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     children: [
                       SizedBox(
                         width: isWeb ? 300 : layoutWdt / 2,
-                        height: isWeb ? 45 : layoutHgt * 0.05,
+                        height: isWeb ? 45 : layoutHgt * 0.1,
                         child: Text(
                           isAllFarms ? 'Participating Farms' : 'My Farms',
-                          style: textStyle(Colors.white, 24, true, false),
+                          style: isWeb
+                              ? textStyle(Colors.white, 24, true, false)
+                              : textStyle(Colors.white, 22, true, false),
                         ),
                       ),
                       if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
