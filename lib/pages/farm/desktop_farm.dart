@@ -112,8 +112,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
                         : MainAxisAlignment.spaceBetween,
                     children: [
                       FittedBox(
-                        //width: isWeb ? 300 : layoutWdt / 2,
-                        //height: isWeb ? 45 : layoutHgt * 0.1,
                         child: Text(
                           isAllFarms ? 'Participating Farms' : 'My Farms',
                           style: isWeb
