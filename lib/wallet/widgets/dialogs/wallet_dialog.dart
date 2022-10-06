@@ -1,28 +1,41 @@
-//dynamic
 import 'package:ax_dapp/dialogs/promo/connected_wallet_promo_dialog.dart';
 import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
-import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:ax_dapp/wallet/widgets/dialogs/connect_metamask_dialog.dart';
+import 'package:ax_dapp/wallet/widgets/dialogs/wrong_network_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class WalletDialog extends StatelessWidget {
   const WalletDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    final controller = Get.find<Controller>();
     return MultiBlocListener(
       listeners: [
         BlocListener<WalletBloc, WalletState>(
           listener: (_, state) {
-            if (state.isWalletUnavailable ||
-                state.isWalletUnsupported ||
-                state.isWalletConnected) {
+            if (state.isWalletUnavailable) {
               Navigator.pop(context);
+              showDialog<void>(
+                context: context,
+                builder: (_) => const ConnectMetaMaskDialog(),
+              );
+            }
+            if (state.isWalletUnsupported) {
+              Navigator.pop(context);
+              showDialog<void>(
+                context: context,
+                builder: (_) => const WrongNetworkDialog(),
+              );
+            }
+            if (state.isWalletConnected) {
+              Navigator.pop(context);
+              showDialog<void>(
+                context: context,
+                builder: (context) => const ConnectedWalletPromoDialog(),
+              );
             }
           },
         ),
@@ -88,13 +101,6 @@ class WalletDialog extends StatelessWidget {
                           context
                               .read<WalletBloc>()
                               .add(const ConnectWalletRequested());
-                          // TODO(Rolly): swap old wallet for new(Credentials?)
-                          // controller.connect();
-                          Navigator.pop(context);
-                          showDialog<void>(
-                            context: context,
-                            builder: (context) => const ConnectedWalletPromoDialog(),
-                          );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
