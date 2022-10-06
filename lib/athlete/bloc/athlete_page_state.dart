@@ -50,3 +50,9 @@ extension BuyDialogStateX on AthletePageState {
   String get selectedAptAddress =>
       aptTypeSelection.isLong ? longApt.address : shortApt.address;
 }
+
+class InvalidAthleteFailure extends Failure {
+  /// {macor temp_failure}
+  InvalidAthleteFailure()
+      : super(Exception('Athlete not Found'), StackTrace.empty);
+}
