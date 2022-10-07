@@ -129,7 +129,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
             selectedSport: event.selectedSport,
           ),
         );
-        await 100.milliseconds.delay();
+        await Future<void>.delayed(const Duration(milliseconds: 100));
       }
       if (event.selectedSport != SupportedSport.all) {
         final filteredList = state.athletes
