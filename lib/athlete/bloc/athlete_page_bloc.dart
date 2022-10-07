@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:ax_dapp/app/config/app_config.dart';
 import 'package:ax_dapp/athlete/models/market_price_record.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
@@ -239,6 +237,10 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
       );
     } on WalletFailure {
       emit(state.copyWith(status: BlocStatus.error));
+    } catch (_) {
+      emit(state.copyWith(failure: InvalidAthleteFailure()));
+      emit(state.copyWith(failure: Failure.none));
+      return;
     }
   }
 }

@@ -77,6 +77,12 @@ class _AthletePageState extends State<AthletePage> {
         if (state.failure is DisconnectedWalletFailure) {
           context.showWalletWarningToast();
         }
+        if (state.failure is InvalidAthleteFailure) {
+          context.showWarningToast(
+            title: 'Error',
+            description: 'Cannot add athlete to wallet',
+          );
+        }
       },
       child: kIsWeb
           ? BlocBuilder<AthletePageBloc, AthletePageState>(
@@ -1031,7 +1037,6 @@ class _AthletePageState extends State<AthletePage> {
                         isPortraitMode: _isPortraitMode,
                         containerWdt: _width,
                         goToTradePage: widget.goToTradePage,
-
                       )
                     ],
                   ),
