@@ -122,7 +122,15 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     Emitter<ScoutPageState> emit,
   ) async {
     try {
-      emit(state.copyWith(status: BlocStatus.loading));
+      while (state.athletes.isEmpty) {
+        emit(
+          state.copyWith(
+            status: BlocStatus.loading,
+            selectedSport: event.selectedSport,
+          ),
+        );
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+      }
       if (event.selectedSport != SupportedSport.all) {
         final filteredList = state.athletes
             .where((athlete) => event.selectedSport.name == athlete.sport.name)
