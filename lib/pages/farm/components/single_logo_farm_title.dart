@@ -34,7 +34,7 @@ Widget singleLogoFarmTitle(
             ),
           ),
         ),
-        Container(width: 15),
+        SizedBox(width: MediaQuery.of(context).size.width * 0.01),
         Expanded(
           child: farm.athlete == null
               ? SportToken(sport: farm.sport, symbol: '${farm.strName} Farm')
