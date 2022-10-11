@@ -72,7 +72,8 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
             ),
           );
         } else {
-          emit(state.copyWith(status: BlocStatus.noData));
+          emit(state.copyWith(
+              status: BlocStatus.noData, filteredCards: [], cards: []));
         }
         add(SearchTermChanged(searchTerm: state.searchTerm));
       } else {
