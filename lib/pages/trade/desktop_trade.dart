@@ -351,6 +351,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               constraints: BoxConstraints(maxWidth: amountBoxAndMaxButtonWid),
               child: IntrinsicWidth(
                 child: TextFormField(
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   controller: _tokenFromInputController,
                   onChanged: (value) => _addEventForFromInputValue(value, bloc),
                   style: textStyle(Colors.grey[400]!, 22, false),

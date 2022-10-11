@@ -147,6 +147,7 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                       SizedBox(
                         width: 70,
                         child: TextFormField(
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
                           controller: unStakeAxInput,
                           onChanged: (value) {
                             unstakeInput(

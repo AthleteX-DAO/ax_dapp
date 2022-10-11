@@ -152,6 +152,7 @@ class _StakeDialogState extends State<StakeDialog> {
                       SizedBox(
                         width: 80,
                         child: TextFormField(
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
                           controller: stakeAxInput,
                           onChanged: (value) {
                             stakeInput(value, totalStakedBalance, selectedFarm);

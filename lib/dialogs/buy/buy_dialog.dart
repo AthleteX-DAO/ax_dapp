@@ -355,6 +355,7 @@ class _BuyDialogState extends State<BuyDialog> {
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _aptAmountController,
+                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                 style: textStyle(Colors.grey[400]!, 22,
                                     isBold: false),
                                 decoration: InputDecoration(
