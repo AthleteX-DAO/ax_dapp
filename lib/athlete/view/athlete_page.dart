@@ -1618,7 +1618,7 @@ class _AthletePageState extends State<AthletePage> {
                         'Book Value',
                         style: textStyle(
                           greyTextColor,
-                          20,
+                          30,
                           false,
                           false,
                         ),
