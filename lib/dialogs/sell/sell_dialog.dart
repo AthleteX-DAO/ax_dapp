@@ -339,6 +339,7 @@ class _SellDialogState extends State<SellDialog> {
                             constraints: BoxConstraints(maxWidth: wid * 0.4),
                             child: IntrinsicWidth(
                               child: TextField(
+                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                 controller: _aptAmountController,
                                 style: textStyle(Colors.grey[400]!, 22,
                                     isBold: false),

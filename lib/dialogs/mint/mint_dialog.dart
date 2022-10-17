@@ -319,6 +319,7 @@ class _MintDialogState extends State<MintDialog> {
                                 width: hgt * 0.2,
                                 child: IntrinsicWidth(
                                   child: TextField(
+                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                     controller: _aptAmountController,
                                     style: textStyle(
                                       Colors.grey[400]!,
