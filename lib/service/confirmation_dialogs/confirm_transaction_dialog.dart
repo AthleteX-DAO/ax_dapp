@@ -28,7 +28,10 @@ class ConfirmTransactionDialog extends StatelessWidget {
       child: Container(
         height: height,
         width: width,
-        decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
+        decoration: BoxDecoration(
+          color: Colors.grey[900],
+          borderRadius: BorderRadius.circular(30),
+        ),
         child: Center(
           child: SizedBox(
             height: 275,
@@ -42,10 +45,14 @@ class ConfirmTransactionDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const SizedBox(width: 5),
-                      FittedBox(
+                      const FittedBox(
                         child: Text(
                           'Transaction Confirmed',
-                          style: textStyle(Colors.white, 20, isBold: false),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: 'OpenSans',
+                          ),
                         ),
                       ),
                       SizedBox(

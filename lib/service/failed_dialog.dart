@@ -10,11 +10,10 @@ class FailedDialog extends StatelessWidget {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     var wid = 500.0;
+    var hgt = 335.0;
     const edge = 40.0;
     if (_width < 505) wid = _width;
-    var hgt = 335.0;
     if (_height < 340) hgt = _height;
-
     return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
@@ -39,13 +38,15 @@ class FailedDialog extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(width: 5),
-                      const Text(
-                        'Transaction Rejected',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontFamily: 'OpenSans',
+                      const SizedBox(width: 5),
+                      const FittedBox(
+                        child: Text(
+                          'Transaction Rejected',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: 'OpenSans',
+                          ),
                         ),
                       ),
                       SizedBox(
