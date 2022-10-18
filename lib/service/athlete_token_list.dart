@@ -91,10 +91,6 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   Widget build(BuildContext context) {
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-    final _height = MediaQuery.of(context).size.height;
-    final textSize = _height * 0.05;
-    var searchBarHintTextSize = textSize * 0.30;
-    if (!isWeb) searchBarHintTextSize = textSize * 0.40;
     return LayoutBuilder(
       builder: (context, constraints) => Dialog(
         backgroundColor: Colors.grey[900],
@@ -143,7 +139,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: SearchBar(
-                          searchBarHintTextSize: searchBarHintTextSize,
+                          searchBarHintTextSize: constraints.maxWidth < 1100 ? 15 : 20 ,
                           updateKeyWord: updateKeyWord,
                           updateFilteredApts: updateFilteredApts,
                         ),
