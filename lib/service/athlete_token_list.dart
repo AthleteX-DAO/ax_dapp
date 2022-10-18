@@ -83,95 +83,90 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
 
   @override
   Widget build(BuildContext context) {
-    final _height = MediaQuery.of(context).size.height;
-    final _width = MediaQuery.of(context).size.width;
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-    return Dialog(
-      backgroundColor: Colors.grey[900],
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25),
-      ),
-      // SingleChildScrollView prevents bottom overflow when keyboard pops up
-      child: SingleChildScrollView(
-        child: SizedBox(
-          width: isWeb ? _width * 0.20 : _width * 0.55,
-          height: _height * .65,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              // column of elements
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                height: _height * .625,
-                width: _width * 0.45 + 120,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 30,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Select a Token',
-                            style: textStyle(
-                              Colors.grey[400]!,
-                              16,
-                              isBold: false,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.grey[400],
-                              size: 30,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: createSearchBar(),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      margin: const EdgeInsets.only(top: 10),
-                      child: buildFilterMenuWeb(),
-                    ),
-                    SizedBox(
-                      height: _height * .625 - 160,
-                      child: (filteredTokens.isEmpty)
-                          ? const Center(
-                              child: Text(
-                                'No tokens are supported.',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 20,
-                                ),
+    return LayoutBuilder(
+      builder: (context, constraints) => Dialog(
+        backgroundColor: Colors.grey[900],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            width: isWeb
+                ? constraints.maxWidth * 0.20
+                : constraints.maxWidth * 0.55,
+            height: constraints.maxHeight * .65,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  height: constraints.maxHeight * .625,
+                  width: constraints.maxWidth * 0.45 + 120,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Select a Token',
+                              style: textStyle(
+                                Colors.grey[400]!,
+                                16,
+                                isBold: false,
                               ),
-                            )
-                          : ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: filteredTokens.length,
-                              itemBuilder: (context, index) {
-                                return widget.createTokenElement(
-                                  filteredTokens[index],
-                                  tokenNumber,
-                                );
-                              },
                             ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                            IconButton(
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: createSearchBar(),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(top: 10),
+                        child: buildFilterMenuWeb(),
+                      ),
+                      SizedBox(
+                        height: constraints.maxHeight * .625 - 160,
+                        child: (filteredTokens.isEmpty)
+                            ? const Center(
+                                child: Text(
+                                  'No tokens are supported.',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              )
+                            : ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: filteredTokens.length,
+                                itemBuilder: (context, index) {
+                                  return widget.createTokenElement(
+                                    filteredTokens[index],
+                                    tokenNumber,
+                                  );
+                                },
+                              ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -203,7 +198,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.only(bottom: 10),
-                hintText: 'Search a name or paste an address',
+                hintText: 'Search a token',
                 hintStyle: TextStyle(
                   color: Colors.white,
                   fontSize: searchBarHintTextSize,
@@ -215,15 +210,6 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
         ],
       ),
     );
-  }
-
-  TextStyle textSwapState({
-    required bool condition,
-    required TextStyle tabNotSelected,
-    required TextStyle tabSelected,
-  }) {
-    if (condition) return tabSelected;
-    return tabNotSelected;
   }
 
   Row buildFilterMenuWeb() {
