@@ -194,9 +194,9 @@ class SearchBar extends StatelessWidget {
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
       child: Row(
         children: [
-          Container(width: 8),
+          const SizedBox(width: 8),
           const Icon(Icons.search, color: Colors.white),
-          Container(width: 10),
+          const SizedBox(width: 10),
           Expanded(
             child: TextFormField(
               onChanged: (value) {
