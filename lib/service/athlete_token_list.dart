@@ -137,29 +137,19 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                       Container(
                         alignment: Alignment.centerLeft,
                         margin: const EdgeInsets.only(top: 10),
-                        child: buildFilterMenuWeb(),
+                        child: BuildFilterMenu(
+                          selectedSport: selectedSport,
+                          setSelectedSport: setSelectedSport,
+                        ),
                       ),
                       SizedBox(
                         height: constraints.maxHeight * .625 - 160,
                         child: (filteredTokens.isEmpty)
-                            ? const Center(
-                                child: Text(
-                                  'No tokens are supported.',
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              )
-                            : ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: filteredTokens.length,
-                                itemBuilder: (context, index) {
-                                  return widget.createTokenElement(
-                                    filteredTokens[index],
-                                    tokenNumber,
-                                  );
-                                },
+                            ? const FilterMenuError()
+                            : BuildListView(
+                                filteredTokens: filteredTokens,
+                                widget: widget,
+                                tokenNumber: tokenNumber,
                               ),
                       ),
                     ],
@@ -211,8 +201,66 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
       ),
     );
   }
+}
 
-  Row buildFilterMenuWeb() {
+class BuildListView extends StatelessWidget {
+  const BuildListView({
+    super.key,
+    required this.filteredTokens,
+    required this.widget,
+    required this.tokenNumber,
+  });
+
+  final List<Token> filteredTokens;
+  final AthleteTokenList widget;
+  final int tokenNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: filteredTokens.length,
+      itemBuilder: (context, index) {
+        return widget.createTokenElement(
+          filteredTokens[index],
+          tokenNumber,
+        );
+      },
+    );
+  }
+}
+
+class FilterMenuError extends StatelessWidget {
+  const FilterMenuError({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'No tokens are supported.',
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 20,
+        ),
+      ),
+    );
+  }
+}
+
+class BuildFilterMenu extends StatelessWidget {
+  const BuildFilterMenu({
+    super.key,
+    required this.selectedSport,
+    required this.setSelectedSport,
+  });
+
+  final SupportedSport selectedSport;
+  final void Function(SupportedSport) setSelectedSport;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         TextButton(
