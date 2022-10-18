@@ -58,6 +58,12 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     updateFilteredApts();
   }
 
+  void updateKeyWord(String value) {
+    setState(() {
+      keyword = value;
+    });
+  }
+
   void updateTokens(List<Token> tokens) {
     if (mounted) {
       this.tokens = [...tokens];
@@ -85,6 +91,10 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
   Widget build(BuildContext context) {
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    final _height = MediaQuery.of(context).size.height;
+    final textSize = _height * 0.05;
+    var searchBarHintTextSize = textSize * 0.30;
+    if (!isWeb) searchBarHintTextSize = textSize * 0.40;
     return LayoutBuilder(
       builder: (context, constraints) => Dialog(
         backgroundColor: Colors.grey[900],
@@ -132,7 +142,11 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        child: createSearchBar(),
+                        child: SearchBar(
+                          searchBarHintTextSize: searchBarHintTextSize,
+                          updateKeyWord: updateKeyWord,
+                          updateFilteredApts: updateFilteredApts,
+                        ),
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
@@ -162,12 +176,22 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
       ),
     );
   }
+}
 
-  Widget createSearchBar() {
-    final _height = MediaQuery.of(context).size.height;
-    final textSize = _height * 0.05;
-    var searchBarHintTextSize = textSize * 0.30;
-    if (!isWeb) searchBarHintTextSize = textSize * 0.40;
+class SearchBar extends StatelessWidget {
+  const SearchBar({
+    super.key,
+    required this.searchBarHintTextSize,
+    required this.updateKeyWord,
+    required this.updateFilteredApts,
+  });
+
+  final double searchBarHintTextSize;
+  final void Function(String) updateKeyWord;
+  final void Function() updateFilteredApts;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: 300,
       height: 40,
@@ -180,9 +204,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
           Expanded(
             child: TextFormField(
               onChanged: (value) {
-                setState(() {
-                  keyword = value;
-                });
+                updateKeyWord(value);
                 updateFilteredApts();
               },
               decoration: InputDecoration(
