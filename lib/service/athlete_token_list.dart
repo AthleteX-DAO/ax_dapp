@@ -1,8 +1,7 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
 import 'dart:async';
 
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,7 +119,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                             style: textStyle(
                               Colors.grey[400]!,
                               16,
-                              false,
+                              isBold: false,
                             ),
                           ),
                         ),
@@ -218,9 +217,13 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     );
   }
 
-  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
-    if (condition) return tru;
-    return fls;
+  TextStyle textSwapState({
+    required bool condition,
+    required TextStyle tabNotSelected,
+    required TextStyle tabSelected,
+  }) {
+    if (condition) return tabSelected;
+    return tabNotSelected;
   }
 
   Row buildFilterMenuWeb() {
@@ -233,9 +236,9 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
           child: Text(
             'ALL',
             style: textSwapState(
-              selectedSport == SupportedSport.all,
-              textStyle(Colors.white, 14, false),
-              textStyle(Colors.amber[400]!, 14, false),
+              condition: selectedSport == SupportedSport.all,
+              tabNotSelected: textStyle(Colors.white, 14, isBold: false),
+              tabSelected: textStyle(Colors.amber[400]!, 14, isBold: false),
             ),
           ),
         ),
@@ -246,9 +249,9 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
           child: Text(
             'MLB',
             style: textSwapState(
-              selectedSport == SupportedSport.MLB,
-              textStyle(Colors.white, 14, false),
-              textStyle(Colors.amber[400]!, 14, false),
+              condition: selectedSport == SupportedSport.MLB,
+              tabNotSelected: textStyle(Colors.white, 14, isBold: false),
+              tabSelected: textStyle(Colors.amber[400]!, 14, isBold: false),
             ),
           ),
         ),
@@ -259,45 +262,13 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
           child: Text(
             'NFL',
             style: textSwapState(
-              selectedSport == SupportedSport.NFL,
-              textStyle(Colors.white, 14, false),
-              textStyle(Colors.amber[400]!, 14, false),
+              condition: selectedSport == SupportedSport.NFL,
+              tabNotSelected: textStyle(Colors.white, 14, isBold: false),
+              tabSelected: textStyle(Colors.amber[400]!, 14, isBold: false),
             ),
           ),
         ),
-        const Spacer(),
-        Container(width: 10),
       ],
-    );
-  }
-
-  TextStyle textStyle(Color color, double size, bool isBold) {
-    if (isBold) {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-      );
-    } else {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
-    }
-  }
-
-  BoxDecoration boxDecoration(
-    Color col,
-    double rad,
-    double borWid,
-    Color borCol,
-  ) {
-    return BoxDecoration(
-      color: col,
-      borderRadius: BorderRadius.circular(rad),
-      border: Border.all(color: borCol, width: borWid),
     );
   }
 }
