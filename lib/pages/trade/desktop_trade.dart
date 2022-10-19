@@ -5,6 +5,7 @@ import 'package:ax_dapp/pages/trade/components/trade_approve_button.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/confirm_transaction_dialog.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -90,37 +91,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
           const slippageTolerance = 1;
           final tokenFrom = state.tokenFrom;
           final tokenTo = state.tokenTo;
-          // TODO(mretana1999): add autofill feature
-
-          TextStyle textStyle(Color color, double size, bool isBold) {
-            if (isBold) {
-              return TextStyle(
-                color: color,
-                fontFamily: 'OpenSans',
-                fontSize: size,
-                fontWeight: FontWeight.w400,
-              );
-            } else {
-              return TextStyle(
-                color: color,
-                fontFamily: 'OpenSans',
-                fontSize: size,
-              );
-            }
-          }
-
-          BoxDecoration boxDecoration(
-            Color col,
-            double rad,
-            double borWid,
-            Color borCol,
-          ) {
-            return BoxDecoration(
-              color: col,
-              borderRadius: BorderRadius.circular(rad),
-              border: Border.all(color: borCol, width: borWid),
-            );
-          }
 
           Container maxButton() {
             return Container(
@@ -145,7 +115,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 },
                 child: Text(
                   'MAX',
-                  style: textStyle(Colors.grey[400]!, 8, false),
+                  style: textStyle(Colors.grey[400]!, 8, isBold: false),
                 ),
               ),
             );
@@ -180,8 +150,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.grey[900],
-                  onSurface: isTokenSelected(token, tknNum)
+                  backgroundColor: Colors.grey[900],
+                  disabledForegroundColor: isTokenSelected(token, tknNum)
                       ? Colors.amber
                       : Colors.grey,
                 ),
@@ -254,7 +224,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.ticker,
-                              style: textStyle(Colors.white, 14, true),
+                              style: textStyle(Colors.white, 14, isBold: true),
                             ),
                           ),
                           Container(
@@ -262,7 +232,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.name,
-                              style: textStyle(Colors.grey[100]!, 9, false),
+                              style: textStyle(Colors.grey[100]!, 9, isBold: false),
                             ),
                           ),
                         ],
@@ -332,7 +302,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       child: Text(
                         tkr,
                         overflow: TextOverflow.ellipsis,
-                        style: textStyle(Colors.white, tkrTextSize, true),
+                        style: textStyle(Colors.white, tkrTextSize, isBold: true),
                       ),
                     ),
                     const Icon(
@@ -354,10 +324,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   controller: _tokenFromInputController,
                   onChanged: (value) => _addEventForFromInputValue(value, bloc),
-                  style: textStyle(Colors.grey[400]!, 22, false),
+                  style: textStyle(Colors.grey[400]!, 22, isBold: false),
                   decoration: InputDecoration(
                     hintText: '0.00',
-                    hintStyle: textStyle(Colors.grey[400]!, 22, false),
+                    hintStyle: textStyle(Colors.grey[400]!, 22, isBold: false),
                     contentPadding: const EdgeInsets.all(9),
                     border: InputBorder.none,
                   ),
@@ -378,10 +348,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 child: TextFormField(
                   readOnly: true,
                   controller: _tokenToInputController,
-                  style: textStyle(Colors.grey[400]!, 22, false),
+                  style: textStyle(Colors.grey[400]!, 22, isBold: false),
                   decoration: InputDecoration(
                     hintText: '0.00',
-                    hintStyle: textStyle(Colors.grey[400]!, 22, false),
+                    hintStyle: textStyle(Colors.grey[400]!, 22, isBold: false),
                     contentPadding: const EdgeInsets.all(9),
                     border: InputBorder.none,
                   ),
@@ -539,7 +509,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
             return Flexible(
               child: Text(
                 'Balance: $balance',
-                style: textStyle(Colors.grey[400]!, 14, false),
+                style: textStyle(Colors.grey[400]!, 14, isBold: false),
               ),
             );
           }
@@ -574,7 +544,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               isWeb ? Alignment.centerLeft : Alignment.center,
                           child: Text(
                             isWeb ? 'Swap' : 'Token Swap',
-                            style: textStyle(Colors.white, 16, false),
+                            style: textStyle(Colors.white, 16, isBold: false),
                           ),
                         ),
                         Container(
@@ -583,7 +553,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'From',
-                            style: textStyle(Colors.grey[400]!, 12, false),
+                            style: textStyle(Colors.grey[400]!, 12, isBold: false),
                           ),
                         ),
                         //First Token container with border
@@ -655,7 +625,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'To',
-                            style: textStyle(Colors.grey[400]!, 12, false),
+                            style: textStyle(Colors.grey[400]!, 12, isBold: false),
                           ),
                         ),
                         //Second Token container with border
@@ -677,11 +647,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // TODO(Ryan): make this and the input box
-                                  //  above
-                                  // a single function
-                                  // dropdown
-                                  // tknNum = 2 (this is a comment)
                                   createTokenButton(2),
                                   // Amount box 2
                                   toAmountBox(amountBoxAndMaxButtonWid),
