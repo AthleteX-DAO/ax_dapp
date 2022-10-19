@@ -1,5 +1,4 @@
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
-import 'package:ax_dapp/pages/trade/components/trade_approve_button.dart';
 import 'package:ax_dapp/pages/trade/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/confirm_transaction_dialog.dart';

@@ -7,4 +7,5 @@ export 'minimum_received.dart';
 export 'price.dart';
 export 'slippage_tolerance.dart';
 export 'to_amount_box.dart';
+export 'trade_approve_button.dart';
 export 'you_received.dart';
