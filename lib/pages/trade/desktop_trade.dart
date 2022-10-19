@@ -12,7 +12,6 @@ import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -129,7 +128,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
             }
           }
 
-          void _addEventForFromInputValue(String value, TradePageBloc bloc) {
+          void addEventForFromInputValue(String value, TradePageBloc bloc) {
             final _value = value.isEmpty ? '0' : value;
             bloc.add(
               NewTokenFromInputEvent(
@@ -183,7 +182,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                             bloc.add(SetTokenTo(tokenTo: token));
                           }
                         }
-                        _addEventForFromInputValue(
+                        addEventForFromInputValue(
                           _tokenFromInputController.text,
                           bloc,
                         );
@@ -320,61 +319,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
             );
           }
 
-          Widget fromAmountBox(double amountBoxAndMaxButtonWid) {
-            return ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: amountBoxAndMaxButtonWid),
-              child: IntrinsicWidth(
-                child: TextFormField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  controller: _tokenFromInputController,
-                  onChanged: (value) => _addEventForFromInputValue(value, bloc),
-                  style: textStyle(Colors.grey[400]!, 22, isBold: false),
-                  decoration: InputDecoration(
-                    hintText: '0.00',
-                    hintStyle: textStyle(Colors.grey[400]!, 22, isBold: false),
-                    contentPadding: const EdgeInsets.all(9),
-                    border: InputBorder.none,
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                      RegExp(r'^(\d+)?\.?\d{0,6}'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-
-          Widget toAmountBox(double amountBoxAndMaxButtonWid) {
-            return ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: amountBoxAndMaxButtonWid),
-              child: IntrinsicWidth(
-                child: TextFormField(
-                  readOnly: true,
-                  controller: _tokenToInputController,
-                  style: textStyle(Colors.grey[400]!, 22, isBold: false),
-                  decoration: InputDecoration(
-                    hintText: '0.00',
-                    hintStyle: textStyle(Colors.grey[400]!, 22, isBold: false),
-                    contentPadding: const EdgeInsets.all(9),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-            );
-          }
-
-          Widget showBalance(String balance) {
-            //Returns widget that shows balance underneath input box
-            return Flexible(
-              child: Text(
-                'Balance: $balance',
-                style: textStyle(Colors.grey[400]!, 14, isBold: false),
-              ),
-            );
-          }
-
           return SafeArea(
             bottom: false,
             child: Container(
@@ -446,14 +390,22 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                       //Max Button
                                       maxButton(),
                                       //Amount box
-                                      fromAmountBox(amountBoxAndMaxButtonWid),
+                                      FromAmountBox(
+                                        amountBoxAndMaxButtonWid:
+                                            amountBoxAndMaxButtonWid,
+                                        tokenFromInputController:
+                                            _tokenFromInputController,
+                                        bloc: bloc,
+                                        addEventForFromInputValue:
+                                            addEventForFromInputValue,
+                                      )
                                     ],
                                   )
                                 ],
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
-                                children: [showBalance(tokenFromBalance)],
+                                children: [Balance(balance: tokenFromBalance)],
                               )
                             ],
                           ),
@@ -470,7 +422,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                 tokenToBalance: tokenToBalance,
                               ),
                             );
-                            _addEventForFromInputValue(
+                            addEventForFromInputValue(
                               _tokenFromInputController.text,
                               bloc,
                             );
@@ -512,12 +464,17 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                 children: [
                                   createTokenButton(2),
                                   // Amount box 2
-                                  toAmountBox(amountBoxAndMaxButtonWid),
+                                  ToAmountBox(
+                                    amountBoxAndMaxButtonWid:
+                                        amountBoxAndMaxButtonWid,
+                                    tokenToInputController:
+                                        _tokenToInputController,
+                                  )
                                 ],
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
-                                children: [showBalance(tokenToBalance)],
+                                children: [Balance(balance: tokenToBalance)],
                               ),
                             ],
                           ),
