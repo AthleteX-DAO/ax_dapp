@@ -90,35 +90,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
           final tokenFrom = state.tokenFrom;
           final tokenTo = state.tokenTo;
 
-          Container maxButton() {
-            return Container(
-              height: 24,
-              width: 40,
-              decoration: boxDecoration(
-                Colors.transparent,
-                100,
-                0.5,
-                Colors.grey[400]!,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  bloc
-                    ..add(MaxSwapTapEvent())
-                    ..add(
-                      NewTokenFromInputEvent(
-                        tokenInputFromAmount: double.parse(tokenFromBalance),
-                      ),
-                    );
-                  _tokenFromInputController.text = tokenFromBalance;
-                },
-                child: Text(
-                  'MAX',
-                  style: textStyle(Colors.grey[400]!, 8, isBold: false),
-                ),
-              ),
-            );
-          }
-
           bool isTokenSelected(Token selectedToken, int tknNum) {
             if (tknNum == 1) {
               return selectedToken.address == state.tokenFrom.address;
@@ -388,7 +359,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       //Max Button
-                                      maxButton(),
+                                      MaxButton(
+                                        bloc: bloc,
+                                        tokenFromBalance: tokenFromBalance,
+                                        tokenFromInputController:
+                                            _tokenFromInputController,
+                                      ),
                                       //Amount box
                                       FromAmountBox(
                                         amountBoxAndMaxButtonWid:
