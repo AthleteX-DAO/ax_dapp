@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+
+class Balance extends StatelessWidget {
+  const Balance({super.key, required this.balance});
+
+  final String balance;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      child: Text(
+        'Balance: $balance',
+        style: TextStyle(color: Colors.grey[400], fontSize: 14),
+      ),
+    );
+  }
+}
