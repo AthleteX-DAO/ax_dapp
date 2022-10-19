@@ -44,8 +44,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
     final _height = mediaquery.size.height;
     final _width = mediaquery.size.width;
     final wid = isWeb ? 550.0 : _width;
-    // Token container refers to box with border that contains tokenButton and
-    // input box
     final tokenContainerWid = wid * 0.95;
     final amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
 
@@ -128,9 +126,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     : () {
                         if (tknNum == 1) {
                           if (token == tokenTo) {
-                            // If the user changes the top token and it is the
-                            // same as the bottom token, then swap the top and
-                            // bottom
                             bloc.add(
                               SwapTokens(
                                 tokenFromBalance: tokenFromBalance,
@@ -156,7 +151,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           _tokenFromInputController.text,
                           bloc,
                         );
-
                         bloc.add(FetchTradeInfoRequested());
                         setState(() {
                           Navigator.pop(builderContext);
@@ -269,7 +263,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         ),
                       ),
                     ),
-                    Container(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         tkr,
