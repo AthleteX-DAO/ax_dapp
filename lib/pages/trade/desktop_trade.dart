@@ -1,7 +1,6 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/components/trade_approve_button.dart';
+import 'package:ax_dapp/pages/trade/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/confirm_transaction_dialog.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
@@ -232,7 +231,11 @@ class _DesktopTradeState extends State<DesktopTrade> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.name,
-                              style: textStyle(Colors.grey[100]!, 9, isBold: false),
+                              style: textStyle(
+                                Colors.grey[100]!,
+                                9,
+                                isBold: false,
+                              ),
                             ),
                           ),
                         ],
@@ -302,7 +305,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       child: Text(
                         tkr,
                         overflow: TextOverflow.ellipsis,
-                        style: textStyle(Colors.white, tkrTextSize, isBold: true),
+                        style:
+                            textStyle(Colors.white, tkrTextSize, isBold: true),
                       ),
                     ),
                     const Icon(
@@ -321,7 +325,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
               constraints: BoxConstraints(maxWidth: amountBoxAndMaxButtonWid),
               child: IntrinsicWidth(
                 child: TextFormField(
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                   controller: _tokenFromInputController,
                   onChanged: (value) => _addEventForFromInputValue(value, bloc),
                   style: textStyle(Colors.grey[400]!, 22, isBold: false),
@@ -356,150 +361,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     border: InputBorder.none,
                   ),
                 ),
-              ),
-            );
-          }
-
-          Widget showPrice(String price) {
-            return Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Price:',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    '$price ${tokenTo.ticker} per ${tokenFrom.ticker}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          Widget showLPFee(String lpFee) {
-            return Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Total Fees',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  Text(
-                    '$lpFee ${tokenFrom.ticker}',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          Widget showMarketPriceImpact(String priceImpact) {
-            return Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Market Price Impact:',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  Text(
-                    '$priceImpact %',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          Widget showMinimumReceived(String minReceived) {
-            return Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Minimum Received:',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  Text(
-                    '$minReceived ${tokenTo.ticker}',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          Widget showSlippageTolerance(int slippageTolerance) {
-            return Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Slippage Tolerance:',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  Text(
-                    '$slippageTolerance %',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          Widget showYouReceived(String receiveAmount) {
-            return Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'You receive:',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    '$receiveAmount ${tokenTo.ticker}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
               ),
             );
           }
@@ -553,7 +414,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'From',
-                            style: textStyle(Colors.grey[400]!, 12, isBold: false),
+                            style:
+                                textStyle(Colors.grey[400]!, 12, isBold: false),
                           ),
                         ),
                         //First Token container with border
@@ -625,7 +487,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'To',
-                            style: textStyle(Colors.grey[400]!, 12, isBold: false),
+                            style:
+                                textStyle(Colors.grey[400]!, 12, isBold: false),
                           ),
                         ),
                         //Second Token container with border
@@ -667,12 +530,27 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          showPrice(price),
-                          showLPFee(totalFee),
-                          showMarketPriceImpact(priceImpact),
-                          showMinimumReceived(minReceived),
-                          showSlippageTolerance(slippageTolerance),
-                          showYouReceived(receiveAmount)
+                          Price(
+                            price: price,
+                            tokenTo: tokenTo,
+                            tokenFrom: tokenFrom,
+                          ),
+                          LPFee(
+                            tokenFrom: tokenFrom,
+                            lpFee: totalFee,
+                          ),
+                          MarketPriceImpact(priceImpact: priceImpact),
+                          MinimumReceived(
+                            minReceived: minReceived,
+                            tokenTo: tokenTo,
+                          ),
+                          const SlippageTolerance(
+                            slippageTolerance: slippageTolerance,
+                          ),
+                          YouReceived(
+                            receiveAmount: receiveAmount,
+                            tokenTo: tokenTo,
+                          )
                         ],
                       ),
                     ),
