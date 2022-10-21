@@ -450,34 +450,36 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      width: wid,
-                      height: 110,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Price(
-                            price: price,
-                            tokenTo: tokenTo,
-                            tokenFrom: tokenFrom,
-                          ),
-                          LPFee(
-                            tokenFrom: tokenFrom,
-                            lpFee: totalFee,
-                          ),
-                          MarketPriceImpact(priceImpact: priceImpact),
-                          MinimumReceived(
-                            minReceived: minReceived,
-                            tokenTo: tokenTo,
-                          ),
-                          const SlippageTolerance(
-                            slippageTolerance: slippageTolerance,
-                          ),
-                          YouReceived(
-                            receiveAmount: receiveAmount,
-                            tokenTo: tokenTo,
-                          )
-                        ],
+                    FittedBox(
+                      child: SizedBox(
+                        width: wid,
+                        height: 110,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Price(
+                              price: price,
+                              tokenTo: tokenTo,
+                              tokenFrom: tokenFrom,
+                            ),
+                            LPFee(
+                              tokenFrom: tokenFrom,
+                              lpFee: totalFee,
+                            ),
+                            MarketPriceImpact(priceImpact: priceImpact),
+                            MinimumReceived(
+                              minReceived: minReceived,
+                              tokenTo: tokenTo,
+                            ),
+                            const SlippageTolerance(
+                              slippageTolerance: slippageTolerance,
+                            ),
+                            YouReceived(
+                              receiveAmount: receiveAmount,
+                              tokenTo: tokenTo,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     if (state.status != BlocStatus.error)
