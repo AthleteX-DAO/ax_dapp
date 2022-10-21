@@ -7,7 +7,8 @@ class Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return FittedBox(
+      fit: BoxFit.scaleDown,
       child: Text(
         'Balance: $balance',
         style: TextStyle(color: Colors.grey[400], fontSize: 14),
