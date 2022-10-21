@@ -290,7 +290,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 height: _height * 0.6,
                 alignment: Alignment.center,
                 child: Container(
-                  height: _height * 0.575,
+                  height: _height * 0.65,
                   width: wid,
                   decoration: boxDecoration(
                     Colors.grey[800]!.withOpacity(0.6),
@@ -332,7 +332,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           //First Token container with border
                           Container(
                             width: tokenContainerWid,
-                            height: _height * 0.1,
+                            height: _height * 0.11,
                             alignment: Alignment.center,
                             decoration: boxDecoration(
                               Colors.transparent,
@@ -423,7 +423,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           //Second Token container with border
                           Container(
                             width: tokenContainerWid,
-                            height: _height * 0.1,
+                            height: _height * 0.11,
                             alignment: Alignment.center,
                             decoration: boxDecoration(
                               Colors.transparent,
