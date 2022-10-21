@@ -1,5 +1,7 @@
 import 'package:ax_dapp/dialogs/promo/connected_wallet_promo_dialog.dart';
 import 'package:ax_dapp/pages/connect_wallet/mobile_login_page.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/connect_metamask_dialog.dart';
 import 'package:ax_dapp/wallet/widgets/dialogs/wrong_network_dialog.dart';
@@ -36,6 +38,12 @@ class WalletDialog extends StatelessWidget {
                 context: context,
                 builder: (context) => const ConnectedWalletPromoDialog(),
               );
+              final walletAddress =
+                  context.read<WalletBloc>().state.formattedWalletAddress;
+              context.read<TrackingCubit>().onConnectWalletSuccessful(
+                    publicAddress: walletAddress,
+                    axUnits: '"${toDecimal(state.axData.balance!, 6)} AX"',
+                  );
             }
           },
         ),
