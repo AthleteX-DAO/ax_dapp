@@ -494,8 +494,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         TradeApproveButton(
                           tokenFromInputController: _tokenFromInputController,
                           tokenToInputController: _tokenToInputController,
-                          width: 175,
-                          height: 40,
                           text: 'Approve',
                           approveCallback: swapController.approve,
                           confirmCallback: swapController.swap,
