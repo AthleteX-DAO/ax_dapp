@@ -303,41 +303,6 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
       );
     }
 
-    Widget createMyLiquiditySearchBar(
-      double layoutHgt,
-      double layoutWdt,
-      MyLiquidityBloc bloc,
-    ) {
-      return Container(
-        margin: EdgeInsets.only(bottom: layoutHgt * 0.01),
-        //1 - title width
-        width: _isWeb ? 300 : layoutWdt * 0.6,
-        //same as title
-        height: _isWeb ? 40 : layoutHgt * 0.05,
-        decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
-        child: Row(
-          children: [
-            Container(width: 8),
-            const Icon(Icons.search, color: Colors.white),
-            Container(width: 10),
-            Expanded(
-              child: TextFormField(
-                onChanged: (value) {
-                  bloc.add(SearchTermChanged(searchTerm: value));
-                },
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 8.5),
-                  hintText: 'Search a pair',
-                  hintStyle: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return BlocListener<WalletBloc, WalletState>(
       listener: (context, state) {
         if (state.isWalletConnected) {
@@ -398,11 +363,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                             if (_isWeb)
                               Container(
                                 padding: const EdgeInsets.only(bottom: 20),
-                                child: createMyLiquiditySearchBar(
-                                  gridHgt,
-                                  _layoutWdt,
-                                  bloc,
-                                ),
+                                child: MyLiquiditySearchBar(layoutHgt: _layoutHgt, isWeb: _isWeb, layoutWdt: _layoutWdt,),
                               ),
                           ],
                         ),
