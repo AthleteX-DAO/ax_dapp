@@ -265,14 +265,9 @@ class _DesktopFarmState extends State<DesktopFarm> {
           Container(
             width: isWeb ? 90 : (layoutWdt / 2) - 5,
             decoration: isAllFarms
-                ? boxDecoration(
-                    Colors.transparent,
-                    100,
-                    0,
-                    Colors.transparent,
-                  )
+                ? boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent)
                 : boxDecoration(
-                    Colors.grey[600]!,
+                    Colors.transparent,
                     100,
                     0,
                     Colors.transparent,

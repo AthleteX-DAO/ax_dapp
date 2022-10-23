@@ -96,7 +96,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                         },
                         child: Text(
                           'Add Liquidity',
-                          style: textStyle(Colors.white, 16, isBold:true),
+                          style: textStyle(Colors.white, 16, isBold: true),
                         ),
                       ),
                     ),
@@ -123,7 +123,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                         },
                         child: Text(
                           'My Liquidity',
-                          style: textStyle(Colors.white, 16, isBold:true),
+                          style: textStyle(Colors.white, 16, isBold: true),
                         ),
                       ),
                     ),

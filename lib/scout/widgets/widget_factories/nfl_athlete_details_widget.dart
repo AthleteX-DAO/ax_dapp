@@ -108,7 +108,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Key Statistics',
-                style: textStyle(Colors.white, 24, false, false),
+                style: textStyle(Colors.white, 20, false, false),
               ),
               SizedBox(
                 width: 300,
@@ -168,7 +168,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Current Season Stats',
-                style: textStyle(greyTextColor, 20, false, false),
+                style: textStyle(Colors.white, 20, false, false),
               ),
               SizedBox(
                 width: 300,

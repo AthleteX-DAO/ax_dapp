@@ -168,7 +168,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Current Season Stats',
-                style: textStyle(greyTextColor, 20, false, false),
+                style: textStyle(Colors.yellow, 20, false, false),
               ),
               SizedBox(
                 width: 300,
