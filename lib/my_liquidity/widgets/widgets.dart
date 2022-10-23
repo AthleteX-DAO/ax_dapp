@@ -1,6 +1,8 @@
 export 'badge_token.dart';
 export 'empty_wallet.dart';
 export 'loading_error.dart';
+export 'my_liquidity_card_information.dart';
+export 'my_liquidity_card_title.dart';
 export 'my_liquidity_search_bar.dart';
 export 'no_wallet.dart';
 export 'pool_remove_approve_button.dart';
