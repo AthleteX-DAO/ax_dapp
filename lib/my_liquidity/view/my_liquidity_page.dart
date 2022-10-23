@@ -10,7 +10,6 @@ import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,69 +24,6 @@ class MyLiquidityPage extends StatefulWidget {
 
   @override
   State<MyLiquidityPage> createState() => _MyLiquidityPageState();
-}
-
-class BadgeToken extends StatelessWidget {
-  const BadgeToken({
-    super.key,
-    required this.sport,
-    required this.symbol,
-  });
-
-  final SupportedSport sport;
-  final String symbol;
-
-  @override
-  Widget build(BuildContext context) {
-    return Badge(
-      shape: BadgeShape.square,
-      borderRadius: BorderRadius.circular(8),
-      badgeContent: Text(
-        sport.name.toUpperCase(),
-        style: textStyle(Colors.white, 12, isBold: true),
-      ),
-      position: BadgePosition.topEnd(top: -14, end: -14),
-      padding: const EdgeInsets.only(top: 2, bottom: 2, left: 5, right: 5),
-      child: Text(
-        symbol,
-        style: textStyle(Colors.white, 24, isBold: true),
-      ),
-    );
-  }
-}
-
-class SimpleToken extends StatelessWidget {
-  const SimpleToken({super.key, required this.symbol});
-
-  final String symbol;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        symbol,
-        style: textStyle(Colors.white, 24, isBold: true),
-      ),
-    );
-  }
-}
-
-class SportToken extends StatelessWidget {
-  const SportToken({
-    super.key,
-    required this.sport,
-    required this.symbol,
-  });
-
-  final SupportedSport sport;
-  final String symbol;
-
-  @override
-  Widget build(BuildContext context) {
-    if (sport == SupportedSport.all) return SimpleToken(symbol: symbol);
-    return BadgeToken(sport: sport, symbol: symbol);
-  }
 }
 
 class _MyLiquidityPageState extends State<MyLiquidityPage>
@@ -539,7 +475,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                     Text(
                                       'Remove Liquidity',
                                       style: textStyle(Colors.white, 20,
-                                          isBold: false),
+                                          isBold: false,),
                                     ),
                                   ],
                                 ),
@@ -551,7 +487,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                                         Text(
                                           '$value%',
                                           style: textStyle(Colors.white, 36,
-                                              isBold: true),
+                                              isBold: true,),
                                         ),
                                         const Spacer(),
                                         DecoratedBox(
@@ -1012,68 +948,6 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class EmptyWallet extends StatelessWidget {
-  const EmptyWallet({
-    super.key,
-    required this.width,
-    required this.height,
-  });
-
-  final double width;
-  final double height;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: const Text(
-          '''Connected wallet does not contain any Liquidity Tokens. You can get your positions on Add Liquidity page.''',
-          style: TextStyle(color: Colors.amber, fontSize: 30),
-        ),
-      ),
-    );
-  }
-}
-
-class NoWallet extends StatelessWidget {
-  const NoWallet({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: SizedBox(
-        height: 70,
-        width: 400,
-        child: Text(
-          'Please connect your wallet.',
-          textAlign: TextAlign.center, //Center text
-          style: TextStyle(color: Colors.amber, fontSize: 30),
-        ),
-      ),
-    );
-  }
-}
-
-class LoadingError extends StatelessWidget {
-  const LoadingError({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: SizedBox(
-        height: 70,
-        width: 400,
-        child: Text(
-          'Failed to load list of liquidity positions',
-          style: TextStyle(color: Colors.red, fontSize: 30),
-        ),
       ),
     );
   }
