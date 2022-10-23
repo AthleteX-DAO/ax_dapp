@@ -5,9 +5,9 @@ import 'package:ax_dapp/add_liquidity/widgets/pool_insufficient_button.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/debouncer.dart';
-import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -119,36 +119,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ..token1 = null;
           }
 
-          TextStyle textStyle(Color color, double size, bool isBold) {
-            if (isBold) {
-              return TextStyle(
-                color: color,
-                fontFamily: 'OpenSans',
-                fontSize: size,
-                fontWeight: FontWeight.w500,
-              );
-            } else {
-              return TextStyle(
-                color: color,
-                fontFamily: 'OpenSans',
-                fontSize: size,
-              );
-            }
-          }
-
-          BoxDecoration boxDecoration(
-            Color col,
-            double rad,
-            double borWid,
-            Color borCol,
-          ) {
-            return BoxDecoration(
-              color: col,
-              borderRadius: BorderRadius.circular(rad),
-              border: Border.all(color: borCol, width: borWid),
-            );
-          }
-
           bool isTokenSelected(Token currentToken, int tknNum) {
             if (tknNum == 1) {
               return currentToken.address == token0.address;
@@ -229,7 +199,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.name,
-                              style: textStyle(Colors.white, 12, true),
+                              style: textStyle(Colors.white, 12, isBold: true),
                             ),
                           ),
                           Container(
@@ -237,7 +207,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.ticker,
-                              style: textStyle(Colors.grey[100]!, 9, false),
+                              style: textStyle(Colors.grey[100]!, 9, isBold: false),
                             ),
                           ),
                         ],
@@ -245,19 +215,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     )
                   ],
                 ),
-              ),
-            );
-          }
-
-          Widget showBalance(int tknNum) {
-            return Container(
-              padding: const EdgeInsets.only(right: 10),
-              alignment: Alignment.bottomRight,
-              child: Text(
-                tknNum == 1
-                    ? 'Balance: ${toDecimal(balance0, 6)}'
-                    : 'Balance: ${toDecimal(balance1, 6)}',
-                style: textStyle(Colors.grey[600]!, 13, false),
               ),
             );
           }
@@ -297,8 +254,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             final tokenContainerWdt = elementWdt * 0.9;
             var tkr = 'Select a Token';
             AssetImage? _tokenImage = const AssetImage('assets/images/apt.png');
-            final decor =
-                boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
             if (tknNum == 1) {
               tkr = token0.ticker;
               _tokenImage = tokenImage(token0);
@@ -323,7 +278,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                       Container(
                         width: 175,
                         height: 40,
-                        decoration: decor,
+                        decoration: boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!),
                         child: TextButton(
                           onPressed: () => showDialog<void>(
                             context: context,
@@ -355,7 +310,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                               Expanded(
                                 child: Text(
                                   tkr,
-                                  style: textStyle(Colors.white, 16, true),
+                                  style: textStyle(Colors.white, 16, isBold: true),
                                 ),
                               ),
                               const Icon(
@@ -406,7 +361,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                   style: textStyle(
                                     Colors.grey[400]!,
                                     8,
-                                    false,
+                                    isBold: false,
                                   ),
                                 ),
                               ),
@@ -440,11 +395,11 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                     );
                                   }
                                 },
-                                style: textStyle(Colors.grey[400]!, 22, false),
+                                style: textStyle(Colors.grey[400]!, 22, isBold: false),
                                 decoration: InputDecoration(
                                   hintText: '0.00',
                                   hintStyle:
-                                      textStyle(Colors.grey[400]!, 22, false),
+                                      textStyle(Colors.grey[400]!, 22, isBold: false),
                                   contentPadding: const EdgeInsets.all(9),
                                   border: InputBorder.none,
                                 ),
@@ -460,136 +415,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                       )
                     ],
                   ),
-                  showBalance(tknNum),
+                  Balance(tokenNumber: tknNum),
                 ],
               ),
-            );
-          }
-
-          Widget addLiquidityToolTip(double elementWdt) {
-            return Tooltip(
-              triggerMode: TooltipTriggerMode.tap,
-              height: 50,
-              padding: const EdgeInsets.all(10),
-              verticalOffset: -100,
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(25),
-              ),
-              richMessage: TextSpan(
-                text:
-                    '''*Add liquidity to earn 0.25% of all trades on this pair proportional to your share of the pool and receive LP tokens.''',
-                style: TextStyle(color: Colors.grey[400], fontSize: 18),
-              ),
-              child: const Icon(
-                Icons.info_outline_rounded,
-                color: Colors.grey,
-                size: 25,
-              ),
-            );
-          }
-
-          Widget youWillReceiveToolTip() {
-            return Tooltip(
-              triggerMode: TooltipTriggerMode.tap,
-              height: 50,
-              padding: const EdgeInsets.all(10),
-              verticalOffset: -60,
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(25),
-              ),
-              richMessage: TextSpan(
-                text:
-                    '''*Output is estimated. If the price changes by more than 2%, your transaction will revert.''',
-                style: TextStyle(color: Colors.grey[400], fontSize: 18),
-              ),
-              child: const Icon(
-                Icons.info_outline_rounded,
-                color: Colors.grey,
-                size: 20,
-              ),
-            );
-          }
-
-          Widget poolShareDetailsHeader(double elementWdt, bool isAdvDetails) {
-            return SizedBox(
-              height: 30,
-              width: elementWdt,
-              child: Row(
-                mainAxisAlignment:
-                    isWeb ? MainAxisAlignment.start : MainAxisAlignment.center,
-                children: [
-                  Text(
-                    isAdvDetails ? 'Details: Price and Pool Share' : 'Details',
-                    style: textStyle(Colors.white, 21, true),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 6),
-                    child: addLiquidityToolTip(elementWdt),
-                  )
-                ],
-              ),
-            );
-          }
-
-          Widget showYouReceived(String amountToReceive) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: 25,
-                  child: Row(
-                    mainAxisAlignment: isWeb
-                        ? MainAxisAlignment.start
-                        : MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'You will receive:',
-                          style: textStyle(Colors.grey[600]!, 18, false),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 6),
-                        child: youWillReceiveToolTip(),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: isWeb
-                          ? MainAxisAlignment.spaceAround
-                          : MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 15),
-                          child: Text(
-                            amountToReceive,
-                            style: textStyle(Colors.white, 21, false),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${token0.ticker}/${token1.ticker}',
-                              style: textStyle(Colors.white, 15, false),
-                            ),
-                            Text(
-                              'LP Tokens',
-                              style: textStyle(Colors.white, 15, false),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                )
-              ],
             );
           }
 
@@ -603,7 +431,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  poolShareDetailsHeader(_elementWdt, isAdvDetails),
+                  ShareDetailsHeader(elementWdt: _elementWdt, isAdvDetails: isAdvDetails),
                   SizedBox(
                     width: _elementWdt,
                     child: Row(
@@ -613,28 +441,28 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                           width: _elementWdt / 4,
                           child: Text(
                             '${token0.ticker} Liquidity:',
-                            style: textStyle(Colors.grey[600]!, 15, false),
+                            style: textStyle(Colors.grey[600]!, 15, isBold: false),
                           ),
                         ),
                         SizedBox(
                           width: _elementWdt / 4,
                           child: Text(
                             poolInfo.reserve0,
-                            style: textStyle(Colors.white, 15, false),
+                            style: textStyle(Colors.white, 15, isBold: false),
                           ),
                         ),
                         SizedBox(
                           width: _elementWdt / 4,
                           child: Text(
                             '${token1.ticker} Liquidity:',
-                            style: textStyle(Colors.grey[600]!, 15, false),
+                            style: textStyle(Colors.grey[600]!, 15, isBold: false),
                           ),
                         ),
                         SizedBox(
                           width: _elementWdt / 4,
                           child: Text(
                             poolInfo.reserve1,
-                            style: textStyle(Colors.white, 15, false),
+                            style: textStyle(Colors.white, 15, isBold: false),
                           ),
                         ),
                       ],
@@ -650,34 +478,34 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                           width: _elementWdt / 4,
                           child: Text(
                             'Share of pool:',
-                            style: textStyle(Colors.grey[600]!, 15, false),
+                            style: textStyle(Colors.grey[600]!, 15, isBold: false),
                           ),
                         ),
                         SizedBox(
                           width: _elementWdt / 4,
                           child: Text(
                             '${poolInfo.shareOfPool}%',
-                            style: textStyle(Colors.white, 15, false),
+                            style: textStyle(Colors.white, 15, isBold: false),
                           ),
                         ),
                         SizedBox(
                           width: _elementWdt / 4,
                           child: Text(
                             'Expected yield:',
-                            style: textStyle(Colors.grey[600]!, 15, false),
+                            style: textStyle(Colors.grey[600]!, 15, isBold: false),
                           ),
                         ),
                         SizedBox(
                           width: _elementWdt / 4,
                           child: Text(
                             poolInfo.apy,
-                            style: textStyle(Colors.white, 15, false),
+                            style: textStyle(Colors.white, 15, isBold: false),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  showYouReceived(poolInfo.recieveAmount),
+                  const YouReceived(),
                   if (state.status == BlocStatus.success ||
                       state.status == BlocStatus.noData)
                     if (isSufficient(balance0, balance1))
@@ -741,7 +569,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     createTokenButton(1, elementWdt, _tokenAmountOneController),
                     Text(
                       '+',
-                      style: textStyle(Colors.grey[600]!, 35, true),
+                      style: textStyle(Colors.grey[600]!, 35, isBold: true),
                     ),
                     // Bottom Token container
                     createTokenButton(2, elementWdt, _tokenAmountTwoController),
