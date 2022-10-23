@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
+import 'package:ax_dapp/add_liquidity/models/pool_pair_info.dart';
 import 'package:ax_dapp/add_liquidity/widgets/pool_insufficient_button.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
@@ -432,79 +433,11 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ShareDetailsHeader(elementWdt: _elementWdt, isAdvDetails: isAdvDetails),
-                  SizedBox(
-                    width: _elementWdt,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: _elementWdt / 4,
-                          child: Text(
-                            '${token0.ticker} Liquidity:',
-                            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-                          ),
-                        ),
-                        SizedBox(
-                          width: _elementWdt / 4,
-                          child: Text(
-                            poolInfo.reserve0,
-                            style: textStyle(Colors.white, 15, isBold: false),
-                          ),
-                        ),
-                        SizedBox(
-                          width: _elementWdt / 4,
-                          child: Text(
-                            '${token1.ticker} Liquidity:',
-                            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-                          ),
-                        ),
-                        SizedBox(
-                          width: _elementWdt / 4,
-                          child: Text(
-                            poolInfo.reserve1,
-                            style: textStyle(Colors.white, 15, isBold: false),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Liquidity details
+                  LiquidityDetails(elementWdt: _elementWdt,),
                   // pool share / exp. yield
-                  SizedBox(
-                    width: _elementWdt,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: _elementWdt / 4,
-                          child: Text(
-                            'Share of pool:',
-                            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-                          ),
-                        ),
-                        SizedBox(
-                          width: _elementWdt / 4,
-                          child: Text(
-                            '${poolInfo.shareOfPool}%',
-                            style: textStyle(Colors.white, 15, isBold: false),
-                          ),
-                        ),
-                        SizedBox(
-                          width: _elementWdt / 4,
-                          child: Text(
-                            'Expected yield:',
-                            style: textStyle(Colors.grey[600]!, 15, isBold: false),
-                          ),
-                        ),
-                        SizedBox(
-                          width: _elementWdt / 4,
-                          child: Text(
-                            poolInfo.apy,
-                            style: textStyle(Colors.white, 15, isBold: false),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  PoolShareDetails(elementWdt: _elementWdt,),
+                  // Amount received
                   const YouReceived(),
                   if (state.status == BlocStatus.success ||
                       state.status == BlocStatus.noData)
