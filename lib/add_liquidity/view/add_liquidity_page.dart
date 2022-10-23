@@ -1,7 +1,4 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
-import 'package:ax_dapp/add_liquidity/models/pool_pair_info.dart';
 import 'package:ax_dapp/add_liquidity/widgets/pool_insufficient_button.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
@@ -223,7 +220,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
           void onTokenInputChange(
             int tokenNumber,
             String tokenInput,
-            bool hasData,
+            {required bool hasData,}
           ) {
             final _tokenInput = tokenInput.isEmpty ? '0' : tokenInput;
             _debouncer.run(() {
@@ -347,13 +344,13 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                     onTokenInputChange(
                                       tknNum,
                                       formattedBalance0,
-                                      true,
+                                      hasData: true,
                                     );
                                   } else {
                                     onTokenInputChange(
                                       tknNum,
                                       formattedBalance0,
-                                      false,
+                                      hasData: false,
                                     );
                                   }
                                 },
@@ -386,13 +383,13 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                     onTokenInputChange(
                                       tknNum,
                                       tokenInput,
-                                      true,
+                                      hasData: true,
                                     );
                                   } else {
                                     onTokenInputChange(
                                       tknNum,
                                       tokenInput,
-                                      false,
+                                      hasData: false,
                                     );
                                   }
                                 },
@@ -422,7 +419,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             );
           }
 
-          Widget pricePoolShareDetails(double elementWdt, bool isAdvDetails) {
+          Widget pricePoolShareDetails(double elementWdt, {required bool isAdvDetails}) {
             // element width refers to the width of the widget that is returned
             // by
             // this method
@@ -483,7 +480,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             double layoutHgt,
             double layoutWdt,
             double allLiquidityCardHgt,
-            bool isAdvDetails,
+            {required bool isAdvDetails,}
           ) {
             // elementWdt is half the page layout width for desktop version
             final elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
@@ -520,7 +517,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               ),
               // Pool details side (add liq.) -right side of liquidity pool card
               // bottom of card in mobile-
-              pricePoolShareDetails(elementWdt, isAdvDetails),
+              pricePoolShareDetails(elementWdt, isAdvDetails: isAdvDetails),
             ];
           }
 
@@ -556,7 +553,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             layoutHgt,
                             layoutWdt,
                             allLiquidityCardHgt,
-                            isAdvDetails,
+                            isAdvDetails: isAdvDetails,
                           ),
                         )
                       : Column(
@@ -564,7 +561,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             layoutHgt,
                             layoutWdt,
                             allLiquidityCardHgt,
-                            isAdvDetails,
+                            isAdvDetails: isAdvDetails,
                           ),
                         ),
                 ),
