@@ -33,7 +33,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-enum Pages { scout, trade, pool, farm }
+enum Pages { scout, trade, pool, farm, Vote }
 
 class V1App extends StatefulWidget {
   const V1App({super.key});
@@ -283,7 +283,7 @@ class _V1AppState extends State<V1App> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 SizedBox(
-                  width: 72,
+                  width: MediaQuery.of(context).size.width * 0.04 - 30,
                   height: 50,
                   child: IconButton(
                     icon: Image.asset('assets/images/x.png'),
@@ -394,6 +394,35 @@ class _V1AppState extends State<V1App> {
                     ),
                   ),
                 ),
+                TextButton(
+                  onPressed: () {
+                    if (pageNumber != Pages.Vote) {
+                      setPageNumber(Pages.Vote);
+                    }
+                  },
+
+                  child: Text(
+                    'Vote',
+                    style: textSwapState(
+                      pageNumber == Pages.Vote,
+                      textStyle(
+                        Colors.white,
+                        tabTxSz,
+                        true,
+                        false,
+                      ),
+                      textStyle(
+                        Colors.amber[400]!,
+                        tabTxSz,
+                        true,
+                        true,
+                      ),
+                    ),
+                  ),
+                ),
+
+
+
               ],
             ),
           ),
