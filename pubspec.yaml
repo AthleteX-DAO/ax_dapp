@@ -21,6 +21,7 @@ environment:
   sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
+  auto_size_text: ^3.0.0
   badges: ^2.0.3
   cache:
     path: packages/cache
