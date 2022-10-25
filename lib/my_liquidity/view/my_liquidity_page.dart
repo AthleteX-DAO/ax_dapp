@@ -1053,6 +1053,7 @@ class NoWallet extends StatelessWidget {
         width: 400,
         child: Text(
           'Please connect your wallet.',
+          textAlign: TextAlign.center, //Center text
           style: TextStyle(color: Colors.amber, fontSize: 30),
         ),
       ),
