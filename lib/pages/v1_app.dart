@@ -33,7 +33,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-enum Pages { scout, trade, pool, farm, Vote }
+enum Pages { scout, trade, pool, farm}
 
 class V1App extends StatefulWidget {
   const V1App({super.key});
@@ -267,7 +267,7 @@ class _V1AppState extends State<V1App> {
     final _width = MediaQuery.of(context).size.width;
     var tabTxSz = _width * 0.0185;
     if (tabTxSz < 19) tabTxSz = 19;
-    var tabBxSz = _width * 0.3;
+    var tabBxSz = _width * 0.35;
     if (tabBxSz < 350) tabBxSz = 350;
 
     return SizedBox(
@@ -283,7 +283,7 @@ class _V1AppState extends State<V1App> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.04 - 30,
+                  width: 72,
                   height: 50,
                   child: IconButton(
                     icon: Image.asset('assets/images/x.png'),
@@ -395,31 +395,26 @@ class _V1AppState extends State<V1App> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    if (pageNumber != Pages.Vote) {
-                      setPageNumber(Pages.Vote);
-                    }
+                  onPressed: ()  {
+                   final urlString = Uri.parse('https://snapshot.org/#/athletex.eth');
+                   launchUrl(urlString);
                   },
+                   
+                  
 
                   child: Text(
                     'Vote',
-                    style: textSwapState(
-                      pageNumber == Pages.Vote,
+                    style: 
                       textStyle(
                         Colors.white,
                         tabTxSz,
                         true,
                         false,
                       ),
-                      textStyle(
-                        Colors.amber[400]!,
-                        tabTxSz,
-                        true,
-                        true,
-                      ),
+                     
                     ),
                   ),
-                ),
+                
 
 
 
