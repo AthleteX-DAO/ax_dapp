@@ -219,8 +219,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
             var tkr = 'Select a Token';
             AssetImage? _tokenImage =
                 const AssetImage('../assets/images/apt.png');
-            final decor =
-                boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!);
             if (tknNum == 1) {
               tkr = tokenFrom.ticker;
               _tokenImage = tokenImage(tokenFrom);
@@ -236,7 +234,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 maxHeight: 100,
               ),
               height: 40,
-              decoration: decor,
+              decoration:
+                  boxDecoration(Colors.grey[800]!, 100, 0, Colors.grey[800]!),
               child: TextButton(
                 onPressed: () => showDialog<void>(
                   context: context,
@@ -283,237 +282,247 @@ class _DesktopTradeState extends State<DesktopTrade> {
             );
           }
 
-          return SafeArea(
-            bottom: false,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              height: _height - 114,
-              alignment: Alignment.center,
+          return LayoutBuilder(
+            builder: (context, constraints) => SafeArea(
+              bottom: false,
               child: Container(
-                height: _height * 0.575,
-                width: wid,
-                decoration: boxDecoration(
-                  Colors.grey[800]!.withOpacity(0.6),
-                  30,
-                  0.5,
-                  Colors.grey[400]!,
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          padding: isWeb
-                              ? const EdgeInsets.only(left: 20)
-                              : EdgeInsets.zero,
-                          width: wid - 50,
-                          alignment:
-                              isWeb ? Alignment.centerLeft : Alignment.center,
-                          child: Text(
-                            isWeb ? 'Swap' : 'Token Swap',
-                            style: textStyle(Colors.white, 16, isBold: false),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                height: _height * 0.6,
+                alignment: Alignment.center,
+                child: Container(
+                  height: _height * 0.65,
+                  width: wid,
+                  decoration: boxDecoration(
+                    Colors.grey[800]!.withOpacity(0.6),
+                    30,
+                    0.5,
+                    Colors.grey[400]!,
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            padding: isWeb
+                                ? const EdgeInsets.only(left: 20)
+                                : EdgeInsets.zero,
+                            width: wid - 50,
+                            alignment:
+                                isWeb ? Alignment.centerLeft : Alignment.center,
+                            child: Text(
+                              isWeb ? 'Swap' : 'Token Swap',
+                              style: textStyle(Colors.white, 16, isBold: false),
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 20),
-                          width: wid - 50,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'From',
-                            style:
-                                textStyle(Colors.grey[400]!, 12, isBold: false),
-                          ),
-                        ),
-                        //First Token container with border
-                        Container(
-                          width: tokenContainerWid,
-                          height: _height * 0.1,
-                          alignment: Alignment.center,
-                          decoration: boxDecoration(
-                            Colors.transparent,
-                            20,
-                            0.5,
-                            Colors.grey[400]!,
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          //This columns contains token info and balance below
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  createTokenButton(1),
-                                  //Max button and amount box 1
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      //Max Button
-                                      MaxButton(
-                                        bloc: bloc,
-                                        tokenFromBalance: tokenFromBalance,
-                                        tokenFromInputController:
-                                            _tokenFromInputController,
-                                      ),
-                                      //Amount box
-                                      FromAmountBox(
-                                        amountBoxAndMaxButtonWid:
-                                            amountBoxAndMaxButtonWid,
-                                        tokenFromInputController:
-                                            _tokenFromInputController,
-                                        bloc: bloc,
-                                        addEventForFromInputValue:
-                                            addEventForFromInputValue,
-                                      )
-                                    ],
-                                  )
-                                ],
+                          Container(
+                            padding: const EdgeInsets.only(left: 20),
+                            width: wid - 50,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'From',
+                              style: textStyle(
+                                Colors.grey[400]!,
+                                12,
+                                isBold: false,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [Balance(balance: tokenFromBalance)],
+                            ),
+                          ),
+                          //First Token container with border
+                          Container(
+                            width: tokenContainerWid,
+                            height: _height * 0.11,
+                            alignment: Alignment.center,
+                            decoration: boxDecoration(
+                              Colors.transparent,
+                              20,
+                              0.5,
+                              Colors.grey[400]!,
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            //This columns contains token info and balance below
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    createTokenButton(1),
+                                    //Max button and amount box 1
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        //Max Button
+                                        MaxButton(
+                                          bloc: bloc,
+                                          tokenFromBalance: tokenFromBalance,
+                                          tokenFromInputController:
+                                              _tokenFromInputController,
+                                        ),
+                                        //Amount box
+                                        FromAmountBox(
+                                          amountBoxAndMaxButtonWid:
+                                              amountBoxAndMaxButtonWid,
+                                          tokenFromInputController:
+                                              _tokenFromInputController,
+                                          bloc: bloc,
+                                          addEventForFromInputValue:
+                                              addEventForFromInputValue,
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Balance(balance: tokenFromBalance)
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              bloc.add(
+                                SwapTokens(
+                                  tokenFromBalance: tokenFromBalance,
+                                  tokenToBalance: tokenToBalance,
+                                ),
+                              );
+                              addEventForFromInputValue(
+                                _tokenFromInputController.text,
+                                bloc,
+                              );
+                            },
+                            child: Icon(
+                              Icons.arrow_downward,
+                              size: _height * 0.05,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(left: 20),
+                            width: wid - 50,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'To',
+                              style: textStyle(
+                                Colors.grey[400]!,
+                                12,
+                                isBold: false,
+                              ),
+                            ),
+                          ),
+                          //Second Token container with border
+                          Container(
+                            width: tokenContainerWid,
+                            height: _height * 0.11,
+                            alignment: Alignment.center,
+                            decoration: boxDecoration(
+                              Colors.transparent,
+                              20,
+                              0.5,
+                              Colors.grey[400]!,
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    createTokenButton(2),
+                                    // Amount box 2
+                                    ToAmountBox(
+                                      amountBoxAndMaxButtonWid:
+                                          amountBoxAndMaxButtonWid,
+                                      tokenToInputController:
+                                          _tokenToInputController,
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [Balance(balance: tokenToBalance)],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      FittedBox(
+                        child: SizedBox(
+                          width: wid,
+                          height: 110,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Price(
+                                price: price,
+                                tokenTo: tokenTo,
+                                tokenFrom: tokenFrom,
+                              ),
+                              LPFee(
+                                tokenFrom: tokenFrom,
+                                lpFee: totalFee,
+                              ),
+                              MarketPriceImpact(priceImpact: priceImpact),
+                              MinimumReceived(
+                                minReceived: minReceived,
+                                tokenTo: tokenTo,
+                              ),
+                              const SlippageTolerance(
+                                slippageTolerance: slippageTolerance,
+                              ),
+                              YouReceived(
+                                receiveAmount: receiveAmount,
+                                tokenTo: tokenTo,
                               )
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            bloc.add(
-                              SwapTokens(
-                                tokenFromBalance: tokenFromBalance,
-                                tokenToBalance: tokenToBalance,
-                              ),
-                            );
-                            addEventForFromInputValue(
-                              _tokenFromInputController.text,
-                              bloc,
-                            );
-                          },
-                          child: Icon(
-                            Icons.arrow_downward,
-                            size: _height * 0.05,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 20),
-                          width: wid - 50,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'To',
-                            style:
-                                textStyle(Colors.grey[400]!, 12, isBold: false),
-                          ),
-                        ),
-                        //Second Token container with border
-                        Container(
-                          width: tokenContainerWid,
-                          height: _height * 0.1,
-                          alignment: Alignment.center,
-                          decoration: boxDecoration(
-                            Colors.transparent,
-                            20,
-                            0.5,
-                            Colors.grey[400]!,
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  createTokenButton(2),
-                                  // Amount box 2
-                                  ToAmountBox(
-                                    amountBoxAndMaxButtonWid:
-                                        amountBoxAndMaxButtonWid,
-                                    tokenToInputController:
-                                        _tokenToInputController,
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [Balance(balance: tokenToBalance)],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: wid,
-                      height: 110,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Price(
-                            price: price,
-                            tokenTo: tokenTo,
-                            tokenFrom: tokenFrom,
-                          ),
-                          LPFee(
-                            tokenFrom: tokenFrom,
-                            lpFee: totalFee,
-                          ),
-                          MarketPriceImpact(priceImpact: priceImpact),
-                          MinimumReceived(
-                            minReceived: minReceived,
-                            tokenTo: tokenTo,
-                          ),
-                          const SlippageTolerance(
-                            slippageTolerance: slippageTolerance,
-                          ),
-                          YouReceived(
-                            receiveAmount: receiveAmount,
-                            tokenTo: tokenTo,
-                          )
-                        ],
                       ),
-                    ),
-                    if (state.status != BlocStatus.error)
-                      TradeApproveButton(
-                        tokenFromInputController: _tokenFromInputController,
-                        tokenToInputController: _tokenToInputController,
-                        width: 175,
-                        height: 40,
-                        text: 'Approve',
-                        approveCallback: swapController.approve,
-                        confirmCallback: swapController.swap,
-                        confirmDialog: const ConfirmTransactionDialog(),
-                        fromCurrency: tokenFrom.name,
-                        toCurrency: tokenTo.name,
-                        fromUnits: _tokenFromInputController.text,
-                        toUnits: receiveAmount,
-                        totalFee: totalFee,
-                        tradePageBloc: bloc,
-                      )
-                    else
-                      WarningTextButton(
-                        warningTitle: () {
-                          final failure = state.failure;
-                          if (failure is DisconnectedWalletFailure) {
-                            return 'Wallet not connected!';
-                          }
-                          if (failure is NoSwapInfoFailure) {
-                            return 'No swap info found';
-                          }
-                          if (failure is InSufficientFailure) {
-                            return 'Insufficient Balance';
-                          }
-                          return 'Something went wrong';
-                        }(),
-                      ),
-                  ],
+                      if (state.status != BlocStatus.error)
+                        TradeApproveButton(
+                          tokenFromInputController: _tokenFromInputController,
+                          tokenToInputController: _tokenToInputController,
+                          text: 'Approve',
+                          approveCallback: swapController.approve,
+                          confirmCallback: swapController.swap,
+                          confirmDialog: const ConfirmTransactionDialog(),
+                          fromCurrency: tokenFrom.name,
+                          toCurrency: tokenTo.name,
+                          fromUnits: _tokenFromInputController.text,
+                          toUnits: receiveAmount,
+                          totalFee: totalFee,
+                          tradePageBloc: bloc,
+                        )
+                      else
+                        WarningTextButton(
+                          warningTitle: () {
+                            final failure = state.failure;
+                            if (failure is DisconnectedWalletFailure) {
+                              return 'Wallet not connected!';
+                            }
+                            if (failure is NoSwapInfoFailure) {
+                              return 'No swap info found';
+                            }
+                            if (failure is InSufficientFailure) {
+                              return 'Insufficient Balance';
+                            }
+                            return 'Something went wrong';
+                          }(),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
