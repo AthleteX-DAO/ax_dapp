@@ -267,7 +267,7 @@ class _V1AppState extends State<V1App> {
     final _width = MediaQuery.of(context).size.width;
     var tabTxSz = _width * 0.0185;
     if (tabTxSz < 19) tabTxSz = 19;
-    var tabBxSz = _width * 0.3;
+    var tabBxSz = _width * 0.35;
     if (tabBxSz < 350) tabBxSz = 350;
 
     return SizedBox(
@@ -391,6 +391,22 @@ class _V1AppState extends State<V1App> {
                         true,
                         true,
                       ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    final urlString =
+                        Uri.parse('https://snapshot.org/#/athletex.eth');
+                    launchUrl(urlString);
+                  },
+                  child: Text(
+                    'Vote',
+                    style: textStyle(
+                      Colors.white,
+                      tabTxSz,
+                      true,
+                      false,
                     ),
                   ),
                 ),
