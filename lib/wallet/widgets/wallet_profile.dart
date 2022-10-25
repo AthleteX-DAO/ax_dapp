@@ -20,6 +20,9 @@ class WalletProfile extends StatelessWidget {
       showMatic = false;
       width = 350;
     }
+    if (_width < 825) {
+      width = 510;
+    }
     if (_width < 665) {
       showChain = false;
       width = 210;
