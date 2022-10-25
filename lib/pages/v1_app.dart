@@ -33,7 +33,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-enum Pages { scout, trade, pool, farm}
+enum Pages { scout, trade, pool, farm }
 
 class V1App extends StatefulWidget {
   const V1App({super.key});
@@ -395,29 +395,21 @@ class _V1AppState extends State<V1App> {
                   ),
                 ),
                 TextButton(
-                  onPressed: ()  {
-                   final urlString = Uri.parse('https://snapshot.org/#/athletex.eth');
-                   launchUrl(urlString);
+                  onPressed: () {
+                    final urlString =
+                        Uri.parse('https://snapshot.org/#/athletex.eth');
+                    launchUrl(urlString);
                   },
-                   
-                  
-
                   child: Text(
                     'Vote',
-                    style: 
-                      textStyle(
-                        Colors.white,
-                        tabTxSz,
-                        true,
-                        false,
-                      ),
-                     
+                    style: textStyle(
+                      Colors.white,
+                      tabTxSz,
+                      true,
+                      false,
                     ),
                   ),
-                
-
-
-
+                ),
               ],
             ),
           ),
