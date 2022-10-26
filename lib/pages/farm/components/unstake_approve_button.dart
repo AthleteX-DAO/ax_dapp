@@ -13,6 +13,7 @@ class UnStakeApproveButton extends StatefulWidget {
     required this.text,
     required this.confirmDialog,
     required this.selectedFarm,
+    required this.walletAddress,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class UnStakeApproveButton extends StatefulWidget {
   final double width;
   final double height;
   final FarmController selectedFarm;
+  final String walletAddress;
   final Dialog Function(BuildContext) confirmDialog;
 
   @override
@@ -75,6 +77,7 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
                 tickerPairName: info.tickerPairName,
                 axlInput: info.axlInput,
                 axlBalance: info.axlBalance,
+                walletId: widget.walletAddress,
               );
           //Confirm button pressed
           widget.selectedFarm.unstake().then((value) {
@@ -92,6 +95,7 @@ class _UnStakeApproveButtonState extends State<UnStakeApproveButton> {
                   tickerPairName: info.tickerPairName,
                   axlInput: info.axlInput,
                   axlBalance: info.axlBalance,
+                  walletId: widget.walletAddress,
                 );
           }).catchError((error) {
             showDialog<void>(

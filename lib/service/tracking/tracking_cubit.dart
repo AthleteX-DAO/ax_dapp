@@ -569,6 +569,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedStake({
@@ -576,6 +577,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -585,6 +587,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedStakeConfirm({
@@ -592,6 +595,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -601,6 +605,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onStakeSuccess({
@@ -608,6 +613,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -615,11 +621,13 @@ extension FarmPageTracking on TrackingCubit {
   void onPressedClaimRewards({
     required String tickerPair,
     required String tickerPairName,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedClaimRewards({
         'ticker_pair': tickerPair,
         'ticker_pair_name': tickerPairName,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -627,11 +635,13 @@ extension FarmPageTracking on TrackingCubit {
   void onClaimRewardsSuccess({
     required String tickerPair,
     required String tickerPairName,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onClaimRewardsSuccess({
         'ticker_pair': tickerPair,
         'ticker_pair_name': tickerPairName,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -641,6 +651,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedUnStake({
@@ -648,6 +659,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -657,6 +669,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onPressedUnStakeConfirm({
@@ -664,6 +677,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
@@ -673,6 +687,7 @@ extension FarmPageTracking on TrackingCubit {
     required String tickerPairName,
     required String axlInput,
     required String axlBalance,
+    required String walletId,
   }) {
     trackingRepository.track(
       FarmPageTrackingEvent.onUnStakeSuccess({
@@ -680,6 +695,7 @@ extension FarmPageTracking on TrackingCubit {
         'ticker_pair_name': tickerPairName,
         'axl_input': axlInput,
         'axl_balance': axlBalance,
+        'wallet_id': walletId,
       }),
     );
   }
