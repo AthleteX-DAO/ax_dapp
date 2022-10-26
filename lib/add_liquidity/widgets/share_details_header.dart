@@ -3,10 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ShareDetailsHeader extends StatelessWidget {
-  const ShareDetailsHeader({super.key, required this.elementWdt, required this.isAdvDetails});
+  const ShareDetailsHeader({super.key, required this.elementWdt});
 
   final double elementWdt;
-  final bool isAdvDetails;
   
 
   @override
@@ -20,9 +19,9 @@ class ShareDetailsHeader extends StatelessWidget {
         mainAxisAlignment:
             isWeb ? MainAxisAlignment.start : MainAxisAlignment.center,
         children: [
-          Text(
-            isAdvDetails ? 'Details: Price and Pool Share' : 'Details',
-            style: const TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.w500),
+          const Text(
+            'Details: Price and Pool Share',
+            style: TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.w500),
           ),
           Container(
             margin: const EdgeInsets.only(left: 6),

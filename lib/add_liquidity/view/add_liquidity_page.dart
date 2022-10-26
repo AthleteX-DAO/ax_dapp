@@ -65,9 +65,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaquery = MediaQuery.of(context);
-    final _height = mediaquery.size.height;
-    final _width = mediaquery.size.width;
+    final _height = MediaQuery.of(context).size.height;
+    final _width = MediaQuery.of(context).size.width;
     final isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final layoutHgt = _height * 0.8;
@@ -415,14 +414,14 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             );
           }
 
-          Widget pricePoolShareDetails(double elementWdt, {required bool isAdvDetails}) {
+          Widget pricePoolShareDetails(double elementWdt) {
             final _elementWdt = isWeb ? elementWdt * 0.85 : elementWdt * 0.9;
             return Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 20, right: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ShareDetailsHeader(elementWdt: _elementWdt, isAdvDetails: isAdvDetails),
+                  ShareDetailsHeader(elementWdt: _elementWdt,),
                   // Liquidity details
                   LiquidityDetails(elementWdt: _elementWdt,),
                   // pool share / exp. yield
@@ -473,7 +472,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             double layoutHgt,
             double layoutWdt,
             double allLiquidityCardHgt,
-            {required bool isAdvDetails,}
           ) {
             final elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
             final tokensSectionHgt = isWeb ? 280.0 : allLiquidityCardHgt * 0.55;
@@ -504,12 +502,11 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                   ],
                 ),
               ),
-              pricePoolShareDetails(elementWdt, isAdvDetails: isAdvDetails),
+              pricePoolShareDetails(elementWdt,),
             ];
           }
 
           Widget allLiquidityLayout(double layoutHgt, double layoutWdt) {
-            const isAdvDetails = true;
             final allLiquidityCardHgt = isWeb ? 300.0 : layoutHgt * 0.76;
 
             return Column(
@@ -533,7 +530,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             layoutHgt,
                             layoutWdt,
                             allLiquidityCardHgt,
-                            isAdvDetails: isAdvDetails,
                           ),
                         )
                       : Column(
@@ -541,7 +537,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             layoutHgt,
                             layoutWdt,
                             allLiquidityCardHgt,
-                            isAdvDetails: isAdvDetails,
                           ),
                         ),
                 ),
