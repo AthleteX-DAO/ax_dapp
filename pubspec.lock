@@ -520,6 +520,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  go_router:
+    dependency: "direct main"
+    description:
+      name: go_router
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.1"
   gql:
     dependency: transitive
     description:
@@ -905,6 +912,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+  property_change_notifier:
+    dependency: "direct main"
+    description:
+      name: property_change_notifier
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   provider:
     dependency: "direct main"
     description:
@@ -1460,4 +1474,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.17.0 <3.0.0"
-  flutter: ">=3.0.0"
+  flutter: ">=3.3.0"

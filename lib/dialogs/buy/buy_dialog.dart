@@ -16,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,7 +27,6 @@ class BuyDialog extends StatefulWidget {
     required this.aptPrice,
     required this.athleteId,
     required this.isLongApt,
-    required this.goToTradePage,
     super.key,
   });
   final AthleteScoutModel athlete;
@@ -34,7 +34,6 @@ class BuyDialog extends StatefulWidget {
   final double aptPrice;
   final int athleteId;
   final bool isLongApt;
-  final void Function() goToTradePage;
 
   @override
   State<StatefulWidget> createState() => _BuyDialogState();
@@ -251,7 +250,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.pop(context);
-                              widget.goToTradePage();
+                              context.goNamed('trade');
                             },
                         ),
                       ],

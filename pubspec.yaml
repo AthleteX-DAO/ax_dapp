@@ -44,11 +44,13 @@ dependencies:
   flutter_sparkline: ^0.1.0
   font_awesome_flutter: ^10.1.0
   get: ^4.6.5
+  go_router: ^5.1.1
   graphql_flutter: ^5.1.0
   intl: ^0.17.0
   local_auth: ^2.1.0
   motion_toast: ^2.3.2
   postgres: ^2.4.5
+  property_change_notifier: ^0.3.0
   provider: ^6.0.3
   retrofit: ^3.0.1+1
   search_page: ^2.0.0+1

@@ -13,9 +13,10 @@ import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class DesktopPool extends StatefulWidget {
-  const DesktopPool({super.key, required this.goToPage});
+  const DesktopPool({
+    super.key,
+  });
 
-  final void Function(int pageNumber) goToPage;
   @override
   State<StatefulWidget> createState() => _DesktopPoolState();
 }
@@ -158,7 +159,6 @@ class _DesktopPoolState extends State<DesktopPool> {
                     child: AddLiquidityPage(
                       token0: token0,
                       token1: token1,
-                      goToPage: widget.goToPage,
                     ),
                   ),
                 ),

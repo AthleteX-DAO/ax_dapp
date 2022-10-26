@@ -12,19 +12,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class MintDialog extends StatefulWidget {
   const MintDialog({
     required this.athlete,
-    required this.goToTradePage,
-    required this.goToPage,
     super.key,
   });
 
   final AthleteScoutModel athlete;
-  final void Function() goToTradePage;
-  final void Function(int page) goToPage;
 
   @override
   State<MintDialog> createState() => _MintDialogState();
@@ -218,7 +215,7 @@ class _MintDialogState extends State<MintDialog> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.pop(context);
-                              widget.goToTradePage();
+                              context.goNamed('trade');
                             },
                         ),
                       ],
@@ -303,7 +300,8 @@ class _MintDialogState extends State<MintDialog> {
                                   onPressed: () {
                                     bloc.add(OnMaxMintTap());
                                     _aptAmountController.text =
-                                        (balance / collateralPerPair).toStringAsFixed(6);
+                                        (balance / collateralPerPair)
+                                            .toStringAsFixed(6);
                                   },
                                   child: Text(
                                     'MAX',
@@ -409,7 +407,6 @@ class _MintDialogState extends State<MintDialog> {
                                 .approve(currentAxt.address);
                           },
                           confirmCallback: bloc.lspController.mint,
-                          goToPage: widget.goToPage,
                         )
                       else
                         WarningTextButton(

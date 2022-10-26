@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class RedeemDialog extends StatefulWidget {
   const RedeemDialog(
@@ -22,8 +23,7 @@ class RedeemDialog extends StatefulWidget {
     this.aptName,
     this.inputLongApt,
     this.inputShortApt,
-    this.valueInAX,
-    this.goToTradePage, {
+    this.valueInAX, {
     super.key,
   });
 
@@ -32,7 +32,6 @@ class RedeemDialog extends StatefulWidget {
   final String inputLongApt;
   final String inputShortApt;
   final String valueInAX;
-  final void Function() goToTradePage;
 
   @override
   State<RedeemDialog> createState() => _RedeemDialogState();
@@ -206,7 +205,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.pop(context);
-                              widget.goToTradePage();
+                              context.goNamed('trade');
                             },
                         ),
                       ],

@@ -12,6 +12,7 @@ import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
@@ -30,18 +31,14 @@ import 'package:wallet_repository/wallet_repository.dart';
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
     super.key,
-    required this.goToTradePage,
-    required this.goToPage,
   });
-
-  final void Function() goToTradePage;
-  final void Function(int page) goToPage;
 
   @override
   State<DesktopScout> createState() => _DesktopScoutState();
 }
 
 class _DesktopScoutState extends State<DesktopScout> {
+  Global global = Global();
   final myController = TextEditingController(text: input);
   static String input = '';
   bool athletePage = false;
@@ -76,88 +73,95 @@ class _DesktopScoutState extends State<DesktopScout> {
     final _height = MediaQuery.of(context).size.height;
     // breaks the code, will come back to it later(probably)
 
-    return BlocBuilder<ScoutPageBloc, ScoutPageState>(
-      buildWhen: (previous, current) {
-        return current.status.name.isNotEmpty ||
-            previous.selectedChain.chainId != current.selectedChain.chainId;
-      },
-      builder: (context, state) {
-        final bloc = context.read<ScoutPageBloc>();
-        final filteredAthletes = state.filteredAthletes;
-        if (_selectedChain != state.selectedChain) {
-          _selectedChain = state.selectedChain;
-          bloc.add(FetchScoutInfoRequested());
-        }
-        _selectedSport = state.selectedSport;
-        if (athletePage && curAthlete != null) {
-          return BlocProvider(
-            create: (context) => AthletePageBloc(
-              walletRepository: context.read<WalletRepository>(),
-              tokensRepository: context.read<TokensRepository>(),
-              mlbRepo: RepositoryProvider.of<MLBRepo>(context),
-              nflRepo: RepositoryProvider.of<NFLRepo>(context),
-              athlete: curAthlete!,
-              getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
-                tokensRepository: context.read<TokensRepository>(),
-                graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                sportsRepos: [
-                  RepositoryProvider.of<MLBRepo>(context),
-                  RepositoryProvider.of<NFLRepo>(context),
-                ],
-              ),
-            ),
-            child: AthletePage(
-              athlete: curAthlete!,
-              goToTradePage: widget.goToTradePage,
-              goToPage: widget.goToPage,
-            ),
-          );
-        }
-        return SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          child: Container(
-            margin: const EdgeInsets.only(top: 20),
-            height: _height * 0.85 + 41,
-            width: _width * 0.99,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
+    return Scaffold(
+        extendBodyBehindAppBar: true,
+        extendBody: true,
+        appBar: global.topNav(context),
+        bottomNavigationBar: global.bottomNav(context),
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: global.background(context),
+          child: BlocBuilder<ScoutPageBloc, ScoutPageState>(
+            buildWhen: (previous, current) {
+              return current.status.name.isNotEmpty ||
+                  previous.selectedChain.chainId !=
+                      current.selectedChain.chainId;
+            },
+            builder: (context, state) {
+              final bloc = context.read<ScoutPageBloc>();
+              final filteredAthletes = state.filteredAthletes;
+              if (_selectedChain != state.selectedChain) {
+                _selectedChain = state.selectedChain;
+                bloc.add(FetchScoutInfoRequested());
+              }
+              _selectedSport = state.selectedSport;
+              if (athletePage && curAthlete != null) {
+                return BlocProvider(
+                  create: (context) => AthletePageBloc(
+                    walletRepository: context.read<WalletRepository>(),
+                    tokensRepository: context.read<TokensRepository>(),
+                    mlbRepo: RepositoryProvider.of<MLBRepo>(context),
+                    nflRepo: RepositoryProvider.of<NFLRepo>(context),
+                    athlete: curAthlete!,
+                    getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
+                      tokensRepository: context.read<TokensRepository>(),
+                      graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+                      sportsRepos: [
+                        RepositoryProvider.of<MLBRepo>(context),
+                        RepositoryProvider.of<NFLRepo>(context),
+                      ],
+                    ),
+                  ),
+                  child: AthletePage(),
+                );
+              }
+              return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: Container(
                   margin: const EdgeInsets.only(top: 20),
-                  child: const Divider(
-                    color: Colors.grey,
+                  height: _height * 0.85 + 41,
+                  width: _width * 0.99,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        child: const Divider(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      // APT Title & Sport Filter
+                      Container(
+                        margin: const EdgeInsets.only(
+                            left: 20, right: 20, bottom: 10),
+                        width: _width * 1,
+                        height: 40,
+                        child: kIsWeb
+                            ? buildFilterMenuWeb(
+                                state,
+                                bloc,
+                                sportFilterTxSz,
+                                _width,
+                              )
+                            : buildFilterMenu(
+                                state,
+                                bloc,
+                                sportFilterTxSz,
+                                sportFilterIconSz,
+                              ),
+                      ),
+                      // List Headers
+                      buildListviewHeaders(),
+                      buildScoutView(state, filteredAthletes),
+                    ],
                   ),
                 ),
-                // APT Title & Sport Filter
-                Container(
-                  margin:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                  width: _width * 1,
-                  height: 40,
-                  child: kIsWeb
-                      ? buildFilterMenuWeb(
-                          state,
-                          bloc,
-                          sportFilterTxSz,
-                          _width,
-                        )
-                      : buildFilterMenu(
-                          state,
-                          bloc,
-                          sportFilterTxSz,
-                          sportFilterIconSz,
-                        ),
-                ),
-                // List Headers
-                buildListviewHeaders(),
-                buildScoutView(state, filteredAthletes),
-              ],
-            ),
+              );
+            },
           ),
-        );
-      },
-    );
+        ));
   }
 
   Stack buildScoutView(
@@ -900,7 +904,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                               aptPrice: athlete.longTokenBookPrice!,
                               athleteId: athlete.id,
                               isLongApt: isLongToken,
-                              goToTradePage: widget.goToTradePage,
                             ),
                           ),
                         );
@@ -1174,7 +1177,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                               aptPrice: athlete.longTokenBookPrice!,
                               athleteId: athlete.id,
                               isLongApt: isLongToken,
-                              goToTradePage: widget.goToTradePage,
                             ),
                           ),
                         );
