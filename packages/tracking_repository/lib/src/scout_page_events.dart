@@ -7,6 +7,11 @@ class ScoutPageTrackingEvent extends TrackEvent {
     Map<String, dynamic> params,
   ) : super(name: 'wallet_connection_success', params: params);
 
+  /// Informs tracking services that the user requested to connect a wallet
+  ScoutPageTrackingEvent.onConnectWalletPressed(
+    Map<String, dynamic> params,
+  ) : super(name: 'connect_wallet', params: params);
+
   /// Informs tracking services that view athlete button was pressed
   ScoutPageTrackingEvent.onPressedAthleteView(
     Map<String, dynamic> params,

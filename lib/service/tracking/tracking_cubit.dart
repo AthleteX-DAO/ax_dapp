@@ -33,11 +33,27 @@ extension ConnectWalletSuccessfulTracking on TrackingCubit {
   void onConnectWalletSuccessful({
     required String publicAddress,
     required String axUnits,
+    required String walletType,
   }) {
     trackingRepository.track(
       ScoutPageTrackingEvent.onConnectWalletSuccessful({
         'public_address': publicAddress,
         'ax_units': axUnits,
+        'wallet_type': walletType,
+      }),
+    );
+  }
+
+  void onConnectWalletPressed({
+    required String publicAddress,
+    required String axUnits,
+    required String walletType,
+  }) {
+    trackingRepository.track(
+      ScoutPageTrackingEvent.onConnectWalletPressed({
+        'public_address': publicAddress,
+        'ax_units': axUnits,
+        'wallet_type': walletType,
       }),
     );
   }
