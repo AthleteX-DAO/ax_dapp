@@ -4,6 +4,7 @@ import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -152,7 +153,9 @@ class _StakeDialogState extends State<StakeDialog> {
                       SizedBox(
                         width: 80,
                         child: TextFormField(
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           controller: stakeAxInput,
                           onChanged: (value) {
                             stakeInput(value, totalStakedBalance, selectedFarm);
@@ -262,6 +265,10 @@ class _StakeDialogState extends State<StakeDialog> {
                       text: 'Approve',
                       confirmDialog: transactionConfirmed,
                       selectedFarm: selectedFarm,
+                      walletAddress: context
+                          .read<WalletBloc>()
+                          .state
+                          .formattedWalletAddress,
                     )
                   ] else ...[
                     const WarningTextButton(
