@@ -24,7 +24,6 @@ class PoolRemoveApproveButton extends StatefulWidget {
     required this.shareOfPool,
     required this.percentRemoval,
     required this.lpTokenName,
-    required this.myLiquidityBloc,
     super.key,
   });
   final TabController tabController;
@@ -42,7 +41,6 @@ class PoolRemoveApproveButton extends StatefulWidget {
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Widget confirmDialog;
-  final MyLiquidityBloc myLiquidityBloc;
 
   @override
   State<PoolRemoveApproveButton> createState() =>
@@ -137,7 +135,7 @@ class _PoolRemoveApproveButtonState extends State<PoolRemoveApproveButton> {
                 builder: (BuildContext context) => widget.confirmDialog,
               ).then((value) {
                 //show loading spinner
-                widget.myLiquidityBloc
+                context.read<MyLiquidityBloc>()
                     .add(const FetchAllLiquidityPositionsRequested());
                 setState(() {
                   widget.tabController.index = 0;
