@@ -250,7 +250,7 @@ extension AthleteMintTracking on TrackingCubit {
     required String aptName,
     required String sport,
     required String inputApt,
-    required String valueInAx,
+    required double valueInAx,
     required String walletId,
   }) {
     trackingRepository.track(
@@ -271,7 +271,7 @@ extension AthleteMintTracking on TrackingCubit {
     required String aptName,
     required String sport,
     required String inputApt,
-    required String valueInAx,
+    required double valueInAx,
     required String walletId,
   }) {
     trackingRepository.track(
@@ -292,7 +292,7 @@ extension AthleteMintTracking on TrackingCubit {
     required String aptName,
     required String sport,
     required String inputApt,
-    required String valueInAx,
+    required double valueInAx,
     required String walletId,
   }) {
     trackingRepository.track(
