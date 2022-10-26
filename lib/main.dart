@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ax_dapp/app/app.dart';
+import 'package:ax_dapp/app/view/app_routing.dart';
 import 'package:ax_dapp/bootstrap.dart';
 import 'package:ax_dapp/firebase_options.dart';
 import 'package:ax_dapp/logger_interceptor.dart';

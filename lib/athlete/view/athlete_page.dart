@@ -3,6 +3,7 @@ import 'package:ax_dapp/athlete/widgets/widgets.dart';
 import 'package:ax_dapp/scout/scout.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
@@ -18,22 +19,18 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class AthletePage extends StatefulWidget {
-  const AthletePage({
+  AthletePage({
     super.key,
-    required this.athlete,
-    required this.goToTradePage,
-    required this.goToPage,
   });
 
-  final AthleteScoutModel athlete;
-  final void Function() goToTradePage;
-  final void Function(int page) goToPage;
+  AthleteScoutModel? athlete;
 
   @override
   State<AthletePage> createState() => _AthletePageState();
 }
 
 class _AthletePageState extends State<AthletePage> {
+  Global global = Global();
   late AthleteScoutModel athlete;
   int listView = 0;
 
@@ -49,7 +46,7 @@ class _AthletePageState extends State<AthletePage> {
   @override
   void initState() {
     super.initState();
-    athlete = widget.athlete;
+    athlete = global.curAthlete!;
     final aptPair = context.read<TokensRepository>().currentAptPair(athlete.id);
     Get.find<LSPController>().updateAptAddress(aptPair.address);
     _zoomPanBehavior = ZoomPanBehavior(
@@ -66,10 +63,7 @@ class _AthletePageState extends State<AthletePage> {
     final _mediaquery = MediaQuery.of(context);
     _isPortraitMode = _mediaquery.orientation == Orientation.portrait;
     if (listView == 1) {
-      return DesktopScout(
-        goToTradePage: widget.goToTradePage,
-        goToPage: widget.goToPage,
-      );
+      return DesktopScout();
     }
 
     return BlocListener<AthletePageBloc, AthletePageState>(
@@ -1001,7 +995,6 @@ class _AthletePageState extends State<AthletePage> {
                             isPortraitMode: _isPortraitMode,
                             containerWdt: _width,
                             isLongApt: aptTypeSelection.isLong,
-                            goToTradePage: widget.goToTradePage,
                           );
                         },
                       ),
@@ -1013,7 +1006,6 @@ class _AthletePageState extends State<AthletePage> {
                             isPortraitMode: _isPortraitMode,
                             containerWdt: _width,
                             isLongApt: aptTypeSelection.isLong,
-                            goToTradePage: widget.goToTradePage,
                           );
                         },
                       )
@@ -1026,8 +1018,6 @@ class _AthletePageState extends State<AthletePage> {
                         athlete: athlete,
                         isPortraitMode: _isPortraitMode,
                         containerWdt: _width,
-                        goToTradePage: widget.goToTradePage,
-                        goToPage: widget.goToPage,
                       ),
                       RedeemButton(
                         athlete: athlete,
@@ -1036,7 +1026,6 @@ class _AthletePageState extends State<AthletePage> {
                         valueInAX: '',
                         isPortraitMode: _isPortraitMode,
                         containerWdt: _width,
-                        goToTradePage: widget.goToTradePage,
                       )
                     ],
                   ),
@@ -1371,7 +1360,6 @@ class _AthletePageState extends State<AthletePage> {
                                 athlete: athlete,
                                 isPortraitMode: _isPortraitMode,
                                 containerWdt: containerWdt,
-                                goToTradePage: widget.goToTradePage,
                                 isLongApt: aptTypeSelection.isLong,
                               );
                             },
@@ -1385,7 +1373,6 @@ class _AthletePageState extends State<AthletePage> {
                                 isPortraitMode: _isPortraitMode,
                                 containerWdt: containerWdt,
                                 isLongApt: aptTypeSelection.isLong,
-                                goToTradePage: widget.goToTradePage,
                               );
                             },
                           )
@@ -1398,8 +1385,6 @@ class _AthletePageState extends State<AthletePage> {
                             athlete: athlete,
                             isPortraitMode: _isPortraitMode,
                             containerWdt: containerWdt,
-                            goToTradePage: widget.goToTradePage,
-                            goToPage: widget.goToPage,
                           ),
                           RedeemButton(
                             athlete: athlete,
@@ -1408,7 +1393,6 @@ class _AthletePageState extends State<AthletePage> {
                             valueInAX: '',
                             isPortraitMode: _isPortraitMode,
                             containerWdt: containerWdt,
-                            goToTradePage: widget.goToTradePage,
                           )
                         ],
                       ),

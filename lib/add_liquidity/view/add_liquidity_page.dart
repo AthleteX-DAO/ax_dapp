@@ -23,12 +23,10 @@ class AddLiquidityPage extends StatefulWidget {
     super.key,
     this.token0,
     this.token1,
-    required this.goToPage,
   });
 
   Token? token0;
   Token? token1;
-  final void Function(int pageNumber) goToPage;
 
   @override
   State<AddLiquidityPage> createState() => _AddLiquidityPageState();
@@ -359,7 +357,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         valueTwo: _tokenAmountTwoController.text,
                         shareOfPool: poolInfo.shareOfPool,
                         lpTokenName: '${token0.ticker}/${token1.ticker}',
-                        goToPage: widget.goToPage,
                       )
                     else
                       PoolInsufficientButton(
