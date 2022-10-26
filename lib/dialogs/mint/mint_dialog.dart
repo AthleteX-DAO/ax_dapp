@@ -401,7 +401,7 @@ class _MintDialogState extends State<MintDialog> {
                           athlete: widget.athlete,
                           aptName: widget.athlete.name,
                           inputApt: _aptAmountController.text,
-                          valueInAX: ' AX',
+                          valueInAX: spendAmount,
                           approveCallback: () {
                             final currentAxt =
                                 context.read<TokensRepository>().currentAxt;
