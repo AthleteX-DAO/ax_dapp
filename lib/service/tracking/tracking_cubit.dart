@@ -47,10 +47,11 @@ extension ScoutPageTracking on TrackingCubit {
   /// Get athlete view information for analytics
   void trackAthleteView({
     required String athleteName,
+    required String walletId,
   }) {
     trackingRepository.track(
       ScoutPageTrackingEvent.onPressedAthleteView(
-        {'apt_player_name': athleteName},
+        {'apt_player_name': athleteName, 'wallet_id': walletId},
       ),
     );
   }
