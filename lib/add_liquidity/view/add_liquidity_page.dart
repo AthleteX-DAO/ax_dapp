@@ -245,10 +245,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             double elementWdt,
             TextEditingController tokenAmountController,
           ) {
-            // Returns the tokenContainer containing dropdown menu button with
-            // token icon and ticker and amount input box
-            // element width refers to the width of half the all liquidity card
-            // (for desktop only
             final tokenContainerWdt = elementWdt * 0.9;
             var tkr = 'Select a Token';
             AssetImage? _tokenImage = const AssetImage('assets/images/apt.png');
@@ -420,9 +416,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
           }
 
           Widget pricePoolShareDetails(double elementWdt, {required bool isAdvDetails}) {
-            // element width refers to the width of the widget that is returned
-            // by
-            // this method
             final _elementWdt = isWeb ? elementWdt * 0.85 : elementWdt * 0.9;
             return Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 20, right: 10),
@@ -482,13 +475,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             double allLiquidityCardHgt,
             {required bool isAdvDetails,}
           ) {
-            // elementWdt is half the page layout width for desktop version
             final elementWdt = isWeb ? layoutWdt / 2 : layoutWdt;
             final tokensSectionHgt = isWeb ? 280.0 : allLiquidityCardHgt * 0.55;
-            // Returns the contents of all liquidity pool card
             return [
-              // Tokens side add liq. -left side of all liquidity pool card in
-              // desktop, top of card in mobile-
               SizedBox(
                 height: tokensSectionHgt,
                 width: elementWdt,
@@ -515,23 +504,17 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                   ],
                 ),
               ),
-              // Pool details side (add liq.) -right side of liquidity pool card
-              // bottom of card in mobile-
               pricePoolShareDetails(elementWdt, isAdvDetails: isAdvDetails),
             ];
           }
 
           Widget allLiquidityLayout(double layoutHgt, double layoutWdt) {
-            // Boolean to show advanced details
-            // Using 87% of layoutHgt at the moment (76) Pool Card + (5) Title +
-            // (6) Toggle Button
             const isAdvDetails = true;
             final allLiquidityCardHgt = isWeb ? 300.0 : layoutHgt * 0.76;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //Liquidity pool grey card
                 Container(
                   margin: const EdgeInsets.only(top: 20),
                   width: layoutWdt,
@@ -542,9 +525,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     1.5,
                     Colors.grey[400]!,
                   ),
-                  // if isWeb return a row structure for all liquidity card,
-                  // else
-                  // return a column
                   child: isWeb
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
