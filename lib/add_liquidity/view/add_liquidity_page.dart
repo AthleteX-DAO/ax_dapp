@@ -419,7 +419,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             ),
                             child: IntrinsicWidth(
                               child: TextFormField(
-                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                 readOnly: ((tknNum == 2) &&
                                         (state.status == BlocStatus.success))
                                     ? !isReadOnly

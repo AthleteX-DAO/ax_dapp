@@ -8,7 +8,6 @@ import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
-import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -173,9 +172,7 @@ Widget myFarmItem(
                   Colors.amber[600]!,
                 ),
                 child: TextButton(
-                  onPressed: () async {
-                    final walletAddress =
-                        context.read<WalletBloc>().state.formattedWalletAddress;
+                  onPressed: () async => {
                     context.read<TrackingCubit>().onPressedClaimRewards(
                           tickerPair: farm.athlete == null
                               ? farm.strName
@@ -183,8 +180,7 @@ Widget myFarmItem(
                           tickerPairName: farm.strStakedAlias.value.isNotEmpty
                               ? farm.strStakedAlias.value
                               : farm.strStakedSymbol.value,
-                          walletId: walletAddress,
-                        );
+                        ),
                     await farm.claim().then((value) {
                       showDialog<void>(
                         context: context,
@@ -197,14 +193,13 @@ Widget myFarmItem(
                             tickerPairName: farm.strStakedAlias.value.isNotEmpty
                                 ? farm.strStakedAlias.value
                                 : farm.strStakedSymbol.value,
-                            walletId: walletAddress,
                           );
                     }).catchError((error) {
                       showDialog<void>(
                         context: context,
                         builder: (context) => const FailedDialog(),
                       );
-                    });
+                    })
                   },
                   child: Text(
                     'Claim Rewards',
