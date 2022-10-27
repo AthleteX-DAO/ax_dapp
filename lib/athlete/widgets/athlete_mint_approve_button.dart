@@ -28,7 +28,7 @@ class AthleteMintApproveButton extends StatefulWidget {
   final AthleteScoutModel athlete;
   final String aptName;
   final String inputApt;
-  final String valueInAX;
+  final double valueInAX;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final void Function(int page) goToPage;

@@ -92,19 +92,20 @@ class _DesktopScoutState extends State<DesktopScout> {
         if (athletePage && curAthlete != null) {
           return BlocProvider(
             create: (context) => AthletePageBloc(
-                walletRepository: context.read<WalletRepository>(),
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
+              mlbRepo: RepositoryProvider.of<MLBRepo>(context),
+              nflRepo: RepositoryProvider.of<NFLRepo>(context),
+              athlete: curAthlete!,
+              getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
                 tokensRepository: context.read<TokensRepository>(),
-                mlbRepo: RepositoryProvider.of<MLBRepo>(context),
-                nflRepo: RepositoryProvider.of<NFLRepo>(context),
-                athlete: curAthlete!,
-                getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
-                  tokensRepository: context.read<TokensRepository>(),
-                  graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                  sportsRepos: [
-                    RepositoryProvider.of<MLBRepo>(context),
-                    RepositoryProvider.of<NFLRepo>(context),
-                  ],
-                )),
+                graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+                sportsRepos: [
+                  RepositoryProvider.of<MLBRepo>(context),
+                  RepositoryProvider.of<NFLRepo>(context),
+                ],
+              ),
+            ),
             child: AthletePage(
               athlete: curAthlete!,
               goToTradePage: widget.goToTradePage,
@@ -962,6 +963,12 @@ class _DesktopScoutState extends State<DesktopScout> {
       height: 70,
       child: OutlinedButton(
         onPressed: () {
+          final walletAddress =
+              context.read<WalletBloc>().state.formattedWalletAddress;
+          context.read<TrackingCubit>().trackAthleteView(
+                athleteName: athlete.name,
+                walletId: walletAddress,
+              );
           setState(() {
             curAthlete = athlete;
             athletePage = true;
@@ -1178,9 +1185,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        context
-                            .read<TrackingCubit>()
-                            .trackAthleteView(athleteName: athlete.name);
+                        final walletAddress = context
+                            .read<WalletBloc>()
+                            .state
+                            .formattedWalletAddress;
+                        context.read<TrackingCubit>().trackAthleteView(
+                              athleteName: athlete.name,
+                              walletId: walletAddress,
+                            );
                         setState(() {
                           curAthlete = athlete;
                           athletePage = true;

@@ -20,6 +20,7 @@ class WalletView extends StatelessWidget {
         context.read<TrackingCubit>().onConnectWalletSuccessful(
               publicAddress: walletAddress,
               axUnits: '"${toDecimal(state.axData.balance!, 6)} AX"',
+              walletType: 'MetaMask',
             );
       },
       child: BlocConsumer<WalletBloc, WalletState>(

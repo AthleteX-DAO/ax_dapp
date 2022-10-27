@@ -274,17 +274,17 @@ class _BuyDialogState extends State<BuyDialog> {
                     ),
                   ),
                 ),
-                //Input apt text with toggle
+                //Input AX text with toggle
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      isWeb
-                          ? 'Input AX:'
-                          : 'Input AX amount you want to spend:',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
+                    FittedBox(
+                      child: Text(
+                        'Input AX:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ),
                     toggleLongShortToken(wid, hgt),
@@ -355,6 +355,7 @@ class _BuyDialogState extends State<BuyDialog> {
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _aptAmountController,
+                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                 style: textStyle(Colors.grey[400]!, 22,
                                     isBold: false),
                                 decoration: InputDecoration(

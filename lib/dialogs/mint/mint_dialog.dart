@@ -319,6 +319,7 @@ class _MintDialogState extends State<MintDialog> {
                                 width: hgt * 0.2,
                                 child: IntrinsicWidth(
                                   child: TextField(
+                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                     controller: _aptAmountController,
                                     style: textStyle(
                                       Colors.grey[400]!,
@@ -400,7 +401,7 @@ class _MintDialogState extends State<MintDialog> {
                           athlete: widget.athlete,
                           aptName: widget.athlete.name,
                           inputApt: _aptAmountController.text,
-                          valueInAX: ' AX',
+                          valueInAX: spendAmount,
                           approveCallback: () {
                             final currentAxt =
                                 context.read<TokensRepository>().currentAxt;
