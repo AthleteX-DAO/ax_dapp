@@ -29,3 +29,12 @@ BoxDecoration boxDecoration(
     border: Border.all(color: borCol, width: borWid),
   );
 }
+
+TextStyle textSwapState({
+  required bool condition,
+  required TextStyle tabNotSelected,
+  required TextStyle tabSelected,
+}) {
+  if (condition) return tabSelected;
+  return tabNotSelected;
+}

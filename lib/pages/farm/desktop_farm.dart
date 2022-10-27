@@ -10,7 +10,7 @@ import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -305,6 +305,47 @@ class _DesktopFarmState extends State<DesktopFarm> {
   }
 
   Widget createSearchBar(FarmBloc bloc, double layoutWdt, double layoutHgt) {
+    final isWebMobile = kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.iOS ||
+            defaultTargetPlatform == TargetPlatform.android);
+    if (isWebMobile) {
+      return MobileSearchBar(
+        isWeb: isWeb,
+        myController: myController,
+        layoutHgt: layoutHgt,
+        layoutWdt: layoutWdt,
+        bloc: bloc,
+      );
+    } else {
+      return WebSearchBar(
+        isWeb: isWeb,
+        myController: myController,
+        layoutHgt: layoutHgt,
+        layoutWdt: layoutWdt,
+        bloc: bloc,
+      );
+    }
+  }
+}
+
+class WebSearchBar extends StatelessWidget {
+  const WebSearchBar({
+    Key? key,
+    required this.isWeb,
+    required this.myController,
+    required this.layoutWdt,
+    required this.layoutHgt,
+    required this.bloc,
+  }) : super(key: key);
+
+  final bool isWeb;
+  final TextEditingController myController;
+  final double layoutWdt;
+  final double layoutHgt;
+  final FarmBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: isWeb ? 250 : layoutWdt / 2,
       height: isWeb ? 40 : layoutHgt * 0.05,
@@ -325,6 +366,53 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 contentPadding: EdgeInsets.only(bottom: 8.5),
                 hintText: 'Search a farm',
                 hintStyle: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MobileSearchBar extends StatelessWidget {
+  const MobileSearchBar({
+    Key? key,
+    required this.isWeb,
+    required this.myController,
+    required this.layoutWdt,
+    required this.layoutHgt,
+    required this.bloc,
+  }) : super(key: key);
+
+  final bool isWeb;
+  final TextEditingController myController;
+  final double layoutWdt;
+  final double layoutHgt;
+  final FarmBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: isWeb ? 250 : layoutWdt / 2,
+      height: isWeb ? 40 : layoutHgt * 0.05,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
+      child: Row(
+        children: [
+          const SizedBox(width: 8),
+          const Icon(Icons.search, color: Colors.white),
+          const SizedBox(width: 8),
+          Expanded(
+            child: TextFormField(
+              controller: myController,
+              onChanged: (value) {
+                bloc.add(OnSearchFarms(searchedName: value));
+              },
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(bottom: layoutHgt * 0.022),
+                hintText: 'Search a farm',
+                hintStyle: const TextStyle(color: Colors.white),
               ),
             ),
           ),

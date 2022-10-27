@@ -1,8 +1,7 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
 import 'dart:async';
 
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,6 +58,12 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     updateFilteredApts();
   }
 
+  void updateKeyWord(String value) {
+    setState(() {
+      keyword = value;
+    });
+  }
+
   void updateTokens(List<Token> tokens) {
     if (mounted) {
       this.tokens = [...tokens];
@@ -84,127 +89,124 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
 
   @override
   Widget build(BuildContext context) {
-    final _height = MediaQuery.of(context).size.height;
-    final _width = MediaQuery.of(context).size.width;
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-    return Dialog(
-      backgroundColor: Colors.grey[900],
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25),
-      ),
-      // SingleChildScrollView prevents bottom overflow when keyboard pops up
-      child: SingleChildScrollView(
-        child: SizedBox(
-          width: isWeb ? _width * 0.20 : _width * 0.55,
-          height: _height * .65,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              // column of elements
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                height: _height * .625,
-                width: _width * 0.45 + 120,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 30,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Select a Token',
-                            style: textStyle(
-                              Colors.grey[400]!,
-                              16,
-                              false,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.grey[400],
-                              size: 30,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: createSearchBar(),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      margin: const EdgeInsets.only(top: 10),
-                      child: buildFilterMenuWeb(),
-                    ),
-                    SizedBox(
-                      height: _height * .625 - 160,
-                      child: (filteredTokens.isEmpty)
-                          ? const Center(
-                              child: Text(
-                                'No tokens are supported.',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 20,
-                                ),
+    return LayoutBuilder(
+      builder: (context, constraints) => Dialog(
+        backgroundColor: Colors.grey[900],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            width: isWeb
+                ? constraints.maxWidth * 0.20
+                : constraints.maxWidth * 0.55,
+            height: constraints.maxHeight * .65,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  height: constraints.maxHeight * .625,
+                  width: constraints.maxWidth * 0.45 + 120,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Select a Token',
+                              style: textStyle(
+                                Colors.grey[400]!,
+                                16,
+                                isBold: false,
                               ),
-                            )
-                          : ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: filteredTokens.length,
-                              itemBuilder: (context, index) {
-                                return widget.createTokenElement(
-                                  filteredTokens[index],
-                                  tokenNumber,
-                                );
-                              },
                             ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                            IconButton(
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: SearchBar(
+                          searchBarHintTextSize: constraints.maxWidth < 1100 ? 15 : 20 ,
+                          updateKeyWord: updateKeyWord,
+                          updateFilteredApts: updateFilteredApts,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(top: 10),
+                        child: BuildFilterMenu(
+                          selectedSport: selectedSport,
+                          setSelectedSport: setSelectedSport,
+                        ),
+                      ),
+                      SizedBox(
+                        height: constraints.maxHeight * .625 - 160,
+                        child: (filteredTokens.isEmpty)
+                            ? const FilterMenuError()
+                            : BuildListView(
+                                filteredTokens: filteredTokens,
+                                widget: widget,
+                                tokenNumber: tokenNumber,
+                              ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
 
-  Widget createSearchBar() {
-    final _height = MediaQuery.of(context).size.height;
-    final textSize = _height * 0.05;
-    var searchBarHintTextSize = textSize * 0.30;
-    if (!isWeb) searchBarHintTextSize = textSize * 0.40;
+class SearchBar extends StatelessWidget {
+  const SearchBar({
+    super.key,
+    required this.searchBarHintTextSize,
+    required this.updateKeyWord,
+    required this.updateFilteredApts,
+  });
+
+  final double searchBarHintTextSize;
+  final void Function(String) updateKeyWord;
+  final void Function() updateFilteredApts;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: 300,
       height: 40,
       decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
       child: Row(
         children: [
-          Container(width: 8),
+          const SizedBox(width: 8),
           const Icon(Icons.search, color: Colors.white),
-          Container(width: 10),
+          const SizedBox(width: 10),
           Expanded(
             child: TextFormField(
               onChanged: (value) {
-                setState(() {
-                  keyword = value;
-                });
+                updateKeyWord(value);
                 updateFilteredApts();
               },
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.only(bottom: 10),
-                hintText: 'Search a name or paste an address',
+                hintText: 'Search a token',
                 hintStyle: TextStyle(
                   color: Colors.white,
                   fontSize: searchBarHintTextSize,
@@ -217,13 +219,66 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
       ),
     );
   }
+}
 
-  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
-    if (condition) return tru;
-    return fls;
+class BuildListView extends StatelessWidget {
+  const BuildListView({
+    super.key,
+    required this.filteredTokens,
+    required this.widget,
+    required this.tokenNumber,
+  });
+
+  final List<Token> filteredTokens;
+  final AthleteTokenList widget;
+  final int tokenNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: filteredTokens.length,
+      itemBuilder: (context, index) {
+        return widget.createTokenElement(
+          filteredTokens[index],
+          tokenNumber,
+        );
+      },
+    );
   }
+}
 
-  Row buildFilterMenuWeb() {
+class FilterMenuError extends StatelessWidget {
+  const FilterMenuError({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'No tokens are supported.',
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 20,
+        ),
+      ),
+    );
+  }
+}
+
+class BuildFilterMenu extends StatelessWidget {
+  const BuildFilterMenu({
+    super.key,
+    required this.selectedSport,
+    required this.setSelectedSport,
+  });
+
+  final SupportedSport selectedSport;
+  final void Function(SupportedSport) setSelectedSport;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         TextButton(
@@ -233,9 +288,9 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
           child: Text(
             'ALL',
             style: textSwapState(
-              selectedSport == SupportedSport.all,
-              textStyle(Colors.white, 14, false),
-              textStyle(Colors.amber[400]!, 14, false),
+              condition: selectedSport == SupportedSport.all,
+              tabNotSelected: textStyle(Colors.white, 14, isBold: false),
+              tabSelected: textStyle(Colors.amber[400]!, 14, isBold: false),
             ),
           ),
         ),
@@ -246,9 +301,9 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
           child: Text(
             'MLB',
             style: textSwapState(
-              selectedSport == SupportedSport.MLB,
-              textStyle(Colors.white, 14, false),
-              textStyle(Colors.amber[400]!, 14, false),
+              condition: selectedSport == SupportedSport.MLB,
+              tabNotSelected: textStyle(Colors.white, 14, isBold: false),
+              tabSelected: textStyle(Colors.amber[400]!, 14, isBold: false),
             ),
           ),
         ),
@@ -259,45 +314,13 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
           child: Text(
             'NFL',
             style: textSwapState(
-              selectedSport == SupportedSport.NFL,
-              textStyle(Colors.white, 14, false),
-              textStyle(Colors.amber[400]!, 14, false),
+              condition: selectedSport == SupportedSport.NFL,
+              tabNotSelected: textStyle(Colors.white, 14, isBold: false),
+              tabSelected: textStyle(Colors.amber[400]!, 14, isBold: false),
             ),
           ),
         ),
-        const Spacer(),
-        Container(width: 10),
       ],
-    );
-  }
-
-  TextStyle textStyle(Color color, double size, bool isBold) {
-    if (isBold) {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-      );
-    } else {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
-    }
-  }
-
-  BoxDecoration boxDecoration(
-    Color col,
-    double rad,
-    double borWid,
-    Color borCol,
-  ) {
-    return BoxDecoration(
-      color: col,
-      borderRadius: BorderRadius.circular(rad),
-      border: Border.all(color: borCol, width: borWid),
     );
   }
 }
