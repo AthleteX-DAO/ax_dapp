@@ -276,17 +276,17 @@ class _SellDialogState extends State<SellDialog> {
                     ),
                   ),
                 ),
-                //Input APT text with toggle
+                //Input apt text with toggle
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    FittedBox(
-                      child: Text(
-                        'Input APT:',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                    Text(
+                      isWeb
+                          ? 'Input APT:'
+                          : 'Input APT amount you want to sell:',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
                       ),
                     ),
                     toggleLongShortToken(wid, hgt),
@@ -339,7 +339,6 @@ class _SellDialogState extends State<SellDialog> {
                             constraints: BoxConstraints(maxWidth: wid * 0.4),
                             child: IntrinsicWidth(
                               child: TextField(
-                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                 controller: _aptAmountController,
                                 style: textStyle(Colors.grey[400]!, 22,
                                     isBold: false),

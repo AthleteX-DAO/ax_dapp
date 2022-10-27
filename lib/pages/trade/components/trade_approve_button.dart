@@ -10,6 +10,8 @@ class TradeApproveButton extends StatefulWidget {
   const TradeApproveButton({
     required this.tokenFromInputController,
     required this.tokenToInputController,
+    required this.width,
+    required this.height,
     required this.text,
     required this.approveCallback,
     required this.confirmCallback,
@@ -24,6 +26,8 @@ class TradeApproveButton extends StatefulWidget {
   });
 
   final String text;
+  final double width;
+  final double height;
   final String fromCurrency;
   final String toCurrency;
   final String fromUnits;
@@ -41,6 +45,8 @@ class TradeApproveButton extends StatefulWidget {
 }
 
 class _TradeApproveButtonState extends State<TradeApproveButton> {
+  double width = 0;
+  double height = 0;
   String text = '';
   bool isApproved = false;
   Color? fillcolor;
@@ -50,6 +56,8 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
   @override
   void initState() {
     super.initState();
+    width = widget.width;
+    height = widget.height;
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;
@@ -96,78 +104,75 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      child: SizedBox(
-        width: 175,
-        height: 40,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.amber),
-            color: fillcolor,
-            borderRadius: BorderRadius.circular(100),
-          ),
-          child: TextButton(
-            onPressed: () {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.amber),
+        color: fillcolor,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: TextButton(
+        onPressed: () {
+          final walletAddress =
+              context.read<WalletBloc>().state.formattedWalletAddress;
+          if (isApproved) {
+            context.read<TrackingCubit>().onSwapConfirmClick(
+                  fromCurrency: widget.fromCurrency,
+                  toCurrency: widget.toCurrency,
+                  fromUnits: widget.fromUnits,
+                  toUnits: widget.toUnits,
+                  totalFee: widget.totalFee,
+                  walletId: walletAddress,
+                );
+            //Confirm button pressed
+            widget.confirmCallback().then((value) {
               final walletAddress =
                   context.read<WalletBloc>().state.formattedWalletAddress;
-              if (isApproved) {
-                context.read<TrackingCubit>().onSwapConfirmClick(
-                      fromCurrency: widget.fromCurrency,
-                      toCurrency: widget.toCurrency,
-                      fromUnits: widget.fromUnits,
-                      toUnits: widget.toUnits,
-                      totalFee: widget.totalFee,
-                      walletId: walletAddress,
-                    );
-                //Confirm button pressed
-                widget.confirmCallback().then((value) {
-                  final walletAddress =
-                      context.read<WalletBloc>().state.formattedWalletAddress;
-                  context.read<TrackingCubit>().onSwapConfirmedTransaction(
-                        fromCurrency: widget.fromCurrency,
-                        toCurrency: widget.toCurrency,
-                        fromUnits: widget.fromUnits,
-                        toUnits: widget.toUnits,
-                        totalFee: widget.totalFee,
-                        walletId: walletAddress,
-                      );
-                  showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) => widget.confirmDialog,
-                  ).then((value) {
-                    setState(() {
-                      resetButton();
-                      widget.tradePageBloc.add(FetchTradeInfoRequested());
-                      widget.tokenFromInputController.clear();
-                      widget.tokenToInputController.clear();
-                    });
-                  });
-                }).catchError((error) {
-                  showDialog<void>(
-                    context: context,
-                    builder: (context) => const FailedDialog(),
+              context.read<TrackingCubit>().onSwapConfirmedTransaction(
+                    fromCurrency: widget.fromCurrency,
+                    toCurrency: widget.toCurrency,
+                    fromUnits: widget.fromUnits,
+                    toUnits: widget.toUnits,
+                    totalFee: widget.totalFee,
+                    walletId: walletAddress,
                   );
+              showDialog<void>(
+                context: context,
+                builder: (BuildContext context) =>
+                    widget.confirmDialog,
+              ).then((value) {
+                setState(() {
+                  resetButton();
+                  widget.tradePageBloc.add(FetchTradeInfoRequested());
+                  widget.tokenFromInputController.clear();
+                  widget.tokenToInputController.clear();
                 });
-              } else {
-                //Approve button was pressed
-                context.read<TrackingCubit>().onSwapApproveClick(
-                      fromCurrency: widget.fromCurrency,
-                      toCurrency: widget.toCurrency,
-                      fromUnits: widget.fromUnits,
-                      toUnits: widget.toUnits,
-                      totalFee: widget.totalFee,
-                      walletId: walletAddress,
-                    );
-                changeButton();
-              }
-            },
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 16,
-                color: textcolor,
-              ),
-            ),
+              });
+            }).catchError((error) {
+              showDialog<void>(
+                context: context,
+                builder: (context) => const FailedDialog(),
+              );
+            });
+          } else {
+            //Approve button was pressed
+            context.read<TrackingCubit>().onSwapApproveClick(
+                  fromCurrency: widget.fromCurrency,
+                  toCurrency: widget.toCurrency,
+                  fromUnits: widget.fromUnits,
+                  toUnits: widget.toUnits,
+                  totalFee: widget.totalFee,
+                  walletId: walletAddress,
+                );
+            changeButton();
+          }
+        },
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 16,
+            color: textcolor,
           ),
         ),
       ),

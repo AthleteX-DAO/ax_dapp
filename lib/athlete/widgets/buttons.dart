@@ -20,7 +20,6 @@ import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class BuyButton extends StatelessWidget {
   const BuyButton({
@@ -266,11 +265,10 @@ class RedeemButton extends StatelessWidget {
             context.showWalletWarningToast();
           }
         },
-        child: AutoSizeText(
+        child: Text(
           'Redeem Pair',
           style: textStyle(Colors.white, 20, false, false),
-          maxLines: 1,
-        ), 
+        ),
       ),
     );
   }

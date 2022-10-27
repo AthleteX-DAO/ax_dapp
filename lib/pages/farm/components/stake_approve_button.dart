@@ -13,7 +13,6 @@ class StakeApproveButton extends StatefulWidget {
     required this.text,
     required this.confirmDialog,
     required this.selectedFarm,
-    required this.walletAddress,
     super.key,
   });
 
@@ -21,7 +20,6 @@ class StakeApproveButton extends StatefulWidget {
   final double width;
   final double height;
   final FarmController selectedFarm;
-  final String walletAddress;
   final Dialog Function(BuildContext) confirmDialog;
 
   @override
@@ -75,7 +73,6 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
             tickerPairName: info.tickerPairName,
             axlInput: info.axlInput,
             axlBalance: info.axlBalance,
-            walletId: widget.walletAddress,
           );
     }).catchError((_) {
       showDialog<void>(
@@ -115,7 +112,6 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
                   tickerPairName: info.tickerPairName,
                   axlInput: info.axlInput,
                   axlBalance: info.axlBalance,
-                  walletId: widget.walletAddress,
                 );
             //Confirm button pressed
             widget.selectedFarm.stake().then((value) {
@@ -134,7 +130,6 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
                     tickerPairName: info.tickerPairName,
                     axlInput: info.axlInput,
                     axlBalance: info.axlBalance,
-                    walletId: widget.walletAddress,
                   );
             }).catchError((error) {
               showDialog<void>(
