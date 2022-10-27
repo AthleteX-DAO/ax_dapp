@@ -305,7 +305,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     BoxConstraints(maxWidth: wid * 0.4),
                                 child: IntrinsicWidth(
                                   child: TextField(
-                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                     controller: _longInputController,
                                     style: textStyle(
                                       Colors.grey[400]!,
@@ -397,7 +396,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     BoxConstraints(maxWidth: wid * 0.4),
                                 child: IntrinsicWidth(
                                   child: TextField(
-                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                     controller: _shortInputController,
                                     style: textStyle(
                                       Colors.grey[400]!,

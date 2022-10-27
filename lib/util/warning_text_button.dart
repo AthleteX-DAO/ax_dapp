@@ -10,26 +10,22 @@ class WarningTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      child: SizedBox(
-        width: 175,
-        height: 40,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.red[400]!),
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(100),
-          ),
-          child: TextButton(
-            onPressed: null,
-            child: Text(
-              warningTitle,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.red[400],
-              ),
-            ),
+    return Container(
+      width: 175,
+      height: 45,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.red[400]!),
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: TextButton(
+        onPressed: null,
+        child: Text(
+          warningTitle,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.red[400],
           ),
         ),
       ),
