@@ -107,14 +107,6 @@ class WalletDialog extends StatelessWidget {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          final walletAddress =
-                            context.read<WalletBloc>().state.formattedWalletAddress;
-                          final axBalance = context.read<WalletBloc>().state.axData.balance;
-                          context.read<TrackingCubit>().onConnectWalletPressed(
-                                publicAddress: walletAddress,
-                                axUnits: '"${toDecimal(axBalance!, 6)} AX"',
-                                walletType: 'MetaMask',
-                              );
                           context
                               .read<WalletBloc>()
                               .add(const ConnectWalletRequested());
