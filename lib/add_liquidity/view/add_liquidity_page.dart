@@ -422,11 +422,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ShareDetailsHeader(elementWdt: _elementWdt,),
-                  // Liquidity details
                   LiquidityDetails(elementWdt: _elementWdt,),
-                  // pool share / exp. yield
                   PoolShareDetails(elementWdt: _elementWdt,),
-                  // Amount received
                   const YouReceived(),
                   if (state.status == BlocStatus.success ||
                       state.status == BlocStatus.noData)
@@ -543,7 +540,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             );
           }
 
-          //Bloc builder return
           return allLiquidityLayout(layoutHgt, layoutWdt);
         },
       ),
