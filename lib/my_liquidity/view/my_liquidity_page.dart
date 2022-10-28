@@ -32,7 +32,6 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
   double _layoutHgt = 0;
   PoolController poolController = Get.find();
   Controller controller = Get.find();
-  // double value = 0;
   LiquidityPositionInfo infoOfSelectedCard = LiquidityPositionInfo.empty();
   AssetImage? token0Icon = const AssetImage('assets/images/apt.png');
   AssetImage? token1Icon = const AssetImage('assets/images/apt.png');

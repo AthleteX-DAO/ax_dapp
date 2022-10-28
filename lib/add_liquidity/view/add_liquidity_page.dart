@@ -435,7 +435,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         width: _elementWdt * 0.95 - 150,
                         tokenAmountOneController: _tokenAmountOneController,
                         tokenAmountTwoController: _tokenAmountTwoController,
-                        height: 40,
                         text: 'Approve',
                         approveCallback: bloc.poolController.approve,
                         confirmCallback: bloc.poolController.addLiquidity,

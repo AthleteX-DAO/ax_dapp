@@ -1,6 +1,5 @@
 import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
 import 'package:ax_dapp/my_liquidity/widgets/pool_remove_approve_button.dart';
-import 'package:ax_dapp/service/confirmation_dialogs/removal_confirmed_dialog.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
@@ -458,8 +457,6 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                     children: [
                       PoolRemoveApproveButton(
                         tabController: widget._tabController,
-                        width: 175,
-                        height: 40,
                         text: 'Approve',
                         approveCallback: () {
                           final handler =
@@ -471,7 +468,6 @@ class _RemoveLiquidityPageState extends State<RemoveLiquidityPage> {
                               context.read<WalletRepository>().getTokenBalance;
                           return widget.poolController.removeLiquidity(handler);
                         },
-                        confirmDialog: const RemovalConfirmedDialog(),
                         currencyOne: widget.infoOfSelectedCard.token0Symbol,
                         currencyTwo: widget.infoOfSelectedCard.token1Symbol,
                         valueOne: tokenOneRemoveAmount,
