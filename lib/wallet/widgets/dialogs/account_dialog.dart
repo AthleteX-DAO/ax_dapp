@@ -92,7 +92,7 @@ class AccountDialog extends StatelessWidget {
                                   'Connected With Metamask',
                                   style: textStyle(
                                     Colors.grey[600]!,
-                                    13,
+                                    17, //change font size
                                     false,
                                   ),
                                 ),
@@ -104,7 +104,7 @@ class AccountDialog extends StatelessWidget {
                                     ),
                                     Text(
                                       formattedWalletAddress,
-                                      style: textStyle(Colors.white, 20, false),
+                                      style: textStyle(Colors.white, 18, false),
                                     ),
                                   ],
                                 ),
@@ -170,8 +170,9 @@ class AccountDialog extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Wrap(
+                      //Switched Row to Wrap to prevent overflowing
+                      direction: Axis.vertical,
                       children: [
                         TextButton(
                           onPressed: () {
@@ -190,7 +191,8 @@ class AccountDialog extends StatelessWidget {
                               ),
                               Text(
                                 'Copy Address',
-                                style: textStyle(Colors.grey[400]!, 15, false),
+                                style: textStyle(Colors.grey[400]!, 17,
+                                    false), //change font size
                               ),
                             ],
                           ),
@@ -210,7 +212,8 @@ class AccountDialog extends StatelessWidget {
                               ),
                               Text(
                                 'Show on Polygonscan',
-                                style: textStyle(Colors.grey[400]!, 15, false),
+                                style: textStyle(Colors.grey[400]!, 17,
+                                    false), //change font size
                               ),
                             ],
                           ),
