@@ -25,17 +25,12 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => AppBloc(
-            walletRepository: context.read<WalletRepository>(),
-            tokensRepository: context.read<TokensRepository>(),
             configRepository: configRepository,
           ),
           lazy: false,
         ),
         BlocProvider(
-          create: (_) => WalletBloc(
-            walletRepository: context.read<WalletRepository>(),
-            tokensRepository: context.read<TokensRepository>(),
-          ),
+          create: (_) => WalletBloc(),
         ),
         BlocProvider(
           create: (context) => TrackingCubit(

@@ -2,11 +2,14 @@ import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/view/wallet_view.dart';
+import 'package:config_repository/config_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 // singleton class
 class Global extends PropertyChangeNotifier<String> {
@@ -18,7 +21,6 @@ class Global extends PropertyChangeNotifier<String> {
     _page = 'landing';
     _isWeb = true;
     _selectedIndex = 0;
-    _pageController = PageController(initialPage: _selectedIndex);
   }
   static final Global _instance = Global._internal();
 
@@ -28,6 +30,9 @@ class Global extends PropertyChangeNotifier<String> {
   bool _isWeb = true;
   int _selectedIndex = 0;
   late PageController _pageController;
+  late ConfigRepository _configRepository;
+  late WalletRepository _walletRepository;
+  late TokensRepository _tokensRepository;
 
   List<AthleteScoutModel> get athleteList => _athleteList;
   set athleteList(List<AthleteScoutModel> list) {
@@ -59,6 +64,24 @@ class Global extends PropertyChangeNotifier<String> {
     notifyListeners('selectedIndex');
   }
 
+  ConfigRepository get configRepository => _configRepository;
+  set configRepository(ConfigRepository _configRepository) {
+    this._configRepository = _configRepository;
+    notifyListeners('configRepository');
+  }
+
+  WalletRepository get walletRepository => _walletRepository;
+  set walletRepository(WalletRepository _walletRepository) {
+    this._walletRepository = _walletRepository;
+    notifyListeners('walletRepository');
+  }
+
+  TokensRepository get tokensRepository => _tokensRepository;
+  set tokensRepository(TokensRepository _tokensRepository) {
+    this._tokensRepository = _tokensRepository;
+    notifyListeners('walletRepository');
+  }
+
   /// App-wide elements
 
   // Background
@@ -84,20 +107,20 @@ class Global extends PropertyChangeNotifier<String> {
     return isWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context);
   }
 
-  Widget backgroundNav(BuildContext context, Widget page) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: topNav(context),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: background(context),
-        child: page,
-      ),
-      bottomNavigationBar: bottomNav(context),
-    );
-  }
+  // Widget backgroundNav(BuildContext context, Widget page) {
+  //   return Scaffold(
+  //     extendBodyBehindAppBar: true,
+  //     extendBody: true,
+  //     appBar: topNav(context),
+  //     body: Container(
+  //       width: MediaQuery.of(context).size.width,
+  //       height: MediaQuery.of(context).size.height,
+  //       decoration: background(context),
+  //       child: page,
+  //     ),
+  //     bottomNavigationBar: bottomNav(context),
+  //   );
+  // }
 
   Widget topNavBar(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;

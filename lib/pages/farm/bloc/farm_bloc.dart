@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -17,14 +18,11 @@ part 'farm_state.dart';
 
 class FarmBloc extends Bloc<FarmEvent, FarmState> {
   FarmBloc({
-    required this.walletRepository,
-    required this.tokensRepository,
-    required this.configRepository,
     required this.streamAppDataChanges,
     required this.repo,
   }) : super(
           FarmState(
-            farmOwner: walletRepository.defaultChain.getFarmOwner(),
+            farmOwner: Global().walletRepository.defaultChain.getFarmOwner(),
           ),
         ) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -40,9 +38,9 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
     }
   }
 
-  final WalletRepository walletRepository;
-  final TokensRepository tokensRepository;
-  final ConfigRepository configRepository;
+  final WalletRepository walletRepository = Global().walletRepository;
+  final TokensRepository tokensRepository = Global().tokensRepository;
+  final ConfigRepository configRepository = Global().configRepository;
   final StreamAppDataChangesUseCase streamAppDataChanges;
   final GetFarmDataUseCase repo;
 

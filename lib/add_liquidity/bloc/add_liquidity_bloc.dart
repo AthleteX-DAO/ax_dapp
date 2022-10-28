@@ -3,28 +3,27 @@ import 'dart:async';
 import 'package:ax_dapp/add_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ethereum_api/src/tokens/models/contract.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-import 'package:ethereum_api/src/tokens/models/contract.dart';
+
 part 'add_liquidity_event.dart';
 part 'add_liquidity_state.dart';
 
 class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
   AddLiquidityBloc({
-    required WalletRepository walletRepository,
-    required TokensRepository tokensRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.poolController,
-  })  : _walletRepository = walletRepository,
-        _streamAppDataChanges = streamAppDataChanges,
+  })  : _streamAppDataChanges = streamAppDataChanges,
         super(
           AddLiquidityState(
-            token0: tokensRepository.currentTokens.first,
-            token1: tokensRepository.currentTokens[1],
+            token0: Global().tokensRepository.currentTokens.first,
+            token1: Global().tokensRepository.currentTokens[1],
           ),
         ) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -38,7 +37,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     add(const FetchPairInfoRequested());
   }
 
-  final WalletRepository _walletRepository;
+  final WalletRepository _walletRepository = Global().walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetPoolInfoUseCase repo;
   final PoolController poolController;
