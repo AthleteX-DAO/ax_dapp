@@ -27,6 +27,12 @@ extension LandingPageTracking on TrackingCubit {
       LandingPageEvent.onPressedStartTrading({}),
     );
   }
+
+  void onLandingPageView() {
+    trackingRepository.track(
+      LandingPageEvent.onLandingPageView({}),
+    );
+  }
 }
 
 extension ConnectWalletSuccessfulTracking on TrackingCubit {

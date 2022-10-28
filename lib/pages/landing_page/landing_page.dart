@@ -1,6 +1,8 @@
 import 'package:ax_dapp/pages/landing_page/components/landing_page_widgets.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -22,6 +24,7 @@ class _LandingPageState extends State<LandingPage> {
     var tradingTextSize = textSize * 0.7;
     if (_width < _height) textSize = _width * 0.05;
     if (!isWeb) tradingTextSize = textSize * 1.25;
+    context.read<TrackingCubit>().onLandingPageView();
 
     return Container(
       width: _width,
