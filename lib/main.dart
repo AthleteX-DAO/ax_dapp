@@ -15,6 +15,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:cache/cache.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/config_api.dart';
@@ -71,6 +72,21 @@ void main() async {
   final getPairInfoUseCase = GetPairInfoUseCase(subGraphRepo);
   final getSwapInfoUseCase = GetSwapInfoUseCase(getPairInfoUseCase);
 
+  final global = Global();
+
+  // ignore: cascade_invocations
+  global
+    ..walletRepository = WalletRepository(
+      walletApiClient,
+      cache,
+      defaultChain: defaultChain,
+    )
+    ..tokensRepository = TokensRepository(
+      tokensApiClient: tokensApiClient,
+      reactiveLspClient: reactiveLspClient,
+      coinGeckoApiClient: coinApi,
+    );
+
   unawaited(
     bootstrap(() async {
       await Firebase.initializeApp(
@@ -79,18 +95,10 @@ void main() async {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
-            create: (_) => WalletRepository(
-              walletApiClient,
-              cache,
-              defaultChain: defaultChain,
-            ),
+            create: (_) => global.walletRepository,
           ),
           RepositoryProvider(
-            create: (_) => TokensRepository(
-              tokensApiClient: tokensApiClient,
-              reactiveLspClient: reactiveLspClient,
-              coinGeckoApiClient: coinApi,
-            ),
+            create: (_) => global.tokensRepository,
           ),
           RepositoryProvider.value(value: gysrApiClient),
           RepositoryProvider.value(value: subGraphRepo),

@@ -12,22 +12,22 @@ import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class GetScoutAthletesDataUseCase {
   GetScoutAthletesDataUseCase({
-    required TokensRepository tokensRepository,
     required this.graphRepo,
     required List<SportsRepo<SportAthlete>> sportsRepos,
-  }) : _tokensRepository = tokensRepository {
+  }) {
     for (final repo in sportsRepos) {
       _repos[repo.sport] = repo;
     }
   }
 
-  final TokensRepository _tokensRepository;
+  final TokensRepository _tokensRepository = Global().tokensRepository;
   final SubGraphRepo graphRepo;
   final Map<SupportedSport, SportsRepo<SportAthlete>> _repos = {};
 
@@ -200,6 +200,9 @@ class GetScoutAthletesDataUseCase {
           ),
         );
       });
+
+      Global().athleteList = athletes;
+
       return athletes;
     }
   }

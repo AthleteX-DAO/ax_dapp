@@ -4,6 +4,7 @@ import 'package:ax_dapp/pages/trade/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair_info.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ethereum_api/src/tokens/models/contract.dart';
 import 'package:shared/shared.dart';
@@ -16,17 +17,15 @@ part 'trade_page_state.dart';
 
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   TradePageBloc({
-    required WalletRepository walletRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.swapController,
     required this.isBuyAX,
-  })  : _walletRepository = walletRepository,
-        _streamAppDataChanges = streamAppDataChanges,
+  })  : _streamAppDataChanges = streamAppDataChanges,
         super(
           TradePageState.initial(
             isBuyAX: isBuyAX,
-            chain: walletRepository.currentChain,
+            chain: Global().walletRepository.currentChain,
           ),
         ) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -42,7 +41,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     add(FetchTradeInfoRequested());
   }
 
-  final WalletRepository _walletRepository;
+  final WalletRepository _walletRepository = Global().walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetSwapInfoUseCase repo;
   final SwapController swapController;

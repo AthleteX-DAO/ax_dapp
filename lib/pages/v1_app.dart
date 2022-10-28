@@ -150,12 +150,9 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == Pages.scout)
             BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
-                tokenRepository: context.read<TokensRepository>(),
-                walletRepository: context.read<WalletRepository>(),
                 streamAppDataChanges:
                     context.read<StreamAppDataChangesUseCase>(),
                 repo: GetScoutAthletesDataUseCase(
-                  tokensRepository: context.read<TokensRepository>(),
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                   sportsRepos: [
                     RepositoryProvider.of<MLBRepo>(context),
@@ -168,7 +165,6 @@ class _V1AppState extends State<V1App> {
           else if (pageNumber == Pages.trade)
             BlocProvider(
               create: (BuildContext context) => TradePageBloc(
-                walletRepository: context.read<WalletRepository>(),
                 streamAppDataChanges:
                     context.read<StreamAppDataChangesUseCase>(),
                 repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
@@ -182,9 +178,6 @@ class _V1AppState extends State<V1App> {
           else if (pageNumber == Pages.farm)
             BlocProvider(
               create: (BuildContext context) => FarmBloc(
-                walletRepository: context.read<WalletRepository>(),
-                tokensRepository: context.read<TokensRepository>(),
-                configRepository: context.read<AppBloc>().configRepository,
                 streamAppDataChanges:
                     context.read<StreamAppDataChangesUseCase>(),
                 repo: GetFarmDataUseCase(
@@ -202,11 +195,8 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
             create: (BuildContext context) => ScoutPageBloc(
-              tokenRepository: context.read<TokensRepository>(),
-              walletRepository: context.read<WalletRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: GetScoutAthletesDataUseCase(
-                tokensRepository: context.read<TokensRepository>(),
                 graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                 sportsRepos: [
                   RepositoryProvider.of<MLBRepo>(context),
@@ -218,7 +208,6 @@ class _V1AppState extends State<V1App> {
           ),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
-              walletRepository: context.read<WalletRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
               swapController: Get.find(),
@@ -228,8 +217,6 @@ class _V1AppState extends State<V1App> {
           ),
           BlocProvider(
             create: (BuildContext context) => AddLiquidityBloc(
-              walletRepository: context.read<WalletRepository>(),
-              tokensRepository: context.read<TokensRepository>(),
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
               poolController: Get.find(),
@@ -238,9 +225,6 @@ class _V1AppState extends State<V1App> {
           ),
           BlocProvider(
             create: (BuildContext context) => FarmBloc(
-              walletRepository: context.read<WalletRepository>(),
-              tokensRepository: context.read<TokensRepository>(),
-              configRepository: context.read<AppBloc>().configRepository,
               streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: GetFarmDataUseCase(
                 gysrApiClient: context.read<GysrApiClient>(),

@@ -4,6 +4,7 @@ import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/confirm_transaction_dialog.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -38,6 +39,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   @override
   Widget build(BuildContext context) {
+    final global = Global();
     isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final mediaquery = MediaQuery.of(context);
@@ -47,54 +49,58 @@ class _DesktopTradeState extends State<DesktopTrade> {
     final tokenContainerWid = wid * 0.95;
     final amountBoxAndMaxButtonWid = tokenContainerWid * 0.5;
 
-    return BlocListener<WalletBloc, WalletState>(
-      listener: (context, state) {
-        if (state.isWalletConnected || state.isWalletDisconnected) {
-          context.read<TradePageBloc>().add(WatchAppDataChangesStarted());
-          _tokenFromInputController.clear();
-          _tokenToInputController.clear();
-        }
-        if (state.isWalletUnavailable) {
-          debugPrint('Wallet is unavailable -> ${state.isWalletUnavailable}');
-        }
-        if (state.isWalletUnsupported) {
-          debugPrint('wallet is not supported -> ${state.isWalletUnsupported}');
-        }
-      },
-      child: BlocConsumer<TradePageBloc, TradePageState>(
-        listenWhen: (_, current) => current.status == BlocStatus.error,
-        listener: (context, state) {
-          if (state.failure is NoSwapInfoFailure) {
-            context.showWarningToast(
-              title: 'Action Error',
-              description: 'No swap info found',
-            );
-          }
-        },
-        builder: (context, state) {
-          final bloc = context.read<TradePageBloc>();
-          final price = state.swapInfo.toPrice.toStringAsFixed(6);
-          final tokenToBalance = state.tokenToBalance.toStringAsFixed(6);
-          final tokenFromBalance = toDecimal(state.tokenFromBalance, 6);
-          final minReceived = state.swapInfo.minimumReceived.toStringAsFixed(6);
-          final priceImpact = state.swapInfo.priceImpact.toStringAsFixed(6);
-          final receiveAmount = state.status != BlocStatus.error
-              ? state.swapInfo.receiveAmount.toStringAsFixed(6)
-              : '0';
-          _tokenToInputController.text = receiveAmount;
-          final totalFee = state.swapInfo.totalFee.toStringAsFixed(6);
-          const slippageTolerance = 1;
-          final tokenFrom = state.tokenFrom;
-          final tokenTo = state.tokenTo;
-
-          bool isTokenSelected(Token selectedToken, int tknNum) {
-            if (tknNum == 1) {
-              return selectedToken.address == state.tokenFrom.address;
-            } else {
-              //tknNum == 2
-              return selectedToken.address == state.tokenTo.address;
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      appBar: global.topNav(context),
+      bottomNavigationBar: global.bottomNav(context),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: global.background(context),
+        child: BlocListener<WalletBloc, WalletState>(
+          listener: (context, state) {
+            if (state.isWalletConnected || state.isWalletDisconnected) {
+              context.read<TradePageBloc>().add(WatchAppDataChangesStarted());
+              _tokenFromInputController.clear();
+              _tokenToInputController.clear();
             }
-          }
+            if (state.isWalletUnavailable) {
+              debugPrint(
+                  'Wallet is unavailable -> ${state.isWalletUnavailable}');
+            }
+            if (state.isWalletUnsupported) {
+              debugPrint(
+                  'wallet is not supported -> ${state.isWalletUnsupported}');
+            }
+          },
+          child: BlocConsumer<TradePageBloc, TradePageState>(
+            listenWhen: (_, current) => current.status == BlocStatus.error,
+            listener: (context, state) {
+              if (state.failure is NoSwapInfoFailure) {
+                context.showWarningToast(
+                  title: 'Action Error',
+                  description: 'No swap info found',
+                );
+              }
+            },
+            builder: (context, state) {
+              final bloc = context.read<TradePageBloc>();
+              final price = state.swapInfo.toPrice.toStringAsFixed(6);
+              final tokenToBalance = state.tokenToBalance.toStringAsFixed(6);
+              final tokenFromBalance = toDecimal(state.tokenFromBalance, 6);
+              final minReceived =
+                  state.swapInfo.minimumReceived.toStringAsFixed(6);
+              final priceImpact = state.swapInfo.priceImpact.toStringAsFixed(6);
+              final receiveAmount = state.status != BlocStatus.error
+                  ? state.swapInfo.receiveAmount.toStringAsFixed(6)
+                  : '0';
+              _tokenToInputController.text = receiveAmount;
+              final totalFee = state.swapInfo.totalFee.toStringAsFixed(6);
+              const slippageTolerance = 1;
+              final tokenFrom = state.tokenFrom;
+              final tokenTo = state.tokenTo;
+              // TODO(mretana1999): add autofill feature
 
           void addEventForFromInputValue(String value, TradePageBloc bloc) {
             final _value = value.isEmpty ? '0' : value;
@@ -103,6 +109,15 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 tokenInputFromAmount: double.parse(_value),
               ),
             );
+          }
+
+          bool isTokenSelected(Token currentToken, int tknNum) {
+            if (tknNum == 1) {
+              return currentToken.address == state.tokenFrom.address;
+            } else {
+              //tknNum == 2
+              return currentToken.address == state.tokenTo.address;
+            }
           }
 
           Widget createTokenElement(
@@ -527,7 +542,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
               ),
             ),
           );
-        }, //BlocBuilder
+            }, //BlocBuilder
+          ),
+        ),
       ),
     );
   }
