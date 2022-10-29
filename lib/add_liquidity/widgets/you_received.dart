@@ -1,20 +1,24 @@
-import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class YouReceived extends StatelessWidget {
-  const YouReceived({super.key});
+  const YouReceived({
+    super.key,
+    required this.amountToReceive,
+    required this.token0,
+    required this.token1,
+  });
+
+  final String amountToReceive;
+  final Token token0;
+  final Token token1;
 
   @override
   Widget build(BuildContext context) {
     final isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
-    final amountToReceive =
-        context.read<AddLiquidityBloc>().state.poolPairInfo.recieveAmount;
-    final token0 = context.read<AddLiquidityBloc>().state.token0;
-    final token1 = context.read<AddLiquidityBloc>().state.token0;
     return Column(
       children: [
         SizedBox(

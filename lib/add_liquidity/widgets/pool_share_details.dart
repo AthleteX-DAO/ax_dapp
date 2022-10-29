@@ -22,28 +22,40 @@ class PoolShareDetails extends StatelessWidget {
             width: _elementWdt / 4,
             child: Text(
               'Share of pool:',
-              style: TextStyle(color: Colors.grey[600], fontSize: 15,),
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 15,
+              ),
             ),
           ),
           SizedBox(
             width: _elementWdt / 4,
             child: Text(
               '${poolInfo.shareOfPool}%',
-              style: const TextStyle(color: Colors.white, fontSize: 15,),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
             ),
           ),
           SizedBox(
             width: _elementWdt / 4,
             child: Text(
               'Expected yield:',
-              style: TextStyle(color: Colors.grey[600], fontSize: 15,),
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 15,
+              ),
             ),
           ),
           SizedBox(
             width: _elementWdt / 4,
             child: Text(
               poolInfo.apy,
-              style: const TextStyle(color: Colors.white, fontSize: 15,),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
             ),
           ),
         ],

@@ -204,7 +204,11 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.ticker,
-                              style: textStyle(Colors.grey[100]!, 9, isBold: false),
+                              style: textStyle(
+                                Colors.grey[100]!,
+                                9,
+                                isBold: false,
+                              ),
                             ),
                           ),
                         ],
@@ -218,9 +222,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
 
           void onTokenInputChange(
             int tokenNumber,
-            String tokenInput,
-            {required bool hasData,}
-          ) {
+            String tokenInput, {
+            required bool hasData,
+          }) {
             final _tokenInput = tokenInput.isEmpty ? '0' : tokenInput;
             _debouncer.run(() {
               if (hasData) {
@@ -248,7 +252,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             final textSize = _height * 0.05;
             var tkrTextSize = textSize * 0.25;
             if (!isWeb) tkrTextSize = textSize * 0.35;
-            var tkr = 'Select a Token';         
+            var tkr = 'Select a Token';
             AssetImage? _tokenImage = const AssetImage('assets/images/apt.png');
             if (tknNum == 1) {
               tkr = token0.ticker;
@@ -270,8 +274,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               child: TextButton(
                 onPressed: () => showDialog<void>(
                   context: context,
-                  builder: (BuildContext builderContext) =>
-                      AthleteTokenList(
+                  builder: (BuildContext builderContext) => AthleteTokenList(
                     tknNum,
                     (token, tknNumber) => createTokenElement(
                       token,
@@ -298,7 +301,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     Expanded(
                       child: Text(
                         tkr,
-                        style: textStyle(Colors.white, tkrTextSize, isBold: true),
+                        style:
+                            textStyle(Colors.white, tkrTextSize, isBold: true),
                       ),
                     ),
                     const Icon(
@@ -319,10 +323,20 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ShareDetailsHeader(elementWdt: _elementWdt,),
-                  LiquidityDetails(elementWdt: _elementWdt,),
-                  PoolShareDetails(elementWdt: _elementWdt,),
-                  const YouReceived(),
+                  ShareDetailsHeader(
+                    elementWdt: _elementWdt,
+                  ),
+                  LiquidityDetails(
+                    elementWdt: _elementWdt,
+                  ),
+                  PoolShareDetails(
+                    elementWdt: _elementWdt,
+                  ),
+                  YouReceived(
+                    amountToReceive: poolInfo.recieveAmount,
+                    token0: token0,
+                    token1: token1,
+                  ),
                   if (state.status == BlocStatus.success ||
                       state.status == BlocStatus.noData)
                     if (isSufficient(balance0, balance1))
@@ -371,218 +385,248 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
             final tokensSectionHgt = isWeb ? 280.0 : allLiquidityCardHgt * 0.55;
             return [
               LayoutBuilder(
-                builder: (context, constraints) => SafeArea(
-                  bottom: false,
-                  child: SizedBox(
-                    height: tokensSectionHgt,
-                    width: elementWdt,  
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        //First Token container with border
-                        Container(
-                          width: elementWdt,
-                          height: _height * 0.11,
-                          alignment: Alignment.center,
-                          decoration: boxDecoration(
-                            Colors.transparent,
-                            20,
-                            0.5,
-                            Colors.grey[400]!,
-                            ),
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                children: [
-                                  createTokenButton(1, elementWdt,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        height: 24,
-                                        width: 40,
-                                        decoration: boxDecoration(
-                                          Colors.transparent,
-                                          100,
-                                          0.5,
-                                          Colors.grey[400]!,
+                builder: (context, constraints) => SizedBox(
+                  height: tokensSectionHgt,
+                  width: elementWdt,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      //First Token container with border
+                      Container(
+                        width: elementWdt,
+                        height: _height * 0.085,
+                        alignment: Alignment.center,
+                        decoration: boxDecoration(
+                          Colors.transparent,
+                          20,
+                          0.5,
+                          Colors.grey[400]!,
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                createTokenButton(
+                                  1,
+                                  elementWdt,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      height: 24,
+                                      width: 40,
+                                      decoration: boxDecoration(
+                                        Colors.transparent,
+                                        100,
+                                        0.5,
+                                        Colors.grey[400]!,
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          final formattedBalance0 =
+                                              balance0.toStringAsFixed(6);
+                                          _tokenAmountOneController.text =
+                                              formattedBalance0;
+                                          if (state.status ==
+                                              BlocStatus.success) {
+                                            onTokenInputChange(
+                                              1,
+                                              formattedBalance0,
+                                              hasData: true,
+                                            );
+                                          } else {
+                                            onTokenInputChange(
+                                              1,
+                                              formattedBalance0,
+                                              hasData: false,
+                                            );
+                                          }
+                                        },
+                                        child: Text(
+                                          'MAX',
+                                          style: textStyle(
+                                            Colors.grey[400]!,
+                                            8,
+                                            isBold: false,
+                                          ),
                                         ),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            final formattedBalance0 =
-                                                balance0.toStringAsFixed(6);
-                                            _tokenAmountOneController.text =
-                                                formattedBalance0;
-                                            if (state.status == BlocStatus.success) {
+                                      ),
+                                    ),
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxWidth: elementWdt * 0.5,
+                                      ),
+                                      child: IntrinsicWidth(
+                                        child: TextFormField(
+                                          keyboardType: const TextInputType
+                                              .numberWithOptions(decimal: true),
+                                          controller: _tokenAmountOneController,
+                                          onChanged: (tokenInput) {
+                                            if (state.status ==
+                                                BlocStatus.success) {
                                               onTokenInputChange(
                                                 1,
-                                                formattedBalance0,
+                                                tokenInput,
                                                 hasData: true,
                                               );
                                             } else {
                                               onTokenInputChange(
                                                 1,
-                                                formattedBalance0,
+                                                tokenInput,
                                                 hasData: false,
                                               );
                                             }
                                           },
-                                          child: Text(
-                                            'MAX',
-                                            style: textStyle(
+                                          style: textStyle(
+                                            Colors.grey[400]!,
+                                            22,
+                                            isBold: false,
+                                          ),
+                                          decoration: InputDecoration(
+                                            hintText: '0.00',
+                                            hintStyle: textStyle(
                                               Colors.grey[400]!,
-                                              8,
+                                              22,
                                               isBold: false,
                                             ),
+                                            contentPadding:
+                                                const EdgeInsets.all(9),
+                                            border: InputBorder.none,
                                           ),
-                                        ),
-                                      ),
-                                      ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxWidth: elementWdt * 0.5,
-                                        ),
-                                        child: IntrinsicWidth(
-                                          child: TextFormField(
-                                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                            controller: _tokenAmountOneController,
-                                            onChanged: (tokenInput) {
-                                              if (state.status == BlocStatus.success) {
-                                                onTokenInputChange(
-                                                  1,
-                                                  tokenInput,
-                                                  hasData: true,
-                                                );
-                                              } else {
-                                                onTokenInputChange(
-                                                  1,
-                                                  tokenInput,
-                                                  hasData: false,
-                                                );
-                                              }
-                                            },
-                                            style: textStyle(Colors.grey[400]!, 22, isBold: false),
-                                            decoration: InputDecoration(
-                                              hintText: '0.00',
-                                              hintStyle:
-                                                  textStyle(Colors.grey[400]!, 22, isBold: false),
-                                              contentPadding: const EdgeInsets.all(9),
-                                              border: InputBorder.none,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(r'^(\d+)?\.?\d{0,6}'),
                                             ),
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.allow(
-                                                RegExp(r'^(\d+)?\.?\d{0,6}'),
-                                              ),
-                                            ],
-                                          ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Balance(balance: balance0),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        //Second Token container with border
-                        Container(
-                          width: elementWdt,
-                          height: _height * 0.11,
-                          alignment: Alignment.center,
-                          decoration: boxDecoration(
-                            Colors.transparent,
-                            20,
-                            0.5,
-                            Colors.grey[400]!,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                children: [
-                                  createTokenButton(2, elementWdt,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxWidth: elementWdt * 0.5,
-                                        ),
-                                        child: IntrinsicWidth(
-                                          child: TextFormField(
-                                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                            controller: _tokenAmountTwoController,
-                                            onChanged: (tokenInput) {
-                                              if (state.status == BlocStatus.success) {
-                                                onTokenInputChange(
-                                                  2,
-                                                  tokenInput,
-                                                  hasData: true,
-                                                );
-                                              } else {
-                                                onTokenInputChange(
-                                                  2,
-                                                  tokenInput,
-                                                  hasData: false,
-                                                );
-                                              }
-                                            },
-                                            style: textStyle(Colors.grey[400]!, 22, isBold: false),
-                                            decoration: InputDecoration(
-                                              hintText: '0.00',
-                                              hintStyle:
-                                                  textStyle(Colors.grey[400]!, 22, isBold: false),
-                                              contentPadding: const EdgeInsets.all(9),
-                                              border: InputBorder.none,
-                                            ),
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.allow(
-                                                RegExp(r'^(\d+)?\.?\d{0,6}'),
-                                              ),
-                                            ],
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Balance(balance: balance0),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        '+',
+                        style: textStyle(Colors.grey[600]!, 35, isBold: true),
+                      ),
+                      //Second Token container with border
+                      Container(
+                        width: elementWdt,
+                        height: _height * 0.085,
+                        alignment: Alignment.center,
+                        decoration: boxDecoration(
+                          Colors.transparent,
+                          20,
+                          0.5,
+                          Colors.grey[400]!,
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                createTokenButton(
+                                  2,
+                                  elementWdt,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxWidth: elementWdt * 0.5,
+                                      ),
+                                      child: IntrinsicWidth(
+                                        child: TextFormField(
+                                          keyboardType: const TextInputType
+                                              .numberWithOptions(decimal: true),
+                                          controller: _tokenAmountTwoController,
+                                          onChanged: (tokenInput) {
+                                            if (state.status ==
+                                                BlocStatus.success) {
+                                              onTokenInputChange(
+                                                2,
+                                                tokenInput,
+                                                hasData: true,
+                                              );
+                                            } else {
+                                              onTokenInputChange(
+                                                2,
+                                                tokenInput,
+                                                hasData: false,
+                                              );
+                                            }
+                                          },
+                                          style: textStyle(
+                                            Colors.grey[400]!,
+                                            22,
+                                            isBold: false,
                                           ),
+                                          decoration: InputDecoration(
+                                            hintText: '0.00',
+                                            hintStyle: textStyle(
+                                              Colors.grey[400]!,
+                                              22,
+                                              isBold: false,
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.all(9),
+                                            border: InputBorder.none,
+                                          ),
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(r'^(\d+)?\.?\d{0,6}'),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Balance(balance: balance1,),
-                                ],
-                              ),
-                            ],
-                          ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Balance(
+                                  balance: balance1,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        if (state.status == BlocStatus.noData) ...[
-                          const Text(
-                            'Not Created - Please input both token amounts',
-                          ),
-                        ] else ...[
-                          const Text(
-                            'Please input an amount of liquidity for both tokens',
-                          ),
-                        ]
-                      ],
-                    ),
+                      ),
+                      if (state.status == BlocStatus.noData) ...[
+                        const Text(
+                          'Not Created - Please input both token amounts',
+                        ),
+                      ] else ...[
+                        const Text(
+                          'Please input an amount of liquidity for both tokens',
+                        ),
+                      ]
+                    ],
                   ),
                 ),
               ),
-              pricePoolShareDetails(elementWdt,),
+              pricePoolShareDetails(
+                elementWdt,
+              ),
             ];
           }
 
