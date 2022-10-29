@@ -393,7 +393,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     children: [
                       //First Token container with border
                       Container(
-                        width: elementWdt,
+                        width: elementWdt * 0.9,
                         height: _height * 0.085,
                         alignment: Alignment.center,
                         decoration: boxDecoration(
@@ -524,7 +524,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                       ),
                       //Second Token container with border
                       Container(
-                        width: elementWdt,
+                        width: elementWdt * 0.9,
                         height: _height * 0.085,
                         alignment: Alignment.center,
                         decoration: boxDecoration(
