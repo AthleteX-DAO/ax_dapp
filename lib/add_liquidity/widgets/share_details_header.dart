@@ -6,7 +6,6 @@ class ShareDetailsHeader extends StatelessWidget {
   const ShareDetailsHeader({super.key, required this.elementWdt});
 
   final double elementWdt;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,11 @@ class ShareDetailsHeader extends StatelessWidget {
         children: [
           const Text(
             'Details: Price and Pool Share',
-            style: TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 21,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           Container(
             margin: const EdgeInsets.only(left: 6),
