@@ -11,7 +11,7 @@ class Balance extends StatelessWidget {
       padding: const EdgeInsets.only(right: 10),
       alignment: Alignment.bottomRight,
       child: Text(
-        '$balance',
+        'Balance: $balance',
         style: TextStyle(color: Colors.grey[400], fontSize: 13),
       ),
     );
