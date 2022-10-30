@@ -222,23 +222,14 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
 
           void onTokenInputChange(
             int tokenNumber,
-            String tokenInput, {
-            required bool hasData,
-          }) {
+            String tokenInput,
+          ) {
             final _tokenInput = tokenInput.isEmpty ? '0' : tokenInput;
             _debouncer.run(() {
-              if (hasData) {
-                if (tokenNumber == 1) {
-                  bloc.add(Token0AmountChanged(_tokenInput));
-                } else {
-                  bloc.add(Token1AmountChanged(_tokenInput));
-                }
+              if (tokenNumber == 1) {
+                bloc.add(Token0AmountChanged(_tokenInput));
               } else {
-                if (tokenNumber == 1) {
-                  bloc.add(Token0AmountChanged(_tokenInput));
-                } else {
-                  bloc.add(Token1AmountChanged(_tokenInput));
-                }
+                bloc.add(Token1AmountChanged(_tokenInput));
               }
             });
           }
@@ -431,20 +422,10 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                               balance0.toStringAsFixed(6);
                                           _tokenAmountOneController.text =
                                               formattedBalance0;
-                                          if (state.status ==
-                                              BlocStatus.success) {
-                                            onTokenInputChange(
-                                              1,
-                                              formattedBalance0,
-                                              hasData: true,
-                                            );
-                                          } else {
-                                            onTokenInputChange(
-                                              1,
-                                              formattedBalance0,
-                                              hasData: false,
-                                            );
-                                          }
+                                          onTokenInputChange(
+                                            1,
+                                            formattedBalance0,
+                                          );
                                         },
                                         child: Text(
                                           'MAX',
@@ -466,20 +447,10 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                               .numberWithOptions(decimal: true),
                                           controller: _tokenAmountOneController,
                                           onChanged: (tokenInput) {
-                                            if (state.status ==
-                                                BlocStatus.success) {
-                                              onTokenInputChange(
-                                                1,
-                                                tokenInput,
-                                                hasData: true,
-                                              );
-                                            } else {
-                                              onTokenInputChange(
-                                                1,
-                                                tokenInput,
-                                                hasData: false,
-                                              );
-                                            }
+                                            onTokenInputChange(
+                                              1,
+                                              tokenInput,
+                                            );
                                           },
                                           style: textStyle(
                                             Colors.grey[400]!,
@@ -557,20 +528,10 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                               .numberWithOptions(decimal: true),
                                           controller: _tokenAmountTwoController,
                                           onChanged: (tokenInput) {
-                                            if (state.status ==
-                                                BlocStatus.success) {
-                                              onTokenInputChange(
-                                                2,
-                                                tokenInput,
-                                                hasData: true,
-                                              );
-                                            } else {
-                                              onTokenInputChange(
-                                                2,
-                                                tokenInput,
-                                                hasData: false,
-                                              );
-                                            }
+                                            onTokenInputChange(
+                                              2,
+                                              tokenInput,
+                                            );
                                           },
                                           style: textStyle(
                                             Colors.grey[400]!,
