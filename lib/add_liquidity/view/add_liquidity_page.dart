@@ -61,7 +61,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
     super.dispose();
   }
 
-  bool isReadOnly = true;
+  bool showDetailsHeader = true;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +71,10 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final layoutHgt = _height * 0.8;
     final layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
+
+    if (_width < 900) {
+      showDetailsHeader = false;
+    }
 
     return BlocListener<WalletBloc, WalletState>(
       listener: (context, state) {
@@ -314,9 +318,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ShareDetailsHeader(
-                    elementWdt: _elementWdt,
-                  ),
+                  if (showDetailsHeader) ShareDetailsHeader(elementWdt: _elementWdt,),
                   LiquidityDetails(
                     elementWdt: _elementWdt,
                   ),
