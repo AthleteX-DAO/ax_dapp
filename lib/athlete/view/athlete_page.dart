@@ -1,5 +1,8 @@
 import 'package:ax_dapp/athlete/bloc/athlete_page_bloc.dart';
 import 'package:ax_dapp/athlete/widgets/widgets.dart';
+import 'package:ax_dapp/repositories/mlb_repo.dart';
+import 'package:ax_dapp/repositories/nfl_repo.dart';
+import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/scout/scout.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
@@ -15,8 +18,10 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class AthletePage extends StatefulWidget {
   AthletePage({
@@ -24,7 +29,7 @@ class AthletePage extends StatefulWidget {
     required this.athlete,
   });
 
-  final AthleteScoutModel athlete;
+  final AthleteScoutModel? athlete;
 
   @override
   State<AthletePage> createState() => _AthletePageState();
@@ -32,7 +37,7 @@ class AthletePage extends StatefulWidget {
 
 class _AthletePageState extends State<AthletePage> {
   late AthleteScoutModel athlete;
-  int listView = 0;
+  // int listView = 0;
 
   int _widgetIndex = 0;
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
@@ -46,7 +51,7 @@ class _AthletePageState extends State<AthletePage> {
   @override
   void initState() {
     super.initState();
-    athlete = widget.athlete;
+    athlete = widget.athlete!;
     final aptPair = context.read<TokensRepository>().currentAptPair(athlete.id);
     Get.find<LSPController>().updateAptAddress(aptPair.address);
     _zoomPanBehavior = ZoomPanBehavior(
@@ -62,31 +67,50 @@ class _AthletePageState extends State<AthletePage> {
   Widget build(BuildContext context) {
     final _mediaquery = MediaQuery.of(context);
     _isPortraitMode = _mediaquery.orientation == Orientation.portrait;
+    /* shouldn't be needed with go_router anymore
     if (listView == 1) {
       return DesktopScout();
-    }
+    }*/
 
-    return BlocListener<AthletePageBloc, AthletePageState>(
-      listener: (context, state) {
-        if (state.failure is DisconnectedWalletFailure) {
-          context.showWalletWarningToast();
-        }
-        if (state.failure is InvalidAthleteFailure) {
-          context.showWarningToast(
-            title: 'Error',
-            description: 'Cannot add athlete to wallet',
-          );
-        }
-      },
-      child: kIsWeb
-          ? BlocBuilder<AthletePageBloc, AthletePageState>(
-              buildWhen: (previous, current) => previous.stats != current.stats,
-              builder: (_, state) {
-                final chartStats = state.stats;
-                return buildWebView(athlete, chartStats);
-              },
-            )
-          : buildMobileView(context),
+    return BlocProvider(
+      create: (context) => AthletePageBloc(
+        walletRepository: context.read<WalletRepository>(),
+        tokensRepository: context.read<TokensRepository>(),
+        mlbRepo: RepositoryProvider.of<MLBRepo>(context),
+        nflRepo: RepositoryProvider.of<NFLRepo>(context),
+        athlete: athlete,
+        getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
+          tokensRepository: context.read<TokensRepository>(),
+          graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+          sportsRepos: [
+            RepositoryProvider.of<MLBRepo>(context),
+            RepositoryProvider.of<NFLRepo>(context),
+          ],
+        ),
+      ),
+      child: BlocListener<AthletePageBloc, AthletePageState>(
+        listener: (context, state) {
+          if (state.failure is DisconnectedWalletFailure) {
+            context.showWalletWarningToast();
+          }
+          if (state.failure is InvalidAthleteFailure) {
+            context.showWarningToast(
+              title: 'Error',
+              description: 'Cannot add athlete to wallet',
+            );
+          }
+        },
+        child: kIsWeb
+            ? BlocBuilder<AthletePageBloc, AthletePageState>(
+                buildWhen: (previous, current) =>
+                    previous.stats != current.stats,
+                builder: (_, state) {
+                  final chartStats = state.stats;
+                  return buildWebView(athlete, chartStats);
+                },
+              )
+            : buildMobileView(context),
+      ),
     );
   }
 
@@ -338,7 +362,8 @@ class _AthletePageState extends State<AthletePage> {
               TextButton(
                 onPressed: () {
                   setState(() {
-                    listView = 1;
+                    context.goNamed('scout');
+                    // listView = 1;
                   });
                 },
                 child:
@@ -1074,7 +1099,8 @@ class _AthletePageState extends State<AthletePage> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        listView = 1;
+                        context.goNamed('scout');
+                        // listView = 1;
                       });
                     },
                     child: const Icon(
