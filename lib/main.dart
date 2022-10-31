@@ -72,21 +72,6 @@ void main() async {
   final getPairInfoUseCase = GetPairInfoUseCase(subGraphRepo);
   final getSwapInfoUseCase = GetSwapInfoUseCase(getPairInfoUseCase);
 
-  final global = Global();
-
-  // ignore: cascade_invocations
-  global
-    ..walletRepository = WalletRepository(
-      walletApiClient,
-      cache,
-      defaultChain: defaultChain,
-    )
-    ..tokensRepository = TokensRepository(
-      tokensApiClient: tokensApiClient,
-      reactiveLspClient: reactiveLspClient,
-      coinGeckoApiClient: coinApi,
-    );
-
   unawaited(
     bootstrap(() async {
       await Firebase.initializeApp(
@@ -95,10 +80,18 @@ void main() async {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
-            create: (_) => global.walletRepository,
+            create: (_) => WalletRepository(
+              walletApiClient,
+              cache,
+              defaultChain: defaultChain,
+            ),
           ),
           RepositoryProvider(
-            create: (_) => global.tokensRepository,
+            create: (_) => TokensRepository(
+              tokensApiClient: tokensApiClient,
+              reactiveLspClient: reactiveLspClient,
+              coinGeckoApiClient: coinApi,
+            ),
           ),
           RepositoryProvider.value(value: gysrApiClient),
           RepositoryProvider.value(value: subGraphRepo),

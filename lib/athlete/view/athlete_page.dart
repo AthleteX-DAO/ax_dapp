@@ -21,16 +21,16 @@ import 'package:tokens_repository/tokens_repository.dart';
 class AthletePage extends StatefulWidget {
   AthletePage({
     super.key,
+    required this.athlete,
   });
 
-  AthleteScoutModel? athlete;
+  final AthleteScoutModel athlete;
 
   @override
   State<AthletePage> createState() => _AthletePageState();
 }
 
 class _AthletePageState extends State<AthletePage> {
-  Global global = Global();
   late AthleteScoutModel athlete;
   int listView = 0;
 
@@ -46,7 +46,7 @@ class _AthletePageState extends State<AthletePage> {
   @override
   void initState() {
     super.initState();
-    athlete = global.curAthlete!;
+    athlete = widget.athlete;
     final aptPair = context.read<TokensRepository>().currentAptPair(athlete.id);
     Get.find<LSPController>().updateAptAddress(aptPair.address);
     _zoomPanBehavior = ZoomPanBehavior(

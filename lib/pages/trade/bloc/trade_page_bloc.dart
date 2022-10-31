@@ -17,15 +17,17 @@ part 'trade_page_state.dart';
 
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   TradePageBloc({
+    required WalletRepository walletRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.swapController,
     required this.isBuyAX,
-  })  : _streamAppDataChanges = streamAppDataChanges,
+  })  : _walletRepository = walletRepository,
+        _streamAppDataChanges = streamAppDataChanges,
         super(
           TradePageState.initial(
             isBuyAX: isBuyAX,
-            chain: Global().walletRepository.currentChain,
+            chain: walletRepository.currentChain,
           ),
         ) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -41,7 +43,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     add(FetchTradeInfoRequested());
   }
 
-  final WalletRepository _walletRepository = Global().walletRepository;
+  final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetSwapInfoUseCase repo;
   final SwapController swapController;

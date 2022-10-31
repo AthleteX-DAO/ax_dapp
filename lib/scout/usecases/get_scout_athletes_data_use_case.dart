@@ -19,15 +19,16 @@ import 'package:tokens_repository/tokens_repository.dart';
 
 class GetScoutAthletesDataUseCase {
   GetScoutAthletesDataUseCase({
+    required TokensRepository tokensRepository,
     required this.graphRepo,
     required List<SportsRepo<SportAthlete>> sportsRepos,
-  }) {
+  }) : _tokensRepository = tokensRepository {
     for (final repo in sportsRepos) {
       _repos[repo.sport] = repo;
     }
   }
 
-  final TokensRepository _tokensRepository = Global().tokensRepository;
+  final TokensRepository _tokensRepository;
   final SubGraphRepo graphRepo;
   final Map<SupportedSport, SportsRepo<SportAthlete>> _repos = {};
 

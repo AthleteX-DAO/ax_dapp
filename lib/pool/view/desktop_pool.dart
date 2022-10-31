@@ -150,13 +150,12 @@ class _DesktopPoolState extends State<DesktopPool> {
                       height: layoutHgt,
                       child: BlocProvider(
                         create: (BuildContext context) => AddLiquidityBloc(
+                          walletRepository: context.read<WalletRepository>(),
+                          tokensRepository: context.read<TokensRepository>(),
                           streamAppDataChanges:
                               context.read<StreamAppDataChangesUseCase>(),
-                          repo: GetPoolInfoUseCase(
-                            RepositoryProvider.of<GetPairInfoUseCase>(
-                              context,
-                            ),
-                          ),
+                          repo: RepositoryProvider.of<GetPoolInfoUseCase>(
+                              context),
                           poolController: Get.find(),
                         ),
                         child: AddLiquidityPage(

@@ -17,7 +17,7 @@ class Global extends PropertyChangeNotifier<String> {
 
   Global._internal() {
     _athleteList = [];
-    _curAthlete = null;
+    //_curAthlete = null;
     _page = 'landing';
     _isWeb = true;
     _selectedIndex = 0;
@@ -25,14 +25,16 @@ class Global extends PropertyChangeNotifier<String> {
   static final Global _instance = Global._internal();
 
   List<AthleteScoutModel> _athleteList = [];
-  AthleteScoutModel? _curAthlete;
+  //AthleteScoutModel? _curAthlete;
   String _page = 'landing';
   bool _isWeb = true;
   int _selectedIndex = 0;
   late PageController _pageController;
+  /*
   late ConfigRepository _configRepository;
   late WalletRepository _walletRepository;
   late TokensRepository _tokensRepository;
+  */
 
   List<AthleteScoutModel> get athleteList => _athleteList;
   set athleteList(List<AthleteScoutModel> list) {
@@ -40,12 +42,13 @@ class Global extends PropertyChangeNotifier<String> {
     notifyListeners('athleteList');
   }
 
+/*
   AthleteScoutModel? get curAthlete => _curAthlete;
   set curAthlete(AthleteScoutModel? _ath) {
     _curAthlete = _ath;
     notifyListeners('curAthlete');
   }
-
+*/
   String get page => _page;
   set page(String _page) {
     this._page = _page;
@@ -63,7 +66,7 @@ class Global extends PropertyChangeNotifier<String> {
     this._selectedIndex = _selectedIndex;
     notifyListeners('selectedIndex');
   }
-
+/*
   ConfigRepository get configRepository => _configRepository;
   set configRepository(ConfigRepository _configRepository) {
     this._configRepository = _configRepository;
@@ -81,7 +84,7 @@ class Global extends PropertyChangeNotifier<String> {
     this._tokensRepository = _tokensRepository;
     notifyListeners('walletRepository');
   }
-
+*/
   /// App-wide elements
 
   // Background

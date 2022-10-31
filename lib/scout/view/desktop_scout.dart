@@ -90,6 +90,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             },
             builder: (context, state) {
               final bloc = context.read<ScoutPageBloc>();
+              if (Global().athleteList.isEmpty) {
+                Global().athleteList = state.athletes;
+              }
               final filteredAthletes = state.filteredAthletes;
               if (_selectedChain != state.selectedChain) {
                 _selectedChain = state.selectedChain;
@@ -105,6 +108,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                     nflRepo: RepositoryProvider.of<NFLRepo>(context),
                     athlete: curAthlete!,
                     getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
+                      tokensRepository: context.read<TokensRepository>(),
                       graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                       sportsRepos: [
                         RepositoryProvider.of<MLBRepo>(context),
@@ -112,7 +116,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ],
                     ),
                   ),
-                  child: AthletePage(),
+                  child: AthletePage(
+                    athlete: curAthlete!,
+                  ),
                 );
               }
               return SingleChildScrollView(

@@ -27,8 +27,7 @@ class StartTradingButton extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              // context.read<TrackingCubit>().onPressedStartTrading();
-              debugPrint('start trading pressed');
+              context.read<TrackingCubit>().onPressedStartTrading();
               context.goNamed('scout');
               // navigateToV1App(context);
             },
@@ -70,11 +69,13 @@ class StartTradingButton extends StatelessWidget {
             ),
           );
   }
-
+/*
   void navigateToV1App(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute<void>(builder: (context) => const V1App()),
     );
   }
+*/
+
 }

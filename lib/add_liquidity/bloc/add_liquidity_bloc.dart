@@ -16,14 +16,17 @@ part 'add_liquidity_state.dart';
 
 class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
   AddLiquidityBloc({
+    required WalletRepository walletRepository,
+    required TokensRepository tokensRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.poolController,
-  })  : _streamAppDataChanges = streamAppDataChanges,
+  })  : _walletRepository = walletRepository,
+        _streamAppDataChanges = streamAppDataChanges,
         super(
           AddLiquidityState(
-            token0: Global().tokensRepository.currentTokens.first,
-            token1: Global().tokensRepository.currentTokens[1],
+            token0: tokensRepository.currentTokens.first,
+            token1: tokensRepository.currentTokens[1],
           ),
         ) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -37,7 +40,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     add(const FetchPairInfoRequested());
   }
 
-  final WalletRepository _walletRepository = Global().walletRepository;
+  final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetPoolInfoUseCase repo;
   final PoolController poolController;
