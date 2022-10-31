@@ -73,151 +73,162 @@ class AccountDialog extends StatelessWidget {
                   .5,
                   Colors.grey[400]!,
                 ),
-                child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: wid - edge2,
-                      child: Row(
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: wid - edge2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              height: 65,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Connected With Metamask',
+                                    style: textStyle(
+                                      Colors.grey[600]!,
+                                      13,
+                                      false,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.account_balance_wallet,
+                                        color: Colors.white,
+                                      ),
+                                      Text(
+                                        formattedWalletAddress,
+                                        style:
+                                            textStyle(Colors.white, 20, false),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 65,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // TODO(anyone): https://athletex.atlassian.net/browse/AX-734
+                                  // There's only MetaMask currently supported,
+                                  // so there's no point in having a change
+                                  // wallet button yet.
+
+                                  // Container(
+                                  //   width: 75,
+                                  //   height: 25,
+                                  //   decoration: boxDecoration(
+                                  //      Colors.transparent,
+                                  //       100, 0, Colors.blue[800]!),
+                                  //   child: TextButton(
+                                  //     onPressed: () {
+                                  //       controller.changeAddress();
+                                  //     },
+                                  //     child: Text(
+                                  //       "Change",
+                                  //       style: textStyle(
+                                  //           Colors.blue[300]!, 10, true),
+                                  //     ),
+                                  //   ),
+                                  // ),
+
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(right: 5.0, top: 5.0),
+                                    width: 75,
+                                    height: 25,
+                                    decoration: boxDecoration(
+                                      Colors.transparent,
+                                      100,
+                                      0,
+                                      Colors.red[900]!,
+                                    ),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        context.read<WalletBloc>().add(
+                                              const DisconnectWalletRequested(),
+                                            );
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'Disconnect',
+                                        style: textStyle(
+                                          Colors.red[900]!,
+                                          10,
+                                          true,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            height: 65,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              // crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Connected With Metamask',
-                                  style: textStyle(
-                                    Colors.grey[600]!,
-                                    13,
-                                    false,
-                                  ),
+                          TextButton(
+                            onPressed: () {
+                              Clipboard.setData(
+                                ClipboardData(
+                                  text: walletAddress,
                                 ),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.account_balance_wallet,
-                                      color: Colors.white,
-                                    ),
-                                    Text(
-                                      formattedWalletAddress,
-                                      style: textStyle(Colors.white, 20, false),
-                                    ),
-                                  ],
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Icon(
+                                  Icons.filter_none,
+                                  color: Colors.grey,
+                                ),
+                                Text(
+                                  'Copy Address',
+                                  style:
+                                      textStyle(Colors.grey[400]!, 15, false),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 65,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          TextButton(
+                            onPressed: () {
+                              final urlString =
+                                  'https://polygonscan.com/address/$walletAddress';
+                              launchUrl(Uri.parse(urlString));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                // TODO(anyone): https://athletex.atlassian.net/browse/AX-734
-                                // There's only MetaMask currently supported,
-                                // so there's no point in having a change
-                                // wallet button yet.
-
-                                // Container(
-                                //   width: 75,
-                                //   height: 25,
-                                //   decoration: boxDecoration(
-                                //      Colors.transparent,
-                                //       100, 0, Colors.blue[800]!),
-                                //   child: TextButton(
-                                //     onPressed: () {
-                                //       controller.changeAddress();
-                                //     },
-                                //     child: Text(
-                                //       "Change",
-                                //       style: textStyle(
-                                //           Colors.blue[300]!, 10, true),
-                                //     ),
-                                //   ),
-                                // ),
-                                Container(
-                                  width: 75,
-                                  height: 25,
-                                  decoration: boxDecoration(
-                                    Colors.transparent,
-                                    100,
-                                    0,
-                                    Colors.red[900]!,
-                                  ),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      context.read<WalletBloc>().add(
-                                            const DisconnectWalletRequested(),
-                                          );
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      'Disconnect',
-                                      style: textStyle(
-                                        Colors.red[900]!,
-                                        10,
-                                        true,
-                                      ),
-                                    ),
-                                  ),
+                                const Icon(
+                                  Icons.open_in_new,
+                                  color: Colors.grey,
+                                ),
+                                Text(
+                                  'Show on Polygonscan',
+                                  style:
+                                      textStyle(Colors.grey[400]!, 15, false),
                                 ),
                               ],
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Clipboard.setData(
-                              ClipboardData(
-                                text: walletAddress,
-                              ),
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const Icon(
-                                Icons.filter_none,
-                                color: Colors.grey,
-                              ),
-                              Text(
-                                'Copy Address',
-                                style: textStyle(Colors.grey[400]!, 15, false),
-                              ),
-                            ],
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            final urlString =
-                                'https://polygonscan.com/address/$walletAddress';
-                            launchUrl(Uri.parse(urlString));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const Icon(
-                                Icons.open_in_new,
-                                color: Colors.grey,
-                              ),
-                              Text(
-                                'Show on Polygonscan',
-                                style: textStyle(Colors.grey[400]!, 15, false),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             ],
