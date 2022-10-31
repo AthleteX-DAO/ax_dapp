@@ -17,24 +17,21 @@ class Global extends PropertyChangeNotifier<String> {
 
   Global._internal() {
     _athleteList = [];
-    //_curAthlete = null;
     _page = 'landing';
     _isWeb = true;
     _selectedIndex = 0;
   }
   static final Global _instance = Global._internal();
 
+  /// Variables
+
   List<AthleteScoutModel> _athleteList = [];
-  //AthleteScoutModel? _curAthlete;
   String _page = 'landing';
   bool _isWeb = true;
   int _selectedIndex = 0;
   late PageController _pageController;
-  /*
-  late ConfigRepository _configRepository;
-  late WalletRepository _walletRepository;
-  late TokensRepository _tokensRepository;
-  */
+
+  /// Gettters/Setters
 
   List<AthleteScoutModel> get athleteList => _athleteList;
   set athleteList(List<AthleteScoutModel> list) {
@@ -42,13 +39,6 @@ class Global extends PropertyChangeNotifier<String> {
     notifyListeners('athleteList');
   }
 
-/*
-  AthleteScoutModel? get curAthlete => _curAthlete;
-  set curAthlete(AthleteScoutModel? _ath) {
-    _curAthlete = _ath;
-    notifyListeners('curAthlete');
-  }
-*/
   String get page => _page;
   set page(String _page) {
     this._page = _page;
@@ -66,25 +56,7 @@ class Global extends PropertyChangeNotifier<String> {
     this._selectedIndex = _selectedIndex;
     notifyListeners('selectedIndex');
   }
-/*
-  ConfigRepository get configRepository => _configRepository;
-  set configRepository(ConfigRepository _configRepository) {
-    this._configRepository = _configRepository;
-    notifyListeners('configRepository');
-  }
 
-  WalletRepository get walletRepository => _walletRepository;
-  set walletRepository(WalletRepository _walletRepository) {
-    this._walletRepository = _walletRepository;
-    notifyListeners('walletRepository');
-  }
-
-  TokensRepository get tokensRepository => _tokensRepository;
-  set tokensRepository(TokensRepository _tokensRepository) {
-    this._tokensRepository = _tokensRepository;
-    notifyListeners('walletRepository');
-  }
-*/
   /// App-wide elements
 
   // Background
@@ -109,21 +81,6 @@ class Global extends PropertyChangeNotifier<String> {
   Widget bottomNav(BuildContext context) {
     return isWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context);
   }
-
-  // Widget backgroundNav(BuildContext context, Widget page) {
-  //   return Scaffold(
-  //     extendBodyBehindAppBar: true,
-  //     extendBody: true,
-  //     appBar: topNav(context),
-  //     body: Container(
-  //       width: MediaQuery.of(context).size.width,
-  //       height: MediaQuery.of(context).size.height,
-  //       decoration: background(context),
-  //       child: page,
-  //     ),
-  //     bottomNavigationBar: bottomNav(context),
-  //   );
-  // }
 
   Widget topNavBar(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;

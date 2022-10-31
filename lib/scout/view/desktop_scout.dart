@@ -24,6 +24,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -41,16 +42,18 @@ class _DesktopScoutState extends State<DesktopScout> {
   Global global = Global();
   final myController = TextEditingController(text: input);
   static String input = '';
-  bool athletePage = false;
+  //bool athletePage = false;
   static bool isLongToken = true;
   static int sportState = 0;
   static SupportedSport _selectedSport = SupportedSport.all;
   String allSportsTitle = 'All Sports';
   String longTitle = 'Long';
-  AthleteScoutModel? curAthlete;
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
   EthereumChain? _selectedChain;
+  String selectedAthlete = '';
+  List<AthleteScoutModel> filteredAthletes = [];
+
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -93,12 +96,15 @@ class _DesktopScoutState extends State<DesktopScout> {
               if (Global().athleteList.isEmpty) {
                 Global().athleteList = state.athletes;
               }
-              final filteredAthletes = state.filteredAthletes;
+              filteredAthletes = state.filteredAthletes;
               if (_selectedChain != state.selectedChain) {
                 _selectedChain = state.selectedChain;
                 bloc.add(FetchScoutInfoRequested());
               }
               _selectedSport = state.selectedSport;
+              /* shouldnt need with go router
+              // moved provider inside athletePage
+              // sends to athlete on button press
               if (athletePage && curAthlete != null) {
                 return BlocProvider(
                   create: (context) => AthletePageBloc(
@@ -121,6 +127,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                   ),
                 );
               }
+              */
               return SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 child: Container(
@@ -159,7 +166,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ),
                       // List Headers
                       buildListviewHeaders(),
-                      buildScoutView(state, filteredAthletes),
+                      buildScoutView(state),
                     ],
                   ),
                 ),
@@ -169,10 +176,7 @@ class _DesktopScoutState extends State<DesktopScout> {
         ));
   }
 
-  Stack buildScoutView(
-    ScoutPageState state,
-    List<AthleteScoutModel> filteredAthletes,
-  ) {
+  Stack buildScoutView(ScoutPageState state) {
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -184,7 +188,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           ),
         if (state.status == BlocStatus.success && filteredAthletes.isEmpty)
           const NoResultFound(),
-        buildListview(state, filteredAthletes)
+        buildListview(state)
       ],
     );
   }
@@ -711,10 +715,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     );
   }
 
-  Widget buildListview(
-    ScoutPageState state,
-    List<AthleteScoutModel> filteredAthletes,
-  ) {
+  Widget buildListview(ScoutPageState state) {
     final _height = MediaQuery.of(context).size.height;
     final hgt = _height * 0.8 - 120;
     return SizedBox(
@@ -747,8 +748,10 @@ class _DesktopScoutState extends State<DesktopScout> {
       child: OutlinedButton(
         onPressed: () {
           setState(() {
-            curAthlete = athlete;
-            athletePage = true;
+            global.athleteList = filteredAthletes;
+            selectedAthlete = athlete.id.toString() + athlete.name;
+            context.goNamed('athlete', params: {'id': selectedAthlete});
+            //athletePage = true;
           });
         },
         child: Row(
@@ -914,8 +917,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                         );
                       } else {
                         setState(() {
-                          curAthlete = athlete;
-                          athletePage = true;
+                          global.athleteList = filteredAthletes;
+                          selectedAthlete =
+                              athlete.id.toString() + athlete.name;
+                          context.goNamed('athlete',
+                              params: {'id': selectedAthlete});
+                          //athletePage = true;
                         });
                       }
                     },
@@ -939,8 +946,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                     child: TextButton(
                       onPressed: () {
                         setState(() {
-                          curAthlete = athlete;
-                          athletePage = true;
+                          global.athleteList = filteredAthletes;
+                          selectedAthlete =
+                              athlete.id.toString() + athlete.name;
+                          context.goNamed('athlete',
+                              params: {'id': selectedAthlete});
+                          //athletePage = true;
                         });
                       },
                       child: SizedBox(
@@ -997,8 +1008,10 @@ class _DesktopScoutState extends State<DesktopScout> {
                 walletId: walletAddress,
               );
           setState(() {
-            curAthlete = athlete;
-            athletePage = true;
+            global.athleteList = filteredAthletes;
+            selectedAthlete = athlete.id.toString() + athlete.name;
+            context.goNamed('athlete', params: {'id': selectedAthlete});
+            //athletePage = true;
           });
         },
         child: Row(
@@ -1187,8 +1200,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                         );
                       } else {
                         setState(() {
-                          curAthlete = athlete;
-                          athletePage = true;
+                          global.athleteList = filteredAthletes;
+                          selectedAthlete =
+                              athlete.id.toString() + athlete.name;
+                          context.goNamed('athlete',
+                              params: {'id': selectedAthlete});
+                          //athletePage = true;
                         });
                       }
                     },
@@ -1220,8 +1237,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                               walletId: walletAddress,
                             );
                         setState(() {
-                          curAthlete = athlete;
-                          athletePage = true;
+                          global.athleteList = filteredAthletes;
+                          selectedAthlete =
+                              athlete.id.toString() + athlete.name;
+                          context.goNamed(
+                            'athlete',
+                            params: {'id': selectedAthlete},
+                          );
+                          //athletePage = true;
                         });
                       },
                       child: SizedBox(

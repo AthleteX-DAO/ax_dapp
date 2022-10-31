@@ -218,14 +218,10 @@ class _AppState extends State<App> {
           routes: [
             GoRoute(
               name: 'athlete',
-              path: ':id',
+              path: 'athlete/:id',
               pageBuilder: (context, state) => MaterialPage(
                 key: state.pageKey,
-                child: AthletePage(
-                  athlete: global.athleteList
-                      .where((athlete) => athlete.name == ':id')
-                      .first,
-                ),
+                child: AthletePage(athlete: _toAthlete(state.params['id']!)),
               ),
             ),
           ],
@@ -300,6 +296,15 @@ class _AppState extends State<App> {
         ),
       ),
     );
+  }
+
+  AthleteScoutModel? _toAthlete(String id) {
+    for (final athlete in global.athleteList) {
+      if ((athlete.id.toString() + athlete.name) == id) {
+        return athlete;
+      }
+    }
+    return null;
   }
 
   // global listeners
