@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+
+
 
 class ConnectMetaMaskDialog extends StatelessWidget {
   const ConnectMetaMaskDialog({super.key});
@@ -19,14 +22,16 @@ class ConnectMetaMaskDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Container(
-        height: hgt,
-        width: wid,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.grey[900],
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(width: 0),
+      child: LayoutBuilder(
+          builder: (context, constraints) => Container(
+            constraints: const BoxConstraints(minHeight: 235, maxHeight: 250),
+            height: constraints.maxHeight * 0.26,
+            width: constraints.maxWidth * 0.27,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(width: 0),
         ),
         child: Column(
           children: [
@@ -67,7 +72,9 @@ class ConnectMetaMaskDialog extends StatelessWidget {
               children: [
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 40),
-                  width: widChild,
+                  width: constraints.maxWidth < 450
+                          ? constraints.maxWidth * 0.62
+                          : constraints.maxWidth * 0.22,
                   height: 45,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
@@ -79,13 +86,14 @@ class ConnectMetaMaskDialog extends StatelessWidget {
                       launchUrl(Uri.parse('https://metamask.io/download/'));
                       Navigator.pop(context);
                     },
-                    child: const Text(
+                    child:  AutoSizeText(
                       'Install MetaMask extension',
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'OpenSans',
                         fontSize: 16,
                       ),
+                      maxLines: 1,
                     ),
                   ),
                 ),
@@ -94,6 +102,7 @@ class ConnectMetaMaskDialog extends StatelessWidget {
           ],
         ),
       ),
+    )
     );
   }
 }
