@@ -10,8 +10,12 @@ part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({
+    required WalletRepository walletRepository,
+    required TokensRepository tokensRepository,
     required this.configRepository,
-  }) : super(const AppState()) {
+  })  : _walletRepository = walletRepository,
+        _tokensRepository = tokensRepository,
+        super(const AppState()) {
     on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
     // on<WatchAptsChangesStarted>(_onWatchAptsChangesStarted);
 
@@ -19,8 +23,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     // add(const WatchAptsChangesStarted());
   }
 
-  final WalletRepository _walletRepository = Global().walletRepository;
-  final TokensRepository _tokensRepository = Global().tokensRepository;
+  final WalletRepository _walletRepository;
+  final TokensRepository _tokensRepository;
   final ConfigRepository configRepository;
 
   Future<void> _onWatchChainChangesStarted(

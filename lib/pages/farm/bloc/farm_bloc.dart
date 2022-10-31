@@ -18,11 +18,14 @@ part 'farm_state.dart';
 
 class FarmBloc extends Bloc<FarmEvent, FarmState> {
   FarmBloc({
+    required this.walletRepository,
+    required this.tokensRepository,
+    required this.configRepository,
     required this.streamAppDataChanges,
     required this.repo,
   }) : super(
           FarmState(
-            farmOwner: Global().walletRepository.defaultChain.getFarmOwner(),
+            farmOwner: walletRepository.defaultChain.getFarmOwner(),
           ),
         ) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
@@ -38,9 +41,9 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
     }
   }
 
-  final WalletRepository walletRepository = Global().walletRepository;
-  final TokensRepository tokensRepository = Global().tokensRepository;
-  final ConfigRepository configRepository = Global().configRepository;
+  final WalletRepository walletRepository;
+  final TokensRepository tokensRepository;
+  final ConfigRepository configRepository;
   final StreamAppDataChangesUseCase streamAppDataChanges;
   final GetFarmDataUseCase repo;
 

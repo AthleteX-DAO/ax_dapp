@@ -12,8 +12,12 @@ part 'wallet_event.dart';
 part 'wallet_state.dart';
 
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
-  WalletBloc()
-      : super(WalletState.fromWallet(Global().walletRepository.currentWallet)) {
+  WalletBloc({
+    required WalletRepository walletRepository,
+    required TokensRepository tokensRepository,
+  })  : _walletRepository = walletRepository,
+        _tokensRepository = tokensRepository,
+        super(WalletState.fromWallet(walletRepository.currentWallet)) {
     on<ConnectWalletRequested>(_onConnectWalletRequested);
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
     on<WatchWalletChangesStarted>(_onWatchWalletChangesStarted);
@@ -27,8 +31,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     add(const WatchAxtChangesStarted());
   }
 
-  final WalletRepository _walletRepository = Global().walletRepository;
-  final TokensRepository _tokensRepository = Global().tokensRepository;
+  final WalletRepository _walletRepository;
+  final TokensRepository _tokensRepository;
 
   Future<void> _onConnectWalletRequested(
     ConnectWalletRequested _,

@@ -16,9 +16,13 @@ part 'scout_page_state.dart';
 
 class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   ScoutPageBloc({
+    required WalletRepository walletRepository,
+    required TokensRepository tokenRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
-  })  : _streamAppDataChanges = streamAppDataChanges,
+  })  : _walletRepository = walletRepository,
+        _tokenRepository = tokenRepository,
+        _streamAppDataChanges = streamAppDataChanges,
         super(const ScoutPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
@@ -29,8 +33,8 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     add(FetchScoutInfoRequested());
   }
 
-  final WalletRepository _walletRepository = Global().walletRepository;
-  final TokensRepository _tokenRepository = Global().tokensRepository;
+  final WalletRepository _walletRepository;
+  final TokensRepository _tokenRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetScoutAthletesDataUseCase repo;
 
