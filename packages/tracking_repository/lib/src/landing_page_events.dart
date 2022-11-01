@@ -6,4 +6,9 @@ class LandingPageEvent extends TrackEvent {
   LandingPageEvent.onPressedStartTrading(
     Map<String, dynamic> params,
   ) : super(name: 'start_trading', params: params);
+
+  /// Informs tracking services that the user is on the landing page
+  LandingPageEvent.onLandingPageView(
+    Map<String, dynamic> params,
+  ) : super(name: 'landing_page_view', params: params);
 }
