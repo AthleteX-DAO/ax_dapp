@@ -10,5 +10,5 @@ class LandingPageEvent extends TrackEvent {
   /// Informs tracking services that the user is on the landing page
   LandingPageEvent.onLandingPageView(
     Map<String, dynamic> params,
-  ) : super(name: 'page_view', params: params);
+  ) : super(name: 'landing_page_view', params: params);
 }
