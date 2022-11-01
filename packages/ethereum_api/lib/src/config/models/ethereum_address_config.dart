@@ -30,7 +30,7 @@ class EthereumAddressConfig {
 
   /// Configuration for [Token.matic].
   const EthereumAddressConfig.matic()
-      : polygonMainnet = '0x0000000000000000000000000000000000001010',
+      : polygonMainnet = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
         polygonTestnet = '0x0000000000000000000000000000000000001010',
         sportxMainnet = '0xfa6f64dfbad14e6883321c2f756f5b22ff658f9c',
         sportxTestnet = kEmptyAddress;
