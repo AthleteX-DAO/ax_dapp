@@ -17,7 +17,7 @@ AssetImage tokenImage(Token token) {
       tokenAssetName = 'WSX_Small.png';
       break;
     case EthereumCurrency.matic:
-      tokenAssetName = 'Polygon_Small.png';
+      tokenAssetName = 'w_matic.png';
       break;
     case EthereumCurrency.weth:
       tokenAssetName = 'weth_small.png';
