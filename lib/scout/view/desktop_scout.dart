@@ -278,8 +278,8 @@ class _DesktopScoutState extends State<DesktopScout> {
             'NBA',
             style: textSwapState(
               _selectedSport == SupportedSport.NBA,
-              textStyle(Colors.white, sportFilterTxSz, false, false),
-              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+              global.textStyle(Colors.white, sportFilterTxSz, false, false),
+              global.textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
           ),
         ),
