@@ -1,5 +1,6 @@
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
+import 'package:ax_dapp/athlete/bloc/athlete_page_bloc.dart';
 import 'package:ax_dapp/athlete/view/athlete_page.dart';
 import 'package:ax_dapp/debug/views/debug_app_wrapper.dart';
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
@@ -171,15 +172,8 @@ class _AppState extends State<App> {
     );
   }
 
-  AthleteScoutModel _AthleteFrom(String name) {
-    return global.athleteList.where((athlete) => athlete.name == name).first;
-  }
-
   // router
   GoRouter _router() {
-    for (var i = 0; i < 500; i++) {
-      debugPrint('debug');
-    }
     return GoRouter(
       routes: <GoRoute>[
         GoRoute(
@@ -219,10 +213,12 @@ class _AppState extends State<App> {
             GoRoute(
               name: 'athlete',
               path: 'athlete/:id',
-              pageBuilder: (context, state) => MaterialPage(
-                key: state.pageKey,
-                child: AthletePage(athlete: _toAthlete(state.params['id']!)),
-              ),
+              pageBuilder: (context, state) {
+                return MaterialPage(
+                  key: state.pageKey,
+                  child: AthletePage(athlete: _toAthlete(state.params['id']!)),
+                );
+              },
             ),
           ],
         ),

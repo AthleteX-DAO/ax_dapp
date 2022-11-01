@@ -397,8 +397,8 @@ class Global extends PropertyChangeNotifier<String> {
       color: color,
       fontFamily: 'OpenSans',
       fontSize: size,
-      fontWeight: isBold ? FontWeight.w400 : null,
-      decoration: isUline ? TextDecoration.underline : null,
+      fontWeight: isBold ? FontWeight.w400 : FontWeight.normal,
+      decoration: isUline ? TextDecoration.underline : TextDecoration.none,
     );
   }
 
