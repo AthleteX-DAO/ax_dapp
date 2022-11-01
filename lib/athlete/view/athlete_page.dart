@@ -36,6 +36,7 @@ class AthletePage extends StatefulWidget {
 }
 
 class _AthletePageState extends State<AthletePage> {
+  Global global = Global();
   late AthleteScoutModel athlete;
   // int listView = 0;
 
@@ -377,11 +378,11 @@ class _AthletePageState extends State<AthletePage> {
                   children: [
                     Text(
                       athlete.name,
-                      style: textStyle(Colors.white, 20, false, false),
+                      style: global.textStyle(Colors.white, 20, false, false),
                     ),
                     Text(
                       'Seasonal APT',
-                      style: textStyle(
+                      style: global.textStyle(
                         const Color.fromRGBO(154, 154, 154, 1),
                         12,
                         false,
@@ -627,7 +628,7 @@ class _AthletePageState extends State<AthletePage> {
                               children: [
                                 Text(
                                   'Book Value Chart',
-                                  style: textStyle(
+                                  style: global.textStyle(
                                     Colors.white,
                                     9,
                                     false,
@@ -643,7 +644,7 @@ class _AthletePageState extends State<AthletePage> {
                                     children: [
                                       Text(
                                         bookValue,
-                                        style: textStyle(
+                                        style: global.textStyle(
                                           Colors.white,
                                           16,
                                           true,
@@ -654,7 +655,7 @@ class _AthletePageState extends State<AthletePage> {
                                         alignment: Alignment.topLeft,
                                         child: Text(
                                           bookValuePercent,
-                                          style: textStyle(
+                                          style: global.textStyle(
                                             Colors.green,
                                             12,
                                             false,
@@ -775,7 +776,7 @@ class _AthletePageState extends State<AthletePage> {
                                     width: _width * 0.4375,
                                     child: Text(
                                       'Price Overview',
-                                      style: textStyle(
+                                      style: global.textStyle(
                                         Colors.white,
                                         15,
                                         false,
@@ -793,7 +794,7 @@ class _AthletePageState extends State<AthletePage> {
                                           alignment: Alignment.bottomLeft,
                                           child: Text(
                                             'Current',
-                                            style: textStyle(
+                                            style: global.textStyle(
                                               greyTextColor,
                                               10,
                                               false,
@@ -805,7 +806,7 @@ class _AthletePageState extends State<AthletePage> {
                                           alignment: Alignment.bottomRight,
                                           child: Text(
                                             'All-Time High',
-                                            style: textStyle(
+                                            style: global.textStyle(
                                               greyTextColor,
                                               10,
                                               false,
@@ -827,7 +828,7 @@ class _AthletePageState extends State<AthletePage> {
                                   children: [
                                     Text(
                                       'Market Price',
-                                      style: textStyle(
+                                      style: global.textStyle(
                                         greyTextColor,
                                         12,
                                         false,
@@ -844,7 +845,7 @@ class _AthletePageState extends State<AthletePage> {
                                             children: [
                                               Text(
                                                 marketPrice,
-                                                style: textStyle(
+                                                style: global.textStyle(
                                                   Colors.white,
                                                   12,
                                                   false,
@@ -853,7 +854,7 @@ class _AthletePageState extends State<AthletePage> {
                                               ),
                                               Text(
                                                 marketPricePercent,
-                                                style: textStyle(
+                                                style: global.textStyle(
                                                   Colors.red,
                                                   12,
                                                   false,
@@ -864,7 +865,7 @@ class _AthletePageState extends State<AthletePage> {
                                           ),
                                           Text(
                                             '4.24 AX',
-                                            style: textStyle(
+                                            style: global.textStyle(
                                               greyTextColor,
                                               12,
                                               false,
@@ -885,7 +886,7 @@ class _AthletePageState extends State<AthletePage> {
                                     width: _width * 0.175,
                                     child: Text(
                                       'Book Value',
-                                      style: textStyle(
+                                      style: global.textStyle(
                                         greyTextColor,
                                         12,
                                         false,
@@ -903,7 +904,7 @@ class _AthletePageState extends State<AthletePage> {
                                           children: [
                                             Text(
                                               bookValue,
-                                              style: textStyle(
+                                              style: global.textStyle(
                                                 Colors.white,
                                                 12,
                                                 false,
@@ -912,7 +913,7 @@ class _AthletePageState extends State<AthletePage> {
                                             ),
                                             Text(
                                               bookValuePercent,
-                                              style: textStyle(
+                                              style: global.textStyle(
                                                 Colors.green,
                                                 12,
                                                 false,
@@ -923,7 +924,7 @@ class _AthletePageState extends State<AthletePage> {
                                         ),
                                         Text(
                                           bookValue,
-                                          style: textStyle(
+                                          style: global.textStyle(
                                             greyTextColor,
                                             12,
                                             false,
@@ -943,7 +944,7 @@ class _AthletePageState extends State<AthletePage> {
                                     width: _width * 0.175,
                                     child: Text(
                                       'MP:BV Ratio',
-                                      style: textStyle(
+                                      style: global.textStyle(
                                         greyTextColor,
                                         12,
                                         false,
@@ -961,7 +962,7 @@ class _AthletePageState extends State<AthletePage> {
                                           children: [
                                             Text(
                                               '80%',
-                                              style: textStyle(
+                                              style: global.textStyle(
                                                 greyTextColor,
                                                 12,
                                                 false,
@@ -972,7 +973,7 @@ class _AthletePageState extends State<AthletePage> {
                                         ),
                                         Text(
                                           '120%',
-                                          style: textStyle(
+                                          style: global.textStyle(
                                             greyTextColor,
                                             12,
                                             false,
@@ -1137,7 +1138,7 @@ class _AthletePageState extends State<AthletePage> {
                 // Player Name
                 Text(
                   athlete.name,
-                  style: textStyle(Colors.white, 26, false, false),
+                  style: global.textStyle(Colors.white, 26, false, false),
                 ),
                 // '|' Symbol
                 Container(
@@ -1145,7 +1146,7 @@ class _AthletePageState extends State<AthletePage> {
                   alignment: Alignment.center,
                   child: Text(
                     '|',
-                    style: textStyle(
+                    style: global.textStyle(
                       const Color.fromRGBO(100, 100, 100, 1),
                       24,
                       false,
@@ -1158,7 +1159,7 @@ class _AthletePageState extends State<AthletePage> {
                   children: [
                     Text(
                       'Seasonal APT',
-                      style: textStyle(
+                      style: global.textStyle(
                         const Color.fromRGBO(154, 154, 154, 1),
                         24,
                         false,
@@ -1301,8 +1302,8 @@ class _AthletePageState extends State<AthletePage> {
                         },
                         child: Text(
                           '+ Add to Wallet',
-                          style:
-                              textStyle(Colors.amber[500]!, 10, false, false),
+                          style: global.textStyle(
+                              Colors.amber[500]!, 10, false, false),
                         ),
                       ),
                     ),
@@ -1485,7 +1486,7 @@ class _AthletePageState extends State<AthletePage> {
                   children: [
                     Text(
                       'Price Overview',
-                      style: textStyle(
+                      style: global.textStyle(
                         Colors.white,
                         24,
                         false,
@@ -1527,7 +1528,7 @@ class _AthletePageState extends State<AthletePage> {
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'Current',
-                        style: textStyle(
+                        style: global.textStyle(
                           greyTextColor,
                           14,
                           false,
@@ -1540,7 +1541,7 @@ class _AthletePageState extends State<AthletePage> {
                     // Container(
                     //     alignment: Alignment.bottomRight,
                     //     child: Text("All-Time High",
-                    //         style: textStyle(greyTextColor,
+                    //         style: global.textStyle(greyTextColor,
                     //             14, false, false)))
                   ],
                 ),
@@ -1550,7 +1551,7 @@ class _AthletePageState extends State<AthletePage> {
                   children: [
                     Text(
                       'Market Price',
-                      style: textStyle(
+                      style: global.textStyle(
                         greyTextColor,
                         20,
                         false,
@@ -1570,7 +1571,7 @@ class _AthletePageState extends State<AthletePage> {
                                 aptTypeSelection.isLong
                                     ? '''${athlete.longTokenPrice!.toStringAsFixed(2)} AX'''
                                     : '''${athlete.shortTokenPrice!.toStringAsFixed(2)} AX''',
-                                style: textStyle(
+                                style: global.textStyle(
                                   Colors.white,
                                   14,
                                   false,
@@ -1588,7 +1589,7 @@ class _AthletePageState extends State<AthletePage> {
                                           athlete.shortTokenPercentage!,
                                         ),
                                   style: aptTypeSelection.isLong
-                                      ? textStyle(
+                                      ? global.textStyle(
                                           getPercentageColor(
                                             athlete.longTokenPercentage!,
                                           ),
@@ -1596,7 +1597,7 @@ class _AthletePageState extends State<AthletePage> {
                                           false,
                                           false,
                                         )
-                                      : textStyle(
+                                      : global.textStyle(
                                           getPercentageColor(
                                             athlete.shortTokenPercentage!,
                                           ),
@@ -1610,7 +1611,7 @@ class _AthletePageState extends State<AthletePage> {
                               // and
                               // market value prices
                               // Text("4.24 AX",
-                              //     style: textStyle(greyTextColor, 14,
+                              //     style: global.textStyle(greyTextColor, 14,
                               //         false, false))
                             ],
                           );
@@ -1626,7 +1627,7 @@ class _AthletePageState extends State<AthletePage> {
                       width: _width * 0.175,
                       child: Text(
                         'Book Value',
-                        style: textStyle(
+                        style: global.textStyle(
                           greyTextColor,
                           20,
                           false,
@@ -1643,7 +1644,7 @@ class _AthletePageState extends State<AthletePage> {
                               aptTypeSelection.isLong
                                   ? '''${athlete.longTokenBookPrice!.toStringAsFixed(2)} AX'''
                                   : '''${athlete.shortTokenBookPrice!.toStringAsFixed(2)} AX''',
-                              style: textStyle(
+                              style: global.textStyle(
                                 Colors.white,
                                 14,
                                 false,
@@ -1659,7 +1660,7 @@ class _AthletePageState extends State<AthletePage> {
                                       athlete.shortTokenBookPricePercent!,
                                     ),
                               style: aptTypeSelection.isLong
-                                  ? textStyle(
+                                  ? global.textStyle(
                                       getPercentageColor(
                                         athlete.longTokenBookPricePercent!,
                                       ),
@@ -1667,7 +1668,7 @@ class _AthletePageState extends State<AthletePage> {
                                       false,
                                       false,
                                     )
-                                  : textStyle(
+                                  : global.textStyle(
                                       getPercentageColor(
                                         athlete.shortTokenBookPricePercent!,
                                       ),
@@ -1693,7 +1694,7 @@ class _AthletePageState extends State<AthletePage> {
                       width: _width * 0.175,
                       child: Text(
                         'MP:BV Ratio',
-                        style: textStyle(
+                        style: global.textStyle(
                           greyTextColor,
                           20,
                           false,
@@ -1706,7 +1707,7 @@ class _AthletePageState extends State<AthletePage> {
                       builder: (context, aptTypeSelection) {
                         return Text(
                           '''${aptTypeSelection.isLong ? longCurrentBookValueRatio.toStringAsFixed(2) : shortCurrentBookValueRatio.toStringAsFixed(2)}%''',
-                          style: textStyle(
+                          style: global.textStyle(
                             greyTextColor,
                             16,
                             false,
@@ -1718,7 +1719,7 @@ class _AthletePageState extends State<AthletePage> {
                     // TODO(anyone): get the all time high book value and
                     // market value prices
                     // Container(
-                    //   child: Text("120%", style: textStyle(greyTextColor, 16,
+                    //   child: Text("120%", style: global.textStyle(greyTextColor, 16,
                     //false, false)),),
                   ],
                 ),
@@ -1738,7 +1739,7 @@ class _AthletePageState extends State<AthletePage> {
     return Center(
       child: Text(
         'Symbol: $symbol',
-        style: textStyle(greyTextColor, 10, false, false),
+        style: global.textStyle(greyTextColor, 10, false, false),
         textAlign: TextAlign.center,
       ),
     );

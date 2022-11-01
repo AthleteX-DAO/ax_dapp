@@ -201,8 +201,9 @@ class _DesktopScoutState extends State<DesktopScout> {
   ) {
     return Row(
       children: [
-        Text('APT List', style: textStyle(Colors.white, 18, false, false)),
-        Text('|', style: textStyle(Colors.white, 18, false, false)),
+        Text('APT List',
+            style: global.textStyle(Colors.white, 18, false, false)),
+        Text('|', style: global.textStyle(Colors.white, 18, false, false)),
         TextButton(
           onPressed: () {
             myController.clear();
@@ -217,8 +218,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             'ALL',
             style: textSwapState(
               _selectedSport == SupportedSport.all,
-              textStyle(Colors.white, sportFilterTxSz, false, false),
-              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+              global.textStyle(Colors.white, sportFilterTxSz, false, false),
+              global.textStyle(
+                  Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
           ),
         ),
@@ -236,8 +238,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             'MLB',
             style: textSwapState(
               _selectedSport == SupportedSport.MLB,
-              textStyle(Colors.white, sportFilterTxSz, false, false),
-              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+              global.textStyle(Colors.white, sportFilterTxSz, false, false),
+              global.textStyle(
+                  Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
           ),
         ),
@@ -255,8 +258,9 @@ class _DesktopScoutState extends State<DesktopScout> {
             'NFL',
             style: textSwapState(
               _selectedSport == SupportedSport.NFL,
-              textStyle(Colors.white, sportFilterTxSz, false, false),
-              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+              global.textStyle(Colors.white, sportFilterTxSz, false, false),
+              global.textStyle(
+                  Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
           ),
         ),
@@ -304,9 +308,10 @@ class _DesktopScoutState extends State<DesktopScout> {
             children: [
               Text(
                 'APT List',
-                style: textStyle(Colors.white, 18, false, false),
+                style: global.textStyle(Colors.white, 18, false, false),
               ),
-              Text('|', style: textStyle(Colors.white, 18, false, false)),
+              Text('|',
+                  style: global.textStyle(Colors.white, 18, false, false)),
               SizedBox(
                 child: PopupMenuButton(
                   itemBuilder: (context) => [
@@ -320,13 +325,13 @@ class _DesktopScoutState extends State<DesktopScout> {
                               'All Sports',
                               style: textSwapState(
                                 sportState == 0,
-                                textStyle(
+                                global.textStyle(
                                   Colors.white,
                                   sportFilterTxSz,
                                   false,
                                   false,
                                 ),
-                                textStyle(
+                                global.textStyle(
                                   Colors.amber[400]!,
                                   sportFilterTxSz,
                                   false,
@@ -365,13 +370,13 @@ class _DesktopScoutState extends State<DesktopScout> {
                               'MLB',
                               style: textSwapState(
                                 sportState == 1,
-                                textStyle(
+                                global.textStyle(
                                   Colors.white,
                                   sportFilterTxSz,
                                   false,
                                   false,
                                 ),
-                                textStyle(
+                                global.textStyle(
                                   Colors.amber[400]!,
                                   sportFilterTxSz,
                                   false,
@@ -410,13 +415,13 @@ class _DesktopScoutState extends State<DesktopScout> {
                               'NFL',
                               style: textSwapState(
                                 sportState == 2,
-                                textStyle(
+                                global.textStyle(
                                   Colors.white,
                                   sportFilterTxSz,
                                   false,
                                   false,
                                 ),
-                                textStyle(
+                                global.textStyle(
                                   Colors.amber[400]!,
                                   sportFilterTxSz,
                                   false,
@@ -592,7 +597,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                     width: _width * 0.12,
                     child: Text(
                       'Team',
-                      style: textStyle(
+                      style: global.textStyle(
                         Colors.grey[400]!,
                         12,
                         false,
@@ -604,14 +609,16 @@ class _DesktopScoutState extends State<DesktopScout> {
                   width: _width * 0.18,
                   child: Text(
                     'Market Price / Change',
-                    style: textStyle(Colors.grey[400]!, 10, false, false),
+                    style:
+                        global.textStyle(Colors.grey[400]!, 10, false, false),
                   ),
                 ),
                 SizedBox(
                   width: _width * 0.12,
                   child: Text(
                     'Book Value / Change',
-                    style: textStyle(Colors.grey[400]!, 10, false, false),
+                    style:
+                        global.textStyle(Colors.grey[400]!, 10, false, false),
                   ),
                 ),
               ],
@@ -634,7 +641,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                     width: _width * 0.15,
                     child: Text(
                       'Team',
-                      style: textStyle(
+                      style: global.textStyle(
                         Colors.grey[400]!,
                         12,
                         false,
@@ -688,7 +695,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         children: [
                           Text(
                             'Book Value',
-                            style: textStyle(
+                            style: global.textStyle(
                               Colors.grey[400]!,
                               10,
                               false,
@@ -771,7 +778,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                           isLongToken
                               ? '${athlete.longTokenPrice!.toStringAsFixed(4)} AX'
                               : '${athlete.shortTokenPrice!.toStringAsFixed(4)} AX',
-                          style: textStyle(Colors.white, 16, false, false),
+                          style:
+                              global.textStyle(Colors.white, 16, false, false),
                         ),
                         Container(width: 10),
                         Text(
@@ -783,7 +791,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   athlete.shortTokenPercentage!,
                                 ),
                           style: isLongToken
-                              ? textStyle(
+                              ? global.textStyle(
                                   getPercentageColor(
                                     athlete.longTokenPercentage!,
                                   ),
@@ -791,7 +799,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   false,
                                   false,
                                 )
-                              : textStyle(
+                              : global.textStyle(
                                   getPercentageColor(
                                     athlete.shortTokenPercentage!,
                                   ),
@@ -810,7 +818,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                               isLongToken
                                   ? '${athlete.longTokenBookPrice!.toStringAsFixed(4)} AX'
                                   : '${athlete.shortTokenBookPrice!.toStringAsFixed(4)} AX',
-                              style: textStyle(
+                              style: global.textStyle(
                                 Colors.white,
                                 16,
                                 false,
@@ -827,7 +835,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                       athlete.shortTokenBookPricePercent!,
                                     ),
                               style: isLongToken
-                                  ? textStyle(
+                                  ? global.textStyle(
                                       getPercentageColor(
                                         athlete.longTokenBookPricePercent!,
                                       ),
@@ -835,7 +843,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                       false,
                                       false,
                                     )
-                                  : textStyle(
+                                  : global.textStyle(
                                       getPercentageColor(
                                         athlete.shortTokenBookPricePercent!,
                                       ),
@@ -850,7 +858,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                           isLongToken
                               ? '${athlete.longTokenBookPriceUsd!.toStringAsFixed(4)} AX'
                               : '${athlete.shortTokenPriceUsd!.toStringAsFixed(4)} AX',
-                          style: textStyle(
+                          style: global.textStyle(
                             Colors.amberAccent,
                             14,
                             false,
@@ -961,7 +969,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                           children: <Widget>[
                             Text(
                               'View',
-                              style: textStyle(
+                              style: global.textStyle(
                                 Colors.white,
                                 16,
                                 false,
@@ -1034,7 +1042,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             isLongToken
                                 ? '${athlete.longTokenPrice!.toStringAsFixed(4)} AX'
                                 : '${athlete.shortTokenPrice!.toStringAsFixed(4)} AX',
-                            style: textStyle(
+                            style: global.textStyle(
                               Colors.white,
                               16,
                               false,
@@ -1051,7 +1059,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                     athlete.shortTokenPercentage!,
                                   ),
                             style: isLongToken
-                                ? textStyle(
+                                ? global.textStyle(
                                     getPercentageColor(
                                       athlete.longTokenPercentage!,
                                     ),
@@ -1059,7 +1067,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                     false,
                                     false,
                                   )
-                                : textStyle(
+                                : global.textStyle(
                                     getPercentageColor(
                                       athlete.shortTokenPercentage!,
                                     ),
@@ -1075,7 +1083,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             ? r'$' +
                                 athlete.longTokenPriceUsd!.toStringAsFixed(4)
                             : '\$${athlete.shortTokenPriceUsd!.toStringAsFixed(4)}',
-                        style: textStyle(
+                        style: global.textStyle(
                           Colors.amberAccent,
                           14,
                           false,
@@ -1095,7 +1103,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                           isLongToken
                               ? '${athlete.longTokenBookPrice!.toStringAsFixed(4)} AX'
                               : '${athlete.shortTokenBookPrice!.toStringAsFixed(4)}AX',
-                          style: textStyle(
+                          style: global.textStyle(
                             Colors.white,
                             16,
                             false,
@@ -1112,7 +1120,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   athlete.shortTokenBookPricePercent!,
                                 ),
                           style: isLongToken
-                              ? textStyle(
+                              ? global.textStyle(
                                   getPercentageColor(
                                     athlete.longTokenBookPricePercent!,
                                   ),
@@ -1120,7 +1128,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   false,
                                   false,
                                 )
-                              : textStyle(
+                              : global.textStyle(
                                   getPercentageColor(
                                     athlete.shortTokenBookPricePercent!,
                                   ),
@@ -1135,7 +1143,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       isLongToken
                           ? '\$${athlete.longTokenBookPriceUsd!.toStringAsFixed(4)}'
                           : '\$${athlete.shortTokenBookPriceUsd!.toStringAsFixed(4)}',
-                      style: textStyle(
+                      style: global.textStyle(
                         Colors.amberAccent,
                         14,
                         false,
@@ -1254,7 +1262,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                           children: <Widget>[
                             Text(
                               'View',
-                              style: textStyle(
+                              style: global.textStyle(
                                 Colors.white,
                                 16,
                                 false,
@@ -1285,14 +1293,14 @@ class _DesktopScoutState extends State<DesktopScout> {
     if (kIsWeb) {
       textWidget = Text(
         'Buy',
-        style:
-            textStyle(const Color.fromRGBO(254, 197, 0, 1), 12, false, false),
+        style: global.textStyle(
+            const Color.fromRGBO(254, 197, 0, 1), 12, false, false),
       );
     } else {
       textWidget = Text(
         'View',
-        style:
-            textStyle(const Color.fromRGBO(255, 198, 0, 1), 10, false, false),
+        style: global.textStyle(
+            const Color.fromRGBO(255, 198, 0, 1), 10, false, false),
       );
     }
     return textWidget;
@@ -1358,40 +1366,6 @@ class _DesktopScoutState extends State<DesktopScout> {
     return _width;
   }
 
-  TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    // ignore: curly_braces_in_flow_control_structures
-    if (isBold) if (isUline) {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-        decoration: TextDecoration.underline,
-      );
-    } else {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-      );
-    }
-    else if (isUline) {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        decoration: TextDecoration.underline,
-      );
-    } else {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
-    }
-  }
-
   TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
     if (condition) return tru;
     return fls;
@@ -1439,7 +1413,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               },
               child: Text(
                 'Long Token',
-                style: textStyle(Colors.white, 14, true, false),
+                style: global.textStyle(Colors.white, 14, true, false),
               ),
             ),
           ),
@@ -1469,7 +1443,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               },
               child: Text(
                 'Short Token',
-                style: textStyle(Colors.white, 14, true, false),
+                style: global.textStyle(Colors.white, 14, true, false),
               ),
             ),
           )
