@@ -16,47 +16,50 @@ class PoolShareDetails extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 900) {
-          return Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Share of pool:',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 15,
+          return Container(
+            padding: const EdgeInsets.only(left: 25, right: 25),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Share of pool:',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 15,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${poolInfo.shareOfPool}%',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
+                    Text(
+                      '${poolInfo.shareOfPool}%',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Expected yield:',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 15,
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Expected yield:',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 15,
+                      ),
                     ),
-                  ),
-                  Text(
-                    poolInfo.apy,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
+                    Text(
+                      poolInfo.apy,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           );
         } else {
           return SizedBox(
