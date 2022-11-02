@@ -205,6 +205,7 @@ extension AthleteSellTracking on TrackingCubit {
     required String sport,
     required String walletId,
     required double valueInUSD,
+    required double feeInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedAthleteSell(
@@ -219,6 +220,7 @@ extension AthleteSellTracking on TrackingCubit {
           'sport': sport,
           'wallet_id': walletId,
           'value_in_usd': valueInUSD,
+          'fee_in_usd': feeInUSD,
         },
       ),
     );
@@ -236,6 +238,7 @@ extension AthleteSellTracking on TrackingCubit {
     required String sport,
     required String walletId,
     required double valueInUSD,
+    required double feeInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onPressedConfirmSell(
@@ -250,6 +253,7 @@ extension AthleteSellTracking on TrackingCubit {
           'sport': sport,
           'wallet_id': walletId,
           'value_in_usd': valueInUSD,
+          'fee_in_usd': feeInUSD,
         },
       ),
     );
@@ -267,6 +271,7 @@ extension AthleteSellTracking on TrackingCubit {
     required String sport,
     required String walletId,
     required double valueInUSD,
+    required double feeInUSD,
   }) {
     trackingRepository.track(
       AthletePageTrackingEvent.onAthleteSellSuccess({
@@ -280,6 +285,7 @@ extension AthleteSellTracking on TrackingCubit {
         'sport': sport,
         'wallet_id': walletId,
         'value_in_usd': valueInUSD,
+        'fee_in_usd': feeInUSD,
       }),
     );
   }

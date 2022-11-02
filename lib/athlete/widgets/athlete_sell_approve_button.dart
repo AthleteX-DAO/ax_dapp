@@ -117,6 +117,7 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
                   sport: widget.athlete.sport.toString(),
                   walletId: widget.walletAddress,
                   valueInUSD: widget.aptSellInfo.receiveAmount * price,
+                  feeInUSD: widget.aptSellInfo.axPrice * widget.aptSellInfo.totalFee * price,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
@@ -139,6 +140,7 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
                     sport: widget.athlete.sport.toString(),
                     walletId: widget.walletAddress,
                     valueInUSD: widget.aptSellInfo.receiveAmount * price,
+                    feeInUSD: widget.aptSellInfo.axPrice * widget.aptSellInfo.totalFee * price,
                   );
             }).catchError((error) {
               showDialog<void>(
@@ -163,6 +165,7 @@ class _AthleteSellApproveButtonState extends State<AthleteSellApproveButton> {
                   sport: widget.athlete.sport.toString(),
                   walletId: widget.walletAddress,
                   valueInUSD: widget.aptSellInfo.receiveAmount * price,
+                  feeInUSD: widget.aptSellInfo.axPrice * widget.aptSellInfo.totalFee * price,
                 );
             changeButton();
           }
