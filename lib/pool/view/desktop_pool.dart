@@ -54,9 +54,7 @@ class _DesktopPoolState extends State<DesktopPool> {
       physics: const ClampingScrollPhysics(),
       child: Container(
         width: layoutWdt,
-        height: _height - AppBar().preferredSize.height - 10,
-        // Top margin of Pool section is equal to height + 1 of AppBar on
-        // mobile only
+        height: isWeb ? _height - AppBar().preferredSize.height - 10 : _height,
         margin: EdgeInsets.only(top: AppBar().preferredSize.height + 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
