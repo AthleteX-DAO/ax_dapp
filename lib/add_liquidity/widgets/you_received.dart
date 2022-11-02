@@ -21,21 +21,25 @@ class YouReceived extends StatelessWidget {
         if (constraints.maxWidth < 900) {
           return Container(
             padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'You will receive:',
-                  style: TextStyle(color: Colors.grey[600], fontSize: 18),
+            child: FittedBox(
+              child: SizedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'You will receive:',
+                      style: TextStyle(color: Colors.grey[600], fontSize: 18),
+                    ),
+                    Text(
+                      '$amountToReceive ${token0.ticker}/${token1.ticker} LP Tokens',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  '$amountToReceive ${token0.ticker}/${token1.ticker} LP Tokens',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
+              ),
             ),
           );
         } else {
