@@ -6,7 +6,6 @@ import 'package:ax_dapp/my_liquidity/view/view.dart';
 import 'package:ax_dapp/my_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
-import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -71,11 +70,10 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
         child: GridTile(
           child: Container(
             padding: const EdgeInsets.all(25),
-            decoration: boxDecoration(
-              Colors.grey[800]!.withOpacity(0.25),
-              30,
-              1.5,
-              Colors.grey[400]!,
+            decoration: BoxDecoration(
+              color: Colors.grey[800]!.withOpacity(0.25),
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(color: Colors.grey[400]!, width: 1.5),
             ),
             child: Column(
               children: [
@@ -94,15 +92,9 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // add button
-                    Container(
-                      width: _isWeb ? 155 : (layoutWdt / 2) - 30,
+                    SizedBox(
+                      width: _isWeb ? 155 : (layoutWdt * 0.4) - 30,
                       height: 37.5,
-                      decoration: boxDecoration(
-                        Colors.amber[400]!,
-                        100,
-                        0,
-                        Colors.amber[400]!,
-                      ),
                       child: TextButton(
                         onPressed: () {
                           widget.togglePool(
@@ -110,23 +102,43 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                             token1: token1,
                           );
                         },
-                        child: Text(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.amber[400]!,
+                          ),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(color: Colors.amber[400]!),
+                            ),
+                          ),
+                        ),
+                        child: const Text(
                           'Add',
-                          style: textStyle(Colors.black, 20, isBold: true),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'OpenSans',
+                          ),
                         ),
                       ),
                     ),
                     //remove button
-                    Container(
-                      width: _isWeb ? 155 : (layoutWdt / 2) - 30,
+                    SizedBox(
+                      width: _isWeb ? 155 : (layoutWdt * 0.4) - 30,
                       height: 37.5,
-                      decoration: boxDecoration(
-                        Colors.transparent,
-                        100,
-                        1,
-                        Colors.amber[400]!,
-                      ),
                       child: TextButton(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(color: Colors.amber[400]!),
+                            ),
+                          ),
+                        ),
                         onPressed: () {
                           context
                               .read<MyLiquidityBloc>()
@@ -147,8 +159,12 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                         },
                         child: Text(
                           'Remove',
-                          style:
-                              textStyle(Colors.amber[400]!, 18, isBold: true),
+                          style: TextStyle(
+                            color: Colors.amber[400],
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'OpenSans',
+                          ),
                         ),
                       ),
                     ),
