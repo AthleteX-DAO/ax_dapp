@@ -18,43 +18,50 @@ class MyLiquidityCardTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 35,
-          height: 35,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              scale: 0.5,
-              image: tokenImage(token0),
+    final _width = MediaQuery.of(context).size.width;
+    return FittedBox(
+      child: SizedBox(
+        width: 500,
+        height: _width < 900 ? 50 : 35,
+        child: Row(
+          children: [
+            Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  scale: 0.5,
+                  image: tokenImage(token0),
+                ),
+              ),
             ),
-          ),
-        ),
-        Container(
-          width: 35,
-          height: 35,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              scale: 0.5,
-              image: tokenImage(token1),
+            Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  scale: 0.5,
+                  image: tokenImage(token1),
+                ),
+              ),
             ),
-          ),
+            SportToken(
+              sport: token0.sport,
+              symbol: liquidityPositionInfo.token0Symbol,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: const Text(' - '),
+            ),
+            SportToken(
+              sport: token1.sport,
+              symbol: liquidityPositionInfo.token1Symbol,
+            ),
+          ],
         ),
-        SportToken(
-          sport: token0.sport,
-          symbol: liquidityPositionInfo.token0Symbol,
-        ),
-        Container(
-          alignment: Alignment.centerLeft,
-          child: const Text(' - '),
-        ),
-        SportToken(
-          sport: token1.sport,
-          symbol: liquidityPositionInfo.token1Symbol,
-        ),
-      ],
+      ),
     );
   }
 }
