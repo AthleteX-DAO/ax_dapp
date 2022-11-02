@@ -61,7 +61,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
     super.dispose();
   }
 
-  bool isReadOnly = true;
+  bool showDetailsHeader = true;
+  bool showLiquidityDetails = true;
+  bool showInputMessage = true;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +73,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final layoutHgt = _height * 0.8;
     final layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
+
+    if (_width < 900) {
+      showDetailsHeader = false;
+      showLiquidityDetails = false;
+      showInputMessage = false;
+    }
 
     return BlocListener<WalletBloc, WalletState>(
       listener: (context, state) {
@@ -290,10 +298,14 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: Text(
-                        tkr,
-                        style:
-                            textStyle(Colors.white, tkrTextSize, isBold: true),
+                      child: FittedBox(
+                        child: SizedBox(
+                          child: Text(
+                            tkr,
+                            style:
+                                textStyle(Colors.white, tkrTextSize, isBold: true),
+                          ),
+                        ),
                       ),
                     ),
                     const Icon(
@@ -314,12 +326,14 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ShareDetailsHeader(
-                    elementWdt: _elementWdt,
-                  ),
-                  LiquidityDetails(
-                    elementWdt: _elementWdt,
-                  ),
+                  if (showDetailsHeader)
+                    ShareDetailsHeader(
+                      elementWdt: _elementWdt,
+                    ),
+                  if (showLiquidityDetails)
+                    LiquidityDetails(
+                      elementWdt: _elementWdt,
+                    ),
                   PoolShareDetails(
                     elementWdt: _elementWdt,
                   ),
@@ -427,12 +441,16 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                             formattedBalance0,
                                           );
                                         },
-                                        child: Text(
-                                          'MAX',
-                                          style: textStyle(
-                                            Colors.grey[400]!,
-                                            8,
-                                            isBold: false,
+                                        child: FittedBox(
+                                          child: SizedBox(
+                                            child: Text(
+                                              'MAX',
+                                              style: textStyle(
+                                                Colors.grey[400]!,
+                                                8,
+                                                isBold: false,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -572,15 +590,17 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                           ],
                         ),
                       ),
-                      if (state.status == BlocStatus.noData) ...[
-                        const Text(
-                          'Not Created - Please input both token amounts',
-                        ),
-                      ] else ...[
-                        const Text(
-                          'Please input an amount of liquidity for both tokens',
-                        ),
-                      ]
+                      if (showInputMessage) ...[
+                        if (state.status == BlocStatus.noData) ...[
+                          const Text(
+                            'Not Created - Please input both token amounts',
+                          ),
+                        ] else ...[
+                          const Text(
+                            'Please input an amount of liquidity for both tokens',
+                          ),
+                        ]
+                      ],
                     ],
                   ),
                 ),

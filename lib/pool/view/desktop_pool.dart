@@ -3,7 +3,6 @@ import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
-import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -55,9 +54,7 @@ class _DesktopPoolState extends State<DesktopPool> {
       physics: const ClampingScrollPhysics(),
       child: Container(
         width: layoutWdt,
-        height: _height - AppBar().preferredSize.height - 10,
-        // Top margin of Pool section is equal to height + 1 of AppBar on
-        // mobile only
+        height: isWeb ? _height - AppBar().preferredSize.height - 10 : _height,
         margin: EdgeInsets.only(top: AppBar().preferredSize.height + 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,9 +91,13 @@ class _DesktopPoolState extends State<DesktopPool> {
                             currentTabIndex = 0;
                           });
                         },
-                        child: Text(
-                          'Add Liquidity',
-                          style: textStyle(Colors.white, 16, isBold:true),
+                        child: FittedBox(
+                          child: SizedBox(
+                            child: Text(
+                              'Add Liquidity',
+                              style: textStyle(Colors.white, 16, isBold:true),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -121,9 +122,13 @@ class _DesktopPoolState extends State<DesktopPool> {
                             currentTabIndex = 1;
                           });
                         },
-                        child: Text(
-                          'My Liquidity',
-                          style: textStyle(Colors.white, 16, isBold:true),
+                        child: FittedBox(
+                          child: SizedBox(
+                            child: Text(
+                              'My Liquidity',
+                              style: textStyle(Colors.white, 16, isBold:true),
+                            ),
+                          ),
                         ),
                       ),
                     ),
