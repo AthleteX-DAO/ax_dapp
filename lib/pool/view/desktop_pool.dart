@@ -3,7 +3,6 @@ import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
-import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -94,9 +93,13 @@ class _DesktopPoolState extends State<DesktopPool> {
                             currentTabIndex = 0;
                           });
                         },
-                        child: Text(
-                          'Add Liquidity',
-                          style: textStyle(Colors.white, 16, isBold:true),
+                        child: FittedBox(
+                          child: SizedBox(
+                            child: Text(
+                              'Add Liquidity',
+                              style: textStyle(Colors.white, 16, isBold:true),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -121,9 +124,13 @@ class _DesktopPoolState extends State<DesktopPool> {
                             currentTabIndex = 1;
                           });
                         },
-                        child: Text(
-                          'My Liquidity',
-                          style: textStyle(Colors.white, 16, isBold:true),
+                        child: FittedBox(
+                          child: SizedBox(
+                            child: Text(
+                              'My Liquidity',
+                              style: textStyle(Colors.white, 16, isBold:true),
+                            ),
+                          ),
                         ),
                       ),
                     ),
