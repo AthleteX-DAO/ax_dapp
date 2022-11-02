@@ -298,10 +298,14 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: Text(
-                        tkr,
-                        style:
-                            textStyle(Colors.white, tkrTextSize, isBold: true),
+                      child: FittedBox(
+                        child: SizedBox(
+                          child: Text(
+                            tkr,
+                            style:
+                                textStyle(Colors.white, tkrTextSize, isBold: true),
+                          ),
+                        ),
                       ),
                     ),
                     const Icon(
