@@ -441,12 +441,16 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                             formattedBalance0,
                                           );
                                         },
-                                        child: Text(
-                                          'MAX',
-                                          style: textStyle(
-                                            Colors.grey[400]!,
-                                            8,
-                                            isBold: false,
+                                        child: FittedBox(
+                                          child: SizedBox(
+                                            child: Text(
+                                              'MAX',
+                                              style: textStyle(
+                                                Colors.grey[400]!,
+                                                8,
+                                                isBold: false,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
