@@ -20,7 +20,7 @@ class YouReceived extends StatelessWidget {
       builder: (context, constraints) {
         if (constraints.maxWidth < 900) {
           return Container(
-            padding: const EdgeInsets.only(left: 25, right: 25),
+            padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
