@@ -6,9 +6,7 @@ AssetImage tokenImage(Token token) {
   String tokenAssetName;
   switch (token.currency) {
     case EthereumCurrency.none:
-      // TODO: Remove and uncomment
-      return const AssetImage('assets/images/SX_Small.png');
-    //throw UnsupportedError('token image for ${token.currency}');
+      throw UnsupportedError('token image for ${token.currency}');
     case EthereumCurrency.ax:
       tokenAssetName = 'X_Logo_Black_BR.png';
       break;

@@ -66,6 +66,9 @@ class _DesktopScoutState extends State<DesktopScout> {
   @override
   void initState() {
     super.initState();
+    setState(
+      () {},
+    );
   }
 
   @override

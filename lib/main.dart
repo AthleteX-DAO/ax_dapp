@@ -15,7 +15,6 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_swap_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:cache/cache.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/config_api.dart';
@@ -25,6 +24,7 @@ import 'package:ethereum_api/wallet_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -47,7 +47,7 @@ void main() async {
   final httpClient = http.Client();
 
   await initHiveForFlutter();
-
+  usePathUrlStrategy();
   final configApiClient = ConfigApiClient(
     defaultChain: defaultChain,
     httpClient: httpClient,

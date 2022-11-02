@@ -98,7 +98,22 @@ class _AppState extends State<App> {
           )..setup(),
         )
       ],
-      child: kDebugMode
+      child: DebugAppWrapper(
+        home: MaterialApp.router(
+          routerConfig: _router,
+          title: 'AthleteX',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            canvasColor: Colors.transparent,
+            brightness: Brightness.dark,
+            primaryColor: Colors.yellow[700],
+            colorScheme: ColorScheme.fromSwatch(brightness: Brightness.dark)
+                .copyWith(secondary: Colors.black),
+          ),
+        ),
+      ),
+      /*
+      kDebugMode
           ? DebugAppWrapper(
               home: MaterialApp.router(
                 routerConfig: _router,
@@ -126,6 +141,7 @@ class _AppState extends State<App> {
                     .copyWith(secondary: Colors.black),
               ),
             ),
+            */
     );
   }
 
@@ -135,45 +151,39 @@ class _AppState extends State<App> {
       GoRoute(
         name: 'landing',
         path: '/',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const LandingPage(),
-        ),
+        builder: (BuildContext context, GoRouterState state) {
+          // ignore: prefer_const_constructors
+          return LandingPage();
+        },
       ),
       GoRoute(
         name: 'scout',
         path: '/scout',
-        pageBuilder: (context, state) {
-          return MaterialPage(
-            key: state.pageKey,
-            child: BlocProvider(
-              create: (BuildContext context) => ScoutPageBloc(
-                tokenRepository: context.read<TokensRepository>(),
-                walletRepository: context.read<WalletRepository>(),
-                streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
-                repo: GetScoutAthletesDataUseCase(
-                  tokensRepository: context.read<TokensRepository>(),
-                  graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                  sportsRepos: [
-                    RepositoryProvider.of<MLBRepo>(context),
-                    RepositoryProvider.of<NFLRepo>(context),
-                  ],
-                ),
+        builder: (BuildContext context, GoRouterState state) {
+          return BlocProvider(
+            create: (BuildContext context) => ScoutPageBloc(
+              tokenRepository: context.read<TokensRepository>(),
+              walletRepository: context.read<WalletRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+              repo: GetScoutAthletesDataUseCase(
+                tokensRepository: context.read<TokensRepository>(),
+                graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+                sportsRepos: [
+                  RepositoryProvider.of<MLBRepo>(context),
+                  RepositoryProvider.of<NFLRepo>(context),
+                ],
               ),
-              child: const DesktopScout(),
             ),
+            // ignore: prefer_const_constructors
+            child: DesktopScout(),
           );
         },
         routes: [
           GoRoute(
             name: 'athlete',
             path: 'athlete/:id',
-            pageBuilder: (context, state) {
-              return MaterialPage(
-                key: state.pageKey,
-                child: AthletePage(athlete: _toAthlete(state.params['id']!)),
-              );
+            builder: (BuildContext context, GoRouterState state) {
+              return AthletePage(athlete: _toAthlete(state.params['id']!));
             },
           ),
         ],
@@ -181,69 +191,57 @@ class _AppState extends State<App> {
       GoRoute(
         name: 'trade',
         path: '/trade',
-        pageBuilder: (context, state) {
-          return MaterialPage(
-            key: state.pageKey,
-            child: BlocProvider(
-              create: (BuildContext context) => TradePageBloc(
-                walletRepository: context.read<WalletRepository>(),
-                streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
-                repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                swapController: Get.find(),
-                //isBuyAX: isBuyAX,
-                isBuyAX: false,
-              ),
-              child: const DesktopTrade(),
+        builder: (BuildContext context, GoRouterState state) {
+          return BlocProvider(
+            create: (BuildContext context) => TradePageBloc(
+              walletRepository: context.read<WalletRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+              repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
+              swapController: Get.find(),
+              isBuyAX: false,
             ),
+            // ignore: prefer_const_constructors
+            child: DesktopTrade(),
           );
         },
       ),
       GoRoute(
         name: 'pool',
         path: '/pool',
-        pageBuilder: (context, state) {
-          return MaterialPage(
-            key: state.pageKey,
-            child: BlocProvider(
-              create: (BuildContext context) => AddLiquidityBloc(
-                walletRepository: context.read<WalletRepository>(),
-                tokensRepository: context.read<TokensRepository>(),
-                streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
-                repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-                poolController: Get.find(),
-              ),
-              child: const DesktopPool(),
+        builder: (BuildContext context, GoRouterState state) {
+          return BlocProvider(
+            create: (BuildContext context) => AddLiquidityBloc(
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+              repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
+              poolController: Get.find(),
             ),
+            child: const DesktopPool(),
           );
         },
       ),
       GoRoute(
         name: 'farm',
         path: '/farm',
-        pageBuilder: (context, state) {
-          return MaterialPage(
-            key: state.pageKey,
-            child: BlocProvider(
-              create: (BuildContext context) => FarmBloc(
-                walletRepository: context.read<WalletRepository>(),
-                tokensRepository: context.read<TokensRepository>(),
-                configRepository: context.read<AppBloc>().configRepository,
-                streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
-                repo: GetFarmDataUseCase(
-                  gysrApiClient: context.read<GysrApiClient>(),
-                ),
+        builder: (BuildContext context, GoRouterState state) {
+          return BlocProvider(
+            create: (BuildContext context) => FarmBloc(
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
+              configRepository: context.read<AppBloc>().configRepository,
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+              repo: GetFarmDataUseCase(
+                gysrApiClient: context.read<GysrApiClient>(),
               ),
-              child: const DesktopFarm(),
             ),
+            child: const DesktopFarm(),
           );
         },
       ),
     ],
     errorPageBuilder: (context, state) => MaterialPage(
-      key: state.pageKey,
+      key: UniqueKey(),
       child: Scaffold(
         body: Center(child: Text(state.error.toString())),
       ),
