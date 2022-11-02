@@ -38,7 +38,6 @@ class AthletePage extends StatefulWidget {
 class _AthletePageState extends State<AthletePage> {
   Global global = Global();
   late AthleteScoutModel athlete;
-  // int listView = 0;
 
   int _widgetIndex = 0;
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
@@ -362,10 +361,7 @@ class _AthletePageState extends State<AthletePage> {
             children: [
               TextButton(
                 onPressed: () {
-                  setState(() {
-                    context.goNamed('scout');
-                    // listView = 1;
-                  });
+                  context.goNamed('scout');
                 },
                 child:
                     const Icon(Icons.arrow_back, size: 24, color: Colors.white),
@@ -1099,10 +1095,7 @@ class _AthletePageState extends State<AthletePage> {
                   width: 70,
                   child: TextButton(
                     onPressed: () {
-                      setState(() {
-                        context.goNamed('scout');
-                        // listView = 1;
-                      });
+                      context.goNamed('scout');
                     },
                     child: const Icon(
                       Icons.arrow_back,
