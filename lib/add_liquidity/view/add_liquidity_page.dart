@@ -62,6 +62,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
   }
 
   bool showDetailsHeader = true;
+  bool showLiquidityDetails = true;
+  bool showInputMessage = true;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +76,8 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
 
     if (_width < 900) {
       showDetailsHeader = false;
+      showLiquidityDetails = false;
+      showInputMessage = false;
     }
 
     return BlocListener<WalletBloc, WalletState>(
@@ -318,10 +322,14 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (showDetailsHeader) ShareDetailsHeader(elementWdt: _elementWdt,),
-                  LiquidityDetails(
-                    elementWdt: _elementWdt,
-                  ),
+                  if (showDetailsHeader)
+                    ShareDetailsHeader(
+                      elementWdt: _elementWdt,
+                    ),
+                  if (showLiquidityDetails)
+                    LiquidityDetails(
+                      elementWdt: _elementWdt,
+                    ),
                   PoolShareDetails(
                     elementWdt: _elementWdt,
                   ),
@@ -574,15 +582,17 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                           ],
                         ),
                       ),
-                      if (state.status == BlocStatus.noData) ...[
-                        const Text(
-                          'Not Created - Please input both token amounts',
-                        ),
-                      ] else ...[
-                        const Text(
-                          'Please input an amount of liquidity for both tokens',
-                        ),
-                      ]
+                      if (showInputMessage) ...[
+                        if (state.status == BlocStatus.noData) ...[
+                          const Text(
+                            'Not Created - Please input both token amounts',
+                          ),
+                        ] else ...[
+                          const Text(
+                            'Please input an amount of liquidity for both tokens',
+                          ),
+                        ]
+                      ],
                     ],
                   ),
                 ),
