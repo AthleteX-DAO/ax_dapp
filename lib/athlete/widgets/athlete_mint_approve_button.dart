@@ -92,6 +92,8 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
 
   @override
   Widget build(BuildContext context) {
+    final usdValue = context.read<WalletBloc>().state.axData.price;
+    final price = usdValue ?? 0;
     return Container(
       width: width,
       height: height,
@@ -112,6 +114,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                   inputApt: widget.inputApt,
                   valueInAx: widget.valueInAX,
                   walletId: walletAddress,
+                  valueInUSD: widget.valueInAX * price,
                 );
             widget.confirmCallback().then((value) {
               showDialog<void>(
@@ -133,6 +136,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                     inputApt: widget.inputApt,
                     valueInAx: widget.valueInAX,
                     walletId: walletAddress,
+                    valueInUSD: widget.valueInAX * price,
                   );
             }).catchError((error) {
               showDialog<void>(
@@ -152,6 +156,7 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                   inputApt: widget.inputApt,
                   valueInAx: widget.valueInAX,
                   walletId: walletAddress,
+                  valueInUSD: widget.valueInAX * price,
                 );
             changeButton();
           }
