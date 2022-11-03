@@ -44,9 +44,9 @@ enum EthereumChain {
   ),
 
   /// Polygon test network.
-  polygonTestnet(
-    chainId: 80001,
-    chainName: 'Polygon Testnet',
+  goerliTestNet(
+    chainId: 5,
+    chainName: 'Goerli Testnet',
     currency: EthereumCurrency.matic,
     rpcUrls: ['https://matic-mumbai.chainstacklabs.com/'],
     blockExplorerUrls: ['https://polygonscan.com/'],
@@ -151,7 +151,7 @@ extension ChainConfigX on EthereumChain {
     );
     final supportedApts =
         ((chain.chainId == EthereumChain.polygonMainnet.chainId) ||
-                (chain.chainId == EthereumChain.polygonTestnet.chainId))
+                (chain.chainId == EthereumChain.goerliTestNet.chainId))
             ? mlbApts
             : nflApts;
     return supportedApts
