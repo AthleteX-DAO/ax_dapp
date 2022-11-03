@@ -11,7 +11,6 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 
-// TODO(Pearlson): confirm info
 /// {@template ethereum_chain}
 /// Represents an `Ethereum` blockchain network.
 /// {@endtemplate}
@@ -43,11 +42,11 @@ enum EthereumChain {
     blockExplorerUrls: ['https://polygonscan.com/'],
   ),
 
-  /// Polygon test network.
+  /// Goerli test network.
   goerliTestNet(
     chainId: 5,
     chainName: 'Goerli Testnet',
-    currency: EthereumCurrency.matic,
+    currency: EthereumCurrency.geth,
     rpcUrls: ['https://matic-mumbai.chainstacklabs.com/'],
     blockExplorerUrls: ['https://polygonscan.com/'],
   ),

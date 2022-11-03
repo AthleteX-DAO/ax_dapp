@@ -1,5 +1,4 @@
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
-import 'package:ethereum_api/src/apt_factory/apt_factory.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 
@@ -31,7 +30,7 @@ class EthereumAddressConfig {
   /// Configuration for [Token.matic].
   const EthereumAddressConfig.matic()
       : polygonMainnet = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-        polygonTestnet = '0x0000000000000000000000000000000000001010',
+        goerliTestNet = '0x0000000000000000000000000000000000001010',
         sportxMainnet = '0xfa6f64dfbad14e6883321c2f756f5b22ff658f9c',
         sportxTestnet = kEmptyAddress;
 
@@ -60,14 +59,14 @@ class EthereumAddressConfig {
   /// Configuration for [APTRouter] client.
   const EthereumAddressConfig.dexRouterAddress()
       : polygonMainnet = '0x15e4eb77713CD274472D95bDfcc7797F6a8C2D95',
-        goerliTestNet = '0x003bA57020B97b282160e13A6D502aF9A5BA8ABd', //.5json athleteXrouter
+        goerliTestNet = '0x003bA57020B97b282160e13A6D502aF9A5BA8ABd',
         sportxMainnet = '0x4C2295082FC932EDE19EefB1af03c0b6B323610A',
         sportxTestnet = kEmptyAddress;
 
   /// Configuration for [Dex] client.
   const EthereumAddressConfig.dexFactoryAddress()
       : polygonMainnet = '0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B',
-        goerliTestNet = '0x8b4AA21Efb25Bea2Bd90f4b6030c0E5646e63E67', //.5json athleteXfactory 
+        goerliTestNet = '0x8b4AA21Efb25Bea2Bd90f4b6030c0E5646e63E67', 
         sportxMainnet = '0x668880Eb73AAd6474b8aE1C08D3310e765803717',
         sportxTestnet = kEmptyAddress;
 
