@@ -1,6 +1,5 @@
 import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
 import 'package:ax_dapp/app/bloc/app_bloc.dart';
-import 'package:ax_dapp/athlete/bloc/athlete_page_bloc.dart';
 import 'package:ax_dapp/athlete/view/athlete_page.dart';
 import 'package:ax_dapp/debug/views/debug_app_wrapper.dart';
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
@@ -100,7 +99,7 @@ class _AppState extends State<App> {
     );
   }
 
-  final MaterialApp _appRouter = MaterialApp.router(
+  final _appRouter = MaterialApp.router(
     title: 'AthleteX',
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
@@ -110,112 +109,115 @@ class _AppState extends State<App> {
       colorScheme: ColorScheme.fromSwatch(brightness: Brightness.dark)
           .copyWith(secondary: Colors.black),
     ),
-    // router -- Add new pages here with corrosponding route
-    // on the buttons leading to those pages, onPressed: () => context.goNamed('scout');
-    routerConfig: GoRouter(
-      routes: <GoRoute>[
-        GoRoute(
-          name: 'landing',
-          path: '/',
-          builder: (BuildContext context, GoRouterState state) {
-            return const LandingPage();
-          },
-        ),
-        GoRoute(
-          name: 'scout',
-          path: '/scout',
-          builder: (BuildContext context, GoRouterState state) {
-            return BlocProvider(
-              create: (BuildContext context) => ScoutPageBloc(
-                tokenRepository: context.read<TokensRepository>(),
-                walletRepository: context.read<WalletRepository>(),
-                streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
-                repo: GetScoutAthletesDataUseCase(
-                  tokensRepository: context.read<TokensRepository>(),
-                  graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                  sportsRepos: [
-                    RepositoryProvider.of<MLBRepo>(context),
-                    RepositoryProvider.of<NFLRepo>(context),
-                  ],
-                ),
-              ),
-              child: const DesktopScout(),
-            );
-          },
-          routes: [
-            GoRoute(
-              name: 'athlete',
-              path: 'athlete/:id',
-              builder: (BuildContext context, GoRouterState state) {
-                return AthletePage(athlete: _toAthlete(state.params['id']!));
-              },
+    routerConfig: _router,
+  );
+}
+
+// router -- Add new pages here with corrosponding route
+// on the buttons leading to those pages, onPressed: () => context.goNamed('scout');
+final _router = GoRouter(
+  redirect: (context, state) {
+    if (state.location.contains('/athlete') && Global().athleteList.isEmpty) {
+      return '/scout';
+    }
+  },
+  routes: <GoRoute>[
+    GoRoute(
+      name: 'landing',
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const LandingPage();
+      },
+    ),
+    GoRoute(
+      name: 'scout',
+      path: '/scout',
+      builder: (BuildContext context, GoRouterState state) {
+        return BlocProvider(
+          create: (BuildContext context) => ScoutPageBloc(
+            tokenRepository: context.read<TokensRepository>(),
+            walletRepository: context.read<WalletRepository>(),
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+            repo: GetScoutAthletesDataUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+              sportsRepos: [
+                RepositoryProvider.of<MLBRepo>(context),
+                RepositoryProvider.of<NFLRepo>(context),
+              ],
             ),
-          ],
-        ),
+          ),
+          child: const DesktopScout(),
+        );
+      },
+      routes: [
         GoRoute(
-          name: 'trade',
-          path: '/trade',
+          name: 'athlete',
+          path: 'athlete/:id',
           builder: (BuildContext context, GoRouterState state) {
-            return BlocProvider(
-              create: (BuildContext context) => TradePageBloc(
-                walletRepository: context.read<WalletRepository>(),
-                streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
-                repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                swapController: Get.find(),
-                isBuyAX: false,
-              ),
-              child: const DesktopTrade(),
-            );
-          },
-        ),
-        GoRoute(
-          name: 'pool',
-          path: '/pool',
-          builder: (BuildContext context, GoRouterState state) {
-            return BlocProvider(
-              create: (BuildContext context) => AddLiquidityBloc(
-                walletRepository: context.read<WalletRepository>(),
-                tokensRepository: context.read<TokensRepository>(),
-                streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
-                repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
-                poolController: Get.find(),
-              ),
-              child: const DesktopPool(),
-            );
-          },
-        ),
-        GoRoute(
-          name: 'farm',
-          path: '/farm',
-          builder: (BuildContext context, GoRouterState state) {
-            return BlocProvider(
-              create: (BuildContext context) => FarmBloc(
-                walletRepository: context.read<WalletRepository>(),
-                tokensRepository: context.read<TokensRepository>(),
-                configRepository: context.read<AppBloc>().configRepository,
-                streamAppDataChanges:
-                    context.read<StreamAppDataChangesUseCase>(),
-                repo: GetFarmDataUseCase(
-                  gysrApiClient: context.read<GysrApiClient>(),
-                ),
-              ),
-              child: const DesktopFarm(),
-            );
+            return AthletePage(athlete: _toAthlete(state.params['id']!));
           },
         ),
       ],
-      errorPageBuilder: (context, state) => MaterialPage(
-        key: UniqueKey(),
-        child: Scaffold(
-          body: Center(child: Text(state.error.toString())),
-        ),
-      ),
     ),
-  );
-}
+    GoRoute(
+      name: 'trade',
+      path: '/trade',
+      builder: (BuildContext context, GoRouterState state) {
+        return BlocProvider(
+          create: (BuildContext context) => TradePageBloc(
+            walletRepository: context.read<WalletRepository>(),
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+            repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
+            swapController: Get.find(),
+            isBuyAX: false,
+          ),
+          child: const DesktopTrade(),
+        );
+      },
+    ),
+    GoRoute(
+      name: 'pool',
+      path: '/pool',
+      builder: (BuildContext context, GoRouterState state) {
+        return BlocProvider(
+          create: (BuildContext context) => AddLiquidityBloc(
+            walletRepository: context.read<WalletRepository>(),
+            tokensRepository: context.read<TokensRepository>(),
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+            repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
+            poolController: Get.find(),
+          ),
+          child: const DesktopPool(),
+        );
+      },
+    ),
+    GoRoute(
+      name: 'farm',
+      path: '/farm',
+      builder: (BuildContext context, GoRouterState state) {
+        return BlocProvider(
+          create: (BuildContext context) => FarmBloc(
+            walletRepository: context.read<WalletRepository>(),
+            tokensRepository: context.read<TokensRepository>(),
+            configRepository: context.read<AppBloc>().configRepository,
+            streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
+            repo: GetFarmDataUseCase(
+              gysrApiClient: context.read<GysrApiClient>(),
+            ),
+          ),
+          child: const DesktopFarm(),
+        );
+      },
+    ),
+  ],
+  errorPageBuilder: (context, state) => MaterialPage(
+    key: UniqueKey(),
+    child: Scaffold(
+      body: Center(child: Text(state.error.toString())),
+    ),
+  ),
+);
 
 AthleteScoutModel? _toAthlete(String id) {
   for (final athlete in Global().athleteList) {

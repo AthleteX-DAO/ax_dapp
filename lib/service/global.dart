@@ -114,7 +114,7 @@ class Global extends PropertyChangeNotifier<String> {
                   onPressed: () {
                     if (_page != 'scout') {
                       _page = 'scout';
-                      context.replace('/scout');
+                      context.goNamed('scout');
                     }
                   },
                   child: Text(
@@ -140,7 +140,7 @@ class Global extends PropertyChangeNotifier<String> {
                   onPressed: () {
                     if (_page != 'trade') {
                       _page = 'trade';
-                      context.replace('/trade');
+                      context.goNamed('trade');
                     }
                   },
                   child: Text(
@@ -166,7 +166,7 @@ class Global extends PropertyChangeNotifier<String> {
                   onPressed: () {
                     if (_page != 'pool') {
                       _page = 'pool';
-                      context.replace('/pool');
+                      context.goNamed('pool');
                     }
                   },
                   child: Text(
@@ -192,7 +192,7 @@ class Global extends PropertyChangeNotifier<String> {
                   onPressed: () {
                     if (_page != 'farm') {
                       _page = 'farm';
-                      context.replace('/farm');
+                      context.goNamed('farm');
                     }
                   },
                   child: Text(
