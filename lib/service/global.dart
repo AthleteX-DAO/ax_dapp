@@ -2,14 +2,11 @@ import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/view/wallet_view.dart';
-import 'package:config_repository/config_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wallet_repository/wallet_repository.dart';
 
 // singleton class
 class Global extends PropertyChangeNotifier<String> {
