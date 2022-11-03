@@ -96,8 +96,8 @@ class _DesktopScoutState extends State<DesktopScout> {
             },
             builder: (context, state) {
               final bloc = context.read<ScoutPageBloc>();
-              if (Global().athleteList.isEmpty) {
-                Global().athleteList = state.athletes;
+              if (global.athleteList.isEmpty) {
+                global.athleteList = state.athletes;
               }
               filteredAthletes = state.filteredAthletes;
               if (_selectedChain != state.selectedChain) {
@@ -105,32 +105,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                 bloc.add(FetchScoutInfoRequested());
               }
               _selectedSport = state.selectedSport;
-              /* shouldnt need with go router
-              // moved provider inside athletePage
-              // sends to athlete on button press
-              if (athletePage && curAthlete != null) {
-                return BlocProvider(
-                  create: (context) => AthletePageBloc(
-                    walletRepository: context.read<WalletRepository>(),
-                    tokensRepository: context.read<TokensRepository>(),
-                    mlbRepo: RepositoryProvider.of<MLBRepo>(context),
-                    nflRepo: RepositoryProvider.of<NFLRepo>(context),
-                    athlete: curAthlete!,
-                    getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
-                      tokensRepository: context.read<TokensRepository>(),
-                      graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                      sportsRepos: [
-                        RepositoryProvider.of<MLBRepo>(context),
-                        RepositoryProvider.of<NFLRepo>(context),
-                      ],
-                    ),
-                  ),
-                  child: AthletePage(
-                    athlete: curAthlete!,
-                  ),
-                );
-              }
-              */
               return SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 child: Container(
@@ -282,7 +256,8 @@ class _DesktopScoutState extends State<DesktopScout> {
             style: textSwapState(
               _selectedSport == SupportedSport.NBA,
               global.textStyle(Colors.white, sportFilterTxSz, false, false),
-              global.textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+              global.textStyle(
+                  Colors.amber[400]!, sportFilterTxSz, false, true),
             ),
           ),
         ),
