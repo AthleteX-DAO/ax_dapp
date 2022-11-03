@@ -152,8 +152,7 @@ class _AppState extends State<App> {
         name: 'landing',
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
-          // ignore: prefer_const_constructors
-          return LandingPage();
+          return const LandingPage();
         },
       ),
       GoRoute(
@@ -174,8 +173,7 @@ class _AppState extends State<App> {
                 ],
               ),
             ),
-            // ignore: prefer_const_constructors
-            child: DesktopScout(),
+            child: const DesktopScout(),
           );
         },
         routes: [
@@ -200,8 +198,7 @@ class _AppState extends State<App> {
               swapController: Get.find(),
               isBuyAX: false,
             ),
-            // ignore: prefer_const_constructors
-            child: DesktopTrade(),
+            child: const DesktopTrade(),
           );
         },
       ),
