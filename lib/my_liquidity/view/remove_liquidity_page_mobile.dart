@@ -126,8 +126,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                       controller: _removeAmountController,
                                       onChanged: (removeInput) {
                                         setState(() {
-                                          value = double.parse(removeInput)
-                                              .roundToDouble();
+                                          value = removeInput.isEmpty ? 0 : double.parse(removeInput).roundToDouble();
                                           widget.poolController
                                               .removePercentage = value;
                                         });
