@@ -126,7 +126,10 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                       controller: _removeAmountController,
                                       onChanged: (removeInput) {
                                         setState(() {
-                                          value = removeInput.isEmpty ? 0 : double.parse(removeInput).roundToDouble();
+                                          value = removeInput.isEmpty
+                                              ? 0
+                                              : double.parse(removeInput)
+                                                  .roundToDouble();
                                           widget.poolController
                                               .removePercentage = value;
                                         });
@@ -143,13 +146,12 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                           22,
                                           isBold: false,
                                         ),
-                                        contentPadding:
-                                            const EdgeInsets.all(9),
+                                        contentPadding: const EdgeInsets.all(9),
                                         border: InputBorder.none,
                                       ),
                                       inputFormatters: [
-                                        FilteringTextInputFormatter
-                                            .digitsOnly
+                                        FilteringTextInputFormatter.digitsOnly,
+                                        LengthLimitingTextInputFormatter(3),
                                       ],
                                     ),
                                   ),
@@ -319,7 +321,8 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                       SizedBox(
                                         width: 100,
                                         child: Text(
-                                          tokenOneRemoveAmount.toStringAsFixed(6),
+                                          tokenOneRemoveAmount
+                                              .toStringAsFixed(6),
                                           textAlign: TextAlign.end,
                                         ),
                                       ),
@@ -371,7 +374,8 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                       SizedBox(
                                         width: 100,
                                         child: Text(
-                                          tokenTwoRemoveAmount.toStringAsFixed(6),
+                                          tokenTwoRemoveAmount
+                                              .toStringAsFixed(6),
                                           textAlign: TextAlign.end,
                                         ),
                                       ),
