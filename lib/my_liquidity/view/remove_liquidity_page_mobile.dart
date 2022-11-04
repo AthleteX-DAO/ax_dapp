@@ -2,6 +2,7 @@ import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
 import 'package:ax_dapp/my_liquidity/widgets/pool_remove_approve_button.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/util/limit_range.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -152,6 +153,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                       inputFormatters: [
                                         FilteringTextInputFormatter.digitsOnly,
                                         LengthLimitingTextInputFormatter(3),
+                                        LimitRange(0, 100),
                                       ],
                                     ),
                                   ),
