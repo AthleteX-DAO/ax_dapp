@@ -114,58 +114,53 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ConstrainedBox(
-                                      constraints: BoxConstraints(
-                                        maxWidth: _width,
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: _width,
+                                  ),
+                                  child: IntrinsicWidth(
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.number,
+                                      controller: _removeAmountController,
+                                      onChanged: (removeInput) {
+                                        setState(() {
+                                          value = double.parse(removeInput)
+                                              .roundToDouble();
+                                          widget.poolController
+                                              .removePercentage = value;
+                                        });
+                                      },
+                                      style: textStyle(
+                                        Colors.grey[400]!,
+                                        22,
+                                        isBold: false,
                                       ),
-                                      child: IntrinsicWidth(
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          controller: _removeAmountController,
-                                          onChanged: (removeInput) {
-                                            setState(() {
-                                              value = double.parse(removeInput)
-                                                  .roundToDouble();
-                                              widget.poolController
-                                                  .removePercentage = value;
-                                            });
-                                          },
-                                          style: textStyle(
-                                            Colors.grey[400]!,
-                                            22,
-                                            isBold: false,
-                                          ),
-                                          decoration: InputDecoration(
-                                            hintText: '0',
-                                            hintStyle: textStyle(
-                                              Colors.grey[400]!,
-                                              22,
-                                              isBold: false,
-                                            ),
-                                            contentPadding:
-                                                const EdgeInsets.all(9),
-                                            border: InputBorder.none,
-                                          ),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly
-                                          ],
+                                      decoration: InputDecoration(
+                                        hintText: '0',
+                                        hintStyle: textStyle(
+                                          Colors.grey[400]!,
+                                          22,
+                                          isBold: false,
                                         ),
+                                        contentPadding:
+                                            const EdgeInsets.all(9),
+                                        border: InputBorder.none,
                                       ),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter
+                                            .digitsOnly
+                                      ],
                                     ),
-                                    Text(
-                                      '%',
-                                      style: TextStyle(
-                                        color: Colors.grey[400],
-                                        fontSize: 22,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
+                                ),
+                                Text(
+                                  '%',
+                                  style: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize: 22,
+                                  ),
                                 ),
                               ],
                             ),
