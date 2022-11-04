@@ -24,14 +24,14 @@ class RemoveLiquidityPageMobile extends StatefulWidget {
   final PoolController poolController;
 
   @override
-  State<RemoveLiquidityPageMobile> createState() => _RemoveLiquidityPageMobileState();
+  State<RemoveLiquidityPageMobile> createState() =>
+      _RemoveLiquidityPageMobileState();
 }
-class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
 
+class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
   LiquidityPositionInfo infoOfSelectedCard = LiquidityPositionInfo.empty();
   double value = 0;
-  final TextEditingController _removeAmountController =
-      TextEditingController();
+  final TextEditingController _removeAmountController = TextEditingController();
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
     super.initState();
   }
 
-    @override
+  @override
   void dispose() {
     _removeAmountController.dispose();
     super.dispose();
@@ -50,9 +50,9 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
     final tokenOneRemoveAmount =
-      double.parse(infoOfSelectedCard.token0LpAmount) * (value / 100);
+        double.parse(infoOfSelectedCard.token0LpAmount) * (value / 100);
     final tokenTwoRemoveAmount =
-      double.parse(infoOfSelectedCard.token1LpAmount) * (value / 100);
+        double.parse(infoOfSelectedCard.token1LpAmount) * (value / 100);
     return Container(
       alignment: Alignment.topCenter,
       width: _width * 0.7,
@@ -92,7 +92,13 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                   ),
                   Column(
                     children: [
-                      const Text('Amount To Remove', textAlign: TextAlign.left,),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          'Amount To Remove',
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
                       Container(
                         width: 500,
                         height: 50,
@@ -119,13 +125,14 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                       ),
                                       child: IntrinsicWidth(
                                         child: TextFormField(
-                                          keyboardType: const TextInputType
-                                              .numberWithOptions(decimal: true),
+                                          keyboardType: TextInputType.number,
                                           controller: _removeAmountController,
                                           onChanged: (removeInput) {
                                             setState(() {
-                                              value = double.parse(removeInput).roundToDouble();
-                                              widget.poolController.removePercentage = value;
+                                              value = double.parse(removeInput)
+                                                  .roundToDouble();
+                                              widget.poolController
+                                                  .removePercentage = value;
                                             });
                                           },
                                           style: textStyle(
@@ -145,11 +152,17 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                             border: InputBorder.none,
                                           ),
                                           inputFormatters: [
-                                            FilteringTextInputFormatter.allow(
-                                              RegExp(r'^(\d+)?\.?\d{0,6}'),
-                                            ),
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
                                           ],
                                         ),
+                                      ),
+                                    ),
+                                    Text(
+                                      '%',
+                                      style: TextStyle(
+                                        color: Colors.grey[400],
+                                        fontSize: 22,
                                       ),
                                     ),
                                   ],
@@ -385,20 +398,25 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                             tabController: widget._tabController,
                             text: 'Approve',
                             approveCallback: () {
-                              final handler =
-                                  context.read<WalletRepository>().getTokenBalance;
-                              return widget.poolController.approveRemove(handler);
+                              final handler = context
+                                  .read<WalletRepository>()
+                                  .getTokenBalance;
+                              return widget.poolController
+                                  .approveRemove(handler);
                             },
                             confirmCallback: () {
-                              final handler =
-                                  context.read<WalletRepository>().getTokenBalance;
-                              return widget.poolController.removeLiquidity(handler);
+                              final handler = context
+                                  .read<WalletRepository>()
+                                  .getTokenBalance;
+                              return widget.poolController
+                                  .removeLiquidity(handler);
                             },
                             currencyOne: widget.infoOfSelectedCard.token0Symbol,
                             currencyTwo: widget.infoOfSelectedCard.token1Symbol,
                             valueOne: tokenOneRemoveAmount,
                             valueTwo: tokenTwoRemoveAmount,
-                            lpTokens: widget.infoOfSelectedCard.lpTokenPairBalance,
+                            lpTokens:
+                                widget.infoOfSelectedCard.lpTokenPairBalance,
                             shareOfPool: widget.infoOfSelectedCard.shareOfPool,
                             percentRemoval: value,
                             lpTokenName:
@@ -417,7 +435,8 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                 setState(() {
                                   widget._tabController.index = 0;
                                   value = 0;
-                                  widget.poolController.removePercentage = value;
+                                  widget.poolController.removePercentage =
+                                      value;
                                 });
                               },
                               child: const Text(
