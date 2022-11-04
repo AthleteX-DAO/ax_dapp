@@ -120,8 +120,8 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     ConstrainedBox(
-                                      constraints: const BoxConstraints(
-                                        maxWidth: 500,
+                                      constraints: BoxConstraints(
+                                        maxWidth: _width,
                                       ),
                                       child: IntrinsicWidth(
                                         child: TextFormField(
@@ -141,7 +141,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                             isBold: false,
                                           ),
                                           decoration: InputDecoration(
-                                            hintText: '0.00',
+                                            hintText: '0',
                                             hintStyle: textStyle(
                                               Colors.grey[400]!,
                                               22,
@@ -270,123 +270,125 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: _width,
-                    height: _height * 0.1,
-                    decoration: boxDecoration(
-                      Colors.transparent,
-                      15,
-                      0.5,
-                      Colors.grey[600]!,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                          width: _width - 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  left: 30,
-                                ),
-                                width: 35,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    scale: 0.25,
-                                    image: widget.token0Icon!,
+                  FittedBox(
+                    child: Container(
+                      width: _width,
+                      height: _height * 0.1,
+                      decoration: boxDecoration(
+                        Colors.transparent,
+                        15,
+                        0.5,
+                        Colors.grey[600]!,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: _width - 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    left: 30,
+                                  ),
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      scale: 0.25,
+                                      image: widget.token0Icon!,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                widget.infoOfSelectedCard.token0Symbol,
-                                style: textStyle(
-                                  Colors.white,
-                                  16,
-                                  isBold: false,
+                                const SizedBox(
+                                  width: 10,
                                 ),
-                              ),
-                              const Spacer(),
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  right: 30,
-                                ),
-                                width: _width * .20,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      child: Text(
-                                        tokenOneRemoveAmount.toStringAsFixed(6),
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: _width - 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  left: 30,
-                                ),
-                                width: 35,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    scale: 0.25,
-                                    image: widget.token1Icon!,
+                                Text(
+                                  widget.infoOfSelectedCard.token0Symbol,
+                                  style: textStyle(
+                                    Colors.white,
+                                    16,
+                                    isBold: false,
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                widget.infoOfSelectedCard.token1Symbol,
-                                style: textStyle(
-                                  Colors.white,
-                                  16,
-                                  isBold: false,
-                                ),
-                              ),
-                              const Spacer(),
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  right: 30,
-                                ),
-                                width: _width * .20,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      child: Text(
-                                        tokenTwoRemoveAmount.toStringAsFixed(6),
-                                        textAlign: TextAlign.end,
+                                const Spacer(),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    right: 30,
+                                  ),
+                                  width: _width * .20,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      SizedBox(
+                                        width: 100,
+                                        child: Text(
+                                          tokenOneRemoveAmount.toStringAsFixed(6),
+                                          textAlign: TextAlign.end,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            width: _width - 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    left: 30,
+                                  ),
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      scale: 0.25,
+                                      image: widget.token1Icon!,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  widget.infoOfSelectedCard.token1Symbol,
+                                  style: textStyle(
+                                    Colors.white,
+                                    16,
+                                    isBold: false,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    right: 30,
+                                  ),
+                                  width: _width * .20,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      SizedBox(
+                                        width: 100,
+                                        child: Text(
+                                          tokenTwoRemoveAmount.toStringAsFixed(6),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: _height * 0.03),
