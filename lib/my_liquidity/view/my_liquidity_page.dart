@@ -283,13 +283,20 @@ class _MyLiquidityPageState extends State<MyLiquidityPage>
                       ],
                     ),
                   ),
-                  RemoveLiquidityPage(
+                  if (_isWeb) RemoveLiquidityPage(
                     infoOfSelectedCard: infoOfSelectedCard,
                     token0Icon: token0Icon,
                     token1Icon: token1Icon,
                     tabController: _tabController,
                     poolController: poolController,
-                  ),
+                  ) else RemoveLiquidityPageMobile(
+                    infoOfSelectedCard: infoOfSelectedCard,
+                    token0Icon: token0Icon,
+                    token1Icon: token1Icon,
+                    tabController: _tabController,
+                    poolController: poolController,
+                  )
+                  ,
                 ],
               ),
             ),
