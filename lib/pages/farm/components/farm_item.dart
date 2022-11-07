@@ -38,46 +38,53 @@ Widget farmItem(
       1,
       Colors.grey[600]!,
     ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        farmTitleWidget,
-        // Current Balance
-        Row(
+    child: FittedBox(
+      fit: BoxFit.scaleDown,
+      child: SizedBox(
+        height: cardHeight,
+        width: cardWidth,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Available Balance',
-              style: txStyle,
+            farmTitleWidget,
+            // Current Balance
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Available Balance',
+                  style: txStyle,
+                ),
+                Obx(
+                  () => Text(
+                    '${farm.stakingInfo.value.viewAmount} ${farm.strStakedSymbol}',
+                    style: txStyle,
+                  ),
+                )
+              ],
             ),
-            Obx(
-              () => Text(
-                '${farm.stakingInfo.value.viewAmount} ${farm.strStakedSymbol}',
-                style: txStyle,
-              ),
-            )
-          ],
-        ),
-        // TVL
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'TVL',
-              style: txStyle,
+            // TVL
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'TVL',
+                  style: txStyle,
+                ),
+                Text('\$${farm.strTVL}', style: txStyle)
+              ],
             ),
-            Text('\$${farm.strTVL}', style: txStyle)
+            // Total APY
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Total APR', style: txStyle),
+                Text('${farm.strAPR}%', style: txStyle)
+              ],
+            ),
           ],
         ),
-        // Total APY
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Total APR', style: txStyle),
-            Text('${farm.strAPR}%', style: txStyle)
-          ],
-        ),
-      ],
+      ),
     ),
   );
 }
