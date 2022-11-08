@@ -1,6 +1,6 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/widgets/widget_factories/athlete_details_widget.dart';
-import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/abbreviation_mappings_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,12 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'Details',
-              style: Global().textStyle(Colors.white, 24, false, false),
+              style: textStyle(
+                Colors.white,
+                24,
+                isBold: false,
+                isUline: false,
+              ),
             ),
           ),
           Divider(thickness: 1, color: greyTextColor),
@@ -30,12 +35,22 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Sport / League',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 athlete.sport.name,
                 //toDo add map for the different league
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -44,11 +59,21 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Team',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 '''${retrieveNFLTeamCityName(athlete.team)} ${retrieveNFLTeamNickName(athlete.team)}''',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -57,11 +82,21 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Position',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 retrieveFullNFLAthletePosition(athlete.position),
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -70,11 +105,21 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Season Start',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 'Sep 8, 2022',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -83,11 +128,21 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Season End',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 'Jan 8, 2023',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -108,7 +163,12 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Key Statistics',
-                style: Global().textStyle(Colors.white, 24, false, false),
+                style: textStyle(
+                  Colors.white,
+                  24,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               SizedBox(
                 width: 300,
@@ -119,48 +179,72 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'Yds',
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'Tds',
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'Rec',
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'RYd',
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'RTch',
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'RuYd',
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                   ],
@@ -174,7 +258,12 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Current Season Stats',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               SizedBox(
                 width: 300,
@@ -185,48 +274,72 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.passingYards.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.passingTouchdowns.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.reception.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.receivingYards.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.receivingTouchdowns.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.rushingYards.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 13, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                   ],
@@ -260,20 +373,20 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 athlete.name,
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.white,
                   18,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               ),
               Text(
                 retrieveFullNFLAthletePosition(athlete.position),
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.grey[700]!,
                   10,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               )
             ],
@@ -288,20 +401,20 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
               children: [
                 Text(
                   retrieveNFLTeamCityName(athlete.team),
-                  style: Global().textStyle(
+                  style: textStyle(
                     Colors.white,
                     18,
-                    false,
-                    false,
+                    isBold: false,
+                    isUline: false,
                   ),
                 ),
                 Text(
                   retrieveNFLTeamNickName(athlete.team),
-                  style: Global().textStyle(
+                  style: textStyle(
                     Colors.grey[700]!,
                     10,
-                    false,
-                    false,
+                    isBold: false,
+                    isUline: false,
                   ),
                 )
               ],
@@ -337,20 +450,20 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 athlete.name,
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.white,
                   18,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               ),
               Text(
                 'Test',
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.grey[700]!,
                   10,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               )
             ],
@@ -366,20 +479,20 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
               children: [
                 Text(
                   'TeamName',
-                  style: Global().textStyle(
+                  style: textStyle(
                     Colors.white,
                     18,
-                    false,
-                    false,
+                    isBold: false,
+                    isUline: false,
                   ),
                 ),
                 Text(
                   'TeamNickName',
-                  style: Global().textStyle(
+                  style: textStyle(
                     Colors.grey[700]!,
                     10,
-                    false,
-                    false,
+                    isBold: false,
+                    isUline: false,
                   ),
                 )
               ],

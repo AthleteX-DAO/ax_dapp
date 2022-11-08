@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
 import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
@@ -10,7 +11,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dar
 import 'package:ax_dapp/repositories/subgraph/usecases/get_sell_info_use_case.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
-import 'package:ax_dapp/util/athlete_page_format_helper.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -20,7 +21,6 @@ import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class BuyButton extends StatelessWidget {
   const BuyButton({
@@ -77,7 +77,15 @@ class BuyButton extends StatelessWidget {
             context.showWalletWarningToast();
           }
         },
-        child: Text('Buy', style: textStyle(Colors.black, 20, false, false)),
+        child: Text(
+          'Buy',
+          style: textStyle(
+            Colors.black,
+            20,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
       ),
     );
   }
@@ -138,7 +146,15 @@ class SellButton extends StatelessWidget {
             context.showWalletWarningToast();
           }
         },
-        child: Text('Sell', style: textStyle(Colors.black, 20, false, false)),
+        child: Text(
+          'Sell',
+          style: textStyle(
+            Colors.black,
+            20,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
       ),
     );
   }
@@ -189,8 +205,15 @@ class MintButton extends StatelessWidget {
             context.showWalletWarningToast();
           }
         },
-        child:
-            Text('Mint Pair', style: textStyle(Colors.white, 20, false, false)),
+        child: Text(
+          'Mint Pair',
+          style: textStyle(
+            Colors.white,
+            20,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
       ),
     );
   }
@@ -253,9 +276,14 @@ class RedeemButton extends StatelessWidget {
         },
         child: AutoSizeText(
           'Redeem Pair',
-          style: textStyle(Colors.white, 20, false, false),
+          style: textStyle(
+            Colors.white,
+            20,
+            isBold: false,
+            isUline: false,
+          ),
           maxLines: 1,
-        ), 
+        ),
       ),
     );
   }

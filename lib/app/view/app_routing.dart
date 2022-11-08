@@ -47,16 +47,10 @@ class App extends StatefulWidget {
 
   @override
   // ignore: no_logic_in_create_state
-  State<App> createState() => _AppState(configRepository: configRepository);
+  State<App> createState() => _AppState();
 }
 
 class _AppState extends State<App> {
-  _AppState({
-    required this.configRepository,
-  });
-
-  final ConfigRepository configRepository;
-
   @override
   void initState() {
     super.initState();
@@ -75,7 +69,7 @@ class _AppState extends State<App> {
           create: (_) => AppBloc(
             walletRepository: context.read<WalletRepository>(),
             tokensRepository: context.read<TokensRepository>(),
-            configRepository: configRepository,
+            configRepository: context.read<ConfigRepository>(),
           ),
           lazy: false,
         ),
@@ -113,6 +107,8 @@ class _AppState extends State<App> {
   );
 }
 
+Global global = Global();
+
 // router -- Add new pages here with corrosponding route
 // on the buttons leading to those pages, onPressed: () => context.goNamed('scout');
 final _router = GoRouter(
@@ -133,6 +129,7 @@ final _router = GoRouter(
       name: 'scout',
       path: '/scout',
       builder: (BuildContext context, GoRouterState state) {
+        global.page = 'scout';
         return BlocProvider(
           create: (BuildContext context) => ScoutPageBloc(
             tokenRepository: context.read<TokensRepository>(),
@@ -155,6 +152,7 @@ final _router = GoRouter(
           name: 'athlete',
           path: 'athlete/:id',
           builder: (BuildContext context, GoRouterState state) {
+            global.page = 'athlete';
             return AthletePage(athlete: _toAthlete(state.params['id']!));
           },
         ),
@@ -164,6 +162,7 @@ final _router = GoRouter(
       name: 'trade',
       path: '/trade',
       builder: (BuildContext context, GoRouterState state) {
+        global.page = 'trade';
         return BlocProvider(
           create: (BuildContext context) => TradePageBloc(
             walletRepository: context.read<WalletRepository>(),
@@ -180,6 +179,7 @@ final _router = GoRouter(
       name: 'pool',
       path: '/pool',
       builder: (BuildContext context, GoRouterState state) {
+        global.page = 'pool';
         return BlocProvider(
           create: (BuildContext context) => AddLiquidityBloc(
             walletRepository: context.read<WalletRepository>(),
@@ -196,6 +196,7 @@ final _router = GoRouter(
       name: 'farm',
       path: '/farm',
       builder: (BuildContext context, GoRouterState state) {
+        global.page = 'farm';
         return BlocProvider(
           create: (BuildContext context) => FarmBloc(
             walletRepository: context.read<WalletRepository>(),

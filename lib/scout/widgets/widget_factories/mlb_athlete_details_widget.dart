@@ -1,6 +1,6 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/widgets/widget_factories/athlete_details_widget.dart';
-import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/abbreviation_mappings_helper.dart';
 import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,12 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'Details',
-              style: Global().textStyle(Colors.white, 24, false, false),
+              style: textStyle(
+                Colors.white,
+                24,
+                isBold: false,
+                isUline: false,
+              ),
             ),
           ),
           Divider(thickness: 1, color: greyTextColor),
@@ -30,12 +35,22 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Sport / League',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 athlete.sport.name,
                 //toDo add map for the different league
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -44,11 +59,21 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Team',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 '''${retrieveTeamCityName(athlete.team)} ${retrieveTeamNickname(athlete.team)}''',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -57,11 +82,21 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Position',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 retrieveFullMLBAthletePosition(athlete.position),
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -70,11 +105,21 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Season Start',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 'Mar 31, 2022',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -83,11 +128,21 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Season End',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               Text(
                 'Nov 2, 2022',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               )
             ],
           ),
@@ -108,7 +163,12 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Key Statistics',
-                style: Global().textStyle(Colors.white, 24, false, false),
+                style: textStyle(
+                  Colors.white,
+                  24,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               SizedBox(
                 width: 300,
@@ -119,48 +179,72 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'AtBat',
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'HR',
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'wOBA',
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'SB',
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'Err',
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         'InPl',
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                   ],
@@ -174,7 +258,12 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 'Current Season Stats',
-                style: Global().textStyle(greyTextColor, 20, false, false),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
               SizedBox(
                 width: 300,
@@ -185,48 +274,72 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.atBats.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.homeRuns.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.weightedOnBasePercentage.toStringAsFixed(3),
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.stolenBases.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.errors.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         athlete.inningsPlayed.toString(),
-                        style:
-                            Global().textStyle(greyTextColor, 15, false, false),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                   ],
@@ -264,20 +377,20 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 athlete.name,
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.white,
                   18,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               ),
               Text(
                 retrieveFullMLBAthletePosition(athlete.position),
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.grey[700]!,
                   10,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               )
             ],
@@ -291,20 +404,20 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 retrieveTeamCityName(athlete.team),
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.white,
                   18,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               ),
               Text(
                 retrieveTeamNickname(athlete.team),
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.grey[700]!,
                   10,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               )
             ],
@@ -339,22 +452,22 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             children: [
               Text(
                 athlete.name,
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.white,
                   18,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               ),
               Text(
                 retrieveFullMLBAthletePosition(
                   athlete.position,
                 ),
-                style: Global().textStyle(
+                style: textStyle(
                   Colors.grey[700]!,
                   10,
-                  false,
-                  false,
+                  isBold: false,
+                  isUline: false,
                 ),
               )
             ],
@@ -370,20 +483,20 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
               children: [
                 Text(
                   retrieveTeamCityName(athlete.team),
-                  style: Global().textStyle(
+                  style: textStyle(
                     Colors.white,
                     18,
-                    false,
-                    false,
+                    isBold: false,
+                    isUline: false,
                   ),
                 ),
                 Text(
                   retrieveTeamNickname(athlete.team),
-                  style: Global().textStyle(
+                  style: textStyle(
                     Colors.grey[700]!,
                     10,
-                    false,
-                    false,
+                    isBold: false,
+                    isUline: false,
                   ),
                 )
               ],

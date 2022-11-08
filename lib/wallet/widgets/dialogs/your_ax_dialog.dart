@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class YourAXDialog extends StatelessWidget {
-  const YourAXDialog({super.key,});
+  const YourAXDialog({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,12 @@ class YourAXDialog extends StatelessWidget {
                   children: [
                     Text(
                       'Your AX',
-                      style: textStyle(Colors.white, 20, isBold:false),
+                      style: textStyle(
+                        Colors.white,
+                        20,
+                        isBold: false,
+                        isUline: false,
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(
@@ -188,7 +195,12 @@ class YourAXDialog extends StatelessWidget {
                         },
                         child: Text(
                           'Buy AX',
-                          style: textStyle(Colors.black, 14, isBold:true),
+                          style: textStyle(
+                            Colors.black,
+                            14,
+                            isBold: true,
+                            isUline: false,
+                          ),
                         ),
                       ),
                     ),
@@ -200,6 +212,6 @@ class YourAXDialog extends StatelessWidget {
         ),
       ),
     ),
-  );
+    );
   }
 }
