@@ -119,10 +119,14 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                           context
                               .read<TrackingCubit>()
 <<<<<<< HEAD
+<<<<<<< HEAD
                               .onDiscordLinkClicked(walletId: walletId);
 =======
                               .onDiscordLinkClicked(walletId: walletAddress);
 >>>>>>> 4dea737f (feat: track events for when the user clicks on the discord link)
+=======
+                              .onDiscordLinkClicked(walletId: walletId);
+>>>>>>> eedb6914 (refactor: added checks if the walletAddress is empty or if it is equal to the empty address constant)
                           launchDiscordLink();
                           Navigator.pop(context);
                         },
