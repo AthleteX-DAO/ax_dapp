@@ -21,6 +21,7 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
     if (_height < 350) hgt = _height;
     final walletAddress =
         context.read<WalletBloc>().state.formattedWalletAddress;
+    final walletId = (walletAddress.isEmpty || walletAddress == kEmptyAddress) ? '' : walletAddress;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -117,7 +118,7 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                         onPressed: () {
                           context
                               .read<TrackingCubit>()
-                              .onDiscordLinkClicked(walletId: walletAddress);
+                              .onDiscordLinkClicked(walletId: walletId);
                           launchDiscordLink();
                           Navigator.pop(context);
                         },
