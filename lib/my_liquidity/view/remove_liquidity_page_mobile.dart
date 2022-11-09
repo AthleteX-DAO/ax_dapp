@@ -83,6 +83,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                     Colors.white,
                     20,
                     isBold: false,
+                    isUline: false,
                   ),
                 ),
               ],
@@ -135,6 +136,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                   Colors.grey[400]!,
                                   22,
                                   isBold: false,
+                                  isUline: false,
                                 ),
                                 decoration: InputDecoration(
                                   hintText: '0',
@@ -142,6 +144,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                     Colors.grey[400]!,
                                     22,
                                     isBold: false,
+                                    isUline: false,
                                   ),
                                   contentPadding: const EdgeInsets.all(9),
                                   border: InputBorder.none,
@@ -176,6 +179,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                   Colors.grey[600]!,
                   16,
                   isBold: false,
+                  isUline: false,
                 ),
               ),
             ),
@@ -198,6 +202,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           Text(
@@ -206,6 +211,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           )
                         ],
@@ -224,6 +230,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.grey[600]!,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           Text(
@@ -232,6 +239,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           )
                         ],
@@ -250,6 +258,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.grey[600]!,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           Text(
@@ -258,6 +267,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           )
                         ],
@@ -276,6 +286,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                   Colors.grey[600]!,
                   16,
                   isBold: false,
+                  isUline: false,
                 ),
               ),
             ),
@@ -320,6 +331,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           const Spacer(),
@@ -373,6 +385,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           const Spacer(),
