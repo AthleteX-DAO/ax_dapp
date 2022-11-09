@@ -140,6 +140,7 @@ flutter:
     - assets/images/weth_small.png
     - assets/images/USDC_small.png
     - assets/images/w_matic.png
+    - assets/images/geth.png
 
 flutter_icons:
   android: 'launcher_icon'

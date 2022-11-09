@@ -25,6 +25,9 @@ AssetImage tokenImage(Token token) {
     case EthereumCurrency.usdc:
       tokenAssetName = 'USDC_small.png';
       break;
+    case EthereumCurrency.geth:
+      tokenAssetName = '';
+      break;
     case EthereumCurrency.apt:
       return aptImage(token as Apt);
   }

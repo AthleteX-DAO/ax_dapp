@@ -1,5 +1,3 @@
-// TODO(Pearlson): confirm info
-
 /// {@template ethereum_currency}
 /// Holds data about an `Ethereum` currency.
 /// {@endtemplate}
@@ -26,7 +24,10 @@ enum EthereumCurrency {
   usdc(currencyName: 'USDC Token', symbol: 'USDC'),
 
   /// APT currency.
-  apt(currencyName: 'AP Token', symbol: 'APT');
+  apt(currencyName: 'AP Token', symbol: 'APT'),
+
+  /// Goerli Ether currency.
+  geth(currencyName: 'Goerli Token', symbol: 'GTH');
 
   /// {@macro ethereum_currency}
   const EthereumCurrency({

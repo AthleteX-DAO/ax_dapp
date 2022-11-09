@@ -53,8 +53,8 @@ extension EthereumChainLocalizationX on EthereumChain {
         throw UnsupportedError('$this');
       case EthereumChain.polygonMainnet:
         return 'Matic Network';
-      case EthereumChain.polygonTestnet:
-        return 'Matic Test Network';
+      case EthereumChain.goerliTestNet:
+        return 'Goerli Test Network';
       case EthereumChain.sxMainnet:
         return 'SX Network';
       case EthereumChain.sxTestnet:
