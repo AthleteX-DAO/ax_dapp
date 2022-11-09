@@ -47,8 +47,8 @@ enum EthereumChain {
     chainId: 5,
     chainName: 'Goerli Testnet',
     currency: EthereumCurrency.geth,
-    rpcUrls: ['https://matic-mumbai.chainstacklabs.com/'],
-    blockExplorerUrls: ['https://polygonscan.com/'],
+    rpcUrls: ['https://goerli.infura.io/v3/'],
+    blockExplorerUrls: ['https://goerli.etherscan.io/'],
   ),
 
   /// SX main network.
@@ -175,7 +175,7 @@ extension ChainConfigX on EthereumChain {
         client: client,
       );
 
-  /// Creates a [Dex] client based on this [EthereumChain] configuration.
+  /// Creates a [APTFactory] client based on this [EthereumChain] configuration.
   APTFactory createAptFactoryClient(Web3Client client) => APTFactory(
         address: EthereumAddress.fromHex(
           const EthereumAddressConfig.dexFactoryAddress().address(this),
