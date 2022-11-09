@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class YourAXDialog extends StatelessWidget {
-  const YourAXDialog({super.key,});
+  const YourAXDialog({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +19,20 @@ class YourAXDialog extends StatelessWidget {
     if (_width < 405) wid = _width;
     var hgt = 500.0;
     if (_height < 505) hgt = _height;
-      return Dialog(
-    backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Container(
-      height: hgt,
-      width: wid,
-      decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Container(
+        height: hgt,
+        width: wid,
+        decoration: boxDecoration(
+          Colors.grey[900]!,
+          30,
+          0,
+          Colors.black,
+        ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -40,7 +45,12 @@ class YourAXDialog extends StatelessWidget {
                   children: [
                     Text(
                       'Your AX',
-                      style: textStyle(Colors.white, 20, isBold:false),
+                      style: textStyle(
+                        Colors.white,
+                        20,
+                        isBold: false,
+                        isUline: false,
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(
@@ -183,12 +193,16 @@ class YourAXDialog extends StatelessWidget {
                           //     "https://app.sushi.com/swap?inputCurrency=0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df&outputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
                           const axEthUniswap =
                               'https://app.uniswap.org/#/swap?chain=polygon';
-      
                           launchUrl(Uri.parse(axEthUniswap));
                         },
                         child: Text(
                           'Buy AX',
-                          style: textStyle(Colors.black, 14, isBold:true),
+                          style: textStyle(
+                            Colors.black,
+                            14,
+                            isBold: true,
+                            isUline: false,
+                          ),
                         ),
                       ),
                     ),
@@ -199,7 +213,6 @@ class YourAXDialog extends StatelessWidget {
           ),
         ),
       ),
-    ),
-  );
+    );
   }
 }

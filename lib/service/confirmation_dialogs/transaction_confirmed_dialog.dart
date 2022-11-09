@@ -26,7 +26,12 @@ class LinkButton extends StatelessWidget {
         },
         child: Text(
           pageName,
-          style: textStyle(Colors.amber, 12, isBold: false),
+          style: textStyle(
+            Colors.amber,
+            12,
+            isBold: false,
+            isUline: false,
+          ),
         ),
       ),
     );
@@ -116,7 +121,12 @@ class TransactionConfirmed extends StatelessWidget {
                       Container(width: 5),
                       Text(
                         'Deposit Confirmed',
-                        style: textStyle(Colors.white, 20, isBold: false),
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                       SizedBox(
                         width: 40,

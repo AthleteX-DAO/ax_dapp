@@ -1,5 +1,6 @@
 import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
 import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/view/wallet_view.dart';
 import 'package:flutter/material.dart';
@@ -120,18 +121,18 @@ class Global extends PropertyChangeNotifier<String> {
                   child: Text(
                     'Scout',
                     style: textSwapState(
-                      _page == 'scout',
-                      textStyle(
+                      condition: _page == 'scout',
+                      tabNotSelected: textStyle(
                         Colors.white,
                         tabTxSz,
-                        true,
-                        false,
+                        isBold: true,
+                        isUline: false,
                       ),
-                      textStyle(
+                      tabSelected: textStyle(
                         Colors.amber[400]!,
                         tabTxSz,
-                        true,
-                        true,
+                        isBold: true,
+                        isUline: true,
                       ),
                     ),
                   ),
@@ -146,18 +147,18 @@ class Global extends PropertyChangeNotifier<String> {
                   child: Text(
                     'Trade',
                     style: textSwapState(
-                      _page == 'trade',
-                      textStyle(
+                      condition: _page == 'trade',
+                      tabNotSelected: textStyle(
                         Colors.white,
                         tabTxSz,
-                        true,
-                        false,
+                        isBold: true,
+                        isUline: false,
                       ),
-                      textStyle(
+                      tabSelected: textStyle(
                         Colors.amber[400]!,
                         tabTxSz,
-                        true,
-                        true,
+                        isBold: true,
+                        isUline: true,
                       ),
                     ),
                   ),
@@ -172,18 +173,18 @@ class Global extends PropertyChangeNotifier<String> {
                   child: Text(
                     'Pool',
                     style: textSwapState(
-                      _page == 'pool',
-                      textStyle(
+                      condition: _page == 'pool',
+                      tabNotSelected: textStyle(
                         Colors.white,
                         tabTxSz,
-                        true,
-                        false,
+                        isBold: true,
+                        isUline: false,
                       ),
-                      textStyle(
+                      tabSelected: textStyle(
                         Colors.amber[400]!,
                         tabTxSz,
-                        true,
-                        true,
+                        isBold: true,
+                        isUline: true,
                       ),
                     ),
                   ),
@@ -198,18 +199,18 @@ class Global extends PropertyChangeNotifier<String> {
                   child: Text(
                     'Farm',
                     style: textSwapState(
-                      _page == 'farm',
-                      textStyle(
+                      condition: _page == 'farm',
+                      tabNotSelected: textStyle(
                         Colors.white,
                         tabTxSz,
-                        true,
-                        false,
+                        isBold: true,
+                        isUline: false,
                       ),
-                      textStyle(
+                      tabSelected: textStyle(
                         Colors.amber[400]!,
                         tabTxSz,
-                        true,
-                        true,
+                        isBold: true,
+                        isUline: true,
                       ),
                     ),
                   ),
@@ -387,23 +388,6 @@ class Global extends PropertyChangeNotifier<String> {
   }
 
   /// common methods
-
-  TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    // ignore: curly_braces_in_flow_control_structures
-    return TextStyle(
-      color: color,
-      fontFamily: 'OpenSans',
-      fontSize: size,
-      fontWeight: isBold ? FontWeight.w400 : FontWeight.normal,
-      decoration: isUline ? TextDecoration.underline : TextDecoration.none,
-    );
-  }
-
-  // ignore: avoid_positional_boolean_parameters
-  TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
-    if (condition) return tru;
-    return fls;
-  }
 
   Color iconColor(int index) {
     if (index == _selectedIndex) {

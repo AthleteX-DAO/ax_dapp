@@ -202,7 +202,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.name,
-                              style: textStyle(Colors.white, 12, isBold: true),
+                              style: textStyle(
+                                Colors.white,
+                                12,
+                                isBold: true,
+                                isUline: false,
+                              ),
                             ),
                           ),
                           Container(
@@ -214,6 +219,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                 Colors.grey[100]!,
                                 9,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                           ),
@@ -300,8 +306,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         child: SizedBox(
                           child: Text(
                             tkr,
-                            style:
-                                textStyle(Colors.white, tkrTextSize, isBold: true),
+                            style: textStyle(
+                              Colors.white,
+                              tkrTextSize,
+                              isBold: true,
+                              isUline: false,
+                            ),
                           ),
                         ),
                       ),
@@ -446,6 +456,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                                 Colors.grey[400]!,
                                                 8,
                                                 isBold: false,
+                                                isUline: false,
                                               ),
                                             ),
                                           ),
@@ -471,6 +482,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                             Colors.grey[400]!,
                                             22,
                                             isBold: false,
+                                            isUline: false,
                                           ),
                                           decoration: InputDecoration(
                                             hintText: '0.00',
@@ -478,6 +490,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                               Colors.grey[400]!,
                                               22,
                                               isBold: false,
+                                              isUline: false,
                                             ),
                                             contentPadding:
                                                 const EdgeInsets.all(9),
@@ -506,7 +519,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                       ),
                       Text(
                         '+',
-                        style: textStyle(Colors.grey[600]!, 35, isBold: true),
+                        style: textStyle(
+                          Colors.grey[600]!,
+                          35,
+                          isBold: true,
+                          isUline: false,
+                        ),
                       ),
                       //Second Token container with border
                       Container(
@@ -552,6 +570,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                             Colors.grey[400]!,
                                             22,
                                             isBold: false,
+                                            isUline: false,
                                           ),
                                           decoration: InputDecoration(
                                             hintText: '0.00',
@@ -559,6 +578,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                               Colors.grey[400]!,
                                               22,
                                               isBold: false,
+                                              isUline: false,
                                             ),
                                             contentPadding:
                                                 const EdgeInsets.all(9),

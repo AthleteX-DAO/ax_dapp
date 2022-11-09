@@ -62,8 +62,12 @@ class _SellDialogState extends State<SellDialog> {
       decoration: boxDecoration(Colors.transparent, 20, 1, Colors.grey[800]!),
       child: Row(
         children: const [
-          Expanded(child: LongAptButton()),
-          Expanded(child: ShortAptButton()),
+          Expanded(
+            child: LongAptButton(),
+          ),
+          Expanded(
+            child: ShortAptButton(),
+          ),
         ],
       ),
     );
@@ -74,11 +78,23 @@ class _SellDialogState extends State<SellDialog> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Total Fees:',
-              style: textStyle(Colors.grey[600]!, 15, isBold: false)),
+          Text(
+            'Total Fees:',
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
+          ),
           Text(
             '$totalFee APT(0.3%)',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -92,7 +108,12 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text(
             'Balance: ${toDecimal(balance, 6)}',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -106,11 +127,21 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text(
             'Market Price Impact:',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
           Text(
             '$marketPriceImpact %',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -124,11 +155,21 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text(
             'Minimum Received:',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
           Text(
             '$minimumReceived AX',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -142,11 +183,21 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text(
             'Slippage Tolerance:',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
           Text(
             '$slipageTolerance %',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -160,11 +211,21 @@ class _SellDialogState extends State<SellDialog> {
         children: [
           Text(
             'You Receive:',
-            style: textStyle(Colors.white, 15, isBold: false),
+            style: textStyle(
+              Colors.white,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
           Text(
             '$amountToReceive AX',
-            style: textStyle(Colors.white, 15, isBold: false),
+            style: textStyle(
+              Colors.white,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -225,7 +286,12 @@ class _SellDialogState extends State<SellDialog> {
                     children: [
                       Text(
                         'Sell ${widget.athleteName} APT',
-                        style: textStyle(Colors.white, 20, isBold: false),
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(
@@ -310,7 +376,9 @@ class _SellDialogState extends State<SellDialog> {
                           Container(width: 5),
                           const AptIcon(),
                           Container(width: 15),
-                          const Expanded(child: Ticker()),
+                          const Expanded(
+                            child: Ticker(),
+                          ),
                           Container(
                             height: 28,
                             width: 48,
@@ -322,14 +390,20 @@ class _SellDialogState extends State<SellDialog> {
                             ),
                             child: TextButton(
                               onPressed: () {
-                                bloc.add(MaxSellTap());
+                                bloc.add(
+                                  MaxSellTap(),
+                                );
                                 _aptAmountController.text =
                                     state.balance.toStringAsFixed(6);
                               },
                               child: Text(
                                 'MAX',
-                                style: textStyle(Colors.grey[400]!, 9,
-                                    isBold: false),
+                                style: textStyle(
+                                  Colors.grey[400]!,
+                                  9,
+                                  isBold: false,
+                                  isUline: false,
+                                ),
                               ),
                             ),
                           ),
@@ -337,14 +411,25 @@ class _SellDialogState extends State<SellDialog> {
                             constraints: BoxConstraints(maxWidth: wid * 0.4),
                             child: IntrinsicWidth(
                               child: TextField(
-                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                  decimal: true,
+                                ),
                                 controller: _aptAmountController,
-                                style: textStyle(Colors.grey[400]!, 22,
-                                    isBold: false),
+                                style: textStyle(
+                                  Colors.grey[400]!,
+                                  22,
+                                  isBold: false,
+                                  isUline: false,
+                                ),
                                 decoration: InputDecoration(
                                   hintText: '0.00',
-                                  hintStyle: textStyle(Colors.grey[400]!, 22,
-                                      isBold: false),
+                                  hintStyle: textStyle(
+                                    Colors.grey[400]!,
+                                    22,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
                                   contentPadding:
                                       const EdgeInsets.only(left: 3),
                                   border: InputBorder.none,
@@ -388,12 +473,18 @@ class _SellDialogState extends State<SellDialog> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [Flexible(child: Price())],
+                        children: const [
+                          Flexible(
+                            child: Price(),
+                          )
+                        ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          showTotalFee(totalFee.toStringAsFixed(6)),
+                          showTotalFee(
+                            totalFee.toStringAsFixed(6),
+                          ),
                         ],
                       ),
                       Row(
@@ -490,9 +581,9 @@ class LongAptButton extends StatelessWidget {
         minimumSize: const Size(50, 30),
         primary: aptTypeSelection.isLong ? Colors.amber : Colors.transparent,
       ),
-      onPressed: () => context
-          .read<SellDialogBloc>()
-          .add(const AptTypeSelectionChanged(AptType.long)),
+      onPressed: () => context.read<SellDialogBloc>().add(
+            const AptTypeSelectionChanged(AptType.long),
+          ),
       child: Text(
         'Long',
         style: TextStyle(
@@ -522,9 +613,9 @@ class ShortAptButton extends StatelessWidget {
         minimumSize: const Size(50, 30),
         primary: aptTypeSelection.isLong ? Colors.transparent : Colors.black,
       ),
-      onPressed: () => context
-          .read<SellDialogBloc>()
-          .add(const AptTypeSelectionChanged(AptType.short)),
+      onPressed: () => context.read<SellDialogBloc>().add(
+            const AptTypeSelectionChanged(AptType.short),
+          ),
       child: Text(
         'Short',
         style: TextStyle(
@@ -573,7 +664,15 @@ class Price extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Price:', style: textStyle(Colors.white, 15, isBold: false)),
+        Text(
+          'Price:',
+          style: textStyle(
+            Colors.white,
+            15,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
         BlocBuilder<SellDialogBloc, SellDialogState>(
           buildWhen: (previous, current) =>
               previous.aptTypeSelection != current.aptTypeSelection ||
@@ -582,7 +681,12 @@ class Price extends StatelessWidget {
               previous.shortApt != current.shortApt,
           builder: (context, state) {
             final price = state.aptSellInfo.axPrice.toStringAsFixed(6);
-            final _textStyle = textStyle(Colors.white, 15, isBold: false);
+            final _textStyle = textStyle(
+              Colors.white,
+              15,
+              isBold: false,
+              isUline: false,
+            );
             return state.aptTypeSelection.isLong
                 ? Text(
                     '$price AX per ${state.longApt.ticker} APT',
@@ -610,7 +714,12 @@ class Ticker extends StatelessWidget {
           previous.longApt != current.longApt ||
           previous.shortApt != current.shortApt,
       builder: (context, state) {
-        final _textStyle = textStyle(Colors.white, 15, isBold: false);
+        final _textStyle = textStyle(
+          Colors.white,
+          15,
+          isBold: false,
+          isUline: false,
+        );
         return Text(
           state.aptTypeSelection.isLong
               ? '''${state.longApt.ticker} APT'''
