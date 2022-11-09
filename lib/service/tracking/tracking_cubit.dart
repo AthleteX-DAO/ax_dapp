@@ -754,3 +754,15 @@ extension FarmPageTracking on TrackingCubit {
     );
   }
 }
+
+extension PromoDialogTracking on TrackingCubit {
+  void onDiscordLinkClicked({
+    required String walletId,
+  }) {
+    trackingRepository.track(
+      WalletPromoTrackingEvent.onDiscordLinkClicked({
+        'wallet_id': walletId,
+      }),
+    );
+  }
+}
