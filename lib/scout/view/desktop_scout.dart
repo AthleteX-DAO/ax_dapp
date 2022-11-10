@@ -75,81 +75,73 @@ class _DesktopScoutState extends State<DesktopScout> {
     final _height = MediaQuery.of(context).size.height;
     // breaks the code, will come back to it later(probably)
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: global.topNav(context),
-      bottomNavigationBar: global.bottomNav(context),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: global.background(context),
-        child: BlocBuilder<ScoutPageBloc, ScoutPageState>(
-          buildWhen: (previous, current) {
-            return current.status.name.isNotEmpty ||
-                previous.selectedChain.chainId != current.selectedChain.chainId;
-          },
-          builder: (context, state) {
-            final bloc = context.read<ScoutPageBloc>();
-            if (global.athleteList.isEmpty) {
-              global.athleteList = state.athletes;
-            }
-            filteredAthletes = state.filteredAthletes;
-            if (_selectedChain != state.selectedChain) {
-              _selectedChain = state.selectedChain;
-              bloc.add(
-                FetchScoutInfoRequested(),
-              );
-            }
-            _selectedSport = state.selectedSport;
-            return SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Container(
-                margin: const EdgeInsets.only(top: 20),
-                height: _height * 0.85 + 41,
-                width: _width * 0.99,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: const Divider(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    // APT Title & Sport Filter
-                    Container(
-                      margin: const EdgeInsets.only(
-                        left: 20,
-                        right: 20,
-                        bottom: 10,
-                      ),
-                      width: _width * 1,
-                      height: 40,
-                      child: kIsWeb
-                          ? buildFilterMenuWeb(
-                              state,
-                              bloc,
-                              sportFilterTxSz,
-                              _width,
-                            )
-                          : buildFilterMenu(
-                              state,
-                              bloc,
-                              sportFilterTxSz,
-                              sportFilterIconSz,
-                            ),
-                    ),
-                    // List Headers
-                    buildListviewHeaders(),
-                    buildScoutView(state),
-                  ],
-                ),
-              ),
+    return global.buildPage(
+      context,
+      BlocBuilder<ScoutPageBloc, ScoutPageState>(
+        buildWhen: (previous, current) {
+          return current.status.name.isNotEmpty ||
+              previous.selectedChain.chainId != current.selectedChain.chainId;
+        },
+        builder: (context, state) {
+          final bloc = context.read<ScoutPageBloc>();
+          if (global.athleteList.isEmpty) {
+            global.athleteList = state.athletes;
+          }
+          filteredAthletes = state.filteredAthletes;
+          if (_selectedChain != state.selectedChain) {
+            _selectedChain = state.selectedChain;
+            bloc.add(
+              FetchScoutInfoRequested(),
             );
-          },
-        ),
+          }
+          _selectedSport = state.selectedSport;
+          return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              height: _height * 0.85 + 41,
+              width: _width * 0.99,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: const Divider(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  // APT Title & Sport Filter
+                  Container(
+                    margin: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      bottom: 10,
+                    ),
+                    width: _width * 1,
+                    height: 40,
+                    child: kIsWeb
+                        ? buildFilterMenuWeb(
+                            state,
+                            bloc,
+                            sportFilterTxSz,
+                            _width,
+                          )
+                        : buildFilterMenu(
+                            state,
+                            bloc,
+                            sportFilterTxSz,
+                            sportFilterIconSz,
+                          ),
+                  ),
+                  // List Headers
+                  buildListviewHeaders(),
+                  buildScoutView(state),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

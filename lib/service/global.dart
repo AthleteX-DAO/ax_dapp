@@ -3,6 +3,7 @@ import 'package:ax_dapp/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/view/wallet_view.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +17,6 @@ class Global extends PropertyChangeNotifier<String> {
   Global._internal() {
     _athleteList = [];
     _page = 'landing';
-    _isWeb = true;
     _selectedIndex = 0;
   }
   static final Global _instance = Global._internal();
@@ -25,7 +25,6 @@ class Global extends PropertyChangeNotifier<String> {
 
   List<AthleteScoutModel> _athleteList = [];
   String _page = 'landing';
-  bool _isWeb = true;
   int _selectedIndex = 0;
   late PageController _pageController;
 
@@ -41,12 +40,6 @@ class Global extends PropertyChangeNotifier<String> {
   set page(String _page) {
     this._page = _page;
     notifyListeners('page');
-  }
-
-  bool get isWeb => _isWeb;
-  set isWeb(bool _isWeb) {
-    this._isWeb = _isWeb;
-    notifyListeners('isWeb');
   }
 
   int get selectedIndex => _selectedIndex;
@@ -67,17 +60,32 @@ class Global extends PropertyChangeNotifier<String> {
     );
   }
 
+  Scaffold buildPage(BuildContext context, Widget page) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      appBar: topNav(context),
+      bottomNavigationBar: bottomNav(context),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: background(context),
+        child: page,
+      ),
+    );
+  }
+
   AppBar topNav(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: _isWeb ? topNavBar(context) : topNavBarAndroid(context),
+      title: kIsWeb ? topNavBar(context) : topNavBarAndroid(context),
       backgroundColor: Colors.transparent,
       elevation: 0,
     );
   }
 
   Widget bottomNav(BuildContext context) {
-    return isWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context);
+    return kIsWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context);
   }
 
   Widget topNavBar(BuildContext context) {

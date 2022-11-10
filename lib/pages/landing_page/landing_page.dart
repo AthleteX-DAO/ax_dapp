@@ -1,5 +1,4 @@
 import 'package:ax_dapp/pages/landing_page/components/landing_page_widgets.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';

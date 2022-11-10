@@ -82,9 +82,7 @@ class App extends StatelessWidget {
 
 class _MaterialApp extends StatelessWidget {
   // ignore: use_super_parameters
-  const _MaterialApp({
-    Key? key,
-  }) : super(key: key);
+  const _MaterialApp();
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/pages/farm/usecases/get_farm_data_use_case.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:equatable/equatable.dart';

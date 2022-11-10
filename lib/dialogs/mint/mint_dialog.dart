@@ -267,7 +267,6 @@ class _MintDialogState extends State<MintDialog> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pop(context);
                               context.goNamed('trade');
                             },
                         ),

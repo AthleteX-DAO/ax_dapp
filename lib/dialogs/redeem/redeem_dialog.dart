@@ -232,7 +232,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pop(context);
                               context.goNamed('trade');
                             },
                         ),

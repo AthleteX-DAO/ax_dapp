@@ -301,7 +301,6 @@ class _BuyDialogState extends State<BuyDialog> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pop(context);
                               context.goNamed('trade');
                             },
                         ),

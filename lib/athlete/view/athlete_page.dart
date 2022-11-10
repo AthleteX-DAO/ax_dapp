@@ -72,6 +72,10 @@ class _AthletePageState extends State<AthletePage> {
       return DesktopScout();
     }*/
 
+    if (global.page != 'athlete') {
+      context.goNamed(global.page);
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,

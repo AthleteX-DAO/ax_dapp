@@ -1,7 +1,6 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/usecases/usecases.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';

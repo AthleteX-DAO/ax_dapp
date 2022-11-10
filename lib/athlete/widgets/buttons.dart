@@ -255,7 +255,7 @@ class RedeemButton extends StatelessWidget {
           'Redeem Pair',
           style: textStyle(Colors.white, 20, false, false),
           maxLines: 1,
-        ), 
+        ),
       ),
     );
   }

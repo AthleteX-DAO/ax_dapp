@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/wallet/models/models.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';

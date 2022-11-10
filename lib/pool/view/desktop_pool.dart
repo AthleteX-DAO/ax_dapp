@@ -53,144 +53,136 @@ class _DesktopPoolState extends State<DesktopPool> {
 
     final toggleWdt = isWeb ? 260.0 : layoutWdt;
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: global.topNav(context),
-      bottomNavigationBar: global.bottomNav(context),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: global.background(context),
-        child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          child: Container(
-            width: layoutWdt,
-            height: _height - AppBar().preferredSize.height - 10,
-            // Top margin of Pool section is equal to height + 1 of AppBar on
-            // mobile only
-            margin: EdgeInsets.only(top: AppBar().preferredSize.height + 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: toggleWdt,
-                    height: isWeb ? 40 : layoutHgt * 0.06,
-                    margin: EdgeInsets.symmetric(vertical: layoutHgt * 0.01),
-                    decoration: boxDecoration(
-                        Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          width: isWeb ? 120 : (toggleWdt / 2) - 5,
-                          decoration: currentTabIndex == 0
-                              ? boxDecoration(
-                                  Colors.grey[600]!,
-                                  100,
-                                  0,
-                                  Colors.transparent,
-                                )
-                              : boxDecoration(
-                                  Colors.transparent,
-                                  100,
-                                  0,
-                                  Colors.transparent,
-                                ),
-                          child: TextButton(
-                            onPressed: () {
-                              setState(() {
-                                currentTabIndex = 0;
-                              });
-                            },
-                            child: Text(
-                              'Add Liquidity',
-                              style: textStyle(
-                                Colors.white,
-                                16,
-                                isBold: true,
-                                isUline: false,
+    return global.buildPage(
+      context,
+      SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Container(
+          width: layoutWdt,
+          height: _height - AppBar().preferredSize.height - 10,
+          // Top margin of Pool section is equal to height + 1 of AppBar on
+          // mobile only
+          margin: EdgeInsets.only(top: AppBar().preferredSize.height + 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: Container(
+                  width: toggleWdt,
+                  height: isWeb ? 40 : layoutHgt * 0.06,
+                  margin: EdgeInsets.symmetric(vertical: layoutHgt * 0.01),
+                  decoration: boxDecoration(
+                      Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: isWeb ? 120 : (toggleWdt / 2) - 5,
+                        decoration: currentTabIndex == 0
+                            ? boxDecoration(
+                                Colors.grey[600]!,
+                                100,
+                                0,
+                                Colors.transparent,
+                              )
+                            : boxDecoration(
+                                Colors.transparent,
+                                100,
+                                0,
+                                Colors.transparent,
                               ),
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              currentTabIndex = 0;
+                            });
+                          },
+                          child: Text(
+                            'Add Liquidity',
+                            style: textStyle(
+                              Colors.white,
+                              16,
+                              isBold: true,
+                              isUline: false,
                             ),
                           ),
                         ),
-                        Container(
-                          width: isWeb ? 120 : (toggleWdt / 2) - 5,
-                          decoration: (currentTabIndex == 1)
-                              ? boxDecoration(
-                                  Colors.grey[600]!,
-                                  100,
-                                  0,
-                                  Colors.transparent,
-                                )
-                              : boxDecoration(
-                                  Colors.transparent,
-                                  100,
-                                  0,
-                                  Colors.transparent,
-                                ),
-                          child: TextButton(
-                            onPressed: () {
-                              setState(() {
-                                currentTabIndex = 1;
-                              });
-                            },
-                            child: Text(
-                              'My Liquidity',
-                              style: textStyle(
-                                Colors.white,
-                                16,
-                                isBold: true,
-                                isUline: false,
+                      ),
+                      Container(
+                        width: isWeb ? 120 : (toggleWdt / 2) - 5,
+                        decoration: (currentTabIndex == 1)
+                            ? boxDecoration(
+                                Colors.grey[600]!,
+                                100,
+                                0,
+                                Colors.transparent,
+                              )
+                            : boxDecoration(
+                                Colors.transparent,
+                                100,
+                                0,
+                                Colors.transparent,
                               ),
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              currentTabIndex = 1;
+                            });
+                          },
+                          child: Text(
+                            'My Liquidity',
+                            style: textStyle(
+                              Colors.white,
+                              16,
+                              isBold: true,
+                              isUline: false,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                IndexedStack(
-                  alignment: AlignmentDirectional.center,
-                  index: currentTabIndex,
-                  children: [
-                    SizedBox(
-                      height: layoutHgt,
-                      child: BlocProvider(
-                        create: (BuildContext context) => AddLiquidityBloc(
-                          walletRepository: context.read<WalletRepository>(),
-                          tokensRepository: context.read<TokensRepository>(),
-                          streamAppDataChanges:
-                              context.read<StreamAppDataChangesUseCase>(),
-                          repo: RepositoryProvider.of<GetPoolInfoUseCase>(
-                              context),
-                          poolController: Get.find(),
-                        ),
-                        child: AddLiquidityPage(
-                          token0: token0,
-                          token1: token1,
-                        ),
-                      ),
-                    ),
-                    BlocProvider(
-                      create: (_) => MyLiquidityBloc(
+              ),
+              IndexedStack(
+                alignment: AlignmentDirectional.center,
+                index: currentTabIndex,
+                children: [
+                  SizedBox(
+                    height: layoutHgt,
+                    child: BlocProvider(
+                      create: (BuildContext context) => AddLiquidityBloc(
                         walletRepository: context.read<WalletRepository>(),
+                        tokensRepository: context.read<TokensRepository>(),
                         streamAppDataChanges:
                             context.read<StreamAppDataChangesUseCase>(),
-                        repo: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(
-                          context,
-                        ),
+                        repo:
+                            RepositoryProvider.of<GetPoolInfoUseCase>(context),
+                        poolController: Get.find(),
                       ),
-                      child: MyLiquidityPage(
-                        togglePool: togglePool,
+                      child: AddLiquidityPage(
+                        token0: token0,
+                        token1: token1,
                       ),
                     ),
-                  ],
-                )
-              ],
-            ),
+                  ),
+                  BlocProvider(
+                    create: (_) => MyLiquidityBloc(
+                      walletRepository: context.read<WalletRepository>(),
+                      streamAppDataChanges:
+                          context.read<StreamAppDataChangesUseCase>(),
+                      repo: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(
+                        context,
+                      ),
+                    ),
+                    child: MyLiquidityPage(
+                      togglePool: togglePool,
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),
