@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/farm/widgets/single_logo_farm_title.dart';
+import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/foundation.dart';

@@ -1,9 +1,5 @@
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
-import 'package:ax_dapp/pages/farm/widgets/farm_item.dart';
-import 'package:ax_dapp/pages/farm/widgets/my_farm_item.dart';
-import 'package:ax_dapp/pages/farm/widgets/no_data.dart';
-import 'package:ax_dapp/pages/farm/widgets/no_wallet.dart';
-import 'package:ax_dapp/pages/farm/widgets/unsupported_chain.dart';
+import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';

@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/farm/dialogs/transaction_confirmed_dialog.dart';
+import 'package:ax_dapp/pages/farm/dialogs/dialogs.dart';
 import 'package:ax_dapp/pages/farm/modules/axl_info.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';

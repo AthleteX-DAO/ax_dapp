@@ -1,7 +1,5 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
-import 'package:ax_dapp/pages/farm/dialogs/stake_dialog.dart';
-import 'package:ax_dapp/pages/farm/widgets/sport_token.dart';
+import 'package:ax_dapp/pages/farm/dialogs/dialogs.dart';
+import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';

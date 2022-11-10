@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/farm/widgets/unstake_approve_button.dart';
+import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
