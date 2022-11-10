@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/farm/dialogs/trx_confirmed_dialog.dart';
+import 'package:ax_dapp/pages/farm/dialogs/transaction_confirmed_dialog.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
@@ -237,7 +237,7 @@ Widget dualStakeDialog(
                     Navigator.pop(context);
                     showDialog<void>(
                       context: context,
-                      builder: transactionConfirmed,
+                      builder: (BuildContext context) => const TransactionConfirmed(),
                     );
                   },
                   child: Text(
@@ -263,7 +263,7 @@ Widget dualStakeDialog(
                     Navigator.pop(context);
                     showDialog<void>(
                       context: context,
-                      builder: transactionConfirmed,
+                      builder: (BuildContext context) => const TransactionConfirmed(),
                     );
                   },
                   child:

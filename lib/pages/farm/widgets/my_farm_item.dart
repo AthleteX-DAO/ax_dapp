@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/farm/widgets/single_logo_farm_title.dart';
 import 'package:ax_dapp/pages/farm/dialogs/reward_claim_dialog.dart';
 import 'package:ax_dapp/pages/farm/dialogs/unstake_dialog.dart';
+import 'package:ax_dapp/pages/farm/widgets/single_logo_farm_title.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
@@ -187,7 +187,7 @@ Widget myFarmItem(
                     await farm.claim().then((value) {
                       showDialog<void>(
                         context: context,
-                        builder: rewardClaimDialog,
+                        builder: (BuildContext context) => const RewardsClaimedDialog(),
                       );
                       context.read<TrackingCubit>().onClaimRewardsSuccess(
                             tickerPair: farm.athlete == null

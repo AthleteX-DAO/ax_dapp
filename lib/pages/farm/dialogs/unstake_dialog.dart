@@ -1,4 +1,3 @@
-import 'package:ax_dapp/pages/farm/dialogs/unstake_confirmed_dialog.dart';
 import 'package:ax_dapp/pages/farm/widgets/unstake_approve_button.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -245,7 +244,6 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                       width: 175,
                       height: 45,
                       text: 'Confirm',
-                      confirmDialog: unstakeConfirmedDialog,
                       selectedFarm: selectedFarm,
                       walletAddress: context
                           .read<WalletBloc>()
