@@ -75,12 +75,10 @@ class DoubleLogoFarmTitle extends StatelessWidget {
                       isWeb: isWeb,
                     );
                   } else {
-                    return dualStakeDialog(
-                      builderContext,
-                      farm,
-                      farm.athlete!,
-                      _cardWidth,
-                      isWeb,
+                    return DualStakeDialog(
+                      selectedFarm: farm,
+                      athlete: farm.athlete!,
+                      layoutWdt: _cardWidth,
                     );
                   }
                 },

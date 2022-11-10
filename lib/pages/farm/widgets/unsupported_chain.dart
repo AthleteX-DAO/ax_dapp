@@ -9,14 +9,14 @@ class UnsupportedChain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-    child: SizedBox(
-      height: 70,
-      width: 400,
-      child: Text(
-        'Farms support for ${chain.chainName} coming soon!',
-        style: const TextStyle(color: Colors.blueAccent, fontSize: 30),
+      child: SizedBox(
+        height: 70,
+        width: 400,
+        child: Text(
+          'Farms support for ${chain.chainName} coming soon!',
+          style: const TextStyle(color: Colors.blueAccent, fontSize: 30),
+        ),
       ),
-    ),
-  );
+    );
   }
 }

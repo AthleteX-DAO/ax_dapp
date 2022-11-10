@@ -11,7 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SingleLogoFarmTitle extends StatelessWidget {
-  const SingleLogoFarmTitle({super.key, required this.farm, required this.cardWidth});
+  const SingleLogoFarmTitle({
+    super.key,
+    required this.farm,
+    required this.cardWidth,
+  });
 
   final FarmController farm;
   final double cardWidth;
@@ -21,63 +25,66 @@ class SingleLogoFarmTitle extends StatelessWidget {
     final isWeb =
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return SizedBox(
-    width: cardWidth,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 35,
-          height: 35,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: AssetImage('assets/images/x.jpg'),
+      width: cardWidth,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 35,
+            height: 35,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: AssetImage('assets/images/x.jpg'),
+              ),
             ),
           ),
-        ),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.01),
-        Expanded(
-          child: farm.athlete == null
-              ? SportToken(sport: farm.sport, symbol: '${farm.strName} Farm')
-              : SportToken(sport: farm.sport, symbol: '${farm.athlete!} Farm'),
-        ),
-        Container(width: 10),
-        Container(
-          width: 110,
-          height: 35,
-          decoration: boxDecoration(
-            Colors.amber[600]!,
-            100,
-            0,
-            Colors.amber[600]!,
-          ),
-          child: TextButton(
-            onPressed: () {
-              final isWalletConnected =
-                  context.read<WalletBloc>().state.isWalletConnected;
-              if (isWalletConnected) {
-                showDialog<void>(
-                  context: context,
-                  builder: (BuildContext builderContext) => StakeDialog(
-                    context: builderContext,
-                    farm: farm,
-                    layoutWdt: cardWidth,
-                    isWeb: isWeb,
+          SizedBox(width: MediaQuery.of(context).size.width * 0.01),
+          Expanded(
+            child: farm.athlete == null
+                ? SportToken(sport: farm.sport, symbol: '${farm.strName} Farm')
+                : SportToken(
+                    sport: farm.sport,
+                    symbol: '${farm.athlete!} Farm',
                   ),
-                );
-              } else {
-                context.showWalletWarningToast();
-              }
-            },
-            child: Text(
-              'Stake',
-              style: textStyle(Colors.black, 14, isBold: true),
+          ),
+          Container(width: 10),
+          Container(
+            width: 110,
+            height: 35,
+            decoration: boxDecoration(
+              Colors.amber[600]!,
+              100,
+              0,
+              Colors.amber[600]!,
+            ),
+            child: TextButton(
+              onPressed: () {
+                final isWalletConnected =
+                    context.read<WalletBloc>().state.isWalletConnected;
+                if (isWalletConnected) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext builderContext) => StakeDialog(
+                      context: builderContext,
+                      farm: farm,
+                      layoutWdt: cardWidth,
+                      isWeb: isWeb,
+                    ),
+                  );
+                } else {
+                  context.showWalletWarningToast();
+                }
+              },
+              child: Text(
+                'Stake',
+                style: textStyle(Colors.black, 14, isBold: true),
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
   }
 }

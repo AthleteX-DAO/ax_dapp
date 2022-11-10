@@ -6,14 +6,14 @@ class LoadingError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-    child: SizedBox(
-      height: 70,
-      width: 400,
-      child: Text(
-        'Failed to load list of liquidity positions',
-        style: TextStyle(color: Colors.red, fontSize: 30),
+      child: SizedBox(
+        height: 70,
+        width: 400,
+        child: Text(
+          'Failed to load list of liquidity positions',
+          style: TextStyle(color: Colors.red, fontSize: 30),
+        ),
       ),
-    ),
-  );
+    );
   }
 }

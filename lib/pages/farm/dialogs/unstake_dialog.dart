@@ -139,7 +139,8 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                           },
                           child: Text(
                             'Max',
-                            style: textStyle(Colors.grey[400]!, 9, isBold: false),
+                            style:
+                                textStyle(Colors.grey[400]!, 9, isBold: false),
                           ),
                         ),
                       ),
@@ -157,10 +158,12 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                               selectedFarm,
                             );
                           },
-                          style: textStyle(Colors.grey[400]!, 22, isBold: false),
+                          style:
+                              textStyle(Colors.grey[400]!, 22, isBold: false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle: textStyle(Colors.grey[400]!, 22, isBold: false),
+                            hintStyle:
+                                textStyle(Colors.grey[400]!, 22, isBold: false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),

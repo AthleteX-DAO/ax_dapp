@@ -120,8 +120,7 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
             widget.selectedFarm.stake().then((value) {
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) =>
-                    const TransactionConfirmed(),
+                builder: (BuildContext context) => const TransactionConfirmed(),
               ).then((value) {
                 if (mounted) {
                   Navigator.pop(context);

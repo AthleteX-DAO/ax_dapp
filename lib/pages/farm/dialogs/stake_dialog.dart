@@ -144,7 +144,8 @@ class _StakeDialogState extends State<StakeDialog> {
                           },
                           child: Text(
                             'Max',
-                            style: textStyle(Colors.grey[400]!, 9, isBold: false),
+                            style:
+                                textStyle(Colors.grey[400]!, 9, isBold: false),
                           ),
                         ),
                       ),
@@ -159,10 +160,12 @@ class _StakeDialogState extends State<StakeDialog> {
                             stakeInput(value, totalStakedBalance, selectedFarm);
                             isValid.value = checkValidInput(selectedFarm);
                           },
-                          style: textStyle(Colors.grey[400]!, 22, isBold: false),
+                          style:
+                              textStyle(Colors.grey[400]!, 22, isBold: false),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle: textStyle(Colors.grey[400]!, 22, isBold: false),
+                            hintStyle:
+                                textStyle(Colors.grey[400]!, 22, isBold: false),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
