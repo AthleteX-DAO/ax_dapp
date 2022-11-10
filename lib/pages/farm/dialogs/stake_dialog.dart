@@ -1,8 +1,6 @@
-import 'package:ax_dapp/pages/farm/components/stake_approve_button.dart';
-import 'package:ax_dapp/pages/farm/dialogs/trx_confirmed_dialog.dart';
-import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
-import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
+import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +70,12 @@ class _StakeDialogState extends State<StakeDialog> {
               children: <Widget>[
                 Text(
                   'Stake Liquidity',
-                  style: textStyle(Colors.white, 20, false),
+                  style: textStyle(
+                    Colors.white,
+                    20,
+                    isBold: false,
+                    isUline: false,
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -123,7 +126,12 @@ class _StakeDialogState extends State<StakeDialog> {
                       Expanded(
                         child: Text(
                           '''${selectedFarm.strStakedAlias.value.isNotEmpty ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}''',
-                          style: textStyle(Colors.white, 15, false),
+                          style: textStyle(
+                            Colors.white,
+                            15,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
                       ),
                       //Max button
@@ -146,7 +154,12 @@ class _StakeDialogState extends State<StakeDialog> {
                           },
                           child: Text(
                             'Max',
-                            style: textStyle(Colors.grey[400]!, 9, false),
+                            style: textStyle(
+                              Colors.grey[400]!,
+                              9,
+                              isBold: false,
+                              isUline: false,
+                            ),
                           ),
                         ),
                       ),
@@ -161,10 +174,20 @@ class _StakeDialogState extends State<StakeDialog> {
                             stakeInput(value, totalStakedBalance, selectedFarm);
                             isValid.value = checkValidInput(selectedFarm);
                           },
-                          style: textStyle(Colors.grey[400]!, 22, false),
+                          style: textStyle(
+                            Colors.grey[400]!,
+                            22,
+                            isBold: false,
+                            isUline: false,
+                          ),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
+                            hintStyle: textStyle(
+                              Colors.grey[400]!,
+                              22,
+                              isBold: false,
+                              isUline: false,
+                            ),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -185,12 +208,22 @@ class _StakeDialogState extends State<StakeDialog> {
               children: [
                 Text(
                   'Current ${selectedFarm.strStakedSymbol} Balance',
-                  style: textStyle(Colors.grey[400]!, 14, false),
+                  style: textStyle(
+                    Colors.grey[400]!,
+                    14,
+                    isBold: false,
+                    isUline: false,
+                  ),
                 ),
                 Obx(
                   () => Text(
                     '''${selectedFarm.stakingInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}''',
-                    style: textStyle(Colors.grey[400]!, 14, false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      14,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
               ],
@@ -200,12 +233,22 @@ class _StakeDialogState extends State<StakeDialog> {
               children: [
                 Text(
                   'Current ${selectedFarm.strStakedSymbol} Staked',
-                  style: textStyle(Colors.grey[400]!, 14, false),
+                  style: textStyle(
+                    Colors.grey[400]!,
+                    14,
+                    isBold: false,
+                    isUline: false,
+                  ),
                 ),
                 Obx(
                   () => Text(
                     '''${selectedFarm.stakedInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}''',
-                    style: textStyle(Colors.grey[400]!, 14, false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      14,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
               ],
@@ -216,7 +259,12 @@ class _StakeDialogState extends State<StakeDialog> {
                   padding: const EdgeInsets.only(left: 55),
                   child: Text(
                     '+',
-                    style: textStyle(Colors.grey[400]!, 14, false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      14,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 )
               ],
@@ -226,12 +274,22 @@ class _StakeDialogState extends State<StakeDialog> {
               children: [
                 Text(
                   'Funds Added',
-                  style: textStyle(Colors.grey[400]!, 14, false),
+                  style: textStyle(
+                    Colors.grey[400]!,
+                    14,
+                    isBold: false,
+                    isUline: false,
+                  ),
                 ),
                 Obx(
                   () => Text(
                     '''${selectedFarm.strStakeInput.value} ${selectedFarm.strStakedSymbol}''',
-                    style: textStyle(Colors.grey[400]!, 14, false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      14,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
               ],
@@ -263,7 +321,6 @@ class _StakeDialogState extends State<StakeDialog> {
                       width: 175,
                       height: 45,
                       text: 'Approve',
-                      confirmDialog: transactionConfirmed,
                       selectedFarm: selectedFarm,
                       walletAddress: context
                           .read<WalletBloc>()

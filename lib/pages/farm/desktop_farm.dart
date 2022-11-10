@@ -1,12 +1,7 @@
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
-import 'package:ax_dapp/pages/farm/components/farm_item.dart';
-import 'package:ax_dapp/pages/farm/components/my_farm_item.dart';
-import 'package:ax_dapp/pages/farm/components/no_data.dart';
-import 'package:ax_dapp/pages/farm/components/no_wallet.dart';
-import 'package:ax_dapp/pages/farm/components/unsupported_chain.dart';
-import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
-import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
+import 'package:ax_dapp/pages/farm/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
@@ -96,13 +91,13 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 }
                 if (state.status == BlocStatus.error ||
                     state.status == BlocStatus.noData) {
-                  widget = noData();
+                  widget = const NoData();
                 }
                 if (!state.isAllFarms && state.status == BlocStatus.noWallet) {
-                  widget = noWallet();
+                  widget = const NoWallet();
                 }
                 if (state.status == BlocStatus.unsupportedChain) {
-                  widget = unsupported(state.chain);
+                  widget = UnsupportedChain(chain: state.chain);
                 }
                 final Widget toggle =
                     toggleFarmButton(bloc, layoutWdt, layoutHgt);
@@ -119,8 +114,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                           child: Text(
                             isAllFarms ? 'Participating Farms' : 'My Farms',
                             style: isWeb
-                                ? textStyle(Colors.white, 24, true, false)
-                                : textStyle(Colors.white, 20, true, false),
+                                ? textStyle(Colors.white, 24, isBold: true, isUline: false)
+                                : textStyle(Colors.white, 20, isBold: true, isUline: false),
                           ),
                         ),
                         if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
@@ -151,7 +146,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                             : (state.isAllFarms
                                     ? state.filteredFarms.isEmpty
                                     : state.filteredStakedFarms.isEmpty)
-                                ? noData()
+                                ? const NoData()
                                 : GridView.builder(
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
@@ -172,10 +167,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                         : state.filteredStakedFarms.length,
                                     itemBuilder: (context, index) {
                                       return isAllFarms
-                                          ? farmItem(
-                                              context,
-                                              isWeb,
-                                              FarmController(
+                                          ? FarmItem(
+                                              farm: FarmController(
                                                 farm:
                                                     state.filteredFarms[index],
                                                 walletRepository: context
@@ -191,13 +184,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                                     .read<FarmBloc>()
                                                     .streamAppDataChanges,
                                               ),
-                                              listHeight,
-                                              layoutWdt,
+                                              listHeight: listHeight,
+                                              layoutWdt: layoutWdt,
                                             )
-                                          : myFarmItem(
-                                              context,
-                                              isWeb,
-                                              FarmController(
+                                          : MyFarmItem(
+                                              farm: FarmController(
                                                 farm: state
                                                     .filteredStakedFarms[index],
                                                 walletRepository: context
@@ -213,8 +204,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                                     .read<FarmBloc>()
                                                     .streamAppDataChanges,
                                               ),
-                                              listHeight,
-                                              layoutWdt,
+                                              listHeight: listHeight,
+                                              layoutWidth: layoutWdt,
                                             );
                                     },
                                   ),
@@ -264,7 +255,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
               },
               child: Text(
                 'All Farms',
-                style: textStyle(Colors.white, 16, true, false),
+                style: textStyle(Colors.white, 16, isBold: true, isUline: false),
               ),
             ),
           ),
@@ -301,7 +292,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
               },
               child: Text(
                 'My Farms',
-                style: textStyle(Colors.white, 16, true, false),
+                style: textStyle(Colors.white, 16, isBold: true, isUline: false),
               ),
             ),
           )
@@ -336,13 +327,13 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
 class WebSearchBar extends StatelessWidget {
   const WebSearchBar({
-    Key? key,
+    super.key,
     required this.isWeb,
     required this.myController,
     required this.layoutWdt,
     required this.layoutHgt,
     required this.bloc,
-  }) : super(key: key);
+  });
 
   final bool isWeb;
   final TextEditingController myController;
@@ -383,13 +374,13 @@ class WebSearchBar extends StatelessWidget {
 
 class MobileSearchBar extends StatelessWidget {
   const MobileSearchBar({
-    Key? key,
+    super.key,
     required this.isWeb,
     required this.myController,
     required this.layoutWdt,
     required this.layoutHgt,
     required this.bloc,
-  }) : super(key: key);
+  });
 
   final bool isWeb;
   final TextEditingController myController;

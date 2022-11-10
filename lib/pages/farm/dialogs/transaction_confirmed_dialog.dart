@@ -2,8 +2,8 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
-class UnstakeConfirmedDialog extends StatelessWidget {
-  const UnstakeConfirmedDialog({super.key});
+class TransactionConfirmed extends StatelessWidget {
+  const TransactionConfirmed({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class UnstakeConfirmedDialog extends StatelessWidget {
                     children: [
                       Container(width: 5),
                       Text(
-                        'Removal Confirmed',
+                        'Deposit Confirmed',
                         style: textStyle(
                           Colors.white,
                           20,

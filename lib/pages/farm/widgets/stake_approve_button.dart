@@ -1,3 +1,4 @@
+import 'package:ax_dapp/pages/farm/dialogs/dialogs.dart';
 import 'package:ax_dapp/pages/farm/modules/axl_info.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
@@ -11,7 +12,6 @@ class StakeApproveButton extends StatefulWidget {
     required this.width,
     required this.height,
     required this.text,
-    required this.confirmDialog,
     required this.selectedFarm,
     required this.walletAddress,
     super.key,
@@ -22,7 +22,6 @@ class StakeApproveButton extends StatefulWidget {
   final double height;
   final FarmController selectedFarm;
   final String walletAddress;
-  final Dialog Function(BuildContext) confirmDialog;
 
   @override
   State<StakeApproveButton> createState() => _StakeApproveButtonState();
@@ -121,8 +120,7 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
             widget.selectedFarm.stake().then((value) {
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog(context),
+                builder: (BuildContext context) => const TransactionConfirmed(),
               ).then((value) {
                 if (mounted) {
                   Navigator.pop(context);
