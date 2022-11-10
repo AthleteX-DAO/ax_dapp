@@ -335,13 +335,13 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
 class WebSearchBar extends StatelessWidget {
   const WebSearchBar({
-    Key? key,
+    super.key,
     required this.isWeb,
     required this.myController,
     required this.layoutWdt,
     required this.layoutHgt,
     required this.bloc,
-  }) : super(key: key);
+  });
 
   final bool isWeb;
   final TextEditingController myController;
@@ -382,13 +382,13 @@ class WebSearchBar extends StatelessWidget {
 
 class MobileSearchBar extends StatelessWidget {
   const MobileSearchBar({
-    Key? key,
+    super.key,
     required this.isWeb,
     required this.myController,
     required this.layoutWdt,
     required this.layoutHgt,
     required this.bloc,
-  }) : super(key: key);
+  });
 
   final bool isWeb;
   final TextEditingController myController;
