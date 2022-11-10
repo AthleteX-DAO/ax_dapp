@@ -37,7 +37,12 @@ class RewardsClaimedDialog extends StatelessWidget {
                       Container(width: 5),
                       Text(
                         'Rewards Claimed',
-                        style: textStyle(Colors.white, 20, isBold: false),
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                       SizedBox(
                         width: 40,

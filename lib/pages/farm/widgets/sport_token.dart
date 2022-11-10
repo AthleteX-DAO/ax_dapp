@@ -20,31 +20,23 @@ class BadgeToken extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       badgeContent: Text(
         sport.name.toUpperCase(),
-<<<<<<< HEAD
         style: textStyle(
           Colors.white,
           12,
           isBold: true,
           isUline: false,
         ),
-=======
-        style: textStyle(Colors.white, 12, isBold: true),
->>>>>>> fa2f9f04 (chore: formatting)
       ),
       position: BadgePosition.topEnd(top: -10, end: -12),
       padding: const EdgeInsets.only(top: 2, bottom: 2, left: 5, right: 5),
       child: Text(
         symbol,
-<<<<<<< HEAD
         style: textStyle(
           Colors.white,
           24,
           isBold: true,
           isUline: false,
         ),
-=======
-        style: textStyle(Colors.white, 24, isBold: true),
->>>>>>> fa2f9f04 (chore: formatting)
       ),
     );
   }
@@ -61,16 +53,12 @@ class SimpleToken extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Text(
         symbol,
-<<<<<<< HEAD
         style: textStyle(
           Colors.white,
           24,
           isBold: true,
           isUline: false,
         ),
-=======
-        style: textStyle(Colors.white, 24, isBold: true),
->>>>>>> fa2f9f04 (chore: formatting)
       ),
     );
   }

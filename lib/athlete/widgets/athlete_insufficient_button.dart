@@ -21,7 +21,7 @@ class AthleteInsufficientButton extends StatelessWidget {
         onPressed: () {},
         child: Text(
           'Insufficient AX Balance',
-          style: textStyle(Colors.red[400]!, 16, isBold: false),
+          style: textStyle(Colors.red[400]!, 16, isBold: false, isUline: false),
         ),
       ),
     );

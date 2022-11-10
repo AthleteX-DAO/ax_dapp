@@ -70,7 +70,12 @@ class _StakeDialogState extends State<StakeDialog> {
               children: <Widget>[
                 Text(
                   'Stake Liquidity',
-                  style: textStyle(Colors.white, 20, isBold: false),
+                  style: textStyle(
+                    Colors.white,
+                    20,
+                    isBold: false,
+                    isUline: false,
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -121,7 +126,12 @@ class _StakeDialogState extends State<StakeDialog> {
                       Expanded(
                         child: Text(
                           '''${selectedFarm.strStakedAlias.value.isNotEmpty ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}''',
-                          style: textStyle(Colors.white, 15, isBold: false),
+                          style: textStyle(
+                            Colors.white,
+                            15,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
                       ),
                       //Max button
@@ -144,8 +154,12 @@ class _StakeDialogState extends State<StakeDialog> {
                           },
                           child: Text(
                             'Max',
-                            style:
-                                textStyle(Colors.grey[400]!, 9, isBold: false),
+                            style: textStyle(
+                              Colors.grey[400]!,
+                              9,
+                              isBold: false,
+                              isUline: false,
+                            ),
                           ),
                         ),
                       ),
@@ -160,12 +174,20 @@ class _StakeDialogState extends State<StakeDialog> {
                             stakeInput(value, totalStakedBalance, selectedFarm);
                             isValid.value = checkValidInput(selectedFarm);
                           },
-                          style:
-                              textStyle(Colors.grey[400]!, 22, isBold: false),
+                          style: textStyle(
+                            Colors.grey[400]!,
+                            22,
+                            isBold: false,
+                            isUline: false,
+                          ),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, isBold: false),
+                            hintStyle: textStyle(
+                              Colors.grey[400]!,
+                              22,
+                              isBold: false,
+                              isUline: false,
+                            ),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -186,12 +208,22 @@ class _StakeDialogState extends State<StakeDialog> {
               children: [
                 Text(
                   'Current ${selectedFarm.strStakedSymbol} Balance',
-                  style: textStyle(Colors.grey[400]!, 14, isBold: false),
+                  style: textStyle(
+                    Colors.grey[400]!,
+                    14,
+                    isBold: false,
+                    isUline: false,
+                  ),
                 ),
                 Obx(
                   () => Text(
                     '''${selectedFarm.stakingInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}''',
-                    style: textStyle(Colors.grey[400]!, 14, isBold: false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      14,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
               ],
@@ -201,12 +233,22 @@ class _StakeDialogState extends State<StakeDialog> {
               children: [
                 Text(
                   'Current ${selectedFarm.strStakedSymbol} Staked',
-                  style: textStyle(Colors.grey[400]!, 14, isBold: false),
+                  style: textStyle(
+                    Colors.grey[400]!,
+                    14,
+                    isBold: false,
+                    isUline: false,
+                  ),
                 ),
                 Obx(
                   () => Text(
                     '''${selectedFarm.stakedInfo.value.viewAmount} ${selectedFarm.strStakedSymbol}''',
-                    style: textStyle(Colors.grey[400]!, 14, isBold: false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      14,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
               ],
@@ -217,7 +259,12 @@ class _StakeDialogState extends State<StakeDialog> {
                   padding: const EdgeInsets.only(left: 55),
                   child: Text(
                     '+',
-                    style: textStyle(Colors.grey[400]!, 14, isBold: false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      14,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 )
               ],
@@ -227,12 +274,22 @@ class _StakeDialogState extends State<StakeDialog> {
               children: [
                 Text(
                   'Funds Added',
-                  style: textStyle(Colors.grey[400]!, 14, isBold: false),
+                  style: textStyle(
+                    Colors.grey[400]!,
+                    14,
+                    isBold: false,
+                    isUline: false,
+                  ),
                 ),
                 Obx(
                   () => Text(
                     '''${selectedFarm.strStakeInput.value} ${selectedFarm.strStakedSymbol}''',
-                    style: textStyle(Colors.grey[400]!, 14, isBold: false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      14,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
               ],

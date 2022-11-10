@@ -21,7 +21,7 @@ class PoolInsufficientButton extends StatelessWidget {
         onPressed: () {},
         child: Text(
           'Insufficient Balance',
-          style: textStyle(Colors.red[400]!, 16, isBold: false),
+          style: textStyle(Colors.red[400]!, 16, isBold: false, isUline: false),
         ),
       ),
     );

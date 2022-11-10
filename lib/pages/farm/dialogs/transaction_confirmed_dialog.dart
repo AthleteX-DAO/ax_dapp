@@ -39,7 +39,12 @@ class TransactionConfirmed extends StatelessWidget {
                       Container(width: 5),
                       Text(
                         'Deposit Confirmed',
-                        style: textStyle(Colors.white, 20, isBold: false),
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                       SizedBox(
                         width: 40,

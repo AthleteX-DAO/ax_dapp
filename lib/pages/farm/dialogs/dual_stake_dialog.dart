@@ -58,7 +58,12 @@ class DualStakeDialog extends StatelessWidget {
                     children: [
                       Text(
                         'Deposit Liquidity',
-                        style: textStyle(Colors.white, 20, isBold: false),
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
@@ -78,7 +83,12 @@ class DualStakeDialog extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     '''*Add liquidity to supply LP tokens to your wallet\nDeposit LP tokens to AX rewards''',
-                    style: textStyle(Colors.grey[600]!, 11, isBold: false),
+                    style: textStyle(
+                      Colors.grey[600]!,
+                      11,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
                 //Amount Box
@@ -111,7 +121,12 @@ class DualStakeDialog extends StatelessWidget {
                       Expanded(
                         child: Text(
                           'AX',
-                          style: textStyle(Colors.white, 15, isBold: false),
+                          style: textStyle(
+                            Colors.white,
+                            15,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
                       ),
                       Container(
@@ -129,8 +144,12 @@ class DualStakeDialog extends StatelessWidget {
                               .add(const UpdateAxDataRequested()),
                           child: Text(
                             'Max',
-                            style:
-                                textStyle(Colors.grey[400]!, 9, isBold: false),
+                            style: textStyle(
+                              Colors.grey[400]!,
+                              9,
+                              isBold: false,
+                              isUline: false,
+                            ),
                           ),
                         ),
                       ),
@@ -141,12 +160,20 @@ class DualStakeDialog extends StatelessWidget {
                           onChanged: (value) {
                             stakeAxInput.text = value;
                           },
-                          style:
-                              textStyle(Colors.grey[400]!, 22, isBold: false),
+                          style: textStyle(
+                            Colors.grey[400]!,
+                            22,
+                            isBold: false,
+                            isUline: false,
+                          ),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, isBold: false),
+                            hintStyle: textStyle(
+                              Colors.grey[400]!,
+                              22,
+                              isBold: false,
+                              isUline: false,
+                            ),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -191,7 +218,12 @@ class DualStakeDialog extends StatelessWidget {
                       Expanded(
                         child: Text(
                           '$athlete APT',
-                          style: textStyle(Colors.white, 15, isBold: false),
+                          style: textStyle(
+                            Colors.white,
+                            15,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
                       ),
                       Container(
@@ -207,8 +239,12 @@ class DualStakeDialog extends StatelessWidget {
                           onPressed: () {},
                           child: Text(
                             'Max',
-                            style:
-                                textStyle(Colors.grey[400]!, 9, isBold: false),
+                            style: textStyle(
+                              Colors.grey[400]!,
+                              9,
+                              isBold: false,
+                              isUline: false,
+                            ),
                           ),
                         ),
                       ),
@@ -216,12 +252,20 @@ class DualStakeDialog extends StatelessWidget {
                         width: 70,
                         child: TextFormField(
                           onChanged: (value) {},
-                          style:
-                              textStyle(Colors.grey[400]!, 22, isBold: false),
+                          style: textStyle(
+                            Colors.grey[400]!,
+                            22,
+                            isBold: false,
+                            isUline: false,
+                          ),
                           decoration: InputDecoration(
                             hintText: '0.00',
-                            hintStyle:
-                                textStyle(Colors.grey[400]!, 22, isBold: false),
+                            hintStyle: textStyle(
+                              Colors.grey[400]!,
+                              22,
+                              isBold: false,
+                              isUline: false,
+                            ),
                             contentPadding: const EdgeInsets.all(9),
                             border: InputBorder.none,
                           ),
@@ -256,7 +300,12 @@ class DualStakeDialog extends StatelessWidget {
                     },
                     child: Text(
                       'Add Liquidity',
-                      style: textStyle(Colors.amber[400]!, 20, isBold: true),
+                      style: textStyle(
+                        Colors.amber[400]!,
+                        20,
+                        isBold: true,
+                        isUline: false,
+                      ),
                     ),
                   ),
                 ),
@@ -264,7 +313,12 @@ class DualStakeDialog extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     'LP Tokens: ' '0',
-                    style: textStyle(Colors.white, 18, isBold: true),
+                    style: textStyle(
+                      Colors.white,
+                      18,
+                      isBold: true,
+                      isUline: false,
+                    ),
                   ),
                 ),
                 Container(
@@ -281,8 +335,15 @@ class DualStakeDialog extends StatelessWidget {
                             const TransactionConfirmed(),
                       );
                     },
-                    child: Text('Deposit',
-                        style: textStyle(Colors.black, 16, isBold: true)),
+                    child: Text(
+                      'Deposit',
+                      style: textStyle(
+                        Colors.black,
+                        16,
+                        isBold: true,
+                        isUline: false,
+                      ),
+                    ),
                   ),
                 )
               ],
