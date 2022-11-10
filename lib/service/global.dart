@@ -78,14 +78,14 @@ class Global extends PropertyChangeNotifier<String> {
   AppBar topNav(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: kIsWeb ? topNavBar(context) : topNavBarAndroid(context),
+      title: kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape) ? topNavBar(context) : topNavBarAndroid(context),
       backgroundColor: Colors.transparent,
       elevation: 0,
     );
   }
 
   Widget bottomNav(BuildContext context) {
-    return kIsWeb ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context);
+    return kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape) ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context);
   }
 
   Widget topNavBar(BuildContext context) {
