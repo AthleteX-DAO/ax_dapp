@@ -21,7 +21,6 @@ class LinkButton extends StatelessWidget {
       decoration: boxDecoration(Colors.transparent, 100, 2, Colors.amber),
       child: TextButton(
         onPressed: () {
-          Navigator.pop(context);
           context.goNamed(page);
         },
         child: Text(
