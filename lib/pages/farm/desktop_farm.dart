@@ -1,13 +1,12 @@
 import 'package:ax_dapp/pages/farm/bloc/farm_bloc.dart';
-import 'package:ax_dapp/pages/farm/components/farm_item.dart';
-import 'package:ax_dapp/pages/farm/components/my_farm_item.dart';
-import 'package:ax_dapp/pages/farm/components/no_data.dart';
-import 'package:ax_dapp/pages/farm/components/no_wallet.dart';
-import 'package:ax_dapp/pages/farm/components/unsupported_chain.dart';
-import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
-import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
+import 'package:ax_dapp/pages/farm/widgets/farm_item.dart';
+import 'package:ax_dapp/pages/farm/widgets/my_farm_item.dart';
+import 'package:ax_dapp/pages/farm/widgets/no_data.dart';
+import 'package:ax_dapp/pages/farm/widgets/no_wallet.dart';
+import 'package:ax_dapp/pages/farm/widgets/unsupported_chain.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/global.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -119,8 +118,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                           child: Text(
                             isAllFarms ? 'Participating Farms' : 'My Farms',
                             style: isWeb
-                                ? textStyle(Colors.white, 24, true, false)
-                                : textStyle(Colors.white, 20, true, false),
+                                ? textStyle(Colors.white, 24, isBold: true, isUline: false)
+                                : textStyle(Colors.white, 20, isBold: true, isUline: false),
                           ),
                         ),
                         if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
@@ -264,7 +263,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
               },
               child: Text(
                 'All Farms',
-                style: textStyle(Colors.white, 16, true, false),
+                style: textStyle(Colors.white, 16, isBold: true, isUline: false),
               ),
             ),
           ),
@@ -301,7 +300,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
               },
               child: Text(
                 'My Farms',
-                style: textStyle(Colors.white, 16, true, false),
+                style: textStyle(Colors.white, 16, isBold: true, isUline: false),
               ),
             ),
           )

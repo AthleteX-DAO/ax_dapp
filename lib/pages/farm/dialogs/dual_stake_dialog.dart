@@ -1,9 +1,8 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:ax_dapp/pages/farm/dialogs/trx_confirmed_dialog.dart';
-import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
-import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +51,7 @@ Widget dualStakeDialog(
                   children: [
                     Text(
                       'Deposit Liquidity',
-                      style: textStyle(Colors.white, 20, false),
+                      style: textStyle(Colors.white, 20, isBold: false),
                     ),
                     TextButton(
                       onPressed: () {
@@ -72,7 +71,7 @@ Widget dualStakeDialog(
                 margin: const EdgeInsets.symmetric(vertical: 5),
                 child: Text(
                   '''*Add liquidity to supply LP tokens to your wallet\nDeposit LP tokens to AX rewards''',
-                  style: textStyle(Colors.grey[600]!, 11, false),
+                  style: textStyle(Colors.grey[600]!, 11, isBold: false),
                 ),
               ),
               //Amount Box
@@ -105,7 +104,7 @@ Widget dualStakeDialog(
                     Expanded(
                       child: Text(
                         'AX',
-                        style: textStyle(Colors.white, 15, false),
+                        style: textStyle(Colors.white, 15, isBold: false),
                       ),
                     ),
                     Container(
@@ -123,7 +122,7 @@ Widget dualStakeDialog(
                             .add(const UpdateAxDataRequested()),
                         child: Text(
                           'Max',
-                          style: textStyle(Colors.grey[400]!, 9, false),
+                          style: textStyle(Colors.grey[400]!, 9, isBold: false),
                         ),
                       ),
                     ),
@@ -134,10 +133,10 @@ Widget dualStakeDialog(
                         onChanged: (value) {
                           stakeAxInput.text = value;
                         },
-                        style: textStyle(Colors.grey[400]!, 22, false),
+                        style: textStyle(Colors.grey[400]!, 22, isBold: false),
                         decoration: InputDecoration(
                           hintText: '0.00',
-                          hintStyle: textStyle(Colors.grey[400]!, 22, false),
+                          hintStyle: textStyle(Colors.grey[400]!, 22, isBold: false),
                           contentPadding: const EdgeInsets.all(9),
                           border: InputBorder.none,
                         ),
@@ -182,7 +181,7 @@ Widget dualStakeDialog(
                     Expanded(
                       child: Text(
                         '$athlete APT',
-                        style: textStyle(Colors.white, 15, false),
+                        style: textStyle(Colors.white, 15, isBold: false),
                       ),
                     ),
                     Container(
@@ -198,7 +197,7 @@ Widget dualStakeDialog(
                         onPressed: () {},
                         child: Text(
                           'Max',
-                          style: textStyle(Colors.grey[400]!, 9, false),
+                          style: textStyle(Colors.grey[400]!, 9, isBold: false),
                         ),
                       ),
                     ),
@@ -206,10 +205,10 @@ Widget dualStakeDialog(
                       width: 70,
                       child: TextFormField(
                         onChanged: (value) {},
-                        style: textStyle(Colors.grey[400]!, 22, false),
+                        style: textStyle(Colors.grey[400]!, 22, isBold: false),
                         decoration: InputDecoration(
                           hintText: '0.00',
-                          hintStyle: textStyle(Colors.grey[400]!, 22, false),
+                          hintStyle: textStyle(Colors.grey[400]!, 22, isBold: false),
                           contentPadding: const EdgeInsets.all(9),
                           border: InputBorder.none,
                         ),
@@ -243,7 +242,7 @@ Widget dualStakeDialog(
                   },
                   child: Text(
                     'Add Liquidity',
-                    style: textStyle(Colors.amber[400]!, 20, true),
+                    style: textStyle(Colors.amber[400]!, 20, isBold: true),
                   ),
                 ),
               ),
@@ -251,7 +250,7 @@ Widget dualStakeDialog(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   'LP Tokens: ' '0',
-                  style: textStyle(Colors.white, 18, true),
+                  style: textStyle(Colors.white, 18, isBold: true),
                 ),
               ),
               Container(
@@ -268,7 +267,7 @@ Widget dualStakeDialog(
                     );
                   },
                   child:
-                      Text('Deposit', style: textStyle(Colors.black, 16, true)),
+                      Text('Deposit', style: textStyle(Colors.black, 16, isBold: true)),
                 ),
               )
             ],

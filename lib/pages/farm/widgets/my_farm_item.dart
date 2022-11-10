@@ -1,11 +1,10 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/farm/components/single_logo_farm_title.dart';
+import 'package:ax_dapp/pages/farm/widgets/single_logo_farm_title.dart';
 import 'package:ax_dapp/pages/farm/dialogs/reward_claim_dialog.dart';
 import 'package:ax_dapp/pages/farm/dialogs/unstake_dialog.dart';
-import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
-import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -29,7 +28,7 @@ Widget myFarmItem(
   if (cardHeight < minCardHeight) cardHeight = minCardHeight;
   if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
 
-  final customTextStyle = textStyle(Colors.grey[600]!, 14, false, false);
+  final customTextStyle = textStyle(Colors.grey[600]!, 14, isBold: false);
   final farmTitleWidget = singleLogoFarmTitle(context, isWeb, farm, cardWidth);
   final rewardSymbol = farm.strRewardSymbol;
 
@@ -96,7 +95,7 @@ Widget myFarmItem(
           children: [
             Text(
               'Your Position',
-              style: textStyle(Colors.white, 20, false, false),
+              style: textStyle(Colors.white, 20, isBold: false),
             ),
           ],
         ),
@@ -208,7 +207,7 @@ Widget myFarmItem(
                   },
                   child: Text(
                     'Claim Rewards',
-                    style: textStyle(Colors.black, 14, true, false),
+                    style: textStyle(Colors.black, 14, isBold: true),
                   ),
                 ),
               ),
@@ -234,7 +233,7 @@ Widget myFarmItem(
                   ),
                   child: Text(
                     'Unstake Liquidity',
-                    style: textStyle(Colors.amber[600]!, 14, true, false),
+                    style: textStyle(Colors.amber[600]!, 14, isBold: true),
                   ),
                 ),
               ),

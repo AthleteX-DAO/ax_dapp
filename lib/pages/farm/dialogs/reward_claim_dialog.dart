@@ -1,6 +1,5 @@
-import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
-import 'package:ax_dapp/pages/farm/modules/dialog_text_style.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
 
 // dynamic
@@ -35,7 +34,7 @@ Dialog rewardClaimDialog(BuildContext context) {
                     Container(width: 5),
                     Text(
                       'Rewards Claimed',
-                      style: textStyle(Colors.white, 20, false),
+                      style: textStyle(Colors.white, 20, isBold: false),
                     ),
                     SizedBox(
                       width: 40,
