@@ -77,7 +77,12 @@ class SingleLogoFarmTitle extends StatelessWidget {
               },
               child: Text(
                 'Stake',
-                style: textStyle(Colors.black, 14, isBold: true, isUline: false),
+                style: textStyle(
+                  Colors.black,
+                  14,
+                  isBold: true,
+                  isUline: false,
+                ),
               ),
             ),
           ),

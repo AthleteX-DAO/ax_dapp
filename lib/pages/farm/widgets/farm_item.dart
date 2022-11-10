@@ -28,7 +28,8 @@ class FarmItem extends StatelessWidget {
     if (cardHeight < minCardHeight) cardHeight = minCardHeight;
     if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
 
-    final txStyle = textStyle(Colors.grey[600]!, 14, isBold: false, isUline: false);
+    final txStyle =
+        textStyle(Colors.grey[600]!, 14, isBold: false, isUline: false);
     Widget farmTitleWidget;
     farmTitleWidget = SingleLogoFarmTitle(farm: farm, cardWidth: cardWidth);
 

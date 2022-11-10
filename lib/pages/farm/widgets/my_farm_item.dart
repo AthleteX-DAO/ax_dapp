@@ -33,7 +33,8 @@ class MyFarmItem extends StatelessWidget {
     if (cardHeight < minCardHeight) cardHeight = minCardHeight;
     if (cardHeight > maxCardHeight) cardHeight = maxCardHeight;
 
-    final customTextStyle = textStyle(Colors.grey[600]!, 14, isBold: false, isUline: false);
+    final customTextStyle =
+        textStyle(Colors.grey[600]!, 14, isBold: false, isUline: false);
     final farmTitleWidget =
         SingleLogoFarmTitle(farm: farm, cardWidth: cardWidth);
     final rewardSymbol = farm.strRewardSymbol;
@@ -101,7 +102,8 @@ class MyFarmItem extends StatelessWidget {
             children: [
               Text(
                 'Your Position',
-                style: textStyle(Colors.white, 20, isBold: false, isUline: false),
+                style:
+                    textStyle(Colors.white, 20, isBold: false, isUline: false),
               ),
             ],
           ),
@@ -217,7 +219,12 @@ class MyFarmItem extends StatelessWidget {
                     },
                     child: Text(
                       'Claim Rewards',
-                      style: textStyle(Colors.black, 14, isBold: true, isUline: false),
+                      style: textStyle(
+                        Colors.black,
+                        14,
+                        isBold: true,
+                        isUline: false,
+                      ),
                     ),
                   ),
                 ),
@@ -243,7 +250,12 @@ class MyFarmItem extends StatelessWidget {
                     ),
                     child: Text(
                       'Unstake Liquidity',
-                      style: textStyle(Colors.amber[600]!, 14, isBold: true, isUline: false),
+                      style: textStyle(
+                        Colors.amber[600]!,
+                        14,
+                        isBold: true,
+                        isUline: false,
+                      ),
                     ),
                   ),
                 ),

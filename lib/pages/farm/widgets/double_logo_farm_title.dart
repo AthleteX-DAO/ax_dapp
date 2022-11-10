@@ -50,7 +50,12 @@ class DoubleLogoFarmTitle extends StatelessWidget {
           Expanded(
             child: Text(
               '${farm.athlete!} Farm',
-              style: textStyle(Colors.white, 16, isBold: false, isUline: false),
+              style: textStyle(
+                Colors.white,
+                16,
+                isBold: false,
+                isUline: false,
+              ),
             ),
           ),
           Container(
@@ -84,7 +89,12 @@ class DoubleLogoFarmTitle extends StatelessWidget {
               ),
               child: Text(
                 'Stake',
-                style: textStyle(Colors.black, 14, isBold: true, isUline: false),
+                style: textStyle(
+                  Colors.black,
+                  14,
+                  isBold: true,
+                  isUline: false,
+                ),
               ),
             ),
           ),
