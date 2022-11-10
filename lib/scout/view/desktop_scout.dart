@@ -247,6 +247,25 @@ class _DesktopScoutState extends State<DesktopScout> {
             ),
           ),
         ),
+        TextButton(
+          onPressed: () {
+            myController.clear();
+            setState(() {
+              _selectedSport = SupportedSport.NBA;
+            });
+            bloc.add(
+              const SelectedSportChanged(selectedSport: SupportedSport.NBA),
+            );
+          },
+          child: Text(
+            'NBA',
+            style: textSwapState(
+              _selectedSport == SupportedSport.NBA,
+              textStyle(Colors.white, sportFilterTxSz, false, false),
+              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+            ),
+          ),
+        ),
         const Spacer(),
         toggleTokenButton(800, 40),
         Container(width: 10),

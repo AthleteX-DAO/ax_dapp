@@ -17,13 +17,16 @@ AssetImage tokenImage(Token token) {
       tokenAssetName = 'WSX_Small.png';
       break;
     case EthereumCurrency.matic:
-      tokenAssetName = 'Polygon_Small.png';
+      tokenAssetName = 'w_matic.png';
       break;
     case EthereumCurrency.weth:
       tokenAssetName = 'weth_small.png';
       break;
     case EthereumCurrency.usdc:
       tokenAssetName = 'USDC_small.png';
+      break;
+    case EthereumCurrency.geth:
+      tokenAssetName = '';
       break;
     case EthereumCurrency.apt:
       return aptImage(token as Apt);

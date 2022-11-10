@@ -1,5 +1,8 @@
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ConnectedWalletPromoDialog extends StatelessWidget {
@@ -16,6 +19,9 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
     if (_width < 505) wid = _width;
     var hgt = 345.0;
     if (_height < 350) hgt = _height;
+    final walletAddress =
+        context.read<WalletBloc>().state.formattedWalletAddress;
+    final walletId = (walletAddress.isEmpty || walletAddress == kEmptyAddress) ? '' : walletAddress;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -110,6 +116,9 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
                       ),
                       child: TextButton(
                         onPressed: () {
+                          context
+                              .read<TrackingCubit>()
+                              .onDiscordLinkClicked(walletId: walletId);
                           launchDiscordLink();
                           Navigator.pop(context);
                         },
@@ -133,8 +142,7 @@ class ConnectedWalletPromoDialog extends StatelessWidget {
   }
 
   void launchDiscordLink() {
-    const url =
-        'https://discord.gg/pAWyqJh67k';
+    const url = 'https://discord.gg/pAWyqJh67k';
     launchUrl(Uri.parse(url));
   }
 }

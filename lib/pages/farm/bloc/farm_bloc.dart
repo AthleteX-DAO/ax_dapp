@@ -238,6 +238,6 @@ class FarmBloc extends Bloc<FarmEvent, FarmState> {
 
   bool isChainSupported(EthereumChain chain) =>
       chain.chainId == EthereumChain.polygonMainnet.chainId ||
-      chain.chainId == EthereumChain.polygonTestnet.chainId ||
+      chain.chainId == EthereumChain.goerliTestNet.chainId ||
       chain.chainId == EthereumChain.none.chainId;
 }

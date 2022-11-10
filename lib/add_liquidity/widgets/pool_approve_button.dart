@@ -12,7 +12,6 @@ class PoolApproveButton extends StatefulWidget {
     required this.tokenAmountOneController,
     required this.tokenAmountTwoController,
     required this.width,
-    required this.height,
     required this.text,
     required this.approveCallback,
     required this.confirmCallback,
@@ -31,7 +30,6 @@ class PoolApproveButton extends StatefulWidget {
   final TextEditingController tokenAmountTwoController;
   final String text;
   final double width;
-  final double height;
   final String currencyOne;
   final String currencyTwo;
   final String valueOne;
@@ -49,18 +47,16 @@ class PoolApproveButton extends StatefulWidget {
 
 class _PoolApproveButtonState extends State<PoolApproveButton> {
   double width = 0;
-  double height = 0;
+  double height = 40;
   String text = '';
   bool isApproved = false;
   Color? fillcolor;
   Color? textcolor;
-  Widget? dialog;
 
   @override
   void initState() {
     super.initState();
     width = widget.width;
-    height = widget.height;
     text = widget.text;
     fillcolor = Colors.transparent;
     textcolor = Colors.amber;

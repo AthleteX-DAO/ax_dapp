@@ -7,6 +7,7 @@ import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
@@ -105,6 +106,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
+    final usdValue = context.read<WalletBloc>().state.axData.price;
+    final price = usdValue ?? 0;
 
     return BlocConsumer<RedeemDialogBloc, RedeemDialogState>(
       listenWhen: (_, current) =>
@@ -494,6 +497,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                                     collateralPerPair)
                                                 .toStringAsFixed(6),
                                         walletId: walletAddress,
+                                        valueInUSD: (bloc.lspController.redeemAmt *
+                                                    collateralPerPair) * price,
                                       );
                                 });
                               } else {
