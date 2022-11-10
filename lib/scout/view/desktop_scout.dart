@@ -1,17 +1,14 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/dialogs/buy/bloc/buy_dialog_bloc.dart';
 import 'package:ax_dapp/dialogs/buy/buy_dialog.dart';
-import 'package:ax_dapp/repositories/mlb_repo.dart';
-import 'package:ax_dapp/repositories/nfl_repo.dart';
-import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
-import 'package:ax_dapp/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
+import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
@@ -23,6 +20,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -30,30 +28,28 @@ import 'package:wallet_repository/wallet_repository.dart';
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
     super.key,
-    required this.goToTradePage,
-    required this.goToPage,
   });
-
-  final void Function() goToTradePage;
-  final void Function(int page) goToPage;
 
   @override
   State<DesktopScout> createState() => _DesktopScoutState();
 }
 
 class _DesktopScoutState extends State<DesktopScout> {
+  Global global = Global();
   final myController = TextEditingController(text: input);
   static String input = '';
-  bool athletePage = false;
+  //bool athletePage = false;
   static bool isLongToken = true;
   static int sportState = 0;
   static SupportedSport _selectedSport = SupportedSport.all;
   String allSportsTitle = 'All Sports';
   String longTitle = 'Long';
-  AthleteScoutModel? curAthlete;
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
   EthereumChain? _selectedChain;
+  String selectedAthlete = '';
+  List<AthleteScoutModel> filteredAthletes = [];
+
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -66,6 +62,9 @@ class _DesktopScoutState extends State<DesktopScout> {
   @override
   void initState() {
     super.initState();
+    setState(
+      () {},
+    );
   }
 
   @override
@@ -76,94 +75,78 @@ class _DesktopScoutState extends State<DesktopScout> {
     final _height = MediaQuery.of(context).size.height;
     // breaks the code, will come back to it later(probably)
 
-    return BlocBuilder<ScoutPageBloc, ScoutPageState>(
-      buildWhen: (previous, current) {
-        return current.status.name.isNotEmpty ||
-            previous.selectedChain.chainId != current.selectedChain.chainId;
-      },
-      builder: (context, state) {
-        final bloc = context.read<ScoutPageBloc>();
-        final filteredAthletes = state.filteredAthletes;
-        if (_selectedChain != state.selectedChain) {
-          _selectedChain = state.selectedChain;
-          bloc.add(FetchScoutInfoRequested());
-        }
-        _selectedSport = state.selectedSport;
-        if (athletePage && curAthlete != null) {
-          return BlocProvider(
-            create: (context) => AthletePageBloc(
-              walletRepository: context.read<WalletRepository>(),
-              tokensRepository: context.read<TokensRepository>(),
-              mlbRepo: RepositoryProvider.of<MLBRepo>(context),
-              nflRepo: RepositoryProvider.of<NFLRepo>(context),
-              athlete: curAthlete!,
-              getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
-                tokensRepository: context.read<TokensRepository>(),
-                graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
-                sportsRepos: [
-                  RepositoryProvider.of<MLBRepo>(context),
-                  RepositoryProvider.of<NFLRepo>(context),
+    return global.buildPage(
+      context,
+      BlocBuilder<ScoutPageBloc, ScoutPageState>(
+        buildWhen: (previous, current) {
+          return current.status.name.isNotEmpty ||
+              previous.selectedChain.chainId != current.selectedChain.chainId;
+        },
+        builder: (context, state) {
+          final bloc = context.read<ScoutPageBloc>();
+          if (global.athleteList.isEmpty) {
+            global.athleteList = state.athletes;
+          }
+          filteredAthletes = state.filteredAthletes;
+          if (_selectedChain != state.selectedChain) {
+            _selectedChain = state.selectedChain;
+            bloc.add(
+              FetchScoutInfoRequested(),
+            );
+          }
+          _selectedSport = state.selectedSport;
+          return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              height: _height * 0.85 + 41,
+              width: _width * 0.99,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: const Divider(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  // APT Title & Sport Filter
+                  Container(
+                    margin: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      bottom: 10,
+                    ),
+                    width: _width * 1,
+                    height: 40,
+                    child: kIsWeb
+                        ? buildFilterMenuWeb(
+                            state,
+                            bloc,
+                            sportFilterTxSz,
+                            _width,
+                          )
+                        : buildFilterMenu(
+                            state,
+                            bloc,
+                            sportFilterTxSz,
+                            sportFilterIconSz,
+                          ),
+                  ),
+                  // List Headers
+                  buildListviewHeaders(),
+                  buildScoutView(state),
                 ],
               ),
             ),
-            child: AthletePage(
-              athlete: curAthlete!,
-              goToTradePage: widget.goToTradePage,
-              goToPage: widget.goToPage,
-            ),
           );
-        }
-        return SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          child: Container(
-            margin: const EdgeInsets.only(top: 20),
-            height: _height * 0.85 + 41,
-            width: _width * 0.99,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: const Divider(
-                    color: Colors.grey,
-                  ),
-                ),
-                // APT Title & Sport Filter
-                Container(
-                  margin:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                  width: _width * 1,
-                  height: 40,
-                  child: kIsWeb
-                      ? buildFilterMenuWeb(
-                          state,
-                          bloc,
-                          sportFilterTxSz,
-                          _width,
-                        )
-                      : buildFilterMenu(
-                          state,
-                          bloc,
-                          sportFilterTxSz,
-                          sportFilterIconSz,
-                        ),
-                ),
-                // List Headers
-                buildListviewHeaders(),
-                buildScoutView(state, filteredAthletes),
-              ],
-            ),
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 
-  Stack buildScoutView(
-    ScoutPageState state,
-    List<AthleteScoutModel> filteredAthletes,
-  ) {
+  Stack buildScoutView(ScoutPageState state) {
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -175,7 +158,7 @@ class _DesktopScoutState extends State<DesktopScout> {
           ),
         if (state.status == BlocStatus.success && filteredAthletes.isEmpty)
           const NoResultFound(),
-        buildListview(state, filteredAthletes)
+        buildListview(state)
       ],
     );
   }
@@ -188,14 +171,32 @@ class _DesktopScoutState extends State<DesktopScout> {
   ) {
     return Row(
       children: [
-        Text('APT List', style: textStyle(Colors.white, 18, false, false)),
-        Text('|', style: textStyle(Colors.white, 18, false, false)),
+        Text(
+          'APT List',
+          style: textStyle(
+            Colors.white,
+            18,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
+        Text(
+          '|',
+          style: textStyle(
+            Colors.white,
+            18,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
         TextButton(
           onPressed: () {
             myController.clear();
-            setState(() {
-              _selectedSport = SupportedSport.all;
-            });
+            setState(
+              () {
+                _selectedSport = SupportedSport.all;
+              },
+            );
             bloc.add(
               const SelectedSportChanged(selectedSport: SupportedSport.all),
             );
@@ -204,17 +205,29 @@ class _DesktopScoutState extends State<DesktopScout> {
             'ALL',
             style: textSwapState(
               _selectedSport == SupportedSport.all,
-              textStyle(Colors.white, sportFilterTxSz, false, false),
-              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+              textStyle(
+                Colors.white,
+                sportFilterTxSz,
+                isBold: false,
+                isUline: false,
+              ),
+              textStyle(
+                Colors.amber[400]!,
+                sportFilterTxSz,
+                isBold: false,
+                isUline: true,
+              ),
             ),
           ),
         ),
         TextButton(
           onPressed: () {
             myController.clear();
-            setState(() {
-              _selectedSport = SupportedSport.MLB;
-            });
+            setState(
+              () {
+                _selectedSport = SupportedSport.MLB;
+              },
+            );
             bloc.add(
               const SelectedSportChanged(selectedSport: SupportedSport.MLB),
             );
@@ -223,17 +236,29 @@ class _DesktopScoutState extends State<DesktopScout> {
             'MLB',
             style: textSwapState(
               _selectedSport == SupportedSport.MLB,
-              textStyle(Colors.white, sportFilterTxSz, false, false),
-              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+              textStyle(
+                Colors.white,
+                sportFilterTxSz,
+                isBold: false,
+                isUline: false,
+              ),
+              textStyle(
+                Colors.amber[400]!,
+                sportFilterTxSz,
+                isBold: false,
+                isUline: true,
+              ),
             ),
           ),
         ),
         TextButton(
           onPressed: () {
             myController.clear();
-            setState(() {
-              _selectedSport = SupportedSport.NFL;
-            });
+            setState(
+              () {
+                _selectedSport = SupportedSport.NFL;
+              },
+            );
             bloc.add(
               const SelectedSportChanged(selectedSport: SupportedSport.NFL),
             );
@@ -242,17 +267,29 @@ class _DesktopScoutState extends State<DesktopScout> {
             'NFL',
             style: textSwapState(
               _selectedSport == SupportedSport.NFL,
-              textStyle(Colors.white, sportFilterTxSz, false, false),
-              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+              textStyle(
+                Colors.white,
+                sportFilterTxSz,
+                isBold: false,
+                isUline: false,
+              ),
+              textStyle(
+                Colors.amber[400]!,
+                sportFilterTxSz,
+                isBold: false,
+                isUline: true,
+              ),
             ),
           ),
         ),
         TextButton(
           onPressed: () {
             myController.clear();
-            setState(() {
-              _selectedSport = SupportedSport.NBA;
-            });
+            setState(
+              () {
+                _selectedSport = SupportedSport.NBA;
+              },
+            );
             bloc.add(
               const SelectedSportChanged(selectedSport: SupportedSport.NBA),
             );
@@ -261,8 +298,18 @@ class _DesktopScoutState extends State<DesktopScout> {
             'NBA',
             style: textSwapState(
               _selectedSport == SupportedSport.NBA,
-              textStyle(Colors.white, sportFilterTxSz, false, false),
-              textStyle(Colors.amber[400]!, sportFilterTxSz, false, true),
+              textStyle(
+                Colors.white,
+                sportFilterTxSz,
+                isBold: false,
+                isUline: false,
+              ),
+              textStyle(
+                Colors.amber[400]!,
+                sportFilterTxSz,
+                isBold: false,
+                isUline: true,
+              ),
             ),
           ),
         ),
@@ -291,9 +338,22 @@ class _DesktopScoutState extends State<DesktopScout> {
             children: [
               Text(
                 'APT List',
-                style: textStyle(Colors.white, 18, false, false),
+                style: textStyle(
+                  Colors.white,
+                  18,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
-              Text('|', style: textStyle(Colors.white, 18, false, false)),
+              Text(
+                '|',
+                style: textStyle(
+                  Colors.white,
+                  18,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
               SizedBox(
                 child: PopupMenuButton(
                   itemBuilder: (context) => [
@@ -310,14 +370,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 textStyle(
                                   Colors.white,
                                   sportFilterTxSz,
-                                  false,
-                                  false,
+                                  isBold: false,
+                                  isUline: false,
                                 ),
                                 textStyle(
                                   Colors.amber[400]!,
                                   sportFilterTxSz,
-                                  false,
-                                  true,
+                                  isBold: false,
+                                  isUline: true,
                                 ),
                               ),
                             ),
@@ -327,9 +387,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                       onTap: () {
                         myController.clear();
                         if (sportState != 0) {
-                          setState(() {
-                            sportState = 0;
-                          });
+                          setState(
+                            () {
+                              sportState = 0;
+                            },
+                          );
                         }
                         allSportsTitle = 'All Sports';
                       },
@@ -355,14 +417,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 textStyle(
                                   Colors.white,
                                   sportFilterTxSz,
-                                  false,
-                                  false,
+                                  isBold: false,
+                                  isUline: false,
                                 ),
                                 textStyle(
                                   Colors.amber[400]!,
                                   sportFilterTxSz,
-                                  false,
-                                  true,
+                                  isBold: false,
+                                  isUline: true,
                                 ),
                               ),
                             ),
@@ -372,10 +434,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                       onTap: () {
                         myController.clear();
                         if (sportState != 1) {
-                          setState(() {
-                            sportState = 1;
-                            allSportsTitle = 'MLB';
-                          });
+                          setState(
+                            () {
+                              sportState = 1;
+                              allSportsTitle = 'MLB';
+                            },
+                          );
                         }
                       },
                     ),
@@ -400,14 +464,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 textStyle(
                                   Colors.white,
                                   sportFilterTxSz,
-                                  false,
-                                  false,
+                                  isBold: false,
+                                  isUline: false,
                                 ),
                                 textStyle(
                                   Colors.amber[400]!,
                                   sportFilterTxSz,
-                                  false,
-                                  true,
+                                  isBold: false,
+                                  isUline: true,
                                 ),
                               ),
                             ),
@@ -417,17 +481,21 @@ class _DesktopScoutState extends State<DesktopScout> {
                       onTap: () {
                         myController.clear();
                         if (sportState != 2) {
-                          setState(() {
-                            sportState = 2;
-                            allSportsTitle = 'NFL';
-                          });
+                          setState(
+                            () {
+                              sportState = 2;
+                              allSportsTitle = 'NFL';
+                            },
+                          );
                         }
                       },
                     ),
                   ],
                   offset: const Offset(0, 45),
                   shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -457,9 +525,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ),
                     ),
                     onTap: () {
-                      setState(() {
-                        longTitle = 'Long';
-                      });
+                      setState(
+                        () {
+                          longTitle = 'Long';
+                        },
+                      );
                     },
                   ),
                   PopupMenuItem(
@@ -474,15 +544,19 @@ class _DesktopScoutState extends State<DesktopScout> {
                       ),
                     ),
                     onTap: () {
-                      setState(() {
-                        longTitle = 'Short';
-                      });
+                      setState(
+                        () {
+                          longTitle = 'Short';
+                        },
+                      );
                     },
                   ),
                 ],
                 offset: const Offset(0, 45),
                 shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -502,9 +576,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                 child: Align(
                   child: IconButton(
                     onPressed: () {
-                      setState(() {
-                        _widgetIndex = 1;
-                      });
+                      setState(
+                        () {
+                          _widgetIndex = 1;
+                        },
+                      );
                     },
                     icon: const Icon(
                       Icons.search,
@@ -531,9 +607,11 @@ class _DesktopScoutState extends State<DesktopScout> {
               ),
               MaterialButton(
                 onPressed: () {
-                  setState(() {
-                    _widgetIndex = 0;
-                  });
+                  setState(
+                    () {
+                      _widgetIndex = 0;
+                    },
+                  );
                 },
                 child: const Text(
                   'Cancel',
@@ -582,8 +660,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                       style: textStyle(
                         Colors.grey[400]!,
                         12,
-                        false,
-                        false,
+                        isBold: false,
+                        isUline: false,
                       ),
                     ),
                   ),
@@ -591,14 +669,24 @@ class _DesktopScoutState extends State<DesktopScout> {
                   width: _width * 0.18,
                   child: Text(
                     'Market Price / Change',
-                    style: textStyle(Colors.grey[400]!, 10, false, false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      10,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
                 SizedBox(
                   width: _width * 0.12,
                   child: Text(
                     'Book Value / Change',
-                    style: textStyle(Colors.grey[400]!, 10, false, false),
+                    style: textStyle(
+                      Colors.grey[400]!,
+                      10,
+                      isBold: false,
+                      isUline: false,
+                    ),
                   ),
                 ),
               ],
@@ -624,8 +712,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                       style: textStyle(
                         Colors.grey[400]!,
                         12,
-                        false,
-                        false,
+                        isBold: false,
+                        isUline: false,
                       ),
                     ),
                   ),
@@ -634,9 +722,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                   children: [
                     MaterialButton(
                       onPressed: () {
-                        setState(() {
-                          _marketVsBookPriceIndex = 1;
-                        });
+                        setState(
+                          () {
+                            _marketVsBookPriceIndex = 1;
+                          },
+                        );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -666,9 +756,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                     ),
                     MaterialButton(
                       onPressed: () {
-                        setState(() {
-                          _marketVsBookPriceIndex = 0;
-                        });
+                        setState(
+                          () {
+                            _marketVsBookPriceIndex = 0;
+                          },
+                        );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -678,8 +770,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                             style: textStyle(
                               Colors.grey[400]!,
                               10,
-                              false,
-                              false,
+                              isBold: false,
+                              isUline: false,
                             ),
                           ),
                           Container(
@@ -702,10 +794,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     );
   }
 
-  Widget buildListview(
-    ScoutPageState state,
-    List<AthleteScoutModel> filteredAthletes,
-  ) {
+  Widget buildListview(ScoutPageState state) {
     final _height = MediaQuery.of(context).size.height;
     final hgt = _height * 0.8 - 120;
     return SizedBox(
@@ -737,10 +826,17 @@ class _DesktopScoutState extends State<DesktopScout> {
       height: 70,
       child: OutlinedButton(
         onPressed: () {
-          setState(() {
-            curAthlete = athlete;
-            athletePage = true;
-          });
+          setState(
+            () {
+              global.athleteList = filteredAthletes;
+              selectedAthlete = athlete.id.toString() + athlete.name;
+              context.goNamed(
+                'athlete',
+                params: {'id': selectedAthlete},
+              );
+              //athletePage = true;
+            },
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -759,7 +855,12 @@ class _DesktopScoutState extends State<DesktopScout> {
                           isLongToken
                               ? '${athlete.longTokenPrice!.toStringAsFixed(4)} AX'
                               : '${athlete.shortTokenPrice!.toStringAsFixed(4)} AX',
-                          style: textStyle(Colors.white, 16, false, false),
+                          style: textStyle(
+                            Colors.white,
+                            16,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
                         Container(width: 10),
                         Text(
@@ -776,16 +877,16 @@ class _DesktopScoutState extends State<DesktopScout> {
                                     athlete.longTokenPercentage!,
                                   ),
                                   12,
-                                  false,
-                                  false,
+                                  isBold: false,
+                                  isUline: false,
                                 )
                               : textStyle(
                                   getPercentageColor(
                                     athlete.shortTokenPercentage!,
                                   ),
                                   12,
-                                  false,
-                                  false,
+                                  isBold: false,
+                                  isUline: false,
                                 ),
                         ),
                       ],
@@ -801,8 +902,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                               style: textStyle(
                                 Colors.white,
                                 16,
-                                false,
-                                false,
+                                isBold: false,
+                                isUline: false,
                               ),
                             ),
                             Container(width: 10),
@@ -820,16 +921,16 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         athlete.longTokenBookPricePercent!,
                                       ),
                                       12,
-                                      false,
-                                      false,
+                                      isBold: false,
+                                      isUline: false,
                                     )
                                   : textStyle(
                                       getPercentageColor(
                                         athlete.shortTokenBookPricePercent!,
                                       ),
                                       12,
-                                      false,
-                                      false,
+                                      isBold: false,
+                                      isUline: false,
                                     ),
                             ),
                           ],
@@ -841,8 +942,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                           style: textStyle(
                             Colors.amberAccent,
                             14,
-                            false,
-                            false,
+                            isBold: false,
+                            isUline: false,
                           ),
                         ),
                       ],
@@ -900,15 +1001,22 @@ class _DesktopScoutState extends State<DesktopScout> {
                               aptPrice: athlete.longTokenBookPrice!,
                               athleteId: athlete.id,
                               isLongApt: isLongToken,
-                              goToTradePage: widget.goToTradePage,
                             ),
                           ),
                         );
                       } else {
-                        setState(() {
-                          curAthlete = athlete;
-                          athletePage = true;
-                        });
+                        setState(
+                          () {
+                            global.athleteList = filteredAthletes;
+                            selectedAthlete =
+                                athlete.id.toString() + athlete.name;
+                            context.goNamed(
+                              'athlete',
+                              params: {'id': selectedAthlete},
+                            );
+                            //athletePage = true;
+                          },
+                        );
                       }
                     },
                     child: Center(
@@ -930,10 +1038,18 @@ class _DesktopScoutState extends State<DesktopScout> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        setState(() {
-                          curAthlete = athlete;
-                          athletePage = true;
-                        });
+                        setState(
+                          () {
+                            global.athleteList = filteredAthletes;
+                            selectedAthlete =
+                                athlete.id.toString() + athlete.name;
+                            context.goNamed(
+                              'athlete',
+                              params: {'id': selectedAthlete},
+                            );
+                            //athletePage = true;
+                          },
+                        );
                       },
                       child: SizedBox(
                         width: 60,
@@ -945,8 +1061,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                               style: textStyle(
                                 Colors.white,
                                 16,
-                                false,
-                                false,
+                                isBold: false,
+                                isUline: false,
                               ),
                             ),
                             const Icon(
@@ -988,10 +1104,17 @@ class _DesktopScoutState extends State<DesktopScout> {
                 athleteName: athlete.name,
                 walletId: walletAddress,
               );
-          setState(() {
-            curAthlete = athlete;
-            athletePage = true;
-          });
+          setState(
+            () {
+              global.athleteList = filteredAthletes;
+              selectedAthlete = athlete.id.toString() + athlete.name;
+              context.goNamed(
+                'athlete',
+                params: {'id': selectedAthlete},
+              );
+              //athletePage = true;
+            },
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1016,8 +1139,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                             style: textStyle(
                               Colors.white,
                               16,
-                              false,
-                              false,
+                              isBold: false,
+                              isUline: false,
                             ),
                           ),
                           Container(width: 10),
@@ -1035,16 +1158,16 @@ class _DesktopScoutState extends State<DesktopScout> {
                                       athlete.longTokenPercentage!,
                                     ),
                                     12,
-                                    false,
-                                    false,
+                                    isBold: false,
+                                    isUline: false,
                                   )
                                 : textStyle(
                                     getPercentageColor(
                                       athlete.shortTokenPercentage!,
                                     ),
                                     12,
-                                    false,
-                                    false,
+                                    isBold: false,
+                                    isUline: false,
                                   ),
                           ),
                         ],
@@ -1057,8 +1180,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                         style: textStyle(
                           Colors.amberAccent,
                           14,
-                          false,
-                          false,
+                          isBold: false,
+                          isUline: false,
                         ),
                       ),
                     ],
@@ -1077,8 +1200,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                           style: textStyle(
                             Colors.white,
                             16,
-                            false,
-                            false,
+                            isBold: false,
+                            isUline: false,
                           ),
                         ),
                         Container(width: 10),
@@ -1096,16 +1219,16 @@ class _DesktopScoutState extends State<DesktopScout> {
                                     athlete.longTokenBookPricePercent!,
                                   ),
                                   12,
-                                  false,
-                                  false,
+                                  isBold: false,
+                                  isUline: false,
                                 )
                               : textStyle(
                                   getPercentageColor(
                                     athlete.shortTokenBookPricePercent!,
                                   ),
                                   12,
-                                  false,
-                                  false,
+                                  isBold: false,
+                                  isUline: false,
                                 ),
                         ),
                       ],
@@ -1117,8 +1240,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                       style: textStyle(
                         Colors.amberAccent,
                         14,
-                        false,
-                        false,
+                        isBold: false,
+                        isUline: false,
                       ),
                     ),
                   ],
@@ -1174,15 +1297,22 @@ class _DesktopScoutState extends State<DesktopScout> {
                               aptPrice: athlete.longTokenBookPrice!,
                               athleteId: athlete.id,
                               isLongApt: isLongToken,
-                              goToTradePage: widget.goToTradePage,
                             ),
                           ),
                         );
                       } else {
-                        setState(() {
-                          curAthlete = athlete;
-                          athletePage = true;
-                        });
+                        setState(
+                          () {
+                            global.athleteList = filteredAthletes;
+                            selectedAthlete =
+                                athlete.id.toString() + athlete.name;
+                            context.goNamed(
+                              'athlete',
+                              params: {'id': selectedAthlete},
+                            );
+                            //athletePage = true;
+                          },
+                        );
                       }
                     },
                     child: Center(
@@ -1212,10 +1342,18 @@ class _DesktopScoutState extends State<DesktopScout> {
                               athleteName: athlete.name,
                               walletId: walletAddress,
                             );
-                        setState(() {
-                          curAthlete = athlete;
-                          athletePage = true;
-                        });
+                        setState(
+                          () {
+                            global.athleteList = filteredAthletes;
+                            selectedAthlete =
+                                athlete.id.toString() + athlete.name;
+                            context.goNamed(
+                              'athlete',
+                              params: {'id': selectedAthlete},
+                            );
+                            //athletePage = true;
+                          },
+                        );
                       },
                       child: SizedBox(
                         width: 60,
@@ -1227,8 +1365,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                               style: textStyle(
                                 Colors.white,
                                 16,
-                                false,
-                                false,
+                                isBold: false,
+                                isUline: false,
                               ),
                             ),
                             const Icon(
@@ -1255,14 +1393,22 @@ class _DesktopScoutState extends State<DesktopScout> {
     if (kIsWeb) {
       textWidget = Text(
         'Buy',
-        style:
-            textStyle(const Color.fromRGBO(254, 197, 0, 1), 12, false, false),
+        style: textStyle(
+          const Color.fromRGBO(254, 197, 0, 1),
+          12,
+          isBold: false,
+          isUline: false,
+        ),
       );
     } else {
       textWidget = Text(
         'View',
-        style:
-            textStyle(const Color.fromRGBO(255, 198, 0, 1), 10, false, false),
+        style: textStyle(
+          const Color.fromRGBO(255, 198, 0, 1),
+          10,
+          isBold: false,
+          isUline: false,
+        ),
       );
     }
     return textWidget;
@@ -1292,9 +1438,11 @@ class _DesktopScoutState extends State<DesktopScout> {
             child: TextFormField(
               controller: myController,
               onChanged: (value) {
-                setState(() {
-                  input = value;
-                });
+                setState(
+                  () {
+                    input = value;
+                  },
+                );
                 bloc.add(
                   AthleteSearchChanged(
                     searchedName: value,
@@ -1306,10 +1454,14 @@ class _DesktopScoutState extends State<DesktopScout> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 8.5),
                 hintText: 'Search an athlete',
-                hintStyle: TextStyle(color: Color.fromRGBO(235, 235, 245, 0.6)),
+                hintStyle: TextStyle(
+                  color: Color.fromRGBO(235, 235, 245, 0.6),
+                ),
               ),
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp('[a-zA-z. ]'))
+                FilteringTextInputFormatter.allow(
+                  RegExp('[a-zA-z. ]'),
+                )
               ],
             ),
           ),
@@ -1326,40 +1478,6 @@ class _DesktopScoutState extends State<DesktopScout> {
       _width = widthSize * 0.66;
     }
     return _width;
-  }
-
-  TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    // ignore: curly_braces_in_flow_control_structures
-    if (isBold) if (isUline) {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-        decoration: TextDecoration.underline,
-      );
-    } else {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-      );
-    }
-    else if (isUline) {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        decoration: TextDecoration.underline,
-      );
-    } else {
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-      );
-    }
   }
 
   TextStyle textSwapState(bool condition, TextStyle fls, TextStyle tru) {
@@ -1402,14 +1520,21 @@ class _DesktopScoutState extends State<DesktopScout> {
             child: TextButton(
               onPressed: () {
                 if (!isLongToken) {
-                  setState(() {
-                    isLongToken = true;
-                  });
+                  setState(
+                    () {
+                      isLongToken = true;
+                    },
+                  );
                 }
               },
               child: Text(
                 'Long Token',
-                style: textStyle(Colors.white, 14, true, false),
+                style: textStyle(
+                  Colors.white,
+                  14,
+                  isBold: true,
+                  isUline: false,
+                ),
               ),
             ),
           ),
@@ -1432,14 +1557,21 @@ class _DesktopScoutState extends State<DesktopScout> {
             child: TextButton(
               onPressed: () {
                 if (isLongToken) {
-                  setState(() {
-                    isLongToken = false;
-                  });
+                  setState(
+                    () {
+                      isLongToken = false;
+                    },
+                  );
                 }
               },
               child: Text(
                 'Short Token',
-                style: textStyle(Colors.white, 14, true, false),
+                style: textStyle(
+                  Colors.white,
+                  14,
+                  isBold: true,
+                  isUline: false,
+                ),
               ),
             ),
           )

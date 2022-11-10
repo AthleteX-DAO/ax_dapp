@@ -16,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,7 +27,6 @@ class BuyDialog extends StatefulWidget {
     required this.aptPrice,
     required this.athleteId,
     required this.isLongApt,
-    required this.goToTradePage,
     super.key,
   });
   final AthleteScoutModel athlete;
@@ -34,7 +34,6 @@ class BuyDialog extends StatefulWidget {
   final double aptPrice;
   final int athleteId;
   final bool isLongApt;
-  final void Function() goToTradePage;
 
   @override
   State<StatefulWidget> createState() => _BuyDialogState();
@@ -80,11 +79,23 @@ class _BuyDialogState extends State<BuyDialog> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Total Fees:',
-              style: textStyle(Colors.grey[600]!, 15, isBold: false)),
+          Text(
+            'Total Fees:',
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
+          ),
           Text(
             '$totalFee AX(0.3%)',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -98,7 +109,12 @@ class _BuyDialogState extends State<BuyDialog> {
         children: [
           Text(
             'Balance: ${toDecimal(balance, 6)}',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -112,11 +128,21 @@ class _BuyDialogState extends State<BuyDialog> {
         children: [
           Text(
             'Market Price Impact:',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
           Text(
             '$marketPriceImpact %',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -130,11 +156,21 @@ class _BuyDialogState extends State<BuyDialog> {
         children: [
           Text(
             'Minimum Received:',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
           Text(
             '$minimumReceived APT',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -148,11 +184,21 @@ class _BuyDialogState extends State<BuyDialog> {
         children: [
           Text(
             'Slippage Tolerance:',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
           Text(
             '$slipageTolerance %',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -209,7 +255,12 @@ class _BuyDialogState extends State<BuyDialog> {
                     children: [
                       Text(
                         'Buy ${widget.athleteName} APT',
-                        style: textStyle(Colors.white, 20, isBold: false),
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(
@@ -250,8 +301,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pop(context);
-                              widget.goToTradePage();
+                              context.goNamed('trade');
                             },
                         ),
                       ],
@@ -325,7 +375,12 @@ class _BuyDialogState extends State<BuyDialog> {
                           Expanded(
                             child: Text(
                               'AX',
-                              style: textStyle(Colors.white, 15, isBold: false),
+                              style: textStyle(
+                                Colors.white,
+                                15,
+                                isBold: false,
+                                isUline: false,
+                              ),
                             ),
                           ),
                           Container(
@@ -345,8 +400,12 @@ class _BuyDialogState extends State<BuyDialog> {
                               },
                               child: Text(
                                 'MAX',
-                                style: textStyle(Colors.grey[400]!, 9,
-                                    isBold: false),
+                                style: textStyle(
+                                  Colors.grey[400]!,
+                                  9,
+                                  isBold: false,
+                                  isUline: false,
+                                ),
                               ),
                             ),
                           ),
@@ -355,13 +414,24 @@ class _BuyDialogState extends State<BuyDialog> {
                             child: IntrinsicWidth(
                               child: TextField(
                                 controller: _aptAmountController,
-                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                style: textStyle(Colors.grey[400]!, 22,
-                                    isBold: false),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                  decimal: true,
+                                ),
+                                style: textStyle(
+                                  Colors.grey[400]!,
+                                  22,
+                                  isBold: false,
+                                  isUline: false,
+                                ),
                                 decoration: InputDecoration(
                                   hintText: '0.00',
-                                  hintStyle: textStyle(Colors.grey[400]!, 22,
-                                      isBold: false),
+                                  hintStyle: textStyle(
+                                    Colors.grey[400]!,
+                                    22,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
                                   contentPadding:
                                       const EdgeInsets.only(left: 3),
                                   border: InputBorder.none,
@@ -564,7 +634,15 @@ class Price extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Price:', style: textStyle(Colors.white, 15, isBold: false)),
+        Text(
+          'Price:',
+          style: textStyle(
+            Colors.white,
+            15,
+            isBold: false,
+            isUline: false,
+          ),
+        ),
         BlocBuilder<BuyDialogBloc, BuyDialogState>(
           buildWhen: (previous, current) =>
               previous.aptTypeSelection != current.aptTypeSelection ||
@@ -573,7 +651,12 @@ class Price extends StatelessWidget {
               previous.shortApt != current.shortApt,
           builder: (context, state) {
             final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
-            final _textStyle = textStyle(Colors.white, 15, isBold: false);
+            final _textStyle = textStyle(
+              Colors.white,
+              15,
+              isBold: false,
+              isUline: false,
+            );
             return state.aptTypeSelection.isLong
                 ? Text(
                     '$price AX per ${state.longApt.ticker} APT',
@@ -595,7 +678,12 @@ class AmountToReceive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _textStyle = textStyle(Colors.white, 15, isBold: false);
+    final _textStyle = textStyle(
+      Colors.white,
+      15,
+      isBold: false,
+      isUline: false,
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

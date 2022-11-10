@@ -7,6 +7,7 @@ import 'package:ax_dapp/pages/farm/components/unsupported_chain.dart';
 import 'package:ax_dapp/pages/farm/modules/box_decoration.dart';
 import 'package:ax_dapp/pages/farm/modules/page_text_style.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -23,6 +24,7 @@ class DesktopFarm extends StatefulWidget {
 }
 
 class _DesktopFarmState extends State<DesktopFarm> {
+  Global global = Global();
   final myController = TextEditingController();
   bool isWeb = true;
   bool isAllFarms = true;
@@ -46,178 +48,182 @@ class _DesktopFarmState extends State<DesktopFarm> {
     //If web and in MyFarms list height 500
     if (isWeb && !isAllFarms) listHeight = 500.0;
 
-    return Container(
-      width: _width,
-      height: _height - AppBar().preferredSize.height,
-      margin: isWeb
-          ? EdgeInsets.zero
-          : EdgeInsets.only(top: AppBar().preferredSize.height + 10),
-      alignment: Alignment.center,
-      child: SizedBox(
-        //outermost dimensions for farm section
-        width: layoutWdt,
-        height: layoutHgt,
-        // child:  FarmLayout(layoutHgt, layoutWdt),
-        child: BlocListener<WalletBloc, WalletState>(
-          listener: (context, state) {
-            if (state.isWalletConnected || state.isWalletDisconnected) {
-              context.read<FarmBloc>().add(WatchAppDataChangesStarted());
-            }
-            if (state.isWalletUnavailable) {
-              debugPrint(
-                'Wallet is unavailable -> ${state.isWalletUnavailable}',
-              );
-            }
-            if (state.isWalletUnsupported) {
-              debugPrint(
-                'wallet is not supported -> ${state.isWalletUnsupported}',
-              );
-            }
-          },
-          child: BlocBuilder<FarmBloc, FarmState>(
-            buildWhen: (previous, current) {
-              debugPrint(
-                'Farm Bloc Builder buildWhen current status: ${current.status}, previous status: ${previous.status}',
-              );
-              return previous != current;
-            },
-            builder: (context, state) {
-              final bloc = context.read<FarmBloc>();
-              Widget widget = const Loader();
-              if (state.status == BlocStatus.error) {
-                context.showWarningToast(
-                  title: 'Action Error',
-                  description: 'Something went wrong',
+    return global.buildPage(
+      context,
+      Container(
+        width: _width,
+        height: _height - AppBar().preferredSize.height,
+        margin: isWeb
+            ? EdgeInsets.zero
+            : EdgeInsets.only(top: AppBar().preferredSize.height + 10),
+        alignment: Alignment.center,
+        child: SizedBox(
+          //outermost dimensions for farm section
+          width: layoutWdt,
+          height: layoutHgt,
+          // child:  FarmLayout(layoutHgt, layoutWdt),
+          child: BlocListener<WalletBloc, WalletState>(
+            listener: (context, state) {
+              if (state.isWalletConnected || state.isWalletDisconnected) {
+                context.read<FarmBloc>().add(WatchAppDataChangesStarted());
+              }
+              if (state.isWalletUnavailable) {
+                debugPrint(
+                  'Wallet is unavailable -> ${state.isWalletUnavailable}',
                 );
               }
-              if (state.status == BlocStatus.error ||
-                  state.status == BlocStatus.noData) {
-                widget = noData();
+              if (state.isWalletUnsupported) {
+                debugPrint(
+                  'wallet is not supported -> ${state.isWalletUnsupported}',
+                );
               }
-              if (!state.isAllFarms && state.status == BlocStatus.noWallet) {
-                widget = noWallet();
-              }
-              if (state.status == BlocStatus.unsupportedChain) {
-                widget = unsupported(state.chain);
-              }
-              final Widget toggle =
-                  toggleFarmButton(bloc, layoutWdt, layoutHgt);
-              return Wrap(
-                runSpacing: layoutHgt * 0.02,
-                clipBehavior: Clip.hardEdge,
-                children: [
-                  Row(
-                    mainAxisAlignment: isWeb
-                        ? MainAxisAlignment.start
-                        : MainAxisAlignment.spaceBetween,
-                    children: [
-                      FittedBox(
-                        child: Text(
-                          isAllFarms ? 'Participating Farms' : 'My Farms',
-                          style: isWeb
-                              ? textStyle(Colors.white, 24, true, false)
-                              : textStyle(Colors.white, 20, true, false),
-                        ),
-                      ),
-                      if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
-                    ],
-                  ),
-                  if (isWeb)
+            },
+            child: BlocBuilder<FarmBloc, FarmState>(
+              buildWhen: (previous, current) {
+                debugPrint(
+                  'Farm Bloc Builder buildWhen current status: ${current.status}, previous status: ${previous.status}',
+                );
+                return previous != current;
+              },
+              builder: (context, state) {
+                final bloc = context.read<FarmBloc>();
+                Widget widget = const Loader();
+                if (state.status == BlocStatus.error) {
+                  context.showWarningToast(
+                    title: 'Action Error',
+                    description: 'Something went wrong',
+                  );
+                }
+                if (state.status == BlocStatus.error ||
+                    state.status == BlocStatus.noData) {
+                  widget = noData();
+                }
+                if (!state.isAllFarms && state.status == BlocStatus.noWallet) {
+                  widget = noWallet();
+                }
+                if (state.status == BlocStatus.unsupportedChain) {
+                  widget = unsupported(state.chain);
+                }
+                final Widget toggle =
+                    toggleFarmButton(bloc, layoutWdt, layoutHgt);
+                return Wrap(
+                  runSpacing: layoutHgt * 0.02,
+                  clipBehavior: Clip.hardEdge,
+                  children: [
                     Row(
+                      mainAxisAlignment: isWeb
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.spaceBetween,
                       children: [
-                        createSearchBar(bloc, layoutWdt, layoutHgt),
-                        const SizedBox(width: 50),
-                        toggle
+                        FittedBox(
+                          child: Text(
+                            isAllFarms ? 'Participating Farms' : 'My Farms',
+                            style: isWeb
+                                ? textStyle(Colors.white, 24, true, false)
+                                : textStyle(Colors.white, 20, true, false),
+                          ),
+                        ),
+                        if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
                       ],
                     ),
-                  if (!isWeb) toggle,
-                  SizedBox(
-                    //contains list of allfarms cards
-                    width: layoutWdt,
-                    height: layoutHgt - 120,
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context).copyWith(
-                        dragDevices: {
-                          PointerDeviceKind.mouse,
-                          PointerDeviceKind.touch,
-                        },
+                    if (isWeb)
+                      Row(
+                        children: [
+                          createSearchBar(bloc, layoutWdt, layoutHgt),
+                          const SizedBox(width: 50),
+                          toggle
+                        ],
                       ),
-                      child: state.status != BlocStatus.success
-                          ? widget
-                          : (state.isAllFarms
-                                  ? state.filteredFarms.isEmpty
-                                  : state.filteredStakedFarms.isEmpty)
-                              ? noData()
-                              : GridView.builder(
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: isWeb && _width > 1700
-                                        ? 4
-                                        : isWeb
-                                            ? 3
-                                            : 1,
-                                    mainAxisSpacing: 5,
-                                    crossAxisSpacing: 5,
-                                    childAspectRatio:
-                                        state.isAllFarms ? 1.75 : 1,
+                    if (!isWeb) toggle,
+                    SizedBox(
+                      //contains list of allfarms cards
+                      width: layoutWdt,
+                      height: layoutHgt - 120,
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(
+                          dragDevices: {
+                            PointerDeviceKind.mouse,
+                            PointerDeviceKind.touch,
+                          },
+                        ),
+                        child: state.status != BlocStatus.success
+                            ? widget
+                            : (state.isAllFarms
+                                    ? state.filteredFarms.isEmpty
+                                    : state.filteredStakedFarms.isEmpty)
+                                ? noData()
+                                : GridView.builder(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: isWeb && _width > 1700
+                                          ? 4
+                                          : isWeb
+                                              ? 3
+                                              : 1,
+                                      mainAxisSpacing: 5,
+                                      crossAxisSpacing: 5,
+                                      childAspectRatio:
+                                          state.isAllFarms ? 1.75 : 1,
+                                    ),
+                                    padding: EdgeInsets.zero,
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: isAllFarms
+                                        ? state.filteredFarms.length
+                                        : state.filteredStakedFarms.length,
+                                    itemBuilder: (context, index) {
+                                      return isAllFarms
+                                          ? farmItem(
+                                              context,
+                                              isWeb,
+                                              FarmController(
+                                                farm:
+                                                    state.filteredFarms[index],
+                                                walletRepository: context
+                                                    .read<FarmBloc>()
+                                                    .walletRepository,
+                                                tokensRepository: context
+                                                    .read<FarmBloc>()
+                                                    .tokensRepository,
+                                                configRepository: context
+                                                    .read<FarmBloc>()
+                                                    .configRepository,
+                                                streamAppDataChanges: context
+                                                    .read<FarmBloc>()
+                                                    .streamAppDataChanges,
+                                              ),
+                                              listHeight,
+                                              layoutWdt,
+                                            )
+                                          : myFarmItem(
+                                              context,
+                                              isWeb,
+                                              FarmController(
+                                                farm: state
+                                                    .filteredStakedFarms[index],
+                                                walletRepository: context
+                                                    .read<FarmBloc>()
+                                                    .walletRepository,
+                                                tokensRepository: context
+                                                    .read<FarmBloc>()
+                                                    .tokensRepository,
+                                                configRepository: context
+                                                    .read<FarmBloc>()
+                                                    .configRepository,
+                                                streamAppDataChanges: context
+                                                    .read<FarmBloc>()
+                                                    .streamAppDataChanges,
+                                              ),
+                                              listHeight,
+                                              layoutWdt,
+                                            );
+                                    },
                                   ),
-                                  padding: EdgeInsets.zero,
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: isAllFarms
-                                      ? state.filteredFarms.length
-                                      : state.filteredStakedFarms.length,
-                                  itemBuilder: (context, index) {
-                                    return isAllFarms
-                                        ? farmItem(
-                                            context,
-                                            isWeb,
-                                            FarmController(
-                                              farm: state.filteredFarms[index],
-                                              walletRepository: context
-                                                  .read<FarmBloc>()
-                                                  .walletRepository,
-                                              tokensRepository: context
-                                                  .read<FarmBloc>()
-                                                  .tokensRepository,
-                                              configRepository: context
-                                                  .read<FarmBloc>()
-                                                  .configRepository,
-                                              streamAppDataChanges: context
-                                                  .read<FarmBloc>()
-                                                  .streamAppDataChanges,
-                                            ),
-                                            listHeight,
-                                            layoutWdt,
-                                          )
-                                        : myFarmItem(
-                                            context,
-                                            isWeb,
-                                            FarmController(
-                                              farm: state
-                                                  .filteredStakedFarms[index],
-                                              walletRepository: context
-                                                  .read<FarmBloc>()
-                                                  .walletRepository,
-                                              tokensRepository: context
-                                                  .read<FarmBloc>()
-                                                  .tokensRepository,
-                                              configRepository: context
-                                                  .read<FarmBloc>()
-                                                  .configRepository,
-                                              streamAppDataChanges: context
-                                                  .read<FarmBloc>()
-                                                  .streamAppDataChanges,
-                                            ),
-                                            listHeight,
-                                            layoutWdt,
-                                          );
-                                  },
-                                ),
+                      ),
                     ),
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

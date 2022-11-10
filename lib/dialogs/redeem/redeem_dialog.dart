@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class RedeemDialog extends StatefulWidget {
   const RedeemDialog(
@@ -22,8 +23,7 @@ class RedeemDialog extends StatefulWidget {
     this.aptName,
     this.inputLongApt,
     this.inputShortApt,
-    this.valueInAX,
-    this.goToTradePage, {
+    this.valueInAX, {
     super.key,
   });
 
@@ -32,7 +32,6 @@ class RedeemDialog extends StatefulWidget {
   final String inputLongApt;
   final String inputShortApt;
   final String valueInAX;
-  final void Function() goToTradePage;
 
   @override
   State<RedeemDialog> createState() => _RedeemDialogState();
@@ -54,7 +53,12 @@ class _RedeemDialogState extends State<RedeemDialog> {
         children: [
           Text(
             'Balance: $balance',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -70,7 +74,12 @@ class _RedeemDialogState extends State<RedeemDialog> {
         children: [
           Text(
             'Balance: $balance',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -84,13 +93,23 @@ class _RedeemDialogState extends State<RedeemDialog> {
         children: [
           Text(
             'You Receive: ',
-            style: textStyle(Colors.white, 15, isBold: false),
+            style: textStyle(
+              Colors.white,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
           Row(
             children: [
               Text(
                 '''$receiveAmount AX''',
-                style: textStyle(Colors.white, 15, isBold: false),
+                style: textStyle(
+                  Colors.white,
+                  15,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
             ],
           ),
@@ -148,7 +167,12 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           padding: EdgeInsets.zero,
                           child: Text(
                             'Redeem ${widget.athlete.name} APT Pair',
-                            style: textStyle(Colors.white, 20, isBold: false),
+                            style: textStyle(
+                              Colors.white,
+                              20,
+                              isBold: false,
+                              isUline: false,
+                            ),
                           ),
                         ),
                       ),
@@ -185,6 +209,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             Colors.grey[600]!,
                             isWeb ? 14 : 12,
                             isBold: false,
+                            isUline: false,
                           ),
                         ),
                         TextSpan(
@@ -194,6 +219,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             Colors.grey[600]!,
                             isWeb ? 14 : 12,
                             isBold: false,
+                            isUline: false,
                           ),
                         ),
                         TextSpan(
@@ -202,11 +228,11 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             Colors.amber[400]!,
                             isWeb ? 14 : 12,
                             isBold: false,
+                            isUline: false,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pop(context);
-                              widget.goToTradePage();
+                              context.goNamed('trade');
                             },
                         ),
                       ],
@@ -224,8 +250,12 @@ class _RedeemDialogState extends State<RedeemDialog> {
                           isWeb
                               ? 'Input APT pair:'
                               : 'Input APT pair and amount:',
-                          style:
-                              textStyle(Colors.grey[600]!, 14, isBold: false),
+                          style: textStyle(
+                            Colors.grey[600]!,
+                            14,
+                            isBold: false,
+                            isUline: false,
+                          ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(bottom: 10),
@@ -255,6 +285,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                 Colors.grey[400]!,
                                 9,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                           ),
@@ -300,6 +331,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     Colors.white,
                                     15,
                                     isBold: false,
+                                    isUline: false,
                                   ),
                                 ),
                               ),
@@ -308,12 +340,16 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     BoxConstraints(maxWidth: wid * 0.4),
                                 child: IntrinsicWidth(
                                   child: TextField(
-                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                      decimal: true,
+                                    ),
                                     controller: _longInputController,
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       22,
                                       isBold: false,
+                                      isUline: false,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: '0.00',
@@ -321,6 +357,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                         Colors.grey[400]!,
                                         22,
                                         isBold: false,
+                                        isUline: false,
                                       ),
                                       contentPadding: isWeb
                                           ? const EdgeInsets.all(9)
@@ -392,6 +429,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     Colors.white,
                                     15,
                                     isBold: false,
+                                    isUline: false,
                                   ),
                                 ),
                               ),
@@ -400,12 +438,16 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     BoxConstraints(maxWidth: wid * 0.4),
                                 child: IntrinsicWidth(
                                   child: TextField(
-                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                      decimal: true,
+                                    ),
                                     controller: _shortInputController,
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       22,
                                       isBold: false,
+                                      isUline: false,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: '0.00',
@@ -413,6 +455,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                         Colors.grey[400]!,
                                         22,
                                         isBold: false,
+                                        isUline: false,
                                       ),
                                       contentPadding: isWeb
                                           ? const EdgeInsets.all(9)
@@ -497,8 +540,10 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                                     collateralPerPair)
                                                 .toStringAsFixed(6),
                                         walletId: walletAddress,
-                                        valueInUSD: (bloc.lspController.redeemAmt *
-                                                    collateralPerPair) * price,
+                                        valueInUSD:
+                                            (bloc.lspController.redeemAmt *
+                                                    collateralPerPair) *
+                                                price,
                                       );
                                 });
                               } else {
@@ -517,6 +562,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                 Colors.amber[500]!,
                                 16,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                           ),

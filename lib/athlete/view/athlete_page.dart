@@ -1,8 +1,12 @@
 import 'package:ax_dapp/athlete/bloc/athlete_page_bloc.dart';
 import 'package:ax_dapp/athlete/widgets/widgets.dart';
+import 'package:ax_dapp/repositories/mlb_repo.dart';
+import 'package:ax_dapp/repositories/nfl_repo.dart';
+import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/scout/scout.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
@@ -14,28 +18,26 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class AthletePage extends StatefulWidget {
-  const AthletePage({
+  AthletePage({
     super.key,
     required this.athlete,
-    required this.goToTradePage,
-    required this.goToPage,
   });
 
-  final AthleteScoutModel athlete;
-  final void Function() goToTradePage;
-  final void Function(int page) goToPage;
+  final AthleteScoutModel? athlete;
 
   @override
   State<AthletePage> createState() => _AthletePageState();
 }
 
 class _AthletePageState extends State<AthletePage> {
+  Global global = Global();
   late AthleteScoutModel athlete;
-  int listView = 0;
 
   int _widgetIndex = 0;
   Color indexUnselectedStackBackgroundColor = Colors.transparent;
@@ -49,7 +51,7 @@ class _AthletePageState extends State<AthletePage> {
   @override
   void initState() {
     super.initState();
-    athlete = widget.athlete;
+    athlete = widget.athlete!;
     final aptPair = context.read<TokensRepository>().currentAptPair(athlete.id);
     Get.find<LSPController>().updateAptAddress(aptPair.address);
     _zoomPanBehavior = ZoomPanBehavior(
@@ -65,34 +67,65 @@ class _AthletePageState extends State<AthletePage> {
   Widget build(BuildContext context) {
     final _mediaquery = MediaQuery.of(context);
     _isPortraitMode = _mediaquery.orientation == Orientation.portrait;
+    /* shouldn't be needed with go_router anymore
     if (listView == 1) {
-      return DesktopScout(
-        goToTradePage: widget.goToTradePage,
-        goToPage: widget.goToPage,
-      );
+      return DesktopScout();
+    }*/
+
+    if (global.page != 'athlete') {
+      context.goNamed(global.page);
     }
 
-    return BlocListener<AthletePageBloc, AthletePageState>(
-      listener: (context, state) {
-        if (state.failure is DisconnectedWalletFailure) {
-          context.showWalletWarningToast();
-        }
-        if (state.failure is InvalidAthleteFailure) {
-          context.showWarningToast(
-            title: 'Error',
-            description: 'Cannot add athlete to wallet',
-          );
-        }
-      },
-      child: kIsWeb
-          ? BlocBuilder<AthletePageBloc, AthletePageState>(
-              buildWhen: (previous, current) => previous.stats != current.stats,
-              builder: (_, state) {
-                final chartStats = state.stats;
-                return buildWebView(athlete, chartStats);
-              },
-            )
-          : buildMobileView(context),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      appBar: global.topNav(context),
+      bottomNavigationBar: global.bottomNav(context),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: global.background(context),
+        child: BlocProvider(
+          create: (context) => AthletePageBloc(
+            walletRepository: context.read<WalletRepository>(),
+            tokensRepository: context.read<TokensRepository>(),
+            mlbRepo: RepositoryProvider.of<MLBRepo>(context),
+            nflRepo: RepositoryProvider.of<NFLRepo>(context),
+            athlete: athlete,
+            getScoutAthletesDataUseCase: GetScoutAthletesDataUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
+              sportsRepos: [
+                RepositoryProvider.of<MLBRepo>(context),
+                RepositoryProvider.of<NFLRepo>(context),
+              ],
+            ),
+          ),
+          child: BlocListener<AthletePageBloc, AthletePageState>(
+            listener: (context, state) {
+              if (state.failure is DisconnectedWalletFailure) {
+                context.showWalletWarningToast();
+              }
+              if (state.failure is InvalidAthleteFailure) {
+                context.showWarningToast(
+                  title: 'Error',
+                  description: 'Cannot add athlete to wallet',
+                );
+              }
+            },
+            child: kIsWeb
+                ? BlocBuilder<AthletePageBloc, AthletePageState>(
+                    buildWhen: (previous, current) =>
+                        previous.stats != current.stats,
+                    builder: (_, state) {
+                      final chartStats = state.stats;
+                      return buildWebView(athlete, chartStats);
+                    },
+                  )
+                : buildMobileView(context),
+          ),
+        ),
+      ),
     );
   }
 
@@ -343,9 +376,7 @@ class _AthletePageState extends State<AthletePage> {
             children: [
               TextButton(
                 onPressed: () {
-                  setState(() {
-                    listView = 1;
-                  });
+                  context.goNamed('scout');
                 },
                 child:
                     const Icon(Icons.arrow_back, size: 24, color: Colors.white),
@@ -1001,7 +1032,6 @@ class _AthletePageState extends State<AthletePage> {
                             isPortraitMode: _isPortraitMode,
                             containerWdt: _width,
                             isLongApt: aptTypeSelection.isLong,
-                            goToTradePage: widget.goToTradePage,
                           );
                         },
                       ),
@@ -1013,7 +1043,6 @@ class _AthletePageState extends State<AthletePage> {
                             isPortraitMode: _isPortraitMode,
                             containerWdt: _width,
                             isLongApt: aptTypeSelection.isLong,
-                            goToTradePage: widget.goToTradePage,
                           );
                         },
                       )
@@ -1026,8 +1055,6 @@ class _AthletePageState extends State<AthletePage> {
                         athlete: athlete,
                         isPortraitMode: _isPortraitMode,
                         containerWdt: _width,
-                        goToTradePage: widget.goToTradePage,
-                        goToPage: widget.goToPage,
                       ),
                       RedeemButton(
                         athlete: athlete,
@@ -1036,7 +1063,6 @@ class _AthletePageState extends State<AthletePage> {
                         valueInAX: '',
                         isPortraitMode: _isPortraitMode,
                         containerWdt: _width,
-                        goToTradePage: widget.goToTradePage,
                       )
                     ],
                   ),
@@ -1084,9 +1110,7 @@ class _AthletePageState extends State<AthletePage> {
                   width: 70,
                   child: TextButton(
                     onPressed: () {
-                      setState(() {
-                        listView = 1;
-                      });
+                      context.goNamed('scout');
                     },
                     child: const Icon(
                       Icons.arrow_back,
@@ -1371,7 +1395,6 @@ class _AthletePageState extends State<AthletePage> {
                                 athlete: athlete,
                                 isPortraitMode: _isPortraitMode,
                                 containerWdt: containerWdt,
-                                goToTradePage: widget.goToTradePage,
                                 isLongApt: aptTypeSelection.isLong,
                               );
                             },
@@ -1385,7 +1408,6 @@ class _AthletePageState extends State<AthletePage> {
                                 isPortraitMode: _isPortraitMode,
                                 containerWdt: containerWdt,
                                 isLongApt: aptTypeSelection.isLong,
-                                goToTradePage: widget.goToTradePage,
                               );
                             },
                           )
@@ -1398,8 +1420,6 @@ class _AthletePageState extends State<AthletePage> {
                             athlete: athlete,
                             isPortraitMode: _isPortraitMode,
                             containerWdt: containerWdt,
-                            goToTradePage: widget.goToTradePage,
-                            goToPage: widget.goToPage,
                           ),
                           RedeemButton(
                             athlete: athlete,
@@ -1408,7 +1428,6 @@ class _AthletePageState extends State<AthletePage> {
                             valueInAX: '',
                             isPortraitMode: _isPortraitMode,
                             containerWdt: containerWdt,
-                            goToTradePage: widget.goToTradePage,
                           )
                         ],
                       ),

@@ -38,7 +38,12 @@ class MaxButton extends StatelessWidget {
         },
         child: Text(
           'MAX',
-          style: textStyle(Colors.grey[400]!, 8, isBold: false),
+          style: textStyle(
+            Colors.grey[400]!,
+            8,
+            isBold: false,
+            isUline: false,
+          ),
         ),
       ),
     );

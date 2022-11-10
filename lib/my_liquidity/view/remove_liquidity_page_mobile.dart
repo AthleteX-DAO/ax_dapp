@@ -83,6 +83,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                     Colors.white,
                     20,
                     isBold: false,
+                    isUline: false,
                   ),
                 ),
               ],
@@ -127,14 +128,15 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                         ? 0
                                         : double.parse(removeInput)
                                             .roundToDouble();
-                                    widget.poolController
-                                        .removePercentage = value;
+                                    widget.poolController.removePercentage =
+                                        value;
                                   });
                                 },
                                 style: textStyle(
                                   Colors.grey[400]!,
                                   22,
                                   isBold: false,
+                                  isUline: false,
                                 ),
                                 decoration: InputDecoration(
                                   hintText: '0',
@@ -142,6 +144,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                     Colors.grey[400]!,
                                     22,
                                     isBold: false,
+                                    isUline: false,
                                   ),
                                   contentPadding: const EdgeInsets.all(9),
                                   border: InputBorder.none,
@@ -176,6 +179,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                   Colors.grey[600]!,
                   16,
                   isBold: false,
+                  isUline: false,
                 ),
               ),
             ),
@@ -198,6 +202,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           Text(
@@ -206,6 +211,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           )
                         ],
@@ -224,6 +230,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.grey[600]!,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           Text(
@@ -232,6 +239,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           )
                         ],
@@ -250,6 +258,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.grey[600]!,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           Text(
@@ -258,6 +267,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           )
                         ],
@@ -276,6 +286,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                   Colors.grey[600]!,
                   16,
                   isBold: false,
+                  isUline: false,
                 ),
               ),
             ),
@@ -320,6 +331,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           const Spacer(),
@@ -334,8 +346,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                 SizedBox(
                                   width: 100,
                                   child: Text(
-                                    tokenOneRemoveAmount
-                                        .toStringAsFixed(6),
+                                    tokenOneRemoveAmount.toStringAsFixed(6),
                                     textAlign: TextAlign.end,
                                   ),
                                 ),
@@ -373,6 +384,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                               Colors.white,
                               16,
                               isBold: false,
+                              isUline: false,
                             ),
                           ),
                           const Spacer(),
@@ -387,8 +399,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                                 SizedBox(
                                   width: 100,
                                   child: Text(
-                                    tokenTwoRemoveAmount
-                                        .toStringAsFixed(6),
+                                    tokenTwoRemoveAmount.toStringAsFixed(6),
                                     textAlign: TextAlign.end,
                                   ),
                                 ),
@@ -411,25 +422,20 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                       tabController: widget._tabController,
                       text: 'Approve',
                       approveCallback: () {
-                        final handler = context
-                            .read<WalletRepository>()
-                            .getTokenBalance;
-                        return widget.poolController
-                            .approveRemove(handler);
+                        final handler =
+                            context.read<WalletRepository>().getTokenBalance;
+                        return widget.poolController.approveRemove(handler);
                       },
                       confirmCallback: () {
-                        final handler = context
-                            .read<WalletRepository>()
-                            .getTokenBalance;
-                        return widget.poolController
-                            .removeLiquidity(handler);
+                        final handler =
+                            context.read<WalletRepository>().getTokenBalance;
+                        return widget.poolController.removeLiquidity(handler);
                       },
                       currencyOne: widget.infoOfSelectedCard.token0Symbol,
                       currencyTwo: widget.infoOfSelectedCard.token1Symbol,
                       valueOne: tokenOneRemoveAmount,
                       valueTwo: tokenTwoRemoveAmount,
-                      lpTokens:
-                          widget.infoOfSelectedCard.lpTokenPairBalance,
+                      lpTokens: widget.infoOfSelectedCard.lpTokenPairBalance,
                       shareOfPool: widget.infoOfSelectedCard.shareOfPool,
                       percentRemoval: value,
                       lpTokenName:
@@ -448,8 +454,7 @@ class _RemoveLiquidityPageMobileState extends State<RemoveLiquidityPageMobile> {
                           setState(() {
                             widget._tabController.index = 0;
                             value = 0;
-                            widget.poolController.removePercentage =
-                                value;
+                            widget.poolController.removePercentage = value;
                           });
                         },
                         child: const Text(

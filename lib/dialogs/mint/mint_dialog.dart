@@ -12,19 +12,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class MintDialog extends StatefulWidget {
   const MintDialog({
     required this.athlete,
-    required this.goToTradePage,
-    required this.goToPage,
     super.key,
   });
 
   final AthleteScoutModel athlete;
-  final void Function() goToTradePage;
-  final void Function(int page) goToPage;
 
   @override
   State<MintDialog> createState() => _MintDialogState();
@@ -44,7 +41,12 @@ class _MintDialogState extends State<MintDialog> {
         children: [
           Text(
             'AX Balance: ${toDecimal(balance, 6)}',
-            style: textStyle(Colors.grey[600]!, 15, isBold: false),
+            style: textStyle(
+              Colors.grey[600]!,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -60,7 +62,12 @@ class _MintDialogState extends State<MintDialog> {
             children: [
               Text(
                 'You Receive: ',
-                style: textStyle(Colors.white, 15, isBold: false),
+                style: textStyle(
+                  Colors.white,
+                  15,
+                  isBold: false,
+                  isUline: false,
+                ),
               ),
             ],
           ),
@@ -73,35 +80,60 @@ class _MintDialogState extends State<MintDialog> {
                     width: hgt * 0.2,
                     child: Text(
                       longReceive.toStringAsFixed(6),
-                      style: textStyle(Colors.white, 15, isBold: false),
+                      style: textStyle(
+                        Colors.white,
+                        15,
+                        isBold: false,
+                        isUline: false,
+                      ),
                       maxLines: 1,
                     ),
                   ),
                   SizedBox(
                     child: Text(
                       'Long APTs',
-                      style: textStyle(Colors.white, 15, isBold: false),
+                      style: textStyle(
+                        Colors.white,
+                        15,
+                        isBold: false,
+                        isUline: false,
+                      ),
                       maxLines: 1,
                     ),
                   ),
                   SizedBox(
                     child: Text(
                       ' + ',
-                      style: textStyle(Colors.white, 15, isBold: false),
+                      style: textStyle(
+                        Colors.white,
+                        15,
+                        isBold: false,
+                        isUline: false,
+                      ),
                     ),
                   ),
                   SizedBox(
                     width: hgt * 0.2,
                     child: Text(
                       shortReceive.toStringAsFixed(6),
-                      style: textStyle(Colors.white, 15, isBold: false),
+                      style: textStyle(
+                        Colors.white,
+                        15,
+                        isBold: false,
+                        isUline: false,
+                      ),
                       maxLines: 1,
                     ),
                   ),
                   SizedBox(
                     child: Text(
                       'Short APTs',
-                      style: textStyle(Colors.white, 15, isBold: false),
+                      style: textStyle(
+                        Colors.white,
+                        15,
+                        isBold: false,
+                        isUline: false,
+                      ),
                       maxLines: 1,
                     ),
                   ),
@@ -121,11 +153,21 @@ class _MintDialogState extends State<MintDialog> {
         children: [
           Text(
             'You Spend:',
-            style: textStyle(Colors.white, 15, isBold: false),
+            style: textStyle(
+              Colors.white,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
           Text(
             '$spendAmount AX',
-            style: textStyle(Colors.white, 15, isBold: false),
+            style: textStyle(
+              Colors.white,
+              15,
+              isBold: false,
+              isUline: false,
+            ),
           ),
         ],
       ),
@@ -173,7 +215,12 @@ class _MintDialogState extends State<MintDialog> {
                     children: [
                       Text(
                         'Mint ${widget.athlete.name} APT Pair',
-                        style: textStyle(Colors.white, 20, isBold: false),
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(
@@ -198,6 +245,7 @@ class _MintDialogState extends State<MintDialog> {
                             Colors.grey[600]!,
                             isWeb ? 14 : 12,
                             isBold: false,
+                            isUline: false,
                           ),
                         ),
                         TextSpan(
@@ -206,6 +254,7 @@ class _MintDialogState extends State<MintDialog> {
                             Colors.grey[600]!,
                             isWeb ? 14 : 12,
                             isBold: false,
+                            isUline: false,
                           ),
                         ),
                         TextSpan(
@@ -214,11 +263,11 @@ class _MintDialogState extends State<MintDialog> {
                             Colors.amber[400]!,
                             isWeb ? 14 : 12,
                             isBold: false,
+                            isUline: false,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pop(context);
-                              widget.goToTradePage();
+                              context.goNamed('trade');
                             },
                         ),
                       ],
@@ -232,7 +281,12 @@ class _MintDialogState extends State<MintDialog> {
                       width: wid,
                       child: Text(
                         'Input APT:',
-                        style: textStyle(Colors.grey[600]!, 14, isBold: false),
+                        style: textStyle(
+                          Colors.grey[600]!,
+                          14,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
                     //Input box
@@ -287,6 +341,7 @@ class _MintDialogState extends State<MintDialog> {
                                     Colors.white,
                                     15,
                                     isBold: false,
+                                    isUline: false,
                                   ),
                                 ),
                               ),
@@ -303,7 +358,8 @@ class _MintDialogState extends State<MintDialog> {
                                   onPressed: () {
                                     bloc.add(OnMaxMintTap());
                                     _aptAmountController.text =
-                                        (balance / collateralPerPair).toStringAsFixed(6);
+                                        (balance / collateralPerPair)
+                                            .toStringAsFixed(6);
                                   },
                                   child: Text(
                                     'MAX',
@@ -311,6 +367,7 @@ class _MintDialogState extends State<MintDialog> {
                                       Colors.grey[400]!,
                                       9,
                                       isBold: false,
+                                      isUline: false,
                                     ),
                                   ),
                                 ),
@@ -319,12 +376,16 @@ class _MintDialogState extends State<MintDialog> {
                                 width: hgt * 0.2,
                                 child: IntrinsicWidth(
                                   child: TextField(
-                                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                      decimal: true,
+                                    ),
                                     controller: _aptAmountController,
                                     style: textStyle(
                                       Colors.grey[400]!,
                                       22,
                                       isBold: false,
+                                      isUline: false,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: '0.00',
@@ -332,6 +393,7 @@ class _MintDialogState extends State<MintDialog> {
                                         Colors.grey[400]!,
                                         22,
                                         isBold: false,
+                                        isUline: false,
                                       ),
                                       contentPadding:
                                           const EdgeInsets.only(left: 3),
@@ -409,7 +471,6 @@ class _MintDialogState extends State<MintDialog> {
                                 .approve(currentAxt.address);
                           },
                           confirmCallback: bloc.lspController.mint,
-                          goToPage: widget.goToPage,
                         )
                       else
                         WarningTextButton(

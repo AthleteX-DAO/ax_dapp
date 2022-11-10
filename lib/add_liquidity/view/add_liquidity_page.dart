@@ -23,12 +23,10 @@ class AddLiquidityPage extends StatefulWidget {
     super.key,
     this.token0,
     this.token1,
-    required this.goToPage,
   });
 
   Token? token0;
   Token? token1;
-  final void Function(int pageNumber) goToPage;
 
   @override
   State<AddLiquidityPage> createState() => _AddLiquidityPageState();
@@ -204,7 +202,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               token.name,
-                              style: textStyle(Colors.white, 12, isBold: true),
+                              style: textStyle(
+                                Colors.white,
+                                12,
+                                isBold: true,
+                                isUline: false,
+                              ),
                             ),
                           ),
                           Container(
@@ -216,6 +219,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                 Colors.grey[100]!,
                                 9,
                                 isBold: false,
+                                isUline: false,
                               ),
                             ),
                           ),
@@ -302,8 +306,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         child: SizedBox(
                           child: Text(
                             tkr,
-                            style:
-                                textStyle(Colors.white, tkrTextSize, isBold: true),
+                            style: textStyle(
+                              Colors.white,
+                              tkrTextSize,
+                              isBold: true,
+                              isUline: false,
+                            ),
                           ),
                         ),
                       ),
@@ -359,7 +367,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                         valueTwo: _tokenAmountTwoController.text,
                         shareOfPool: poolInfo.shareOfPool,
                         lpTokenName: '${token0.ticker}/${token1.ticker}',
-                        goToPage: widget.goToPage,
                       )
                     else
                       PoolInsufficientButton(
@@ -449,6 +456,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                                 Colors.grey[400]!,
                                                 8,
                                                 isBold: false,
+                                                isUline: false,
                                               ),
                                             ),
                                           ),
@@ -474,6 +482,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                             Colors.grey[400]!,
                                             22,
                                             isBold: false,
+                                            isUline: false,
                                           ),
                                           decoration: InputDecoration(
                                             hintText: '0.00',
@@ -481,6 +490,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                               Colors.grey[400]!,
                                               22,
                                               isBold: false,
+                                              isUline: false,
                                             ),
                                             contentPadding:
                                                 const EdgeInsets.all(9),
@@ -509,7 +519,12 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                       ),
                       Text(
                         '+',
-                        style: textStyle(Colors.grey[600]!, 35, isBold: true),
+                        style: textStyle(
+                          Colors.grey[600]!,
+                          35,
+                          isBold: true,
+                          isUline: false,
+                        ),
                       ),
                       //Second Token container with border
                       Container(
@@ -555,6 +570,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                             Colors.grey[400]!,
                                             22,
                                             isBold: false,
+                                            isUline: false,
                                           ),
                                           decoration: InputDecoration(
                                             hintText: '0.00',
@@ -562,6 +578,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                                               Colors.grey[400]!,
                                               22,
                                               isBold: false,
+                                              isUline: false,
                                             ),
                                             contentPadding:
                                                 const EdgeInsets.all(9),
