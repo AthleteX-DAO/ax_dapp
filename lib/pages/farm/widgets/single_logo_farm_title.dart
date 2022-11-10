@@ -6,18 +6,21 @@ import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/toast_extensions.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Widget singleLogoFarmTitle(
-  BuildContext context,
-  bool isWeb,
-  FarmController farm,
-  double cardWidth,
-) {
-  //Dialog that appears when stake button is pressed
+class SingleLogoFarmTitle extends StatelessWidget {
+  const SingleLogoFarmTitle({super.key, required this.farm, required this.cardWidth});
 
-  return SizedBox(
+  final FarmController farm;
+  final double cardWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    final isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    return SizedBox(
     width: cardWidth,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,4 +79,5 @@ Widget singleLogoFarmTitle(
       ],
     ),
   );
+  }
 }

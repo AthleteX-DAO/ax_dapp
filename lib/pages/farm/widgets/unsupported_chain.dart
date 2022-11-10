@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
-Widget unsupported(EthereumChain chain) {
-  return Center(
+class UnsupportedChain extends StatelessWidget {
+  const UnsupportedChain({super.key, required this.chain});
+
+  final EthereumChain chain;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
     child: SizedBox(
       height: 70,
       width: 400,
@@ -12,4 +18,5 @@ Widget unsupported(EthereumChain chain) {
       ),
     ),
   );
+  }
 }

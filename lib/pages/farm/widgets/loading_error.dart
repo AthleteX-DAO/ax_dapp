@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
-Widget loadingError() {
-  return const Center(
+class LoadingError extends StatelessWidget {
+  const LoadingError({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
     child: SizedBox(
       height: 70,
       width: 400,
@@ -11,4 +15,5 @@ Widget loadingError() {
       ),
     ),
   );
+  }
 }

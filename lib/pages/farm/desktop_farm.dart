@@ -5,8 +5,8 @@ import 'package:ax_dapp/pages/farm/widgets/no_data.dart';
 import 'package:ax_dapp/pages/farm/widgets/no_wallet.dart';
 import 'package:ax_dapp/pages/farm/widgets/unsupported_chain.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
-import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/util.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
@@ -95,13 +95,13 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 }
                 if (state.status == BlocStatus.error ||
                     state.status == BlocStatus.noData) {
-                  widget = noData();
+                  widget = const NoData();
                 }
                 if (!state.isAllFarms && state.status == BlocStatus.noWallet) {
-                  widget = noWallet();
+                  widget = const NoWallet();
                 }
                 if (state.status == BlocStatus.unsupportedChain) {
-                  widget = unsupported(state.chain);
+                  widget = UnsupportedChain(chain: state.chain);
                 }
                 final Widget toggle =
                     toggleFarmButton(bloc, layoutWdt, layoutHgt);
@@ -150,7 +150,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                             : (state.isAllFarms
                                     ? state.filteredFarms.isEmpty
                                     : state.filteredStakedFarms.isEmpty)
-                                ? noData()
+                                ? const NoData()
                                 : GridView.builder(
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
@@ -171,10 +171,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                         : state.filteredStakedFarms.length,
                                     itemBuilder: (context, index) {
                                       return isAllFarms
-                                          ? farmItem(
-                                              context,
-                                              isWeb,
-                                              FarmController(
+                                          ? FarmItem(
+                                              farm: FarmController(
                                                 farm:
                                                     state.filteredFarms[index],
                                                 walletRepository: context
@@ -190,13 +188,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                                     .read<FarmBloc>()
                                                     .streamAppDataChanges,
                                               ),
-                                              listHeight,
-                                              layoutWdt,
+                                              listHeight: listHeight,
+                                              layoutWdt: layoutWdt,
                                             )
-                                          : myFarmItem(
-                                              context,
-                                              isWeb,
-                                              FarmController(
+                                          : MyFarmItem(
+                                              farm: FarmController(
                                                 farm: state
                                                     .filteredStakedFarms[index],
                                                 walletRepository: context
@@ -212,8 +208,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                                     .read<FarmBloc>()
                                                     .streamAppDataChanges,
                                               ),
-                                              listHeight,
-                                              layoutWdt,
+                                              listHeight: listHeight,
+                                              layoutWidth: layoutWdt,
                                             );
                                     },
                                   ),
