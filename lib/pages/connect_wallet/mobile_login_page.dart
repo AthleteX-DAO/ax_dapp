@@ -54,7 +54,7 @@ class _MobileLoginPageState extends State<MobileLoginPage> {
                     width: _width * .5,
                     child: const Center(
                       child: Text(
-                        'AX Wallet',
+                        'Sign into AthleteX Markets Via E-mail',
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
