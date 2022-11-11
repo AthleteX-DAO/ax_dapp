@@ -78,14 +78,20 @@ class Global extends PropertyChangeNotifier<String> {
   AppBar topNav(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape) ? topNavBar(context) : topNavBarAndroid(context),
+      title: kIsWeb &&
+              (MediaQuery.of(context).orientation == Orientation.landscape)
+          ? topNavBar(context)
+          : topNavBarAndroid(context),
       backgroundColor: Colors.transparent,
       elevation: 0,
     );
   }
 
   Widget bottomNav(BuildContext context) {
-    return kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape) ? bottomNavBarDesktop(context) : bottomNavBarAndroid(context);
+    return kIsWeb &&
+            (MediaQuery.of(context).orientation == Orientation.landscape)
+        ? bottomNavBarDesktop(context)
+        : bottomNavBarAndroid(context);
   }
 
   Widget topNavBar(BuildContext context) {
@@ -390,7 +396,20 @@ class Global extends PropertyChangeNotifier<String> {
         _selectedIndex = index;
         // Need animate function because we are not using _selectedIndex to
         // build mobile UI
-        animateToPage(index);
+        switch (index) {
+          case 0:
+            context.goNamed('scout');
+            break;
+          case 1:
+            context.goNamed('trade');
+            break;
+          case 2:
+            context.goNamed('pool');
+            break;
+          case 3:
+            context.goNamed('farm');
+            break;
+        }
       },
     );
   }
@@ -403,14 +422,5 @@ class Global extends PropertyChangeNotifier<String> {
     } else {
       return Colors.grey;
     }
-  }
-
-  void animateToPage(int index) {
-    // use this to animate to the page
-    _pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.ease,
-    );
   }
 }
