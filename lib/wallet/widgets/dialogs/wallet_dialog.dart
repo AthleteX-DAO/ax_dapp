@@ -143,7 +143,7 @@ class WalletDialog extends StatelessWidget {
                   ],
                 ),
                 Visibility(
-                  visible: !kIsWeb,
+                  visible: kIsWeb,
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 4),
                     width: constraints.maxWidth < 450
@@ -165,7 +165,7 @@ class WalletDialog extends StatelessWidget {
                         );
                       },
                       child: const Text(
-                        'Add/Create wallet',
+                        'Sign in via Email',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
