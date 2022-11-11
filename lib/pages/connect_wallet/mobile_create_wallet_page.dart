@@ -71,7 +71,7 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
             ),
             Container(
               margin: const EdgeInsets.only(top: 30),
-              child: const Text('Your unique 10 word seed phrase'),
+              child: const Text('Please enter your email', style: TextStyle(fontSize: 20)),
             ),
             Container(
               height: _height * .08,
@@ -85,7 +85,7 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
               ),
               child: const Center(
                 child: Text(
-                  ''' Apple Pecker Gator Mountain Daddy Bing Bong Vanilla Ice Cream''',
+                  ''' Enter your email here! ''',
                   style: TextStyle(fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
@@ -100,7 +100,7 @@ class _MobileCreateWalletPageState extends State<MobileCreateWalletPage> {
                   children: [
                     const TextSpan(
                       text:
-                          '''Make sure to copy this seed phrase and store it somewhere safe. you will need it to import your wallet and login to other devices. ''',
+                          '''We will generate a mnemonic seed phrase, along with your account.  This is saved in the local cache, and viewable at any time from the account screen''',
                     ),
                     TextSpan(
                       text: 'There is no recourse if your seed phrase is lost',
