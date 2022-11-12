@@ -8,7 +8,6 @@ import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/global.dart';
 import 'package:ax_dapp/util/util.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -89,16 +88,14 @@ class _AthletePageState extends State<AthletePage> {
                 );
               }
             },
-            child: kIsWeb
-                ? BlocBuilder<AthletePageBloc, AthletePageState>(
+            child: BlocBuilder<AthletePageBloc, AthletePageState>(
                     buildWhen: (previous, current) =>
                         previous.stats != current.stats,
                     builder: (_, state) {
                       final chartStats = state.stats;
                       return BuildWebView(athlete: athlete, chartStats: chartStats);
                     },
-                  )
-                : BuildMobileView(athlete: athlete),
+                  ),
           ),
         ),
       ),
