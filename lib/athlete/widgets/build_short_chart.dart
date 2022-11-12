@@ -15,6 +15,7 @@ class BuildShortChart extends StatelessWidget {
   final List<GraphData> chartStats;
   final TooltipBehavior _shortToolTipBehavior;
   final ZoomPanBehavior _zoomPanBehavior;
+  
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(

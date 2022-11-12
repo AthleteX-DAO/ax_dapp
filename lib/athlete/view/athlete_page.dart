@@ -44,9 +44,6 @@ class _AthletePageState extends State<AthletePage> {
 
   @override
   Widget build(BuildContext context) {
-    //final _mediaquery = MediaQuery.of(context);
-    //_isPortraitMode = _mediaquery.orientation == Orientation.portrait;
-
     if (global.page != 'athlete') {
       context.goNamed(global.page);
     }
@@ -89,13 +86,12 @@ class _AthletePageState extends State<AthletePage> {
               }
             },
             child: BlocBuilder<AthletePageBloc, AthletePageState>(
-                    buildWhen: (previous, current) =>
-                        previous.stats != current.stats,
-                    builder: (_, state) {
-                      final chartStats = state.stats;
-                      return BuildWebView(athlete: athlete, chartStats: chartStats);
-                    },
-                  ),
+              buildWhen: (previous, current) => previous.stats != current.stats,
+              builder: (_, state) {
+                final chartStats = state.stats;
+                return BuildWebView(athlete: athlete, chartStats: chartStats);
+              },
+            ),
           ),
         ),
       ),
