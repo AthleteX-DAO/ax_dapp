@@ -1,4 +1,5 @@
 import 'package:ax_dapp/athlete/bloc/athlete_page_bloc.dart';
+import 'package:ax_dapp/athlete/widgets/widgets.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/widgets/widget_factories/widget_factories.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -74,10 +75,10 @@ class StatsSide extends StatelessWidget {
                               //Check API response data
                               if (snapshot.hasError) {
                                 // can't get symbol
-                                return showSymbol('---');
+                                return const TickerSymbol(symbol: '---');
                               } else if (snapshot.hasData) {
                                 // got the balance
-                                return showSymbol(snapshot.data!);
+                                return TickerSymbol(symbol: snapshot.data!);
                               } else {
                                 // loading
                                 return const Loader(dimension: 10);
@@ -295,16 +296,6 @@ class StatsSide extends StatelessWidget {
           // Stats section
           AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
         ],
-      ),
-    );
-  }
-
-  Widget showSymbol(String symbol) {
-    return Center(
-      child: Text(
-        'Symbol: $symbol',
-        style: textStyle(greyTextColor, 10, isBold: false, isUline: false),
-        textAlign: TextAlign.center,
       ),
     );
   }

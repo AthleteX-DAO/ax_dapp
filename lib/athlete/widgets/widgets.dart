@@ -10,3 +10,4 @@ export 'athlete_sell_approve_button.dart';
 export 'buttons.dart';
 export 'graph_side.dart';
 export 'stats_side.dart';
+export 'ticker_symbol.dart';
