@@ -35,7 +35,6 @@ pubspec.lock
 
 
 # Web related
-lib/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols
@@ -57,3 +56,6 @@ node_modules
 # Local Netlify folder
 .netlify
 pubspec.lock
+
+/linux
+/macos
