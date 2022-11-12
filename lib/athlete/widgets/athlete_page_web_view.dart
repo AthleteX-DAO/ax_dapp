@@ -3,8 +3,8 @@ import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:flutter/cupertino.dart';
 
-class BuildWebView extends StatelessWidget {
-  const BuildWebView({
+class AthletePageWebView extends StatelessWidget {
+  const AthletePageWebView({
     super.key,
     required this.athlete,
     required this.chartStats,

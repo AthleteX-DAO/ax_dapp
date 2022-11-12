@@ -310,13 +310,13 @@ class GraphSide extends StatelessWidget {
                                   return IndexedStack(
                                     index: aptTypeSelection.index - 1,
                                     children: [
-                                      BuildLongChart(
+                                      AthletePageLongGraph(
                                         chartStats: chartStats,
                                         longToolTipBehavior:
                                             _longToolTipBehavior,
                                         zoomPanBehavior: _zoomPanBehavior,
                                       ),
-                                      BuildShortChart(
+                                      AthletePageShortGraph(
                                         chartStats: chartStats,
                                         shortToolTipBehavior:
                                             _shortToolTipBehavior,

@@ -89,7 +89,7 @@ class _AthletePageState extends State<AthletePage> {
               buildWhen: (previous, current) => previous.stats != current.stats,
               builder: (_, state) {
                 final chartStats = state.stats;
-                return BuildWebView(athlete: athlete, chartStats: chartStats);
+                return AthletePageWebView(athlete: athlete, chartStats: chartStats);
               },
             ),
           ),

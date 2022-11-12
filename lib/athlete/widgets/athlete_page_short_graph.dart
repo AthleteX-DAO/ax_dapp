@@ -3,28 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class BuildLongChart extends StatelessWidget {
-  const BuildLongChart({
+class AthletePageShortGraph extends StatelessWidget {
+  const AthletePageShortGraph({
     super.key,
     required this.chartStats,
-    required TooltipBehavior longToolTipBehavior,
+    required TooltipBehavior shortToolTipBehavior,
     required ZoomPanBehavior zoomPanBehavior,
-  })  : _longToolTipBehavior = longToolTipBehavior,
+  })  : _shortToolTipBehavior = shortToolTipBehavior,
         _zoomPanBehavior = zoomPanBehavior;
 
   final List<GraphData> chartStats;
-  final TooltipBehavior _longToolTipBehavior;
+  final TooltipBehavior _shortToolTipBehavior;
   final ZoomPanBehavior _zoomPanBehavior;
-
+  
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
-      tooltipBehavior: _longToolTipBehavior,
-      legend: Legend(isVisible: true),
+      tooltipBehavior: _shortToolTipBehavior,
       zoomPanBehavior: _zoomPanBehavior,
+      legend: Legend(isVisible: true),
       series: [
         FastLineSeries<GraphData, DateTime>(
-          name: 'Book Value',
+          name: 'Price',
           dataSource: chartStats,
           xValueMapper: (
             GraphData data,
@@ -35,7 +35,7 @@ class BuildLongChart extends StatelessWidget {
             GraphData data,
             _,
           ) =>
-              data.price,
+              15000 - data.price,
           dataLabelSettings: const DataLabelSettings(
             textStyle: TextStyle(
               fontSize: 10,
@@ -60,7 +60,7 @@ class BuildLongChart extends StatelessWidget {
             GraphData data,
             _,
           ) =>
-              data.longMarketPrice,
+              data.shortMarketPrice,
           dataLabelSettings: const DataLabelSettings(
             textStyle: TextStyle(
               fontSize: 10,
