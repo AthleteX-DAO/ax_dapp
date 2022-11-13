@@ -1,7 +1,7 @@
 import 'package:ax_dapp/athlete/widgets/widgets.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AthletePageWebView extends StatelessWidget {
   const AthletePageWebView({
@@ -80,30 +80,39 @@ class AthletePageWebView extends StatelessWidget {
       );
     }
     // stacked scroll (portrait mode)
-    _containerHgt = _height * 0.95 - 57;
+    _containerHgt = (_height * 0.90) - AppBar().preferredSize.height;
     _containerWdt = _width * 0.95;
-    return SizedBox(
-      height: _containerHgt,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              width: _containerWdt,
-              child: GraphSide(
-                athlete: athlete,
-                chartStats: chartStats,
-                containerHeight: _containerHgt,
-                containerWidth: _containerWdt,
+    return Container(
+      margin: EdgeInsets.only(top: AppBar().preferredSize.height + 10),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        clipBehavior: Clip.hardEdge,
+        children: [
+          SizedBox(
+            height: _containerHgt,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: _containerWdt,
+                    child: GraphSide(
+                      athlete: athlete,
+                      chartStats: chartStats,
+                      containerHeight: _containerHgt,
+                      containerWidth: _containerWdt,
+                    ),
+                  ),
+                  SizedBox(
+                    width: _containerWdt,
+                    child: StatsSide(
+                      athlete: athlete,
+                    ),
+                  )
+                ],
               ),
             ),
-            SizedBox(
-              width: _containerWdt,
-              child: StatsSide(
-                athlete: athlete,
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
