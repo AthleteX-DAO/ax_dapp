@@ -103,8 +103,8 @@ class _MobileScoutState extends State<MobileScout> {
                   // APT Title & Sport Filter
                   Container(
                     margin: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
+                      left: 15,
+                      right: 15,
                       bottom: 10,
                     ),
                     width: _width * 1,
@@ -397,7 +397,7 @@ class _MobileScoutState extends State<MobileScout> {
                                   children: [
                                     // Search Bar
                                     Container(
-                                      width: _width * 0.66,
+                                      width: _width - 110,
                                       height: 160,
                                       decoration: boxDecoration(
                                         const Color.fromRGBO(
@@ -474,7 +474,6 @@ class _MobileScoutState extends State<MobileScout> {
                                         ],
                                       ),
                                     ),
-                                    const Spacer(),
                                   ],
                                 ),
                               ),
