@@ -99,8 +99,11 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 if (state.status == BlocStatus.unsupportedChain) {
                   widget = UnsupportedChain(chain: state.chain);
                 }
-                final Widget toggle =
-                    toggleFarmButton(bloc, layoutWdt, layoutHgt);
+                final Widget toggle = ToggleFarmButton(
+                  layoutWidth: layoutWdt,
+                  layoutHeight: layoutHgt,
+                  myController: myController,
+                );
                 return Wrap(
                   runSpacing: layoutHgt * 0.02,
                   clipBehavior: Clip.hardEdge,
@@ -114,8 +117,18 @@ class _DesktopFarmState extends State<DesktopFarm> {
                           child: Text(
                             isAllFarms ? 'Participating Farms' : 'My Farms',
                             style: isWeb
-                                ? textStyle(Colors.white, 24, isBold: true, isUline: false)
-                                : textStyle(Colors.white, 20, isBold: true, isUline: false),
+                                ? textStyle(
+                                    Colors.white,
+                                    24,
+                                    isBold: true,
+                                    isUline: false,
+                                  )
+                                : textStyle(
+                                    Colors.white,
+                                    20,
+                                    isBold: true,
+                                    isUline: false,
+                                  ),
                           ),
                         ),
                         if (!isWeb) createSearchBar(bloc, layoutWdt, layoutHgt),
@@ -221,86 +234,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
     );
   }
 
-  Container toggleFarmButton(
-    FarmBloc bloc,
-    double layoutWdt,
-    double layoutHgt,
-  ) {
-    return Container(
-      width: isWeb ? 200 : layoutWdt,
-      height: 40,
-      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Container(
-            width: isWeb ? 90 : (layoutWdt / 2) - 5,
-            decoration: isAllFarms
-                ? boxDecoration(Colors.grey[600]!, 100, 0, Colors.transparent)
-                : boxDecoration(
-                    Colors.transparent,
-                    100,
-                    0,
-                    Colors.transparent,
-                  ),
-            child: TextButton(
-              onPressed: () {
-                if (!isAllFarms) {
-                  myController.clear();
-                  setState(() {
-                    isAllFarms = true;
-                    bloc.add(OnChangeFarmTab(isAllFarms: true));
-                  });
-                }
-              },
-              child: Text(
-                'All Farms',
-                style: textStyle(Colors.white, 16, isBold: true, isUline: false),
-              ),
-            ),
-          ),
-          Container(
-            width: isWeb ? 90 : (layoutWdt / 2) - 5,
-            decoration: isAllFarms
-                ? boxDecoration(
-                    Colors.transparent,
-                    100,
-                    0,
-                    Colors.transparent,
-                  )
-                : boxDecoration(
-                    Colors.grey[600]!,
-                    100,
-                    0,
-                    Colors.transparent,
-                  ),
-            child: TextButton(
-              onPressed: () {
-                final isWalletConnected =
-                    context.read<WalletBloc>().state.isWalletConnected;
-                if (isWalletConnected) {
-                  if (isAllFarms) {
-                    myController.clear();
-                    setState(() {
-                      isAllFarms = false;
-                      bloc.add(OnChangeFarmTab(isAllFarms: false));
-                    });
-                  }
-                } else {
-                  context.showWalletWarningToast();
-                }
-              },
-              child: Text(
-                'My Farms',
-                style: textStyle(Colors.white, 16, isBold: true, isUline: false),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
   Widget createSearchBar(FarmBloc bloc, double layoutWdt, double layoutHgt) {
     final isWebMobile = kIsWeb &&
         (defaultTargetPlatform == TargetPlatform.iOS ||
@@ -322,6 +255,109 @@ class _DesktopFarmState extends State<DesktopFarm> {
         bloc: bloc,
       );
     }
+  }
+}
+
+class ToggleFarmButton extends StatelessWidget {
+  const ToggleFarmButton({
+    super.key,
+    required this.layoutWidth,
+    required this.layoutHeight,
+    required TextEditingController myController,
+  }) : _farmTextController = myController;
+
+  final double layoutWidth;
+  final double layoutHeight;
+  final TextEditingController _farmTextController;
+
+  @override
+  Widget build(BuildContext context) {
+    final isAllFarmsSelection =
+        context.select((FarmBloc bloc) => bloc.state.isAllFarms);
+    final isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    return Container(
+      width: isWeb ? 200 : layoutWidth,
+      height: 40,
+      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[400]!),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+            width: isWeb ? 90 : (layoutWidth / 2) - 5,
+            decoration: isAllFarmsSelection
+                ? boxDecoration(
+                    Colors.grey[600]!,
+                    100,
+                    0,
+                    Colors.transparent,
+                  )
+                : boxDecoration(
+                    Colors.transparent,
+                    100,
+                    0,
+                    Colors.transparent,
+                  ),
+            child: TextButton(
+              onPressed: () {
+                if (!isAllFarmsSelection) {
+                  _farmTextController.clear();
+                  context
+                      .read<FarmBloc>()
+                      .add(OnChangeFarmTab(isAllFarms: true));
+                }
+              },
+              child: Text(
+                'All Farms',
+                style: textStyle(
+                  Colors.white,
+                  16,
+                  isBold: true,
+                  isUline: false,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: isWeb ? 90 : (layoutWidth / 2) - 5,
+            decoration: isAllFarmsSelection
+                ? boxDecoration(
+                    Colors.transparent,
+                    100,
+                    0,
+                    Colors.transparent,
+                  )
+                : boxDecoration(
+                    Colors.grey[600]!,
+                    100,
+                    0,
+                    Colors.transparent,
+                  ),
+            child: TextButton(
+              onPressed: () {
+                final isWalletConnected =
+                    context.read<WalletBloc>().state.isWalletConnected;
+                if (isWalletConnected) {
+                  if (isAllFarmsSelection) {
+                    _farmTextController.clear();
+                    context
+                        .read<FarmBloc>()
+                        .add(OnChangeFarmTab(isAllFarms: false));
+                  }
+                } else {
+                  context.showWalletWarningToast();
+                }
+              },
+              child: Text(
+                'My Farms',
+                style:
+                    textStyle(Colors.white, 16, isBold: true, isUline: false),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
