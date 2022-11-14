@@ -30,8 +30,6 @@ class FarmItem extends StatelessWidget {
 
     final txStyle =
         textStyle(Colors.grey[600]!, 20, isBold: false, isUline: false);
-    Widget farmTitleWidget;
-    farmTitleWidget = SingleLogoFarmTitle(farm: farm, cardWidth: cardWidth);
 
     return Container(
       height: cardHeight,
@@ -53,8 +51,10 @@ class FarmItem extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              farmTitleWidget,
-              // Current Balance
+              SingleLogoFarmTitle(
+                farm: farm,
+                cardWidth: cardWidth,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
