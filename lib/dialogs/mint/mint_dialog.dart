@@ -1,10 +1,10 @@
 import 'package:ax_dapp/athlete/athlete.dart';
 import 'package:ax_dapp/dialogs/mint/bloc/mint_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/mint/widgets/widgets.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:ax_dapp/util/helper.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
@@ -33,146 +33,6 @@ class _MintDialogState extends State<MintDialog> {
   double input = 0;
   final TextEditingController _aptAmountController = TextEditingController();
   LSPController lspController = Get.find();
-
-  Widget showBalance(double balance) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            'AX Balance: ${toDecimal(balance, 6)}',
-            style: textStyle(
-              Colors.grey[600]!,
-              15,
-              isBold: false,
-              isUline: false,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showYouReceive(double shortReceive, double longReceive) {
-    return Flexible(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Text(
-                'You Receive: ',
-                style: textStyle(
-                  Colors.white,
-                  15,
-                  isBold: false,
-                  isUline: false,
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: hgt * 0.2,
-                    child: Text(
-                      longReceive.toStringAsFixed(6),
-                      style: textStyle(
-                        Colors.white,
-                        15,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                      maxLines: 1,
-                    ),
-                  ),
-                  SizedBox(
-                    child: Text(
-                      'Long APTs',
-                      style: textStyle(
-                        Colors.white,
-                        15,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                      maxLines: 1,
-                    ),
-                  ),
-                  SizedBox(
-                    child: Text(
-                      ' + ',
-                      style: textStyle(
-                        Colors.white,
-                        15,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: hgt * 0.2,
-                    child: Text(
-                      shortReceive.toStringAsFixed(6),
-                      style: textStyle(
-                        Colors.white,
-                        15,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                      maxLines: 1,
-                    ),
-                  ),
-                  SizedBox(
-                    child: Text(
-                      'Short APTs',
-                      style: textStyle(
-                        Colors.white,
-                        15,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                      maxLines: 1,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showYouSpend(double spendAmount) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'You Spend:',
-            style: textStyle(
-              Colors.white,
-              15,
-              isBold: false,
-              isUline: false,
-            ),
-          ),
-          Text(
-            '$spendAmount AX',
-            style: textStyle(
-              Colors.white,
-              15,
-              isBold: false,
-              isUline: false,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -423,7 +283,7 @@ class _MintDialogState extends State<MintDialog> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              showBalance(balance),
+                              Balance(balance: balance),
                             ],
                           ),
                         ],
@@ -443,9 +303,9 @@ class _MintDialogState extends State<MintDialog> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      showYouSpend(spendAmount),
+                      YouSpend(spendAmount: spendAmount),
                       Container(height: 10),
-                      showYouReceive(longReceive, shortReceive),
+                      YouReceive(longReceive: longReceive, shortReceive: shortReceive),
                     ],
                   ),
                 ),
