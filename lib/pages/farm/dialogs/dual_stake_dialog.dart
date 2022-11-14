@@ -106,7 +106,7 @@ class DualStakeDialog extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(width: 10),
+                      const SizedBox(width: 10),
                       Container(
                         width: 35,
                         height: 35,
