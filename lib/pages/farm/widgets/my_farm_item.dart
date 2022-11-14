@@ -35,8 +35,6 @@ class MyFarmItem extends StatelessWidget {
 
     final customTextStyle =
         textStyle(Colors.grey[600]!, 14, isBold: false, isUline: false);
-    final farmTitleWidget =
-        SingleLogoFarmTitle(farm: farm, cardWidth: cardWidth);
     final rewardSymbol = farm.strRewardSymbol;
 
     return Container(
@@ -56,7 +54,7 @@ class MyFarmItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           // Farm Title
-          farmTitleWidget,
+          SingleLogoFarmTitle(farm: farm, cardWidth: cardWidth),
           // Current Balance
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
