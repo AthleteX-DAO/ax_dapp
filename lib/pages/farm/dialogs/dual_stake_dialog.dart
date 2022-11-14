@@ -117,7 +117,7 @@ class DualStakeDialog extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(width: 15),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Text(
                           'AX',
@@ -202,7 +202,7 @@ class DualStakeDialog extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(width: 10),
+                      const SizedBox(width: 10),
                       Container(
                         width: 35,
                         height: 35,
@@ -214,7 +214,7 @@ class DualStakeDialog extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(width: 15),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Text(
                           '$athlete APT',

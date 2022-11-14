@@ -45,7 +45,7 @@ class SingleLogoFarmTitle extends StatelessWidget {
                     symbol: '${farm.athlete!} Farm',
                   ),
           ),
-          Container(width: 10),
+          const SizedBox(width: 10),
           Container(
             width: 110,
             height: 35,

@@ -120,8 +120,7 @@ class _StakeDialogState extends State<StakeDialog> {
                           ),
                         ),
                       ),
-                      //Empty space between icon image and ticker
-                      Container(width: 15),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Text(
                           '''${selectedFarm.strStakedAlias.value.isNotEmpty ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}''',

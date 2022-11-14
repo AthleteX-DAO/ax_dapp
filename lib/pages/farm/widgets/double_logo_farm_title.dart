@@ -46,7 +46,7 @@ class DoubleLogoFarmTitle extends StatelessWidget {
               ),
             ),
           ),
-          Container(width: 5),
+          const SizedBox(width: 5),
           Expanded(
             child: Text(
               '${farm.athlete!} Farm',

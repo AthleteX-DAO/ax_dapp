@@ -118,7 +118,7 @@ class _UnstakeDialogState extends State<UnstakeDialog> {
                           shape: BoxShape.circle,
                         ),
                       ),
-                      Container(width: 15),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Text(
                           '''${selectedFarm.strStakedAlias.value.isNotEmpty ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}''',
