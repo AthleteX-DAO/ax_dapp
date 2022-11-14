@@ -113,7 +113,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                       right: 20,
                       bottom: 10,
                     ),
-                    width: _width * 1,
                     height: 40,
                     child: Row(
                       children: [
@@ -360,7 +359,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         Container(width: 10),
                         // Search Bar
                         Container(
-                          width: _width * 0.26,
+                          width: (_width > 800) ? _width * 0.26 : _width - 590,
                           height: 160,
                           decoration: boxDecoration(
                             const Color.fromRGBO(118, 118, 128, 0.24),

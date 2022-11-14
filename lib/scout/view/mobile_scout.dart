@@ -501,108 +501,97 @@ class _MobileScoutState extends State<MobileScout> {
                   ),
                   // List Headers
                   // BuildListViewHeader
-                  Row(
-                    children: <Widget>[
-                      Container(width: 66),
-                      SizedBox(
-                        width: (_width < 685) ? 107 : _width * 0.15,
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Athlete',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ),
-                      if (_width >= 684)
+                  Container(
+                    margin: const EdgeInsets.only(left: 66),
+                    child: Row(
+                      children: <Widget>[
                         SizedBox(
-                          width: _width * 0.15,
-                          child: Text(
-                            'Team',
-                            style: textStyle(
-                              Colors.grey[400]!,
-                              12,
-                              isBold: false,
-                              isUline: false,
+                          width: (_width < 685) ? 107 : _width * 0.15,
+                          child: const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Athlete',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
                             ),
                           ),
                         ),
-                      IndexedStack(
-                        index: _marketVsBookPriceIndex,
-                        children: [
-                          MaterialButton(
-                            onPressed: () {
-                              setState(
-                                () {
-                                  _marketVsBookPriceIndex = 1;
-                                },
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Align(
-                                  child: Text(
-                                    'Market Price',
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 10,
-                                    ),
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(left: 2),
-                                  child: const Align(
-                                    child: Icon(
-                                      Icons.autorenew,
-                                      size: 10,
-                                      color: Colors.grey,
+                        IndexedStack(
+                          index: _marketVsBookPriceIndex,
+                          children: [
+                            MaterialButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    _marketVsBookPriceIndex = 1;
+                                  },
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Align(
+                                    child: Text(
+                                      'Market Price',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 10,
+                                      ),
+                                      textAlign: TextAlign.justify,
                                     ),
                                   ),
-                                )
-                              ],
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 2),
+                                    child: const Align(
+                                      child: Icon(
+                                        Icons.autorenew,
+                                        size: 10,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              setState(
-                                () {
-                                  _marketVsBookPriceIndex = 0;
-                                },
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Book Value',
-                                  style: textStyle(
-                                    Colors.grey[400]!,
-                                    10,
-                                    isBold: false,
-                                    isUline: false,
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(left: 2),
-                                  child: const Align(
-                                    child: Icon(
-                                      Icons.autorenew,
-                                      size: 10,
-                                      color: Colors.grey,
+                            MaterialButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    _marketVsBookPriceIndex = 0;
+                                  },
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Book Value',
+                                    style: textStyle(
+                                      Colors.grey[400]!,
+                                      10,
+                                      isBold: false,
+                                      isUline: false,
                                     ),
                                   ),
-                                )
-                              ],
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 2),
+                                    child: const Align(
+                                      child: Icon(
+                                        Icons.autorenew,
+                                        size: 10,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   //BuildScoutView
                   Stack(
@@ -781,7 +770,7 @@ class _MobileScoutState extends State<MobileScout> {
                                     ),
                                     Row(
                                       children: <Widget>[
-                                        if (_width > 405) ...[
+                                        if (_width > 435) ...[
                                           // Buy
                                           Container(
                                             width: _width * 0.20,
