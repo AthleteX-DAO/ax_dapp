@@ -73,10 +73,8 @@ class DoubleLogoFarmTitle extends StatelessWidget {
                 builder: (BuildContext builderContext) {
                   if (farm.athlete == null) {
                     return StakeDialog(
-                      context: builderContext,
                       farm: farm,
                       layoutWdt: _cardWidth,
-                      isWeb: isWeb,
                     );
                   } else {
                     return DualStakeDialog(
