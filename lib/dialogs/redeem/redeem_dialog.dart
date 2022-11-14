@@ -1,4 +1,5 @@
 import 'package:ax_dapp/dialogs/redeem/bloc/redeem_dialog_bloc.dart';
+import 'package:ax_dapp/dialogs/redeem/widgets/widgets.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
@@ -43,80 +44,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
   double newAmount = 0;
   final TextEditingController _longInputController = TextEditingController();
   final TextEditingController _shortInputController = TextEditingController();
-
-  Widget showLongBalance(double longBalance) {
-    final balance = toDecimal(longBalance, 6);
-    return Container(
-      margin: const EdgeInsets.only(right: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            'Balance: $balance',
-            style: textStyle(
-              Colors.grey[600]!,
-              15,
-              isBold: false,
-              isUline: false,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showShortBalance(double shortBalance) {
-    final balance = toDecimal(shortBalance, 6);
-    return Container(
-      margin: const EdgeInsets.only(right: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            'Balance: $balance',
-            style: textStyle(
-              Colors.grey[600]!,
-              15,
-              isBold: false,
-              isUline: false,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget showYouReceive(double receiveAmount) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'You Receive: ',
-            style: textStyle(
-              Colors.white,
-              15,
-              isBold: false,
-              isUline: false,
-            ),
-          ),
-          Row(
-            children: [
-              Text(
-                '''$receiveAmount AX''',
-                style: textStyle(
-                  Colors.white,
-                  15,
-                  isBold: false,
-                  isUline: false,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -386,7 +313,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                               ),
                             ],
                           ),
-                          showLongBalance(longBalance)
+                          LongBalance(longBalance: longBalance),
                         ],
                       ),
                     ),
@@ -484,7 +411,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                               ),
                             ],
                           ),
-                          showShortBalance(shortBalance)
+                          ShortBalance(shortBalance: shortBalance),
                         ],
                       ),
                     ),
@@ -494,7 +421,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                   thickness: 0.35,
                   color: Colors.grey[400],
                 ),
-                showYouReceive(receiveAmount),
+                ReceiveAmount(receiveAmount: receiveAmount),
                 SizedBox(
                   width: wid,
                   child: Row(
