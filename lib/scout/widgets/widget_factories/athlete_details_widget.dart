@@ -28,7 +28,7 @@ abstract class AthleteDetailsWidget {
   );
 
   Widget athleteDetailsCardsForMobile(
-    bool team,
+    bool showIcon,
     double _width,
     double athNameBx,
   );
@@ -61,7 +61,7 @@ class NoStatsShownWidget implements AthleteDetailsWidget {
 
   @override
   Widget athleteDetailsCardsForMobile(
-    bool team,
+    bool showIcon,
     double _width,
     double athNameBx,
   ) {

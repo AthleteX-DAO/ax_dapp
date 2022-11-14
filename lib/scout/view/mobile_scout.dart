@@ -501,99 +501,97 @@ class _MobileScoutState extends State<MobileScout> {
                   ),
                   // List Headers
                   // BuildListViewHeader
-                  Container(
-                    margin: const EdgeInsets.only(left: 66),
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: (_width < 685) ? 107 : _width * 0.15,
-                          child: const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Athlete',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                              ),
-                            ),
+                  Row(
+                    children: <Widget>[
+                      SizedBox(width: (_width > 290) ? 66 : 10),
+                      const SizedBox(
+                        width: 107,
+                        child: Text(
+                          'Athlete',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
                           ),
                         ),
-                        IndexedStack(
-                          index: _marketVsBookPriceIndex,
-                          children: [
-                            MaterialButton(
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    _marketVsBookPriceIndex = 1;
-                                  },
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Align(
-                                    child: Text(
-                                      'Market Price',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 10,
-                                      ),
-                                      textAlign: TextAlign.justify,
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      IndexedStack(
+                        index: _marketVsBookPriceIndex,
+                        children: [
+                          MaterialButton(
+                            onPressed: () {
+                              setState(
+                                () {
+                                  _marketVsBookPriceIndex = 1;
+                                },
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Align(
+                                  child: Text(
+                                    'Market Price',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 10,
+                                    ),
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(left: 2),
+                                  child: const Align(
+                                    child: Icon(
+                                      Icons.autorenew,
+                                      size: 10,
+                                      color: Colors.grey,
                                     ),
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 2),
-                                    child: const Align(
-                                      child: Icon(
-                                        Icons.autorenew,
-                                        size: 10,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                            MaterialButton(
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    _marketVsBookPriceIndex = 0;
-                                  },
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Book Value',
-                                    style: textStyle(
-                                      Colors.grey[400]!,
-                                      10,
-                                      isBold: false,
-                                      isUline: false,
+                          ),
+                          MaterialButton(
+                            onPressed: () {
+                              setState(
+                                () {
+                                  _marketVsBookPriceIndex = 0;
+                                },
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Book Value',
+                                  style: textStyle(
+                                    Colors.grey[400]!,
+                                    10,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(left: 2),
+                                  child: const Align(
+                                    child: Icon(
+                                      Icons.autorenew,
+                                      size: 10,
+                                      color: Colors.grey,
                                     ),
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 2),
-                                    child: const Align(
-                                      child: Icon(
-                                        Icons.autorenew,
-                                        size: 10,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  //BuildScoutView
+                  //BuildScoutView body
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -632,74 +630,103 @@ class _MobileScoutState extends State<MobileScout> {
                                     },
                                   );
                                 },
+                                // contents of each list item
+                                // name, market/book, buy
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
+                                    // name, market/book
                                     Row(
                                       children: [
+                                        //name
                                         AthleteDetailsWidget(
                                           filteredAthletes[index],
                                         ).athleteDetailsCardsForMobile(
-                                          _width >= 689,
+                                          _width > 290,
                                           _width,
-                                          _width >= 685 ? _width * 0.15 : 107,
+                                          107,
                                         ),
+                                        if (_width > 315)
+                                          const SizedBox(width: 20),
                                         // Market Price / Change
                                         IndexedStack(
                                           index: _marketVsBookPriceIndex,
                                           children: [
-                                            Row(
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
+                                                Row(
+                                                  children: [
+                                                    // price
+                                                    Text(
+                                                      isLongToken
+                                                          ? '${filteredAthletes[index].longTokenPrice!.toStringAsFixed(4)} AX'
+                                                          : '${filteredAthletes[index].shortTokenPrice!.toStringAsFixed(4)} AX',
+                                                      style: textStyle(
+                                                        Colors.white,
+                                                        16,
+                                                        isBold: false,
+                                                        isUline: false,
+                                                      ),
+                                                    ),
+                                                    if (_width > 355) ...[
+                                                      Container(width: 10),
+                                                      // change
+                                                      Text(
+                                                        isLongToken
+                                                            ? getPercentageDesc(
+                                                                filteredAthletes[
+                                                                        index]
+                                                                    .longTokenPercentage!,
+                                                              )
+                                                            : getPercentageDesc(
+                                                                filteredAthletes[
+                                                                        index]
+                                                                    .shortTokenPercentage!,
+                                                              ),
+                                                        style: isLongToken
+                                                            ? textStyle(
+                                                                getPercentageColor(
+                                                                  filteredAthletes[
+                                                                          index]
+                                                                      .longTokenPercentage!,
+                                                                ),
+                                                                12,
+                                                                isBold: false,
+                                                                isUline: false,
+                                                              )
+                                                            : textStyle(
+                                                                getPercentageColor(
+                                                                  filteredAthletes[
+                                                                          index]
+                                                                      .shortTokenPercentage!,
+                                                                ),
+                                                                12,
+                                                                isBold: false,
+                                                                isUline: false,
+                                                              ),
+                                                      ),
+                                                    ]
+                                                  ],
+                                                ),
                                                 Text(
                                                   isLongToken
                                                       ? '${filteredAthletes[index].longTokenPrice!.toStringAsFixed(4)} AX'
                                                       : '${filteredAthletes[index].shortTokenPrice!.toStringAsFixed(4)} AX',
                                                   style: textStyle(
-                                                    Colors.white,
-                                                    16,
+                                                    Colors.amberAccent,
+                                                    14,
                                                     isBold: false,
                                                     isUline: false,
                                                   ),
                                                 ),
-                                                Container(width: 10),
-                                                Text(
-                                                  isLongToken
-                                                      ? getPercentageDesc(
-                                                          filteredAthletes[
-                                                                  index]
-                                                              .longTokenPercentage!,
-                                                        )
-                                                      : getPercentageDesc(
-                                                          filteredAthletes[
-                                                                  index]
-                                                              .shortTokenPercentage!,
-                                                        ),
-                                                  style: isLongToken
-                                                      ? textStyle(
-                                                          getPercentageColor(
-                                                            filteredAthletes[
-                                                                    index]
-                                                                .longTokenPercentage!,
-                                                          ),
-                                                          12,
-                                                          isBold: false,
-                                                          isUline: false,
-                                                        )
-                                                      : textStyle(
-                                                          getPercentageColor(
-                                                            filteredAthletes[
-                                                                    index]
-                                                                .shortTokenPercentage!,
-                                                          ),
-                                                          12,
-                                                          isBold: false,
-                                                          isUline: false,
-                                                        ),
-                                                ),
                                               ],
                                             ),
                                             Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Row(
                                                   children: <Widget>[
@@ -714,41 +741,43 @@ class _MobileScoutState extends State<MobileScout> {
                                                         isUline: false,
                                                       ),
                                                     ),
-                                                    Container(width: 10),
-                                                    Text(
-                                                      isLongToken
-                                                          ? getPercentageDesc(
-                                                              filteredAthletes[
-                                                                      index]
-                                                                  .longTokenBookPricePercent!,
-                                                            )
-                                                          : getPercentageDesc(
-                                                              filteredAthletes[
-                                                                      index]
-                                                                  .shortTokenBookPricePercent!,
-                                                            ),
-                                                      style: isLongToken
-                                                          ? textStyle(
-                                                              getPercentageColor(
+                                                    if (_width > 355) ...[
+                                                      Container(width: 10),
+                                                      Text(
+                                                        isLongToken
+                                                            ? getPercentageDesc(
                                                                 filteredAthletes[
                                                                         index]
                                                                     .longTokenBookPricePercent!,
-                                                              ),
-                                                              12,
-                                                              isBold: false,
-                                                              isUline: false,
-                                                            )
-                                                          : textStyle(
-                                                              getPercentageColor(
+                                                              )
+                                                            : getPercentageDesc(
                                                                 filteredAthletes[
                                                                         index]
                                                                     .shortTokenBookPricePercent!,
                                                               ),
-                                                              12,
-                                                              isBold: false,
-                                                              isUline: false,
-                                                            ),
-                                                    ),
+                                                        style: isLongToken
+                                                            ? textStyle(
+                                                                getPercentageColor(
+                                                                  filteredAthletes[
+                                                                          index]
+                                                                      .longTokenBookPricePercent!,
+                                                                ),
+                                                                12,
+                                                                isBold: false,
+                                                                isUline: false,
+                                                              )
+                                                            : textStyle(
+                                                                getPercentageColor(
+                                                                  filteredAthletes[
+                                                                          index]
+                                                                      .shortTokenBookPricePercent!,
+                                                                ),
+                                                                12,
+                                                                isBold: false,
+                                                                isUline: false,
+                                                              ),
+                                                      ),
+                                                    ]
                                                   ],
                                                 ),
                                                 Text(
@@ -768,10 +797,10 @@ class _MobileScoutState extends State<MobileScout> {
                                         ),
                                       ],
                                     ),
-                                    Row(
-                                      children: <Widget>[
-                                        if (_width > 435) ...[
-                                          // Buy
+                                    // Buy button
+                                    if (_width > 435)
+                                      Row(
+                                        children: <Widget>[
                                           Container(
                                             width: _width * 0.20,
                                             height: 36,
@@ -828,8 +857,7 @@ class _MobileScoutState extends State<MobileScout> {
                                             ),
                                           )
                                         ],
-                                      ],
-                                    )
+                                      )
                                   ],
                                 ),
                               ),

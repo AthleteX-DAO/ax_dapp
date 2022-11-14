@@ -426,7 +426,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
 
   @override
   Widget athleteDetailsCardsForMobile(
-    bool team,
+    bool showIcon,
     double _width,
     double athNameBx,
   ) {
@@ -434,13 +434,14 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Icon
-        SizedBox(
-          width: 50,
-          child: Icon(
-            Icons.sports_baseball,
-            color: Colors.grey[700],
+        if (showIcon)
+          SizedBox(
+            width: 50,
+            child: Icon(
+              Icons.sports_baseball,
+              color: Colors.grey[700],
+            ),
           ),
-        ),
         // Athlete Name
         SizedBox(
           width: athNameBx,
@@ -469,35 +470,6 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
             ],
           ),
         ),
-        // Team
-        if (team)
-          SizedBox(
-            width: _width * 0.15,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'TeamName',
-                  style: textStyle(
-                    Colors.white,
-                    18,
-                    isBold: false,
-                    isUline: false,
-                  ),
-                ),
-                Text(
-                  'TeamNickName',
-                  style: textStyle(
-                    Colors.grey[700]!,
-                    10,
-                    isBold: false,
-                    isUline: false,
-                  ),
-                )
-              ],
-            ),
-          ),
       ],
     );
   }
