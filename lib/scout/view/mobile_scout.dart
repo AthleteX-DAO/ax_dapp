@@ -218,12 +218,21 @@ class _MobileScoutState extends State<MobileScout> {
                                       onTap: () {
                                         myController.clear();
                                         if (sportState != 1) {
+                                          myController.clear();
                                           setState(
                                             () {
                                               sportState = 1;
                                               allSportsTitle = 'MLB';
+                                              _selectedSport =
+                                                  SupportedSport.MLB;
                                             },
                                           );
+                                          context.read<ScoutPageBloc>().add(
+                                                const SelectedSportChanged(
+                                                  selectedSport:
+                                                      SupportedSport.MLB,
+                                                ),
+                                              );
                                         }
                                       },
                                     ),
@@ -268,12 +277,80 @@ class _MobileScoutState extends State<MobileScout> {
                                       onTap: () {
                                         myController.clear();
                                         if (sportState != 2) {
+                                          myController.clear();
                                           setState(
                                             () {
                                               sportState = 2;
                                               allSportsTitle = 'NFL';
+                                              _selectedSport =
+                                                  SupportedSport.NFL;
                                             },
                                           );
+                                          context.read<ScoutPageBloc>().add(
+                                                const SelectedSportChanged(
+                                                  selectedSport:
+                                                      SupportedSport.NFL,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                    ),
+                                    PopupMenuItem(
+                                      height: 5,
+                                      value: 2,
+                                      child: ListTile(
+                                        title: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                right: 8,
+                                              ),
+                                              child: const Icon(
+                                                Icons.sports_football,
+                                                size: sportFilterIconSz,
+                                              ),
+                                            ),
+                                            Text(
+                                              'NBA',
+                                              style: textSwapState(
+                                                condition: sportState == 3,
+                                                tabNotSelected: textStyle(
+                                                  Colors.white,
+                                                  sportFilterTxSz,
+                                                  isBold: false,
+                                                  isUline: false,
+                                                ),
+                                                tabSelected: textStyle(
+                                                  Colors.amber[400]!,
+                                                  sportFilterTxSz,
+                                                  isBold: false,
+                                                  isUline: true,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        myController.clear();
+                                        if (sportState != 3) {
+                                          myController.clear();
+                                          setState(
+                                            () {
+                                              sportState = 3;
+                                              allSportsTitle = 'NBA';
+                                              _selectedSport =
+                                                  SupportedSport.NBA;
+                                            },
+                                          );
+                                          context.read<ScoutPageBloc>().add(
+                                                const SelectedSportChanged(
+                                                  selectedSport:
+                                                      SupportedSport.NBA,
+                                                ),
+                                              );
                                         }
                                       },
                                     ),
@@ -319,6 +396,7 @@ class _MobileScoutState extends State<MobileScout> {
                                       setState(
                                         () {
                                           longTitle = 'Long';
+                                          isLongToken = true;
                                         },
                                       );
                                     },
@@ -339,6 +417,7 @@ class _MobileScoutState extends State<MobileScout> {
                                       setState(
                                         () {
                                           longTitle = 'Short';
+                                          isLongToken = false;
                                         },
                                       );
                                     },
