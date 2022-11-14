@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/farm/dialogs/dialogs.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/confirm_transaction_dialog.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
@@ -295,7 +295,7 @@ class DualStakeDialog extends StatelessWidget {
                       showDialog<void>(
                         context: context,
                         builder: (BuildContext context) =>
-                            const TransactionConfirmed(),
+                            const ConfirmTransactionDialog(),
                       );
                     },
                     child: Text(
@@ -332,7 +332,7 @@ class DualStakeDialog extends StatelessWidget {
                       showDialog<void>(
                         context: context,
                         builder: (BuildContext context) =>
-                            const TransactionConfirmed(),
+                            const ConfirmTransactionDialog(),
                       );
                     },
                     child: Text(

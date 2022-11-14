@@ -1,5 +1,5 @@
-import 'package:ax_dapp/pages/farm/dialogs/dialogs.dart';
 import 'package:ax_dapp/pages/farm/modules/axl_info.dart';
+import 'package:ax_dapp/service/confirmation_dialogs/custom_confirmation_dialogs.dart';
 import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/failed_dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
@@ -120,7 +120,7 @@ class _StakeApproveButtonState extends State<StakeApproveButton> {
             widget.selectedFarm.stake().then((value) {
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) => const TransactionConfirmed(),
+                builder: (BuildContext context) => const ConfirmTransactionDialog(),
               ).then((value) {
                 if (mounted) {
                   Navigator.pop(context);
