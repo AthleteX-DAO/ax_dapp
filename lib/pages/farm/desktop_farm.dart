@@ -20,13 +20,13 @@ class DesktopFarm extends StatefulWidget {
 
 class _DesktopFarmState extends State<DesktopFarm> {
   Global global = Global();
-  final myController = TextEditingController();
+  final farmTextController = TextEditingController();
   bool isWeb = true;
   bool isAllFarms = true;
 
   @override
   void dispose() {
-    myController.dispose();
+    farmTextController.dispose();
     super.dispose();
   }
 
@@ -40,10 +40,10 @@ class _DesktopFarmState extends State<DesktopFarm> {
         builder: (context, constraints) {
           final _width = constraints.maxWidth;
           final _height = constraints.maxHeight;
-          var layoutHgt = _height * 0.8;
-          final layoutWdt = _width * 0.95;
-          if (_height < 445) layoutHgt = _height;
-          var listHeight = (isWeb && isAllFarms) ? 225.0 : layoutHgt * 0.80;
+          var layoutHeight = _height * 0.8;
+          final layoutWidth = _width * 0.95;
+          if (_height < 445) layoutHeight = _height;
+          var listHeight = (isWeb && isAllFarms) ? 225.0 : layoutHeight * 0.80;
           if (isWeb && !isAllFarms) listHeight = 500.0;
           return Container(
             width: _width,
@@ -53,10 +53,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                 : EdgeInsets.only(top: AppBar().preferredSize.height + 10),
             alignment: Alignment.center,
             child: SizedBox(
-              //outermost dimensions for farm section
-              width: layoutWdt,
-              height: layoutHgt,
-              // child:  FarmLayout(layoutHgt, layoutWdt),
+              width: layoutWidth,
+              height: layoutHeight,
               child: BlocListener<WalletBloc, WalletState>(
                 listener: (context, state) {
                   if (state.isWalletConnected || state.isWalletDisconnected) {
@@ -81,7 +79,6 @@ class _DesktopFarmState extends State<DesktopFarm> {
                     return previous != current;
                   },
                   builder: (context, state) {
-                    final bloc = context.read<FarmBloc>();
                     Widget widget = const Loader();
                     if (state.status == BlocStatus.error) {
                       context.showWarningToast(
@@ -101,12 +98,12 @@ class _DesktopFarmState extends State<DesktopFarm> {
                       widget = UnsupportedChain(chain: state.chain);
                     }
                     final Widget toggle = ToggleFarmButton(
-                      layoutWidth: layoutWdt,
-                      layoutHeight: layoutHgt,
-                      myController: myController,
+                      layoutWidth: layoutWidth,
+                      layoutHeight: layoutHeight,
+                      myController: farmTextController,
                     );
                     return Wrap(
-                      runSpacing: layoutHgt * 0.02,
+                      runSpacing: layoutHeight * 0.02,
                       clipBehavior: Clip.hardEdge,
                       children: [
                         Row(
@@ -133,13 +130,21 @@ class _DesktopFarmState extends State<DesktopFarm> {
                               ),
                             ),
                             if (!isWeb)
-                              createSearchBar(bloc, layoutWdt, layoutHgt),
+                              CreateSearchBar(
+                                layoutWidth: layoutWidth,
+                                layoutHeight: layoutHeight,
+                                farmTextController: farmTextController,
+                              ),
                           ],
                         ),
                         if (isWeb)
                           Row(
                             children: [
-                              createSearchBar(bloc, layoutWdt, layoutHgt),
+                              CreateSearchBar(
+                                layoutWidth: layoutWidth,
+                                layoutHeight: layoutHeight,
+                                farmTextController: farmTextController,
+                              ),
                               const SizedBox(width: 50),
                               toggle
                             ],
@@ -147,8 +152,8 @@ class _DesktopFarmState extends State<DesktopFarm> {
                         if (!isWeb) toggle,
                         SizedBox(
                           //contains list of allfarms cards
-                          width: layoutWdt,
-                          height: layoutHgt - 120,
+                          width: layoutWidth,
+                          height: layoutHeight - 120,
                           child: ScrollConfiguration(
                             behavior: ScrollConfiguration.of(context).copyWith(
                               dragDevices: {
@@ -200,7 +205,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                                         .streamAppDataChanges,
                                                   ),
                                                   listHeight: listHeight,
-                                                  layoutWdt: layoutWdt,
+                                                  layoutWdt: layoutWidth,
                                                 )
                                               : MyFarmItem(
                                                   farm: FarmController(
@@ -221,7 +226,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
                                                         .streamAppDataChanges,
                                                   ),
                                                   listHeight: listHeight,
-                                                  layoutWidth: layoutWdt,
+                                                  layoutWidth: layoutWidth,
                                                 );
                                         },
                                       ),
@@ -238,24 +243,40 @@ class _DesktopFarmState extends State<DesktopFarm> {
       ),
     );
   }
+}
 
-  Widget createSearchBar(FarmBloc bloc, double layoutWdt, double layoutHgt) {
+class CreateSearchBar extends StatelessWidget {
+  const CreateSearchBar({
+    super.key,
+    required this.layoutWidth,
+    required this.layoutHeight,
+    required TextEditingController farmTextController,
+  }) : _farmTextController = farmTextController;
+
+  final double layoutWidth;
+  final double layoutHeight;
+  final TextEditingController _farmTextController;
+
+  @override
+  Widget build(BuildContext context) {
+    final isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final isWebMobile = kIsWeb &&
         (defaultTargetPlatform == TargetPlatform.iOS ||
             defaultTargetPlatform == TargetPlatform.android);
     if (isWebMobile) {
       return MobileSearchBar(
         isWeb: isWeb,
-        myController: myController,
-        layoutHgt: layoutHgt,
-        layoutWdt: layoutWdt,
+        myController: _farmTextController,
+        layoutHgt: layoutHeight,
+        layoutWdt: layoutWidth,
       );
     } else {
       return WebSearchBar(
         isWeb: isWeb,
-        myController: myController,
-        layoutHgt: layoutHgt,
-        layoutWdt: layoutWdt,
+        myController: _farmTextController,
+        layoutHgt: layoutHeight,
+        layoutWdt: layoutWidth,
       );
     }
   }
