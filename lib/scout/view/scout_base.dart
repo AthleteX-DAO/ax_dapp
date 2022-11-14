@@ -2,7 +2,6 @@
 
 import 'package:ax_dapp/scout/view/desktop_scout.dart';
 import 'package:ax_dapp/scout/view/mobile_scout.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 class Scout extends StatefulWidget {

@@ -46,6 +46,8 @@ class _DesktopScoutState extends State<DesktopScout> {
   EthereumChain? _selectedChain;
   String selectedAthlete = '';
   List<AthleteScoutModel> filteredAthletes = [];
+  double minTeamWidth = 870;
+  double minViewWidth = 980;
 
   @override
   void dispose() {
@@ -59,9 +61,6 @@ class _DesktopScoutState extends State<DesktopScout> {
   @override
   void initState() {
     super.initState();
-    setState(
-      () {},
-    );
   }
 
   @override
@@ -423,64 +422,66 @@ class _DesktopScoutState extends State<DesktopScout> {
                   ),
                   // List Headers
                   // BuildListViewHeader
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        Container(width: 66),
-                        SizedBox(
-                          width: (_width < 685) ? 107 : _width * 0.15,
-                          child: const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Athlete (Seasonal APT)',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                              ),
+                  Row(
+                    children: <Widget>[
+                      Container(width: 66),
+                      const SizedBox(
+                        width: 140,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Athlete (Seasonal APT)',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
                             ),
                           ),
                         ),
-                        if (_width >= 684)
-                          SizedBox(
-                            width: _width * 0.12,
-                            child: Text(
-                              'Team',
-                              style: textStyle(
-                                Colors.grey[400]!,
-                                12,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
+                      ),
+                      if (_width >= minTeamWidth)
                         SizedBox(
-                          width: _width * 0.18,
+                          width: 125,
                           child: Text(
-                            'Market Price / Change',
+                            'Team',
                             style: textStyle(
                               Colors.grey[400]!,
-                              10,
+                              12,
                               isBold: false,
                               isUline: false,
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: _width * 0.12,
-                          child: Text(
-                            'Book Value / Change',
-                            style: textStyle(
-                              Colors.grey[400]!,
-                              10,
-                              isBold: false,
-                              isUline: false,
-                            ),
+                      SizedBox(
+                        width: 140,
+                        child: Text(
+                          'Market Price / Change',
+                          style: textStyle(
+                            Colors.grey[400]!,
+                            10,
+                            isBold: false,
+                            isUline: false,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        width: 140,
+                        child: Text(
+                          'Book Value / Change',
+                          style: textStyle(
+                            Colors.grey[400]!,
+                            10,
+                            isBold: false,
+                            isUline: false,
+                          ),
+                        ),
+                      ),
+                      if (_width >= minViewWidth)
+                        SizedBox(width: _width * 0.20 + 125)
+                      else
+                        SizedBox(width: _width * 0.20)
+                    ],
                   ),
-                  //BuildScoutView
+                  //BuildScoutView body
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -527,26 +528,27 @@ class _DesktopScoutState extends State<DesktopScout> {
                                         'athlete',
                                         params: {'id': selectedAthlete},
                                       );
-                                      //athletePage = true;
                                     },
                                   );
                                 },
+                                // name, team, market, book, buy, view
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
+                                    //name, team, market, book
                                     Row(
                                       children: <Widget>[
+                                        // name, team
                                         AthleteDetailsWidget(
                                           filteredAthletes[index],
                                         ).athleteDetailsCardsForWeb(
-                                          _width >= 689,
+                                          _width >= minTeamWidth,
                                           _width,
-                                          _width >= 685 ? _width * 0.15 : 107,
                                         ),
                                         // Market Price / Change
                                         SizedBox(
-                                          width: _width * 0.18,
+                                          width: 140,
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
@@ -622,77 +624,82 @@ class _DesktopScoutState extends State<DesktopScout> {
                                             ],
                                           ),
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: <Widget>[
-                                                Text(
-                                                  isLongToken
-                                                      ? '${filteredAthletes[index].longTokenBookPrice!.toStringAsFixed(4)} AX'
-                                                      : '${filteredAthletes[index].shortTokenBookPrice!.toStringAsFixed(4)}AX',
-                                                  style: textStyle(
-                                                    Colors.white,
-                                                    16,
-                                                    isBold: false,
-                                                    isUline: false,
+                                        // Book Value / Change
+                                        SizedBox(
+                                          width: 140,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: <Widget>[
+                                                  Text(
+                                                    isLongToken
+                                                        ? '${filteredAthletes[index].longTokenBookPrice!.toStringAsFixed(4)} AX'
+                                                        : '${filteredAthletes[index].shortTokenBookPrice!.toStringAsFixed(4)}AX',
+                                                    style: textStyle(
+                                                      Colors.white,
+                                                      16,
+                                                      isBold: false,
+                                                      isUline: false,
+                                                    ),
                                                   ),
-                                                ),
-                                                Container(width: 10),
-                                                Text(
-                                                  isLongToken
-                                                      ? getPercentageDesc(
-                                                          filteredAthletes[
-                                                                  index]
-                                                              .longTokenBookPricePercent!,
-                                                        )
-                                                      : getPercentageDesc(
-                                                          filteredAthletes[
-                                                                  index]
-                                                              .shortTokenBookPricePercent!,
-                                                        ),
-                                                  style: isLongToken
-                                                      ? textStyle(
-                                                          getPercentageColor(
+                                                  Container(width: 10),
+                                                  Text(
+                                                    isLongToken
+                                                        ? getPercentageDesc(
                                                             filteredAthletes[
                                                                     index]
                                                                 .longTokenBookPricePercent!,
-                                                          ),
-                                                          12,
-                                                          isBold: false,
-                                                          isUline: false,
-                                                        )
-                                                      : textStyle(
-                                                          getPercentageColor(
+                                                          )
+                                                        : getPercentageDesc(
                                                             filteredAthletes[
                                                                     index]
                                                                 .shortTokenBookPricePercent!,
                                                           ),
-                                                          12,
-                                                          isBold: false,
-                                                          isUline: false,
-                                                        ),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              isLongToken
-                                                  ? '\$${filteredAthletes[index].longTokenBookPriceUsd!.toStringAsFixed(4)}'
-                                                  : '\$${filteredAthletes[index].shortTokenBookPriceUsd!.toStringAsFixed(4)}',
-                                              style: textStyle(
-                                                Colors.amberAccent,
-                                                14,
-                                                isBold: false,
-                                                isUline: false,
+                                                    style: isLongToken
+                                                        ? textStyle(
+                                                            getPercentageColor(
+                                                              filteredAthletes[
+                                                                      index]
+                                                                  .longTokenBookPricePercent!,
+                                                            ),
+                                                            12,
+                                                            isBold: false,
+                                                            isUline: false,
+                                                          )
+                                                        : textStyle(
+                                                            getPercentageColor(
+                                                              filteredAthletes[
+                                                                      index]
+                                                                  .shortTokenBookPricePercent!,
+                                                            ),
+                                                            12,
+                                                            isBold: false,
+                                                            isUline: false,
+                                                          ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
+                                              Text(
+                                                isLongToken
+                                                    ? '\$${filteredAthletes[index].longTokenBookPriceUsd!.toStringAsFixed(4)}'
+                                                    : '\$${filteredAthletes[index].shortTokenBookPriceUsd!.toStringAsFixed(4)}',
+                                                style: textStyle(
+                                                  Colors.amberAccent,
+                                                  14,
+                                                  isBold: false,
+                                                  isUline: false,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
+                                    // buy, view
                                     Row(
                                       children: [
                                         // Buy
@@ -784,7 +791,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                             child: const BuyText(),
                                           ),
                                         ),
-                                        if (_width >= 910) ...[
+                                        if (_width >= minViewWidth) ...[
                                           Container(width: 25),
                                           // Mint
                                           Container(
@@ -828,7 +835,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                                                         'id': selectedAthlete
                                                       },
                                                     );
-                                                    //athletePage = true;
                                                   },
                                                 );
                                               },

@@ -353,7 +353,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
   }
 
   @override
-  Widget athleteDetailsCardsForWeb(bool team, double _width, double athNameBx) {
+  Widget athleteDetailsCardsForWeb(bool team, double _width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -366,7 +366,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
           ),
         ),
         SizedBox(
-          width: athNameBx,
+          width: 140,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -394,7 +394,7 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
         ),
         if (team)
           SizedBox(
-            width: _width * 0.12,
+            width: 125,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -25,7 +25,6 @@ abstract class AthleteDetailsWidget {
   Widget athleteDetailsCardsForWeb(
     bool team,
     double _width,
-    double athNameBx,
   );
 
   Widget athleteDetailsCardsForMobile(
@@ -54,7 +53,6 @@ class NoStatsShownWidget implements AthleteDetailsWidget {
   Widget athleteDetailsCardsForWeb(
     bool team,
     double? _width,
-    double? athNameBx,
   ) {
     return const Center(
       child: Text('No data shown for Athlete Card'),

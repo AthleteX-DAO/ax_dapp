@@ -355,9 +355,8 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
 
   @override
   Widget athleteDetailsCardsForWeb(
-    dynamic team,
+    bool team,
     double _width,
-    double athNameBx,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -371,7 +370,7 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
           ),
         ),
         SizedBox(
-          width: athNameBx,
+          width: 140,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -397,33 +396,34 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
             ],
           ),
         ),
-        SizedBox(
-          width: _width * 0.12,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                retrieveTeamCityName(athlete.team),
-                style: textStyle(
-                  Colors.white,
-                  18,
-                  isBold: false,
-                  isUline: false,
+        if (team)
+          SizedBox(
+            width: 125,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  retrieveTeamCityName(athlete.team),
+                  style: textStyle(
+                    Colors.white,
+                    18,
+                    isBold: false,
+                    isUline: false,
+                  ),
                 ),
-              ),
-              Text(
-                retrieveTeamNickname(athlete.team),
-                style: textStyle(
-                  Colors.grey[700]!,
-                  10,
-                  isBold: false,
-                  isUline: false,
-                ),
-              )
-            ],
+                Text(
+                  retrieveTeamNickname(athlete.team),
+                  style: textStyle(
+                    Colors.grey[700]!,
+                    10,
+                    isBold: false,
+                    isUline: false,
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
       ],
     );
   }

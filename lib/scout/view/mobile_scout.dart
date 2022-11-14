@@ -54,9 +54,6 @@ class _MobileScoutState extends State<MobileScout> {
   @override
   void initState() {
     super.initState();
-    setState(
-      () {},
-    );
   }
 
   @override
@@ -505,110 +502,108 @@ class _MobileScoutState extends State<MobileScout> {
                   ),
                   // List Headers
                   // BuildListViewHeader
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        Container(width: 66),
+                  Row(
+                    children: <Widget>[
+                      Container(width: 66),
+                      SizedBox(
+                        width: (_width < 685) ? 107 : _width * 0.15,
+                        child: const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Athlete',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (_width >= 684)
                         SizedBox(
-                          width: (_width < 685) ? 107 : _width * 0.15,
-                          child: const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Athlete',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                              ),
+                          width: _width * 0.15,
+                          child: Text(
+                            'Team',
+                            style: textStyle(
+                              Colors.grey[400]!,
+                              12,
+                              isBold: false,
+                              isUline: false,
                             ),
                           ),
                         ),
-                        if (_width >= 684)
-                          SizedBox(
-                            width: _width * 0.15,
-                            child: Text(
-                              'Team',
-                              style: textStyle(
-                                Colors.grey[400]!,
-                                12,
-                                isBold: false,
-                                isUline: false,
-                              ),
+                      IndexedStack(
+                        index: _marketVsBookPriceIndex,
+                        children: [
+                          MaterialButton(
+                            onPressed: () {
+                              setState(
+                                () {
+                                  _marketVsBookPriceIndex = 1;
+                                },
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Align(
+                                  child: Text(
+                                    'Market Price',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 10,
+                                    ),
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(left: 2),
+                                  child: const Align(
+                                    child: Icon(
+                                      Icons.autorenew,
+                                      size: 10,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                        IndexedStack(
-                          index: _marketVsBookPriceIndex,
-                          children: [
-                            MaterialButton(
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    _marketVsBookPriceIndex = 1;
-                                  },
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Align(
-                                    child: Text(
-                                      'Market Price',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 10,
-                                      ),
-                                      textAlign: TextAlign.justify,
+                          MaterialButton(
+                            onPressed: () {
+                              setState(
+                                () {
+                                  _marketVsBookPriceIndex = 0;
+                                },
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Book Value',
+                                  style: textStyle(
+                                    Colors.grey[400]!,
+                                    10,
+                                    isBold: false,
+                                    isUline: false,
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(left: 2),
+                                  child: const Align(
+                                    child: Icon(
+                                      Icons.autorenew,
+                                      size: 10,
+                                      color: Colors.grey,
                                     ),
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 2),
-                                    child: const Align(
-                                      child: Icon(
-                                        Icons.autorenew,
-                                        size: 10,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                            MaterialButton(
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    _marketVsBookPriceIndex = 0;
-                                  },
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Book Value',
-                                    style: textStyle(
-                                      Colors.grey[400]!,
-                                      10,
-                                      isBold: false,
-                                      isUline: false,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 2),
-                                    child: const Align(
-                                      child: Icon(
-                                        Icons.autorenew,
-                                        size: 10,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                   //BuildScoutView
                   Stack(
@@ -646,7 +641,6 @@ class _MobileScoutState extends State<MobileScout> {
                                         'athlete',
                                         params: {'id': selectedAthlete},
                                       );
-                                      //athletePage = true;
                                     },
                                   );
                                 },
@@ -839,7 +833,6 @@ class _MobileScoutState extends State<MobileScout> {
                                                         'id': selectedAthlete
                                                       },
                                                     );
-                                                    //athletePage = true;
                                                   },
                                                 );
                                               },
@@ -847,68 +840,6 @@ class _MobileScoutState extends State<MobileScout> {
                                             ),
                                           )
                                         ],
-                                        if (_width >= 910) ...[
-                                          Container(width: 25),
-                                          // Mint
-                                          Container(
-                                            width: 100,
-                                            height: 30,
-                                            decoration: boxDecoration(
-                                              Colors.transparent,
-                                              100,
-                                              2,
-                                              Colors.white,
-                                            ),
-                                            child: TextButton(
-                                              onPressed: () {
-                                                setState(
-                                                  () {
-                                                    global.athleteList =
-                                                        filteredAthletes;
-                                                    selectedAthlete =
-                                                        filteredAthletes[index]
-                                                                .id
-                                                                .toString() +
-                                                            filteredAthletes[
-                                                                    index]
-                                                                .name;
-                                                    context.goNamed(
-                                                      'athlete',
-                                                      params: {
-                                                        'id': selectedAthlete
-                                                      },
-                                                    );
-                                                    //athletePage = true;
-                                                  },
-                                                );
-                                              },
-                                              child: SizedBox(
-                                                width: 60,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      'sdkjfh',
-                                                      style: textStyle(
-                                                        Colors.white,
-                                                        16,
-                                                        isBold: false,
-                                                        isUline: false,
-                                                      ),
-                                                    ),
-                                                    const Icon(
-                                                      Icons.arrow_right,
-                                                      size: 25,
-                                                      color: Colors.white,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        ]
                                       ],
                                     )
                                   ],
