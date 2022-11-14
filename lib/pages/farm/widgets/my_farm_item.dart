@@ -242,10 +242,8 @@ class MyFarmItem extends StatelessWidget {
                     onPressed: () => showDialog<void>(
                       context: context,
                       builder: (BuildContext builderContext) => UnstakeDialog(
-                        context: builderContext,
                         farm: farm,
                         layoutWdt: cardWidth,
-                        isWeb: isWeb,
                       ),
                     ),
                     child: Text(

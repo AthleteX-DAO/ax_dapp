@@ -20,8 +20,6 @@ class SingleLogoFarmTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWeb =
-        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     return SizedBox(
       width: cardWidth,
       child: Row(
@@ -47,7 +45,7 @@ class SingleLogoFarmTitle extends StatelessWidget {
                     symbol: '${farm.athlete!} Farm',
                   ),
           ),
-          Container(width: 10),
+          const SizedBox(width: 10),
           Container(
             width: 110,
             height: 35,
@@ -65,10 +63,8 @@ class SingleLogoFarmTitle extends StatelessWidget {
                   showDialog<void>(
                     context: context,
                     builder: (BuildContext builderContext) => StakeDialog(
-                      context: builderContext,
                       farm: farm,
                       layoutWdt: cardWidth,
-                      isWeb: isWeb,
                     ),
                   );
                 } else {

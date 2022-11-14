@@ -3,6 +3,7 @@ import 'package:ax_dapp/service/controller/farms/farm_controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/util/warning_text_button.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,17 +12,13 @@ import 'package:wallet_repository/wallet_repository.dart';
 
 class StakeDialog extends StatefulWidget {
   const StakeDialog({
-    required this.context,
     required this.farm,
     required this.layoutWdt,
-    required this.isWeb,
     super.key,
   });
 
-  final BuildContext context;
   final FarmController farm;
   final double layoutWdt;
-  final bool isWeb;
 
   @override
   State<StatefulWidget> createState() => _StakeDialogState();
@@ -38,8 +35,10 @@ class _StakeDialogState extends State<StakeDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final _height = MediaQuery.of(context).size.height;
-    final wid = widget.isWeb ? 390.0 : widget.layoutWdt;
+    final wid = isWeb ? 390.0 : widget.layoutWdt;
     final hgt = _height < 455.0 ? _height : 450.0;
     const dialogHorPadding = 30.0;
     final selectedFarm = FarmController.fromFarm(
@@ -121,8 +120,7 @@ class _StakeDialogState extends State<StakeDialog> {
                           ),
                         ),
                       ),
-                      //Empty space between icon image and ticker
-                      Container(width: 15),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: Text(
                           '''${selectedFarm.strStakedAlias.value.isNotEmpty ? selectedFarm.strStakedAlias : selectedFarm.strStakedSymbol}''',
