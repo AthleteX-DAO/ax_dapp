@@ -1,18 +1,17 @@
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LinkButton extends StatelessWidget {
   const LinkButton({
     super.key,
     required this.pageName,
-    required this.pageNumber,
-    required this.goToPage,
+    required this.page,
   });
 
   final String pageName;
-  final int pageNumber;
-  final void Function(int page) goToPage;
+  final String page;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +21,16 @@ class LinkButton extends StatelessWidget {
       decoration: boxDecoration(Colors.transparent, 100, 2, Colors.amber),
       child: TextButton(
         onPressed: () {
-          Navigator.pop(context);
-          goToPage(pageNumber);
+          context.goNamed(page);
         },
         child: Text(
           pageName,
-          style: textStyle(Colors.amber, 12, isBold: false),
+          style: textStyle(
+            Colors.amber,
+            12,
+            isBold: false,
+            isUline: false,
+          ),
         ),
       ),
     );
@@ -40,13 +43,11 @@ class LinkButtons extends StatelessWidget {
     required this.isTrade,
     required this.isPool,
     required this.isFarm,
-    required this.goToPage,
   });
 
   final bool isTrade;
   final bool isPool;
   final bool isFarm;
-  final void Function(int page) goToPage;
 
   @override
   Widget build(BuildContext context) {
@@ -54,22 +55,19 @@ class LinkButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         if (isTrade)
-          LinkButton(
+          const LinkButton(
             pageName: 'Trade',
-            pageNumber: 1,
-            goToPage: goToPage,
+            page: 'trade',
           ),
         if (isPool)
-          LinkButton(
+          const LinkButton(
             pageName: 'Pool',
-            pageNumber: 2,
-            goToPage: goToPage,
+            page: 'pool',
           ),
         if (isFarm)
-          LinkButton(
+          const LinkButton(
             pageName: 'Farm',
-            pageNumber: 3,
-            goToPage: goToPage,
+            page: 'farm',
           )
       ],
     );
@@ -80,7 +78,6 @@ class TransactionConfirmed extends StatelessWidget {
   const TransactionConfirmed({
     super.key,
     required this.context,
-    required this.goToPage,
     this.isTrade = false,
     this.isPool = false,
     this.isFarm = false,
@@ -88,7 +85,6 @@ class TransactionConfirmed extends StatelessWidget {
 
   final BuildContext context;
   final bool isTrade, isPool, isFarm;
-  final void Function(int page) goToPage;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +120,12 @@ class TransactionConfirmed extends StatelessWidget {
                       Container(width: 5),
                       Text(
                         'Deposit Confirmed',
-                        style: textStyle(Colors.white, 20, isBold: false),
+                        style: textStyle(
+                          Colors.white,
+                          20,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                       SizedBox(
                         width: 40,
@@ -182,7 +183,6 @@ class TransactionConfirmed extends StatelessWidget {
                   isTrade: isTrade,
                   isPool: isPool,
                   isFarm: isFarm,
-                  goToPage: goToPage,
                 )
               ],
             ),

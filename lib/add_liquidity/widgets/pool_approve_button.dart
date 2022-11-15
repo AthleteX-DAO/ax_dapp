@@ -22,7 +22,6 @@ class PoolApproveButton extends StatefulWidget {
     required this.valueTwo,
     required this.shareOfPool,
     required this.lpTokenName,
-    required this.goToPage,
     super.key,
   });
 
@@ -39,7 +38,6 @@ class PoolApproveButton extends StatefulWidget {
   final String lpTokenName;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final void Function(int pageNumber) goToPage;
 
   @override
   State<PoolApproveButton> createState() => _PoolApproveButtonState();
@@ -144,7 +142,6 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                 context: context,
                 builder: (BuildContext context) => TransactionConfirmed(
                   context: context,
-                  goToPage: widget.goToPage,
                   isFarm: true,
                 ),
               ).then((value) {

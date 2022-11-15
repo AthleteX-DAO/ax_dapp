@@ -12,6 +12,7 @@ import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/price_record.dart';
 import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
+import 'package:ax_dapp/service/global.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -200,6 +201,9 @@ class GetScoutAthletesDataUseCase {
           ),
         );
       });
+
+      Global().athleteList = athletes;
+
       return athletes;
     }
   }

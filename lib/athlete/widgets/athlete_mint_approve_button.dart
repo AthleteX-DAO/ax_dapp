@@ -18,7 +18,6 @@ class AthleteMintApproveButton extends StatefulWidget {
     required this.valueInAX,
     required this.approveCallback,
     required this.confirmCallback,
-    required this.goToPage,
     super.key,
   });
 
@@ -31,7 +30,6 @@ class AthleteMintApproveButton extends StatefulWidget {
   final double valueInAX;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
-  final void Function(int page) goToPage;
 
   @override
   State<AthleteMintApproveButton> createState() =>
@@ -121,7 +119,6 @@ class _AthleteMintApproveButtonState extends State<AthleteMintApproveButton> {
                 context: context,
                 builder: (BuildContext context) => TransactionConfirmed(
                   context: context,
-                  goToPage: widget.goToPage,
                   isTrade: true,
                   isPool: true,
                 ),

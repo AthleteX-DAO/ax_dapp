@@ -122,8 +122,7 @@ class _AthleteBuyApproveButtonState extends State<AthleteBuyApproveButton> {
             widget.confirmCallback().then((value) {
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) =>
-                    widget.confirmDialog,
+                builder: (BuildContext context) => widget.confirmDialog,
               ).then((value) {
                 if (mounted) {
                   Navigator.pop(context);

@@ -29,7 +29,7 @@ extension EthereumChainX on EthereumChain {
         case EthereumChain.unsupported:
           return TradeTokens.empty;
         case EthereumChain.polygonMainnet:
-        case EthereumChain.polygonTestnet:
+        case EthereumChain.goerliTestNet:
           tokenFrom = Token.matic(this);
           tokenTo = axt;
           break;

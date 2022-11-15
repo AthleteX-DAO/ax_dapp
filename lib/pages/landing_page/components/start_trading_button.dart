@@ -1,7 +1,7 @@
-import 'package:ax_dapp/pages/v1_app.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class StartTradingButton extends StatelessWidget {
   const StartTradingButton({
@@ -27,7 +27,8 @@ class StartTradingButton extends StatelessWidget {
             ),
             onPressed: () {
               context.read<TrackingCubit>().onPressedStartTrading();
-              navigateToV1App(context);
+              context.goNamed('scout');
+              // navigateToV1App(context);
             },
             child: Text(
               'Start Trading',
@@ -53,7 +54,7 @@ class StartTradingButton extends StatelessWidget {
             ),
             onPressed: () {
               context.read<TrackingCubit>().onPressedStartTrading();
-              navigateToV1App(context);
+              context.goNamed('scout');
             },
             child: Text(
               'Start',
@@ -65,12 +66,5 @@ class StartTradingButton extends StatelessWidget {
               ),
             ),
           );
-  }
-
-  void navigateToV1App(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute<void>(builder: (context) => const V1App()),
-    );
   }
 }
