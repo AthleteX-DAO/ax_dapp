@@ -288,7 +288,10 @@ class StatsSide extends StatelessWidget {
           // Detail Section
           AthleteDetailsWidget(athlete).athletePageDetails(),
           // Stats section
-          AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
+          if (_width < 900)
+            AthleteDetailsWidget(athlete).athletePageKeyStatisticsForMobile()
+          else
+            AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
         ],
       ),
     );

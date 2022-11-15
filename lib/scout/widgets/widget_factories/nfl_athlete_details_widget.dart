@@ -153,368 +153,365 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
 
   @override
   Widget athletePageKeyStatistics() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth < 900) {
-          return SizedBox(
-            height: 150,
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Key Statistics',
-                    style: textStyle(
-                      Colors.white,
-                      24,
-                      isBold: false,
-                      isUline: false,
-                    ),
-                  ),
+    return SizedBox(
+      height: 150,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Key Statistics',
+                style: textStyle(
+                  Colors.white,
+                  24,
+                  isBold: false,
+                  isUline: false,
                 ),
-                Divider(thickness: 1, color: greyTextColor),
-                Row(
+              ),
+              SizedBox(
+                width: 300,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Yds',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'Yds',
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.passingYards.toString(),
-                      //toDo add map for the different league
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'Tds',
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
-                    )
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'Rec',
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'RYd',
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'RTch',
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'RuYd',
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                Row(
+              ),
+            ],
+          ),
+          Divider(thickness: 1, color: greyTextColor),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Current Season Stats',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              SizedBox(
+                width: 300,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'TDS',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.passingYards.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.passingTouchdowns.toString(),
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Rec',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.passingTouchdowns.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.reception.toString(),
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'RYd',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.reception.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.receivingYards.toString(),
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'RTch',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.receivingYards.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.receivingTouchdowns.toString(),
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'RuYd',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.receivingTouchdowns.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.rushingYards.toString(),
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.rushingYards.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          13,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-              ],
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget athletePageKeyStatisticsForMobile() {
+    return SizedBox(
+      height: 150,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Key Statistics',
+              style: textStyle(
+                Colors.white,
+                24,
+                isBold: false,
+                isUline: false,
+              ),
             ),
-          );
-        } else {
-          return SizedBox(
-            height: 150,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Key Statistics',
-                      style: textStyle(
-                        Colors.white,
-                        24,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'Yds',
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'Tds',
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'Rec',
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'RYd',
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'RTch',
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'RuYd',
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+          ),
+          Divider(thickness: 1, color: greyTextColor),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Yds',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
                 ),
-                Divider(thickness: 1, color: greyTextColor),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Current Season Stats',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.passingYards.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.passingTouchdowns.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.reception.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.receivingYards.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.receivingTouchdowns.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.rushingYards.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                13,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+              ),
+              Text(
+                athlete.passingYards.toString(),
+                //toDo add map for the different league
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
                 ),
-              ],
-            ),
-          );
-        }
-      },
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'TDS',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.passingTouchdowns.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Rec',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.reception.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'RYd',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.receivingYards.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'RTch',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.receivingTouchdowns.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'RuYd',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.rushingYards.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 

@@ -153,346 +153,342 @@ class MLBAthleteDetailsWidget implements AthleteDetailsWidget {
 
   @override
   Widget athletePageKeyStatistics() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth < 900) {
-          return SizedBox(
-            height: 150,
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Key Statistics',
-                    style: textStyle(
-                      Colors.white,
-                      24,
-                      isBold: false,
-                      isUline: false,
-                    ),
-                  ),
+    return SizedBox(
+      height: 150,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Key Statistics',
+                style: textStyle(
+                  Colors.white,
+                  24,
+                  isBold: false,
+                  isUline: false,
                 ),
-                Divider(thickness: 1, color: greyTextColor),
-                Row(
+              ),
+              SizedBox(
+                width: 300,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'AtBat',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'AtBat',
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.atBats.toString(),
-                      //toDo add map for the different league
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'HR',
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
-                    )
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'wOBA',
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'SB',
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'Err',
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'InPl',
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                Row(
+              ),
+            ],
+          ),
+          Divider(thickness: 1, color: greyTextColor),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Current Season Stats',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              SizedBox(
+                width: 300,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'HR',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.atBats.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.homeRuns.toString(),
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'SB',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.homeRuns.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.stolenBases.toString(),
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Err',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.weightedOnBasePercentage.toStringAsFixed(3),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.errors.toString(),
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'InPl',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.stolenBases.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
                     ),
-                    Text(
-                      athlete.inningsPlayed.toString(),
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.errors.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
                       ),
-                    )
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        athlete.inningsPlayed.toString(),
+                        style: textStyle(
+                          greyTextColor,
+                          15,
+                          isBold: false,
+                          isUline: false,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              ],
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget athletePageKeyStatisticsForMobile() {
+    return SizedBox(
+      height: 150,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Key Statistics',
+              style: textStyle(
+                Colors.white,
+                24,
+                isBold: false,
+                isUline: false,
+              ),
             ),
-          );
-        } else {
-          return SizedBox(
-            height: 150,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Key Statistics',
-                      style: textStyle(
-                        Colors.white,
-                        24,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'AtBat',
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'HR',
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'wOBA',
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'SB',
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'Err',
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              'InPl',
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+          ),
+          Divider(thickness: 1, color: greyTextColor),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'AtBat',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
                 ),
-                Divider(thickness: 1, color: greyTextColor),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Current Season Stats',
-                      style: textStyle(
-                        greyTextColor,
-                        20,
-                        isBold: false,
-                        isUline: false,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.atBats.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.homeRuns.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.weightedOnBasePercentage
-                                  .toStringAsFixed(3),
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.stolenBases.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.errors.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              athlete.inningsPlayed.toString(),
-                              style: textStyle(
-                                greyTextColor,
-                                15,
-                                isBold: false,
-                                isUline: false,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+              ),
+              Text(
+                athlete.atBats.toString(),
+                //toDo add map for the different league
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
                 ),
-              ],
-            ),
-          );
-        }
-      },
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'HR',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.homeRuns.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'SB',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.stolenBases.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Err',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.errors.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'InPl',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.inningsPlayed.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 
