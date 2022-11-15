@@ -64,7 +64,7 @@ class _MobileAthleteContentsState extends State<MobileAthleteContents> {
                       _width,
                       107,
                     ),
-                    if (constraints.maxWidth > 315) const SizedBox(width: 20),
+                    SizedBox(width: (constraints.maxWidth >= 320) ? 20 : 5),
                     // Market Price / Change
                     MobileMarketBookPrice(
                       marketVsBookPriceIndex: widget.marketVsBookPriceIndex,

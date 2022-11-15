@@ -101,9 +101,9 @@ class _MobileScoutState extends State<MobileScout> {
                       ),
                       // APT Title & Sport Filter & search icon/bar
                       Container(
-                        margin: const EdgeInsets.only(
-                          left: 15,
-                          right: 15,
+                        margin: EdgeInsets.only(
+                          left: (constraints.maxWidth >= 300) ? 15 : 9,
+                          right: (constraints.maxWidth >= 300) ? 15 : 9,
                           bottom: 10,
                         ),
                         height: 40,
