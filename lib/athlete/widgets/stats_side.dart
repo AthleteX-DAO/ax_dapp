@@ -188,16 +188,13 @@ class StatsSide extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: _width * 0.175,
-                      child: Text(
-                        'Book Value',
-                        style: textStyle(
-                          greyTextColor,
-                          20,
-                          isBold: false,
-                          isUline: false,
-                        ),
+                    Text(
+                      'Book Value',
+                      style: textStyle(
+                        greyTextColor,
+                        20,
+                        isBold: false,
+                        isUline: false,
                       ),
                     ),
                     BlocSelector<AthletePageBloc, AthletePageState, AptType>(
@@ -255,16 +252,13 @@ class StatsSide extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: _width * 0.175,
-                      child: Text(
-                        'MP:BV Ratio',
-                        style: textStyle(
-                          greyTextColor,
-                          20,
-                          isBold: false,
-                          isUline: false,
-                        ),
+                    Text(
+                      'MP:BV Ratio',
+                      style: textStyle(
+                        greyTextColor,
+                        20,
+                        isBold: false,
+                        isUline: false,
                       ),
                     ),
                     BlocSelector<AthletePageBloc, AthletePageState, AptType>(
@@ -294,7 +288,10 @@ class StatsSide extends StatelessWidget {
           // Detail Section
           AthleteDetailsWidget(athlete).athletePageDetails(),
           // Stats section
-          AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
+          if (_width < 900)
+            AthleteDetailsWidget(athlete).athletePageKeyStatisticsForMobile()
+          else
+            AthleteDetailsWidget(athlete).athletePageKeyStatistics(),
         ],
       ),
     );
