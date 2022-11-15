@@ -353,6 +353,169 @@ class NFLAthleteDetailsWidget implements AthleteDetailsWidget {
   }
 
   @override
+  Widget athletePageKeyStatisticsForMobile() {
+    return SizedBox(
+      height: 150,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Key Statistics',
+              style: textStyle(
+                Colors.white,
+                24,
+                isBold: false,
+                isUline: false,
+              ),
+            ),
+          ),
+          Divider(thickness: 1, color: greyTextColor),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Yds',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.passingYards.toString(),
+                //toDo add map for the different league
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'TDS',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.passingTouchdowns.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Rec',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.reception.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'RYd',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.receivingYards.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'RTch',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.receivingTouchdowns.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'RuYd',
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              ),
+              Text(
+                athlete.rushingYards.toString(),
+                style: textStyle(
+                  greyTextColor,
+                  20,
+                  isBold: false,
+                  isUline: false,
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
   Widget athleteDetailsCardsForWeb(bool team, double _width, double athNameBx) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
