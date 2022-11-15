@@ -3,6 +3,9 @@
 import 'package:ax_dapp/scout/bloc/scout_page_bloc.dart';
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/widgets/buy_text.dart';
+import 'package:ax_dapp/scout/widgets/mobile_athlete_contents.dart';
+import 'package:ax_dapp/scout/widgets/mobile_market_book_price.dart';
+import 'package:ax_dapp/scout/widgets/mobile_market_book_text.dart';
 import 'package:ax_dapp/scout/widgets/widgets.dart';
 import 'package:ax_dapp/service/custom_styles.dart';
 import 'package:ax_dapp/service/global.dart';
@@ -32,10 +35,8 @@ class _MobileScoutState extends State<MobileScout> {
   static String input = '';
   //bool athletePage = false;
   static bool isLongToken = true;
-  static int sportState = 0;
   static SupportedSport _selectedSport = SupportedSport.all;
   String allSportsTitle = 'All Sports';
-  String longTitle = 'Long';
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
   EthereumChain? _selectedChain;
@@ -60,8 +61,6 @@ class _MobileScoutState extends State<MobileScout> {
   Widget build(BuildContext context) {
     const sportFilterTxSz = 14.0;
     const sportFilterIconSz = 14.0;
-    final _width = MediaQuery.of(context).size.width;
-    final _height = MediaQuery.of(context).size.height;
     // breaks the code, will come back to it later(probably)
 
     return global.buildPage(
@@ -73,9 +72,7 @@ class _MobileScoutState extends State<MobileScout> {
         },
         builder: (context, state) {
           final bloc = context.read<ScoutPageBloc>();
-          if (global.athleteList.isEmpty) {
-            global.athleteList = state.athletes;
-          }
+          global.athleteList = state.athletes;
           filteredAthletes = state.filteredAthletes;
           if (_selectedChain != state.selectedChain) {
             _selectedChain = state.selectedChain;
@@ -84,399 +81,409 @@ class _MobileScoutState extends State<MobileScout> {
             );
           }
           _selectedSport = state.selectedSport;
-          return SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Container(
-              margin: const EdgeInsets.only(top: 20),
-              height: _height * 0.85 + 41,
-              width: _width * 0.99,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    child: const Divider(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  // APT Title & Sport Filter
-                  Container(
-                    margin: const EdgeInsets.only(
-                      left: 15,
-                      right: 15,
-                      bottom: 10,
-                    ),
-                    width: _width * 1,
-                    height: 40,
-                    child: IndexedStack(
-                      index: _widgetIndex,
-                      children: [
-                        SizedBox(
-                          height: 20,
-                          child: Row(
-                            children: [
-                              Text(
-                                'APT List',
-                                style: textStyle(
-                                  Colors.white,
-                                  18,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
-                              ),
-                              Text(
-                                '|',
-                                style: textStyle(
-                                  Colors.white,
-                                  18,
-                                  isBold: false,
-                                  isUline: false,
-                                ),
-                              ),
-                              SizedBox(
-                                child: PopupMenuButton(
-                                  itemBuilder: (context) => [
-                                    PopupMenuItem(
-                                      value: 1,
-                                      child: ListTile(
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'All Sports',
-                                              style: textSwapState(
-                                                condition: sportState == 0,
-                                                tabNotSelected: textStyle(
-                                                  Colors.white,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: false,
-                                                ),
-                                                tabSelected: textStyle(
-                                                  Colors.amber[400]!,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        myController.clear();
-                                        if (sportState != 0) {
-                                          setState(
-                                            () {
-                                              sportState = 0;
-                                            },
-                                          );
-                                        }
-                                        allSportsTitle = 'All Sports';
-                                      },
-                                    ),
-                                    PopupMenuItem(
-                                      height: 5,
-                                      value: 1,
-                                      child: ListTile(
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                right: 8,
-                                              ),
-                                              child: const Icon(
-                                                Icons.sports_football,
-                                                size: sportFilterIconSz,
-                                              ),
-                                            ),
-                                            Text(
-                                              'MLB',
-                                              style: textSwapState(
-                                                condition: sportState == 1,
-                                                tabNotSelected: textStyle(
-                                                  Colors.white,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: false,
-                                                ),
-                                                tabSelected: textStyle(
-                                                  Colors.amber[400]!,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        myController.clear();
-                                        if (sportState != 1) {
-                                          myController.clear();
-                                          setState(
-                                            () {
-                                              sportState = 1;
-                                              allSportsTitle = 'MLB';
-                                              _selectedSport =
-                                                  SupportedSport.MLB;
-                                            },
-                                          );
-                                          context.read<ScoutPageBloc>().add(
-                                                const SelectedSportChanged(
-                                                  selectedSport:
-                                                      SupportedSport.MLB,
-                                                ),
-                                              );
-                                        }
-                                      },
-                                    ),
-                                    PopupMenuItem(
-                                      height: 5,
-                                      value: 2,
-                                      child: ListTile(
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                right: 8,
-                                              ),
-                                              child: const Icon(
-                                                Icons.sports_football,
-                                                size: sportFilterIconSz,
-                                              ),
-                                            ),
-                                            Text(
-                                              'NFL',
-                                              style: textSwapState(
-                                                condition: sportState == 2,
-                                                tabNotSelected: textStyle(
-                                                  Colors.white,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: false,
-                                                ),
-                                                tabSelected: textStyle(
-                                                  Colors.amber[400]!,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        myController.clear();
-                                        if (sportState != 2) {
-                                          myController.clear();
-                                          setState(
-                                            () {
-                                              sportState = 2;
-                                              allSportsTitle = 'NFL';
-                                              _selectedSport =
-                                                  SupportedSport.NFL;
-                                            },
-                                          );
-                                          context.read<ScoutPageBloc>().add(
-                                                const SelectedSportChanged(
-                                                  selectedSport:
-                                                      SupportedSport.NFL,
-                                                ),
-                                              );
-                                        }
-                                      },
-                                    ),
-                                    PopupMenuItem(
-                                      height: 5,
-                                      value: 2,
-                                      child: ListTile(
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                right: 8,
-                                              ),
-                                              child: const Icon(
-                                                Icons.sports_football,
-                                                size: sportFilterIconSz,
-                                              ),
-                                            ),
-                                            Text(
-                                              'NBA',
-                                              style: textSwapState(
-                                                condition: sportState == 3,
-                                                tabNotSelected: textStyle(
-                                                  Colors.white,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: false,
-                                                ),
-                                                tabSelected: textStyle(
-                                                  Colors.amber[400]!,
-                                                  sportFilterTxSz,
-                                                  isBold: false,
-                                                  isUline: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        myController.clear();
-                                        if (sportState != 3) {
-                                          myController.clear();
-                                          setState(
-                                            () {
-                                              sportState = 3;
-                                              allSportsTitle = 'NBA';
-                                              _selectedSport =
-                                                  SupportedSport.NBA;
-                                            },
-                                          );
-                                          context.read<ScoutPageBloc>().add(
-                                                const SelectedSportChanged(
-                                                  selectedSport:
-                                                      SupportedSport.NBA,
-                                                ),
-                                              );
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                  offset: const Offset(0, 45),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
+          return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  height: constraints.maxHeight * 0.85 + 41,
+                  width: constraints.maxWidth * 0.99,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        child: const Divider(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      // APT Title & Sport Filter & search icon/bar
+                      Container(
+                        margin: const EdgeInsets.only(
+                          left: 15,
+                          right: 15,
+                          bottom: 10,
+                        ),
+                        height: 40,
+                        // header with the dropdwons & search
+                        child: IndexedStack(
+                          index: _widgetIndex,
+                          children: [
+                            // text & filters
+                            SizedBox(
+                              height: 20,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'APT List',
+                                    style: textStyle(
+                                      Colors.white,
+                                      18,
+                                      isBold: false,
+                                      isUline: false,
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        allSportsTitle,
-                                        style: const TextStyle(
-                                          fontSize: 14,
+                                  Text(
+                                    '|',
+                                    style: textStyle(
+                                      Colors.white,
+                                      18,
+                                      isBold: false,
+                                      isUline: false,
+                                    ),
+                                  ),
+                                  // sport filter dropdown
+                                  SizedBox(
+                                    child: PopupMenuButton(
+                                      // dropdown options
+                                      itemBuilder: (context) => [
+                                        PopupMenuItem(
+                                          value: 1,
+                                          child: ListTile(
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'All Sports',
+                                                  style: textSwapState(
+                                                    condition: allSportsTitle ==
+                                                        'All Sports',
+                                                    tabNotSelected: textStyle(
+                                                      Colors.white,
+                                                      sportFilterTxSz,
+                                                      isBold: false,
+                                                      isUline: false,
+                                                    ),
+                                                    tabSelected: textStyle(
+                                                      Colors.amber[400]!,
+                                                      sportFilterTxSz,
+                                                      isBold: false,
+                                                      isUline: true,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            myController.clear();
+                                            if (allSportsTitle !=
+                                                'All Sports') {
+                                              setState(
+                                                () {
+                                                  allSportsTitle = 'All Sports';
+                                                  _selectedSport =
+                                                      SupportedSport.all;
+                                                },
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        PopupMenuItem(
+                                          height: 5,
+                                          value: 1,
+                                          child: ListTile(
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                    right: 8,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.sports_football,
+                                                    size: sportFilterIconSz,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'MLB',
+                                                  style: textSwapState(
+                                                    condition:
+                                                        allSportsTitle == 'MLB',
+                                                    tabNotSelected: textStyle(
+                                                      Colors.white,
+                                                      sportFilterTxSz,
+                                                      isBold: false,
+                                                      isUline: false,
+                                                    ),
+                                                    tabSelected: textStyle(
+                                                      Colors.amber[400]!,
+                                                      sportFilterTxSz,
+                                                      isBold: false,
+                                                      isUline: true,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            myController.clear();
+                                            if (allSportsTitle != 'MLB') {
+                                              myController.clear();
+                                              setState(
+                                                () {
+                                                  allSportsTitle = 'MLB';
+                                                  _selectedSport =
+                                                      SupportedSport.MLB;
+                                                },
+                                              );
+                                              context.read<ScoutPageBloc>().add(
+                                                    const SelectedSportChanged(
+                                                      selectedSport:
+                                                          SupportedSport.MLB,
+                                                    ),
+                                                  );
+                                            }
+                                          },
+                                        ),
+                                        PopupMenuItem(
+                                          height: 5,
+                                          value: 2,
+                                          child: ListTile(
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                    right: 8,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.sports_football,
+                                                    size: sportFilterIconSz,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'NFL',
+                                                  style: textSwapState(
+                                                    condition:
+                                                        allSportsTitle == 'NFL',
+                                                    tabNotSelected: textStyle(
+                                                      Colors.white,
+                                                      sportFilterTxSz,
+                                                      isBold: false,
+                                                      isUline: false,
+                                                    ),
+                                                    tabSelected: textStyle(
+                                                      Colors.amber[400]!,
+                                                      sportFilterTxSz,
+                                                      isBold: false,
+                                                      isUline: true,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            myController.clear();
+                                            if (allSportsTitle != 'NFL') {
+                                              myController.clear();
+                                              setState(
+                                                () {
+                                                  allSportsTitle = 'NFL';
+                                                  _selectedSport =
+                                                      SupportedSport.NFL;
+                                                },
+                                              );
+                                              context.read<ScoutPageBloc>().add(
+                                                    const SelectedSportChanged(
+                                                      selectedSport:
+                                                          SupportedSport.NFL,
+                                                    ),
+                                                  );
+                                            }
+                                          },
+                                        ),
+                                        PopupMenuItem(
+                                          height: 5,
+                                          value: 2,
+                                          child: ListTile(
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                    right: 8,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.sports_football,
+                                                    size: sportFilterIconSz,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'NBA',
+                                                  style: textSwapState(
+                                                    condition:
+                                                        allSportsTitle == 'NBA',
+                                                    tabNotSelected: textStyle(
+                                                      Colors.white,
+                                                      sportFilterTxSz,
+                                                      isBold: false,
+                                                      isUline: false,
+                                                    ),
+                                                    tabSelected: textStyle(
+                                                      Colors.amber[400]!,
+                                                      sportFilterTxSz,
+                                                      isBold: false,
+                                                      isUline: true,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            myController.clear();
+                                            if (allSportsTitle != 'NBA') {
+                                              myController.clear();
+                                              setState(
+                                                () {
+                                                  allSportsTitle = 'NBA';
+                                                  _selectedSport =
+                                                      SupportedSport.NBA;
+                                                },
+                                              );
+                                              context.read<ScoutPageBloc>().add(
+                                                    const SelectedSportChanged(
+                                                      selectedSport:
+                                                          SupportedSport.NBA,
+                                                    ),
+                                                  );
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                      offset: const Offset(0, 45),
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                      // dropdown title
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            allSportsTitle,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          const Icon(
+                                            Icons.arrow_drop_down_sharp,
+                                            color: Colors.grey,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  // Long/Short filter
+                                  PopupMenuButton(
+                                    itemBuilder: (context) => [
+                                      // Long
+                                      PopupMenuItem(
+                                        value: 1,
+                                        child: ListTile(
+                                          title: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              Text('Long'),
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          setState(
+                                            () {
+                                              isLongToken = true;
+                                            },
+                                          );
+                                        },
+                                      ),
+                                      // Short
+                                      PopupMenuItem(
+                                        height: 5,
+                                        value: 1,
+                                        child: ListTile(
+                                          title: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              Text('Short'),
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          setState(
+                                            () {
+                                              isLongToken = false;
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                    offset: const Offset(0, 45),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    // dropdown title
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          isLongToken ? 'Long' : 'Short',
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_drop_down_sharp,
+                                          color: Colors.grey,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  // search icon
+                                  Center(
+                                    child: Align(
+                                      child: IconButton(
+                                        onPressed: () {
+                                          setState(
+                                            () {
+                                              _widgetIndex = 1;
+                                            },
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.search,
+                                          size: 20,
                                           color: Colors.grey,
                                         ),
                                       ),
-                                      const Icon(
-                                        Icons.arrow_drop_down_sharp,
-                                        color: Colors.grey,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              // Long/Short Toggle
-                              PopupMenuButton(
-                                itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                    value: 1,
-                                    child: ListTile(
-                                      title: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text('Long'),
-                                        ],
-                                      ),
                                     ),
-                                    onTap: () {
-                                      setState(
-                                        () {
-                                          longTitle = 'Long';
-                                          isLongToken = true;
-                                        },
-                                      );
-                                    },
-                                  ),
-                                  PopupMenuItem(
-                                    height: 5,
-                                    value: 1,
-                                    child: ListTile(
-                                      title: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text('Short'),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      setState(
-                                        () {
-                                          longTitle = 'Short';
-                                          isLongToken = false;
-                                        },
-                                      );
-                                    },
                                   ),
                                 ],
-                                offset: const Offset(0, 45),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      longTitle,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_drop_down_sharp,
-                                      color: Colors.grey,
-                                    )
-                                  ],
-                                ),
                               ),
-                              const Spacer(),
-                              Center(
-                                child: Align(
-                                  child: IconButton(
-                                    onPressed: () {
-                                      setState(
-                                        () {
-                                          _widgetIndex = 1;
-                                        },
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.search,
-                                      size: 20,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
+                            ),
+                            // search bar & cancel
+                            SizedBox(
+                              height: 40,
+                              child: Row(
+                                children: [
+                                  Expanded(
                                     // Search Bar
-                                    Container(
-                                      width: _width - 110,
+                                    child: Container(
+                                      width: constraints.maxWidth - 110,
                                       height: 160,
                                       decoration: boxDecoration(
                                         const Color.fromRGBO(
@@ -553,402 +560,118 @@ class _MobileScoutState extends State<MobileScout> {
                                         ],
                                       ),
                                     ),
-                                  ],
+                                  ),
+                                  // cancel serach button
+                                  MaterialButton(
+                                    onPressed: () {
+                                      setState(
+                                        () {
+                                          _widgetIndex = 0;
+                                        },
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(254, 197, 0, 1),
+                                        fontSize: 17,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      // List Headers
+                      // BuildListViewHeader
+                      Row(
+                        children: <Widget>[
+                          SizedBox(
+                              width: (constraints.maxWidth > 290) ? 66 : 10),
+                          const SizedBox(
+                            width: 107,
+                            child: Text(
+                              'Athlete',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          IndexedStack(
+                            index: _marketVsBookPriceIndex,
+                            children: [
+                              MaterialButton(
+                                onPressed: () {
+                                  setState(
+                                    () {
+                                      _marketVsBookPriceIndex = 1;
+                                    },
+                                  );
+                                },
+                                child: const MobileMarketBookText(
+                                  title: 'Market Price',
                                 ),
                               ),
                               MaterialButton(
                                 onPressed: () {
                                   setState(
                                     () {
-                                      _widgetIndex = 0;
+                                      _marketVsBookPriceIndex = 0;
                                     },
                                   );
                                 },
-                                child: const Text(
-                                  'Cancel',
-                                  style: TextStyle(
-                                    color: Color.fromRGBO(254, 197, 0, 1),
-                                    fontSize: 17,
-                                  ),
+                                child: const MobileMarketBookText(
+                                  title: 'Book Value',
                                 ),
-                              )
+                              ),
                             ],
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  // List Headers
-                  // BuildListViewHeader
-                  Row(
-                    children: <Widget>[
-                      SizedBox(width: (_width > 290) ? 66 : 10),
-                      const SizedBox(
-                        width: 107,
-                        child: Text(
-                          'Athlete',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
+                        ],
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      IndexedStack(
-                        index: _marketVsBookPriceIndex,
+                      //BuildScoutView body
+                      Stack(
+                        alignment: Alignment.center,
                         children: [
-                          MaterialButton(
-                            onPressed: () {
-                              setState(
-                                () {
-                                  _marketVsBookPriceIndex = 1;
-                                },
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Align(
-                                  child: Text(
-                                    'Market Price',
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 10,
-                                    ),
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(left: 2),
-                                  child: const Align(
-                                    child: Icon(
-                                      Icons.autorenew,
-                                      size: 10,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                )
-                              ],
+                          if (state.status == BlocStatus.loading)
+                            const Loader(),
+                          if (state.status == BlocStatus.error)
+                            const ScoutLoadingError(),
+                          if (state.status == BlocStatus.noData)
+                            FilterMenuError(
+                              selectedChain: _selectedChain,
                             ),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              setState(
-                                () {
-                                  _marketVsBookPriceIndex = 0;
-                                },
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Book Value',
-                                  style: textStyle(
-                                    Colors.grey[400]!,
-                                    10,
-                                    isBold: false,
-                                    isUline: false,
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(left: 2),
-                                  child: const Align(
-                                    child: Icon(
-                                      Icons.autorenew,
-                                      size: 10,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                )
-                              ],
+                          if (state.status == BlocStatus.success &&
+                              filteredAthletes.isEmpty)
+                            const NoResultFound(),
+                          SizedBox(
+                            height: constraints.maxHeight * 0.8 - 120,
+                            child: ListView.builder(
+                              padding: const EdgeInsets.only(top: 10),
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: filteredAthletes.length,
+                              itemBuilder: (context, index) {
+                                return MobileAthleteContents(
+                                  athlete: filteredAthletes[index],
+                                  marketVsBookPriceIndex:
+                                      _marketVsBookPriceIndex,
+                                  isLongToken: isLongToken,
+                                );
+                              },
                             ),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  //BuildScoutView body
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      if (state.status == BlocStatus.loading) const Loader(),
-                      if (state.status == BlocStatus.error)
-                        const ScoutLoadingError(),
-                      if (state.status == BlocStatus.noData)
-                        FilterMenuError(
-                          selectedChain: _selectedChain,
-                        ),
-                      if (state.status == BlocStatus.success &&
-                          filteredAthletes.isEmpty)
-                        const NoResultFound(),
-                      SizedBox(
-                        height: _height * 0.8 - 120,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.only(top: 10),
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: filteredAthletes.length,
-                          itemBuilder: (context, index) {
-                            return SizedBox(
-                              height: 70,
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  setState(
-                                    () {
-                                      global.athleteList = filteredAthletes;
-                                      selectedAthlete = filteredAthletes[index]
-                                              .id
-                                              .toString() +
-                                          filteredAthletes[index].name;
-                                      context.goNamed(
-                                        'athlete',
-                                        params: {'id': selectedAthlete},
-                                      );
-                                    },
-                                  );
-                                },
-                                // contents of each list item
-                                // name, market/book, buy
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    // name, market/book
-                                    Row(
-                                      children: [
-                                        //name
-                                        AthleteDetailsWidget(
-                                          filteredAthletes[index],
-                                        ).athleteDetailsCardsForMobile(
-                                          _width > 290,
-                                          _width,
-                                          107,
-                                        ),
-                                        if (_width > 315)
-                                          const SizedBox(width: 20),
-                                        // Market Price / Change
-                                        IndexedStack(
-                                          index: _marketVsBookPriceIndex,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    // price
-                                                    Text(
-                                                      isLongToken
-                                                          ? '${filteredAthletes[index].longTokenPrice!.toStringAsFixed(4)} AX'
-                                                          : '${filteredAthletes[index].shortTokenPrice!.toStringAsFixed(4)} AX',
-                                                      style: textStyle(
-                                                        Colors.white,
-                                                        16,
-                                                        isBold: false,
-                                                        isUline: false,
-                                                      ),
-                                                    ),
-                                                    if (_width > 355) ...[
-                                                      Container(width: 10),
-                                                      // change
-                                                      Text(
-                                                        isLongToken
-                                                            ? getPercentageDesc(
-                                                                filteredAthletes[
-                                                                        index]
-                                                                    .longTokenPercentage!,
-                                                              )
-                                                            : getPercentageDesc(
-                                                                filteredAthletes[
-                                                                        index]
-                                                                    .shortTokenPercentage!,
-                                                              ),
-                                                        style: isLongToken
-                                                            ? textStyle(
-                                                                getPercentageColor(
-                                                                  filteredAthletes[
-                                                                          index]
-                                                                      .longTokenPercentage!,
-                                                                ),
-                                                                12,
-                                                                isBold: false,
-                                                                isUline: false,
-                                                              )
-                                                            : textStyle(
-                                                                getPercentageColor(
-                                                                  filteredAthletes[
-                                                                          index]
-                                                                      .shortTokenPercentage!,
-                                                                ),
-                                                                12,
-                                                                isBold: false,
-                                                                isUline: false,
-                                                              ),
-                                                      ),
-                                                    ]
-                                                  ],
-                                                ),
-                                                Text(
-                                                  isLongToken
-                                                      ? '${filteredAthletes[index].longTokenPrice!.toStringAsFixed(4)} AX'
-                                                      : '${filteredAthletes[index].shortTokenPrice!.toStringAsFixed(4)} AX',
-                                                  style: textStyle(
-                                                    Colors.amberAccent,
-                                                    14,
-                                                    isBold: false,
-                                                    isUline: false,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Row(
-                                                  children: <Widget>[
-                                                    Text(
-                                                      isLongToken
-                                                          ? '${filteredAthletes[index].longTokenBookPrice!.toStringAsFixed(4)} AX'
-                                                          : '${filteredAthletes[index].shortTokenBookPrice!.toStringAsFixed(4)} AX',
-                                                      style: textStyle(
-                                                        Colors.white,
-                                                        16,
-                                                        isBold: false,
-                                                        isUline: false,
-                                                      ),
-                                                    ),
-                                                    if (_width > 355) ...[
-                                                      Container(width: 10),
-                                                      Text(
-                                                        isLongToken
-                                                            ? getPercentageDesc(
-                                                                filteredAthletes[
-                                                                        index]
-                                                                    .longTokenBookPricePercent!,
-                                                              )
-                                                            : getPercentageDesc(
-                                                                filteredAthletes[
-                                                                        index]
-                                                                    .shortTokenBookPricePercent!,
-                                                              ),
-                                                        style: isLongToken
-                                                            ? textStyle(
-                                                                getPercentageColor(
-                                                                  filteredAthletes[
-                                                                          index]
-                                                                      .longTokenBookPricePercent!,
-                                                                ),
-                                                                12,
-                                                                isBold: false,
-                                                                isUline: false,
-                                                              )
-                                                            : textStyle(
-                                                                getPercentageColor(
-                                                                  filteredAthletes[
-                                                                          index]
-                                                                      .shortTokenBookPricePercent!,
-                                                                ),
-                                                                12,
-                                                                isBold: false,
-                                                                isUline: false,
-                                                              ),
-                                                      ),
-                                                    ]
-                                                  ],
-                                                ),
-                                                Text(
-                                                  isLongToken
-                                                      ? '${filteredAthletes[index].longTokenBookPriceUsd!.toStringAsFixed(4)} AX'
-                                                      : '${filteredAthletes[index].shortTokenPriceUsd!.toStringAsFixed(4)} AX',
-                                                  style: textStyle(
-                                                    Colors.amberAccent,
-                                                    14,
-                                                    isBold: false,
-                                                    isUline: false,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    // Buy button
-                                    if (_width > 435)
-                                      Row(
-                                        children: <Widget>[
-                                          Container(
-                                            width: _width * 0.20,
-                                            height: 36,
-                                            decoration: boxDecoration(
-                                              const Color.fromRGBO(
-                                                254,
-                                                197,
-                                                0,
-                                                0.2,
-                                              ),
-                                              100,
-                                              0,
-                                              const Color.fromRGBO(
-                                                254,
-                                                197,
-                                                0,
-                                                0.2,
-                                              ),
-                                            ),
-                                            child: TextButton(
-                                              onPressed: () {
-                                                final isWalletDisconnected =
-                                                    context
-                                                        .read<WalletBloc>()
-                                                        .state
-                                                        .isWalletDisconnected;
-                                                if (isWalletDisconnected) {
-                                                  context
-                                                      .showWalletWarningToast();
-                                                  return;
-                                                }
-
-                                                setState(
-                                                  () {
-                                                    global.athleteList =
-                                                        filteredAthletes;
-                                                    selectedAthlete =
-                                                        filteredAthletes[index]
-                                                                .id
-                                                                .toString() +
-                                                            filteredAthletes[
-                                                                    index]
-                                                                .name;
-                                                    context.goNamed(
-                                                      'athlete',
-                                                      params: {
-                                                        'id': selectedAthlete
-                                                      },
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              child: const BuyText(),
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),

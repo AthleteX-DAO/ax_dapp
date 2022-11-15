@@ -16,9 +16,14 @@ class Scout extends StatefulWidget {
 class _ScoutState extends State<Scout> {
   @override
   Widget build(BuildContext context) {
-    debugPrint(MediaQuery.of(context).size.width.toString());
-    return MediaQuery.of(context).size.width >= 685
-        ? const DesktopScout()
-        : const MobileScout();
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth >= 715) {
+          return const DesktopScout();
+        } else {
+          return const MobileScout();
+        }
+      },
+    );
   }
 }
