@@ -91,6 +91,7 @@ class AthletePageWebView extends StatelessWidget {
           SizedBox(
             height: _containerHgt,
             child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 50),
               child: Column(
                 children: [
                   SizedBox(
