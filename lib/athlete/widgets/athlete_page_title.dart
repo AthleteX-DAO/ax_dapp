@@ -27,25 +27,30 @@ class AthletePageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var showBackButton = true;
+    if (_width < 900) {
+      showBackButton = false;
+    }
     return SizedBox(
       width: wid,
       height: 100,
       child: Row(
         children: [
           // Back button
-          SizedBox(
-            width: 70,
-            child: TextButton(
-              onPressed: () {
-                context.goNamed('scout');
-              },
-              child: const Icon(
-                Icons.arrow_back,
-                size: 50,
-                color: Colors.white,
+          if (showBackButton)
+            SizedBox(
+              width: 70,
+              child: TextButton(
+                onPressed: () {
+                  context.goNamed('scout');
+                },
+                child: const Icon(
+                  Icons.arrow_back,
+                  size: 50,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
           // APT Icon
           BlocSelector<AthletePageBloc, AthletePageState, AptType>(
             selector: (state) => state.aptTypeSelection,
