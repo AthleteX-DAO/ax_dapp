@@ -30,8 +30,10 @@ class StatsSide extends StatelessWidget {
       shortCurrentBookValueRatio = 0;
     }
     final _width = MediaQuery.of(context).size.width;
+    var ratioText = 'MP:BV Ratio';
     var wid = _width * 0.4;
     if (_width < 1160) wid = _width * 0.95;
+    if (_width < 900) ratioText = 'Ratio';
 
     return Container(
       width: wid,
@@ -258,7 +260,7 @@ class StatsSide extends StatelessWidget {
                     SizedBox(
                       width: _width * 0.175,
                       child: Text(
-                        'MP:BV Ratio',
+                        ratioText,
                         style: textStyle(
                           greyTextColor,
                           20,
