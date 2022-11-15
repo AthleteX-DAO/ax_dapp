@@ -72,8 +72,8 @@ class AthletePageTitle extends StatelessWidget {
                     ),
                     Container(
                       padding: const EdgeInsets.all(1.5),
-                      width: _width * .15,
-                      height: _height * .02,
+                      width: _width * .25,
+                      height: _height * .04,
                       decoration: boxDecoration(
                         Colors.transparent,
                         10,
@@ -99,7 +99,7 @@ class AthletePageTitle extends StatelessWidget {
                                   child: TextButton(
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      minimumSize: const Size(15, 8),
+                                      minimumSize: const Size(15, 30),
                                     ),
                                     onPressed: () =>
                                         context.read<AthletePageBloc>().add(
@@ -107,18 +107,22 @@ class AthletePageTitle extends StatelessWidget {
                                                 AptType.long,
                                               ),
                                             ),
-                                    child: Text(
-                                      'Long',
-                                      style: TextStyle(
-                                        color: aptTypeSelection.isLong
-                                            ? primaryWhiteColor
-                                            : const Color.fromRGBO(
-                                                154,
-                                                154,
-                                                154,
-                                                1,
-                                              ),
-                                        fontSize: 10,
+                                    child: FittedBox(
+                                      child: SizedBox(
+                                        child: Text(
+                                          'Long',
+                                          style: TextStyle(
+                                            color: aptTypeSelection.isLong
+                                                ? primaryWhiteColor
+                                                : const Color.fromRGBO(
+                                                    154,
+                                                    154,
+                                                    154,
+                                                    1,
+                                                  ),
+                                            fontSize: 10,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -153,18 +157,22 @@ class AthletePageTitle extends StatelessWidget {
                                                 AptType.short,
                                               ),
                                             ),
-                                    child: Text(
-                                      'Short',
-                                      style: TextStyle(
-                                        color: aptTypeSelection.isLong
-                                            ? const Color.fromRGBO(
-                                                154,
-                                                154,
-                                                154,
-                                                1,
-                                              )
-                                            : primaryWhiteColor,
-                                        fontSize: 10,
+                                    child: FittedBox(
+                                      child: SizedBox(
+                                        child: Text(
+                                          'Short',
+                                          style: TextStyle(
+                                            color: aptTypeSelection.isLong
+                                                ? const Color.fromRGBO(
+                                                    154,
+                                                    154,
+                                                    154,
+                                                    1,
+                                                  )
+                                                : primaryWhiteColor,
+                                            fontSize: 10,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -191,7 +199,7 @@ class AthletePageTitle extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  height: 20,
+                  height: 30,
                   decoration: boxDecoration(
                     Colors.amber[500]!.withOpacity(0.20),
                     500,
@@ -214,11 +222,10 @@ class AthletePageTitle extends StatelessWidget {
                     },
                     child: Text(
                       '+ Add to Wallet',
-                      style: textStyle(
-                        Colors.amber[500]!,
-                        10,
-                        isBold: false,
-                        isUline: false,
+                      style: TextStyle(
+                        color: Colors.amber[500],
+                        fontSize: 10,
+                        fontFamily: 'OpenSans',
                       ),
                     ),
                   ),
